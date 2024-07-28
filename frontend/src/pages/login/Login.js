@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../components/atoms/Header';
 import Input from '../../components/atoms/Input';
 import Button from '../../components/atoms/Button';
-import mainlogo from '../../assets/icon/mainlogo.svg';
+import mainlogo from '../../assets/image/mainlogo.svg';
 
 function Login() {
     console.log('***Login Page Rendered***');

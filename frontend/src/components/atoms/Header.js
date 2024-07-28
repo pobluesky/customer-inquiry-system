@@ -1,5 +1,5 @@
 import React from 'react';
-import companylogo from '../../assets/icon/companylogo.svg';
+import companylogo from '../../assets/image/companylogo.svg';
 // import PropTypes from 'prop-types';
 
 function Header({ username }) {
