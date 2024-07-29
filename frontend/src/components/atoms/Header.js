@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import mainlogo from '../../assets/image/mainlogo.svg';
@@ -14,8 +15,8 @@ function Header() {
                 <Link to="/Collaboration" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>협업목록</Link>
             </div>
             <div>
-                <Button btnName={'로그인'} width={'84px'} height={'40px'} backgroundColor={'#03507d'} textColor={'#eeeeee'} borderRadius={'12px'} fontSize={'16px'} />
-                <Button btnName={'회원가입'} width={'84px'} height={'40px'} margin={'24px'} backgroundColor={'#ffffff'} textColor={'#03507d'} borderRadius={'12px'} fontSize={'16px'} />
+                <Button onClick={useNavigate('/login')} btnName={'로그인'} width={'84px'} height={'40px'} backgroundColor={'#03507d'} textColor={'#eeeeee'} borderRadius={'12px'} fontSize={'16px'} />
+                <Button onClick={useNavigate('/join')} btnName={'회원가입'} width={'84px'} height={'40px'} margin={'24px'} backgroundColor={'#ffffff'} textColor={'#03507d'} borderRadius={'12px'} fontSize={'16px'} />
             </div>
         </div>
     );
