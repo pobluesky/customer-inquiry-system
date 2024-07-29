@@ -14,9 +14,9 @@ function Header() {
                 {/* 포스코 로고 */}
                 <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '6vw' }} />
                 {/* 메뉴 */}
-                <Link to="/Ask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>문의하기</Link>
-                <Link to="/MyAsk" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>나의문의</Link>
-                <Link to="/Collaboration" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>협업목록</Link>
+                <Link to="/ask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>문의하기</Link>
+                <Link to="/myssk" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>나의문의</Link>
+                <Link to="/collaboration" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>협업목록</Link>
             </div>
             <div>
                 {/* 로그인, 회원가입 버튼 */}
