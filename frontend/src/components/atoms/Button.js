@@ -1,10 +1,10 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-function Button({ btnName, backgroundColor, textColor }) {
+function Button({ btnName, width, height, margin, backgroundColor, textColor, borderRadius, fontSize }) {
     return (
         <span>
-            <button style={{ width: '168px', height: '44px', margin: '12px', backgroundColor: `${backgroundColor}`, color: `${textColor}`, border: 'solid #c1c1c1 1px', borderRadius: '12px', fontSize: '20px' }}>{btnName}</button>
+            <button style={{ width: `${width}`, height: `${height}`, margin: `${margin}`, backgroundColor: `${backgroundColor}`, color: `${textColor}`, border: 'solid #c1c1c1 1px', borderRadius: `${borderRadius}`, fontSize: `${fontSize}` }}>{btnName}</button>
         </span>
     );
 }

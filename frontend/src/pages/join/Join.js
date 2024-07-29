@@ -4,7 +4,7 @@ import Input from '../../components/atoms/Input';
 import Button from '../../components/atoms/Button';
 // import mainlogo from '../../assets/image/mainlogo.svg';
 
-function Login() {
+function Join() {
     return (
         <div>
             <Header />
@@ -43,4 +43,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Join;
