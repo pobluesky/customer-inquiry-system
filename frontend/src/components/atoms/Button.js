@@ -4,9 +4,7 @@ import React from 'react';
 function Button({ btnName, backgroundColor, textColor }) {
     return (
         <span>
-            <button style={{ width: '168px', height: '36px', margin: '12px', backgroundColor: `${backgroundColor}`, color: `${textColor}`, border: 'solid #b5b5b2', borderRadius: '12px', fontSize: '20px' }}>
-                {btnName}
-            </button>
+            <button style={{ width: '168px', height: '44px', margin: '12px', backgroundColor: `${backgroundColor}`, color: `${textColor}`, border: 'solid #c1c1c1 1px', borderRadius: '12px', fontSize: '20px' }}>{btnName}</button>
         </span>
     );
 }
