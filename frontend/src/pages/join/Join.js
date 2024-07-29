@@ -13,7 +13,7 @@ function Join() {
                 {/* <img src={mainlogo} alt="posco" width="240px" style={{ marginTop: '8vh' }} /> */}
 
                 {/* 로그인, 이메일과 비밀번호를 입력해주세요. */}
-                <div style={{ color: '#03507D', fontSize: '36px', marginTop: '12vh' }}>로그인</div>
+                <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }}>회원가입</div>
                 <div style={{ color: '#03507D', marginTop: '4vh' }}>이메일과 비밀번호를 입력해주세요.</div>
 
                 {/* 이메일, 비밀번호 입력 창 */}
