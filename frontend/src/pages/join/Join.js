@@ -29,13 +29,10 @@ function Join() {
     const findRole = () => {
         const roleMark = no.substring(0, 1);
         if (roleMark === 'Q') {
-            console.log('품질관리');
             setRole('품질관리 담당자');
         } else if (roleMark === 'S') {
-            console.log('판매관리');
             setRole('판매관리 담당자');
         } else {
-            console.log('고객');
             setRole('고객');
         }
     };
@@ -79,12 +76,6 @@ function Join() {
                         <Input category={'이메일'} placeholder={'poscodx@posco.co.kr'} onChange={emailInput} value={email} />
                         <Input category={'비밀번호'} placeholder={'********'} onChange={passwordInput} value={password} />
                         <Input category={'비밀번호 확인'} placeholder={'********'} onChange={passwordInput} value={password} />
-
-                        {/* 역할 구분 */}
-                        {/* <div style={{ width: '360px', display: 'flex', justifyContent: 'space-around', marginTop: '4vh', marginLeft: 'auto', marginRight: 'auto', color: '#03507D', fontWeight: 'bold' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}><input type="checkbox" style={{ marginRight: '1vw', width: '20px', height: '20px' }} />포스코</div>
-                            <div style={{ display: 'flex', alignItems: 'center' }}><input type="checkbox" style={{ marginRight: '1vw', width: '20px', height: '20px' }} />고객사</div>
-                        </div> */}
 
                         {/* 회원가입 버튼 */}
                         <div style={{ marginTop: '4vh' }}>
