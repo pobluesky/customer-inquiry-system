@@ -7,7 +7,7 @@ function Input({ category, placeholder }) {
             <div style={{ width: '360px', color: '#03507D', fontWeight: 'bold', marginLeft: 'auto', marginRight: 'auto', textAlign: 'left', marginBottom: '12px' }}>
                 {category}
             </div>
-            <input type="text" placeholder={placeholder} className="input" style={{ width: '360px', height: '48px', padding: '0 -20px 0 20px', border: 'solid #c1c1c1 1px', borderRadius: '12px', fontSize: '20px' }} />
+            <input type="text" placeholder={placeholder} className="input" style={{ width: '336px', height: '48px', padding: '0 0 0 20px', border: 'solid #c1c1c1 1px', borderRadius: '12px', fontSize: '20px' }} />
         </div>
     );
 }
