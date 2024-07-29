@@ -1,7 +1,7 @@
 import React from 'react';
+import Button from '../../components/atoms/Button';
 import Header from '../../components/atoms/Header';
 import Input from '../../components/atoms/Input';
-import Button from '../../components/atoms/Button';
 // import mainlogo from '../../assets/image/mainlogo.svg';
 
 function Join() {
