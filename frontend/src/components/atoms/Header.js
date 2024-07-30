@@ -12,11 +12,11 @@ function Header() {
         <div style={{ width: '100%', height: '84px', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
             <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5em', fontWeight: 'bold' }}>
                 {/* 포스코 로고 */}
-                <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '6vw' }} />
+                <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '4vw' }} />
                 {/* 메뉴 */}
-                <Link to="/ask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>문의하기</Link>
-                <Link to="/myask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>나의문의</Link>
-                <Link to="/collaboration" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>협업목록</Link>
+                <Link to="/inq" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d' }}>Inquiry</Link>
+                <Link to="/voc" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d' }}>VoC</Link>
+                <Link to="/dashboard" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d' }}>DashBoard</Link>
             </div>
             <div>
                 {/* 로그인, 회원가입 버튼 */}

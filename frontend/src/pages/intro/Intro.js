@@ -8,10 +8,13 @@ function Intro() {
                 <a href="http://localhost:3000/join">회원가입</a>
             </div>
             <div>
-                <a href="http://localhost:3000/dashboard">대시보드</a>
+                <a href="http://localhost:3000/inq">Inquiry</a>
             </div>
             <div>
-                <a href="http://localhost:3000/inq">Inq</a>
+                <a href="http://localhost:3000/voc">VoC</a>
+            </div>
+            <div>
+                <a href="http://localhost:3000/dashboard">DashBoard</a>
             </div>
         </>
     );
