@@ -1,13 +1,13 @@
-package com.pobluesky.inquiry_system;
+package com.pobluesky.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class InquirySystemApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InquirySystemApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }
