@@ -7,6 +7,7 @@ import { Join } from './pages/join';
 import { MyAsk } from './pages/myask';
 import { Ask } from './pages/ask';
 import { Collaboration } from './pages/collaboration';
+import { DashBoard } from './pages/dashboard';
 
 function App() {
     return useRoutes([
@@ -16,6 +17,7 @@ function App() {
         { path: '/myask', element: <MyAsk /> },
         { path: '/ask', element: <Ask /> },
         { path: '/collaboration', element: <Collaboration /> },
+        { path: '/dashboard', element: <DashBoard /> },
     ]);
 }
 

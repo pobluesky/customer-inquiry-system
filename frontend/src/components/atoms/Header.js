@@ -15,7 +15,7 @@ function Header() {
                 <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '6vw' }} />
                 {/* 메뉴 */}
                 <Link to="/ask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>문의하기</Link>
-                <Link to="/myssk" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>나의문의</Link>
+                <Link to="/myask" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>나의문의</Link>
                 <Link to="/collaboration" style={{ marginLeft: '5vw', textDecoration: 'none', color: '#03507d' }}>협업목록</Link>
             </div>
             <div>
