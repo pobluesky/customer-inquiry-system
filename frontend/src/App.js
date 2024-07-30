@@ -8,6 +8,7 @@ import { MyAsk } from './pages/myask';
 import { Ask } from './pages/ask';
 import { Collaboration } from './pages/collaboration';
 import { DashBoard } from './pages/dashboard';
+import { Inq } from './pages/inq';
 
 function App() {
     return useRoutes([
@@ -18,6 +19,7 @@ function App() {
         { path: '/ask', element: <Ask /> },
         { path: '/collaboration', element: <Collaboration /> },
         { path: '/dashboard', element: <DashBoard /> },
+        { path: '/inq', element: <Inq /> },
     ]);
 }
 
