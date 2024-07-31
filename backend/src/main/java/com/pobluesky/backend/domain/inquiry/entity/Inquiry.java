@@ -37,10 +37,13 @@ public class Inquiry {
 
     private String salesPerson;
 
+    @Enumerated(EnumType.STRING)
     private Industry industry;
 
+    @Enumerated(EnumType.STRING)
     private Progress progress;
 
+    @Enumerated(EnumType.STRING)
     private ProductType productType;
 
     private String qualityManager;
@@ -59,6 +62,7 @@ public class Inquiry {
 
     private String files;
 
+    @Enumerated(EnumType.STRING)
     private InquiryType inquiryType;
 
     @Builder
