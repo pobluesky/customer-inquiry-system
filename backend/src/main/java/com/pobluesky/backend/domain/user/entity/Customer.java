@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Customer extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userNo;
+    private Long customerId;
 
     private String customerCode;
 

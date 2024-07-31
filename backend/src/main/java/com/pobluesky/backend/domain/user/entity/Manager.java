@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Manager extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userNo;
+    private Long managerId;
 
     private String empNo;
 

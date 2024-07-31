@@ -16,7 +16,7 @@ public record CustomerResponseDTO(
     // entity -> dto
     public static CustomerResponseDTO from(Customer customer) {
         return CustomerResponseDTO.builder()
-            .userNo(customer.getUserNo())
+            .userNo(customer.getCustomerId())
             .name(customer.getName())
             .email(customer.getEmail())
             .password(customer.getPassword())

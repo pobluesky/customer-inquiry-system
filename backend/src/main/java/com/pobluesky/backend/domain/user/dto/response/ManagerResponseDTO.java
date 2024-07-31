@@ -19,7 +19,7 @@ public record ManagerResponseDTO(
 ) {
     public static ManagerResponseDTO from(Manager manager) {
         return ManagerResponseDTO.builder()
-            .userNo(manager.getUserNo())
+            .userNo(manager.getManagerId())
             .name(manager.getName())
             .email(manager.getEmail())
             .password(manager.getPassword())
