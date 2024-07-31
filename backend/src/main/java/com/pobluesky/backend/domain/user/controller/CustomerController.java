@@ -32,10 +32,10 @@ public class CustomerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-        List<CustomerResponseDTO> allUsers = customerService.getAllCustomers();
+        List<CustomerResponseDTO> response = customerService.getAllCustomers();
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(allUsers));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping
@@ -43,7 +43,7 @@ public class CustomerController {
         CustomerResponseDTO response = customerService.createCustomer(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PutMapping("/{userNo}")
@@ -54,7 +54,7 @@ public class CustomerController {
         CustomerResponseDTO response = customerService.updateCustomerByNo(userNo, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @DeleteMapping("/{userNo}")
