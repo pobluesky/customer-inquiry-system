@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.controller;
 
+import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;

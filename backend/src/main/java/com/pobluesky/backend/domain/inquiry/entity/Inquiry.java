@@ -98,8 +98,8 @@ public class Inquiry {
 
 
 
-    @Builder
-    private void updateInquiry(
+
+    public void updateInquiry(
         Country country,
         String corporate,
         String  salesPerson,
