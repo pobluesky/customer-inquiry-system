@@ -19,15 +19,15 @@ import lombok.NoArgsConstructor;
 public class Voc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vocNo;
+    private Long vocNo; // VoC 번호
 
-    private Long inquiryNo;
+    private Long inquiryNo; // 문의 번호
 
-    private String title;
+    private String title; // 제목
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String contents;
+    private String contents; // 내용
 
-    @Column(nullable = true, columnDefinition = "TEXT")
-    private String files;
+    @Column(columnDefinition = "TEXT")
+    private String files; // 첨부파일
 }
