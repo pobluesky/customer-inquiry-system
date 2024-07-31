@@ -1,39 +1,41 @@
-import { $getRoot, $getSelection } from 'lexical';
-import { useEffect } from 'react';
-
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 
-const theme = {
-    // Theme styling goes here
-    //...
+import ToolbarPlugin from '../../plugins/ToolbarPlugin'
+import TreeViewPlugin from '../../plugins/TreeViewPlugin';
+import Theme from './Theme';
+
+import '../../assets/css/Editor.css';
+
+const placeholder = 'Enter some rich text...';
+
+const editorConfig = {
+    namespace: 'React.js Demo',
+    nodes: [],
+    // Handling of errors during update
+    onError(error) {
+        throw error;
+    },
+    // The editor theme
+    theme: Theme,
 };
 
-// Catch any errors that occur during Lexical updates and log them
-// or throw them as needed. If you don't throw them, Lexical will
-// try to recover gracefully without losing user data.
-function onError(error) {
-    console.error(error);
-}
-
-function Inq() {
-    const initialConfig = {
-        namespace: 'MyEditor',
-        theme,
-        onError,
-    };
-
+export default function Inq() {
     return (
-        <LexicalComposer initialConfig={initialConfig}>
-            <RichTextPlugin contentEditable={<ContentEditable />} placeholder={<div>Enter some text...</div>} ErrorBoundary={LexicalErrorBoundary} />
-            <HistoryPlugin />
-            <AutoFocusPlugin />
+        <LexicalComposer initialConfig={editorConfig}>
+            <div className="editor-container">
+                <ToolbarPlugin />
+                <div className="editor-inner">
+                    <RichTextPlugin contentEditable={<ContentEditable className="editor-input" aria-placeholder={placeholder} placeholder={<div className="editor-placeholder">{placeholder}</div>} />} ErrorBoundary={LexicalErrorBoundary} />
+                    <HistoryPlugin />
+                    <AutoFocusPlugin />
+                    <TreeViewPlugin />
+                </div>
+            </div>
         </LexicalComposer>
     );
 }
-
-export default Inq;
