@@ -1,4 +1,4 @@
-package com.pobluesky.inquiry_system.global;
+package com.pobluesky.backend.global;
 
 import java.time.LocalDateTime;
 
