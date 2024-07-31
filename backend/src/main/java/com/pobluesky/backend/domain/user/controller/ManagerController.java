@@ -30,7 +30,7 @@ public class ManagerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-        List<ManagerResponseDTO> allUsers = managerService.getAllUsers();
+        List<ManagerResponseDTO> allUsers = managerService.getAllManagers();
 
         return ResponseEntity.status(HttpStatus.OK)
             . body(JsonResult.success(allUsers));
@@ -38,18 +38,18 @@ public class ManagerController {
 
     @PostMapping
     public ResponseEntity<JsonResult> createUser(@RequestBody ManagerCreateRequestDTO dto) {
-        ManagerResponseDTO response = managerService.createUser(dto);
+        ManagerResponseDTO response = managerService.createManager(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
             . body(JsonResult.success(response));
     }
 
     @PutMapping("/{userNo}")
-    public ResponseEntity<JsonResult> updateUserByNo(
+    public ResponseEntity<JsonResult> updateManagerByNo(
         @PathVariable Long userNo,
         @RequestBody ManagerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        ManagerResponseDTO response = managerService.updateUserByNo(userNo, customerUpdateRequestDTO);
+        ManagerResponseDTO response = managerService.updateManagerByNo(userNo, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
             . body(JsonResult.success(response));
@@ -57,7 +57,7 @@ public class ManagerController {
 
     @DeleteMapping("/{userNo}")
     public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userNo) {
-        managerService.deleteUserByNo(userNo);
+        managerService.deleteManagerByNo(userNo);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

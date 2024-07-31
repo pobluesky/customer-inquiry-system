@@ -20,7 +20,7 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<ManagerResponseDTO> getAllUsers() {
+    public List<ManagerResponseDTO> getAllManagers() {
         List<Manager> managers = managerRepository.findAll();
 
         return managers.stream()
@@ -29,7 +29,7 @@ public class ManagerService {
     }
 
     @Transactional
-    public ManagerResponseDTO createUser(ManagerCreateRequestDTO dto) {
+    public ManagerResponseDTO createManager(ManagerCreateRequestDTO dto) {
         Manager manager = dto.toManagerEntity();
         Manager savedManager = managerRepository.save(manager);
 
@@ -37,7 +37,7 @@ public class ManagerService {
     }
 
     @Transactional
-    public ManagerResponseDTO updateUserByNo(Long userNo, ManagerUpdateRequestDTO managerUpdateRequestDTO) {
+    public ManagerResponseDTO updateManagerByNo(Long userNo, ManagerUpdateRequestDTO managerUpdateRequestDTO) {
         Manager manager = managerRepository.findById(userNo)
             .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
 
@@ -52,7 +52,7 @@ public class ManagerService {
     }
 
     @Transactional
-    public void deleteUserByNo(Long userNo) {
+    public void deleteManagerByNo(Long userNo) {
         managerRepository.deleteById(userNo);
     }
 

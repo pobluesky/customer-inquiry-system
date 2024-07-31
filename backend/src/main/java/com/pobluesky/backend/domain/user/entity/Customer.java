@@ -36,7 +36,7 @@ public class Customer extends User {
         String customerCode,
         String customerName
     ) {
-        // TODO : 빈칸일 경우 valudate
+        // TODO : 빈칸일 경우 validate
 //        if (name.isBlank() || email.isBlank() || password.isBlank()) {
 //            throw new CommonException(ErrorCode.INVALID_REQUEST);
 //        }
