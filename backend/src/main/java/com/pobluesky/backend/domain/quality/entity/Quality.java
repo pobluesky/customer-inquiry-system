@@ -7,9 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +32,28 @@ public class Quality extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String requireAddContents; // 추가요청내용
+
+    /*
+      Builder Pattern
+     */
+    @Builder
+    private Quality(
+        Long inquiryNo,
+        Long userNo,
+        QualityReviewInfo qualityReviewInfo,
+        String requireAddContents
+    ) {
+        this.inquiryNo = inquiryNo;
+        this.userNo = userNo;
+        this.qualityReviewInfo = qualityReviewInfo;
+        this.requireAddContents = requireAddContents;
+    }
+
+    public void updateQuality(
+        QualityReviewInfo qualityReviewInfo,
+        String requireAddContents
+    ) {
+        this.qualityReviewInfo = qualityReviewInfo;
+        this.requireAddContents = requireAddContents;
+    }
 }
