@@ -72,7 +72,7 @@ public class InquiryService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         inquiry.markAsDeleted();
-        inquiryRepository.save(inquiry);
+
     }
 
 
