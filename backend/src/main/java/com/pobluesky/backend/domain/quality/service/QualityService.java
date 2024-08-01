@@ -46,7 +46,7 @@ public class QualityService {
     @Transactional
     public QualityResponseDTO updateQualityById(Long qualityId, QualityUpdateRequestDTO qualityUpdateRequestDTO) {
         Quality quality = (Quality) qualityRepository.findById(qualityId)
-           .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
 
         quality.updateQuality(
             qualityUpdateRequestDTO.qualityReviewInfo(),
