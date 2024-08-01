@@ -57,5 +57,4 @@ public class Quality {
         this.qualityReviewInfo = qualityReviewInfo;
         this.requireAddContents = requireAddContents;
     }
-
 }
