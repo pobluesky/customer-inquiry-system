@@ -10,9 +10,10 @@ import person from '../../assets/css/icons/person.svg';
 
 function Header({ login }) {
     const navigate = useNavigate();
+    const backgroundColor = login ? '#EDFAFF' : '';
 
     return (
-        <div style={{ width: '100%', height: '84px', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
+        <div style={{ width: '100%', height: '84px', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor, boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
             {login ? (
                 <>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5em', fontWeight: 'bold' }}>
