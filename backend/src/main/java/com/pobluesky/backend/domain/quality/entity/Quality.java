@@ -27,7 +27,7 @@ public class Quality {
     private Long qualityId; // 품질번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inquiry_no")
+    @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의번호
 
     @Embedded
