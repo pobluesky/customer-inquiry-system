@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/atoms/Header';
+import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
 
 function Join() {
@@ -39,7 +39,7 @@ function Join() {
 
     return (
         <div>
-            <Header />
+            <Header login={false} />
             <div style={{ textAlign: 'center' }}>
                 {!check ? (
                     <>

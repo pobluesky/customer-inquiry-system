@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/atoms/Header';
+import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
 
 function Login() {
     return (
         <div>
-            <Header />
+            <Header login={false} />
             <div style={{ textAlign: 'center' }}>
                 <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }}>로그인</div>
                 <div style={{ color: '#03507D', marginTop: '4vh' }}>이메일과 비밀번호를 입력해주세요.</div>

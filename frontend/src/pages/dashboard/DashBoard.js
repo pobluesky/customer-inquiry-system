@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../../components/mocules/Header';
 import Chart from 'react-apexcharts';
 
 class DashBoard extends Component {
@@ -75,13 +76,14 @@ class DashBoard extends Component {
 
     render() {
         return (
-            <div>
+            <>
+                <Header login={true} />
                 <div className="row">
                     <div className="mixed-chart">
                         <Chart options={this.state.options} series={this.state.series} type="bar" width="500" />
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
