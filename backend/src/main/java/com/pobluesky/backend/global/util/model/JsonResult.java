@@ -14,11 +14,7 @@ public class JsonResult<T> {
         this.message = message;
     }
 
-    public static <T> JsonResult<T> success(T data) {
-        return new JsonResult<>("success", data, null);
-    }
-
-    public static <T> JsonResult<T> fail(String message) {
-        return new JsonResult<>("fail", null, message);
+    public static <T> JsonResult<T> of(String result, T data, String message) {
+        return new JsonResult<>(result, data, message);
     }
 }

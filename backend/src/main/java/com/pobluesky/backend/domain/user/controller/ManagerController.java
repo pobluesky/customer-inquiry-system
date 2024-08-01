@@ -32,10 +32,10 @@ public class ManagerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-        List<ManagerResponseDTO> allUsers = managerService.getAllManagers();
+        List<ManagerResponseDTO> response = managerService.getAllManagers();
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(allUsers));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping
@@ -43,7 +43,7 @@ public class ManagerController {
         ManagerResponseDTO response = managerService.createManager(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(response));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PutMapping("/{userId}")
@@ -54,7 +54,7 @@ public class ManagerController {
         ManagerResponseDTO response = managerService.updateManagerById(userId, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(response));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @DeleteMapping("/{userId}")
