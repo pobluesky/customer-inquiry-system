@@ -23,6 +23,7 @@ public record InquiryUpdateRequestDTO(
     String elapsedDays,
     String corporationCode,
     String files,
-    InquiryType inquiryType
+    InquiryType inquiryType,
+    boolean isDeleted
 ) {
 }

@@ -13,6 +13,7 @@ import com.pobluesky.backend.domain.user.entity.Department;
 public record InquiryCreateRequestDTO(
     Country country,
     String corporate,
+    String corporateCode,
     String salesPerson,
     Industry industry,
     Progress progress,
@@ -42,9 +43,10 @@ public record InquiryCreateRequestDTO(
             .customerRequestDate(customerRequestDate)
             .responseDeadline(responseDeadline)
             .elapsedDays(elapsedDays)
-            .corporationCode(corporationCode)
+            .corporationCode("(주) 포스코")
             .files(files)
             .inquiryType(inquiryType)
+            .isDeleted(false)
             .build();
     }
 }

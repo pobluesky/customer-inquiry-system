@@ -70,8 +70,6 @@ public class Inquiry {
 
     private String elapsedDays;
 
-    @ColumnDefault("'(주) 포스코'")
-    @Column(nullable = false)
     private String corporationCode;
 
     private String files;
@@ -79,14 +77,13 @@ public class Inquiry {
     @Enumerated(EnumType.STRING)
     private InquiryType inquiryType;
 
-    @ColumnDefault("false")
-    @Column(nullable = false)
     private boolean isDeleted;
 
     @Builder
     private Inquiry(
         Country country,
         String corporate,
+        String corporationCode,
         String  salesPerson,
         Industry industry,
         Progress progress,
@@ -97,9 +94,9 @@ public class Inquiry {
         String customerRequestDate,
         String responseDeadline,
         String elapsedDays,
-        String corporationCode,
         String files,
-        InquiryType inquiryType
+        InquiryType inquiryType,
+        boolean isDeleted
     ){
         this.country = country;
         this.corporate = corporate;
@@ -116,6 +113,7 @@ public class Inquiry {
         this.corporationCode = corporationCode;
         this.files = files;
         this.inquiryType = inquiryType;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -136,7 +134,8 @@ public class Inquiry {
         String elapsedDays,
         String corporationCode,
         String files,
-        InquiryType inquiryType
+        InquiryType inquiryType,
+        boolean isDeleted
     ){
         this.country = country;
         this.corporate = corporate;
@@ -153,6 +152,7 @@ public class Inquiry {
         this.corporationCode = corporationCode;
         this.files = files;
         this.inquiryType = inquiryType;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -162,12 +162,7 @@ public class Inquiry {
         this.isDeleted = true;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        if (this.corporationCode == null) {
-            this.corporationCode = "(주) 포스코";
-        }
-    }
+
 
 
 

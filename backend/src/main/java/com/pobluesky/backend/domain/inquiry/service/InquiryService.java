@@ -57,7 +57,8 @@ public class InquiryService {
             inquiryUpdateRequestDTO.elapsedDays(),
             inquiryUpdateRequestDTO.corporationCode(),
             inquiryUpdateRequestDTO.files(),
-            inquiryUpdateRequestDTO.inquiryType()
+            inquiryUpdateRequestDTO.inquiryType(),
+            inquiryUpdateRequestDTO.isDeleted()
         );
 
 
