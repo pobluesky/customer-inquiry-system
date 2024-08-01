@@ -33,9 +33,11 @@ public class QualityController {
             .body(JsonResult.success(allQualities));
     }
 
-    @PostMapping
-    public ResponseEntity<JsonResult> createQuality(@RequestBody QualityCreateRequestDTO dto) {
-        QualityResponseDTO response = qualityService.createQuality(dto);
+    @PostMapping("/{inquiryNo}")
+    public ResponseEntity<JsonResult> createQuality(
+        @RequestBody QualityCreateRequestDTO dto,
+        @PathVariable Long inquiryNo) {
+        QualityResponseDTO response = qualityService.createQuality(dto, inquiryNo);
 
         return ResponseEntity.status(HttpStatus.OK)
            .body(JsonResult.success(response));
@@ -52,7 +54,7 @@ public class QualityController {
            .body(JsonResult.success(response));
     }
 
-    @DeleteMapping("{/qualityNo}")
+    @DeleteMapping("/{qualityNo}")
     public ResponseEntity<CommonResult> deleteQualityByNo(@PathVariable Long qualityNo) {
         qualityService.deleteQualityByNo(qualityNo);
 
