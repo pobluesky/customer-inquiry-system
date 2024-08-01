@@ -30,7 +30,7 @@ public class QualityController {
         List<QualityResponseDTO> allQualities = qualityService.getAllQualities();
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(allQualities));
+            .body(ResponseFactory.getSuccessJsonResult(allQualities));
     }
 
     @PostMapping("/{inquiryId}")
@@ -40,7 +40,7 @@ public class QualityController {
         QualityResponseDTO response = qualityService.createQuality(dto, inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
-           .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PutMapping("/{qualityId}")
@@ -51,7 +51,7 @@ public class QualityController {
         QualityResponseDTO response = qualityService.updateQualityById(qualityId, qualityCreateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-           .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @DeleteMapping("/{qualityId}")
