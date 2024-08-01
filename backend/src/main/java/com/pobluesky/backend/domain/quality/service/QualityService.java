@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.quality.service;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
+import com.pobluesky.backend.domain.quality.dto.request.QualityUpdateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.entity.Quality;
 import com.pobluesky.backend.domain.quality.repository.QualityRepository;
@@ -43,7 +44,7 @@ public class QualityService {
     }
 
     @Transactional
-    public QualityResponseDTO updateQualityById(Long qualityId, QualityCreateRequestDTO qualityUpdateRequestDTO) {
+    public QualityResponseDTO updateQualityById(Long qualityId, QualityUpdateRequestDTO qualityUpdateRequestDTO) {
         Quality quality = (Quality) qualityRepository.findById(qualityId)
            .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
 
