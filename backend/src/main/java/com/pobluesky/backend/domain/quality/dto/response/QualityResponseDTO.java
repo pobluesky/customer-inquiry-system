@@ -16,8 +16,7 @@ public record QualityResponseDTO(
     public static QualityResponseDTO from(Quality quality) {
         return QualityResponseDTO.builder()
             .qualityNo(quality.getQualityNo())
-            .inquiryNo(quality.getInquiryNo())
-            .userNo(quality.getUserNo())
+            .inquiryNo(quality.getInquiry().getInquiryNo())
             .qualityReviewInfo(quality.getQualityReviewInfo())
             .requireAddContents(quality.getRequireAddContents())
             .build();
