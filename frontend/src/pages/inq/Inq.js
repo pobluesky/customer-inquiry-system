@@ -1,5 +1,7 @@
 import React from 'react';
 import Header from '../../components/mocules/Header';
+import Path from '../../components/atoms/Path';
+
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -30,6 +32,7 @@ function Inq() {
     return (
         <>
             <Header login={true} inq={true} voc={false} dashboard={false} />
+            <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
             <LexicalComposer initialConfig={editorConfig}>
                 <div className="editor-container">
                     <ToolbarPlugin />
