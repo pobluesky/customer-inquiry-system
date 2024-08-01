@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.quality.controller;
 
 import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
+import com.pobluesky.backend.domain.quality.dto.request.QualityUpdateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.service.QualityService;
 import com.pobluesky.backend.global.util.ResponseFactory;
@@ -46,9 +47,9 @@ public class QualityController {
     @PutMapping("/{qualityId}")
     public ResponseEntity<JsonResult> updateQualityById(
         @PathVariable Long qualityId,
-        @RequestBody QualityCreateRequestDTO qualityCreateRequestDTO
+        @RequestBody QualityUpdateRequestDTO qualityUpdateRequestDTO
     ) {
-        QualityResponseDTO response = qualityService.updateQualityById(qualityId, qualityCreateRequestDTO);
+        QualityResponseDTO response = qualityService.updateQualityById(qualityId, qualityUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
