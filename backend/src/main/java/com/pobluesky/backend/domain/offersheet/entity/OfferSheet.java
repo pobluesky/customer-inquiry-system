@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.offersheet.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,9 +18,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "offersheet")
@@ -27,14 +30,14 @@ public class OfferSheet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long offerSheetNo;
+    private Long offerSheetId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inquiry_no")
+    @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_no")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     private String product;
@@ -70,4 +73,85 @@ public class OfferSheet {
     private LocalDate validity;
 
     private String destination;
+
+    @Builder
+    public OfferSheet(
+        Inquiry inquiry,
+        Customer customer,
+        String product,
+        String specification,
+        String surfaceFinish,
+        String usage,
+        String thickness,
+        String diameter,
+        String width,
+        String quantity,
+        String price,
+        String unitMinWeight,
+        String unitMaxWeight,
+        String edge,
+        String priceTerms,
+        String paymentTerms,
+        LocalDate shipment,
+        LocalDate validity,
+        String destination
+    ) {
+        this.inquiry = inquiry;
+        this.customer = customer;
+        this.product = product;
+        this.specification = specification;
+        this.surfaceFinish = surfaceFinish;
+        this.usage = usage;
+        this.thickness = thickness;
+        this.diameter = diameter;
+        this.width = width;
+        this.quantity = quantity;
+        this.price = price;
+        this.unitMinWeight = unitMinWeight;
+        this.unitMaxWeight = unitMaxWeight;
+        this.edge = edge;
+        this.priceTerms = priceTerms;
+        this.paymentTerms = paymentTerms;
+        this.shipment = shipment;
+        this.validity = validity;
+        this.destination = destination;
+    }
+
+    public void updateOfferSheet(
+        String product,
+        String specification,
+        String surfaceFinish,
+        String usage,
+        String thickness,
+        String diameter,
+        String width,
+        String quantity,
+        String price,
+        String unitMinWeight,
+        String unitMaxWeight,
+        String edge,
+        String priceTerms,
+        String paymentTerms,
+        LocalDate shipment,
+        LocalDate validity,
+        String destination
+    ) {
+        this.product = product;
+        this.specification = specification;
+        this.surfaceFinish = surfaceFinish;
+        this.usage = usage;
+        this.thickness = thickness;
+        this.diameter = diameter;
+        this.width = width;
+        this.quantity = quantity;
+        this.price = price;
+        this.unitMinWeight = unitMinWeight;
+        this.unitMaxWeight = unitMaxWeight;
+        this.edge = edge;
+        this.priceTerms = priceTerms;
+        this.paymentTerms = paymentTerms;
+        this.shipment = shipment;
+        this.validity = validity;
+        this.destination = destination;
+    }
 }
