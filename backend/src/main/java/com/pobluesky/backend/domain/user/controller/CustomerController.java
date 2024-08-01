@@ -46,20 +46,20 @@ public class CustomerController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/{userNo}")
+    @PutMapping("/{userId}")
     public ResponseEntity<JsonResult> updateUserByNo(
-        @PathVariable Long userNo,
+        @PathVariable Long userId,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        CustomerResponseDTO response = customerService.updateCustomerByNo(userNo, customerUpdateRequestDTO);
+        CustomerResponseDTO response = customerService.updateCustomerById(userId, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/{userNo}")
-    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userNo) {
-        customerService.deleteCustomerByNo(userNo);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userId) {
+        customerService.deleteCustomerById(userId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
