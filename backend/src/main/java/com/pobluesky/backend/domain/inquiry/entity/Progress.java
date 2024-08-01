@@ -11,7 +11,7 @@ public enum Progress {
     QUALITY_REVIEW_COMPLETED("Quality Review Completed"),
     FINAL_REVIEW_COMPLETED("Final Review Completed");
 
-    private String value;
+    private final String value;
 
     Progress(String value) {
         this.value = value;

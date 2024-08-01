@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,14 +32,14 @@ public class Inquiry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long inquiryNo;
+    private long inquiryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_no")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_no")
+    @JoinColumn(name = "manager_id")
     private Manager manager;
 
     @Enumerated(EnumType.STRING)
@@ -69,12 +71,17 @@ public class Inquiry {
     private String elapsedDays;
 
     @ColumnDefault("'(주) 포스코'")
+    @Column(nullable = false)
     private String corporationCode;
 
     private String files;
 
     @Enumerated(EnumType.STRING)
     private InquiryType inquiryType;
+
+    @ColumnDefault("false")
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     @Builder
     private Inquiry(
@@ -151,7 +158,16 @@ public class Inquiry {
 
 
 
+    public void markAsDeleted() {
+        this.isDeleted = true;
+    }
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.corporationCode == null) {
+            this.corporationCode = "(주) 포스코";
+        }
+    }
 
 
 

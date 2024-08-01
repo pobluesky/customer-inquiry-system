@@ -11,7 +11,7 @@ import lombok.Builder;
 
 @Builder
 public record InquiryResponseDTO(
-    Long inquiryNo,
+    Long inquiryId,
     Country country,
     String corporate,
     String salesPerson,
@@ -31,7 +31,7 @@ public record InquiryResponseDTO(
 
     public static InquiryResponseDTO from(Inquiry inquiry) {
         return InquiryResponseDTO.builder()
-            .inquiryNo(inquiry.getInquiryNo())
+            .inquiryId(inquiry.getInquiryId())
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())

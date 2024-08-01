@@ -22,7 +22,7 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getAllInquiries() {
-        List<Inquiry> inquiries = inquiryRepository.findAll();
+        List<Inquiry> inquiries = inquiryRepository.findByIsDeletedFalse();
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
@@ -36,9 +36,9 @@ public class InquiryService {
     }
 
     @Transactional
-    public InquiryResponseDTO updateInquiryByNo(Long inquiryNo, InquiryUpdateRequestDTO inquiryUpdateRequestDTO) {
+    public InquiryResponseDTO updateInquiryByNo(Long inquiryId, InquiryUpdateRequestDTO inquiryUpdateRequestDTO) {
 
-        Inquiry inquiry = inquiryRepository.findById(inquiryNo)
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
 
@@ -65,8 +65,13 @@ public class InquiryService {
     }
 
     @Transactional
-    public void deleteInquiryByNo(Long inquiryNo) {
-        inquiryRepository.deleteById(inquiryNo);
+    public void deleteInquiryById(Long inquiryId) {
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        inquiry.markAsDeleted();
+        inquiryRepository.save(inquiry);
     }
 
 

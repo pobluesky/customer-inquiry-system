@@ -40,19 +40,19 @@ public class InquiryController {
             .body(JsonResult.success(response));
     }
 
-    @PutMapping("/{inquiryNo}")
+    @PutMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> updateInquiryByNo(
-        @PathVariable Long inquiryNo,
+        @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
-        InquiryResponseDTO response = inquiryService.updateInquiryByNo(inquiryNo, inquiryUpdateRequestDTO);
+        InquiryResponseDTO response = inquiryService.updateInquiryByNo(inquiryId, inquiryUpdateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
             .body(JsonResult.success(response));
     }
 
-    @DeleteMapping("/{inquiryNo}")
-    public ResponseEntity<CommonResult> deleteInquiryByNo(@PathVariable Long inquiryNo) {
-        inquiryService.deleteInquiryByNo(inquiryNo);
+    @DeleteMapping("/{inquiryId}")
+    public ResponseEntity<CommonResult> deleteInquiryByNo(@PathVariable Long inquiryId) {
+        inquiryService.deleteInquiryById(inquiryId);
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
