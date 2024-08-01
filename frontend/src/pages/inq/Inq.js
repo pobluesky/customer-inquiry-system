@@ -29,7 +29,7 @@ const editorConfig = {
 function Inq() {
     return (
         <>
-            <Header login={true} />
+            <Header login={true} inq={true} voc={false} dashboard={false} />
             <LexicalComposer initialConfig={editorConfig}>
                 <div className="editor-container">
                     <ToolbarPlugin />

@@ -39,7 +39,7 @@ function Join() {
 
     return (
         <div>
-            <Header login={false} />
+            <Header login={false}  inq={true} voc={true} dashboard={true} />
             <div style={{ textAlign: 'center' }}>
                 {!check ? (
                     <>

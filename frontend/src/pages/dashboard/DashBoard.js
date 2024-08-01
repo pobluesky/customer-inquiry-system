@@ -77,7 +77,7 @@ class DashBoard extends Component {
     render() {
         return (
             <>
-                <Header login={true} />
+                <Header login={true} inq={false} voc={false} dashboard={true} />
                 <div className="row">
                     <div className="mixed-chart">
                         <Chart options={this.state.options} series={this.state.series} type="bar" width="500" />
