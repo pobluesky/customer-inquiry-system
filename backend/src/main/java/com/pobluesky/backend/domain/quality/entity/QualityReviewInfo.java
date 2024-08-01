@@ -60,3 +60,4 @@ public class QualityReviewInfo {
         this.availableLab = availableLab;
     }
 }
+

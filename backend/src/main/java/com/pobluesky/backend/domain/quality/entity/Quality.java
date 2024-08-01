@@ -1,4 +1,5 @@
 package com.pobluesky.backend.domain.quality.entity;
+
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
