@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
-import mainlogo from '../../assets/image/mainlogo.svg';
+import mainlogo from '../../assets/css/icons/mainlogo.svg';
 // import PropTypes from 'prop-types';
 
 function Header() {

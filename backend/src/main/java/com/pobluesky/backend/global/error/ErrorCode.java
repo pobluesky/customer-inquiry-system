@@ -13,6 +13,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0001", "존재하지 않는 사용자입니다."),
     INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "I0001", "존재하지 않는 문의입니다.");
 
+
     private HttpStatus status;
     private String code;
     private String message;
