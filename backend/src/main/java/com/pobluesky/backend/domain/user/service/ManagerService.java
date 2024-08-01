@@ -37,8 +37,8 @@ public class ManagerService {
     }
 
     @Transactional
-    public ManagerResponseDTO updateManagerByNo(Long userNo, ManagerUpdateRequestDTO managerUpdateRequestDTO) {
-        Manager manager = managerRepository.findById(userNo)
+    public ManagerResponseDTO updateManagerById(Long userId, ManagerUpdateRequestDTO managerUpdateRequestDTO) {
+        Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("존재하지 않는 아이디 입니다."));
 
         manager.updateManager(
@@ -52,8 +52,8 @@ public class ManagerService {
     }
 
     @Transactional
-    public void deleteManagerByNo(Long userNo) {
-        managerRepository.deleteById(userNo);
+    public void deleteManagerById(Long userId) {
+        managerRepository.deleteById(userId);
     }
 
 

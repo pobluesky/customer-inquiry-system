@@ -7,7 +7,9 @@ import com.pobluesky.backend.domain.user.service.ManagerService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,10 +32,10 @@ public class ManagerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-        List<ManagerResponseDTO> allUsers = managerService.getAllManagers();
+        List<ManagerResponseDTO> response = managerService.getAllManagers();
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(allUsers));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping
@@ -41,23 +43,23 @@ public class ManagerController {
         ManagerResponseDTO response = managerService.createManager(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(response));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/{userNo}")
-    public ResponseEntity<JsonResult> updateManagerByNo(
-        @PathVariable Long userNo,
+    @PutMapping("/{userId}")
+    public ResponseEntity<JsonResult> updateManagerById(
+        @PathVariable Long userId,
         @RequestBody ManagerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        ManagerResponseDTO response = managerService.updateManagerByNo(userNo, customerUpdateRequestDTO);
+        ManagerResponseDTO response = managerService.updateManagerById(userId, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-            . body(JsonResult.success(response));
+            . body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/{userNo}")
-    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userNo) {
-        managerService.deleteManagerByNo(userNo);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<CommonResult> deleteUserById(@PathVariable Long userId) {
+        managerService.deleteManagerById(userId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
