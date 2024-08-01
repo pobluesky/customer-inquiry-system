@@ -30,14 +30,14 @@ public class InquiryController {
     public ResponseEntity<JsonResult> getInquiries() {
         List<InquiryResponseDTO> allInquiries = inquiryService.getAllInquiries();
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(allInquiries));
+            .body(ResponseFactory.getSuccessJsonResult(allInquiries));
     }
 
     @PostMapping
     public ResponseEntity<JsonResult> createInquiry(@RequestBody InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(dto);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PutMapping("/{inquiryId}")
@@ -47,7 +47,7 @@ public class InquiryController {
     ) {
         InquiryResponseDTO response = inquiryService.updateInquiryById(inquiryId, inquiryUpdateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @DeleteMapping("/{inquiryId}")
