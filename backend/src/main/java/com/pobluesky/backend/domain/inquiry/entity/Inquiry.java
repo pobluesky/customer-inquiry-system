@@ -38,10 +38,6 @@ public class Inquiry {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id")
-    private Manager manager;
-
     @Enumerated(EnumType.STRING)
     private Country country;
 
@@ -50,13 +46,22 @@ public class Inquiry {
     private String salesPerson;
 
     @Enumerated(EnumType.STRING)
+    private InquiryType inquiryType;
+
+    @Enumerated(EnumType.STRING)
     private Industry industry;
+
+    private String corporationCode;
+
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
 
     @Enumerated(EnumType.STRING)
     private Progress progress;
 
-    @Enumerated(EnumType.STRING)
-    private ProductType productType;
+    private String customerRequestDate;
+
+    private String additionalRequests;
 
     private String qualityManager;
 
@@ -64,18 +69,11 @@ public class Inquiry {
 
     private String salesManager;
 
-    private String customerRequestDate;
+    private String files;
 
     private String responseDeadline;
 
     private String elapsedDays;
-
-    private String corporationCode;
-
-    private String files;
-
-    @Enumerated(EnumType.STRING)
-    private InquiryType inquiryType;
 
     private boolean isDeleted;
 
@@ -116,56 +114,46 @@ public class Inquiry {
         this.isDeleted = isDeleted;
     }
 
-
-
-
     public void updateInquiry(
         Country country,
         String corporate,
         String  salesPerson,
+        InquiryType inquiryType,
         Industry industry,
-        Progress progress,
+        String corporationCode,
         ProductType productType,
+        Progress progress,
+        String customerRequestDate,
+        String additionalRequests,
         String qualityManager,
         Department department,
         String salesManager,
-        String customerRequestDate,
+        String files,
         String responseDeadline,
         String elapsedDays,
-        String corporationCode,
-        String files,
-        InquiryType inquiryType,
         boolean isDeleted
     ){
         this.country = country;
         this.corporate = corporate;
         this.salesPerson = salesPerson;
+        this.inquiryType = inquiryType;
         this.industry = industry;
-        this.progress = progress;
+        this.corporationCode = corporationCode;
         this.productType = productType;
+        this.progress = progress;
+        this.customerRequestDate = customerRequestDate;
+        this.additionalRequests = additionalRequests;
         this.qualityManager = qualityManager;
         this.department = department;
         this.salesManager = salesManager;
-        this.customerRequestDate = customerRequestDate;
+        this.files = files;
         this.responseDeadline = responseDeadline;
         this.elapsedDays = elapsedDays;
-        this.corporationCode = corporationCode;
-        this.files = files;
-        this.inquiryType = inquiryType;
         this.isDeleted = isDeleted;
     }
-
-
-
 
     public void markAsDeleted() {
         this.isDeleted = true;
     }
-
-
-
-
-
-
 
 }
