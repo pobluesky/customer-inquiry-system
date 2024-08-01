@@ -14,9 +14,7 @@ public class JsonResult<T> {
         this.message = message;
     }
 
-
     public static <T> JsonResult<T> of(String result, T data, String message) {
         return new JsonResult<>(result, data, message);
-
     }
 }

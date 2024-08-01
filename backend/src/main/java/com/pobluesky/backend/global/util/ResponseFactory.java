@@ -1,7 +1,6 @@
 package com.pobluesky.backend.global.util;
 
 import com.pobluesky.backend.global.util.model.CommonResult;
-
 import com.pobluesky.backend.global.util.model.JsonResult;
 
 public class ResponseFactory {
@@ -19,18 +18,15 @@ public class ResponseFactory {
         return result;
     }
 
-
     private static void setSuccessResult(CommonResult result) {
         result.setCode("SUCCESS");
         result.setMessage("성공하였습니다.");
     }
 
-
     private static void setFailResult(CommonResult result, String code, String msg) {
         result.setCode(code);
         result.setMessage(msg);
     }
-
 
     // JsonResult 관련 메서드
     public static <T> JsonResult<T> getSuccessJsonResult(T data) {
@@ -40,5 +36,4 @@ public class ResponseFactory {
     public static <T> JsonResult<T> getFailJsonResult(String message) {
         return JsonResult.of("fail", null, message);
     }
-
 }

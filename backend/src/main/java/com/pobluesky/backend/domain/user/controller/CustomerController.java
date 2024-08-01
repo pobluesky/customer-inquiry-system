@@ -32,7 +32,6 @@ public class CustomerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-
         List<CustomerResponseDTO> response = customerService.getAllCustomers();
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -45,7 +44,6 @@ public class CustomerController {
         CustomerResponseDTO response = customerService.createCustomer(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
-
             .body(ResponseFactory.getSuccessJsonResult(response));
 
     }
@@ -58,7 +56,6 @@ public class CustomerController {
         CustomerResponseDTO response = customerService.updateCustomerByNo(userNo, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-
             .body(ResponseFactory.getSuccessJsonResult(response));
 
     }
