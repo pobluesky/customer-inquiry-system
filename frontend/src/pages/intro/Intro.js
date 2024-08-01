@@ -1,14 +1,23 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 function Intro() {
     return (
         <>
             <div>
-                <a href="http://localhost:3000/login">로그인</a>
+                <Link to="/login">로그인</Link>
             </div>
             <div>
-                <a href="http://localhost:3000/join">회원가입</a>
+                <Link to="/join">회원가입</Link>
             </div>
             <div>
-                <a href="http://localhost:3000/dashboard">대시보드</a>
+                <Link to="/inq">Inquiry</Link>
+            </div>
+            <div>
+                <Link to="/voc">VoC</Link>
+            </div>
+            <div>
+                <Link to="/dashboard">DashBoard</Link>
             </div>
         </>
     );
