@@ -33,30 +33,30 @@ public class QualityController {
             .body(JsonResult.success(allQualities));
     }
 
-    @PostMapping("/{inquiryNo}")
+    @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createQuality(
         @RequestBody QualityCreateRequestDTO dto,
-        @PathVariable Long inquiryNo) {
-        QualityResponseDTO response = qualityService.createQuality(dto, inquiryNo);
+        @PathVariable Long inquiryId) {
+        QualityResponseDTO response = qualityService.createQuality(dto, inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
            .body(JsonResult.success(response));
     }
 
-    @PutMapping("/{qualityNo}")
-    public ResponseEntity<JsonResult> updateQualityByNo(
-        @PathVariable Long qualityNo,
+    @PutMapping("/{qualityId}")
+    public ResponseEntity<JsonResult> updateQualityById(
+        @PathVariable Long qualityId,
         @RequestBody QualityCreateRequestDTO qualityCreateRequestDTO
     ) {
-        QualityResponseDTO response = qualityService.updateQualityByNo(qualityNo, qualityCreateRequestDTO);
+        QualityResponseDTO response = qualityService.updateQualityById(qualityId, qualityCreateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
            .body(JsonResult.success(response));
     }
 
-    @DeleteMapping("/{qualityNo}")
-    public ResponseEntity<CommonResult> deleteQualityByNo(@PathVariable Long qualityNo) {
-        qualityService.deleteQualityByNo(qualityNo);
+    @DeleteMapping("/{qualityId}")
+    public ResponseEntity<CommonResult> deleteQualityById(@PathVariable Long qualityId) {
+        qualityService.deleteQualityById(qualityId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

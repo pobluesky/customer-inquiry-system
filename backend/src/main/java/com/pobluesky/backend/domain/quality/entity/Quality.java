@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Quality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long qualityNo; // 품질번호
+    private Long qualityId; // 품질번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_no")

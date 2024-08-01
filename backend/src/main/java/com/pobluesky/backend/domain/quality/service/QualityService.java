@@ -32,8 +32,8 @@ public class QualityService {
     }
 
     @Transactional
-    public QualityResponseDTO createQuality(QualityCreateRequestDTO dto, Long inquiryNo) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryNo)
+    public QualityResponseDTO createQuality(QualityCreateRequestDTO dto, Long inquiryId) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND)); // inquiry not found 로 변경
 
         Quality quality = dto.toQualityEntity(inquiry);
@@ -43,8 +43,8 @@ public class QualityService {
     }
 
     @Transactional
-    public QualityResponseDTO updateQualityByNo(Long qualityNo, QualityCreateRequestDTO qualityUpdateRequestDTO) {
-        Quality quality = (Quality) qualityRepository.findById(qualityNo)
+    public QualityResponseDTO updateQualityById(Long qualityId, QualityCreateRequestDTO qualityUpdateRequestDTO) {
+        Quality quality = (Quality) qualityRepository.findById(qualityId)
            .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
 
         quality.updateQuality(
@@ -56,7 +56,7 @@ public class QualityService {
     }
 
     @Transactional
-    public void deleteQualityByNo(Long qualityNo) {
-        qualityRepository.deleteById(qualityNo);
+    public void deleteQualityById(Long qualityId) {
+        qualityRepository.deleteById(qualityId);
     }
 }
