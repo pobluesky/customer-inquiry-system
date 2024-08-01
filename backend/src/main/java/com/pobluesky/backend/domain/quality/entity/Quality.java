@@ -1,12 +1,15 @@
 package com.pobluesky.backend.domain.quality.entity;
 
-import com.pobluesky.backend.global.BaseEntity;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,14 +21,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "quality")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quality extends BaseEntity {
+public class Quality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long qualityNo; // 품질번호
 
-    private Long inquiryNo; // 문의번호
-
-    private Long userNo; // 고객사번호
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_no")
+    private Inquiry inquiry; // 문의번호
 
     @Embedded
     private QualityReviewInfo qualityReviewInfo; // 품질검토정보
@@ -38,13 +41,11 @@ public class Quality extends BaseEntity {
      */
     @Builder
     private Quality(
-        Long inquiryNo,
-        Long userNo,
+        Inquiry inquiry,
         QualityReviewInfo qualityReviewInfo,
         String requireAddContents
     ) {
-        this.inquiryNo = inquiryNo;
-        this.userNo = userNo;
+        this.inquiry = inquiry;
         this.qualityReviewInfo = qualityReviewInfo;
         this.requireAddContents = requireAddContents;
     }
