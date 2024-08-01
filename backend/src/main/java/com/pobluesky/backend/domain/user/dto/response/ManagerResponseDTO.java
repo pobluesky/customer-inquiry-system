@@ -8,7 +8,7 @@ import lombok.Builder;
 
 @Builder
 public record ManagerResponseDTO(
-    Long userNo,
+    Long userId,
     String name,
     String email,
     String password,
@@ -19,7 +19,7 @@ public record ManagerResponseDTO(
 ) {
     public static ManagerResponseDTO from(Manager manager) {
         return ManagerResponseDTO.builder()
-            .userNo(manager.getUserNo())
+            .userId(manager.getManagerId())
             .name(manager.getName())
             .email(manager.getEmail())
             .password(manager.getPassword())
