@@ -22,25 +22,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/inquiries")
+@RequestMapping("/api")
 public class InquiryController {
     private final InquiryService inquiryService;
 
-    @GetMapping
-    public ResponseEntity<JsonResult> getInquiries() {
-        List<InquiryResponseDTO> allInquiries = inquiryService.getAllInquiries();
+    @GetMapping("/customer/inquiries/{customerId}")
+    public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
+        List<InquiryResponseDTO> customerInquiries  = inquiryService.getInquiriesByCustomerId(customerId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(allInquiries));
+            .body(ResponseFactory.getSuccessJsonResult(customerInquiries));
     }
 
-    @PostMapping
-    public ResponseEntity<JsonResult> createInquiry(@RequestBody InquiryCreateRequestDTO dto) {
-        InquiryResponseDTO response = inquiryService.createInquiry(dto);
+    @PostMapping("/customer/inquiries/{customerId}")
+    public ResponseEntity<JsonResult> createInquiry(@PathVariable Long customerId,
+        @RequestBody InquiryCreateRequestDTO dto) {
+        InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/{inquiryId}")
+    @PutMapping("/customer/inquiries/{inquiryId}")
     public ResponseEntity<JsonResult> updateInquiryById(
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
@@ -50,7 +51,7 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/{inquiryId}")
+    @DeleteMapping("/customer/inquiries/{inquiryId}")
     public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());

@@ -5,6 +5,8 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.util.List;
@@ -19,18 +21,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
+    private final CustomerRepository customerRepository;
 
     @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getAllInquiries() {
-        List<Inquiry> inquiries = inquiryRepository.findByIsDeletedFalse();
+    public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
+        List<Inquiry> inquiries = inquiryRepository.findByCustomerCustomerIdAndIsDeletedFalse(customerId);
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
     }
 
     @Transactional
-    public InquiryResponseDTO createInquiry(InquiryCreateRequestDTO dto) {
+    public InquiryResponseDTO createInquiry(Long customerId,InquiryCreateRequestDTO dto) {
+        Customer customer = customerRepository.findById(customerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         Inquiry inquiry = dto.toInquiryEntity();
+        inquiry.setCustomer(customer);
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
         return InquiryResponseDTO.from(savedInquiry);
     }
