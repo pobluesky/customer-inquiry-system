@@ -41,17 +41,17 @@ public class InquiryController {
     }
 
     @PutMapping("/{inquiryId}")
-    public ResponseEntity<JsonResult> updateInquiryByNo(
+    public ResponseEntity<JsonResult> updateInquiryById(
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
-        InquiryResponseDTO response = inquiryService.updateInquiryByNo(inquiryId, inquiryUpdateRequestDTO);
+        InquiryResponseDTO response = inquiryService.updateInquiryById(inquiryId, inquiryUpdateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
             .body(JsonResult.success(response));
     }
 
     @DeleteMapping("/{inquiryId}")
-    public ResponseEntity<CommonResult> deleteInquiryByNo(@PathVariable Long inquiryId) {
+    public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

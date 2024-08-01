@@ -36,7 +36,7 @@ public class InquiryService {
     }
 
     @Transactional
-    public InquiryResponseDTO updateInquiryByNo(Long inquiryId, InquiryUpdateRequestDTO inquiryUpdateRequestDTO) {
+    public InquiryResponseDTO updateInquiryById(Long inquiryId, InquiryUpdateRequestDTO inquiryUpdateRequestDTO) {
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
