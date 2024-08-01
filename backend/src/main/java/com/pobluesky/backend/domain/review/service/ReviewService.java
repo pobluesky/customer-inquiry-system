@@ -2,14 +2,16 @@ package com.pobluesky.backend.domain.review.service;
 
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
-import com.pobluesky.backend.domain.review.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.review.entity.Review;
-import com.pobluesky.backend.domain.review.repository.InquiryRepository;
+import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
-import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
+
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +43,6 @@ public class ReviewService {
 
     @Transactional
     public ReviewResponseDTO createReview(ReviewCreateRequestDTO dto, Long inquiryNo) {
-        /////
-        Inquiry teestInquiry = new Inquiry();
-        teestInquiry.setInquiryId(1L);
-        inquiryRepository.save(teestInquiry);
-        ////
         Inquiry inquiry = inquiryRepository.findById(inquiryNo)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
         Review review = dto.toReviewEntity(inquiry);

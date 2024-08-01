@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.review.entity;
 
 import jakarta.persistence.Embeddable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
