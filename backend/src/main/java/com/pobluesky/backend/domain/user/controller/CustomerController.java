@@ -32,10 +32,10 @@ public class CustomerController {
     @GetMapping
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
-        List<CustomerResponseDTO> allUsers = customerService.getAllCustomers();
+        List<CustomerResponseDTO> response = customerService.getAllCustomers();
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(allUsers));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping
@@ -43,23 +43,23 @@ public class CustomerController {
         CustomerResponseDTO response = customerService.createCustomer(dto);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/{userNo}")
+    @PutMapping("/{userId}")
     public ResponseEntity<JsonResult> updateUserByNo(
-        @PathVariable Long userNo,
+        @PathVariable Long userId,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        CustomerResponseDTO response = customerService.updateCustomerByNo(userNo, customerUpdateRequestDTO);
+        CustomerResponseDTO response = customerService.updateCustomerById(userId, customerUpdateRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(response));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/{userNo}")
-    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userNo) {
-        customerService.deleteCustomerByNo(userNo);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userId) {
+        customerService.deleteCustomerById(userId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

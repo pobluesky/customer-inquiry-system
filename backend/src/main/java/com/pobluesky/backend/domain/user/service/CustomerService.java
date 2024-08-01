@@ -48,9 +48,9 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerResponseDTO updateCustomerByNo(Long userNo, CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResponseDTO updateCustomerById(Long userId, CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         // update 할 userNo 에 해당하는 Customer 가 없다면 USER_NOT_FOUND exception
-        Customer customer = customerRepository.findById(userNo)
+        Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         // update
@@ -66,7 +66,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void deleteCustomerByNo(Long userNo) {
-        customerRepository.deleteById(userNo);
+    public void deleteCustomerById(Long userId) {
+        customerRepository.deleteById(userId);
     }
 }
