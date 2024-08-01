@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/mocules/Header';
 import Path from '../../components/atoms/Path';
 
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -28,7 +29,29 @@ const editorConfig = {
     theme: Theme,
 };
 
+function MyOnChangePlugin({ onChange }) {
+    const [editor] = useLexicalComposerContext();
+
+    useEffect(() => {
+        return editor.registerUpdateListener(({ editorState }) => {
+            onChange(editorState);
+        });
+    }, [editor, onChange]);
+    return null;
+}
+
 function Inq() {
+    const [editorState, setEditorState] = useState();
+
+    function onChange(editorState) {
+        // Call toJSON on the EditorState object, which produces a serialization safe string
+        const editorStateJSON = editorState.toJSON();
+        // However, we still have a JavaScript object, so we need to convert it to an actual string with JSON.stringify
+        setEditorState(JSON.stringify(editorStateJSON));
+    }
+
+    console.log(editorState);
+
     return (
         <>
             <Header login={true} inq={true} voc={false} dashboard={false} />
@@ -43,6 +66,7 @@ function Inq() {
                         <TreeViewPlugin />
                     </div>
                 </div>
+                <MyOnChangePlugin onChange={onChange} />
             </LexicalComposer>
         </>
     );
