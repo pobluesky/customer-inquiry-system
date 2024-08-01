@@ -11,7 +11,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 
 import ToolbarPlugin from '../../plugins/ToolbarPlugin';
-import TreeViewPlugin from '../../plugins/TreeViewPlugin';
+// import TreeViewPlugin from '../../plugins/TreeViewPlugin';
 import Theme from './Theme';
 
 import '../../assets/css/Editor.css';
@@ -41,16 +41,44 @@ function MyOnChangePlugin({ onChange }) {
 }
 
 function Inq() {
-    const [editorState, setEditorState] = useState();
+    // const [editorState, setEditorState] = useState();
+    const [originalText, setOriginalText] = useState('');
 
     function onChange(editorState) {
         // Call toJSON on the EditorState object, which produces a serialization safe string
         const editorStateJSON = editorState.toJSON();
         // However, we still have a JavaScript object, so we need to convert it to an actual string with JSON.stringify
-        setEditorState(JSON.stringify(editorStateJSON));
+        setOriginalText(restoreText(editorStateJSON));
     }
 
-    console.log(editorState);
+    /* function that restore original text */
+    const restoreText = (data) => {
+        let result = [];
+
+        if (data.root && data.root.children) {
+            data.root.children.forEach((paragraph) => {
+                let sentence_text = '';
+                if (paragraph.children) {
+                    paragraph.children.forEach((child) => {
+                        let text = child.text;
+                        const format_value = child.format;
+
+                        if (format_value & 1) {
+                            text = `**${text}**`;
+                        }
+                        if (format_value & 2) {
+                            text = `*${text}*`;
+                        }
+
+                        sentence_text += text;
+                    });
+                }
+                result.push(sentence_text);
+            });
+        }
+
+        return result.join('\n');
+    };
 
     return (
         <>
@@ -63,11 +91,15 @@ function Inq() {
                         <RichTextPlugin contentEditable={<ContentEditable className="editor-input" aria-placeholder={placeholder} placeholder={<div className="editor-placeholder">{placeholder}</div>} />} ErrorBoundary={LexicalErrorBoundary} />
                         <HistoryPlugin />
                         <AutoFocusPlugin />
-                        <TreeViewPlugin />
+                        {/* <TreeViewPlugin /> */}
                     </div>
                 </div>
                 <MyOnChangePlugin onChange={onChange} />
             </LexicalComposer>
+            <div>
+                Markdown 원문 복원 (서버로 전송될 데이터)
+                <pre>{originalText}</pre>
+            </div>
         </>
     );
 }
