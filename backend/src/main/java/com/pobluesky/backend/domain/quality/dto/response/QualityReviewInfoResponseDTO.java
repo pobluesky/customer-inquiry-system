@@ -1,10 +1,11 @@
 package com.pobluesky.backend.domain.quality.dto.response;
 
+import com.pobluesky.backend.domain.quality.entity.QualityReviewInfo;
 import lombok.Builder;
 
 @Builder
 public record QualityReviewInfoResponseDTO (
-    Long qualityReviewInfoNo,
+    Long qualityReviewInfoId,
     String finalResult,
     String finalResultDetails,
     Long standard,
@@ -17,9 +18,8 @@ public record QualityReviewInfoResponseDTO (
     Boolean availableLab
 ) {
     // entity -> dto
-    public static QualityReviewInfoResponseDTO from(com.pobluesky.backend.domain.quality.entity.QualityReviewInfo qualityReviewInfo) {
+    public static QualityReviewInfoResponseDTO from(QualityReviewInfo qualityReviewInfo) {
         return QualityReviewInfoResponseDTO.builder()
-            .qualityReviewInfoNo(qualityReviewInfo.getQualityReviewInfoNo())
             .finalResult(qualityReviewInfo.getFinalResult())
             .finalResultDetails(qualityReviewInfo.getFinalResultDetails())
             .standard(qualityReviewInfo.getStandard())
