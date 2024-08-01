@@ -34,9 +34,9 @@ function Header({ login, inq, voc, dashboard }) {
                 <>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '4vw' }} />
-                            <Link to="/inq" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold', disabled: !inq ? true : false }}>Inquiry</Link>
-                            <Link to="/voc" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold', disabled: !voc ? true : false }}>VoC</Link>
-                            <Link to="/dashboard" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold', disabled: !dashboard ? true : false }}>DashBoard</Link>
+                            <Link to="/inq" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>Inquiry</Link>
+                            <Link to="/voc" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>VoC</Link>
+                            <Link to="/dashboard" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>DashBoard</Link>
                     </div>
                     <div>
                         {/* 로그인 & 회원가입 버튼 */}
