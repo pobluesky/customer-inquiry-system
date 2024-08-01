@@ -81,7 +81,7 @@ function Inq() {
     };
 
     return (
-        <>
+        <div style={{ backgroundColor: 'pink' }}>
             <Header login={true} inq={true} voc={false} dashboard={false} />
             <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
             <LexicalComposer initialConfig={editorConfig}>
@@ -100,7 +100,7 @@ function Inq() {
                 Markdown 원문 복원 (서버로 전송될 데이터)
                 <pre>{originalText}</pre>
             </div>
-        </>
+        </div>
     );
 }
 
