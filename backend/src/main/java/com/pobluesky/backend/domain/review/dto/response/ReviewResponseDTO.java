@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record ReviewResponseDTO (
-    Long inquiryNo,
+    Long inquiryId,
     SalesInfo salesInfo,
     String reviewText,
     String attachmentFile,
@@ -15,7 +15,7 @@ public record ReviewResponseDTO (
 ) {
     public static ReviewResponseDTO from(Review review) {
         return ReviewResponseDTO.builder()
-            .inquiryNo(review.getInquiry().getInquiryId())
+            .inquiryId(review.getInquiry().getInquiryId())
             .salesInfo(review.getSalesInfo())
             .reviewText(review.getReviewText())
             .attachmentFile(review.getAttachmentFile())

@@ -22,19 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @GetMapping("/{reviewNo}")
-    public ResponseEntity<JsonResult> getReviewByNo(@PathVariable Long reviewNo) {
-        ReviewResponseDTO reviewByNo = reviewService.getReviewByNo(reviewNo);
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<JsonResult> getReviewByNo(@PathVariable Long reviewId) {
+        ReviewResponseDTO reviewById = reviewService.getReviewById(reviewId);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(reviewByNo));
+            .body(JsonResult.success(reviewById));
     }
 
-    @PostMapping("/{inquiryNo}")
+    @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createReview(
         @RequestBody ReviewCreateRequestDTO dto,
-        @PathVariable Long inquiryNo) {
-        ReviewResponseDTO review = reviewService.createReview(dto, inquiryNo);
+        @PathVariable Long inquiryId) {
+        ReviewResponseDTO review = reviewService.createReview(dto, inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(JsonResult.success(review));

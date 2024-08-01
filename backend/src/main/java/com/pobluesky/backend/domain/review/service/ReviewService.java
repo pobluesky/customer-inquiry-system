@@ -2,9 +2,7 @@ package com.pobluesky.backend.domain.review.service;
 
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.review.entity.Review;
-import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
 
 import com.pobluesky.backend.global.error.CommonException;
@@ -34,16 +32,16 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewResponseDTO getReviewByNo(Long reviewNo){
-        Review review = reviewRepository.findById(reviewNo)
+    public ReviewResponseDTO getReviewById(Long reviewId){
+        Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
 
         return ReviewResponseDTO.from(review);
     }
 
     @Transactional
-    public ReviewResponseDTO createReview(ReviewCreateRequestDTO dto, Long inquiryNo) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryNo)
+    public ReviewResponseDTO createReview(ReviewCreateRequestDTO dto, Long inquiryId) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
         Review review = dto.toReviewEntity(inquiry);
 

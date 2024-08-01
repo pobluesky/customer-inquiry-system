@@ -14,7 +14,7 @@ public record ReviewCreateRequestDTO(
     public Review toReviewEntity(Inquiry inquiry) {
         return Review.builder()
             .inquiry(inquiry)
-            .salesInfo(salesInfo.toEntity())
+            .salesInfo(salesInfo.toSalesInfoEntity())
             .reviewText(reviewText)
             .attachmentFile(attachmentFile)
             .finalReviewText(finalReviewText)

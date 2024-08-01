@@ -7,7 +7,7 @@ public record SalesInfoDTO(
     ContractType contract,
     String thicknessNotify
 ) {
-    public SalesInfo toEntity() {
+    public SalesInfo toSalesInfoEntity() {
         return new SalesInfo(contract, thicknessNotify);
     }
 }

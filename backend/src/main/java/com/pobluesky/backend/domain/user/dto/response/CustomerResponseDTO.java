@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record CustomerResponseDTO(
-    Long userNo,
+    Long userId,
     String name,
     String email,
     String password,
@@ -16,7 +16,7 @@ public record CustomerResponseDTO(
     // entity -> dto
     public static CustomerResponseDTO from(Customer customer) {
         return CustomerResponseDTO.builder()
-            .userNo(customer.getCustomerId())
+            .userId(customer.getCustomerId())
             .name(customer.getName())
             .email(customer.getEmail())
             .password(customer.getPassword())
