@@ -2,9 +2,6 @@ package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
-import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,21 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-
-@Entity
-@Getter
-@Setter
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

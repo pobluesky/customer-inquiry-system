@@ -30,6 +30,7 @@ public class InquiryController {
     @GetMapping("/customers/inquiries/{customerId}")
     public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
         List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
@@ -38,6 +39,7 @@ public class InquiryController {
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
     public ResponseEntity<JsonResult> getInquiryDetail(@PathVariable Long customerId, @PathVariable Long inquiryId) {
         InquiryResponseDTO response = inquiryService.getInquiryDetail(customerId,inquiryId);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
@@ -46,6 +48,7 @@ public class InquiryController {
     public ResponseEntity<JsonResult> createInquiry(@PathVariable Long customerId,
         @RequestBody InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
@@ -56,6 +59,7 @@ public class InquiryController {
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
         InquiryResponseDTO response = inquiryService.updateInquiryById(inquiryId, inquiryUpdateRequestDTO);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
@@ -63,6 +67,7 @@ public class InquiryController {
     @DeleteMapping("/customers/inquiries/{inquiryId}")
     public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
+
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
@@ -70,6 +75,7 @@ public class InquiryController {
     @GetMapping("/managers/inquiries/{managerId}")
     public ResponseEntity<JsonResult> getInquiriesForManager(@PathVariable Long managerId) {
         List<InquiryResponseDTO> response = inquiryService.getInquiries();
+
         return ResponseEntity.status((HttpStatus.OK))
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
