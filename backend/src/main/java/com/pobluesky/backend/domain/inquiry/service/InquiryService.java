@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,4 +96,10 @@ public class InquiryService {
     }
 
 
+    public InquiryResponseDTO getInquiryDetail(Long customerId, Long inquiryId) {
+        Inquiry inquiry = (Inquiry) inquiryRepository.findByCustomerCustomerIdAndInquiryId(customerId,inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        return InquiryResponseDTO.from(inquiry);
+    }
 }

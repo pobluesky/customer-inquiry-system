@@ -26,9 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
     private final InquiryService inquiryService;
 
+    // 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}")
     public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
         List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    // 상세 조회 페이지
+    @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
+    public ResponseEntity<JsonResult> getInquiryDetail(@PathVariable Long customerId, @PathVariable Long inquiryId) {
+        InquiryResponseDTO response = inquiryService.getInquiryDetail(customerId,inquiryId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
