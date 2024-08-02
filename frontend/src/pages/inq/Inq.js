@@ -25,7 +25,6 @@ function Inq() {
 
                     {isChecked ? (
                         <>
-                            <TextEditor originalText={originalText} setOriginalText={setOriginalText} />
                             <Category categoryName={'1. 고객사'} />
                             <Category categoryName={'2. Offersheet'} />
                             <Category categoryName={'3. Price Term'} />
@@ -33,6 +32,7 @@ function Inq() {
                             <Category categoryName={'5. Payment Term'} />
                             <Category categoryName={'6. Destination'} />
                             <Category categoryName={'7. Validity'} />
+                            <TextEditor originalText={originalText} setOriginalText={setOriginalText} />
                         </>
                     ) : (
                         ''

@@ -84,8 +84,8 @@ function TextEditor({ originalText, setOriginalText }) {
                 </div>
                 <MyOnChangePlugin onChange={onChange} />
             </LexicalComposer>
-            <div>
-                ▼서버로 전송될 데이터▼<pre>{originalText}</pre>
+            <div style={{ textAlign: 'center' }}>
+                ▼상단 텍스트 에디터 값 입력 후 "줄바꿈, 굵게, 기울기" 확인 부탁드립니다.▼<pre>{originalText}</pre>
             </div>
         </>
     );
