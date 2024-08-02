@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Voc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vocNo; // VoC 번호
+    private Long vocId; // VoC 번호
 
     private Long inquiryNo; // 문의 번호
 
