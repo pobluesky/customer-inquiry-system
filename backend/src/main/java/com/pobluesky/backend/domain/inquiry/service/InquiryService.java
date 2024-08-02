@@ -26,7 +26,7 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
-        List<Inquiry> inquiries = inquiryRepository.findByCustomerCustomerIdAndIsDeletedFalse(customerId);
+        List<Inquiry> inquiries = inquiryRepository.findByCustomer_CustomerIdAndIsDeletedFalse(customerId);
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
@@ -97,7 +97,7 @@ public class InquiryService {
 
 
     public InquiryResponseDTO getInquiryDetail(Long customerId, Long inquiryId) {
-        Inquiry inquiry = (Inquiry) inquiryRepository.findByCustomerCustomerIdAndInquiryId(customerId,inquiryId)
+        Inquiry inquiry = (Inquiry) inquiryRepository.findByCustomer_CustomerIdAndInquiryId(customerId,inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         return InquiryResponseDTO.from(inquiry);
