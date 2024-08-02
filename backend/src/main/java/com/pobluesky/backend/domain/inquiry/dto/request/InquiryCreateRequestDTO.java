@@ -7,10 +7,12 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 
 
 public record InquiryCreateRequestDTO(
+    Customer customer,
     Country country,
     String corporate,
     String corporateCode,
@@ -26,7 +28,8 @@ public record InquiryCreateRequestDTO(
     String elapsedDays,
     String corporationCode,
     String files,
-    InquiryType inquiryType
+    InquiryType inquiryType,
+    Boolean isActivated
 ) {
 
     public Inquiry toInquiryEntity() {
@@ -46,7 +49,7 @@ public record InquiryCreateRequestDTO(
             .corporationCode("(주) 포스코")
             .files(files)
             .inquiryType(inquiryType)
-            .isDeleted(false)
+            .isActivated(isActivated)
             .build();
     }
 }

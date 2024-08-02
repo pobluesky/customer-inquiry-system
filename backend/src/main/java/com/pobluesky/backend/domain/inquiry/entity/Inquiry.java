@@ -16,9 +16,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inquiry")
@@ -69,7 +71,7 @@ public class Inquiry {
 
     private String elapsedDays;
 
-    private boolean isDeleted;
+    private Boolean isActivated;
 
     @Builder
     private Inquiry(
@@ -88,7 +90,7 @@ public class Inquiry {
         String elapsedDays,
         String files,
         InquiryType inquiryType,
-        boolean isDeleted
+        Boolean isActivated
     ){
         this.country = country;
         this.corporate = corporate;
@@ -105,7 +107,7 @@ public class Inquiry {
         this.corporationCode = corporationCode;
         this.files = files;
         this.inquiryType = inquiryType;
-        this.isDeleted = isDeleted;
+        this.isActivated = true;
     }
 
     public void updateInquiry(
@@ -125,7 +127,7 @@ public class Inquiry {
         String files,
         String responseDeadline,
         String elapsedDays,
-        boolean isDeleted
+        Boolean isActivated
     ){
         this.country = country;
         this.corporate = corporate;
@@ -143,10 +145,10 @@ public class Inquiry {
         this.files = files;
         this.responseDeadline = responseDeadline;
         this.elapsedDays = elapsedDays;
-        this.isDeleted = isDeleted;
+        this.isActivated = isActivated;
     }
 
-    public void markAsDeleted() {
-        this.isDeleted = true;
+    public void deleteInquiry() {
+        this.isActivated = false;
     }
 }

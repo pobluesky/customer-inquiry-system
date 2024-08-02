@@ -26,7 +26,8 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
-        List<Inquiry> inquiries = inquiryRepository.findByCustomer_CustomerIdAndIsDeletedFalse(customerId);
+        List<Inquiry> inquiries = inquiryRepository.findByCustomer_CustomerIdAndIsActivated(customerId);
+
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
@@ -35,6 +36,7 @@ public class InquiryService {
     @Transactional
     public List<InquiryResponseDTO> getInquiries() {
         List<Inquiry> inquiries = inquiryRepository.findAll();
+
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
@@ -48,6 +50,7 @@ public class InquiryService {
         Inquiry inquiry = dto.toInquiryEntity();
         inquiry.setCustomer(customer);
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
+
         return InquiryResponseDTO.from(savedInquiry);
     }
 
@@ -72,13 +75,10 @@ public class InquiryService {
             inquiryUpdateRequestDTO.qualityManager(),
             inquiryUpdateRequestDTO.department(),
             inquiryUpdateRequestDTO.salesManager(),
-
             inquiryUpdateRequestDTO.responseDeadline(),
             inquiryUpdateRequestDTO.elapsedDays(),
-
             inquiryUpdateRequestDTO.files(),
-
-            inquiryUpdateRequestDTO.isDeleted()
+            inquiryUpdateRequestDTO.isActivated()
         );
 
 
@@ -91,7 +91,7 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        inquiry.markAsDeleted();
+        inquiry.deleteInquiry();
 
     }
 

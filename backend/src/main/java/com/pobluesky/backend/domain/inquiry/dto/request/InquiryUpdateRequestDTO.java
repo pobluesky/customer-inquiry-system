@@ -24,7 +24,7 @@ public record InquiryUpdateRequestDTO(
     String corporationCode,
     String files,
     InquiryType inquiryType,
-    boolean isDeleted,
+    Boolean isActivated,
     String additionalRequests
 ) {
 }
