@@ -84,21 +84,26 @@ function Inq() {
             <Header login={true} inq={true} voc={false} dashboard={false} />
             <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
             <RequestBar />
-            <LexicalComposer initialConfig={editorConfig}>
-                <div className="editor-container">
-                    <ToolbarPlugin />
-                    <div className="editor-inner">
-                        <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
-                        <HistoryPlugin />
-                        <AutoFocusPlugin />
-                        {/* <TreeViewPlugin /> */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2vh' }}>
+                <div style={{ width: '80vw', border: 'solid #c1c1c1 1px', borderRadius: '20px' }}>
+                    <div style={{ marginLeft: '2vw' }}>OfferSheet</div>
+                    {/* 텍스트 에디터 */}
+                    <LexicalComposer initialConfig={editorConfig}>
+                        <div className="editor-container">
+                            <ToolbarPlugin />
+                            <div className="editor-inner">
+                                <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
+                                <HistoryPlugin />
+                                <AutoFocusPlugin />
+                                {/* <TreeViewPlugin /> */}
+                            </div>
+                        </div>
+                        <MyOnChangePlugin onChange={onChange} />
+                    </LexicalComposer>
+                    <div>
+                        Markdown 원문 복원 (서버로 전송될 데이터)<pre>{originalText}</pre>
                     </div>
                 </div>
-                <MyOnChangePlugin onChange={onChange} />
-            </LexicalComposer>
-            <div>
-                Markdown 원문 복원 (서버로 전송될 데이터)
-                <pre>{originalText}</pre>
             </div>
         </div>
     );
