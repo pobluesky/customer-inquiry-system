@@ -35,10 +35,10 @@ h1 {
 }
 
 .Editor_Container {
-    margin: 20px auto 20px auto;
+    margin: 0 auto 20px auto;
     border: solid #c1c1c1 1px;
     border-radius: 2px;
-    max-width: 75vw;
+    max-width: 85vw;
     color: #000;
     position: relative;
     line-height: 20px;
