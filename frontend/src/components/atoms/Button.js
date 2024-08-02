@@ -1,10 +1,24 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-function Button({ onClick, btnName, width, height, margin, backgroundColor, textColor, borderRadius, fontSize }) {
+function Button({ onClick, btnName, width, height, margin, marginRight, marginLeft, backgroundColor, textColor, border, borderRadius, fontSize }) {
     return (
         <span>
-            <button onClick={onClick} style={{ width: `${width}`, height: `${height}`, margin: `${margin}`, backgroundColor: `${backgroundColor}`, color: `${textColor}`, borderRadius: `${borderRadius}`, fontSize: `${fontSize}`, border: 'solid #c1c1c1 1px', cursor: 'pointer' }}>{btnName}</button>
+            <button
+                onClick={onClick}
+                style={{ width: `${width}`,
+                         height: `${height}`,
+                         margin: `${margin}`,
+                         marginRight: `${marginRight}`,
+                         marginLeft: `${marginLeft}`,
+                         backgroundColor: `${backgroundColor}`,
+                         color: `${textColor}`,
+                         fontSize: `${fontSize}`,
+                         border: `${border}`,
+                         borderRadius: `${borderRadius}`,
+                         cursor: 'pointer'}}>
+                {btnName}
+            </button>
         </span>
     );
 }

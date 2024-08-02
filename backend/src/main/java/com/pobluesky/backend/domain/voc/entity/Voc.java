@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.voc.entity;
 
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +20,11 @@ import lombok.NoArgsConstructor;
 public class Voc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vocNo; // VoC 번호
+    private Long vocId; // VoC 번호
 
-    private Long inquiryNo; // 문의 번호
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_id")
+    private Long inquiry; // 문의 번호
 
     private String title; // 제목
 
@@ -30,4 +33,29 @@ public class Voc {
 
     @Column(columnDefinition = "TEXT")
     private String files; // 첨부파일
+    /*
+      Builder Pattern
+     */
+    @Builder
+    private Voc(
+        Inquiry inquiry,
+        String title,
+        String contents,
+        String files
+    ) {
+        this.inquiry = inquiry;
+        this.title = title;
+        this.contents = contents;
+        this.files = files;
+    }
+
+    public void updateVoc(
+        String title,
+        String contents,
+        String files
+    ) {
+        this.title = title;
+        this.contents = contents;
+        this.files = files;
+    }
 }
