@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
     private final InquiryService inquiryService;
 
-    @GetMapping("/customer/inquiries/{customerId}")
+    @GetMapping("/customers/inquiries/{customerId}")
     public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
         List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customer/inquiries/{customerId}")
+    @PostMapping("/customers/inquiries/{customerId}")
     public ResponseEntity<JsonResult> createInquiry(@PathVariable Long customerId,
         @RequestBody InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
@@ -41,7 +41,7 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/customer/inquiries/{inquiryId}")
+    @PutMapping("/customers/inquiries/{inquiryId}")
     public ResponseEntity<JsonResult> updateInquiryById(
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
@@ -51,14 +51,14 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/customer/inquiries/{inquiryId}")
+    @DeleteMapping("/customers/inquiries/{inquiryId}")
     public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
     // 매니저면 inquiryId나 managerId 안써도 될까
-    @GetMapping("/manager/inquiries")
+    @GetMapping("/managers/inquiries")
     public ResponseEntity<JsonResult> getInquiriesForManager() {
         List<InquiryResponseDTO> response = inquiryService.getInquiries();
         return ResponseEntity.status((HttpStatus.OK))
