@@ -107,7 +107,7 @@ public class Inquiry {
         this.corporationCode = corporationCode;
         this.files = files;
         this.inquiryType = inquiryType;
-        this.isActivated = true;
+        this.isActivated = isActivated;
     }
 
     public void updateInquiry(

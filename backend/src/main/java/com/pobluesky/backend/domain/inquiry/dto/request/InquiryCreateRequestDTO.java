@@ -49,7 +49,7 @@ public record InquiryCreateRequestDTO(
             .corporationCode("(주) 포스코")
             .files(files)
             .inquiryType(inquiryType)
-            .isActivated(isActivated)
+            .isActivated(true)
             .build();
     }
 }

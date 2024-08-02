@@ -26,7 +26,7 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
-        List<Inquiry> inquiries = inquiryRepository.findByCustomer_CustomerIdAndIsActivated(customerId);
+        List<Inquiry> inquiries = inquiryRepository.findByCustomer_CustomerIdAndIsActivatedTrue(customerId);
 
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
