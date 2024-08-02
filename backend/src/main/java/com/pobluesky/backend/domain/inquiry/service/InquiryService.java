@@ -34,6 +34,9 @@ public class InquiryService {
     @Transactional
     public List<InquiryResponseDTO> getInquiries() {
         List<Inquiry> inquiries = inquiryRepository.findAll();
+        return inquiries.stream()
+            .map(InquiryResponseDTO::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional

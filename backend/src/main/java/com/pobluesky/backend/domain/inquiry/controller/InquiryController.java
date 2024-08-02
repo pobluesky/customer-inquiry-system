@@ -59,7 +59,7 @@ public class InquiryController {
 
     // 매니저면 inquiryId나 managerId 안써도 될까
     @GetMapping("/manager/inquiries")
-    public ResponseEntity<JsonResult> getInquiries() {
+    public ResponseEntity<JsonResult> getInquiriesForManager() {
         List<InquiryResponseDTO> response = inquiryService.getInquiries();
         return ResponseEntity.status((HttpStatus.OK))
             .body(ResponseFactory.getSuccessJsonResult(response));
