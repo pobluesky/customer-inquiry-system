@@ -21,7 +21,7 @@ public class Voc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vocId; // VoC 번호
 
-    private Long inquiryNo; // 문의 번호
+    private Long inquiryId; // 문의 번호
 
     private String title; // 제목
 
