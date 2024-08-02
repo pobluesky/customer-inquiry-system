@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/mocules/Header';
 import Path from '../../components/atoms/Path';
 import RequestBar from '../../components/mocules/RequestBar';
+import Toggle from '../../components/atoms/Toggle';
+import Category from '../../components/atoms/Category';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
@@ -42,6 +44,8 @@ function MyOnChangePlugin({ onChange }) {
 function Inq() {
     // const [editorState, setEditorState] = useState();
     const [originalText, setOriginalText] = useState('');
+    const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
+    const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
     function onChange(editorState) {
         // Call toJSON on the EditorState object, which produces a serialization safe string
@@ -86,23 +90,41 @@ function Inq() {
             <RequestBar />
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2vh' }}>
                 <div style={{ width: '80vw', border: 'solid #c1c1c1 1px', borderRadius: '20px' }}>
-                    <div style={{ marginLeft: '2vw' }}>OfferSheet</div>
-                    {/* 텍스트 에디터 */}
-                    <LexicalComposer initialConfig={editorConfig}>
-                        <div className="editor-container">
-                            <ToolbarPlugin />
-                            <div className="editor-inner">
-                                <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
-                                <HistoryPlugin />
-                                <AutoFocusPlugin />
-                                {/* <TreeViewPlugin /> */}
-                            </div>
-                        </div>
-                        <MyOnChangePlugin onChange={onChange} />
-                    </LexicalComposer>
-                    <div>
-                        Markdown 원문 복원 (서버로 전송될 데이터)<pre>{originalText}</pre>
+                    <div style={{ display: 'flex', alignContent: 'center', padding: '1vw 1vw 1vw 1vw', borderRadius, backgroundColor: '#88daff' }}>
+                        <Toggle isChecked={isChecked} setCheck={setCheck} />
+                        OfferSheet
                     </div>
+
+                    {isChecked ? (
+                        <>
+
+                            <LexicalComposer initialConfig={editorConfig}>
+                                <div className="editor-container">
+                                    <ToolbarPlugin />
+                                    <div className="editor-inner">
+                                        <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
+                                        <HistoryPlugin />
+                                        <AutoFocusPlugin />
+                                    </div>
+                                </div>
+                                <MyOnChangePlugin onChange={onChange} />
+                            </LexicalComposer>
+
+                            <Category categoryName={'1. 고객사'} />
+                            <Category categoryName={'2. Offersheet'} />
+                            <Category categoryName={'3. Price Term'} />
+                            <Category categoryName={'4. Shipment'} />
+                            <Category categoryName={'5. Payment Term'} />
+                            <Category categoryName={'6. Destination'} />
+                            <Category categoryName={'7. Validity'} />
+
+                            <div>
+                                Markdown 원문 복원 (서버로 전송될 데이터)<pre>{originalText}</pre>
+                            </div>
+                        </>
+                    ) : (
+                        ''
+                    )}
                 </div>
             </div>
         </div>
