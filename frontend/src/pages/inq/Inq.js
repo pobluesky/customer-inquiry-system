@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/mocules/Header';
 import Path from '../../components/atoms/Path';
+import RequestBar from '../../components/mocules/RequestBar';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
@@ -15,8 +16,6 @@ import ToolbarPlugin from '../../plugins/ToolbarPlugin';
 import Theme from './Theme';
 
 import '../../assets/css/Editor.css';
-
-const placeholder = 'Enter some rich text...';
 
 const editorConfig = {
     namespace: 'React.js Demo',
@@ -81,14 +80,15 @@ function Inq() {
     };
 
     return (
-        <div style={{ backgroundColor: 'pink' }}>
+        <div>
             <Header login={true} inq={true} voc={false} dashboard={false} />
             <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
+            <RequestBar />
             <LexicalComposer initialConfig={editorConfig}>
                 <div className="editor-container">
                     <ToolbarPlugin />
                     <div className="editor-inner">
-                        <RichTextPlugin contentEditable={<ContentEditable className="editor-input" aria-placeholder={placeholder} placeholder={<div className="editor-placeholder">{placeholder}</div>} />} ErrorBoundary={LexicalErrorBoundary} />
+                        <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
                         <HistoryPlugin />
                         <AutoFocusPlugin />
                         {/* <TreeViewPlugin /> */}
