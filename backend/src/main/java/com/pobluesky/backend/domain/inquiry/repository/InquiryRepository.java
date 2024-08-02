@@ -8,7 +8,6 @@ import org.springframework.data.relational.core.sql.In;
 
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     List<Inquiry> findByCustomer_CustomerIdAndIsDeletedFalse(Long customerId);
-
     Optional<Inquiry> findByCustomer_CustomerIdAndInquiryId(Long customerId, Long inquiryId);
 
 }

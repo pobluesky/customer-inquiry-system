@@ -17,7 +17,7 @@ export default function ToolbarPlugin() {
     const [isBold, setIsBold] = useState(false);
     const [isItalic, setIsItalic] = useState(false);
     const [isUnderline, setIsUnderline] = useState(false);
-    const [isStrikethrough, setIsStrikethrough] = useState(false);
+    // const [isStrikethrough, setIsStrikethrough] = useState(false);
 
     const $updateToolbar = useCallback(() => {
         const selection = $getSelection();
@@ -26,7 +26,7 @@ export default function ToolbarPlugin() {
             setIsBold(selection.hasFormat('bold'));
             setIsItalic(selection.hasFormat('italic'));
             setIsUnderline(selection.hasFormat('underline'));
-            setIsStrikethrough(selection.hasFormat('strikethrough'));
+            // setIsStrikethrough(selection.hasFormat('strikethrough'));
         }
     }, []);
 
@@ -105,7 +105,7 @@ export default function ToolbarPlugin() {
             >
                 <i className="format italic" />
             </button>
-            <button
+            {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
                 }}
@@ -113,8 +113,8 @@ export default function ToolbarPlugin() {
                 aria-label="Format Underline"
             >
                 <i className="format underline" />
-            </button>
-            <button
+            </button> */}
+            {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
                 }}
@@ -122,9 +122,9 @@ export default function ToolbarPlugin() {
                 aria-label="Format Strikethrough"
             >
                 <i className="format strikethrough" />
-            </button>
-            <Divider />
-            <button
+            </button> */}
+            {/* <Divider /> */}
+            {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
                 }}
@@ -159,7 +159,7 @@ export default function ToolbarPlugin() {
                 aria-label="Justify Align"
             >
                 <i className="format justify-align" />
-            </button>{' '}
+            </button>{' '} */}
         </div>
     );
 }

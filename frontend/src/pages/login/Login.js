@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/atoms/Header';
+import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
 
 function Login() {
     return (
         <div>
-            <Header />
+            <Header login={false} inq={true} voc={true} dashboard={true} />
             <div style={{ textAlign: 'center' }}>
                 <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }}>로그인</div>
                 <div style={{ color: '#03507D', marginTop: '4vh' }}>이메일과 비밀번호를 입력해주세요.</div>
@@ -17,8 +17,8 @@ function Login() {
 
                 {/* 로그인 완료 & 비밀번호 찾기 버튼 */}
                 <div style={{ marginTop: '4vh' }}>
-                    <Button btnName={'로그인'} width={'168px'} height={'44px'} margin={'12px'} backgroundColor={'#03507D'} textColor={'#EEEEEE'} borderRadius={'12px'} fontSize={'20px'} />
-                    <Button btnName={'비밀번호 찾기'} width={'168px'} height={'44px'} margin={'12px'} backgroundColor={'#EEEEEE'} textColor={'#03507D'} borderRadius={'12px'} fontSize={'20px'} />
+                    <Button btnName={'로그인'} width={'168px'} height={'44px'} margin={'12px'} backgroundColor={'#03507D'} textColor={'#EEEEEE'} fontSize={'20px'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} />
+                    <Button btnName={'비밀번호 찾기'} width={'168px'} height={'44px'} margin={'12px'} backgroundColor={'#EEEEEE'} textColor={'#03507D'} fontSize={'20px'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} />
                 </div>
 
                 {/* 회원가입 링크 */}

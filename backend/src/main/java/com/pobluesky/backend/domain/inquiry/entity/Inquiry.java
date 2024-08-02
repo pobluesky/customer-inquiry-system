@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
-
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
@@ -27,6 +26,14 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Getter
 @Setter
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inquiry")
@@ -157,5 +164,4 @@ public class Inquiry {
     public void markAsDeleted() {
         this.isDeleted = true;
     }
-
 }
