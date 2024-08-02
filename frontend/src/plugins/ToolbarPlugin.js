@@ -1,13 +1,30 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { mergeRegister } from '@lexical/utils';
-import { $getSelection, $isRangeSelection, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, FORMAT_TEXT_COMMAND, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from 'lexical';
-// import { $getSelection, $isRangeSelection, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, FORMAT_ELEMENT_COMMAND, FORMAT_TEXT_COMMAND, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from 'lexical';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { $getSelection, $isRangeSelection, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, FORMAT_ELEMENT_COMMAND, FORMAT_TEXT_COMMAND, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from 'lexical';
+import {
+    Divider as DividerStyle,
+    Toolbar as ToolbarStyle,
+    Toolbar_Item as ToolbarItemStyle,
+    Spaced as SpacedStyle,
+    Active as ActiveStyle,
+    Format as FormatStyle,
+    Undo as UndoStyle,
+    Redo as RedoStyle,
+    Bold as BoldStyle,
+    Italic as ItalicStyle,
+    // Underline as UnderlineStyle,
+    // Strikethrough as StrikethroughStyle,
+    // Left_Align as LeftAlignStyle,
+    // Center_Align as CenterAlignStyle,
+    // Right_Align as RightAlignStyle,
+    // Justify_Align as JustifyAlignStyle
+} from '../assets/css/Editor.css';
 
 const LowPriority = 1;
 
 function Divider() {
-    return <div className="divider" />;
+    return <div className={DividerStyle} />;
 }
 
 export default function ToolbarPlugin() {
@@ -17,7 +34,7 @@ export default function ToolbarPlugin() {
     const [canRedo, setCanRedo] = useState(false);
     const [isBold, setIsBold] = useState(false);
     const [isItalic, setIsItalic] = useState(false);
-    const [, setIsUnderline] = useState(false);
+    const [isUnderline, setIsUnderline] = useState(false);
     // const [isStrikethrough, setIsStrikethrough] = useState(false);
 
     const $updateToolbar = useCallback(() => {
@@ -66,100 +83,100 @@ export default function ToolbarPlugin() {
     }, [editor, $updateToolbar]);
 
     return (
-        <div className="toolbar" ref={toolbarRef}>
+        <div className={ToolbarStyle} ref={toolbarRef}>
             <button
                 disabled={!canUndo}
                 onClick={() => {
                     editor.dispatchCommand(UNDO_COMMAND, undefined);
                 }}
-                className="toolbar-item spaced"
+                className={`${ToolbarItemStyle} ${SpacedStyle}`}
                 aria-label="Undo"
             >
-                <i className="format undo" />
+                <i className={`${FormatStyle} ${UndoStyle}`} />
             </button>
             <button
                 disabled={!canRedo}
                 onClick={() => {
                     editor.dispatchCommand(REDO_COMMAND, undefined);
                 }}
-                className="toolbar-item"
+                className={ToolbarItemStyle}
                 aria-label="Redo"
             >
-                <i className="format redo" />
+                <i className={`${FormatStyle} ${RedoStyle}`} />
             </button>
             <Divider />
             <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
                 }}
-                className={'toolbar-item spaced ' + (isBold ? 'active' : '')}
+                className={`${ToolbarItemStyle} ${SpacedStyle} ${isBold ? ActiveStyle : ''}`}
                 aria-label="Format Bold"
             >
-                <i className="format bold" />
+                <i className={`${FormatStyle} ${BoldStyle}`} />
             </button>
             <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
                 }}
-                className={'toolbar-item spaced ' + (isItalic ? 'active' : '')}
+                className={`${ToolbarItemStyle} ${SpacedStyle} ${isItalic ? ActiveStyle : ''}`}
                 aria-label="Format Italics"
             >
-                <i className="format italic" />
+                <i className={`${FormatStyle} ${ItalicStyle}`} />
             </button>
             {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
                 }}
-                className={'toolbar-item spaced ' + (isUnderline ? 'active' : '')}
+                className={`${ToolbarItemStyle} ${SpacedStyle} ${isUnderline ? ActiveStyle : ''}`}
                 aria-label="Format Underline"
             >
-                <i className="format underline" />
+                <i className={`${FormatStyle} ${UnderlineStyle}`} />
             </button> */}
             {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
                 }}
-                className={'toolbar-item spaced ' + (isStrikethrough ? 'active' : '')}
+                className={`${ToolbarItemStyle} ${SpacedStyle} ${isStrikethrough ? ActiveStyle : ''}`}
                 aria-label="Format Strikethrough"
             >
-                <i className="format strikethrough" />
+                <i className={`${FormatStyle} ${StrikethroughStyle}`} />
             </button> */}
             {/* <Divider /> */}
             {/* <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
                 }}
-                className="toolbar-item spaced"
+                className={`${ToolbarItemStyle} ${SpacedStyle}`}
                 aria-label="Left Align"
             >
-                <i className="format left-align" />
+                <i className={`${FormatStyle} ${LeftAlignStyle}`} />
             </button>
             <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
                 }}
-                className="toolbar-item spaced"
+                className={`${ToolbarItemStyle} ${SpacedStyle}`}
                 aria-label="Center Align"
             >
-                <i className="format center-align" />
+                <i className={`${FormatStyle} ${CenterAlignStyle}`} />
             </button>
             <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
                 }}
-                className="toolbar-item spaced"
+                className={`${ToolbarItemStyle} ${SpacedStyle}`}
                 aria-label="Right Align"
             >
-                <i className="format right-align" />
+                <i className={`${FormatStyle} ${RightAlignStyle}`} />
             </button>
             <button
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
                 }}
-                className="toolbar-item"
+                className={ToolbarItemStyle}
                 aria-label="Justify Align"
             >
-                <i className="format justify-align" />
+                <i className={`${FormatStyle} ${JustifyAlignStyle}`} />
             </button>{' '} */}
         </div>
     );
