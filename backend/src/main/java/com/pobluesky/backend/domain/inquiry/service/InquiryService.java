@@ -32,6 +32,11 @@ public class InquiryService {
     }
 
     @Transactional
+    public List<InquiryResponseDTO> getInquiries() {
+        List<Inquiry> inquiries = inquiryRepository.findAll();
+    }
+
+    @Transactional
     public InquiryResponseDTO createInquiry(Long customerId,InquiryCreateRequestDTO dto) {
         Customer customer = customerRepository.findById(customerId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -85,7 +90,6 @@ public class InquiryService {
         inquiry.markAsDeleted();
 
     }
-
 
 
 }

@@ -28,9 +28,9 @@ public class InquiryController {
 
     @GetMapping("/customer/inquiries/{customerId}")
     public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
-        List<InquiryResponseDTO> customerInquiries  = inquiryService.getInquiriesByCustomerId(customerId);
+        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(customerInquiries));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping("/customer/inquiries/{customerId}")
@@ -55,6 +55,14 @@ public class InquiryController {
     public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
+    }
+
+    // 매니저면 inquiryId나 managerId 안써도 될까
+    @GetMapping("/manager/inquiries")
+    public ResponseEntity<JsonResult> getInquiries() {
+        List<InquiryResponseDTO> response = inquiryService.getInquiries();
+        return ResponseEntity.status((HttpStatus.OK))
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
 

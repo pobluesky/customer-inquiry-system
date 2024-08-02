@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.user.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -5,5 +5,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
-    List<Inquiry> findByCustomerCustomerIdAndIsDeletedFalse(Long userNo);
+    List<Inquiry> findByCustomerCustomerIdAndIsDeletedFalse(Long customerId);
 }
