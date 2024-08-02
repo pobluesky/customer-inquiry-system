@@ -1,3 +1,32 @@
 .input::placeholder {
     color: #9b9b9b;
 }
+
+.Container {
+    display: flex;
+    justify-content: center;
+}
+
+.Can_Scroll {
+    width: 85vw;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.Table {
+    border-collapse: collapse;
+}
+
+.Table th,
+.Table td {
+    border: 1px solid red;
+}
+
+.Table_Parent {
+    background-color: rgb(5, 255, 105);
+    color: rgb(0, 21, 255);
+}
+
+.Table_Child {
+    background-color: rgb(255, 102, 0);
+}
