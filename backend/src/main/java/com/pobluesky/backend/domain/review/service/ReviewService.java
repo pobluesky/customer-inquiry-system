@@ -2,7 +2,9 @@ package com.pobluesky.backend.domain.review.service;
 
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.review.entity.Review;
+import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
 
 import com.pobluesky.backend.global.error.CommonException;
@@ -19,7 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
+
     private final ReviewRepository reviewRepository;
+
     private final InquiryRepository inquiryRepository;
 
     @Transactional(readOnly = true)

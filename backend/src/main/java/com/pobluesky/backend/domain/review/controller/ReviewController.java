@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.review.controller;
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
 import com.pobluesky.backend.domain.review.service.ReviewService;
+import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ReviewController {
         ReviewResponseDTO reviewById = reviewService.getReviewById(reviewId);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(reviewById));
+            .body(ResponseFactory.getSuccessJsonResult(reviewById));
     }
 
     @PostMapping("/{inquiryId}")
@@ -37,6 +38,6 @@ public class ReviewController {
         ReviewResponseDTO review = reviewService.createReview(dto, inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(JsonResult.success(review));
+            .body(ResponseFactory.getSuccessJsonResult(review));
     }
 }

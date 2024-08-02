@@ -1,6 +1,8 @@
 package com.pobluesky.backend.domain.user.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,14 +19,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "managers")
 public class Manager extends User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long managerId;
 
     private String empNo;
 
+    @Enumerated(EnumType.STRING)
     private ManagerRole role;
 
+    @Enumerated(EnumType.STRING)
     private Department department;
 
     @Builder
@@ -44,6 +49,7 @@ public class Manager extends User {
         this.empNo = empNo;
         this.role = role;
         this.department = department;
+        this.isActivated = true;
     }
 
     public void updateManager(
