@@ -1,5 +1,6 @@
 import React from 'react';
-import { useRoutes } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 
 import { Intro } from './pages/intro';
 import { Login } from './pages/login';
@@ -9,14 +10,20 @@ import { Voc } from './pages/voc';
 import { DashBoard } from './pages/dashboard';
 
 function App() {
-    return useRoutes([
-        { path: '/', element: <Intro /> }, // 메인 화면
-        { path: '/login', element: <Login /> },
-        { path: '/join', element: <Join /> },
-        { path: '/inq', element: <Inq /> },
-        { path: '/voc', element: <Voc /> },
-        { path: '/dashboard', element: <DashBoard /> },
-    ]);
+    return (
+        <Router>
+            <Routes>
+                <Route index path="" element={<Intro />} />
+                <Route path="login" element={<Login />} />
+                <Route path="join" element={<Join />} />
+                <Route path="inq" element={<Inq />} />
+                <Route path="voc" element={<Voc />} />
+                <Route path="dashboard" element={<DashBoard />} />
+                {/* <Route path="error" element={<Error />} />
+                <Route path="*" element={<Error404 />} /> */}
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
