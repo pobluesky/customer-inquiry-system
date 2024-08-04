@@ -1,12 +1,13 @@
 import React, { forwardRef } from 'react';
+import {Offer_Table_Input} from '../../assets/css/Input.css';
 
 const OfferInput = forwardRef(({ onChange, value }, ref) => (
-    <div>
-        <input ref={ref} value={value} onChange={onChange} type="text" style={{ borderStyle: 'none', outline: 'none' }} />
-    </div>
+    <>
+        <input className={Offer_Table_Input} ref={ref} value={value} onChange={onChange} type="text" />
+    </>
 ));
 
-// Header.propTypes = {
+// OfferInput.propTypes = {
 //     username: PropTypes.string.isRequired,
 // };
 
