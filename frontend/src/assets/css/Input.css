@@ -2,31 +2,24 @@
     color: #9b9b9b;
 }
 
-.Container {
+.Offer_Table_Input {
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+}
+
+.Offer_Table_Search_Input {
     display: flex;
-    justify-content: center;
+    align-items: center;
 }
 
-.Can_Scroll {
-    width: 85vw;
-    overflow-x: auto;
-    text-align: center;
-}
-
-.Table {
-    border-collapse: collapse;
-}
-
-.Table th,
-.Table td {
-    border: 1px solid red;
-}
-
-.Table_Parent {
-    background-color: rgb(5, 255, 105);
-    color: rgb(0, 21, 255);
-}
-
-.Table_Child {
-    background-color: rgb(255, 102, 0);
+.Offer_Table_Button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0 4px 0 4px;
+    cursor: pointer;
 }
