@@ -1,5 +1,5 @@
 import React from 'react';
-import OfferInput from '../atoms/OfferInput';
+import OfferTableInput from '../atoms/OfferTableInput';
 import SearchInput from '../mocules/SearchInput';
 import { Container, Scroll, Table, Table_Head, Table_Body, Colspan } from '../../assets/css/Table.css';
 
@@ -71,24 +71,24 @@ function OfferSheet() {
                                                 </select>
                                             </td>
                                             <td>
-                                                <OfferInput />
+                                                <OfferTableInput />
                                             </td>
                                         </tr>
                                     ) : column === 'Size' ? (
                                         sizeSample.map((size, sizeIdx) => (
                                             <td key={sizeIdx}>
-                                                <OfferInput />
+                                                <OfferTableInput />
                                             </td>
                                         ))
                                     ) : column === 'Unit Weight(kg)' ? (
                                         weightSample.map((weight, weightIdx) => (
                                             <td key={weightIdx}>
-                                                <OfferInput />
+                                                <OfferTableInput />
                                             </td>
                                         ))
                                     ) : (
                                         <td>
-                                            <OfferInput />
+                                            <OfferTableInput />
                                         </td>
                                     )}
                                 </React.Fragment>

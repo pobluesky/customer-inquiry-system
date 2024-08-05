@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
-import {Offer_Table_Input} from '../../assets/css/Input.css';
+import { Offer_Input } from '../../assets/css/Input.css';
 
 const OfferInput = forwardRef(({ onChange, value }, ref) => (
     <>
-        <input className={Offer_Table_Input} ref={ref} value={value} onChange={onChange} type="text" />
+        <input className={Offer_Input} ref={ref} value={value} onChange={onChange} type="text" />
     </>
 ));
 

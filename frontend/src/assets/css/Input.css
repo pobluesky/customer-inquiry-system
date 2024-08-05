@@ -23,3 +23,20 @@
     margin: 0 4px 0 4px;
     cursor: pointer;
 }
+
+.Input_Datepicker {
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 2px 4px 2px 4px;
+}
+
+.Offer_Input,
+.Price_Payment {
+    height: 28px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 0 4px 0 4px;
+}
