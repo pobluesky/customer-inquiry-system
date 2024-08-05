@@ -36,6 +36,7 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+
     }
 
     @PostMapping
@@ -44,6 +45,7 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+
     }
 
     @PutMapping("/{userId}")
@@ -55,6 +57,7 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+
     }
 
     @DeleteMapping("/{userId}")
