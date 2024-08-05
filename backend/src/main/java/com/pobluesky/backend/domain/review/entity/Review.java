@@ -47,8 +47,6 @@ public class Review extends BaseEntity {
     @Column(nullable = false, columnDefinition="TEXT")
     private String tsReviewReq;
 
-    private Boolean isActivated;
-
     @Builder
     public Review(
         Inquiry inquiry,
@@ -65,10 +63,6 @@ public class Review extends BaseEntity {
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
         this.isActivated = true;
-    }
-
-    public void deleteReview(){
-        this.isActivated = false;
     }
 
 }
