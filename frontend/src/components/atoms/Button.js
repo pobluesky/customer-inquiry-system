@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-function Button({ onClick, btnName, width, height, margin, marginRight, marginLeft, backgroundColor, textColor, border, borderRadius, fontSize }) {
+function Button({ onClick, btnName, width, height, margin, marginTop, marginBottom, marginRight, marginLeft, backgroundColor, textColor, border, borderRadius, fontSize, fontWeight }) {
     return (
         <span>
             <button
@@ -9,11 +9,14 @@ function Button({ onClick, btnName, width, height, margin, marginRight, marginLe
                 style={{ width: `${width}`,
                          height: `${height}`,
                          margin: `${margin}`,
+                         marginTop: `${marginTop}`,
+                         marginBottom: `${marginBottom}`,
                          marginRight: `${marginRight}`,
                          marginLeft: `${marginLeft}`,
                          backgroundColor: `${backgroundColor}`,
                          color: `${textColor}`,
                          fontSize: `${fontSize}`,
+                         fontWeight: `${fontWeight}`,
                          border: `${border}`,
                          borderRadius: `${borderRadius}`,
                          cursor: 'pointer'}}>
