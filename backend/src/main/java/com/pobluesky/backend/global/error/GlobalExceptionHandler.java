@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     /*
-    서버 단에서 예성되는 예외 처리
+    서버 단에서 예상되는 예외 처리
      */
     @ExceptionHandler(CommonException.class)
     protected ResponseEntity<CommonResult> handleCustomException(CommonException e) {

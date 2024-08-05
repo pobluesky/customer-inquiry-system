@@ -12,7 +12,7 @@ function Header({ login, inq, voc, dashboard }) {
     const backgroundColor = login ? '#EDFAFF' : '';
 
     return (
-        <div style={{ width: '100%', height: '84px', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor, boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
+        <div style={{ width: '100%', height: '84px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor, boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
             {login ? (
                 <>  
                     {/* 로그인 완료 */}
@@ -40,8 +40,8 @@ function Header({ login, inq, voc, dashboard }) {
                     </div>
                     <div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        <Button onClick={() => navigate('/login')} btnName={'로그인'} width={'84px'} height={'40px'} backgroundColor={'#03507d'} textColor={'#eeeeee'} borderRadius={'12px'} fontSize={'16px'} />
-                        <Button onClick={() => navigate('/join')} btnName={'회원가입'} width={'84px'} height={'40px'} margin={'24px'} backgroundColor={'#ffffff'} textColor={'#03507d'} borderRadius={'12px'} fontSize={'16px'} />
+                        <Button onClick={() => navigate('/login')} btnName={'로그인'} width={'84px'} height={'40px'} backgroundColor={'#03507d'} textColor={'#eeeeee'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} fontSize={'16px'} />
+                        <Button onClick={() => navigate('/join')} btnName={'회원가입'} width={'84px'} height={'40px'} margin={'24px'} backgroundColor={'#ffffff'} textColor={'#03507d'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} fontSize={'16px'} />
                     </div>
                 </>
             )}
