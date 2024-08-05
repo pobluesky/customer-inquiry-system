@@ -60,20 +60,26 @@ function OfferSheet() {
                                             <SearchInput />
                                         </td>
                                     ) : column === 'Price' ? (
-                                        <tr>
-                                            <td>
-                                                <select name="selectedCountry" defaultValue="Australian Dollar">
-                                                    {countrySample.map((country, countryIdx) => (
-                                                        <option key={countryIdx} value={country}>
-                                                            {country}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <OfferTableInput />
-                                            </td>
-                                        </tr>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <select name="selectedCountry" defaultValue="Australian Dollar">
+                                                                {countrySample.map((country, countryIdx) => (
+                                                                    <option key={countryIdx} value={country}>
+                                                                        {country}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <OfferTableInput />
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </td>
                                     ) : column === 'Size' ? (
                                         sizeSample.map((size, sizeIdx) => (
                                             <td key={sizeIdx}>
