@@ -65,20 +65,18 @@ public class InquiryService {
             inquiryUpdateRequestDTO.country(),
             inquiryUpdateRequestDTO.corporate(),
             inquiryUpdateRequestDTO.salesPerson(),
-            inquiryUpdateRequestDTO.inquiryType(),
             inquiryUpdateRequestDTO.industry(),
-            inquiryUpdateRequestDTO.corporationCode(),
-            inquiryUpdateRequestDTO.productType(),
             inquiryUpdateRequestDTO.progress(),
-            inquiryUpdateRequestDTO.customerRequestDate(),
-            inquiryUpdateRequestDTO.additionalRequests(),
+            inquiryUpdateRequestDTO.productType(),
             inquiryUpdateRequestDTO.qualityManager(),
             inquiryUpdateRequestDTO.department(),
             inquiryUpdateRequestDTO.salesManager(),
+            inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.responseDeadline(),
             inquiryUpdateRequestDTO.elapsedDays(),
             inquiryUpdateRequestDTO.files(),
-            inquiryUpdateRequestDTO.isActivated()
+            inquiryUpdateRequestDTO.inquiryType(),
+            inquiryUpdateRequestDTO.additionalRequests()
         );
 
 

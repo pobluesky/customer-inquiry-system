@@ -90,7 +90,8 @@ public class Inquiry {
         String elapsedDays,
         String files,
         InquiryType inquiryType,
-        Boolean isActivated
+        Boolean isActivated,
+        String additionalRequests
     ){
         this.country = country;
         this.corporate = corporate;
@@ -108,46 +109,42 @@ public class Inquiry {
         this.files = files;
         this.inquiryType = inquiryType;
         this.isActivated = isActivated;
+        this.additionalRequests = additionalRequests;
     }
 
     public void updateInquiry(
         Country country,
         String corporate,
         String  salesPerson,
-        InquiryType inquiryType,
         Industry industry,
-        String corporationCode,
-        ProductType productType,
         Progress progress,
-        String customerRequestDate,
-        String additionalRequests,
+        ProductType productType,
         String qualityManager,
         Department department,
         String salesManager,
-        String files,
+        String customerRequestDate,
         String responseDeadline,
         String elapsedDays,
-        Boolean isActivated
+        String files,
+        InquiryType inquiryType,
+        String additionalRequests
     ){
         this.country = country;
         this.corporate = corporate;
         this.salesPerson = salesPerson;
-        this.inquiryType = inquiryType;
         this.industry = industry;
-        this.corporationCode = corporationCode;
-        this.productType = productType;
         this.progress = progress;
-        this.customerRequestDate = customerRequestDate;
-        this.additionalRequests = additionalRequests;
+        this.productType = productType;
         this.qualityManager = qualityManager;
         this.department = department;
         this.salesManager = salesManager;
-        this.files = files;
+        this.customerRequestDate = customerRequestDate;
         this.responseDeadline = responseDeadline;
         this.elapsedDays = elapsedDays;
-        this.isActivated = isActivated;
+        this.files = files;
+        this.inquiryType = inquiryType;
+        this.additionalRequests = additionalRequests;
     }
-
     public void deleteInquiry() {
         this.isActivated = false;
     }

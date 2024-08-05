@@ -29,7 +29,8 @@ public record InquiryCreateRequestDTO(
     String corporationCode,
     String files,
     InquiryType inquiryType,
-    Boolean isActivated
+    Boolean isActivated,
+    String additionalRequests
 ) {
 
     public Inquiry toInquiryEntity() {
@@ -50,6 +51,7 @@ public record InquiryCreateRequestDTO(
             .files(files)
             .inquiryType(inquiryType)
             .isActivated(true)
+            .additionalRequests(additionalRequests)
             .build();
     }
 }
