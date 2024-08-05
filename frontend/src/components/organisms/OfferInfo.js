@@ -2,12 +2,13 @@ import React from 'react';
 import Category from '../atoms/Category';
 import Terms from '../atoms/Terms';
 import DateInput from '../mocules/DateInput';
-import OfferInput from '../atoms/OfferInput';
+import OfferInfoInput from '../atoms/OfferInfoInput';
+import { Info_Container, Info_Table } from '../../assets/css/Offersheet.css'
 
 function OfferInfo() {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '12px'}}>
-            <table>
+        <div className={Info_Container}>
+            <table className={Info_Table}>
                 <thead>
                     <tr>
                         <td>
@@ -36,7 +37,7 @@ function OfferInfo() {
                             <Category categoryName={'6. Destination'} />
                         </td>
                         <td>
-                            <OfferInput />
+                            <OfferInfoInput />
                         </td>
                         <td>
                             <Category categoryName={'7. Validity'} />
@@ -48,7 +49,7 @@ function OfferInfo() {
                             <Category categoryName={'8. Remark'} />
                         </td>
                         <td>
-                            <OfferInput />
+                            <OfferInfoInput />
                         </td>
                     </tr>
                 </tbody>

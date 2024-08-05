@@ -1,5 +1,5 @@
 import React from 'react';
-import { Price_Payment } from '../../assets/css/Input.css';
+import { Price_Payment, Price_Payment_Std } from '../../assets/css/Offersheet.css';
 
 function Terms() {
     const termSample = ['CIF', 'CIP', 'FOB', 'CIP'];
@@ -7,7 +7,7 @@ function Terms() {
 
     return (
         <>
-            <select className={Price_Payment} name="selectedTerm" defaultValue="">
+            <select className={Price_Payment_Std} name="selectedTerm" defaultValue="">
                 {termSample.map((term, termIdx) => (
                     <option key={termIdx} value={term}>
                         {term}
