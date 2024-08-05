@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/atoms/Header';
+import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
 
 function Join() {
@@ -39,7 +39,7 @@ function Join() {
 
     return (
         <div>
-            <Header />
+            <Header login={false}  inq={true} voc={true} dashboard={true} />
             <div style={{ textAlign: 'center' }}>
                 {!check ? (
                     <>
@@ -79,7 +79,7 @@ function Join() {
 
                         {/* 회원가입 버튼 */}
                         <div style={{ marginTop: '4vh' }}>
-                            <Button btnName={'회원가입'} width={'360px'} height={'44px'} margin={'12px'} backgroundColor={'#03507D'} textColor={'#EEEEEE'} borderRadius={'12px'} fontSize={'20px'} />
+                            <Button btnName={'회원가입'} width={'360px'} height={'44px'} margin={'12px'} backgroundColor={'#03507D'} textColor={'#EEEEEE'} fontSize={'20px'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} />
                         </div>
                     </>
                 )}

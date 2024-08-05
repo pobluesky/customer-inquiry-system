@@ -33,9 +33,10 @@ public class ManagerController {
     @PostMapping
     public ResponseEntity<JsonResult> getUsers() {
         List<ManagerResponseDTO> response = managerService.getAllManagers();
-
+        
         return ResponseEntity.status(HttpStatus.OK)
             . body(ResponseFactory.getSuccessJsonResult(response));
+
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.review.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
