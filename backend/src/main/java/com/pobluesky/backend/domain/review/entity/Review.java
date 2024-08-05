@@ -63,7 +63,6 @@ public class Review extends BaseEntity {
         this.attachmentFile = attachmentFile;
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
-        this.isActivated = true;
     }
 
 }
