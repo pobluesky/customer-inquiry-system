@@ -1,29 +1,26 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-function Button({ onClick, btnName, width, height, margin, marginTop, marginBottom, marginRight, marginLeft, backgroundColor, textColor, border, borderRadius, fontSize, fontWeight }) {
-    return (
-        <span>
+function Button({ onClick, btnName, width, height, margin, marginRight, marginLeft, backgroundColor, textColor, border, borderRadius, fontSize }) {
+  return (
+      <span>
             <button
                 onClick={onClick}
                 style={{ width: `${width}`,
-                         height: `${height}`,
-                         margin: `${margin}`,
-                         marginTop: `${marginTop}`,
-                         marginBottom: `${marginBottom}`,
-                         marginRight: `${marginRight}`,
-                         marginLeft: `${marginLeft}`,
-                         backgroundColor: `${backgroundColor}`,
-                         color: `${textColor}`,
-                         fontSize: `${fontSize}`,
-                         fontWeight: `${fontWeight}`,
-                         border: `${border}`,
-                         borderRadius: `${borderRadius}`,
-                         cursor: 'pointer'}}>
+                  height: `${height}`,
+                  margin: `${margin}`,
+                  marginRight: `${marginRight}`,
+                  marginLeft: `${marginLeft}`,
+                  backgroundColor: `${backgroundColor}`,
+                  color: `${textColor}`,
+                  fontSize: `${fontSize}`,
+                  border: `${border}`,
+                  borderRadius: `${borderRadius}`,
+                  cursor: 'pointer'}}>
                 {btnName}
             </button>
         </span>
-    );
+  );
 }
 
 // Header.propTypes = {

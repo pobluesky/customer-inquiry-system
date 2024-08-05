@@ -27,8 +27,7 @@ const FirstIntro = () => {
               btnName={'Inquiry 시작하기 ►'}
               width={'250px'}
               height={'60px'}
-              marginBottom={'12vh'}
-              marginTop={'-10vh'}
+              margin={'-10vh 0 12vh 0'}
               marginRight={'3vh'}
               fontWeight={'bolder'}
               fontSize={'26px'}
@@ -42,8 +41,7 @@ const FirstIntro = () => {
               btnName={'VoC 시작하기 ►'}
               width={'250px'}
               height={'60px'}
-              marginBottom={'12vh'}
-              marginTop={'-10vh'}
+              margin={'-10vh 0 12vh 0'}
               fontWeight={'bolder'}
               fontSize={'26px'}
               border={'solid #c1c1c1 1px'}
