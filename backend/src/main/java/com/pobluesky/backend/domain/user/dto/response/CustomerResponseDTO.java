@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.user.dto.response;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
+
 import lombok.Builder;
 
 @Builder
@@ -11,9 +12,10 @@ public record CustomerResponseDTO(
     String password,
     String phone,
     String customerCode,
-    String customerName
+    String customerName,
+    Boolean isActivated
 ) {
-    // entity -> dto
+
     public static CustomerResponseDTO from(Customer customer) {
         return CustomerResponseDTO.builder()
             .userId(customer.getCustomerId())
@@ -23,6 +25,7 @@ public record CustomerResponseDTO(
             .phone(customer.getPhone())
             .customerCode(customer.getCustomerCode())
             .customerName(customer.getCustomerName())
+            .isActivated(customer.getIsActivated())
             .build();
     }
 }

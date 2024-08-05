@@ -25,9 +25,6 @@ public class Customer extends User {
 
     private String customerName;
 
-    /*
-    Builder Pattern
-     */
     @Builder
     private Customer(
         String name,
@@ -48,6 +45,7 @@ public class Customer extends User {
         this.phone = phone;
         this.customerCode = customerCode;
         this.customerName = customerName;
+        this.isActivated = true;
     }
 
     public void updateCustomer(
