@@ -1,6 +1,6 @@
 package com.pobluesky.backend.domain.review.dto.request;
 
-import com.pobluesky.backend.domain.review.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.review.entity.Review;
 
 public record ReviewCreateRequestDTO(

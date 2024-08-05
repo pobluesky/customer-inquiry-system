@@ -15,7 +15,9 @@ public record ManagerResponseDTO(
     String phone,
     String empNo,
     ManagerRole role,
-    Department department
+    Department department,
+
+    Boolean isActivated
 ) {
     public static ManagerResponseDTO from(Manager manager) {
         return ManagerResponseDTO.builder()
@@ -27,6 +29,7 @@ public record ManagerResponseDTO(
             .empNo(manager.getEmpNo())
             .role(manager.getRole())
             .department(manager.getDepartment())
+            .isActivated(manager.getIsActivated())
             .build();
     }
 }

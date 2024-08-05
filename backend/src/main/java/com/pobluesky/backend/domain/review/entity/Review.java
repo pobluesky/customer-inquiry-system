@@ -1,5 +1,8 @@
 package com.pobluesky.backend.domain.review.entity;
 
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -21,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reviews")
-public class Review {
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
@@ -60,6 +63,7 @@ public class Review {
         this.attachmentFile = attachmentFile;
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
+        this.isActivated = true;
     }
 
 }
