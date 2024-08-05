@@ -12,6 +12,8 @@ VALUES
     ('Bob Supervisor', 'bob@company.com', 'managerpass2', '444-555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Charlie Boss', 'charlie@company.com', 'managerpass3', '777-888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+-- department 열의 데이터 타입을 VARCHAR로 변경
+ALTER TABLE inquiry ALTER COLUMN department VARCHAR(50);
 
 -- Inquiry
 INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated)
