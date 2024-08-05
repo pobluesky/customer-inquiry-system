@@ -23,16 +23,20 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class LineItemService {
 
     private final CarLineItemRepository carLineItemRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final ObjectMapper objectMapper;
 
-    public LineItemResponseDTO createLineItemForInquiry(
+    @Transactional
+    public LineItemResponseDTO createLineItem(
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
@@ -66,28 +70,19 @@ public class LineItemService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<LineItemResponseDTO> getLineItemsByInquiry(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        List<CarLineItem> lineItemList = carLineItemRepository.findAllByInquiry(inquiry);
+        List<CarLineItem> lineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
 
         return lineItemList.stream()
             .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
             .collect(Collectors.toList());
     }
 
-    public LineItemResponseDTO toResponseDTO(ProductType productType, LineItem lineItem) {
-        switch (productType) {
-            case CAR :
-                CarLineItem carLineItem = (CarLineItem) lineItem;
-                return CarLineItemResponseDTO.of(carLineItem);
-            // 다른 제품 유형 처리
-            default:
-                throw new CommonException(ErrorCode.INVALID_REQUEST);
-        }
-    }
-
+    @Transactional
     public LineItemResponseDTO updateLineItemById(
         Long inquiryId,
         Long lineItemId,
@@ -100,7 +95,7 @@ public class LineItemService {
 
         switch (productType) {
             case CAR:
-                CarLineItem carLineItem = carLineItemRepository.findById(lineItemId)
+                CarLineItem carLineItem = carLineItemRepository.findActiveCarLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 
                 CarLineItemUpdateRequestDTO carDto = objectMapper.convertValue(
@@ -148,6 +143,37 @@ public class LineItemService {
             // 다른 제품 유형 처리
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
+        }
+    }
+
+    @Transactional
+    public void deleteLineItemById(Long inquiryId, Long lineItemId) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        ProductType productType = inquiry.getProductType();
+
+        switch (productType) {
+            case CAR:
+                CarLineItem lineItem = carLineItemRepository.findActiveCarLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                lineItem.deleteLineItem();
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown product type: " + productType);
+        }
+    }
+
+    public LineItemResponseDTO toResponseDTO(ProductType productType, LineItem lineItem) {
+        switch (productType) {
+            case CAR :
+                CarLineItem carLineItem = (CarLineItem) lineItem;
+                return CarLineItemResponseDTO.of(carLineItem);
+            // 다른 제품 유형 처리
+            default:
+                throw new CommonException(ErrorCode.INVALID_REQUEST);
         }
     }
 }
