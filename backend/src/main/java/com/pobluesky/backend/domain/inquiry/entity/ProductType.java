@@ -21,7 +21,9 @@ public enum ProductType {
     SURFACE_TREATED_GENERAL("Surface Treated (General)"),
     SURFACE_TREATED_HOME_APPLIANCES("Surface Treated (Home Appliances)"),
     STAINLESS("Stainless"),
-    SLAB("Slab");
+    SLAB("Slab"),
+
+    CAR("Car");
 
     private final String type;
 
