@@ -90,7 +90,7 @@ public class CarLineItem extends LineItem {
 
     private Date sop;
 
-    private  String fcAmount;
+    private String fcAmount;
 
     private String bcAmount;
 
