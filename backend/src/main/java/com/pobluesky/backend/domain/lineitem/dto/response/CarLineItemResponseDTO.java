@@ -29,41 +29,77 @@ import lombok.Getter;
 public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long lineItemId;
+
     private Inquiry inquiry;
+
     private Lab lab;
+
     private Kind kind;
+
     private StandardOrg standardOrg;
+
     private String pjtName;
+
     private String salesVehicleName;
+
     private String partName;
+
     private IxPlate ixPlate;
+
     private String thickness;
+
     private String width;
-    private int quantity;
+
+    private Integer quantity;
+
     private Date desiredDeliveryDate;
+
     private String deliveryDestination;
+
     private Order order;
+
     private CoatingCondition coatingCondition;
+
     private CoatingAnotherCondition coatingAnotherCondition;
+
     private ContractType contract;
+
     private Date sop;
+
     private String fcAmount;
+
     private String bcAmount;
+
     private CoatingUnit coatingUnit;
+
     private PostTreatment postTreatment;
+
     private Direction direction;
+
     private String raTarget;
-    private int mTolerance;
-    private int pTolerance;
+
+    private Integer mTolerance;
+
+    private Integer pTolerance;
+
     private RaUnit raUnit;
+
     private RaAnotherUnit raAnotherUnit;
+
     private String qsRequirement;
+
     private String expensePerYear;
+
     private String customerName;
+
     private String completeVehicle;
+
     private Regulation regulation;
+
     private Boolean isActivated;
+
     public static CarLineItemResponseDTO of(CarLineItem carLineItem) {
+
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
             .inquiry(carLineItem.getInquiry())

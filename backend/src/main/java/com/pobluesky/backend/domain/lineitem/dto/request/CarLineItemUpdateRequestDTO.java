@@ -1,7 +1,5 @@
 package com.pobluesky.backend.domain.lineitem.dto.request;
 
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.CoatingAnotherCondition;
 import com.pobluesky.backend.domain.lineitem.entity.type.CoatingCondition;
 import com.pobluesky.backend.domain.lineitem.entity.type.CoatingUnit;
@@ -16,6 +14,7 @@ import com.pobluesky.backend.domain.lineitem.entity.type.RaUnit;
 import com.pobluesky.backend.domain.lineitem.entity.type.Regulation;
 import com.pobluesky.backend.domain.lineitem.entity.type.StandardOrg;
 import com.pobluesky.backend.domain.review.entity.ContractType;
+
 import java.util.Date;
 
 public record CarLineItemUpdateRequestDTO(
@@ -28,7 +27,7 @@ public record CarLineItemUpdateRequestDTO(
     IxPlate ixPlate,
     String thickness,
     String width,
-    int quantity,
+    Integer quantity,
     Date desiredDeliveryDate,
     String deliveryDestination,
     Order order,
@@ -42,8 +41,8 @@ public record CarLineItemUpdateRequestDTO(
     PostTreatment postTreatment,
     Direction direction,
     String raTarget,
-    int mTolerance,
-    int pTolerance,
+    Integer mTolerance,
+    Integer pTolerance,
     RaUnit raUnit,
     RaAnotherUnit raAnotherUnit,
     String qsRequirement,
