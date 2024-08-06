@@ -22,7 +22,8 @@ public record OfferSheetCreateRequestDTO(
     String paymentTerms,
     LocalDate shipment,
     LocalDate validity,
-    String destination
+    String destination,
+    String remark
 ) {
     public OfferSheet toOfferSheetEntity(Inquiry inquiry, Customer customer) {
         return OfferSheet.builder()
@@ -45,6 +46,7 @@ public record OfferSheetCreateRequestDTO(
             .shipment(shipment)
             .validity(validity)
             .destination(destination)
+            .remark(remark)
             .build();
     }
 }

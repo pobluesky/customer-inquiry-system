@@ -19,5 +19,6 @@ public record OfferSheetUpdateRequestDTO(
     String paymentTerms,
     LocalDate shipment,
     LocalDate validity,
-    String destination
+    String destination,
+    String remark
 ) {}

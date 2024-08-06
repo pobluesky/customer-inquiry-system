@@ -30,11 +30,11 @@ VALUES
     (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, '2024-02-28', 'Factory C', 'TEST', 'TEST', 'TEST', 0, '2024-03-01', '1200', '2200', 'TEST', 'TEST', 'TEST', '99.7%', 4, 4, 'TEST', 'TEST', 'IATF16949', '12000', '123 Industries', 'Complete Z', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- OfferSheet
-INSERT INTO offersheet (inquiry_id, customer_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination)
+INSERT INTO offersheet (inquiry_id, customer_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
 VALUES
-    (1, 1, 'Steel Sheet', 'Spec XYZ', 'Polished', 'Automotive', '2mm', '500mm', '1500mm', '1000 units', '50000', '900kg', '1000kg', 'Smooth', 'CIF', 'Net 30', '2023-09-01', '2023-12-31', 'Factory A'),
-    (2, 2, 'Steel Plate', 'Spec ABC', 'Matte', 'Construction', '3mm', '600mm', '1800mm', '1500 units', '75000', '1100kg', '1200kg', 'Rough', 'FOB', 'Net 45', '2023-10-01', '2024-01-31', 'Factory B'),
-    (3, 3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C');
+    (1, 1, 'Steel Sheet', 'Spec XYZ', 'Polished', 'Automotive', '2mm', '500mm', '1500mm', '1000 units', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Net 30', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
+    (2, 2, 'Steel Plate', 'Spec ABC', 'Matte', 'Construction', '3mm', '600mm', '1800mm', '1500 units', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Net 45', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
+    (3, 3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, require_add_contents)

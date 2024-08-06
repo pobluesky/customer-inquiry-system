@@ -64,7 +64,8 @@ public class OfferSheetService {
             offerSheetUpdateRequestDTO.paymentTerms(),
             offerSheetUpdateRequestDTO.shipment(),
             offerSheetUpdateRequestDTO.validity(),
-            offerSheetUpdateRequestDTO.destination()
+            offerSheetUpdateRequestDTO.destination(),
+            offerSheetUpdateRequestDTO.remark()
         );
 
         //4. entity -> dto
