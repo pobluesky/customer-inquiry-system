@@ -27,12 +27,12 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -t ${IMAGE_TAG} .'
+                    steps {
+                        script {
+                            sh 'cd backend && docker build -t ${IMAGE_TAG} .'
+                        }
+                    }
                 }
-            }
-        }
 
         stage('Check AWS CLI') {
             steps {
