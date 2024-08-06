@@ -29,7 +29,7 @@ th {
     height: max-content;
     border-radius: 0 0 20px 20px;
     background-color: #f0f8fc;
-    padding-top: 4vh;
+    padding: 4vh 0 4vh 0;
 }
 
 .Container ._Category {
@@ -110,8 +110,9 @@ th {
     border-collapse: separate;
 }
 
-.Info_Container .Info_Table td {
-    text-align: left;
+.Info_Container .Info_Table .Border_Space {
+    height: 28px;
+    border: none;
 }
 /***********************************************/
 /* Input */
@@ -161,9 +162,9 @@ th {
 }
 
 .Price_Payment_Std {
-    width: 48px;
+    width: 56px;
     height: 28px;
-    margin: 0 12px 0 0;
+    margin: 0 8px 0 0;
     border: solid 1px #c1c1c1;
     border-radius: 8px;
     outline: none;

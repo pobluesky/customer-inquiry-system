@@ -3,7 +3,7 @@ import Category from '../atoms/Category';
 import Terms from '../atoms/Terms';
 import DateInput from '../mocules/DateInput';
 import OfferInfoInput from '../atoms/OfferInfoInput';
-import { Info_Container, Table_Scroll, Info_Table } from '../../assets/css/Offersheet.css';
+import { Info_Container, Table_Scroll, Info_Table, Border_Space } from '../../assets/css/Offersheet.css';
 
 function OfferInfo() {
     return (
@@ -32,8 +32,11 @@ function OfferInfo() {
                             </td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr height="96px">
+                    <tbody style={{ borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+                        <tr>
+                            <td className={Border_Space} colSpan={6}></td>
+                        </tr>
+                        <tr>
                             <td>
                                 <Category categoryName={'6. Destination'} />
                             </td>
