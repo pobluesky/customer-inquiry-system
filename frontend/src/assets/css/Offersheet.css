@@ -12,7 +12,6 @@ th {
 
 .Sheet {
     width: 90vw;
-    height: max-content;
     border: solid #c1c1c1 1px;
     border-radius: 20px;
     margin: 0 0 6vh 0;
@@ -114,6 +113,7 @@ th {
     height: 28px;
     border: none;
 }
+
 /***********************************************/
 /* Input */
 .input::placeholder {
