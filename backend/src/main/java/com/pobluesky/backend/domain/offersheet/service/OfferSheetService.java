@@ -64,7 +64,8 @@ public class OfferSheetService {
             offerSheetUpdateRequestDTO.paymentTerms(),
             offerSheetUpdateRequestDTO.shipment(),
             offerSheetUpdateRequestDTO.validity(),
-            offerSheetUpdateRequestDTO.destination()
+            offerSheetUpdateRequestDTO.destination(),
+            offerSheetUpdateRequestDTO.remark()
         );
 
         //4. entity -> dto
@@ -80,12 +81,7 @@ public class OfferSheetService {
 
         Long customerId = inquiry.getCustomer().getCustomerId();
 
-        Customer customer =
-            customerRepository
-                .findById(customerId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry, customer);
+        OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry);
 
         OfferSheet savedOfferSheet = offerSheetRepository.save(offerSheet);
 
