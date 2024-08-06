@@ -21,7 +21,7 @@ pipeline {
         stage('Build Jar') {
             steps {
                 script {
-                    sh 'cd backend && /usr/bin/gradle clean build'
+                    sh 'cd backend && /opt/gradle/bin/gradle clean build'
                 }
             }
         }
