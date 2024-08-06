@@ -19,17 +19,18 @@ pipeline {
         }
 
         stage('Build Jar') {
-            steps {
-                script {
-                    sh 'cd backend && /opt/gradle/bin/gradle clean build'
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
                     steps {
                         script {
-                            sh 'cd backend && docker build -t ${IMAGE_TAG} .'
+                            sh 'cd backend && /opt/gradle/bin/gradle clean build'
+                            sh 'cp backend/build/libs/*.jar .'
+                        }
+                    }
+                }
+
+                stage('Build Docker Image') {
+                    steps {
+                        script {
+                            sh 'docker build -t ${IMAGE_TAG} .'
                         }
                     }
                 }
