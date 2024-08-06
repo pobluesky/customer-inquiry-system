@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = function(env) {
     return {
-        mode: "none",
+        mode: "development",
         entry: path.resolve(`src/index.js`),
         output: {
             path: path.resolve('public'),
@@ -41,6 +41,14 @@ module.exports = function(env) {
             compress: true,
             hot: false,
             historyApiFallback: true,
-        }    
+            proxy: [
+                {
+                    context: ['/api'],
+                    target: 'http://localhost:8080',
+                    secure: false,
+                    changeOrigin: true
+                }
+            ]
+        }
     };
 }
