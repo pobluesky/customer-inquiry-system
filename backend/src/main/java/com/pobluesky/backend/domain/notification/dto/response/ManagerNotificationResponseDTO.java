@@ -8,14 +8,14 @@ public record ManagerNotificationResponseDTO(
     Long notificationId,
     Long managerId,
     String notificationContents,
-    boolean readOrNot
+    boolean isRead
 ) {
     public static ManagerNotificationResponseDTO from(ManagerNotification managerNotification) {
         return ManagerNotificationResponseDTO.builder()
             .notificationId(managerNotification.getNotificationId())
             .managerId(managerNotification.getManager().getManagerId())
             .notificationContents(managerNotification.getNotificationContents())
-            .readOrNot(managerNotification.getReadOrNot())
+            .isRead(managerNotification.getIsRead())
             .build();
     }
 }
