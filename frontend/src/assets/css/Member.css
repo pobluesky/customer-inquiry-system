@@ -1,0 +1,57 @@
+.Container {
+    margin: 4vh 0 0 0;
+}
+
+._Category {
+    width: 360px;
+    color: #03507d;
+    font-weight: bold;
+    margin: 0 auto 12px auto;
+    text-align: left;
+}
+
+.Input {
+    width: 336px;
+    height: 48px;
+    padding: 0 0 0 20px;
+    border: solid #c1c1c1 1px;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+.Container_Login,
+.Container_Join {
+    text-align: center;
+}
+
+.Login_Title,
+.Join_Title,
+.Login_Email_Password,
+.Join_Name_No,
+.Join_Link {
+    color: #03507d;
+}
+
+.Login_Title,
+.Join_Title,
+.Join_Name_No {
+    font-size: 36px;
+}
+
+.Login_Title,
+.Join_Title {
+    margin: 8vh 0 0 0;
+}
+
+.Login_Email_Password {
+    margin: 4vh 0 0 0;
+}
+
+.Join_Line {
+    color: #c1c1c1;
+    width: 28vw;
+}
+
+.Join_Link {
+    font-size: 12px;
+}

@@ -40,13 +40,6 @@ public class LineItemService {
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-        /*
-        예시 insert
-         */
-        Inquiry test = new Inquiry(ProductType.CAR);
-        inquiryRepository.save(test);
-         //
-
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 

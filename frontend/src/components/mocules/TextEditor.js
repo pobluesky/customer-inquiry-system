@@ -10,7 +10,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import ToolbarPlugin from '../../plugins/ToolbarPlugin';
 import Theme from '../atoms/Theme';
 
-import '../../assets/css/Editor.css';
+import { Editor_Container, Editor_Inner, Editor_Input } from '../../assets/css/Editor.css';
 
 const editorConfig = {
     namespace: 'React.js Demo',
@@ -74,19 +74,17 @@ function TextEditor({ originalText, setOriginalText }) {
     return (
         <>
             <LexicalComposer initialConfig={editorConfig}>
-                <div className="editor-container">
+                <div className={Editor_Container}>
                     <ToolbarPlugin />
-                    <div className="editor-inner">
-                        <RichTextPlugin contentEditable={<ContentEditable className="editor-input" />} ErrorBoundary={LexicalErrorBoundary} />
+                    <div className={Editor_Inner}>
+                        <RichTextPlugin contentEditable={<ContentEditable className={Editor_Input} />} ErrorBoundary={LexicalErrorBoundary} />
                         <HistoryPlugin />
                         <AutoFocusPlugin />
                     </div>
                 </div>
                 <MyOnChangePlugin onChange={onChange} />
             </LexicalComposer>
-            <div style={{ textAlign: 'center' }}>
-                ▼상단 텍스트 에디터 값 입력 후 "줄바꿈, 굵게, 기울기" 확인 부탁드립니다.▼<pre>{originalText}</pre>
-            </div>
+            {/* <div style={{ textAlign: 'center' }}>{originalText}</div> */}
         </>
     );
 }
