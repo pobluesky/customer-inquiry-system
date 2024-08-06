@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/JoinInput';
+import { Container_Join, Join_Title, Join_Name_No } from '../../assets/css/Member.css';
 
 function Join() {
     const nameRef = useRef(null);
@@ -40,10 +41,10 @@ function Join() {
     return (
         <div>
             <Header login={false} inq={true} voc={true} dashboard={true} />
-            <div style={{ textAlign: 'center' }}>
+            <div className={Container_Join}>
                 {!check ? (
                     <>
-                        <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }}>회원가입</div>
+                        <div className={Join_Title}>회원가입</div>
                         {/* 이름 & 사번 입력 창 */}
                         <div style={{ marginTop: '8vh' }} />
                         <Input category={'이름'} placeholder={'김숙하'} onChange={nameInput} ref={nameRef} />
@@ -70,7 +71,7 @@ function Join() {
                     </>
                 ) : (
                     <>
-                        <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }} />
+                        <div className={Join_Name_No} style={{ marginTop: '8vh' }} />
                         {/* 이름 & 사번 입력 창 */}
                         <Input category={'권한'} value={`${role}`}></Input>
                         <Input category={'이메일'} placeholder={'poscodx@posco.co.kr'} onChange={emailInput} value={email} />

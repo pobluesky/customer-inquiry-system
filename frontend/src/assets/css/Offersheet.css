@@ -1,0 +1,173 @@
+th {
+    font-weight: normal;
+}
+
+/***********************************************/
+/* Offer Sheet */
+.Container {
+    display: flex;
+    justify-content: center;
+    margin: 2vh 0 0 0;
+}
+
+.Sheet {
+    width: 90vw;
+    /* height: 80vh; */
+    border: solid #c1c1c1 1px;
+    border-radius: 20px;
+    margin: 0 0 6vh 0;
+}
+
+._Toggle {
+    display: flex;
+    align-content: center;
+    padding: 1vw 1vw 1vw 1vw;
+    background-color: #03507d;
+}
+
+.Container .Opend {
+    height: 65vh;
+    border-radius: 0 0 20px 20px;
+    background-color: #f0f8fc;
+    padding-top: 2vh;
+}
+
+.Container ._Category {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 16px 0;
+}
+
+.Container ._Category .Detail {
+    width: 85vw;
+    display: flex;
+    justify-content: left;
+}
+
+/***********************************************/
+/* Offer Table */
+.Table_Container {
+    display: flex;
+    justify-content: center;
+}
+
+.Table_Scroll {
+    width: 85vw;
+    overflow-x: auto;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+.Table_Table {
+    /* background-color: #ffffff; */
+    border-collapse: separate;
+    border: solid 1px #c1c1c1;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.Table_Table_Head {
+    color: #03507d;
+}
+
+.Table_Table_Body {
+    line-height: 8px;
+}
+
+.Table_Table select {
+    color: #03507d;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.Table_Colspan {
+    display: flex;
+    justify-content: center;
+}
+
+/* Scroll Bar */
+.Table_Scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* Scroll Bar Thumb */
+.Table_Scroll::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+/***********************************************/
+/* Offer Info */
+.Info_Container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+}
+
+.Info_Table {
+    width: 85vw;
+    border-collapse: separate;
+    border-spacing: 0 16px;
+    text-align: center;
+}
+
+/***********************************************/
+/* Input */
+.input::placeholder {
+    color: #9b9b9b;
+}
+
+.Input {
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 0 12px 0 12px;
+}
+
+.Search_Input {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 0 16px;
+}
+
+.Button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0 4px 0 4px;
+    cursor: pointer;
+}
+
+.Info_Input,
+.Price_Payment {
+    height: 28px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 0 12px 0 12px;
+}
+
+.Info_Input {
+    width: 208px;
+}
+
+.Price_Payment_Std {
+    margin: 0 12px 0 0;
+    height: 28px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 0 16px 0 16px;
+}
+
+.Datepicker {
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 2px 4px 2px 4px;
+}

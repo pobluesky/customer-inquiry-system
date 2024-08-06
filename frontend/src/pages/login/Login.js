@@ -2,14 +2,15 @@ import React from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/JoinInput';
+import { Container_Login, Login_Title, Login_Email_Password, Join_Line, Join_Link } from '../../assets/css/Member.css';
 
 function Login() {
     return (
         <div>
             <Header login={false} inq={true} voc={true} dashboard={true} />
-            <div style={{ textAlign: 'center' }}>
-                <div style={{ color: '#03507D', fontSize: '36px', marginTop: '8vh' }}>로그인</div>
-                <div style={{ color: '#03507D', marginTop: '4vh' }}>이메일과 비밀번호를 입력해주세요.</div>
+            <div className={Container_Login}>
+                <div className={Login_Title}>로그인</div>
+                <div className={Login_Email_Password}>이메일과 비밀번호를 입력해주세요.</div>
 
                 {/* 이메일 & 비밀번호 입력 창 */}
                 <Input category={'이메일'} placeholder={'poscodx@posco.co.kr'} />
@@ -23,9 +24,9 @@ function Login() {
 
                 {/* 회원가입 링크 */}
                 <br />
-                <hr style={{ color: '#c1c1c1', width: '28vw' }} />
+                <hr className={Join_Line} />
                 <br />
-                <a href="/join" style={{ color: '#03507D', fontSize: '12px' }}>
+                <a href="/join" className={Join_Link}>
                     회원이 아니신가요?
                 </a>
             </div>

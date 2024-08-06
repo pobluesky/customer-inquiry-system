@@ -5,8 +5,10 @@ import TextEditor from '../../components/mocules/TextEditor';
 import RequestBar from '../../components/mocules/RequestBar';
 import Toggle from '../../components/atoms/Toggle';
 import Category from '../../components/atoms/Category';
-import OfferTable from '../../components/organisms/OfferTable';
+import OfferInfoInput from '../../components/atoms/OfferInfoInput';
 import OfferInfo from '../../components/organisms/OfferInfo';
+import OfferTable from '../../components/organisms/OfferTable';
+import { Container, Sheet, _Toggle, Opend, _Category, Detail } from '../../assets/css/Offersheet.css';
 
 function Inq() {
     const [originalText, setOriginalText] = useState('');
@@ -18,19 +20,30 @@ function Inq() {
             <Header login={true} inq={true} voc={false} dashboard={false} />
             <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
             <RequestBar />
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2vh', marginBottom: '4vh' }}>
-                <div style={{ width: '90vw', border: 'solid #c1c1c1 1px', borderRadius: '20px' }}>
-                    <div style={{ display: 'flex', alignContent: 'center', padding: '1vw 1vw 1vw 1vw', borderRadius, backgroundColor: '#88daff' }}>
+            <div className={Container}>
+                <div className={Sheet}>
+
+                    {/* 토글 바 */}
+                    <div className={_Toggle} style={{ borderRadius }}>
                         <Toggle isChecked={isChecked} setCheck={setCheck} />
-                        OfferSheet
+                        &nbsp;&nbsp;<span style={{ color: '#ffffff', fontSize: '24px', fontWeight : 'bold' }}>OfferSheet</span>
                     </div>
 
+                    {/* 토글 클릭 후 오퍼시트 열림 */}
                     {isChecked ? (
-                        <div style={{ height: '60vh', borderRadius: '0 0 20px 20px', backgroundColor: '#f0f8fc', paddingTop: '2vh' }}>
+                        <div className={Opend}>
                             <TextEditor originalText={originalText} setOriginalText={setOriginalText} />
-                            <Category categoryName={'1. 고객사'} />
-                            Posco Asia
-                            <Category categoryName={'2. Offer-Sheet'} />
+                            <div className={_Category}>
+                                <div className={Detail}>
+                                    <Category categoryName={'1. 고객사'} />
+                                    <OfferInfoInput />
+                                </div>
+                            </div>
+                            <div className={_Category}>
+                                <div className={Detail}>
+                                    <Category categoryName={'2. Offer-Sheet'} />
+                                </div>
+                            </div>
                             <OfferTable />
                             <OfferInfo />
                         </div>
