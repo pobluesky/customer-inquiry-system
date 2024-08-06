@@ -2,8 +2,8 @@ import React from 'react';
 import Header from "../../../components/mocules/Header";
 import intro from "../../../assets/css/icons/intro/intro-icon.svg";
 import Button from "../../../components/atoms/Button";
-import { Container, SubTitle, Title, Wrapper, Icon } from "./Style";
-import { ScrollStyle } from "./ScrollStyle";
+import { Container, SubTitle, Title, Wrapper, Icon } from "../../../assets/css/IntroStyle";
+import { ScrollStyle } from "../../../assets/css/ScrollStyle";
 import {useNavigate} from "react-router-dom";
 // import useScrollAnimation from "../../../hooks/UseScrollAnimation";
 

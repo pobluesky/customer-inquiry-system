@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Text, Title, Wrapper, DataBox, DataIcon } from "./Style";
+import { Container, Text, Title, Wrapper, DataBox, DataIcon } from "../../../assets/css/IntroStyle";
 import { increaseArrow, decreaseArrow } from "../../../assets/css/icons/intro";
-import Graph from "./Graph";
+import Graph from "../graph/Graph";
 // import useScrollAnimation from "../../../hooks/UseScrollAnimation";
 
 const FourthIntro = () => {
