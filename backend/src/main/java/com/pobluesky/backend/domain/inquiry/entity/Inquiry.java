@@ -61,6 +61,7 @@ public class Inquiry {
 
     private String qualityManager;
 
+    @Enumerated(EnumType.STRING)
     private Department department;
 
     private String salesManager;

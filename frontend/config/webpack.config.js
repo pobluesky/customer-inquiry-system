@@ -5,7 +5,7 @@ module.exports = function (env) {
         mode: 'none',
         entry: path.resolve(`src/index.js`),
         output: {
-            path: path.resolve('../backend/src/main/resources'),
+            path: path.resolve('public'),
             filename: 'assets/js/main.js',
             assetModuleFilename: 'assets/images/[hash][ext]',
         },
@@ -44,6 +44,13 @@ module.exports = function (env) {
             liveReload: true,
             compress: true,
             hot: false,
+            historyApiFallback: true,
+            proxy: [
+                {
+                    context: ['/api'],
+                    target: 'http://localhost:8080',
+                },
+            ],
         },
     };
 };
