@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.image;
+package com.pobluesky.backend.domain.file;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

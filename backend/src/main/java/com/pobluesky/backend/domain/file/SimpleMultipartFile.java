@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.image;
+package com.pobluesky.backend.domain.file;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
