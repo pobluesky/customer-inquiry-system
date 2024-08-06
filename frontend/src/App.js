@@ -9,11 +9,14 @@ import { Inq } from './pages/inq';
 import { Voc } from './pages/voc';
 import { DashBoard } from './pages/dashboard';
 
+import Card from './components/mocules/Card';
+
 function App() {
     return (
         <Router>
             <Routes>
                 <Route index path="" element={<Intro />} />
+                <Route path="card" element={<Card />} />
                 <Route path="login" element={<Login />} />
                 <Route path="join" element={<Join />} />
                 <Route path="inq" element={<Inq />} />
