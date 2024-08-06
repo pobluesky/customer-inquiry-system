@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/quality")
+@RequestMapping("/api/qualities")
 public class QualityController {
     private final QualityService qualityService;
 
