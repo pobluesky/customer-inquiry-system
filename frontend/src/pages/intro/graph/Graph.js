@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraphContainer, BarContainer, Bar, Value, Arrow, Label } from "./GraphStyle";
+import { GraphContainer, BarContainer, Bar, Value, Arrow, Label } from "../../../assets/css/IntroGraphStyle";
 
 const formatNumber = (number) => {
   let num = parseFloat(number);
