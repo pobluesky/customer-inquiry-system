@@ -4,12 +4,12 @@ import com.pobluesky.backend.domain.notification.entity.CustomerNotification;
 import com.pobluesky.backend.domain.user.entity.Customer;
 
 public record CustomerNotificationCreateRequestDTO(
-    String contents
+    String notificationContents
 ) {
     public CustomerNotification toCustomerNotificationEntity(Customer customer) {
         return CustomerNotification.builder()
                 .customer(customer)
-                .notificationContents(contents)
+                .notificationContents(notificationContents)
                 .readOrNot(false)
                 .build();
     }

@@ -4,12 +4,12 @@ import com.pobluesky.backend.domain.notification.entity.ManagerNotification;
 import com.pobluesky.backend.domain.user.entity.Manager;
 
 public record ManagerNotificationCreateRequestDTO(
-    String contents
+    String notificationContents
 ) {
     public ManagerNotification toManagerNotificationEntity(Manager manager) {
         return ManagerNotification.builder()
             .manager(manager)
-            .notificationContents(contents)
+            .notificationContents(notificationContents)
             .readOrNot(false)
             .build();
     }
