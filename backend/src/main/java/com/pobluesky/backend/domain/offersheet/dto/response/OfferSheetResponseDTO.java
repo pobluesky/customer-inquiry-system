@@ -32,7 +32,7 @@ public record OfferSheetResponseDTO(
         return OfferSheetResponseDTO.builder()
             .offerSheetId(offerSheet.getOfferSheetId())
             .inquiryId(offerSheet.getInquiry().getInquiryId())
-            .customerId(offerSheet.getCustomer().getCustomerId())
+            .customerId(offerSheet.getInquiry().getCustomer().getCustomerId())
             .product(offerSheet.getProduct())
             .specification(offerSheet.getSpecification())
             .surfaceFinish(offerSheet.getSurfaceFinish())

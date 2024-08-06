@@ -25,10 +25,9 @@ public record OfferSheetCreateRequestDTO(
     String destination,
     String remark
 ) {
-    public OfferSheet toOfferSheetEntity(Inquiry inquiry, Customer customer) {
+    public OfferSheet toOfferSheetEntity(Inquiry inquiry) {
         return OfferSheet.builder()
             .inquiry(inquiry)
-            .customer(customer)
             .product(product)
             .specification(specification)
             .surfaceFinish(surfaceFinish)

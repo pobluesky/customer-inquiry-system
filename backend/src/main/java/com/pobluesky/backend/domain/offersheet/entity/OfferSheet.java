@@ -36,9 +36,9 @@ public class OfferSheet {
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "customer_id")
+//    private Customer customer;
 
     private String product;
 
@@ -79,7 +79,6 @@ public class OfferSheet {
     @Builder
     public OfferSheet(
         Inquiry inquiry,
-        Customer customer,
         String product,
         String specification,
         String surfaceFinish,
@@ -100,7 +99,6 @@ public class OfferSheet {
         String remark
     ) {
         this.inquiry = inquiry;
-        this.customer = customer;
         this.product = product;
         this.specification = specification;
         this.surfaceFinish = surfaceFinish;
