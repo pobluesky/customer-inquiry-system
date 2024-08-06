@@ -52,7 +52,7 @@ public class Question {
         this.files = files;
         this.status = status;
     }
-    public void updateVocQuestion(
+    public void updateQuestion(
         String title,
         String contents,
         String files,

@@ -44,7 +44,7 @@ public class Answer {
         this.customer = customer;
         this.answerContents = answerContents;
     }
-    public void updateVocAnswer(
+    public void updateAnswer(
         String answerContents
     ) {
         this.answerContents = answerContents;
