@@ -3,57 +3,59 @@ import Category from '../atoms/Category';
 import Terms from '../atoms/Terms';
 import DateInput from '../mocules/DateInput';
 import OfferInfoInput from '../atoms/OfferInfoInput';
-import { Info_Container, Info_Table } from '../../assets/css/Offersheet.css'
+import { Info_Container, Table_Scroll, Info_Table } from '../../assets/css/Offersheet.css';
 
 function OfferInfo() {
     return (
         <div className={Info_Container}>
-            <table className={Info_Table}>
-                <thead>
-                    <tr>
-                        <td>
-                            <Category categoryName={'3. Price Term'} />
-                        </td>
-                        <td>
-                            <Terms />
-                        </td>
-                        <td>
-                            <Category categoryName={'4. Shipment'} />
-                        </td>
-                        <td>
-                            <DateInput />
-                        </td>
-                        <td>
-                            <Category categoryName={'5. Payment Term'} />
-                        </td>
-                        <td>
-                            <Terms />
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <Category categoryName={'6. Destination'} />
-                        </td>
-                        <td>
-                            <OfferInfoInput />
-                        </td>
-                        <td>
-                            <Category categoryName={'7. Validity'} />
-                        </td>
-                        <td>
-                            <DateInput />
-                        </td>
-                        <td>
-                            <Category categoryName={'8. Remark'} />
-                        </td>
-                        <td>
-                            <OfferInfoInput />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className={Table_Scroll}>
+                <table className={Info_Table}>
+                    <thead>
+                        <tr>
+                            <td>
+                                <Category categoryName={'3. Price Term'} />
+                            </td>
+                            <td>
+                                <Terms />
+                            </td>
+                            <td>
+                                <Category categoryName={'4. Shipment'} />
+                            </td>
+                            <td>
+                                <DateInput />
+                            </td>
+                            <td>
+                                <Category categoryName={'5. Payment Term'} />
+                            </td>
+                            <td>
+                                <Terms />
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr height="96px">
+                            <td>
+                                <Category categoryName={'6. Destination'} />
+                            </td>
+                            <td>
+                                <OfferInfoInput />
+                            </td>
+                            <td>
+                                <Category categoryName={'7. Validity'} />
+                            </td>
+                            <td>
+                                <DateInput />
+                            </td>
+                            <td>
+                                <Category categoryName={'8. Remark'} />
+                            </td>
+                            <td>
+                                <OfferInfoInput />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
 import { Info_Input } from '../../assets/css/Offersheet.css';
 
-const OfferInput = forwardRef(({ onChange, value }, ref) => (
+const OfferInput = forwardRef(({ onChange, value, margin }, ref) => (
     <>
-        <input className={Info_Input} ref={ref} value={value} onChange={onChange} type="text" />
+        <input className={Info_Input} ref={ref} value={value} onChange={onChange} type="text" style={{ margin: `${margin}` }}/>
     </>
 ));
 

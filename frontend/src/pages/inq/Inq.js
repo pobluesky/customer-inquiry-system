@@ -36,7 +36,7 @@ function Inq() {
                             <div className={_Category}>
                                 <div className={Detail}>
                                     <Category categoryName={'1. 고객사'} />
-                                    <OfferInfoInput />
+                                    <OfferInfoInput margin={'0 0 0 12px'} />
                                 </div>
                             </div>
                             <div className={_Category}>
