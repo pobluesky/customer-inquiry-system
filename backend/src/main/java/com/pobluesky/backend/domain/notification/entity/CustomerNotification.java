@@ -27,11 +27,15 @@ public class CustomerNotification extends Notification {
     @Builder
     public CustomerNotification(
         String notificationContents,
-        boolean readOrNot,
+        boolean isRead,
         Customer customer
     ) {
         this.notificationContents = notificationContents;
-        this.readOrNot = readOrNot;
+        this.isRead = isRead;
         this.customer = customer;
+    }
+
+    public void setIsRead() {
+        this.isRead = true;
     }
 }

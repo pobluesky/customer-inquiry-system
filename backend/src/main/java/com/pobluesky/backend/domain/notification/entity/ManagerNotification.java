@@ -27,11 +27,15 @@ public class ManagerNotification extends Notification {
     @Builder
     public ManagerNotification(
         String notificationContents,
-        Boolean readOrNot,
+        Boolean isRead,
         Manager manager
     ) {
         this.notificationContents = notificationContents;
-        this.readOrNot = readOrNot;
+        this.isRead = isRead;
         this.manager = manager;
+    }
+
+    public void setIsRead() {
+        this.isRead = true;
     }
 }
