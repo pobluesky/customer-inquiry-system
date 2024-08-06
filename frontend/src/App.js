@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route } from 'react-router';
 
 import { Intro } from './pages/intro';
+import { InqMain, VocMain } from './pages/main';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
 import { Inq } from './pages/inq';
@@ -14,6 +15,8 @@ function App() {
         <Router>
             <Routes>
                 <Route index path="" element={<Intro />} />
+                <Route path="inq-main" element={<InqMain />} />
+                <Route path="voc-main" element={<VocMain />} />
                 <Route path="login" element={<Login />} />
                 <Route path="join" element={<Join />} />
                 <Route path="inq" element={<Inq />} />
