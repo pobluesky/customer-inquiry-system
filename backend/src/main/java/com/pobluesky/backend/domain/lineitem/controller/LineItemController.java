@@ -41,7 +41,7 @@ public class LineItemController {
     public ResponseEntity<JsonResult> createLineItem(
         @PathVariable Long inquiryId,
         @RequestBody Map<String, Object> requestDto) {
-        LineItemResponseDTO response = lineItemService.createLineItemForInquiry(
+        LineItemResponseDTO response = lineItemService.createLineItem(
             inquiryId,
             requestDto
         );
