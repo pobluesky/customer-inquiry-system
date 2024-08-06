@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
-import Input from '../../components/atoms/Input';
+import Input from '../../components/atoms/JoinInput';
 
 function Login() {
     return (

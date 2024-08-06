@@ -1,0 +1,59 @@
+.Container {
+    display: flex;
+    justify-content: center;
+}
+
+.Scroll {
+    width: 85vw;
+    overflow-x: auto;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+/* Scroll Bar */
+.Scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* Scroll Bar Track */
+.Scroll::-webkit-scrollbar-track {
+}
+
+/* Scroll Bar Thumb */
+.Scroll::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+/* 테이블 전체 */
+.Table {
+    /* background-color: #ffffff; */
+    border-collapse: separate;
+    border: solid 1px #c1c1c1;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.Table_Head {
+    color: #03507d;
+}
+
+.Table_Body {
+    line-height: 8px;
+}
+
+.Table select {
+    color: #03507d;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.Colspan {
+    display: flex;
+    justify-content: center;
+}
+
+th {
+    font-weight: normal;
+}

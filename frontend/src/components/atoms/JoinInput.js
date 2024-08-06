@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import '../../assets/css/Input.css';
 
-const Input = forwardRef(({ onChange, category, placeholder, value }, ref) => (
+const JoinInput = forwardRef(({ onChange, category, placeholder, value }, ref) => (
     <div style={{ marginTop: '4vh' }}>
         <div style={{ width: '360px', color: '#03507D', fontWeight: 'bold', marginLeft: 'auto', marginRight: 'auto', textAlign: 'left', marginBottom: '12px' }}>
             {category}
@@ -14,4 +14,4 @@ const Input = forwardRef(({ onChange, category, placeholder, value }, ref) => (
 //     username: PropTypes.string.isRequired,
 // };
 
-export default Input;
+export default JoinInput;
