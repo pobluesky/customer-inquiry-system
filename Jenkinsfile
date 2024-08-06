@@ -5,7 +5,7 @@ pipeline {
         GIT_CREDENTIALS_ID = 'github-token'
         AWS_CREDENTIALS_ID = 'aws-token'
         REPO_URL = 'https://github.com/pobluesky/customer-inquiry-system.git'
-        BRANCH_NAME = 'BE-feat#117-KSY--infra'
+        BRANCH_NAME = 'main'
         ECR_URI = '014498623207.dkr.ecr.ap-northeast-2.amazonaws.com/pobluesky'
         IMAGE_TAG = "jenkins-ecr:${env.BUILD_ID}"
         LATEST_TAG = "latest"
