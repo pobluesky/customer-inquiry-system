@@ -1,8 +1,8 @@
 import React from 'react';
-import { Container, Title, Text, Wrapper, Icon, Arrow, Step, StepWrapper } from "./Style";
+import { Container, Title, Text, Wrapper, Icon, Arrow, Step, StepWrapper } from "../../../assets/css/IntroStyle";
 import { step1, step2, step3, step4, arrow } from "../../../assets/css/icons/intro";
 // import useScrollAnimation from "../../../hooks/UseScrollAnimation";
-import { ScrollStyle } from "./ScrollStyle";
+import { ScrollStyle } from "../../../assets/css/ScrollStyle";
 
 const SecondIntro = () => {
   // useScrollAnimation();

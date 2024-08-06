@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Text, Title, Wrapper, AIBox, MiddleAIBox, SmallAIBox, Icon, CustomerWrapper, HighLighter } from "./Style";
+import { Container, Text, Title, Wrapper, AIBox, MiddleAIBox, SmallAIBox, Icon, CustomerWrapper, HighLighter } from "../../../assets/css/IntroStyle";
 import { hammer, gear } from "../../../assets/css/icons/intro";
 // import useScrollAnimation from "../../../hooks/UseScrollAnimation";
 
