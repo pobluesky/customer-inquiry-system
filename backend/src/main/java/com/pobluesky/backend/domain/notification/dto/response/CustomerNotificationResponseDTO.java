@@ -8,14 +8,14 @@ public record CustomerNotificationResponseDTO(
       Long notificationId,
       Long customerId,
       String notificationContents,
-      boolean readOrNot
+      boolean isRead
 ) {
     public static CustomerNotificationResponseDTO from(CustomerNotification customerNotification) {
         return CustomerNotificationResponseDTO.builder()
             .notificationId(customerNotification.getNotificationId())
             .customerId(customerNotification.getCustomer().getCustomerId())
             .notificationContents(customerNotification.getNotificationContents())
-            .readOrNot(customerNotification.getReadOrNot())
+            .isRead(customerNotification.getIsRead())
             .build();
     }
 }
