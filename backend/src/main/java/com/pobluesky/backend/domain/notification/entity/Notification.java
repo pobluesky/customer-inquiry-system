@@ -19,6 +19,5 @@ public abstract class Notification extends BaseEntity {
     @Column(nullable = false)
     protected String notificationContents;
 
-    @Column(nullable = false)
     protected Boolean readOrNot = false;
 }
