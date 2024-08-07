@@ -56,3 +56,10 @@ VALUES
     (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf'),
     (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf'),
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
+
+-- CUSTOMER_NOTIFICATION
+INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_id, notification_contents)
+VALUES
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
