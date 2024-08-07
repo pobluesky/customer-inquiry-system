@@ -16,11 +16,11 @@ VALUES
 ALTER TABLE inquiry ALTER COLUMN department VARCHAR(50);
 
 -- Inquiry
-INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated)
+INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated, created_date, modified_date)
 VALUES
-    (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'COLD_ROLLED_GENERAL', 'INITIAL_REVIEW', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true),
-    (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'QUALITY_REQUESTED', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true),
-    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'FINAL_REVIEW_COMPLETED', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true);
+    (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'COLD_ROLLED_GENERAL', 'INITIAL_REVIEW', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'QUALITY_REQUESTED', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'FINAL_REVIEW_COMPLETED', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, desired_delivery_date, delivery_destination, orders, coating_condition, coating_another_condition, contract, sop, fc_amount, bc_amount, coating_unit, post_treatment, direction, ra_target, m_tolerance, p_tolerance, ra_unit, ra_another_unit, qs_requirement, expense_per_year, customer_name, complete_vehicle, regulation, is_activated, created_date, modified_date)
@@ -37,7 +37,7 @@ VALUES
     (3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
-INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, require_add_contents)
+INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
     (1, 'Passed', 'All tests passed successfully', 1, 'Category A', '10g/m2', '5g/m2', '±0.1mm', 'Smooth', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
     (2, 'Failed', 'Some tests failed, see details', 2, 'Category B', '15g/m2', '7g/m2', '±0.2mm', 'Rough', 'Customer Quality Requirement 2', false, 'Additional requirement details 2'),
@@ -56,3 +56,10 @@ VALUES
     (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf'),
     (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf'),
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
+
+-- CUSTOMER_NOTIFICATION
+INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_id, notification_contents)
+VALUES
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
