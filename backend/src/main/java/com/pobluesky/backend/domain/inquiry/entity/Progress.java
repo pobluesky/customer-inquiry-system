@@ -5,11 +5,10 @@ import lombok.Getter;
 @Getter
 public enum Progress {
 
-    INITIAL_REVIEW("Initial Review"),
-    INITIAL_REVIEW_COMPLETED("Initial Review Completed"),
-    QUALITY_REQUESTED("Quality Requested"),
-    QUALITY_REVIEW_COMPLETED("Quality Review Completed"),
-    FINAL_REVIEW_COMPLETED("Final Review Completed");
+    RECEIPT("Receipt"),
+    FIRST_REVIEW("First Review"),
+    QUALITY_REVIEW("Quality Review"),
+    FINAL_REVIEW("Final Review");
 
     private final String value;
 
