@@ -35,7 +35,7 @@ public class CustomerNotification extends Notification {
         this.customer = customer;
     }
 
-    public void setIsRead() {
+    public void updateIsRead() {
         this.isRead = true;
     }
 }

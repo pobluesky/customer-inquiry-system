@@ -16,9 +16,9 @@ import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -102,21 +102,23 @@ public class NotificationService {
             .collect(Collectors.toList());
     }
 
+    @Transactional
     public CustomerNotificationResponseDTO updateCustomerNotificationIsRead(Long notificationId, CustomerNotificationUpdateRequestDTO dto) {
         CustomerNotification notification = customerNotificationRepository.findById(notificationId)
            .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
-        notification.setIsRead();
+        notification.updateIsRead();
         customerNotificationRepository.save(notification);
 
         return CustomerNotificationResponseDTO.from(notification);
     }
 
+    @Transactional
     public ManagerNotificationResponseDTO updateManagerNotificationIsRead(Long notificationId, ManagerNotificationUpdateRequestDTO dto) {
         ManagerNotification notification = managerNotificationRepository.findById(notificationId)
             .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
-        notification.setIsRead();
+        notification.updateIsRead();
         managerNotificationRepository.save(notification);
 
         return ManagerNotificationResponseDTO.from(notification);
