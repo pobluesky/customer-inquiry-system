@@ -1,11 +1,10 @@
 package com.pobluesky.backend.domain.user.controller;
 
-import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.LogInDto;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
-import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.ManagerService;
 import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.global.util.ResponseFactory;
@@ -34,37 +33,25 @@ import java.util.List;
 @RequestMapping("/api/managers")
 @Slf4j
 public class ManagerController {
+
     private final ManagerService managerService;
+
+    private final CustomUserDetailsService userDetailsService;
+
+    @GetMapping
+    public ResponseEntity<JsonResult> getUsers() {
+        List<ManagerResponseDTO> response = managerService.getAllManagers();
+        
+        return ResponseEntity.status(HttpStatus.OK)
+            . body(ResponseFactory.getSuccessJsonResult(response));
+    }
 
     @PostMapping("/sign-in")
     public JwtToken signIn(@RequestBody LogInDto logInDto) {
         String email = logInDto.email();
         String password = logInDto.password();
 
-        JwtToken jwtToken = managerService.signIn(email, password);
-
-        log.info(
-            "request email = {}, password = {}",
-            jwtToken,
-            password
-        );
-
-        log.info(
-            "jwtToken accessToken = {}, refreshToken = {}",
-            jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken()
-        );
-
-        return jwtToken;
-    }
-
-    @GetMapping
-    @PostMapping
-    public ResponseEntity<JsonResult> getUsers() {
-        List<ManagerResponseDTO> response = managerService.getAllManagers();
-        
-        return ResponseEntity.status(HttpStatus.OK)
-            . body(ResponseFactory.getSuccessJsonResult(response));
+        return userDetailsService.signIn(email, password);
     }
 
     @PostMapping("/sign-up")
@@ -80,7 +67,10 @@ public class ManagerController {
         @PathVariable Long userId,
         @RequestBody ManagerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        ManagerResponseDTO response = managerService.updateManagerById(userId, customerUpdateRequestDTO);
+        ManagerResponseDTO response = managerService.updateManagerById(
+            userId,
+            customerUpdateRequestDTO
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             . body(ResponseFactory.getSuccessJsonResult(response));

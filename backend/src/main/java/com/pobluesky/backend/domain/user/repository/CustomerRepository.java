@@ -1,7 +1,9 @@
 package com.pobluesky.backend.domain.user.repository;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
+
 import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

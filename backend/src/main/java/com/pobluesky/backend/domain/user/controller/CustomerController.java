@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.user.controller;
 
+import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.CustomerUpdateRequestDTO;
@@ -35,45 +36,27 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping("/sign-in")
-    public JwtToken signIn(@RequestBody LogInDto logInDto) {
-        String email = logInDto.email();
-        String password = logInDto.password();
+    private final CustomUserDetailsService userDetailsService;
 
-        JwtToken jwtToken = customerService.signIn(email, password);
-
-        log.info(
-            "request email = {}, password = {}",
-            jwtToken,
-            password
-        );
-
-        log.info(
-            "jwtToken accessToken = {}, refreshToken = {}",
-            jwtToken.getAccessToken(),
-            jwtToken.getRefreshToken()
-        );
-
-        return jwtToken;
-    }
-
-    @PostMapping("/test")
-    public String test() {
-        return "success";
-    }
-
-    @PostMapping("/sign-up")
-    public ResponseEntity<JsonResult> signUp(@RequestBody CustomerCreateRequestDTO signUpDto) {
-        CustomerResponseDTO response = customerService.signUp(signUpDto);
+    @GetMapping
+    public ResponseEntity<JsonResult> getUsers() {
+        List<CustomerResponseDTO> response = customerService.getAllCustomers();
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping
-    @PostMapping
-    public ResponseEntity<JsonResult> getUsers() {
-        List<CustomerResponseDTO> response = customerService.getAllCustomers();
+    @PostMapping("/sign-in")
+    public JwtToken signIn(@RequestBody LogInDto logInDto) {
+        String email = logInDto.email();
+        String password = logInDto.password();
+
+        return userDetailsService.signIn(email, password);
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<JsonResult> signUp(@RequestBody CustomerCreateRequestDTO signUpDto) {
+        CustomerResponseDTO response = customerService.signUp(signUpDto);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
