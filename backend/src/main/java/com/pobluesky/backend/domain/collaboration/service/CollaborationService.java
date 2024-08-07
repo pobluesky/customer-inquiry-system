@@ -72,22 +72,22 @@ public class CollaborationService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        Manager requestManager = managerRepository.findById(requestDTO.colReqId())
+        Manager reqManager = managerRepository.findById(requestDTO.colReqId())
             .orElseThrow(() -> new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND));
 
-        Manager responseManager = managerRepository.findById(requestDTO.colResId())
+        Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
         if(collaborationRepository
-            .findByRequestManagerAndResponseManager(requestManager, responseManager)
+            .findByRequestManagerAndResponseManager(reqManager, resManager)
             .isPresent()
         ) {
             throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
         }
 
         Collaboration collaborationEntity = requestDTO.toCollaborationEntity(
-            requestManager,
-            responseManager,
+            reqManager,
+            resManager,
             question
         );
 
