@@ -7,8 +7,8 @@ public enum ColStatus {
     READY("ready"),
     INPROGRESS("inprogress"),
     REFUSE("refuse"),
-    FINISH("finish"),
     COMPLETE("complete");
+
 
     private String status;
 
