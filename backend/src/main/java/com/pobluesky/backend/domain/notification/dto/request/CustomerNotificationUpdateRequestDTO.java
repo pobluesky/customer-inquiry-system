@@ -4,6 +4,6 @@ public record CustomerNotificationUpdateRequestDTO(
     Long notificationId,
     Long customerId,
     String notificationContents,
-    boolean isRead
+    Boolean isRead
 ) {
 }
