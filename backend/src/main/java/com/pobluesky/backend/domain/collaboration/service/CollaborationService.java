@@ -134,9 +134,9 @@ public class CollaborationService {
             .findById(collaborationId)
             .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
-        if (collaboration.getColStatus() == ColStatus.COMPLETED) {
+        if (collaboration.getColStatus() == ColStatus.COMPLETE) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
-        } else if (collaboration.getColStatus() == ColStatus.REFUSED) {
+        } else if (collaboration.getColStatus() == ColStatus.REFUSE) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_REFUSED);
         }
 

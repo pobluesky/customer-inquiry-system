@@ -78,12 +78,12 @@ public class Collaboration extends BaseEntity {
         if (isAccepted) {
             this.colStatus = ColStatus.INPROGRESS;
         } else {
-            this.colStatus = ColStatus.REFUSED;
+            this.colStatus = ColStatus.REFUSE;
         }
     }
 
     public void completeCollaboration() {
-        this.colStatus = ColStatus.COMPLETED;
+        this.colStatus = ColStatus.COMPLETE;
     }
 
     public void writeColReply(String reply) {

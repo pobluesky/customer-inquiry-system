@@ -6,8 +6,9 @@ import lombok.Getter;
 public enum ColStatus {
     READY("ready"),
     INPROGRESS("inprogress"),
-    REFUSED("refused"),
-    COMPLETED("completed");
+    REFUSE("refuse"),
+    FINISH("finish"),
+    COMPLETE("complete");
 
     private String status;
 
