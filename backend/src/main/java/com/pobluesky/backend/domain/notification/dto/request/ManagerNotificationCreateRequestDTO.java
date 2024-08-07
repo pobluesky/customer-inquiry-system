@@ -10,7 +10,6 @@ public record ManagerNotificationCreateRequestDTO(
         return ManagerNotification.builder()
             .manager(manager)
             .notificationContents(notificationContents)
-            .isRead(false)
             .build();
     }
 }
