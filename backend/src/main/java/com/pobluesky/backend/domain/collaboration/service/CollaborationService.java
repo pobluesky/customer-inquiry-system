@@ -79,7 +79,7 @@ public class CollaborationService {
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
         if(collaborationRepository
-            .findByRequestMananerAndResponseManager(requestManager, responseManager)
+            .findByRequestManagerAndResponseManager(requestManager, responseManager)
             .isPresent()
         ) {
             throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
