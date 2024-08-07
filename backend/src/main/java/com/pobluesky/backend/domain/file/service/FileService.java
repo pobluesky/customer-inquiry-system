@@ -1,8 +1,10 @@
-package com.pobluesky.backend.domain.file;
+package com.pobluesky.backend.domain.file.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.pobluesky.backend.domain.file.dto.SimpleMultipartFile;
+import com.pobluesky.backend.domain.file.entity.FileInfo;
 import com.pobluesky.backend.global.error.FileUploadException;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;
@@ -16,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class FileS3Service {
+public class FileService {
     private final AmazonS3 amazonS3;
 
     private final Dotenv dotenv = Dotenv.load();

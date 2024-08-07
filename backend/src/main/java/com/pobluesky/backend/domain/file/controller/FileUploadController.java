@@ -1,5 +1,7 @@
-package com.pobluesky.backend.domain.file;
+package com.pobluesky.backend.domain.file.controller;
 
+import com.pobluesky.backend.domain.file.entity.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileUploadController {
 
     @Autowired
-    private FileS3Service fileS3Service;
+    private FileService fileService;
 
     @PostMapping("/uploadFile")
     public FileInfo uploadFile(@RequestParam("filePath") String filePath) {
 
-        return fileS3Service.uploadFileFromPath(filePath);
+        return fileService.uploadFileFromPath(filePath);
     }
 }

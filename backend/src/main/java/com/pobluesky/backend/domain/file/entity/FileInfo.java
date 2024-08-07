@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.file;
+package com.pobluesky.backend.domain.file.entity;
 
 
 import lombok.Builder;

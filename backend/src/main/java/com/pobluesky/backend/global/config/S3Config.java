@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.file;
+package com.pobluesky.backend.global.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3Config {
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv.load(); // .env파일에 aws 정보를 넣고 가져오는 방식
 
     @Bean
     public AmazonS3 s3Builder() {
