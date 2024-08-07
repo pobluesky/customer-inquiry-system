@@ -73,10 +73,10 @@ public class CollaborationService {
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         Manager requestManager = managerRepository.findById(requestDTO.colReqId())
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND));
 
         Manager responseManager = managerRepository.findById(requestDTO.colResId())
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
         if(collaborationRepository
             .findByRequestMananerAndResponseManager(requestManager, responseManager)
