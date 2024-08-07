@@ -8,9 +8,8 @@ import lombok.Builder;
 public record QualityResponseDTO(
     Long qualityId,
     Long inquiryId,
-    Long userId,
     QualityReviewInfo qualityReviewInfo,
-    String requireAddContents
+    String qualityComments
 ) {
     // entity -> dto
     public static QualityResponseDTO from(Quality quality) {
@@ -18,7 +17,7 @@ public record QualityResponseDTO(
             .qualityId(quality.getQualityId())
             .inquiryId(quality.getInquiry().getInquiryId())
             .qualityReviewInfo(quality.getQualityReviewInfo())
-            .requireAddContents(quality.getRequireAddContents())
+            .qualityComments(quality.getQualityComments())
             .build();
     }
 }
