@@ -1,10 +1,101 @@
+/* Question Report Component */
+.Report_Container {
+    width: 1320px;
+    margin: 36px auto 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.Report_Container img {
+    margin: 0 0 12px 0;
+}
+
+.Report_Container div {
+    text-align: center;
+}
+
+.Report_Container div div {
+    font-size: 20px;
+    font-weight: 700;
+    color: #454545;
+}
+
+.Report_Container .Report_Count {
+    font-size: 48px;
+    font-weight: 400;
+    color: #03507d;
+}
+
+/* Search Bar Component */
+.Search_Container {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 0 0;
+}
+
+.Search_Item_Container {
+    width: 1320px;
+    height: 228px;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+}
+
+.Item_Center {
+    display: flex;
+    align-items: center;
+}
+
+.Category_Gap {
+    margin: 24px 0 0 28px;
+}
+
+.Item_Center .Category_Text {
+    margin: 0 0 0 12px;
+    font-size: 24px;
+    color: #49454f;
+    font-weight: bold;
+}
+
+.Item_Center div {
+    color: #8b8b8b;
+}
+
+.Title_Date {
+    display: flex;
+}
+
+.Date {
+    margin: 0 12px 0 0;
+}
+
+.Date_Input {
+    margin: 0 12px 0 12px;
+}
+
+.Title_Date,
+._Sort {
+    margin: 32px 0 0 28px;
+}
+
+.Search_List_Count {
+    margin: 0 28px 0 0;
+    text-align: right;
+}
+
+.Search_List_Count text {
+    color: red;
+    font-size: 24px;
+}
+
+/* Question Card Component */
 .Card_Container {
     width: 360px;
     height: 300px;
+    margin: 0 0 24px 0;
     border: solid 1px #ffffff;
     border-radius: 12px;
     background-color: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .Card_Text {
@@ -30,4 +121,34 @@
     font-size: 16px;
     font-weight: bold;
     color: #03507d;
+}
+
+/* VoC Page */
+.Question_Title {
+    width: 1320px;
+    margin: 24px auto 24px auto;
+    font-size: 24px;
+    font-weight: bold;
+    color: #49454f;
+}
+
+.Question_Card {
+    width: 1320px;
+    margin: 0 auto 24px auto;
+    display: grid;
+    column-gap: 120px;
+    grid-template-columns: auto auto auto;
+}
+
+.Question_Doesnt_Exist {
+    width: 360px;
+    height: 300px;
+    margin: 0 0 24px 0;
+    background-color: #c1c1c1;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 12px;
+    text-align: center;
+    align-content: center;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
