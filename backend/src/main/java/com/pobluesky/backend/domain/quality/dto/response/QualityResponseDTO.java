@@ -8,7 +8,6 @@ import lombok.Builder;
 public record QualityResponseDTO(
     Long qualityId,
     Long inquiryId,
-    Long userId,
     QualityReviewInfo qualityReviewInfo,
     String requireAddContents
 ) {
