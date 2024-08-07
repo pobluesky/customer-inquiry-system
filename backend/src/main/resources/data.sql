@@ -37,7 +37,7 @@ VALUES
     (3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
-INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, require_add_contents)
+INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
     (1, 'Passed', 'All tests passed successfully', 1, 'Category A', '10g/m2', '5g/m2', '±0.1mm', 'Smooth', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
     (2, 'Failed', 'Some tests failed, see details', 2, 'Category B', '15g/m2', '7g/m2', '±0.2mm', 'Rough', 'Customer Quality Requirement 2', false, 'Additional requirement details 2'),

@@ -34,7 +34,7 @@ public class Quality extends BaseEntity {
     private QualityReviewInfo qualityReviewInfo; // 품질검토정보
 
     @Column(columnDefinition = "TEXT")
-    private String requireAddContents; // 추가요청내용
+    private String qualityComments; // 추가요청내용
     /*
       Builder Pattern
      */
@@ -42,17 +42,17 @@ public class Quality extends BaseEntity {
     private Quality(
         Inquiry inquiry,
         QualityReviewInfo qualityReviewInfo,
-        String requireAddContents
+        String qualityComments
     ) {
         this.inquiry = inquiry;
         this.qualityReviewInfo = qualityReviewInfo;
-        this.requireAddContents = requireAddContents;
+        this.qualityComments = qualityComments;
     }
     public void updateQuality(
         QualityReviewInfo qualityReviewInfo,
         String requireAddContents
     ) {
         this.qualityReviewInfo = qualityReviewInfo;
-        this.requireAddContents = requireAddContents;
+        this.qualityComments = qualityComments;
     }
 }
