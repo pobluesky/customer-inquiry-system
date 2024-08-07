@@ -5,10 +5,11 @@ import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 
 import lombok.Getter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @MappedSuperclass
-public abstract class User extends BaseEntity {
+public abstract class User extends BaseEntity implements UserDetails {
 
     protected String name;
 
