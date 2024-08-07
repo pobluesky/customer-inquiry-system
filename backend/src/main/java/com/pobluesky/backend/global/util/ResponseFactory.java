@@ -30,7 +30,7 @@ public class ResponseFactory {
 
     // JsonResult 관련 메서드
     public static <T> JsonResult<T> getSuccessJsonResult(T data) {
-        return JsonResult.of("success", data, null);
+        return JsonResult.of("success", data, "성공하였습니다.");
     }
 
     public static <T> JsonResult<T> getFailJsonResult(String message) {
