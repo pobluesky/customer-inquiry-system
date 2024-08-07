@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.inquiry.controller;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
@@ -37,15 +38,28 @@ public class InquiryController {
 
     // 상세 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
-    public ResponseEntity<JsonResult> getInquiryDetail(@PathVariable Long customerId, @PathVariable Long inquiryId) {
+    public ResponseEntity<JsonResult> getInquiryDetail(
+        @PathVariable Long customerId,
+        @PathVariable Long inquiryId) {
         InquiryResponseDTO response = inquiryService.getInquiryDetail(customerId,inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    //progress별 조회
+    @GetMapping("/inquiries/progress/{code}")
+    public ResponseEntity<JsonResult> getInquiryByProgress(@PathVariable Integer code) {
+        Progress progress = Progress.fromCode(code);
+        List<InquiryResponseDTO> response = inquiryService.getInquiriesByProgress(progress);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
     @PostMapping("/customers/inquiries/{customerId}")
-    public ResponseEntity<JsonResult> createInquiry(@PathVariable Long customerId,
+    public ResponseEntity<JsonResult> createInquiry(
+        @PathVariable Long customerId,
         @RequestBody InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
 

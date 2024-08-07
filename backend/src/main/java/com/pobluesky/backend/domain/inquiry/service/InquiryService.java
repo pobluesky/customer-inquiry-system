@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
@@ -93,11 +94,20 @@ public class InquiryService {
 
     }
 
-
+    @Transactional
     public InquiryResponseDTO getInquiryDetail(Long customerId, Long inquiryId) {
         Inquiry inquiry = (Inquiry) inquiryRepository.findByCustomer_CustomerIdAndInquiryId(customerId,inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         return InquiryResponseDTO.from(inquiry);
+    }
+
+    @Transactional
+    public List<InquiryResponseDTO> getInquiriesByProgress(Progress progress) {
+        List<Inquiry> inquiries = inquiryRepository.findByProgress(progress);
+
+        return inquiries.stream()
+            .map(InquiryResponseDTO::from)
+            .collect(Collectors.toList());
     }
 }
