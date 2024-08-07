@@ -5,7 +5,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.pobluesky.backend.global.error.FileUploadException;
 import io.github.cdimascio.dotenv.Dotenv;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,5 +75,24 @@ public class FileS3Service {
             .originName(originName)
             .storedFilePath(storedFilePath)
             .build();
+    }
+
+    public FileInfo uploadFileFromPath(String filePath){
+        File file = new File(filePath);
+        try{
+            byte[] content = Files.readAllBytes(Paths.get(filePath));
+            String contentType = Files.probeContentType(Paths.get(filePath));
+
+            MultipartFile multipartFile = new SimpleMultipartFile(
+                "file",
+                file.getName(),
+                contentType,
+                content
+            );
+
+            return uploadFile(multipartFile);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
     }
 }
