@@ -9,8 +9,8 @@ import com.pobluesky.backend.domain.notification.dto.response.ManagerNotificatio
 import com.pobluesky.backend.domain.notification.service.NotificationService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
