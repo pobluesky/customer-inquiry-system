@@ -4,5 +4,4 @@ public record LogInDto(
     String email,
     String password
 ){
-
 }

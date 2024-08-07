@@ -5,6 +5,7 @@ import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 
 import lombok.Getter;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
