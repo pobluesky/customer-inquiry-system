@@ -5,6 +5,7 @@ import QuestionReport from '../../components/organisms/QuestionReport';
 import SearchItem from '../../components/organisms/SearchItem';
 import Tag from '../../components/atoms/Tag';
 import QuestionCard from '../../components/mocules/QuestionCard';
+import Notification from '../../components/mocules/Notification';
 import { Question_Title, Question_Card, Question_Doesnt_Exist } from '../../assets/css/Voc.css';
 
 const QuestionDoesntExist = () => {
@@ -23,16 +24,16 @@ function Voc() {
     const inquiryItems = dataSample.filter((data) => data.type === 'inquiry');
     const siteItems = dataSample.filter((data) => data.type === 'site');
     const etcItems = dataSample.filter((data) => data.type === 'etc');
-    
-    const readyItems = (dataSample.filter((data) => data.status === 'ready')).length;
-    const completedItems = (dataSample.filter((data) => data.status === 'completed')).length;
+
+    const readyItems = dataSample.filter((data) => data.status === 'ready').length;
+    const completedItems = dataSample.filter((data) => data.status === 'completed').length;
     const totalItems = readyItems + completedItems;
 
     return (
         <>
             <Header login={true} inq={false} voc={true} dashboard={false} />
             <Path largeCategory={'VoC'} mediumCategory={'문의 목록'} />
-            <QuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems}/>
+            <QuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
             <SearchItem />
             <div className={Question_Title}>문의 목록</div>
             <div className={Question_Card}>
@@ -49,6 +50,7 @@ function Voc() {
                     {etcItems.length > 0 ? dataSample.map((data, dataIdx) => data.type === 'etc' && <QuestionCard key={dataIdx} status={data.status} createdAt={data.createdAt} updatedAt={data.updatedAt} title={data.title} />) : <QuestionDoesntExist />}
                 </div>
             </div>
+            <Notification />
         </>
     );
 }

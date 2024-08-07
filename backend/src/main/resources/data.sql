@@ -37,7 +37,7 @@ VALUES
     (3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
-INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, require_add_contents)
+INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
     (1, 'Passed', 'All tests passed successfully', 1, 'Category A', '10g/m2', '5g/m2', '±0.1mm', 'Smooth', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
     (2, 'Failed', 'Some tests failed, see details', 2, 'Category B', '15g/m2', '7g/m2', '±0.2mm', 'Rough', 'Customer Quality Requirement 2', false, 'Additional requirement details 2'),
@@ -56,3 +56,10 @@ VALUES
     (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf'),
     (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf'),
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
+
+-- CUSTOMER_NOTIFICATION
+INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_id, notification_contents)
+VALUES
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
