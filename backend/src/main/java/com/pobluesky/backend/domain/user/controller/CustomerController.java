@@ -1,14 +1,18 @@
 package com.pobluesky.backend.domain.user.controller;
 
+import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.CustomerUpdateRequestDTO;
+import com.pobluesky.backend.domain.user.dto.request.LogInDto;
 import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.backend.domain.user.service.CustomerService;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +30,45 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/customers")
+@Slf4j
 public class CustomerController {
+
     private final CustomerService customerService;
+
+    @PostMapping("/sign-in")
+    public JwtToken signIn(@RequestBody LogInDto logInDto) {
+        String email = logInDto.email();
+        String password = logInDto.password();
+
+        JwtToken jwtToken = customerService.signIn(email, password);
+
+        log.info(
+            "request email = {}, password = {}",
+            jwtToken,
+            password
+        );
+
+        log.info(
+            "jwtToken accessToken = {}, refreshToken = {}",
+            jwtToken.getAccessToken(),
+            jwtToken.getRefreshToken()
+        );
+
+        return jwtToken;
+    }
+
+    @PostMapping("/test")
+    public String test() {
+        return "success";
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<JsonResult> signUp(@RequestBody CustomerCreateRequestDTO signUpDto) {
+        CustomerResponseDTO response = customerService.signUp(signUpDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
 
     @GetMapping
     @PostMapping
@@ -36,16 +77,6 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
-
-    }
-
-    @PostMapping
-    public ResponseEntity<JsonResult> createUser(@RequestBody CustomerCreateRequestDTO dto) {
-        CustomerResponseDTO response = customerService.createCustomer(dto);
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-
     }
 
     @PutMapping("/{userId}")
@@ -53,11 +84,13 @@ public class CustomerController {
         @PathVariable Long userId,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        CustomerResponseDTO response = customerService.updateCustomerById(userId, customerUpdateRequestDTO);
+        CustomerResponseDTO response = customerService.updateCustomerById(
+            userId,
+            customerUpdateRequestDTO
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
-
     }
 
     @DeleteMapping("/{userId}")
@@ -66,5 +99,4 @@ public class CustomerController {
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
-
 }
