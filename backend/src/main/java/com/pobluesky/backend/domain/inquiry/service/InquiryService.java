@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.service;
 
+import com.pobluesky.backend.domain.file.entity.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
+    private final FileService fileService;
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
@@ -49,6 +52,8 @@ public class InquiryService {
 
         Inquiry inquiry = dto.toInquiryEntity();
         inquiry.setCustomer(customer);
+        FileInfo fileInfo = fileService.uploadFileFromPath(dto.files());
+        inquiry.setFiles(fileInfo.getStoredFilePath());
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         return InquiryResponseDTO.from(savedInquiry);

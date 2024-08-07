@@ -25,9 +25,33 @@ public class FileService {
 
     private final String bucketName = dotenv.get("S3_BUCKET_NAME");
 
-    private String changedFileName(String originName) {
-        String random = UUID.randomUUID().toString();
-        return random + originName;
+    public FileInfo uploadFileFromPath(String filePath){
+        File file = new File(filePath);
+        try{
+            byte[] content = Files.readAllBytes(Paths.get(filePath));
+            String contentType = Files.probeContentType(Paths.get(filePath));
+
+            MultipartFile multipartFile = new SimpleMultipartFile(
+                "file",
+                file.getName(),
+                contentType,
+                content
+            );
+
+            return uploadFile(multipartFile);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+    }
+
+    public FileInfo uploadFile(MultipartFile file) {
+        String originName = file.getOriginalFilename();
+        String storedFilePath = uploadFileToS3(file);
+
+        return FileInfo.builder()
+            .originName(originName)
+            .storedFilePath(storedFilePath)
+            .build();
     }
 
     private String uploadFileToS3(MultipartFile file) {
@@ -69,32 +93,9 @@ public class FileService {
         return amazonS3.getUrl(bucketName, changedName).toString();
     }
 
-    public FileInfo uploadFile(MultipartFile file) {
-        String originName = file.getOriginalFilename();
-        String storedFilePath = uploadFileToS3(file);
-
-        return FileInfo.builder()
-            .originName(originName)
-            .storedFilePath(storedFilePath)
-            .build();
+    private String changedFileName(String originName) {
+        String random = UUID.randomUUID().toString();
+        return random + originName;
     }
 
-    public FileInfo uploadFileFromPath(String filePath){
-        File file = new File(filePath);
-        try{
-            byte[] content = Files.readAllBytes(Paths.get(filePath));
-            String contentType = Files.probeContentType(Paths.get(filePath));
-
-            MultipartFile multipartFile = new SimpleMultipartFile(
-                "file",
-                file.getName(),
-                contentType,
-                content
-            );
-
-            return uploadFile(multipartFile);
-        } catch (IOException e) {
-            throw new FileUploadException();
-        }
-    }
 }
