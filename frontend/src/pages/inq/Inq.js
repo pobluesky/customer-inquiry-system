@@ -3,6 +3,7 @@ import Header from '../../components/mocules/Header';
 import Path from '../../components/atoms/Path';
 import RequestBar from './../../components/mocules/RequestBar';
 import OfferSheet from './offersheet';
+import '../../assets/css/Offersheet.css';
 
 function Inq() {
     const [originalText, setOriginalText] = useState('');
