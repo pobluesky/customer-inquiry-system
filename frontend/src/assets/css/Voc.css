@@ -82,7 +82,7 @@
     text-align: right;
 }
 
-.Search_List_Count text {
+.Search_List_Count span {
     color: red;
     font-size: 24px;
 }

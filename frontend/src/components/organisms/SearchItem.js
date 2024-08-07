@@ -42,7 +42,7 @@ function SearchItem() {
                 </div>
 
                 {/* 검색 결과 개수 */}
-                <div className={Search_List_Count}>검색 결과: 총 <text>{listCount}</text>건</div>
+                <div className={Search_List_Count}>검색 결과: 총 <span>{listCount}</span>건</div>
             </div>
         </div>
     );
