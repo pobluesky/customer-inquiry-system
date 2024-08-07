@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.user.service;
 
+import com.pobluesky.backend.global.security.JwtToken;
+import com.pobluesky.backend.global.security.JwtTokenProvider;
 import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.CustomerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
@@ -7,8 +9,13 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +27,36 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public JwtToken signIn(String email, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+            new UsernamePasswordAuthenticationToken(email, password);
+
+        Authentication authentication = authenticationManagerBuilder
+            .getObject()
+            .authenticate(authenticationToken);
+
+        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+
+        return jwtToken;
+    }
+
+    @Transactional
+    public CustomerResponseDTO signUp(CustomerCreateRequestDTO signUpDto) {
+        if (customerRepository.existsByEmail(signUpDto.email())) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        }
+
+        // Password 암호화
+        String encodedPassword = passwordEncoder.encode(signUpDto.password());
+        List<String> roles = new ArrayList<>();
+        roles.add("USER");  // USER 권한 부여
+        return CustomerResponseDTO.from(customerRepository.save(signUpDto.toCustomerEntity(encodedPassword, roles)));
+    }
 
     /*
     전체 User 조회, readOnly=true 옵션을 주어 변경 감지 X
@@ -31,20 +68,6 @@ public class CustomerService {
         return customers.stream()
             .map(CustomerResponseDTO::from)
             .collect(Collectors.toList());
-    }
-
-    /*
-    Customer 생성
-     */
-    @Transactional
-    public CustomerResponseDTO createCustomer(CustomerCreateRequestDTO dto) {
-        // 1. 클라이언트에서 받은 dto안에 데이터를 꺼내서 Entity로 변환
-        Customer customer = dto.toCustomerEntity();
-        // 2. 앤티티를 리포에 저장
-        Customer savedCustomer = customerRepository.save(customer);
-
-        // 3. 저장된 객체를 반환
-        return CustomerResponseDTO.from(savedCustomer);
     }
 
     @Transactional
