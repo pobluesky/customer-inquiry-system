@@ -19,7 +19,8 @@ public enum ErrorCode {
     LINE_ITEM_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0001", "존재하지 않는 라인아이템입니다."),
     QUALITY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 품질입니다."),
     QUALITY_REVIEW_INFO_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0002", "존재하지 않는 품질검토정보입니다."),
-    OFFERSHEET_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "O0001", "존재하지 않는 OfferSheet입니다.");
+    OFFERSHEET_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "O0001", "존재하지 않는 오퍼시트입니다."),
+    INVALID_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "G0003","권한 정보가 없는 토큰입니다.");
 
     private HttpStatus status;
     private String code;
