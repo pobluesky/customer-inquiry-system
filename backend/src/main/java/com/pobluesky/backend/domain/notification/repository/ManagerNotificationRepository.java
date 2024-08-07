@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.notification.repository;
 
-import com.pobluesky.backend.domain.notification.entity.CustomerNotification;
 import com.pobluesky.backend.domain.notification.entity.ManagerNotification;
 import java.util.List;
 import org.springframework.data.domain.Page;
