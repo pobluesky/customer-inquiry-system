@@ -6,8 +6,8 @@ import com.pobluesky.backend.domain.notification.dto.request.ManagerNotification
 import com.pobluesky.backend.domain.notification.dto.request.ManagerNotificationUpdateRequestDTO;
 import com.pobluesky.backend.domain.notification.dto.response.CustomerNotificationResponseDTO;
 import com.pobluesky.backend.domain.notification.dto.response.ManagerNotificationResponseDTO;
-import com.pobluesky.backend.domain.notification.service.CustomerNotificationService;
-import com.pobluesky.backend.domain.notification.service.ManagerNotificationService;
+import com.pobluesky.backend.domain.notification.service.NotificationService;
+import com.pobluesky.backend.domain.notification.service.NotificationType;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/notifications")
 public class NotificationController {
 
-    private final CustomerNotificationService customerNotificationService;
-    private final ManagerNotificationService managerNotificationService;
+    private final NotificationService notificationService;
 
     // 고객사
     @GetMapping("/customers/{customerId}")
@@ -36,7 +35,7 @@ public class NotificationController {
         @PathVariable Long customerId
     ) {
 
-        List<?> notification = customerNotificationService.getNotificationsById(customerId);
+        List<?> notification = notificationService.getNotificationsById(customerId, NotificationType.CUSTOMER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -46,7 +45,7 @@ public class NotificationController {
     public ResponseEntity<JsonResult> getRecentCustomerNotificationById(
         @PathVariable Long customerId) {
 
-        List<?> notificationById = customerNotificationService.getRecentNotifications(customerId);
+        List<?> notificationById = notificationService.getRecentNotifications(customerId, NotificationType.CUSTOMER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notificationById));
@@ -57,7 +56,7 @@ public class NotificationController {
         @RequestBody CustomerNotificationCreateRequestDTO dto,
         @PathVariable Long customerId) {
 
-        CustomerNotificationResponseDTO notification = (CustomerNotificationResponseDTO) customerNotificationService.createNotification(dto, customerId);
+        CustomerNotificationResponseDTO notification = (CustomerNotificationResponseDTO) notificationService.createNotification(dto, customerId, NotificationType.CUSTOMER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -68,7 +67,7 @@ public class NotificationController {
         @PathVariable Long notificationId,
         @RequestBody CustomerNotificationUpdateRequestDTO dto
     ) {
-        CustomerNotificationResponseDTO notification = (CustomerNotificationResponseDTO) customerNotificationService.updateNotificationIsRead(notificationId, dto);
+        CustomerNotificationResponseDTO notification = (CustomerNotificationResponseDTO) notificationService.updateNotificationIsRead(notificationId, dto, NotificationType.CUSTOMER);
 
         return ResponseEntity.status(HttpStatus.OK)
            .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -81,7 +80,7 @@ public class NotificationController {
         @PathVariable Long managerId
     ) {
 
-        List<?> notification = managerNotificationService.getNotificationsById(managerId);
+        List<?> notification = notificationService.getNotificationsById(managerId, NotificationType.MANAGER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -91,7 +90,7 @@ public class NotificationController {
     public ResponseEntity<JsonResult> getRecentManagerNotificationById(
         @PathVariable Long managerId) {
 
-        List<?> notificationById = managerNotificationService.getRecentNotifications(managerId);
+        List<?> notificationById = notificationService.getRecentNotifications(managerId, NotificationType.MANAGER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notificationById));
@@ -102,7 +101,7 @@ public class NotificationController {
         @RequestBody ManagerNotificationCreateRequestDTO dto,
         @PathVariable Long managerId) {
 
-        ManagerNotificationResponseDTO notification = (ManagerNotificationResponseDTO) managerNotificationService.createNotification(dto, managerId);
+        ManagerNotificationResponseDTO notification = (ManagerNotificationResponseDTO) notificationService.createNotification(dto, managerId, NotificationType.MANAGER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -113,7 +112,7 @@ public class NotificationController {
         @PathVariable Long notificationId,
         @RequestBody ManagerNotificationUpdateRequestDTO dto
     ) {
-        ManagerNotificationResponseDTO notification = (ManagerNotificationResponseDTO) managerNotificationService.updateNotificationIsRead(notificationId, dto);
+        ManagerNotificationResponseDTO notification = (ManagerNotificationResponseDTO) notificationService.updateNotificationIsRead(notificationId, dto, NotificationType.MANAGER);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));

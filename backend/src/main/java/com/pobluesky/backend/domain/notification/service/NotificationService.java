@@ -25,15 +25,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public abstract class NotificationService {
+public class NotificationService {
 
     private final CustomerNotificationRepository customerNotificationRepository;
     private final ManagerNotificationRepository managerNotificationRepository;
     private final CustomerRepository customerRepository;
     private final ManagerRepository managerRepository;
-    private final NotificationType notificationType;
 
-    public List<?> getNotificationsById(Long id) {
+    public List<?> getNotificationsById(Long id, NotificationType notificationType) {
         switch (notificationType) {
             case CUSTOMER:
                 List<CustomerNotification> notifications = customerNotificationRepository.findByCustomer_CustomerId(id);
@@ -52,7 +51,7 @@ public abstract class NotificationService {
         }
     }
 
-    public List<?> getRecentNotifications(Long id) {
+    public List<?> getRecentNotifications(Long id, NotificationType notificationType) {
         Pageable pageable = PageRequest.of(0, 10);
 
         switch (notificationType) {
@@ -73,7 +72,7 @@ public abstract class NotificationService {
         }
     }
 
-    public Object createNotification(Object dto, Long id) {
+    public Object createNotification(Object dto, Long id, NotificationType notificationType) {
 
         switch (notificationType) {
             case CUSTOMER:
@@ -99,7 +98,7 @@ public abstract class NotificationService {
         }
     }
 
-    public Object updateNotificationIsRead(Long notificationId, Object dto) {
+    public Object updateNotificationIsRead(Long notificationId, Object dto, NotificationType notificationType) {
 
         switch (notificationType) {
             case CUSTOMER:
