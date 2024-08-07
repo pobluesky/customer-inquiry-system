@@ -33,7 +33,9 @@ public class ManagerNotification extends Notification {
         this.manager = manager;
     }
 
-    public void updateIsRead() {
+    public void updateIsRead(
+        Boolean isRead
+    ) {
         this.isRead = true;
     }
 }
