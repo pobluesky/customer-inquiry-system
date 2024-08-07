@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.quality.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "quality")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quality {
+public class Quality extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long qualityId; // 품질번호
