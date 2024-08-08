@@ -21,7 +21,9 @@ public enum ErrorCode {
     QUALITY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 품질입니다."),
     QUALITY_REVIEW_INFO_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0002", "존재하지 않는 품질검토정보입니다."),
     OFFERSHEET_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "O0001", "존재하지 않는 OfferSheet입니다."),
-    NOTIFICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "N0001", "존재하지 않는 알림입니다.");
+    PROGRESS_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "P0002", "존재하지 않는 진행단계입니다."),
+    OFFERSHEET_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "O0001", "존재하지 않는 오퍼시트입니다."),
+    NOTIFICATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "N0001", "존재하지 않는 알림입니다."),
     QUESTION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 질문입니다."),
     QUESTION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0003", "이미 답변이 완료된 질문입니다."),
     COLLABORATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "C0001", "존재하지 않는 협업입니다."),
