@@ -9,6 +9,9 @@ pipeline {
         ECR_URI = '014498623207.dkr.ecr.ap-northeast-2.amazonaws.com/pobluesky'
         IMAGE_TAG = "jenkins-ecr:${env.BUILD_ID}"
         LATEST_TAG = "latest"
+
+        DB_URL = credentials('DB_URL')
+        DB_CREDENTIALS = credentials('DB_CREDENTIALS')
     }
 
     stages {
@@ -21,6 +24,9 @@ pipeline {
         stage('Build Jar') {
             steps {
                 script {
+
+
+
                     sh 'cd backend && /opt/gradle/bin/gradle clean build'
                     sh 'cp backend/build/libs/*.jar .'
                 }
@@ -30,7 +36,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t ${IMAGE_TAG} .'
+                    def dbUsername = DB_CREDENTIALS_USR
+                    def dbPassword = DB_CREDENTIALS_PSW
+
+                    sh """
+                       docker build -t ${IMAGE_TAG} \
+                           --build-arg DB_URL=${DB_URL} \
+                           --build-arg DB_USERNAME=${dbUsername} \
+                           --build-arg DB_PASSWORD=${dbPassword} .
+                       """
+
                 }
             }
         }
