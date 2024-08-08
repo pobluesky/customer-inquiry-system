@@ -1,7 +1,8 @@
-package com.pobluesky.backend.domain.voc.entity;
+package com.pobluesky.backend.domain.answer.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,7 +29,7 @@ public class Answer extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "question_id")
-    private Question question; // vos 번호
+    private Question question; // voc 번호
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
@@ -39,6 +40,9 @@ public class Answer extends BaseEntity {
     private Customer customer; // 고객사 번호
 
     @Column(columnDefinition = "TEXT")
+    private String answerTitle; // 답변 제목
+
+    @Column(columnDefinition = "TEXT")
     private String answerContents; // 답변 내용
 
     @Builder
@@ -46,16 +50,19 @@ public class Answer extends BaseEntity {
         Question question,
         Inquiry inquiry,
         Customer customer,
+        String answerTitle,
         String answerContents
     ) {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
+        this.answerTitle = answerTitle;
         this.answerContents = answerContents;
     }
     public void updateAnswer(
         String answerContents
     ) {
+        this.answerTitle = answerTitle;
         this.answerContents = answerContents;
     }
 }

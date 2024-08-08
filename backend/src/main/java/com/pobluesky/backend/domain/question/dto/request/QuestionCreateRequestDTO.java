@@ -1,10 +1,10 @@
-package com.pobluesky.backend.domain.voc.dto.request;
+package com.pobluesky.backend.domain.question.dto.request;
 
-import com.pobluesky.backend.domain.voc.entity.Question;
+import com.pobluesky.backend.domain.question.entity.Question;
+import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.voc.entity.QuestionStatus;
 
-public record VocQuestionCreateRequestDTO(
+public record QuestionCreateRequestDTO(
     String title,
     String contents,
     String files,
