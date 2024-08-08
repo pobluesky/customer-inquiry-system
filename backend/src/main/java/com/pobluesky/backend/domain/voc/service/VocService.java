@@ -41,7 +41,7 @@ public class VocService {
     public VocAnswerResponseDTO createVocAnswer(Long inquiryId, VocAnswerCreateRequestDTO dto) {
         Inquiry inquiry = inquiryRepository
             .findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED));
 
         Long customerId = inquiry.getCustomer().getCustomerId();
         Answer answer = dto.toAnswerEntity(inquiry);
