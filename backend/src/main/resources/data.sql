@@ -63,3 +63,10 @@ VALUES
     (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
     (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
     (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+
+-- MANAGER_NOTIFICATION
+INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_id, notification_contents)
+VALUES
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
