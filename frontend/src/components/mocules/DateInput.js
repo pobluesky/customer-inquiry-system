@@ -4,11 +4,12 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import { ko } from 'date-fns/locale';
 import { Datepicker } from '../../assets/css/Offersheet.css';
 
-function DateInput() {
+function DateInput({ margin }) {
     const [startDate, setStartDate] = useState(new Date());
 
     return (
         <DatePicker
+            style={{ margin: `${margin}` }}
             className={Datepicker}
             selected={startDate}
             onChange={(date) => setStartDate(date)}
