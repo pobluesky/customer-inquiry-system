@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,11 +65,11 @@ public class CustomerController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<JsonResult> updateUserByNo(
-        @PathVariable Long userId,
+        @RequestHeader("Authorization") String token,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
         CustomerResponseDTO response = customerService.updateCustomerById(
-            userId,
+            token,
             customerUpdateRequestDTO
         );
 

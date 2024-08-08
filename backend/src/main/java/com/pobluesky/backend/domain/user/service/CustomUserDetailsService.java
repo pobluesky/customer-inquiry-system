@@ -1,12 +1,17 @@
 package com.pobluesky.backend.domain.user.service;
 
+import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.User;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
 import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.global.security.JwtTokenProvider;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,7 +61,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
     }
 
-
     private UserDetails createUserDetails(User user) {
 
         return new org.springframework.security.core.userdetails.User(
@@ -64,5 +68,16 @@ public class CustomUserDetailsService implements UserDetailsService {
             passwordEncoder.encode(user.getPassword()),
             user.getAuthorities()
         );
+    }
+
+    public Long parseToken(String token) {
+        Claims claims = jwtTokenProvider.parseClaims(token);
+        String email = claims.getSubject();
+
+        return customerRepository.findByEmail(email)
+            .map(Customer::getCustomerId)
+            .or(() -> managerRepository.findByEmail(email)
+                .map(Manager::getManagerId))
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 }

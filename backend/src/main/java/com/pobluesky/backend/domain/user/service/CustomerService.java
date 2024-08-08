@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerService {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     private final CustomerRepository customerRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -55,7 +57,12 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerResponseDTO updateCustomerById(Long userId, CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResponseDTO updateCustomerById(
+        String token,
+        CustomerUpdateRequestDTO customerUpdateRequestDTO
+    ) {
+        Long userId = customUserDetailsService.parseToken(token);
+
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 

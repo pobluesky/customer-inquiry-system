@@ -33,8 +33,11 @@ public class SecurityConfig {
             // 해당 API에 대해서는 모든 요청을 허가
             .requestMatchers("/api/customers/**").permitAll()
             .requestMatchers("/api/managers/**").permitAll()
+            .requestMatchers("/api/reviews/**").permitAll()
+            .requestMatchers("/api/line-items/**").permitAll()
+            .requestMatchers("/api/inquiries/**").permitAll()
             // USER 권한이 있어야 요청할 수 있음
-            .requestMatchers("/api/test").hasRole("USER")
+//            .requestMatchers("/api/reviews/**").hasRole("USER")
             // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
             .anyRequest().authenticated()
             .and()
