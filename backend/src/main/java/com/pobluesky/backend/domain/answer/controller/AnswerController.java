@@ -17,6 +17,15 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerController {
     private final AnswerService answerService;
 
+//    @GetMapping("/{inquiryId}")
+//    public ResponseEntity<JsonResult> getOfferSheetByInquiryId(@PathVariable Long inquiryId) {
+//        OfferSheetResponseDTO response = offerSheetService.getOfferSheetByInquiryId(inquiryId);
+//
+//        return ResponseEntity
+//            .status(HttpStatus.OK)
+//            .body(ResponseFactory.getSuccessJsonResult(response));
+//    }
+
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createAnswer(
         @PathVariable Long inquiryId,
