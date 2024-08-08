@@ -22,103 +22,109 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
 
     private final CustomerNotificationRepository customerNotificationRepository;
-
     private final ManagerNotificationRepository managerNotificationRepository;
-
     private final CustomerRepository customerRepository;
-
     private final ManagerRepository managerRepository;
 
-    @Transactional(readOnly = true)
-    public List<CustomerNotificationResponseDTO> getAllCustomerNotifications() {
+    public List<?> getNotificationsById(Long id, NotificationType notificationType) {
+        switch (notificationType) {
+            case CUSTOMER:
+                List<CustomerNotification> notifications = customerNotificationRepository.findByCustomer_CustomerId(id);
+                return notifications.stream()
+                    .map(CustomerNotificationResponseDTO::from)
+                    .collect(Collectors.toList());
 
-        List<CustomerNotification> notifications = customerNotificationRepository.findAll();
+            case MANAGER:
+                List<ManagerNotification> managerNotifications = managerNotificationRepository.findByManager_ManagerId(id);
+                return managerNotifications.stream()
+                    .map(ManagerNotificationResponseDTO::from)
+                    .collect(Collectors.toList());
 
-        return notifications.stream()
-            .map(CustomerNotificationResponseDTO::from)
-            .collect(Collectors.toList());
+            default:
+                throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 
-    @Transactional
-    public CustomerNotificationResponseDTO createCustomerNotification(
-        CustomerNotificationCreateRequestDTO dto, Long customerId) {
-
-        Customer customer = customerRepository.findById(customerId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        CustomerNotification notification = dto.toCustomerNotificationEntity(customer);
-
-        CustomerNotification savedNotification = customerNotificationRepository.save(notification);
-
-        return CustomerNotificationResponseDTO.from(savedNotification);
-    }
-
-    @Transactional(readOnly = true)
-    public List<CustomerNotificationResponseDTO> getRecentCustomerNotificationsById(Long customerId) {
+    public List<?> getRecentNotifications(Long id, NotificationType notificationType) {
         Pageable pageable = PageRequest.of(0, 10);
-        var page = customerNotificationRepository.findRecentNotificationsByCustomerIdAndIsRead(customerId, Boolean.TRUE, pageable);
-        return page.getContent().stream()
-            .map(CustomerNotificationResponseDTO::from)
-            .collect(Collectors.toList());
+
+        switch (notificationType) {
+            case CUSTOMER:
+                var customerPage = customerNotificationRepository.findRecentNotificationsByCustomerIdAndIsRead(id, Boolean.TRUE, pageable);
+                return customerPage.getContent().stream()
+                    .map(CustomerNotificationResponseDTO::from)
+                    .collect(Collectors.toList());
+
+            case MANAGER:
+                var managerPage = managerNotificationRepository.findRecentNotificationsByManagerIdAndIsRead(id, Boolean.TRUE, pageable);
+                return managerPage.getContent().stream()
+                    .map(ManagerNotificationResponseDTO::from)
+                    .collect(Collectors.toList());
+
+            default:
+                throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 
-    @Transactional(readOnly = true)
-    public List<ManagerNotificationResponseDTO> getAllManagerNotifications() {
+    public Object createNotification(Object dto, Long id, NotificationType notificationType) {
 
-        List<ManagerNotification> notifications = managerNotificationRepository.findAll();
+        switch (notificationType) {
+            case CUSTOMER:
+                Customer customer = customerRepository.findById(id)
+                    .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        return notifications.stream()
-            .map(ManagerNotificationResponseDTO::from)
-            .collect(Collectors.toList());
+                CustomerNotification customerNotification = ((CustomerNotificationCreateRequestDTO) dto).toCustomerNotificationEntity(customer);
+                CustomerNotification savedCustomerNotification = customerNotificationRepository.save(customerNotification);
+
+                return CustomerNotificationResponseDTO.from(savedCustomerNotification);
+
+            case MANAGER:
+                Manager manager = managerRepository.findById(id)
+                   .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+                ManagerNotification managerNotification = ((ManagerNotificationCreateRequestDTO) dto).toManagerNotificationEntity(manager);
+                ManagerNotification savedManagerNotification = managerNotificationRepository.save(managerNotification);
+
+                return ManagerNotificationResponseDTO.from(savedManagerNotification);
+
+            default:
+                throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 
-    @Transactional
-    public ManagerNotificationResponseDTO createManagerNotification(
-        ManagerNotificationCreateRequestDTO dto, Long managerId) {
+    public Object updateNotificationIsRead(Long notificationId, Object dto, NotificationType notificationType) {
 
-        Manager manager = managerRepository.findById(managerId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        switch (notificationType) {
+            case CUSTOMER:
+                CustomerNotification customerNotification = customerNotificationRepository.findById(
+                        notificationId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
-        ManagerNotification notification = dto.toManagerNotificationEntity(manager);
+                CustomerNotificationUpdateRequestDTO updateCustomerDTO = (CustomerNotificationUpdateRequestDTO) dto;
+                customerNotification.updateIsRead(updateCustomerDTO.isRead());
+                customerNotificationRepository.save(customerNotification);
 
-        ManagerNotification savedNotification = managerNotificationRepository.save(notification);
+                return CustomerNotificationResponseDTO.from(customerNotification);
 
-        return ManagerNotificationResponseDTO.from(savedNotification);
-    }
+            case MANAGER:
+                ManagerNotification managerNotification = managerNotificationRepository.findById(
+                        notificationId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
-    @Transactional(readOnly = true)
-    public List<ManagerNotificationResponseDTO> getRecentManagerNotificationsById(Long managerId) {
-        Pageable pageable = PageRequest.of(0, 10);
-        var page = managerNotificationRepository.findRecentNotificationsByManagerIdAndIsRead(managerId, Boolean.TRUE, pageable);
-        return page.getContent().stream()
-            .map(ManagerNotificationResponseDTO::from)
-            .collect(Collectors.toList());
-    }
+                ManagerNotificationUpdateRequestDTO updateManagerDTO = (ManagerNotificationUpdateRequestDTO) dto;
+                managerNotification.updateIsRead(updateManagerDTO.isRead());
+                managerNotificationRepository.save(managerNotification);
 
-    public CustomerNotificationResponseDTO updateCustomerNotificationIsRead(Long notificationId, CustomerNotificationUpdateRequestDTO dto) {
-        CustomerNotification notification = customerNotificationRepository.findById(notificationId)
-           .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
+                return ManagerNotificationResponseDTO.from(managerNotification);
 
-        notification.setIsRead();
-        customerNotificationRepository.save(notification);
-
-        return CustomerNotificationResponseDTO.from(notification);
-    }
-
-    public ManagerNotificationResponseDTO updateManagerNotificationIsRead(Long notificationId, ManagerNotificationUpdateRequestDTO dto) {
-        ManagerNotification notification = managerNotificationRepository.findById(notificationId)
-            .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
-
-        notification.setIsRead();
-        managerNotificationRepository.save(notification);
-
-        return ManagerNotificationResponseDTO.from(notification);
+            default:
+                throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
     }
 }
