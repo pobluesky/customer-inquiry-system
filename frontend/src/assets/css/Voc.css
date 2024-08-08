@@ -98,6 +98,10 @@
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
+.Card_Container:hover {
+    background-color: #cbefff;
+}
+
 .Card_Text {
     margin: 0 0 0 192px;
     font-size: 12px;
@@ -151,4 +155,120 @@
     text-align: center;
     align-content: center;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+/* Question Modal Component */
+.Modal_Container {
+    width: 900px;
+    height: 600px;
+    margin: 5% auto 0 auto;
+    border: solid 1px #ffffff;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.Modal_Outside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* 마크(Q, A) */
+.Modal_Container img:nth-child(1) {
+    margin: 0 0 0 24px;
+}
+
+/* 질문 & 답변 Container */
+.Modal_Part_Question,
+.Modal_Part_Answer {
+    width: 840px;
+    height: fit-content;
+    border: solid 1px #c1c1c1;
+    border-radius: 12px;
+    background-color: #ffffff;
+    word-break: break-all;
+}
+
+.Modal_Part_Question {
+    margin: 0 auto 0 auto;
+}
+
+.Modal_Part_Answer {
+    margin: 24px auto 0 auto;
+}
+
+/* 질문 & 답변 Container 마크, 제목, 폴더, 파일 Grid */
+.Modal_Part_Question div:nth-child(1),
+.Modal_Part_Answer div:nth-child(1) {
+    display: grid;
+    grid-template-columns: 64px 524px 32px 96px 96px;
+    align-items: center;
+}
+
+/* 질문 & 답변 제목 */
+.Modal_Part_Question p,
+.Modal_Part_Answer p {
+    color: #6e6e6e;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* 고객사 & 담당자 첨부파일 */
+.Modal_Part_Question div div,
+.Modal_Part_Answer div div {
+    color: #6e6e6e;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* 질문 & 답변 내용 */
+.Modal_Part_Question div:nth-child(2),
+.Modal_Part_Answer div:nth-child(2) {
+    color: #6e6e6e;
+    font-size: 16px;
+    margin: 0 64px 32px 64px;
+}
+
+.Modal_Part_Answer div:nth-child(2) {
+    min-height: 112px;
+    max-height: 112px;
+    overflow-y: auto;
+}
+
+/* Scroll Bar */
+.Modal_Part_Answer div:nth-child(2)::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+    height: 8px;
+}
+
+.Modal_Part_Answer div:nth-child(2)::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+._Tag {
+    width: 840px;
+    margin: 52px auto 24px auto;
+}
+
+._Button {
+    position: relative;
+    width: 840px;
+    height: 32px;
+    margin: 12px auto 24px auto;
+}
+
+._Button Button {
+    position: sticky;
+}
+
+.Answering {
+    width: 840px;
+    height: 228px;
+    margin: 24px auto 0 auto;
 }

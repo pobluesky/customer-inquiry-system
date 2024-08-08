@@ -38,10 +38,12 @@ h1 {
     margin: 0 auto 20px auto;
     border: solid #c1c1c1 1px;
     border-radius: 2px;
-    max-width: 85vw;
+    /* max-width: offersheet vs question modal */
+    /* max-width: 85vw; */
+    max-width: 840px;
     color: #000;
     position: relative;
-    line-height: 10px;
+    line-height: 20px;
     font-weight: 400;
     text-align: left;
     border-top-left-radius: 10px;
@@ -63,7 +65,9 @@ h1 {
     outline: 0;
     padding: 0 15px 15px 15px;
     caret-color: #444;
-    height: 8vh;
+    /* height: offersheet vs question modal */
+    /* height: 8vh; */
+    height: 108px;
     overflow: auto;
 }
 
