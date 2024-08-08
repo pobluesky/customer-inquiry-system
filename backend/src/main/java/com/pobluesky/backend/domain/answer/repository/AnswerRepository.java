@@ -1,7 +1,6 @@
 package com.pobluesky.backend.domain.answer.repository;
 
 import com.pobluesky.backend.domain.answer.entity.Answer;
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    Optional<Answer> findByInquiry(Inquiry inquiry);
+
+    Optional<Answer> findByQuestion_QuestionId(Long questionId);
 }

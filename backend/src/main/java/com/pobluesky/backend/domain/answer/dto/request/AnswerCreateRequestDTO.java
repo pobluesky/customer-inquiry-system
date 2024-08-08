@@ -7,9 +7,8 @@ public record AnswerCreateRequestDTO(
     String answerTitle,
     String answerContents
 ) {
-    public Answer toAnswerEntity(Inquiry inquiry) {
+    public Answer toAnswerEntity(Long questionId) {
         return Answer.builder()
-            .inquiry(inquiry)
             .answerTitle(answerTitle)
             .answerContents(answerContents)
             .build();

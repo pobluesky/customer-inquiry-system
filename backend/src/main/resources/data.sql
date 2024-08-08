@@ -3,7 +3,8 @@ INSERT INTO customers (name, email, password, phone, is_activated, customer_code
 VALUES
     ('John Doe', 'john@example.com', 'password123', '123-456-7890', true, 'CUST001', 'ABC Corp', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Jane Smith', 'jane@example.com', 'password456', '987-654-3210', true, 'CUST002', 'XYZ Inc', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Heejin', 'heejin@example.com', 'passwor1011', '777-777-7777', true, 'CUST004', 'Mr.Son', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Managers
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
@@ -20,7 +21,8 @@ INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type
 VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'COLD_ROLLED_GENERAL', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, desired_delivery_date, delivery_destination, orders, coating_condition, coating_another_condition, contract, sop, fc_amount, bc_amount, coating_unit, post_treatment, direction, ra_target, m_tolerance, p_tolerance, ra_unit, ra_another_unit, qs_requirement, expense_per_year, customer_name, complete_vehicle, regulation, is_activated, created_date, modified_date)
@@ -70,3 +72,11 @@ VALUES
     (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
     (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
     (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+
+-- QUESTION
+INSERT INTO question (inquiry_id, title, contents, files, status)
+VALUES
+    (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'READY'),
+    (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'COMPLETED'),
+    (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'COMPLETED'),
+    (3, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'READY');
