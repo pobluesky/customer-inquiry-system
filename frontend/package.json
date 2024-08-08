@@ -17,6 +17,7 @@
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
         "apexcharts": "^3.51.0",
+        "axios": "^1.7.3",
         "d3-ease": "^3.0.1",
         "date-fns": "^3.6.0",
         "lexical": "^0.16.1",
