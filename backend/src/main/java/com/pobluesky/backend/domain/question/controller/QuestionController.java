@@ -16,6 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionController {
     private final QuestionService questionService;
 
+    @GetMapping("/{inquiryId}")
+    public ResponseEntity<JsonResult> getQuestionByInquiryId(@PathVariable Long inquiryId) {
+        QuestionResponseDTO response = questionService.getQuestionByInquiryId(inquiryId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createQuestion(
         @PathVariable Long inquiryId,

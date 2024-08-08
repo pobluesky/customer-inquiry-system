@@ -13,9 +13,9 @@ import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +35,16 @@ public class QuestionService {
         Question question = dto.toQuestionEntity(inquiry);
         Question savedQuestion = questionRepository.save(question);
         return QuestionResponseDTO.from(savedQuestion);
+    }
+
+    @Transactional(readOnly = true)
+    public QuestionResponseDTO getQuestionByInquiryId(Long inquiryId) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Question question = questionRepository.findByInquiry(inquiry)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return QuestionResponseDTO.from(question);
     }
 }
