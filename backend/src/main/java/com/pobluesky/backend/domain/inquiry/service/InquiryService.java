@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
-    private final CustomerService customerService;
 
     @Transactional(readOnly = true)
     public List<InquiryResponseDTO> getInquiriesByCustomerId(Long customerId) {
