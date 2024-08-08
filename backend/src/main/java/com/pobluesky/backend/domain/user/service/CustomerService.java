@@ -69,7 +69,7 @@ public class CustomerService {
         customer.updateCustomer(
             customerUpdateRequestDTO.name(),
             customerUpdateRequestDTO.email(),
-            customerUpdateRequestDTO.password(),
+            passwordEncoder.encode(customerUpdateRequestDTO.password()),
             customerUpdateRequestDTO.phone()
         );
 

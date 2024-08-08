@@ -41,15 +41,23 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public JwtToken signIn(String email, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(email, password);
+        Customer customer = customerRepository.findByEmail(email)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Authentication authentication = authenticationManagerBuilder
-            .getObject()
-            .authenticate(authenticationToken);
+        if (!passwordEncoder.matches(password, customer.getPassword())) {
+            throw new CommonException(ErrorCode.INVALID_PASSWORD);
+        }
 
-        return jwtTokenProvider.generateToken(authentication);
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//            new UsernamePasswordAuthenticationToken(email, password);
+//
+//        Authentication authentication = authenticationManagerBuilder
+//            .getObject()
+//            .authenticate(authenticationToken);
+
+        return jwtTokenProvider.generateToken(email, "USER");
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

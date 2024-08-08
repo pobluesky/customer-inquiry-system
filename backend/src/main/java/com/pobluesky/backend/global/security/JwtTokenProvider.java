@@ -4,6 +4,7 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,25 +40,26 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken generateToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(","));
+    public JwtToken generateToken(String email, String role) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(email));
+        claims.put("role", role);
 
-        long now = (new Date()).getTime();
-
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date now = new Date();
 
         String accessToken = Jwts.builder()
-            .setSubject(authentication.getName())
-            .claim("auth", authorities)
-            .setExpiration(accessTokenExpiresIn)
-            .signWith(key, SignatureAlgorithm.HS256)
+            .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(new Date(now.getTime() + 8640000))
+            .signWith(SignatureAlgorithm.HS256, key)
             .compact();
 
         String refreshToken = Jwts.builder()
-            .setExpiration(new Date(now + 86400000))
-            .signWith(key, SignatureAlgorithm.HS256)
+            .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(new Date(now.getTime() + 8640000))
+            .signWith(SignatureAlgorithm.HS256, key)
             .compact();
 
         return JwtToken.builder()
