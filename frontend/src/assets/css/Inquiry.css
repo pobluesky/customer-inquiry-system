@@ -1,0 +1,33 @@
+._Label {
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #C1C1C1;
+  width: 140px;
+  height: 20px;
+  padding: 3px;
+  margin: 10vh;
+}
+
+._text1 {
+  color: #616161;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._text2 {
+  color: #007AFF;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._Inquiry {
+  border-radius: 0 20px 20px 20px;
+  border: 1px solid #C1C1C1;
+  width: 85%;
+  height: 90px;
+  margin-top: -10vh;
+  margin-left: 10vh;
+}
+
+._InquiryItem {
+  margin: 10px;
+}
