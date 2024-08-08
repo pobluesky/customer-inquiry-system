@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @PostMapping("/question/{inquiryId}")
+    @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createQuestion(
         @PathVariable Long inquiryId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {

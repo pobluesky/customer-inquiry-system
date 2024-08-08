@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.answer.controller;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
 import com.pobluesky.backend.domain.answer.service.AnswerService;
+import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDTO;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerController {
     private final AnswerService answerService;
 
-    @PostMapping("/answer/{inquiryId}")
+    @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createAnswer(
         @PathVariable Long inquiryId,
         @RequestBody AnswerCreateRequestDTO answerCreateRequestDTO) {
