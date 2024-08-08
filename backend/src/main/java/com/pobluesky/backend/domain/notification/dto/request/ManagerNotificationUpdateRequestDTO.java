@@ -4,6 +4,6 @@ public record ManagerNotificationUpdateRequestDTO(
     Long notificationId,
     Long managerId,
     String notificationContents,
-    boolean isRead
+    Boolean isRead
 ) {
 }

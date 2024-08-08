@@ -10,7 +10,6 @@ public record CustomerNotificationCreateRequestDTO(
         return CustomerNotification.builder()
                 .customer(customer)
                 .notificationContents(notificationContents)
-                .isRead(false)
                 .build();
     }
 }
