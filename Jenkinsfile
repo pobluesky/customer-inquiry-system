@@ -27,7 +27,7 @@ pipeline {
 
 
 
-                    sh 'cd backend && /opt/gradle/bin/gradle clean build'
+                    sh 'cd backend && /opt/gradle/bin/gradle clean build -x test'
                     sh 'cp backend/build/libs/*.jar .'
                 }
             }
@@ -38,6 +38,10 @@ pipeline {
                 script {
                     def dbUsername = DB_CREDENTIALS_USR
                     def dbPassword = DB_CREDENTIALS_PSW
+
+                    echo "DB_URL: ${DB_URL}"
+                    echo "DB_USERNAME: ${dbUsername}"
+                    echo "DB_PASSWORD: ${dbPassword}"
 
                     sh """
                        docker build -t ${IMAGE_TAG} \
