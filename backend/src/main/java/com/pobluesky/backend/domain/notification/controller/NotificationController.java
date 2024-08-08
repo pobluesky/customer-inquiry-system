@@ -10,6 +10,8 @@ import com.pobluesky.backend.domain.notification.service.NotificationService;
 import com.pobluesky.backend.domain.notification.service.NotificationType;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     // 고객사
+    @Operation(summary = "고객사 계정별 알림 조회")
     @GetMapping("/customers/{customerId}")
     public ResponseEntity<JsonResult> getCustomerNotificationsById(
         @PathVariable Long customerId
@@ -41,6 +44,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notification));
     }
 
+    @Operation(summary = "고객사 계정별 읽은 알림 조회")
     @GetMapping("/customers/read/{customerId}")
     public ResponseEntity<JsonResult> getRecentCustomerNotificationById(
         @PathVariable Long customerId) {
@@ -51,6 +55,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notificationById));
     }
 
+    @Operation(summary = "고객사 계정별 알림 전송")
     @PostMapping("/customers/{customerId}")
     public ResponseEntity<JsonResult> createCustomerNotification(
         @RequestBody CustomerNotificationCreateRequestDTO dto,
@@ -62,6 +67,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notification));
     }
 
+    @Operation(summary = "고객사 알림 상태 변경(안 읽음 -> 읽음)")
     @PutMapping("/customers/{notificationId}")
     public ResponseEntity<JsonResult> updateCustomerNotificationIsRead(
         @PathVariable Long notificationId,
@@ -75,6 +81,7 @@ public class NotificationController {
 
 
     // 담당자
+    @Operation(summary = "담당자 계정별 알림 조회")
     @GetMapping("/managers/{managerId}")
     public ResponseEntity<JsonResult> getAllManagerNotifications(
         @PathVariable Long managerId
@@ -86,6 +93,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notification));
     }
 
+    @Operation(summary = "담당자 계정별 읽은 알림 조회")
     @GetMapping("/managers/read/{managerId}")
     public ResponseEntity<JsonResult> getRecentManagerNotificationById(
         @PathVariable Long managerId) {
@@ -96,6 +104,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notificationById));
     }
 
+    @Operation(summary = "담당자 계정별 알림 전송")
     @PostMapping("/managers/{managerId}")
     public ResponseEntity<JsonResult> createManagerNotification(
         @RequestBody ManagerNotificationCreateRequestDTO dto,
@@ -107,6 +116,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notification));
     }
 
+    @Operation(summary = "고객사 알림 상태 변경(안 읽음 -> 읽음)")
     @PutMapping("/managers/{notificationId}")
     public ResponseEntity<JsonResult> updateManagerNotificationIsRead(
         @PathVariable Long notificationId,
