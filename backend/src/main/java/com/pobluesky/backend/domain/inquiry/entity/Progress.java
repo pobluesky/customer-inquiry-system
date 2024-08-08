@@ -1,5 +1,8 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
+import java.util.Objects;
 import lombok.Getter;
 
 @Getter
@@ -20,11 +23,11 @@ public enum Progress {
 
     public static Progress fromCode(Integer code) {
         for (Progress progress : Progress.values()) {
-            if (progress.code == code) {
+            if (Objects.equals(progress.code, code)) {
                 return progress;
             }
         }
-        throw new IllegalArgumentException("Invalid progress code: " + code);
+        throw new CommonException(ErrorCode.PROGRESS_NOT_FOUND);
     }
 
 
