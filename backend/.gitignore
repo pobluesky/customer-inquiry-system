@@ -47,4 +47,4 @@ out/
 .DS_Store
 
 ### jwt ###
-src/main/resources/application-jwt.properties
+src/main/resources/application-local.properties
