@@ -71,6 +71,9 @@ public class CustomerService {
 
     @Transactional
     public void deleteCustomerById(Long userId) {
-        customerRepository.deleteById(userId);
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        customer.deleteUser();
     }
 }

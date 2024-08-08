@@ -4,6 +4,8 @@ function Category({ categoryName }) {
     return (
         <div style={{ width: '132px',
                       height: '28px',
+                      lineHeight: '28px',
+                      textAlign: 'left',
                       padding: '0 16px 0 12px',
                       backgroundColor: '#e3e3e3',
                       color: '#7b7b7b',

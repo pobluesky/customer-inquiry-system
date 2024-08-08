@@ -3,8 +3,11 @@ package com.pobluesky.backend.domain.user.service;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
@@ -76,6 +79,9 @@ public class ManagerService {
 
     @Transactional
     public void deleteManagerById(Long userId) {
-        managerRepository.deleteById(userId);
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        manager.deleteUser();
     }
 }

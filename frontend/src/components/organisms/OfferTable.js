@@ -1,7 +1,7 @@
 import React from 'react';
 import OfferTableInput from '../atoms/OfferTableInput';
 import SearchInput from '../mocules/SearchInput';
-import { Container, Scroll, Table, Table_Head, Table_Body, Colspan } from '../../assets/css/Table.css';
+import { Table_Container, Table_Scroll, Table_Table, Table_Table_Head, Table_Table_Body, Table_Colspan } from '../../assets/css/Offersheet.css';
 
 function OfferSheet() {
     const columnSample = ['Product', 'Specification', 'Surface', 'Usage', 'Size', 'Quantity(mt)', 'Price', 'Unit Weight(kg)'];
@@ -11,20 +11,20 @@ function OfferSheet() {
     const countrySample = ['Austrailan Dollar', 'Japan Yen', 'Korean Won'];
 
     return (
-        <div className={Container}>
-            <div className={Scroll}>
-                <table className={Table}>
-                    <thead className={Table_Head}>
+        <div className={Table_Container}>
+            <div className={Table_Scroll}>
+                <table className={Table_Table}>
+                    <thead className={Table_Table_Head}>
                         <tr>
                             {columnSample.map((column, idx) => (
                                 <React.Fragment key={idx}>
                                     {column === 'Size' ? (
                                         <th colSpan={3}>
-                                            <div className={Colspan}>{column}</div>
+                                            <div className={Table_Colspan}>{column}</div>
                                         </th>
                                     ) : column === 'Unit Weight(kg)' ? (
                                         <th colSpan={2}>
-                                            <div className={Colspan}>{column}</div>
+                                            <div className={Table_Colspan}>{column}</div>
                                         </th>
                                     ) : (
                                         <th>{column}</th>
@@ -34,11 +34,18 @@ function OfferSheet() {
                         </tr>
                         <tr>
                             {columnSample.map((column, idx) => (
-                                <React.Fragment key={idx}>{column === 'Size' ? sizeSample.map((size, sizeIdx) => <th key={sizeIdx}>{size}</th>) : column === 'Unit Weight(kg)' ? weightSample.map((weight, weightIdx) => <th key={weightIdx}>{weight}</th>) : <th />}</React.Fragment>
+                                <React.Fragment key={idx}>
+                                    {column === 'Size' ? sizeSample.map((size, sizeIdx) => 
+                                        <th key={sizeIdx}>{size}</th>
+                                    ) : column === 'Unit Weight(kg)' ? 
+                                        weightSample.map((weight, weightIdx) => <th key={weightIdx}>{weight}</th>
+                                    ) : <th />
+                                    }
+                                </React.Fragment>
                             ))}
                         </tr>
                     </thead>
-                    <tbody className={Table_Body}>
+                    <tbody className={Table_Table_Body}>
                         <tr>
                             {columnSample.map((column, idx) => (
                                 <React.Fragment key={idx}>
