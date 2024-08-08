@@ -45,3 +45,6 @@ out/
 
 ### others ###
 .DS_Store
+
+### jwt ###
+./src/main/resources/application-jwt.properties
