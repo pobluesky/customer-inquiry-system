@@ -65,11 +65,11 @@ public class ManagerController {
     @PutMapping("/{userId}")
     public ResponseEntity<JsonResult> updateManagerById(
         @PathVariable Long userId,
-        @RequestBody ManagerUpdateRequestDTO customerUpdateRequestDTO
+        @RequestBody ManagerUpdateRequestDTO managerUpdateRequestDTO
     ) {
         ManagerResponseDTO response = managerService.updateManagerById(
             userId,
-            customerUpdateRequestDTO
+            managerUpdateRequestDTO
         );
 
         return ResponseEntity.status(HttpStatus.OK)
