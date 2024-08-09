@@ -1,14 +1,44 @@
 import React from 'react';
+
 // import PropTypes from 'prop-types';
 
-function Button({ onClick, btnName, width, height, margin, backgroundColor, textColor, fontSize, border, borderRadius, float }) {
+function Button({
+  onClick,
+  btnName,
+  width,
+  height,
+  margin,
+  backgroundColor,
+  textColor,
+  fontSize,
+  border,
+  borderRadius,
+  float,
+  fontWeight,
+  alignSelf,
+  justifySelf
+}) {
   return (
-            <button
-                onClick={onClick}
-                style={{ width: `${width}`, height: `${height}`, margin: `${margin}`, backgroundColor: `${backgroundColor}`, color: `${textColor}`, fontSize: `${fontSize}`, border: `${border}`, borderRadius: `${borderRadius}`, float: `${float}`, cursor: 'pointer'}}
-            >
-            {btnName}
-            </button>
+      <button
+          onClick={onClick}
+          style={{
+            width: `${width}`,
+            height: `${height}`,
+            margin: `${margin}`,
+            backgroundColor: `${backgroundColor}`,
+            color: `${textColor}`,
+            fontSize: `${fontSize}`,
+            border: `${border}`,
+            borderRadius: `${borderRadius}`,
+            float: `${float}`,
+            cursor: 'pointer',
+            fontWeight: `${fontWeight}`,
+            alignSelf: `${alignSelf}`,
+            justifySelf: `${justifySelf}`,
+          }}
+      >
+        {btnName}
+      </button>
   );
 }
 
@@ -25,5 +55,5 @@ function Button({ onClick, btnName, width, height, margin, backgroundColor, text
 //     disabled: PropTypes.string.isRequired,
 //     cursor: PropTypes.string.isRequired
 // };
-  
+
 export default Button;
