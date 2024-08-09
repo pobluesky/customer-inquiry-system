@@ -12,11 +12,10 @@ import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.global.security.JwtTokenProvider;
 
 import io.jsonwebtoken.Claims;
+import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,25 +34,21 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public JwtToken signIn(String email, String password) {
-        Customer customer = customerRepository.findByEmail(email)
+        User user = Stream.of(
+                customerRepository.findByEmail(email),
+                managerRepository.findByEmail(email)
+            )
+            .flatMap(Optional::stream)
+            .findFirst()
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!passwordEncoder.matches(password, customer.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CommonException(ErrorCode.INVALID_PASSWORD);
         }
-
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//            new UsernamePasswordAuthenticationToken(email, password);
-//
-//        Authentication authentication = authenticationManagerBuilder
-//            .getObject()
-//            .authenticate(authenticationToken);
 
         return jwtTokenProvider.generateToken(email, "USER");
     }
