@@ -28,14 +28,14 @@ public class QuestionService {
 
     // InquiryId로 문의 조회 및 질문 등록
     @Transactional
-    public QuestionResponseDTO createQuestion(Long inquiryId, Long customerId, QuestionCreateRequestDTO dto) {
-        Inquiry inquiry = inquiryRepository
-            .findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
+    public QuestionResponseDTO createQuestion(Long customerId, Long inquiryId, QuestionCreateRequestDTO dto) {
         Customer customer = customerRepository
             .findById(customerId)
            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository
+            .findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         Question question = dto.toQuestionEntity(inquiry, customer);
         Question savedQuestion = questionRepository.save(question);
@@ -52,7 +52,7 @@ public class QuestionService {
             .collect(Collectors.toList());
     }
 
-    // 질문 번호로 질문 상세 조회 (1개)
+    // 질문 번호별 질문 조회
     @Transactional(readOnly = true)
     public QuestionResponseDTO getQuestionByQuestionId(Long questionId) {
         Question question = questionRepository.findById(questionId)
@@ -61,7 +61,7 @@ public class QuestionService {
         return QuestionResponseDTO.from(question);
     }
 
-    // 고객 번호로 질문 전체 조회 (1개 이상)
+    // 고객 번호별 질문 조회
     @Transactional(readOnly = true)
     public List<QuestionResponseDTO> getQuestionByCustomerId(Long customerId) {
         List<Question> question = questionRepository.findByCustomer_CustomerId(customerId);

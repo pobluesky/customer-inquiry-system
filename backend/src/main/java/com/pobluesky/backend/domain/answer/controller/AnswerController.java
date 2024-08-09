@@ -17,21 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerController {
     private final AnswerService answerService;
 
-    // 답변 등록 (담당자)
     @PostMapping("/{questionId}")
-    @Operation(summary = "답변 등록", description = "담당자는 questionId로 상세 질문을 구분하여 답변을 등록한다.")
+    @Operation(summary = "질문 번호로 답변 등록(담당자)", description = "담당자는 질문 번호로 질문을 검색하고 답변을 등록한다.")
     public ResponseEntity<JsonResult> createAnswer(
         @PathVariable Long questionId,
         @RequestBody AnswerCreateRequestDTO answerCreateRequestDTO) {
-        AnswerResponseDTO response = answerService.createAnswer(answerCreateRequestDTO, questionId);
+        AnswerResponseDTO response = answerService.createAnswer(questionId, answerCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
-
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    // 상세 답변 조회 (고객사)
     @GetMapping("/customer/{questionId}")
-    @Operation(summary = "답변 조회", description = "고객사는 상세 답변을 questionId로 조회한다.")
+    @Operation(summary = "질문 번호로 답변 조회(고객사)", description = "고객사는 본인의 질문에 대한 상세 답변을 질문 번호로 조회한다.")
     public ResponseEntity<JsonResult> getAnswerByInquiryId(@PathVariable Long questionId) {
         AnswerResponseDTO response = answerService.getAnswerById(questionId);
 
