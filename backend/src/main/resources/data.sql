@@ -4,7 +4,7 @@ VALUES
     ('John Doe', 'john@example.com', 'password123', '123-456-7890', true, 'CUST001', 'ABC Corp', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Jane Smith', 'jane@example.com', 'password456', '987-654-3210', true, 'CUST002', 'XYZ Inc', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Heejin', 'heejin@example.com', 'passwor1011', '777-777-7777', true, 'CUST004', 'Mr.Son', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('Michael Jackson', 'michael@example.com', 'password1011', '777-777-7777', true, 'CUST004', 'Mr.Son', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Managers
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
