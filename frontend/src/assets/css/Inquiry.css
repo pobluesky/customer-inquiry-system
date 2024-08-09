@@ -20,19 +20,22 @@
   font-weight: bold;
 }
 
-._Inquiry {
-  display: flex;
+._InquiryItem {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding: 10px 80px 30px 80px;
+}
+
+._InquiryBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1.5fr;
   justify-content: center;
   border-radius: 0 20px 20px 20px;
   border: 1px solid #C1C1C1;
-  width: 90%;
-  height: 90px;
-  margin-top: -10vh;
-  margin-left: 7vh;
 }
 
-._InquiryItem {
-  margin: 30px auto;
+._Inquiry {
+  display: grid;
 }
 
 ._Product {
@@ -49,18 +52,24 @@
   margin-top: -2vh;
 }
 
-._InquirySearchBox {
-  width: 89%;
+._InquirySearch {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
   height: 280px;
   border-radius: 15px;
   border: 1px solid #C1C1C1;
   padding: 5px;
-  margin: 50px auto;
+  margin: 60px;
+}
+
+._InquirySearchBox {
+  display: grid;
+  grid-template-rows: auto auto auto;
 }
 
 ._SearchBox {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 2fr 1fr 3fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 2.5fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
   grid-template-rows: repeat(3, 50px); /* 3행의 높이를 100px로 설정 */
 }
 
