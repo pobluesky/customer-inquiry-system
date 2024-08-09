@@ -9,6 +9,8 @@ import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ public class InquiryController {
 
     // 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}")
+    @Operation(summary = "고객사 Inquiry 전체 조회")
     public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
         List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
 
@@ -38,6 +41,7 @@ public class InquiryController {
 
     // 상세 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
+    @Operation(summary = "고객사 Inquiry 상세 조회")
     public ResponseEntity<JsonResult> getInquiryDetail(
         @PathVariable Long customerId,
         @PathVariable Long inquiryId) {
@@ -49,6 +53,7 @@ public class InquiryController {
 
     //progress별 조회
     @GetMapping("/inquiries/progress/{code}")
+    @Operation(summary = "Progress별 Inquiry 조회")
     public ResponseEntity<JsonResult> getInquiryByProgress(@PathVariable Integer code) {
         Progress progress = Progress.fromCode(code);
         List<InquiryResponseDTO> response = inquiryService.getInquiriesByProgress(progress);
@@ -58,6 +63,7 @@ public class InquiryController {
     }
 
     @PostMapping("/customers/inquiries/{customerId}")
+    @Operation(summary = "고객사 Inquiry 생성")
     public ResponseEntity<JsonResult> createInquiry(
         @PathVariable Long customerId,
         @RequestBody InquiryCreateRequestDTO dto) {
@@ -68,6 +74,7 @@ public class InquiryController {
     }
 
     @PutMapping("/customers/inquiries/{inquiryId}")
+    @Operation(summary = "고객사 Inquiry 수정")
     public ResponseEntity<JsonResult> updateInquiryById(
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
@@ -79,22 +86,19 @@ public class InquiryController {
     }
 
     @DeleteMapping("/customers/inquiries/{inquiryId}")
+    @Operation(summary = "고객사 Inquiry 삭제")
     public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
         inquiryService.deleteInquiryById(inquiryId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
-
     @GetMapping("/managers/inquiries")
+    @Operation(summary = "담당자 Inquiry 조회")
     public ResponseEntity<JsonResult> getInquiriesForManager() {
         List<InquiryResponseDTO> response = inquiryService.getInquiries();
 
         return ResponseEntity.status((HttpStatus.OK))
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
-
-
-
-
 }

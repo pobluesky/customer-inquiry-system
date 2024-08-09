@@ -36,7 +36,7 @@ public class QualityController {
             .body(ResponseFactory.getSuccessJsonResult(allQualities));
     }
 
-    @Operation(summary = "inquiryId 별 품질검토 조회")
+    @Operation(summary = "inquiryId 별 품질검토 작성")
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createQuality(
         @RequestBody QualityCreateRequestDTO dto,
