@@ -140,7 +140,7 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_REFUSED);
         }
 
-        Question question = questionRepository.findById(collaboration.getQuestion().getId())
+        Question question = questionRepository.findById(collaboration.getQuestion().getQuestionId())
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         if(question.getStatus() == QuestionStatus.COMPLETED) {
