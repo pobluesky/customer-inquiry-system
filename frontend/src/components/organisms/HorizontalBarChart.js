@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 
+const data = [{productType: '자동차', progress: '최종검토'},
+                    {productType: '자동차', progress: '1차 검토'},
+                    {productType: '자동차', progress: '접수'}]
+
+const dataSample = [{productType: '자동차', progress: [100, 200, 300, 400]}, {productType: '열연', progress: [400, 300, 200, 100]}];
+
 class HorizontalBarChart extends Component {
     constructor(props) {
         super(props);
@@ -8,7 +14,7 @@ class HorizontalBarChart extends Component {
         this.state = {
             options: {
                 title: {
-                    text: '이번 달 제품별 문의 건수',
+                    text: `${productType}`,
                     align: 'center',
                     style: {
                         fontSize: '20px',
@@ -71,14 +77,14 @@ class HorizontalBarChart extends Component {
                     labels: { show: false },
                     axisTicks: { show: false },
                     axisBorder: { show: false },
-                    categories: ['열연', '후판', '표면처리', '자동차'],
+                    // categories: ['열연', '후판', '표면처리', '자동차'],
                     type: 'category', // category, datetime, numeric
                 },
             },
             series: [
                 {
                     name: 'inquiry',
-                    data: [91, 75, 60, 40],
+                    data: `${progress}`,
                 },
             ],
         };
