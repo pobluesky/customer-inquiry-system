@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,11 @@ public class InquiryService {
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
     }
+
+//    @Transactional(readOnly = true)
+//    public Page<InquiryResponseDTO> getInquiries(Pageable pageable, String sortBy) {
+//        return inquiryRepository.findInquiries(pageable, sortBy);
+//    }
 
     @Transactional
     public List<InquiryResponseDTO> getInquiries() {

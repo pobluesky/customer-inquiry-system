@@ -41,7 +41,7 @@ public class JwtTokenProvider {
     }
 
     public JwtToken generateToken(String email, String role) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(email));
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
         Date now = new Date();
@@ -69,13 +69,14 @@ public class JwtTokenProvider {
             .build();
     }
 
+
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("auth") == null)
+        if (claims.get("role") == null)
             throw new CommonException(ErrorCode.INVALID_TOKEN);
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth")
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("role")
                 .toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -108,7 +109,6 @@ public class JwtTokenProvider {
 
     public Claims parseClaims(String accessToken) {
         try {
-
             return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

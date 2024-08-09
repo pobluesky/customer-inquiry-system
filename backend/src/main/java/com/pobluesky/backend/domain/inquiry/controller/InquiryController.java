@@ -10,6 +10,9 @@ import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -35,6 +39,20 @@ public class InquiryController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
+
+    // 페이징 & 정렬
+//    @GetMapping("/inquiries")
+//    public ResponseEntity<JsonResult> getInquiries(
+//        @RequestParam(defaultValue = "0") int page,
+//        @RequestParam(defaultValue = "5") int size,
+//        @RequestParam(defaultValue = "latest") String sortBy) {
+//
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<InquiryResponseDTO> response = inquiryService.getInquiries(pageable, sortBy);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//            .body(ResponseFactory.getSuccessJsonResult(response));
+//    }
 
     // 상세 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
