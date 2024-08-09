@@ -5,6 +5,8 @@ import dummyInquiryData from './dummyInquiryData';
 import Path from "../../components/atoms/Path";
 import InquirySearchBox from "../../components/organisms/InquirySearchBox";
 import SearchResult from "../../components/mocules/SearchResult";
+import {Link} from "react-router-dom";
+import {_Link} from "../../assets/css/Inquiry.css";
 
 const InqList = () => {
   return (
@@ -15,7 +17,7 @@ const InqList = () => {
         <SearchResult searchResult={"54"}/>
 
         {dummyInquiryData.map((inquiryData, index) => (
-                <InquiryItem key={index} inquiryData={inquiryData} />
+                <Link to="/inq-item" className={_Link}><InquiryItem key={index} inquiryData={inquiryData} /></Link>
           ))}
       </div>
   );

@@ -1,3 +1,3 @@
-import Inq from './Inq';
+import Inq from "./Inq";
 
 export { Inq };

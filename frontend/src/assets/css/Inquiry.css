@@ -115,3 +115,15 @@
   color: #F02323;
   font-weight: bold;
 }
+
+._Link {
+  text-decoration: none;
+  color: inherit;
+}
+
+._Link:hover {
+  color: #007AFF;
+  transition: color 0.1s ease-in-out;
+  cursor: pointer;
+  font-weight: bolder;
+}
