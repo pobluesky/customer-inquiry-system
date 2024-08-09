@@ -11,6 +11,7 @@ import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class ManagerController {
     private final CustomUserDetailsService userDetailsService;
 
     @GetMapping
+    @Operation(summary = "담당자 조회")
     public ResponseEntity<JsonResult> getUsers() {
         List<ManagerResponseDTO> response = managerService.getAllManagers();
         
@@ -47,6 +49,7 @@ public class ManagerController {
     }
 
     @PostMapping("/sign-in")
+    @Operation(summary = "담당자 로그인")
     public JwtToken signIn(@RequestBody LogInDto logInDto) {
         String email = logInDto.email();
         String password = logInDto.password();
@@ -55,6 +58,7 @@ public class ManagerController {
     }
 
     @PostMapping("/sign-up")
+    @Operation(summary = "담당자 회원가입")
     public ResponseEntity<JsonResult> signUp(@RequestBody ManagerCreateRequestDTO signUpDto) {
         ManagerResponseDTO response = managerService.signUp(signUpDto);
 
@@ -63,6 +67,7 @@ public class ManagerController {
     }
 
     @PutMapping("/{userId}")
+    @Operation(summary = "담당자 정보 수정")
     public ResponseEntity<JsonResult> updateManagerById(
         @PathVariable Long userId,
         @RequestBody ManagerUpdateRequestDTO managerUpdateRequestDTO
@@ -77,6 +82,7 @@ public class ManagerController {
     }
 
     @DeleteMapping("/{userId}")
+    @Operation(summary = "담당자 삭제")
     public ResponseEntity<CommonResult> deleteUserById(@PathVariable Long userId) {
         managerService.deleteManagerById(userId);
 
