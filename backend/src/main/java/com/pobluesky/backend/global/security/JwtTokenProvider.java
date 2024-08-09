@@ -72,10 +72,10 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("auth") == null)
+        if (claims.get("role") == null)
             throw new CommonException(ErrorCode.INVALID_TOKEN);
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth")
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("role")
                 .toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
