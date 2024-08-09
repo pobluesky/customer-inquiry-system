@@ -23,11 +23,11 @@ public class Answer extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Question question; // voc 번호
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의 번호
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer; // 고객사 번호
 
@@ -48,12 +48,6 @@ public class Answer extends BaseEntity {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
-        this.answerTitle = answerTitle;
-        this.answerContents = answerContents;
-    }
-    public void updateAnswer(
-        String answerContents
-    ) {
         this.answerTitle = answerTitle;
         this.answerContents = answerContents;
     }

@@ -27,6 +27,7 @@ public enum ErrorCode {
     PROGRESS_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "P0002", "존재하지 않는 진행단계입니다."),
     QUESTION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 질문입니다."),
     QUESTION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0003", "이미 답변이 완료된 질문입니다."),
+    ANSWER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A0001", "존재하지 않는 답변입니다."),
     COLLABORATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "C0001", "존재하지 않는 협업입니다."),
     COLLABORATION_ALREADY_EXISTS(HttpStatus.INTERNAL_SERVER_ERROR, "C0002", "이미 존재하는 협업입니다."),
     COLLABORATION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "C0003", "이미 완료된 협업입니다."),
