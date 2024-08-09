@@ -1,7 +1,7 @@
 import React from 'react';
-import Label from "../atoms/Label";
-import Inquiry from "../mocules/Inquiry";
+import ProjectLabel from "../mocules/ProjectLabel";
 import {_InquiryItem} from '../../assets/css/Inquiry.css';
+import InquiryBox from "../mocules/InquiryBox";
 
 const InquiryItem = ({inquiryData}) => {
   const {
@@ -19,11 +19,11 @@ const InquiryItem = ({inquiryData}) => {
 
   return (
       <div className={_InquiryItem}>
-        <Label text={project}/>
-        <Inquiry inquiryId={inquiryId} inquiryType={inquiryType}
-                 salesPerson={salesPerson} progress={progress} customer={customer}
-                 productType={productType} inquiryStandard={inquiryStandard}
-                 thickness={thickness} width={width}/>
+        <ProjectLabel text={project}/>
+        <InquiryBox inquiryId={inquiryId} inquiryType={inquiryType}
+                    salesPerson={salesPerson} progress={progress} customer={customer}
+                    productType={productType} inquiryStandard={inquiryStandard}
+                    thickness={thickness} width={width} />
       </div>
   );
 };

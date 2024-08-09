@@ -10,7 +10,7 @@ const SearchResult = ({searchResult}) => {
           &nbsp;건
         </p>
         <Button btnName={"엑셀 다운로드"} textColor={"#ffffff"} borderRadius={"17px"}
-                width={"100px"} height={"35px"} fontWeight={"700"}
+                width={"120px"} height={"35px"} fontWeight={"800"}
                 backgroundColor={"#03507D"} border={"none"} margin={"25px 0 0 20px"}/>
       </div>
   );
