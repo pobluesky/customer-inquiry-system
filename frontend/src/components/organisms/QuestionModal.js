@@ -9,6 +9,7 @@ import qmark from '../../assets/css/icons/voc/question_mark.svg';
 import amark from '../../assets/css/icons/voc/answer_mark.svg';
 import folder from '../../assets/css/icons/voc/question_folder.svg';
 import { Modal_Container, Modal_Outside, _Tag, Modal_Part_Question, Modal_Part_Answer, _Button, Answering } from '../../assets/css/Voc.css';
+import Swal from 'sweetalert2';
 
 const BeforeAnswer = styled.div`
     width: 840px;
@@ -40,6 +41,33 @@ function QuestionModal({ title, contents, files, status, onClose }) {
 
     const answerTitleChange = (e) => {
         setAnswerTitle(e.target.value);
+    };
+
+    const errorMsgTitle = () => {
+        Swal.fire({ icon: 'error', text: <div style={{color:'#f00', fontSize:'15px'}}> 제목은 1~20자까지 입력 가능합니다. </div> });
+    };
+
+    const errorMsgContents = () => {
+        Swal.fire({ icon: 'error', text: '답변을 10자 이상 입력하세요.' });
+    };
+
+    const checkAnswer = () => {
+        Swal.fire({
+            icon: 'success',
+            title: `<div style="font-size: 20px; font-weight : bolder;">답변이 등록되었습니다.</div>`,
+        });
+    };
+
+    const completedAnswering = () => {
+        if (answerTitle.length > 21 || answerTitle.length < 1) {
+            return errorMsgTitle();
+        } else if (originalText.length < 10) {
+            return errorMsgContents();
+        } else {
+            setStatus('completed');
+            setAnswerContents(originalText);
+            setAnswering(false);
+        }
     };
 
     return (
@@ -83,18 +111,7 @@ function QuestionModal({ title, contents, files, status, onClose }) {
                 )}
                 <div className={_Button}>
                     {/* [닫기] */}
-                    <Button
-                        btnName={'닫기'}
-                        onClick={onClose}
-                        width={'96px'}
-                        height={'32px'}
-                        margin={'0 0 24px 0'}
-                        backgroundColor={'#2f4f79'}
-                        textColor={'#ffffff'}
-                        border={`none`}
-                        borderRadius={'10px'}
-                        float={'right'}
-                    />
+                    <Button btnName={'닫기'} onClick={onClose} width={'96px'} height={'32px'} margin={'0 0 24px 0'} backgroundColor={'#2f4f79'} textColor={'#ffffff'} border={`none`} borderRadius={'10px'} float={'right'} />
                     {/* [답변하기] */}
                     {getStatus === 'ready' && !isAnswering && (
                         <Button
@@ -117,8 +134,8 @@ function QuestionModal({ title, contents, files, status, onClose }) {
                         <Button
                             btnName={'답변 등록'}
                             onClick={() => {
-                                console.log('버튼 클릭');
-                                answerTitle.length > 21 || answerTitle.length < 1 ? alert('제목은 1~20자까지 입력 가능합니다.') : originalText.length < 10 ? alert('10자 이상 답변을 입력하세요.') : (setStatus('completed'), setAnswerContents(originalText), setAnswering(false));
+                                completedAnswering();
+                                checkAnswer();
                             }}
                             width={'96px'}
                             height={'32px'}
