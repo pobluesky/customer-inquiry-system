@@ -8,9 +8,12 @@ import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import java.util.ArrayList;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,28 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomerService {
+
+    private final CustomUserDetailsService customUserDetailsService;
+
     private final CustomerRepository customerRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public CustomerResponseDTO signUp(CustomerCreateRequestDTO signUpDto) {
+        if (customerRepository.existsByEmail(signUpDto.email())) {
+            throw new CommonException(ErrorCode.ALREADY_EXISTS_EMAIL);
+        }
+
+        String encodedPassword = passwordEncoder.encode(signUpDto.password());
+
+        List<String> roles = new ArrayList<>();
+        roles.add("USER");
+
+        Customer customer = signUpDto.toCustomerEntity(encodedPassword, roles);
+
+        return CustomerResponseDTO.from(customerRepository.save(customer));
+    }
 
     @Transactional(readOnly = true)
     public List<CustomerResponseDTO> getAllCustomers() {
@@ -33,23 +57,19 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerResponseDTO createCustomer(CustomerCreateRequestDTO dto) {
-        Customer customer = dto.toCustomerEntity();
+    public CustomerResponseDTO updateCustomerById(
+        String token,
+        CustomerUpdateRequestDTO customerUpdateRequestDTO
+    ) {
+        Long userId = customUserDetailsService.parseToken(token);
 
-        Customer savedCustomer = customerRepository.save(customer);
-
-        return CustomerResponseDTO.from(savedCustomer);
-    }
-
-    @Transactional
-    public CustomerResponseDTO updateCustomerById(Long userId, CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         customer.updateCustomer(
             customerUpdateRequestDTO.name(),
             customerUpdateRequestDTO.email(),
-            customerUpdateRequestDTO.password(),
+            passwordEncoder.encode(customerUpdateRequestDTO.password()),
             customerUpdateRequestDTO.phone()
         );
 
