@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router';
 import { Intro } from './pages/intro';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
+import { InqList } from "./pages/inq-list";
 import { Inq } from './pages/inq';
 import { Voc } from './pages/voc';
 import { DashBoard } from './pages/dashboard';
@@ -16,6 +17,7 @@ function App() {
                 <Route index path="" element={<Intro />} />
                 <Route path="login" element={<Login />} />
                 <Route path="join" element={<Join />} />
+                <Route path="inq-list" element={<InqList />} />
                 <Route path="inq" element={<Inq />} />
                 <Route path="voc" element={<Voc />} />
                 <Route path="dashboard" element={<DashBoard />} />
