@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.quality.service.QualityService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class QualityController {
     private final QualityService qualityService;
 
+    @Operation(summary = "품질검토 전체 조회")
     @GetMapping
     public ResponseEntity<JsonResult> getQualities() {
         List<QualityResponseDTO> allQualities = qualityService.getAllQualities();
@@ -34,6 +36,7 @@ public class QualityController {
             .body(ResponseFactory.getSuccessJsonResult(allQualities));
     }
 
+    @Operation(summary = "inquiryId 별 품질검토 조회")
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createQuality(
         @RequestBody QualityCreateRequestDTO dto,
@@ -44,6 +47,7 @@ public class QualityController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "품질검토 조회 수정")
     @PutMapping("/{qualityId}")
     public ResponseEntity<JsonResult> updateQualityById(
         @PathVariable Long qualityId,
@@ -55,6 +59,7 @@ public class QualityController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "품질검토 삭제")
     @DeleteMapping("/{qualityId}")
     public ResponseEntity<CommonResult> deleteQualityById(@PathVariable Long qualityId) {
         qualityService.deleteQualityById(qualityId);

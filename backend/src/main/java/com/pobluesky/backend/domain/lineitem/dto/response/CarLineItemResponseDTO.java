@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.lineitem.dto.response;
 
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
@@ -30,7 +31,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long lineItemId;
 
-    private Inquiry inquiry;
+    private Long inquiryId;
 
     private Lab lab;
 
@@ -102,7 +103,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
-            .inquiry(carLineItem.getInquiry())
+            .inquiryId(carLineItem.getInquiry().getInquiryId())
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
             .standardOrg(carLineItem.getStandardOrg())

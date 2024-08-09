@@ -4,12 +4,15 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+import com.pobluesky.backend.domain.user.service.CustomerService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,11 +96,22 @@ public class InquiryService {
 
     }
 
-
+    @Transactional(readOnly = true)
     public InquiryResponseDTO getInquiryDetail(Long customerId, Long inquiryId) {
+        Customer customer = customerRepository.findById(customerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
         Inquiry inquiry = (Inquiry) inquiryRepository.findByCustomer_CustomerIdAndInquiryId(customerId,inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         return InquiryResponseDTO.from(inquiry);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InquiryResponseDTO> getInquiriesByProgress(Progress progress) {
+        List<Inquiry> inquiries = inquiryRepository.findByProgress(progress);
+
+        return inquiries.stream()
+            .map(InquiryResponseDTO::from)
+            .collect(Collectors.toList());
     }
 }

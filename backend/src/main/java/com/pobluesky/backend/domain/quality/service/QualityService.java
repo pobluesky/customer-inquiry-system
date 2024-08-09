@@ -50,7 +50,7 @@ public class QualityService {
 
         quality.updateQuality(
             qualityUpdateRequestDTO.qualityReviewInfo(),
-            qualityUpdateRequestDTO.requireAddContents()
+            qualityUpdateRequestDTO.qualityComments()
         );
 
         return QualityResponseDTO.from(quality);

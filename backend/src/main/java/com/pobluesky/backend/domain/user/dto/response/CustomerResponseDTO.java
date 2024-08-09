@@ -17,6 +17,7 @@ public record CustomerResponseDTO(
 ) {
 
     public static CustomerResponseDTO from(Customer customer) {
+
         return CustomerResponseDTO.builder()
             .userId(customer.getCustomerId())
             .name(customer.getName())

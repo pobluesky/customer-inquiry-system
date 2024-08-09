@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.lineitem.dto.request.CarLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.CarLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.CarLineItemResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.CarLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LineItemService {
 
     private final CarLineItemRepository carLineItemRepository;
@@ -66,7 +69,7 @@ public class LineItemService {
     @Transactional(readOnly = true)
     public List<LineItemResponseDTO> getLineItemsByInquiry(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         List<CarLineItem> lineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
 
@@ -163,7 +166,7 @@ public class LineItemService {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
-                return CarLineItemResponseDTO.of(carLineItem);
+                return CarLineItemSummaryResponseDTO.of(carLineItem);
             // 다른 제품 유형 처리
             default:
                 throw new CommonException(ErrorCode.INVALID_REQUEST);
