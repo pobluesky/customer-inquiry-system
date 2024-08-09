@@ -60,23 +60,23 @@ VALUES
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
 
 -- CUSTOMER_NOTIFICATION
-INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_id, notification_contents)
+INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_contents)
 VALUES
-    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
-    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
-    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
 
 -- MANAGER_NOTIFICATION
-INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_id, notification_contents)
+INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_contents)
 VALUES
-    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
-    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
-    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
 
 -- QUESTION
-INSERT INTO question (inquiry_id, title, contents, files, status)
+INSERT INTO question (created_date, modified_date, inquiry_id, customer_id, title, contents, files, status)
 VALUES
-    (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'READY'),
-    (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'COMPLETED'),
-    (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'COMPLETED'),
-    (3, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'READY');
+    ('2024-08-01 10:00:00', '2024-08-01 10:00:00', 1, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'READY'),
+    ('2024-08-02 11:15:00', '2024-08-02 11:15:00', 2, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'COMPLETED'),
+    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'COMPLETED'),
+    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'READY');

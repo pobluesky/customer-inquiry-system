@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.question.service;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
@@ -27,13 +28,16 @@ public class QuestionService {
 
     // InquiryId로 문의 조회 및 질문 등록
     @Transactional
-    public QuestionResponseDTO createQuestion(Long inquiryId, QuestionCreateRequestDTO dto) {
+    public QuestionResponseDTO createQuestion(Long inquiryId, Long customerId, QuestionCreateRequestDTO dto) {
         Inquiry inquiry = inquiryRepository
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Long customerId = inquiry.getCustomer().getCustomerId();
-        Question question = dto.toQuestionEntity(inquiry);
+        Customer customer = customerRepository
+            .findById(customerId)
+           .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = dto.toQuestionEntity(inquiry, customer);
         Question savedQuestion = questionRepository.save(question);
         return QuestionResponseDTO.from(savedQuestion);
     }

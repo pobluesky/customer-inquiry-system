@@ -116,7 +116,7 @@ public class NotificationController {
             .body(ResponseFactory.getSuccessJsonResult(notification));
     }
 
-    @Operation(summary = "고객사 알림 상태 변경(안 읽음 -> 읽음)")
+    @Operation(summary = "담당자 알림 상태 변경(안 읽음 -> 읽음)")
     @PutMapping("/managers/{notificationId}")
     public ResponseEntity<JsonResult> updateManagerNotificationIsRead(
         @PathVariable Long notificationId,
