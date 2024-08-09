@@ -16,7 +16,7 @@ public record QuestionResponseDTO(
     public static QuestionResponseDTO from(Question question) {
         return QuestionResponseDTO.builder()
             .inquiryId(question.getInquiry().getInquiryId())
-            .customerId(question.getInquiry().getCustomer().getCustomerId())
+            .customerId(question.getCustomer().getCustomerId())
             .title(question.getTitle())
             .contents(question.getContents())
             .files(question.getFiles())

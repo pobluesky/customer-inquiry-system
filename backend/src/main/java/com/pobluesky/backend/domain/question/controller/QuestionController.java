@@ -53,12 +53,13 @@ public class QuestionController {
     }
 
     // InquiryId로 문의를 검색하고, 이를 이용하여 질문 등록 (고객사)
-    @PostMapping("/{inquiryId}")
+    @PostMapping("/{inquiryId}/{customerId}")
     @Operation(summary = "문의 등록(고객사)", description = "고객사는 InquiryId로 문의를 검색하고 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @PathVariable Long inquiryId,
+        @PathVariable Long customerId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
-        QuestionResponseDTO response = questionService.createQuestion(inquiryId, questionCreateRequestDTO);
+        QuestionResponseDTO response = questionService.createQuestion(inquiryId, customerId, questionCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
 
             .body(ResponseFactory.getSuccessJsonResult(response));

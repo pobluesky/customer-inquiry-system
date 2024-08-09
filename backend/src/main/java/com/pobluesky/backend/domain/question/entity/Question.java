@@ -2,7 +2,6 @@ package com.pobluesky.backend.domain.question.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의 번호
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer; // 고객사 번호
 
