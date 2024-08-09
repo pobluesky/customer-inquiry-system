@@ -6,6 +6,7 @@ import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineItemController {
 
     private final LineItemService lineItemService;
+
+    @Operation(summary = "inquiryId 별 line-item 조회")
     @GetMapping
     public ResponseEntity<JsonResult> getAllLineItemsByInquiry(@PathVariable Long inquiryId) {
         List<LineItemResponseDTO> response = lineItemService.getLineItemsByInquiry(inquiryId);
@@ -37,6 +40,7 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 line-item 작성")
     @PostMapping
     public ResponseEntity<JsonResult> createLineItem(
         @PathVariable Long inquiryId,
@@ -50,6 +54,7 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 line-item 수정")
     @PutMapping("/update/{lineItemId}")
     public ResponseEntity<JsonResult> updateLineItem(
         @PathVariable Long inquiryId,
@@ -66,6 +71,7 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 line-item 삭제")
     @DeleteMapping("/delete/{lineItemId}")
     public ResponseEntity<CommonResult> deleteLineItem(
         @PathVariable Long inquiryId,
