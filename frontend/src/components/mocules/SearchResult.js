@@ -1,0 +1,19 @@
+import React from 'react';
+import {_Text, _searchResult, _searchCount} from '../../assets/css/Inquiry.css';
+import Button from "../atoms/Button";
+
+const SearchResult = ({searchResult}) => {
+  return (
+      <div className={_searchResult}>
+        <p className={_Text}>검색 결과 : 총&nbsp;
+          <span className={_searchCount}>{searchResult}</span>
+          &nbsp;건
+        </p>
+        <Button btnName={"엑셀 다운로드"} textColor={"#ffffff"} borderRadius={"17px"}
+                width={"100px"} height={"35px"} fontWeight={"700"}
+                backgroundColor={"#03507D"} border={"none"} margin={"25px 0 0 20px"}/>
+      </div>
+  );
+};
+
+export default SearchResult;
