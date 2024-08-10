@@ -8,7 +8,6 @@ import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
-import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import org.springframework.transaction.annotation.Transactional;

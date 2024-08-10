@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.question.controller;
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
 import com.pobluesky.backend.domain.question.service.QuestionService;
-import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
