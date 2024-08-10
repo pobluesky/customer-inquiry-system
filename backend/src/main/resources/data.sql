@@ -77,7 +77,13 @@ VALUES
 -- QUESTION
 INSERT INTO question (created_date, modified_date, inquiry_id, customer_id, title, contents, files, status)
 VALUES
-    ('2024-08-01 10:00:00', '2024-08-01 10:00:00', 1, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'READY'),
+    ('2024-08-01 10:00:00', '2024-08-01 10:00:00', 1, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'COMPLETED'),
     ('2024-08-02 11:15:00', '2024-08-02 11:15:00', 2, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'COMPLETED'),
-    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'COMPLETED'),
+    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'READY'),
     ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'READY');
+
+-- ANSWER
+INSERT INTO answer (created_date, modified_date, inquiry_id, customer_id, question_id, answer_title, answer_contents)
+VALUES
+    (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 1, 'Thank you for joining with us.', 'We will contact you ASAP.'),
+    (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2, 2, 'Reply for your question.', 'We are going to check ASAP.');

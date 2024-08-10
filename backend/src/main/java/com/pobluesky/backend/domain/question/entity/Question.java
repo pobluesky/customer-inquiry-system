@@ -4,11 +4,10 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,14 +53,8 @@ public class Question extends BaseEntity {
         this.status = status;
     }
     public void updateQuestion(
-        String title,
-        String contents,
-        String files,
         QuestionStatus status
     ) {
-        this.title = title;
-        this.contents = contents;
-        this.files = files;
         this.status = status;
     }
 }
