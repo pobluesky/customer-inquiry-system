@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
 
