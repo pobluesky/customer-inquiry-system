@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.answer.service;
 import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
+import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -25,7 +29,50 @@ public class AnswerService {
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
 
-    // 질문 번호로 답변 등록 (담당자)
+    // 고객별 답변 전체 조회 (고객사)
+    @Transactional(readOnly = true)
+    public List<AnswerResponseDTO> getAnswerByCustomerId(Long customerId) {
+        // 고객 ID에 해당하는 모든 답변 조회
+        List<Answer> answers = answerRepository.findAllByCustomer_CustomerId(customerId);
+
+        if (answers.isEmpty()) {
+            throw new CommonException(ErrorCode.ANSWER_NOT_FOUND);
+        }
+
+        // Answer 엔티티 리스트를 AnswerResponseDTO 리스트로 변환하여 반환
+        return answers.stream()
+            .map(AnswerResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    // 고객별 & 질문별 답변 조회 (고객사)
+    @Transactional(readOnly = true)
+    public AnswerResponseDTO getAnswerById(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return AnswerResponseDTO.from(answer);
+    }
+
+    // 답변 전체 조회 (담당자)
+    public List<AnswerResponseDTO> getAnswer() {
+        List<Answer> answer = answerRepository.findAll();
+
+        return answer.stream()
+            .map(AnswerResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    // 질문별 답변 조회 (담당자)
+    @Transactional(readOnly = true)
+    public AnswerResponseDTO getAnswerByQuestionId(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return AnswerResponseDTO.from(answer);
+    }
+
+    // 질문별 답변 작성 (담당자)
     @Transactional
     public AnswerResponseDTO createAnswer(Long questionId, AnswerCreateRequestDTO dto) {
         Question question = questionRepository.findById(questionId)
@@ -48,14 +95,5 @@ public class AnswerService {
         questionRepository.save(question);
 
         return AnswerResponseDTO.from(savedAnswer);
-    }
-
-    // 질문 번호로 답변 조회 (고객사)
-    @Transactional(readOnly = true)
-    public AnswerResponseDTO getAnswerById(Long questionId) {
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
-
-        return AnswerResponseDTO.from(answer);
     }
 }

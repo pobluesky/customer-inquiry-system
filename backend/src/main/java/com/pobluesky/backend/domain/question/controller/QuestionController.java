@@ -39,7 +39,7 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/customer/{customerId}")
     @Operation(summary = "질문 전체 조회(고객사)", description = "고객사는 본인의 모든 질문을 고객 번호로 찾는다.")
     public ResponseEntity<JsonResult> getQuestionByCustomerId(@PathVariable Long customerId) {
         List<QuestionResponseDTO> response = questionService.getQuestionByCustomerId(customerId);
@@ -49,8 +49,8 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/{customerId}/{inquiryId}")
-    @Operation(summary = "질문 등록(고객사)", description = "고객사는 문의에 대해 새로운 질문을 등록한다.")
+    @PostMapping("/customer/{customerId}/{inquiryId}")
+    @Operation(summary = "문의별 질문 작성(고객사)", description = "고객사는 문의에 대해 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @PathVariable Long customerId,
         @PathVariable Long inquiryId,

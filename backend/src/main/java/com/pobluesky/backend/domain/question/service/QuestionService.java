@@ -25,23 +25,7 @@ public class QuestionService {
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
 
-    // InquiryId로 문의 조회 및 질문 등록
-    @Transactional
-    public QuestionResponseDTO createQuestion(Long customerId, Long inquiryId, QuestionCreateRequestDTO dto) {
-        Customer customer = customerRepository
-            .findById(customerId)
-           .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Inquiry inquiry = inquiryRepository
-            .findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
-        Question question = dto.toQuestionEntity(inquiry, customer);
-        Question savedQuestion = questionRepository.save(question);
-        return QuestionResponseDTO.from(savedQuestion);
-    }
-
-    // 전체 질문 조회
+    // 질문 전체 조회 (담당자)
     @Transactional
     public List<QuestionResponseDTO> getQuestion() {
         List<Question> question = questionRepository.findAll();
@@ -51,7 +35,7 @@ public class QuestionService {
             .collect(Collectors.toList());
     }
 
-    // 질문 번호별 질문 조회
+    // 질문 번호별 질문 조회 (담당자)
     @Transactional(readOnly = true)
     public QuestionResponseDTO getQuestionByQuestionId(Long questionId) {
         Question question = questionRepository.findById(questionId)
@@ -60,7 +44,7 @@ public class QuestionService {
         return QuestionResponseDTO.from(question);
     }
 
-    // 고객 번호별 질문 조회
+    // 고객별 질문 조회 (고객사)
     @Transactional(readOnly = true)
     public List<QuestionResponseDTO> getQuestionByCustomerId(Long customerId) {
         List<Question> question = questionRepository.findByCustomer_CustomerId(customerId);
@@ -68,5 +52,21 @@ public class QuestionService {
         return question.stream()
             .map(QuestionResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    // 문의별 질문 작성 (고객사)
+    @Transactional
+    public QuestionResponseDTO createQuestion(Long customerId, Long inquiryId, QuestionCreateRequestDTO dto) {
+        Customer customer = customerRepository
+            .findById(customerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository
+            .findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Question question = dto.toQuestionEntity(inquiry, customer);
+        Question savedQuestion = questionRepository.save(question);
+        return QuestionResponseDTO.from(savedQuestion);
     }
 }
