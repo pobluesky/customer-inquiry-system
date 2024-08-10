@@ -1,15 +1,16 @@
 package com.pobluesky.backend.domain.answer.service;
 
 import com.pobluesky.backend.domain.answer.entity.Answer;
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
-import com.pobluesky.backend.domain.question.entity.Question;
-import com.pobluesky.backend.domain.question.entity.QuestionStatus;
-import com.pobluesky.backend.domain.user.repository.CustomerRepository;
-import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
+import com.pobluesky.backend.domain.question.entity.Question;
+import com.pobluesky.backend.domain.question.entity.QuestionStatus;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
+import com.pobluesky.backend.domain.question.repository.QuestionRepository;
+import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +35,13 @@ public class AnswerService {
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
         }
 
-        Inquiry inquiry = question.getInquiry();
+        Inquiry inquiry = inquiryRepository.findById(question.getInquiry().getInquiryId())
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Question customer = questionRepository.findById(question.getCustomer().getCustomerId())
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+        Customer customer = customerRepository.findById(question.getCustomer().getCustomerId())
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Answer answer = dto.toAnswerEntity(question, inquiry, customer.getCustomer());
+        Answer answer = dto.toAnswerEntity(question, inquiry, customer);
         Answer savedAnswer = answerRepository.save(answer);
 
         question.setStatus(QuestionStatus.COMPLETED);
