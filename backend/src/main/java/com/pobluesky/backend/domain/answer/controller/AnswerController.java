@@ -63,6 +63,7 @@ public class AnswerController {
         @PathVariable Long questionId,
         @RequestBody AnswerCreateRequestDTO answerCreateRequestDTO) {
         AnswerResponseDTO response = answerService.createAnswer(questionId, answerCreateRequestDTO);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }

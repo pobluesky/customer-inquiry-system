@@ -66,6 +66,7 @@ public class QuestionService {
 
         Question question = dto.toQuestionEntity(inquiry, customer);
         Question savedQuestion = questionRepository.save(question);
+
         return QuestionResponseDTO.from(savedQuestion);
     }
 }
