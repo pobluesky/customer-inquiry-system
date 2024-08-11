@@ -44,11 +44,11 @@ function QuestionModal({ title, contents, files, status, onClose }) {
     };
 
     const errorMsgTitle = () => {
-        Swal.fire({ icon: 'error', text: <div style={{color:'#f00', fontSize:'15px'}}> 제목은 1~20자까지 입력 가능합니다. </div> });
+        Swal.fire({ icon: 'warning', text: '제목은 1~20자까지 입력 가능합니다.' });
     };
 
     const errorMsgContents = () => {
-        Swal.fire({ icon: 'error', text: '답변을 10자 이상 입력하세요.' });
+        Swal.fire({ icon: 'warning', text: '답변을 10자 이상 입력하세요.' });
     };
 
     const checkAnswer = () => {
@@ -64,6 +64,7 @@ function QuestionModal({ title, contents, files, status, onClose }) {
         } else if (originalText.length < 10) {
             return errorMsgContents();
         } else {
+            checkAnswer();
             setStatus('completed');
             setAnswerContents(originalText);
             setAnswering(false);
@@ -135,7 +136,6 @@ function QuestionModal({ title, contents, files, status, onClose }) {
                             btnName={'답변 등록'}
                             onClick={() => {
                                 completedAnswering();
-                                checkAnswer();
                             }}
                             width={'96px'}
                             height={'32px'}
