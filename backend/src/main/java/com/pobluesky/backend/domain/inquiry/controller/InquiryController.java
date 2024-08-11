@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.inquiry.controller;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
@@ -41,18 +42,20 @@ public class InquiryController {
     }
 
     // 페이징 & 정렬
-//    @GetMapping("/inquiries")
-//    public ResponseEntity<JsonResult> getInquiries(
-//        @RequestParam(defaultValue = "0") int page,
-//        @RequestParam(defaultValue = "5") int size,
-//        @RequestParam(defaultValue = "latest") String sortBy) {
-//
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<InquiryResponseDTO> response = inquiryService.getInquiries(pageable, sortBy);
-//
-//        return ResponseEntity.status(HttpStatus.OK)
-//            .body(ResponseFactory.getSuccessJsonResult(response));
-//    }
+    @GetMapping("/customers/{customerId}/inquiries")
+    public ResponseEntity<JsonResult> getInquiries(
+        @PathVariable Long customerId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "4") int size,
+        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(required = false) Progress progress) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(customerId, pageable, sortBy, progress);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(inquiries));
+    }
 
     // 상세 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
