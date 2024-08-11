@@ -40,7 +40,7 @@ public class Inquiry extends BaseEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.REMOVE)
     private List<CarLineItem> carLineItemList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
