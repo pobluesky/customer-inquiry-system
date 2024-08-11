@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.collaboration.service.CollaborationService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollaborationController {
     private final CollaborationService collaborationService;
 
+    @Operation(summary = "협업 전체 조회")
     @GetMapping
     public ResponseEntity<JsonResult> getAllCollaborations() {
         List<CollaborationResponseDTO> response = collaborationService.getAllCollaborations();
@@ -36,6 +38,7 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "questionId 별 협업 작성")
     @PostMapping("/{questionId}")
     public ResponseEntity<JsonResult> createCollaboration(
         @PathVariable Long questionId,
@@ -50,6 +53,7 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "questionId, collaborationId 별 협업 조회")
     @GetMapping("/{questionId}/{collaborationId}")
     public ResponseEntity<JsonResult> getCollaboration(
         @PathVariable Long questionId,
@@ -64,6 +68,7 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "collaborationId 별 협업 수락/거절 결정")
     @PutMapping("/{collaborationId}/decision")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @PathVariable Long collaborationId,
@@ -78,6 +83,7 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "collaborationId 별 협업 완료 결정")
     @PutMapping("/{collaborationId}/decision/complete")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @PathVariable Long collaborationId

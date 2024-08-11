@@ -2,24 +2,12 @@ package com.pobluesky.backend.domain.question.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.global.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,14 +53,8 @@ public class Question extends BaseEntity {
         this.status = status;
     }
     public void updateQuestion(
-        String title,
-        String contents,
-        String files,
         QuestionStatus status
     ) {
-        this.title = title;
-        this.contents = contents;
-        this.files = files;
         this.status = status;
     }
 }

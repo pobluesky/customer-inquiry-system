@@ -7,6 +7,7 @@ import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import com.pobluesky.backend.global.util.ResponseFactory;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Operation(summary = "reviewId 별 검토 조회")
     @GetMapping("/{reviewId}")
     public ResponseEntity<JsonResult> getReviewByNo(@PathVariable Long reviewId) {
         ReviewResponseDTO reviewById = reviewService.getReviewById(reviewId);
@@ -32,6 +34,7 @@ public class ReviewController {
             .body(ResponseFactory.getSuccessJsonResult(reviewById));
     }
 
+    @Operation(summary = "inquiryId 별 검토 작성")
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createReview(
         @RequestBody ReviewCreateRequestDTO dto,
