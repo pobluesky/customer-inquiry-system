@@ -54,7 +54,18 @@ public class QuestionController {
         @PathVariable Long customerId,
         @PathVariable Long inquiryId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
-        QuestionResponseDTO response = questionService.createQuestion(customerId, inquiryId, questionCreateRequestDTO);
+        QuestionResponseDTO response = questionService.createInquiryQuestion(customerId, inquiryId, questionCreateRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @PostMapping("/customer/{customerId}")
+    @Operation(summary = "타입별 질문 작성(고객사)", description = "고객사는 문의 외적인 새로운 질문을 등록한다.")
+    public ResponseEntity<JsonResult> createQuestion(
+        @PathVariable Long customerId,
+        @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
+        QuestionResponseDTO response = questionService.createNotInquiryQuestion(customerId, questionCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.OK)
 
             .body(ResponseFactory.getSuccessJsonResult(response));

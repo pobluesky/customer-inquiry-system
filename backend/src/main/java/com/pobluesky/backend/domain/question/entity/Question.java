@@ -18,7 +18,7 @@ public class Question extends BaseEntity {
     private Long questionId; // 질문 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inquiry_id")
+    @JoinColumn(name = "inquiry_id", nullable = true)
     private Inquiry inquiry; // 문의 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,6 +36,9 @@ public class Question extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private QuestionType type;
+
     @Builder
     private Question(
         Inquiry inquiry,
@@ -43,7 +46,8 @@ public class Question extends BaseEntity {
         String title,
         String contents,
         String files,
-        QuestionStatus status
+        QuestionStatus status,
+        QuestionType type
     ) {
         this.inquiry = inquiry;
         this.customer = customer;
@@ -51,6 +55,7 @@ public class Question extends BaseEntity {
         this.contents = contents;
         this.files = files;
         this.status = status;
+        this.type = type;
     }
     public void updateQuestion(
         QuestionStatus status
