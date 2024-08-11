@@ -1,71 +1,85 @@
-//package com.pobluesky.backend.domain.inquiry.repository;
-//
-//import static com.pobluesky.backend.domain.inquiry.entity.QInquiry.inquiry;
-//
-//import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
-//import com.querydsl.core.types.Order;
-//import com.querydsl.core.types.OrderSpecifier;
-//import com.querydsl.core.types.Projections;
-//import com.querydsl.jpa.impl.JPAQueryFactory;
-//import java.util.List;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageImpl;
-//import org.springframework.data.domain.Pageable;
-//
-//public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
-//
-//    private final JPAQueryFactory queryFactory;
-//
-//    public InquiryRepositoryImpl(JPAQueryFactory queryFactory) {
-//        this.queryFactory = queryFactory;
-//    }
-//
-//    @Override
-//    public Page<InquiryResponseDTO> findInquiries(Pageable pageable, String sortBy) {
-//        OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortBy);
-//
-//        List<InquiryResponseDTO> content = queryFactory
-//            .select(Projections.constructor(InquiryResponseDTO.class,
-//                inquiry.inquiryId,
-//                inquiry.country,
-//                inquiry.corporate,
-//                inquiry.salesPerson,
-//                inquiry.industry,
-//                inquiry.progress,
-//                inquiry.productType,
-//                inquiry.qualityManager,
-//                inquiry.department,
-//                inquiry.salesManager,
-//                inquiry.customerRequestDate,
-//                inquiry.responseDeadline,
-//                inquiry.elapsedDays,
-//                inquiry.corporationCode,
-//                inquiry.files,
-//                inquiry.inquiryType
-//            ))
-//            .from(inquiry)
-//            .where(inquiry.isActivated.isTrue())
-//            .orderBy(orderSpecifier)
-//            .offset(pageable.getOffset())
-//            .limit(pageable.getPageSize())
-//            .fetch();
-//
-//        long total = queryFactory
-//            .selectFrom(inquiry)
-//            .where(inquiry.isActivated.isTrue())
-//            .fetchCount();
-//
-//        return new PageImpl<>(content, pageable, total);
-//    }
-//
-//    private OrderSpecifier<?> getOrderSpecifier(String sortBy) {
-//        switch (sortBy) {
-//            case "oldest":
-//                return new OrderSpecifier<>(Order.ASC, inquiry.createdAt);
-//            case "progress":
-//                return new OrderSpecifier<>(Order.ASC, inquiry.progress);
-//            default:
-//                return new OrderSpecifier<>(Order.DESC, inquiry.createdAt);
-//        }
-//    }
-//}
+package com.pobluesky.backend.domain.inquiry.repository;
+
+import static com.pobluesky.backend.domain.inquiry.entity.QInquiry.inquiry;
+import static com.pobluesky.backend.domain.lineitem.entity.QCarLineItem.carLineItem;
+import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
+
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+
+public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
+
+    private final JPAQueryFactory queryFactory;
+
+    public InquiryRepositoryImpl(EntityManager em) {
+        this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public Page<InquirySummaryResponseDTO> findInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
+        //OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortBy);
+
+        List<InquirySummaryResponseDTO> content = queryFactory
+            .select(Projections.constructor(InquirySummaryResponseDTO.class,
+                inquiry.inquiryId,
+                inquiry.salesPerson, //판매계약자
+                inquiry.progress, //진행현황
+                inquiry.productType, //제품유형
+                inquiry.inquiryType, //문의유형
+                carLineItem.pjtName,
+                carLineItem.standardOrg,
+                carLineItem.thickness,
+                carLineItem.width,
+                customer.customerName
+            ))
+            .from(inquiry)
+            .leftJoin(inquiry.carLineItemList, carLineItem)
+            .join(inquiry.customer, customer)
+            .where(
+                inquiry.isActivated.isTrue(),
+                inquiry.customer.customerId.eq(customerId),
+                progressEq(progress)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Inquiry> countQuery = queryFactory
+            .selectFrom(inquiry)
+            .where(
+                inquiry.isActivated.isTrue(),
+                inquiry.customer.customerId.eq(customerId),
+                progressEq(progress)
+            );
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private BooleanExpression progressEq(Progress progress) {
+        return progress != null ? inquiry.progress.eq(progress) : null;
+    }
+
+    private OrderSpecifier<?> getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "oldest":
+                return new OrderSpecifier<>(Order.ASC, inquiry.createdDate);
+            case "progress":
+                return new OrderSpecifier<>(Order.ASC, inquiry.progress);
+            default:
+                return new OrderSpecifier<>(Order.DESC, inquiry.createdDate);
+        }
+    }
+}
