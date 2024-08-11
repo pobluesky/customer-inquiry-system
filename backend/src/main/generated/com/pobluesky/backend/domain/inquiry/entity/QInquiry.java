@@ -26,6 +26,8 @@ public class QInquiry extends EntityPathBase<Inquiry> {
 
     public final StringPath additionalRequests = createString("additionalRequests");
 
+    public final ListPath<com.pobluesky.backend.domain.lineitem.entity.CarLineItem, com.pobluesky.backend.domain.lineitem.entity.QCarLineItem> carLineItemList = this.<com.pobluesky.backend.domain.lineitem.entity.CarLineItem, com.pobluesky.backend.domain.lineitem.entity.QCarLineItem>createList("carLineItemList", com.pobluesky.backend.domain.lineitem.entity.CarLineItem.class, com.pobluesky.backend.domain.lineitem.entity.QCarLineItem.class, PathInits.DIRECT2);
+
     public final StringPath corporate = createString("corporate");
 
     public final StringPath corporationCode = createString("corporationCode");
