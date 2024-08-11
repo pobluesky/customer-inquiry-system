@@ -63,3 +63,6 @@ out/
 
 ## env
 .env
+
+### querydsl ###
+/src/main/generated/
