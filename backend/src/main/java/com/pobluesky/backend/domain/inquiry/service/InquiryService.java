@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.inquiry.service;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
@@ -38,10 +39,10 @@ public class InquiryService {
             .collect(Collectors.toList());
     }
 
-//    @Transactional(readOnly = true)
-//    public Page<InquiryResponseDTO> getInquiries(Pageable pageable, String sortBy) {
-//        return inquiryRepository.findInquiries(pageable, sortBy);
-//    }
+    @Transactional(readOnly = true)
+    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
+        return inquiryRepository.findInquiries(customerId, pageable, sortBy, progress);
+    }
 
     @Transactional
     public List<InquiryResponseDTO> getInquiries() {
