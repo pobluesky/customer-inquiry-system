@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "hotrolled_line_items")
-public class HotRolledLineItem {
+public class HotRolledLineItem extends LineItem{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
