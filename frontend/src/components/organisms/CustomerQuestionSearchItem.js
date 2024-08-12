@@ -3,11 +3,11 @@ import Button from '../atoms/Button';
 import SearchInput from '../mocules/SearchInput';
 import DateInput from '../mocules/DateInput';
 import search from '../../assets/css/icons/voc/search.svg';
-import { Question_Search_Container } from '../../assets/css/Voc.css';
+import { Customer_Question_Search } from '../../assets/css/Voc.css';
 
-function QuestionSearchItem({ totalItems }) {
+function CustomerQuestionSearchItem({ totalItems }) {
     return (
-        <div className={Question_Search_Container}>
+        <div className={Customer_Question_Search}>
             <div>
                 {/* 아이콘 + 문의 조회 */}
                 <div><img src={search} /><div>문의 조회</div></div>
@@ -41,4 +41,4 @@ function QuestionSearchItem({ totalItems }) {
     );
 }
 
-export default QuestionSearchItem;
+export default CustomerQuestionSearchItem;

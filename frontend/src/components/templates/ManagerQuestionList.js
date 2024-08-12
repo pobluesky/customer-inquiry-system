@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Tag from '../atoms/Tag';
 import CustomerQuestionCard from '../mocules/CustomerQuestionCard';
 import CustomerQuestionModal from '../organisms/CustomerQuestionModal';
-import { Question_Doesnt_Exist, Customer_Question_Card_List } from '../../assets/css/Voc.css';
+import { Question_Doesnt_Exist, Manager_Question_Card_List } from '../../assets/css/Voc.css';
 
 const QuestionDoesntExist = () => {
     return <div className={Question_Doesnt_Exist}>아직 문의가 없습니다.</div>;
@@ -45,7 +45,7 @@ function CustomerQuestionList({ dataList }) {
 
     return (
         <>
-            <div className={Customer_Question_Card_List}>
+            <div className={Manager_Question_Card_List}>
                 <div>
                     <Tag
                         category={'Inquiry 주문 문의'}

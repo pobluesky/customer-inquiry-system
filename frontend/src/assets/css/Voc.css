@@ -1,16 +1,16 @@
 /* Question Report Component *************************/
-.Report_Container {
+.Customer_Question_Report {
     width: 1320px;
     margin: 36px auto 0 auto;
 }
 
-.Report_Container > div:first-child {
+.Customer_Question_Report > div:first-child {
     display: grid;
     grid-template-columns: 360px 120px 360px 120px 360px;
     justify-content: center;
 }
 
-.Report_Container div div {
+.Customer_Question_Report div div {
     display: grid;
     grid-template-rows: 84px 28px 64px;
     font-size: 20px;
@@ -20,24 +20,61 @@
 }
 
 /* 카테고리 아이콘 */
-.Report_Container div div img {
+.Customer_Question_Report div div img {
     margin: 0 auto 0 auto;
 }
 
 /* 구분선 */
-.Report_Container > div img {
+.Customer_Question_Report > div img {
     margin: auto;
 }
 
 /* 카테고리별 문의 개수 */
-.Report_Container div:nth-child(3) {
+.Customer_Question_Report div:nth-child(3) {
+    font-size: 48px;
+    font-weight: 400;
+    color: #03507d;
+}
+
+.Manager_Question_Report {
+    width: 1320px;
+    margin: 36px auto 0 auto;
+}
+
+.Manager_Question_Report > div:first-child {
+    display: grid;
+    grid-template-columns: 240px 60px 240px 60px 240px 60px 240px;
+    justify-content: center;
+}
+
+.Manager_Question_Report div div {
+    display: grid;
+    grid-template-rows: 84px 28px 64px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #454545;
+    text-align: center;
+}
+
+/* 카테고리 아이콘 */
+.Manager_Question_Report div div img {
+    margin: 0 auto 0 auto;
+}
+
+/* 구분선 */
+.Manager_Question_Report > div img {
+    margin: auto;
+}
+
+/* 카테고리별 문의 개수 */
+.Manager_Question_Report div:nth-child(3) {
     font-size: 48px;
     font-weight: 400;
     color: #03507d;
 }
 
 /* Search Bar Component ******************************/
-.Question_Search_Container {
+.Customer_Question_Search {
     width: 1320px;
     height: 228px;
     margin: 36px auto 0 auto;
@@ -45,14 +82,14 @@
     border-radius: 20px;
 }
 
-.Question_Search_Container > div:first-child {
+.Customer_Question_Search > div:first-child {
     display: grid;
     grid-template-rows: 52px 52px 36px 32px;
     margin: 36px 0 0 36px;
 }
 
 /* 아이콘 + 문의 조회 */
-.Question_Search_Container > div > div:nth-child(1) {
+.Customer_Question_Search > div > div:nth-child(1) {
     display: grid;
     grid-template-columns: 48px 120px;
     align-items: start;
@@ -62,7 +99,7 @@
 }
 
 /* 문의 제목 + 문의 등록일 */
-.Question_Search_Container > div > div:nth-child(2) > :nth-child(1) {
+.Customer_Question_Search > div > div:nth-child(2) > :nth-child(1) {
     display: grid;
     grid-template-columns: 120px 320px 128px 200px 48px 1fr 1fr 1fr;
     align-items: center;
@@ -71,7 +108,7 @@
 }
 
 /* 정렬 조건 + 정렬 버튼 */
-.Question_Search_Container > div > div:nth-child(3) {
+.Customer_Question_Search > div > div:nth-child(3) {
     display: grid;
     grid-template-columns: 120px 96px 96px 96px 96px;
     align-items: center;
@@ -80,7 +117,7 @@
 }
 
 /* 검색 결과 */
-.Question_Search_Container > div > div:nth-child(4) {
+.Customer_Question_Search > div > div:nth-child(4) {
     display: grid;
     grid-template-columns: 30fr 1fr 0.5fr 1fr;
     align-items: center;
@@ -90,7 +127,83 @@
 }
 
 /* 검색 결과 개수 */
-.Question_Search_Container > div > div:nth-child(4) > div {
+.Customer_Question_Search > div > div:nth-child(4) > div {
+    margin: 0 0 0 12px;
+    font-size: 24px;
+    font-weight: 600;
+    color: red;
+}
+
+.Manager_Question_Search {
+    width: 1320px;
+    height: 276px;
+    margin: 36px auto 0 auto;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+}
+
+.Manager_Question_Search > div:first-child {
+    display: grid;
+    grid-template-rows: 52px 96px 48px 24px;
+    margin: 36px 0 0 36px;
+}
+
+/* 아이콘 + 문의 조회 */
+.Manager_Question_Search > div > div:nth-child(1) {
+    display: grid;
+    grid-template-columns: 48px 120px;
+    align-items: start;
+    font-size: 24px;
+    font-weight: 600;
+    color: #49454f;
+}
+
+/* 문의번호, 문의제목, 고객사명, 문의등록일 그룹 */
+.Manager_Question_Search > div > div:nth-child(2) > div:first-child {
+    display: grid;
+    grid-template-rows: 48px 48px;
+}
+
+/* 문의번호, 문의제목 */
+.Manager_Question_Search > div > div:nth-child(2) > div > :nth-child(1) {
+    display: grid;
+    grid-template-columns: 120px 320px 120px 320px;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
+}
+
+/* 고객사명, 문의등록일, 조회 버튼 */
+.Manager_Question_Search > div > div:nth-child(2) > div > :nth-child(2) {
+    display: grid;
+    grid-template-columns: 120px 320px 136px 192px 40px 324px 20px;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
+}
+
+/* 정렬 조건 + 정렬 버튼 */
+.Manager_Question_Search > div > div:nth-child(3) {
+    /* border: solid 2px red; */
+    display: grid;
+    grid-template-columns: 124px 96px 96px 96px 96px;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
+}
+
+/* 검색 결과 */
+.Manager_Question_Search > div > div:nth-child(4) {
+    display: grid;
+    grid-template-columns: 30fr 1fr 0.5fr 1fr;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
+    text-align: right;
+}
+
+/* 검색 결과 개수 */
+.Manager_Question_Search > div > div:nth-child(4) > div {
     margin: 0 0 0 12px;
     font-size: 24px;
     font-weight: 600;
@@ -232,7 +345,8 @@
 }
 
 /* Question Card Component ***************************/
-.Card_Container {
+
+.Question_Card {
     width: 360px;
     height: 300px;
     margin: 0 0 24px 0;
@@ -243,32 +357,49 @@
         rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
-.Card_Container:hover {
+.Question_Card:hover {
     background-color: #cbefff;
+    cursor: pointer;
 }
 
-.Card_Text {
-    margin: 0 0 0 192px;
+.Question_Card > div {
+    display: grid;
+    grid-template-rows: 48px 84px 84px 32px;
+    margin: 24px 24px 0 24px; 
+}
+
+/* 고객사명, 문의 등록일, 답변 등록일 그룹 */
+.Question_Card > div > div:nth-child(2) {
+    display: grid;
+    grid-template-columns: 144px 132px;
+    margin: 0 0 0 24px;
     font-size: 12px;
 }
 
-.Card_Title {
-    margin: 24px 0 0 0;
-    text-align: center;
+/* 고객사명 */
+.Question_Card > div > div:nth-child(2) > div:nth-child(1) {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
+    grid-row: 1 / span 2;
 }
 
-.Card_Move_To {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 36px 48px 0 36px;
+/* 제목 */
+.Question_Card > div > div:nth-child(3) {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
 }
 
-.Answer {
+/* 협업 요청 + 답변 달기 그룹 */
+.Question_Card > div > div:nth-child(4) {
+    display: grid;
+    grid-template-columns: 236px 72px;
+}
+
+/* 답변 달기 */
+.Question_Card > div > div:nth-child(4) > div:nth-child(2) {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     color: #03507d;
 }
 
@@ -287,7 +418,15 @@
         rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
-.Question_Card {
+.Customer_Question_Card_List {
+    width: 1320px;
+    margin: 0 auto 24px auto;
+    display: grid;
+    column-gap: 120px;
+    grid-template-columns: 360px 360px 360px;
+}
+
+.Manager_Question_Card_List {
     width: 1320px;
     margin: 0 auto 24px auto;
     display: grid;

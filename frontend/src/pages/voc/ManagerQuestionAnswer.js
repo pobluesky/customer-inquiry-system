@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/mocules/Header';
 import Path from '../../components/atoms/Path';
-import CustomerQuestionReport from '../../components/organisms/CustomerQuestionReport';
-import CustomerQuestionSearchItem from '../../components/organisms/CustomerQuestionSearchItem';
-import CustomerQuestionList from '../../components/templates/CustomerQuestionList';
+import ManagerQuestionReport from '../../components/organisms/ManagerQuestionReport';
+import ManagerQuestionSearchItem from '../../components/organisms/ManagerQuestionSearchItem';
+import ManagerQuestionList from '../../components/templates/ManagerQuestionList';
 import Notification from '../../components/mocules/Notification';
 import { Question_Title } from '../../assets/css/Voc.css';
 
@@ -39,10 +39,10 @@ function QuestionAnswer() {
         <>
             <Header login={true} inq={false} voc={true} dashboard={false} />
             <Path largeCategory={'VoC'} mediumCategory={'문의 목록'} />
-            <CustomerQuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
-            <CustomerQuestionSearchItem totalItems={totalItems}/>
+            <ManagerQuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
+            <ManagerQuestionSearchItem totalItems={totalItems}/>
             <div className={Question_Title}>문의 목록</div>
-            <CustomerQuestionList dataList={dataList} />
+            <ManagerQuestionList dataList={dataList} />
             <Notification />
         </>
     );
