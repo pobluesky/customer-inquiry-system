@@ -26,7 +26,6 @@ public record ColdRolledLineItemCreateRequestDTO(
 
         return ColdRolledLineItem.builder()
             .inquiry(inquiry)
-            .customer(customer)
             .kind(kind)
             .inqName(inqName)
             .orderCategory(orderCategory)

@@ -33,9 +33,9 @@ VALUES
     (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, '2024-02-28', 'Factory C', 'TEST', 'TEST', 'TEST', 0, '2024-03-01', '1200', '2200', 'TEST', 'TEST', 'TEST', '99.7%', 4, 4, 'TEST', 'TEST', 'IATF16949', '12000', '123 Industries', 'Complete Z', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- ColdRolledLineItem
-INSERT INTO coldrolled_line_items (inquiry_id, customer_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
+INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
 VALUES
-    (4, 1, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
+    (4, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
 
 
 -- OfferSheet
