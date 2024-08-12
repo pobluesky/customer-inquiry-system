@@ -5,9 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ProductType {
 
-    COLD_ROLLED_GENERAL("Cold Rolled (General)"),
-    COLD_ROLLED_HOME_APPLIANCES("Cold Rolled (Home Appliances)"),
-    COLD_ROLLED_OTHERS("Cold Rolled (Others)"),
+    COLD_ROLLED("Cold Rolled"),
     ELECTRICAL_STEEL("Electrical Steel"),
     HOT_ROLLED_GENERAL("Hot Rolled (General)"),
     HOT_ROLLED_ENERGY_PIPE("Hot Rolled (Energy Pipe)"),
