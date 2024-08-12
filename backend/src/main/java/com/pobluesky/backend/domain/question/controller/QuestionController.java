@@ -46,8 +46,8 @@ public class QuestionController {
         @PathVariable Long inquiryId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createInquiryQuestion(customerId, inquiryId, questionCreateRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
@@ -57,8 +57,8 @@ public class QuestionController {
         @PathVariable Long customerId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createNotInquiryQuestion(customerId, questionCreateRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 }
