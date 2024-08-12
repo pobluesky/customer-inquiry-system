@@ -400,8 +400,37 @@ label {
     font-weight: 500;
     text-align: center;
     padding: 3px;
-    width: 135px;
+    width: 132px;
     margin-left: 15px;
     border: 1px solid #c1c1c1;
     border-radius: 8px;
+}
+
+.FileColumn {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 8fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+._FileItem {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr;
+    color: #7B7B7B;
+    background-color: #ffffff;
+    font-weight: 400;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 16px;
 }
