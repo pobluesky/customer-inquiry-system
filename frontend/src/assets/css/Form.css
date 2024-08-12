@@ -259,3 +259,68 @@ label {
     padding: 10px;
     margin: 0 20px 0 20px;
 }
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+}
+
+.LineItemColumn {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 15px;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+._none {
+    display: none;
+}
+
+._checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 7px;
+}
+
+._checkbox:checked {
+    background-color: #03507D;
+    border: 1px solid #c1c1c1;
+    border-radius: 7px;
+}
+
+.LineItemRow {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #ffffff;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+.LineItemInput {
+    background-color: #ffffff;
+    text-align: left;
+    font-size: 19px;
+    color: #444444;
+    font-weight: 400;
+    width: 120px;
+    margin-left: 15px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+}
