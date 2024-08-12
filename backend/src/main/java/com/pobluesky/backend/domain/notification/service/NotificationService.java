@@ -14,9 +14,11 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,21 +29,39 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NotificationService {
 
+    private final CustomUserDetailsService userDetailsService;
+
     private final CustomerNotificationRepository customerNotificationRepository;
+
     private final ManagerNotificationRepository managerNotificationRepository;
+
     private final CustomerRepository customerRepository;
+
     private final ManagerRepository managerRepository;
 
-    public List<?> getNotificationsById(Long id, NotificationType notificationType) {
+    public List<?> getNotificationsById(
+        String token,
+        Long id,
+        NotificationType notificationType
+    ) {
+        Long userId = userDetailsService.parseToken(token);
+
+        if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId))
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        
         switch (notificationType) {
             case CUSTOMER:
-                List<CustomerNotification> notifications = customerNotificationRepository.findByCustomer_CustomerId(id);
+                List<CustomerNotification> notifications =
+                    customerNotificationRepository.findByCustomer_CustomerId(id);
+
                 return notifications.stream()
                     .map(CustomerNotificationResponseDTO::from)
                     .collect(Collectors.toList());
 
             case MANAGER:
-                List<ManagerNotification> managerNotifications = managerNotificationRepository.findByManager_ManagerId(id);
+                List<ManagerNotification> managerNotifications =
+                    managerNotificationRepository.findByManager_ManagerId(id);
+
                 return managerNotifications.stream()
                     .map(ManagerNotificationResponseDTO::from)
                     .collect(Collectors.toList());
@@ -51,18 +71,42 @@ public class NotificationService {
         }
     }
 
-    public List<?> getRecentNotifications(Long id, NotificationType notificationType) {
+    public List<?> getRecentNotifications(
+        String token,
+        Long id,
+        NotificationType notificationType
+    ) {
+        Long userId = userDetailsService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(customer.getCustomerId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
         Pageable pageable = PageRequest.of(0, 10);
 
         switch (notificationType) {
             case CUSTOMER:
-                var customerPage = customerNotificationRepository.findRecentNotificationsByCustomerIdAndIsRead(id, Boolean.TRUE, pageable);
+                var customerPage =
+                    customerNotificationRepository.findRecentNotificationsByCustomerIdAndIsRead(
+                        id,
+                        true,
+                        pageable
+                    );
+
                 return customerPage.getContent().stream()
                     .map(CustomerNotificationResponseDTO::from)
                     .collect(Collectors.toList());
 
             case MANAGER:
-                var managerPage = managerNotificationRepository.findRecentNotificationsByManagerIdAndIsRead(id, Boolean.TRUE, pageable);
+                var managerPage =
+                    managerNotificationRepository.findRecentNotificationsByManagerIdAndIsRead(
+                        id,
+                        true,
+                        pageable
+                    );
+
                 return managerPage.getContent().stream()
                     .map(ManagerNotificationResponseDTO::from)
                     .collect(Collectors.toList());
@@ -72,7 +116,19 @@ public class NotificationService {
         }
     }
 
-    public Object createNotification(Object dto, Long id, NotificationType notificationType) {
+    public Object createNotification(
+        String token,
+        Object dto,
+        Long id,
+        NotificationType notificationType
+    ) {
+        Long userId = userDetailsService.parseToken(token);
+
+        Customer foundCustomer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(foundCustomer.getCustomerId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:
@@ -98,7 +154,19 @@ public class NotificationService {
         }
     }
 
-    public Object updateNotificationIsRead(Long notificationId, Object dto, NotificationType notificationType) {
+    public Object updateNotificationIsRead(
+        String token,
+        Long notificationId,
+        Object dto,
+        NotificationType notificationType
+    ) {
+        Long userId = userDetailsService.parseToken(token);
+
+        Customer foundCustomer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(foundCustomer.getCustomerId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:
