@@ -65,11 +65,11 @@ function QuestionList({ dataList }) {
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
                                         questionCreatedDate={
-                                            data.question.createdDate
+                                            data.question.createdDate.substr(0, 10)
                                         }
                                         answerCreatedDate={
                                             data.answer &&
-                                            data.answer.createdDate
+                                            data.answer.createdDate.substr(0, 10)
                                         }
                                         title={data.question.title}
                                     />
@@ -98,11 +98,11 @@ function QuestionList({ dataList }) {
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
                                         questionCreatedDate={
-                                            data.question.createdDate
+                                            data.question.createdDate.substr(0, 10)
                                         }
                                         answerCreatedDate={
                                             data.answer &&
-                                            data.answer.createdDate
+                                            data.answer.createdDate.substr(0, 10)
                                         }
                                         title={data.question.title}
                                     />
@@ -131,11 +131,11 @@ function QuestionList({ dataList }) {
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
                                         questionCreatedDate={
-                                            data.question.createdDate
+                                            data.question.createdDate.substr(0, 10)
                                         }
                                         answerCreatedDate={
                                             data.answer &&
-                                            data.answer.createdDate
+                                            data.answer.createdDate.substr(0, 10)
                                         }
                                         title={data.question.title}
                                     />
