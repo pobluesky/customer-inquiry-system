@@ -1,7 +1,6 @@
 package com.pobluesky.backend.domain.answer.dto.response;
 
 import com.pobluesky.backend.domain.answer.entity.Answer;
-import com.pobluesky.backend.domain.question.entity.Question;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

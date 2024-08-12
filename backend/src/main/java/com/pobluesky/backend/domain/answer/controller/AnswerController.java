@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerWithQuestionResponseDTO;
 import com.pobluesky.backend.domain.answer.service.AnswerService;
-import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/answer")
 public class AnswerController {
-    private final QuestionService questionService;
     private final AnswerService answerService;
 
     @GetMapping("/customer/complex/{customerId}")
