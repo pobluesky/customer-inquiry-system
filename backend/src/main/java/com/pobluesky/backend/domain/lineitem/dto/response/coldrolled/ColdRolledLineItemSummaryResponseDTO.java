@@ -24,6 +24,8 @@ public class ColdRolledLineItemSummaryResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
+    private Boolean isActivated;
+
     public static ColdRolledLineItemSummaryResponseDTO of(ColdRolledLineItem coldRolledLineItem) {
 
         InquirySummaryResponseDTO inquiryDTO =
@@ -36,6 +38,7 @@ public class ColdRolledLineItemSummaryResponseDTO extends LineItemResponseDTO {
             .thickness(coldRolledLineItem.getThickness())
             .width(coldRolledLineItem.getWidth())
             .quantity(coldRolledLineItem.getQuantity())
+            .isActivated(coldRolledLineItem.getIsActivated())
             .build();
     }
 

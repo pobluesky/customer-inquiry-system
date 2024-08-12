@@ -41,6 +41,8 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private String outDiameter;
 
+    private Boolean isActivated;
+
     public static ColdRolledLineItemResponseDTO of(ColdRolledLineItem coldRolledLineItem) {
 
         return ColdRolledLineItemResponseDTO.builder()
@@ -58,6 +60,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
             .orderEdge(coldRolledLineItem.getOrderEdge())
             .inDiameter(coldRolledLineItem.getInDiameter())
             .outDiameter(coldRolledLineItem.getOutDiameter())
+            .isActivated(coldRolledLineItem.getIsActivated())
             .build();
     }
 }
