@@ -36,7 +36,7 @@ public class AnswerService {
         List<Question> questions = questionRepository.findAllByCustomer_CustomerId(customerId);
 
         if (questions.isEmpty()) {
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+            throw new CommonException(ErrorCode.QUESTION_NOT_FOUND);
         }
 
         List<AnswerWithQuestionResponseDTO> result = new ArrayList<>();
