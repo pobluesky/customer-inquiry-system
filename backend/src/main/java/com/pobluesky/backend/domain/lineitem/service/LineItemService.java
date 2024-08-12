@@ -12,6 +12,7 @@ import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLi
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.thickplate.ThickPlateLineItemCreateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.thickplate.ThickPlateLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemResponseDTO;
@@ -225,6 +226,13 @@ public class LineItemService {
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
 
+            case THICK_PLATE:
+                List<ThickPlateLineItem> thickPlateLineItemList = thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(
+                    inquiry);
+                return thickPlateLineItemList.stream()
+                    .map(lineItem-> toFullResponseDTO(inquiry.getProductType(),lineItem))
+                    .collect(Collectors.toList());
+
 
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -338,6 +346,29 @@ public class LineItemService {
                     wireDto.finalUse()
                 );
 
+            case THICK_PLATE:
+
+                ThickPlateLineItem thickPlateLineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                ThickPlateLineItemUpdateRequestDTO thickDto = objectMapper.convertValue(
+                    requestDto,
+                    ThickPlateLineItemUpdateRequestDTO.class
+                );
+
+                thickPlateLineItem.updateThickPlateLineItem(
+                    thickDto.generalDetails(),
+                    thickDto.orderInfo(),
+                    thickDto.ladleIngredient(),
+                    thickDto.productIngredient(),
+                    thickDto.seal(),
+                    thickDto.grainSizeAnalysis(),
+                    thickDto.show(),
+                    thickDto.curve(),
+                    thickDto.additionalRequests()
+                );
+
+
 
             // 다른 제품 유형 처리
             default:
@@ -383,6 +414,13 @@ public class LineItemService {
                 lineItem.deleteLineItem();
                 break;
 
+            case THICK_PLATE:
+                lineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                lineItem.deleteLineItem();
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -405,6 +443,10 @@ public class LineItemService {
             case WIRE_ROD:
                 WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
                 return WireRodLineItemResponseDTO.of(wireRodLineItem);
+
+            case THICK_PLATE:
+                ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
+                return ThickPlateLineItemResponseDTO.of(thickPlateLineItem);
 
             // 다른 제품 유형 처리
             default:
@@ -429,6 +471,10 @@ public class LineItemService {
             case WIRE_ROD:
                 WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
                 return WireRodLineItemResponseDTO.of(wireRodLineItem);
+
+            case THICK_PLATE:
+                ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
+                return ThickPlateLineItemResponseDTO.of(thickPlateLineItem);
 
             // 다른 제품 유형 처리
             default:

@@ -23,6 +23,7 @@ VALUES
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (5, 'KOREA', 'Mrs.Selly', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- CarLineItem
