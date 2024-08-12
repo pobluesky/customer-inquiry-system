@@ -22,10 +22,10 @@ function Header({ login, inq, voc, dashboard }) {
                     </div>
                     <div>
                         <div className={Container_Menu}>
-                            <Link to="/inq" className={Menu_Link} style={{ color: inq && !voc && !dashboard ? '#03507d' : '#c1c1c1' }}>
+                            <Link to="/inq-main" className={Menu_Link} style={{ color: inq && !voc && !dashboard ? '#03507d' : '#c1c1c1' }}>
                                 Inquiry
                             </Link>
-                            <Link to="/voc" className={Menu_Link} style={{ color: !inq && voc && !dashboard ? '#03507d' : '#c1c1c1' }}>
+                            <Link to="/voc-main" className={Menu_Link} style={{ color: !inq && voc && !dashboard ? '#03507d' : '#c1c1c1' }}>
                                 VoC
                             </Link>
                             <Link to="/dashboard" className={Menu_Link} style={{ color: !inq && !voc && dashboard ? '#03507d' : '#c1c1c1' }}>

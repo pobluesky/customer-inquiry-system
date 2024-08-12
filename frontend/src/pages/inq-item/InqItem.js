@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/mocules/Header';
-import Path from '../../components/atoms/Path';
+import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/mocules/RequestBar';
-import OfferSheet from './offersheet';
+import Offersheet from './Offersheet';
 import '../../assets/css/Offersheet.css';
 
 function InqItem() {
@@ -13,11 +13,11 @@ function InqItem() {
     return (
         <div>
             <Header login={true} inq={true} voc={false} dashboard={false} />
-            <Path largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
-            <RequestBar />
-            <OfferSheet inquiryId={1} />
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
+            <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
+            <Offersheet inquiryId={1} />
         </div>
-    );
+    )
 }
 
 export default InqItem;

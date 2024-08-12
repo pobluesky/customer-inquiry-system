@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Header from '../../components/mocules/Header';
-import Path from './../../components/atoms/Path';
 import QuestionReport from '../../components/organisms/QuestionReport';
 import SearchItem from '../../components/organisms/SearchItem';
 import Tag from '../../components/atoms/Tag';
@@ -8,12 +7,13 @@ import QuestionCard from '../../components/mocules/QuestionCard';
 import QuestionModal from './../../components/organisms/QuestionModal';
 import Notification from '../../components/mocules/Notification';
 import { Question_Title, Question_Card, Question_Doesnt_Exist } from '../../assets/css/Voc.css';
+import VocPath from "../../components/atoms/VocPath";
 
 const QuestionDoesntExist = () => {
     return <div className={Question_Doesnt_Exist}>아직 문의가 없습니다.</div>;
 };
 
-function Voc() {
+function VocList() {
     const questionDataSample = [
         { type: 'site', status: 'completed', createdAt: '2024-08-08', updatedAt: '2024-08-09', title: '자동차 규격 재검토 문의드립니다.', contents: 'AAT380 가로 규격이 4mm인데, 왜 3mm로 나온거죠?', files: '고소장.pdf', answerContents: '누구세요?' },
         { type: 'site', status: 'completed', createdAt: '2024-08-09', updatedAt: '2024-08-10', title: '재검토 아직 멀었나요?', contents: '제가 만만하신가요?', files: '고소장.pdf', answerContents: '신고합니다!' },
@@ -52,7 +52,7 @@ function Voc() {
     return (
         <>
             <Header login={true} inq={false} voc={true} dashboard={false} />
-            <Path largeCategory={'VoC'} mediumCategory={'문의 목록'} />
+            <VocPath largeCategory={'VoC'} mediumCategory={'문의 목록'} />
             <QuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
             <SearchItem />
             <div className={Question_Title}>문의 목록</div>
@@ -76,4 +76,4 @@ function Voc() {
     );
 }
 
-export default Voc;
+export default VocList;
