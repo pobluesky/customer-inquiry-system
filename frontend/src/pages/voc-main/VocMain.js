@@ -18,7 +18,7 @@ const VocMain = () => {
 
   return (
       <div>
-        <Header login={true} inq={true} voc={false} dashboard={false} />
+        <Header login={true} inq={false} voc={true} dashboard={false} />
         <VocPath largeCategory={'Voc'} mediumCategory={'문의목록'} />
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
