@@ -3,8 +3,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 
 function Button({
-  onClick,
   btnName,
+  onClick,
   width,
   height,
   margin,

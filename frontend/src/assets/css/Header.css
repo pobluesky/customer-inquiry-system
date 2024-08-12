@@ -1,39 +1,47 @@
 .Container {
     width: 100%;
     height: 84px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.Logo {
-    display: flex;
+.Container > div {
+    display: grid;
+    grid-template-columns: 24px 804px 120px 84px 156px 48px 108px;
+    justify-content: center;
     align-items: center;
 }
 
-.Container_Menu {
-    display: flex;
-    align-items: center;
+/* POSCO 로고 */
+.Container > div > img {
+    width: 120px;
 }
 
-.Menu {
-    margin: 0 0 0 6vw;
-    text-decoration: none;
-    color: #03507d;
+/* 메뉴 링크 */
+.Container > div > div:nth-child(3),
+.Container > div > div:nth-child(5),
+.Container > div > div:nth-child(4) {
     font-size: 1.5em;
     font-weight: bold;
+    color: #03507d;
 }
 
-.Menu_Link {
-    margin: 0 6vw 0 0;
-    text-decoration: none;
-    font-size: 1.5em;
-    font-weight: bold;    
+/* 로그인 아이콘 */
+.Container > div > div:nth-child(6) {
+    display: grid;
 }
 
-.User {
-    margin: 0 4vw 0 0;
+/* 로그인 아이콘 */
+.Container > div > div:nth-child(6) > img {
+    width: 30px;
+}
+
+.Container > div > div:nth-child(6) {
+    width: 120px;
+}
+
+/* 사용자 이름 */
+.Container > div > div:nth-child(7) {
     font-size: 1.2em;
     font-weight: bold;
     color: #03507d;
