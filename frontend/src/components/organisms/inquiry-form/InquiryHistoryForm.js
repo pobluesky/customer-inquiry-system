@@ -141,6 +141,7 @@ const InquiryHistoryForm = () => {
                         lineItems={row.items}
                         onRowSelect={onRowSelected}
                         onChange={handleInputChange}
+                        isChecked={true}
                     />
                 ))}
               </div>

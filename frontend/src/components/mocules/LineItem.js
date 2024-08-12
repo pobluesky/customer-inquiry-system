@@ -5,14 +5,17 @@ import {
     _checkbox
 } from "../../assets/css/Form.css";
 
-// InquiryRow 컴포넌트 정의
-const LineItem = ({ id, lineItems, onRowSelect, onChange }) => {
+const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
+  const [selected, setSelected] = useState(isChecked);
+
   return (
       <div className={LineItemRow}>
-        <div>
-          <input type="checkbox" className={_checkbox} onChange={() => onRowSelect(id)}/>
-        </div>
-        {lineItems.map((item, index) => (
+        {isChecked ? <div>
+          <input type="checkbox" className={_checkbox}
+                 onChange={() => onRowSelect(id)}/>
+        </div> : null}
+
+        {lineItems?.map((item, index) => (
             <input
                 key={index}
                 type="text"
