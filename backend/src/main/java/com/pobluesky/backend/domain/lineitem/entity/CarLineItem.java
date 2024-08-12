@@ -1,19 +1,9 @@
 package com.pobluesky.backend.domain.lineitem.entity;
 
-import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingAnotherCondition;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingCondition;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.Direction;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.Order;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.PostTreatment;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.RaAnotherUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.RaUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.Regulation;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
-import com.pobluesky.backend.domain.review.entity.ContractType;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 
 import jakarta.persistence.Entity;
@@ -26,8 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,59 +61,6 @@ public class CarLineItem extends LineItem {
 
     private Integer quantity;
 
-    private Date desiredDeliveryDate;
-
-    private String deliveryDestination;
-
-    @Enumerated(EnumType.STRING)
-    private Order orders;
-
-    @Enumerated(EnumType.STRING)
-    private CoatingCondition coatingCondition;
-
-    @Enumerated(EnumType.STRING)
-    private CoatingAnotherCondition coatingAnotherCondition;
-
-    private ContractType contract;
-
-    private Date sop;
-
-    private String fcAmount;
-
-    private String bcAmount;
-
-    @Enumerated(EnumType.STRING)
-    private CoatingUnit coatingUnit;
-
-    @Enumerated(EnumType.STRING)
-    private PostTreatment postTreatment;
-
-    @Enumerated(EnumType.STRING)
-    private Direction direction;
-
-    private String raTarget;
-
-    private Integer mTolerance;
-
-    private Integer pTolerance;
-
-    @Enumerated(EnumType.STRING)
-    private RaUnit raUnit;
-
-    @Enumerated(EnumType.STRING)
-    private RaAnotherUnit raAnotherUnit;
-
-    private String qsRequirement;
-
-    private String expensePerYear;
-
-    private String customerName;
-
-    private String completeVehicle;
-
-    @Enumerated(EnumType.STRING)
-    private Regulation regulation;
-
     @Builder
     public CarLineItem(
         Inquiry inquiry,
@@ -138,29 +73,7 @@ public class CarLineItem extends LineItem {
         IxPlate ixPlate,
         String thickness,
         String width,
-        Integer quantity,
-        Date desiredDeliveryDate,
-        String deliveryDestination,
-        Order order,
-        CoatingCondition coatingCondition,
-        CoatingAnotherCondition coatingAnotherCondition,
-        ContractType contract,
-        Date sop,
-        String fcAmount,
-        String bcAmount,
-        CoatingUnit coatingUnit,
-        PostTreatment postTreatment,
-        Direction direction,
-        String raTarget,
-        Integer mTolerance,
-        Integer pTolerance,
-        RaUnit raUnit,
-        RaAnotherUnit raAnotherUnit,
-        String qsRequirement,
-        String expensePerYear,
-        String customerName,
-        String completeVehicle,
-        Regulation regulation
+        Integer quantity
     ) {
         this.inquiry=inquiry;
         this.lab = lab;
@@ -173,28 +86,6 @@ public class CarLineItem extends LineItem {
         this.thickness = thickness;
         this.width = width;
         this.quantity = quantity;
-        this.pTolerance = pTolerance;
-        this.raUnit = raUnit;
-        this.raAnotherUnit = raAnotherUnit;
-        this.qsRequirement = qsRequirement;
-        this.expensePerYear = expensePerYear;
-        this.customerName = customerName;
-        this.completeVehicle = completeVehicle;
-        this.regulation = regulation;
-        this.desiredDeliveryDate = desiredDeliveryDate;
-        this.deliveryDestination = deliveryDestination;
-        this.orders = order;
-        this.coatingCondition = coatingCondition;
-        this.coatingAnotherCondition = coatingAnotherCondition;
-        this.contract = contract;
-        this.sop = sop;
-        this.fcAmount = fcAmount;
-        this.bcAmount = bcAmount;
-        this.coatingUnit = coatingUnit;
-        this.postTreatment = postTreatment;
-        this.direction = direction;
-        this.raTarget = raTarget;
-        this.mTolerance = mTolerance;
         this.isActivated = true;
     }
 
@@ -209,29 +100,7 @@ public class CarLineItem extends LineItem {
         IxPlate ixPlate,
         String thickness,
         String width,
-        Integer quantity,
-        Date desiredDeliveryDate,
-        String deliveryDestination,
-        Order order,
-        CoatingCondition coatingCondition,
-        CoatingAnotherCondition coatingAnotherCondition,
-        ContractType contract,
-        Date sop,
-        String fcAmount,
-        String bcAmount,
-        CoatingUnit coatingUnit,
-        PostTreatment postTreatment,
-        Direction direction,
-        String raTarget,
-        Integer mTolerance,
-        Integer pTolerance,
-        RaUnit raUnit,
-        RaAnotherUnit raAnotherUnit,
-        String qsRequirement,
-        String expensePerYear,
-        String customerName,
-        String completeVehicle,
-        Regulation regulation
+        Integer quantity
     ) {
         this.lab = lab;
         this.kind = kind;
@@ -243,27 +112,5 @@ public class CarLineItem extends LineItem {
         this.thickness = thickness;
         this.width = width;
         this.quantity = quantity;
-        this.pTolerance = pTolerance;
-        this.raUnit = raUnit;
-        this.raAnotherUnit = raAnotherUnit;
-        this.qsRequirement = qsRequirement;
-        this.expensePerYear = expensePerYear;
-        this.customerName = customerName;
-        this.completeVehicle = completeVehicle;
-        this.regulation = regulation;
-        this.desiredDeliveryDate = desiredDeliveryDate;
-        this.deliveryDestination = deliveryDestination;
-        this.orders = order;
-        this.coatingCondition = coatingCondition;
-        this.coatingAnotherCondition = coatingAnotherCondition;
-        this.contract = contract;
-        this.sop = sop;
-        this.fcAmount = fcAmount;
-        this.bcAmount = bcAmount;
-        this.coatingUnit = coatingUnit;
-        this.postTreatment = postTreatment;
-        this.direction = direction;
-        this.raTarget = raTarget;
-        this.mTolerance = mTolerance;
     }
 }
