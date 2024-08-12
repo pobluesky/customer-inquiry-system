@@ -1,6 +1,7 @@
-package com.pobluesky.backend.domain.lineitem.dto.response;
+package com.pobluesky.backend.domain.lineitem.dto.response.car;
 
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;

@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.lineitem.dto.request;
+package com.pobluesky.backend.domain.lineitem.dto.request.car;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;

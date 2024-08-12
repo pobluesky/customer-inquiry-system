@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.lineitem.dto.request;
+package com.pobluesky.backend.domain.lineitem.dto.request.car;
 
 import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingAnotherCondition;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingCondition;
