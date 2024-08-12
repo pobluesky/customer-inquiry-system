@@ -6,10 +6,7 @@ import lombok.Getter;
 public enum ProductType {
 
     COLD_ROLLED("Cold Rolled"),
-    ELECTRICAL_STEEL("Electrical Steel"),
-    HOT_ROLLED_GENERAL("Hot Rolled (General)"),
-    HOT_ROLLED_ENERGY_PIPE("Hot Rolled (Energy Pipe)"),
-    HOT_ROLLED_CONSTRUCTION("Hot Rolled (Construction)"),
+    HOT_ROLLED("Hot Rolled"),
     WIRE_ROD("Wire Rod"),
     HEAVY_PLATE_GENERAL("Heavy Plate (General/Classification Society)"),
     HEAVY_PLATE_ENERGY_PIPE("Heavy Plate (Energy Pipe)"),
