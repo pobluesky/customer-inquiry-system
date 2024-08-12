@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
 import { SignIn } from '../../assets/css/Auth.css';
+import Swal from 'sweetalert2';
+
+import { signInApi } from '../../apis/api/auth/auth';
 
 function Login() {
+    const [auth, setAuth] = useState([]);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    // const token = process.env.REACT_APP_JWT_TOKEN;
+
+    const fetchGetAuth = async () => {
+        const result = await signInApi(email, password);
+        setAuth(result);
+    };
+
+    const successAlert = () => {
+        if (auth.success) {
+            Swal.fire({ icon: 'success', title: '로그인되었습니다.' });   
+        }
+    };
+
+    successAlert();
+
+    const emailChange = (e) => setEmail(e.target.value);
+    const passwordChange = (e) => setPassword(e.target.value);
+
+    /* 입력 창 초기화 */
+    const inputClear = () => {
+        nameRef.current.value = null;
+        noRef.current.value = null;
+    };
+
     return (
         <div>
             <Header
@@ -37,7 +67,7 @@ function Login() {
                             categoryMargin={'0 auto 12px auto'}
                             categoryTextAlign={'left'}
                             placeholder={'poscodx@posco.co.kr'}
-                            // onChange={onChange}
+                            onChange={emailChange}
                             // ref={ref}
                         />
                     </div>
@@ -57,7 +87,7 @@ function Login() {
                             categoryMargin={'0 auto 12px auto'}
                             categoryTextAlign={'left'}
                             placeholder={'********'}
-                            // onChange={onChange}
+                            onChange={passwordChange}
                             // ref={ref}
                         />
                     </div>
@@ -75,6 +105,7 @@ function Login() {
                                 fontSize={'20px'}
                                 border={'solid #c1c1c1 1px'}
                                 borderRadius={'12px'}
+                                onClick={() => fetchGetAuth(email, password)}
                             />
                         </div>
                         <div>

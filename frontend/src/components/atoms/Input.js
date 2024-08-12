@@ -14,6 +14,7 @@ const Input = forwardRef(
             placeholder,
             value,
             onChange,
+            type,
             width,
             height,
             margin,
@@ -45,7 +46,7 @@ const Input = forwardRef(
                 ref={ref}
                 value={value}
                 onChange={onChange}
-                type="text"
+                type={type}
                 placeholder={placeholder}
                 style={{
                     width: `${width}`,
