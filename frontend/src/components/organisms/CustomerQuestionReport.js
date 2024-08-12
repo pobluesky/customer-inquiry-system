@@ -5,7 +5,7 @@ import completed from '../../assets/css/icons/voc/question_completed.svg';
 import partition from '../../assets/css/icons/voc/question_partition.svg';
 import { Report_Container } from '../../assets/css/Voc.css';
 
-function QuestionReport({ question_total, question_ready, question_completed }) {
+function CustomerQuestionReport({ question_total, question_ready, question_completed }) {
     return (
         <div className={Report_Container}>
             <div> 
@@ -35,4 +35,4 @@ function QuestionReport({ question_total, question_ready, question_completed }) 
     );
 }
 
-export default QuestionReport;
+export default CustomerQuestionReport;

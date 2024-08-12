@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Label from '../../components/atoms/Label';
+import Label from '../atoms/Label';
 import Tag from '../atoms/Tag';
 import Input from '../atoms/Input';
-import TextEditor from './../mocules/TextEditor';
+import TextEditor from '../mocules/TextEditor';
 import Button from '../atoms/Button';
 import qmark from '../../assets/css/icons/voc/question_mark.svg';
 import amark from '../../assets/css/icons/voc/answer_mark.svg';
