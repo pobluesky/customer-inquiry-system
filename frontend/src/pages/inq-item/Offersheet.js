@@ -7,7 +7,7 @@ import OfferInfo from '../../components/organisms/OfferInfo';
 import OfferTable from '../../components/organisms/OfferTable';
 import { Container, Sheet, _Toggle, Opend, _Category, Detail } from '../../assets/css/Offersheet.css';
 
-function OfferSheet({ inquiryId, addTask }) {
+function Offersheet({ inquiryId, addTask }) {
     const [originalText, setOriginalText] = useState('');
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
@@ -107,4 +107,4 @@ function OfferSheet({ inquiryId, addTask }) {
     );
 }
 
-export default OfferSheet;
+export default Offersheet;
