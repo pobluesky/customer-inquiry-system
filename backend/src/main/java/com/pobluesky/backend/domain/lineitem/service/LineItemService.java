@@ -11,6 +11,7 @@ import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLi
 import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemUpdateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
@@ -18,14 +19,17 @@ import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledL
 import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemSummaryResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.wirerod.WireRodLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
+import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
 
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.HotRolledLineItemRepository;
+import com.pobluesky.backend.domain.lineitem.repository.WireRodLineItemRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
@@ -55,8 +59,9 @@ public class LineItemService {
 
     private final ColdRolledLineItemRepository coldRolledLineItemRepository;
 
-    private final HotRolledLineItemRepository hotrolledLineItemRepository;
     private final HotRolledLineItemRepository hotRolledLineItemRepository;
+
+    private final WireRodLineItemRepository wireRodLineItemRepository;
 
     @Transactional
     public LineItemResponseDTO createLineItem(
@@ -106,6 +111,17 @@ public class LineItemService {
 
                 return HotRolledLineItemResponseDTO.of(hotRolledLineItem);
 
+            case WIRE_ROD:
+                WireRodLineItemCreateRequestDTO wireRodDto = objectMapper.convertValue(
+                    requestDto,
+                    WireRodLineItemCreateRequestDTO.class
+                );
+
+                entity = wireRodDto.toWireRodLineItem(inquiry);
+                WireRodLineItem wireRodLineItem = wireRodLineItemRepository.save((WireRodLineItem) entity);
+
+                return WireRodLineItemResponseDTO.of(wireRodLineItem);
+
 
 
 
@@ -138,6 +154,12 @@ public class LineItemService {
             case HOT_ROLLED:
                 List<HotRolledLineItem> hotRolledLineItemList = hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
                 return hotRolledLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                    .collect(Collectors.toList());
+
+            case WIRE_ROD:
+                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
+                return wireRodLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
             // 다른 제품 유형 처리
@@ -175,6 +197,12 @@ public class LineItemService {
                 return hotRolledLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
+
+            case WIRE_ROD:
+                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveHotRolledLineItemByInquiry(
+                    inquiry);
+                return wireRodLineItemList.stream()
+                    .map(lineItem -> toF)
 
 
             default:
