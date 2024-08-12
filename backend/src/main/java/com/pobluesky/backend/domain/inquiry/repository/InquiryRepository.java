@@ -4,6 +4,8 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import java.util.List;
 import java.util.Optional;
+
+import com.pobluesky.backend.domain.question.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+
     @Bean
     public OpenAPI openAPI() {
         String jwt = "JWT";
@@ -26,6 +27,7 @@ public class SwaggerConfig {
             .addSecurityItem(securityRequirement)
             .components(components);
     }
+
     private Info apiInfo() {
         return new Info()
             .title("포청천 Swagger UI") // API의 제목
