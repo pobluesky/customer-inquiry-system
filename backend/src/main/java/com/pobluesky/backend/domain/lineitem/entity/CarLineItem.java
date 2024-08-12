@@ -6,6 +6,7 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 
+import com.pobluesky.backend.domain.user.entity.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -112,5 +113,9 @@ public class CarLineItem extends LineItem {
         this.thickness = thickness;
         this.width = width;
         this.quantity = quantity;
+    }
+
+    public Customer getCustomer() {
+        return this.inquiry.getCustomer();
     }
 }

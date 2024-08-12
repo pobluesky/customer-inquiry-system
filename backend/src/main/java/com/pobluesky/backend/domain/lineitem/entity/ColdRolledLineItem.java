@@ -35,10 +35,6 @@ public class ColdRolledLineItem extends LineItem{
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-
     @Enumerated(EnumType.STRING)
     private Kind kind;
 
@@ -64,7 +60,6 @@ public class ColdRolledLineItem extends LineItem{
     @Builder
     public ColdRolledLineItem(
         Inquiry inquiry,
-        Customer customer,
         Kind kind,
         InqName inqName,
         String orderCategory,
@@ -77,7 +72,6 @@ public class ColdRolledLineItem extends LineItem{
         String outDiameter
     ){
         this.inquiry = inquiry;
-        this.customer = customer;
         this.kind = kind;
         this.inqName = inqName;
         this.orderCategory = orderCategory;
@@ -117,4 +111,7 @@ public class ColdRolledLineItem extends LineItem{
     }
 
 
+    public Customer getCustomer() {
+        return this.inquiry.getCustomer();
+    }
 }

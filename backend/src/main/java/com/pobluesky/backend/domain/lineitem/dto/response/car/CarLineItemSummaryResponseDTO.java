@@ -44,7 +44,6 @@ public class CarLineItemSummaryResponseDTO extends LineItemResponseDTO {
             .pjtName(carLineItem.getPjtName())
             .thickness(carLineItem.getThickness())
             .width(carLineItem.getWidth())
-            .customerName(carLineItem.getCustomerName())
             .isActivated(carLineItem.getIsActivated())
             .build();
     }

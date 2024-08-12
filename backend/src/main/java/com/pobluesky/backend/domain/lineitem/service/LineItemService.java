@@ -175,29 +175,7 @@ public class LineItemService {
                     carDto.ixPlate(),
                     carDto.thickness(),
                     carDto.width(),
-                    carDto.quantity(),
-                    carDto.desiredDeliveryDate(),
-                    carDto.deliveryDestination(),
-                    carDto.order(),
-                    carDto.coatingCondition(),
-                    carDto.coatingAnotherCondition(),
-                    carDto.contract(),
-                    carDto.sop(),
-                    carDto.fcAmount(),
-                    carDto.bcAmount(),
-                    carDto.coatingUnit(),
-                    carDto.postTreatment(),
-                    carDto.direction(),
-                    carDto.raTarget(),
-                    carDto.mTolerance(),
-                    carDto.pTolerance(),
-                    carDto.raUnit(),
-                    carDto.raAnotherUnit(),
-                    carDto.qsRequirement(),
-                    carDto.expensePerYear(),
-                    carDto.customerName(),
-                    carDto.completeVehicle(),
-                    carDto.regulation()
+                    carDto.quantity()
                 );
 
                 return CarLineItemResponseDTO.of(carLineItem);

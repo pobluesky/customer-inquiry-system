@@ -22,6 +22,10 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
+    private Long CustomerId;
+
+    private String CustomerName;
+
     private Lab lab;
 
     private Kind kind;
@@ -42,50 +46,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private Date desiredDeliveryDate;
-
-    private String deliveryDestination;
-
-    private Order order;
-
-    private CoatingCondition coatingCondition;
-
-    private CoatingAnotherCondition coatingAnotherCondition;
-
-    private ContractType contract;
-
-    private Date sop;
-
-    private String fcAmount;
-
-    private String bcAmount;
-
-    private CoatingUnit coatingUnit;
-
-    private PostTreatment postTreatment;
-
-    private Direction direction;
-
-    private String raTarget;
-
-    private Integer mTolerance;
-
-    private Integer pTolerance;
-
-    private RaUnit raUnit;
-
-    private RaAnotherUnit raAnotherUnit;
-
-    private String qsRequirement;
-
-    private String expensePerYear;
-
-    private String customerName;
-
-    private String completeVehicle;
-
-    private Regulation regulation;
-
     private Boolean isActivated;
 
     public static CarLineItemResponseDTO of(CarLineItem carLineItem) {
@@ -93,6 +53,8 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
             .inquiryId(carLineItem.getInquiry().getInquiryId())
+            .CustomerId(carLineItem.getCustomer().getCustomerId())
+            .CustomerName(carLineItem.getCustomer().getCustomerName())
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
             .standardOrg(carLineItem.getStandardOrg())
@@ -103,28 +65,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .thickness(carLineItem.getThickness())
             .width(carLineItem.getWidth())
             .quantity(carLineItem.getQuantity())
-            .desiredDeliveryDate(carLineItem.getDesiredDeliveryDate())
-            .deliveryDestination(carLineItem.getDeliveryDestination())
-            .order(carLineItem.getOrders())
-            .coatingCondition(carLineItem.getCoatingCondition())
-            .coatingAnotherCondition(carLineItem.getCoatingAnotherCondition())
-            .contract(carLineItem.getContract())
-            .sop(carLineItem.getSop())
-            .fcAmount(carLineItem.getFcAmount())
-            .bcAmount(carLineItem.getBcAmount())
-            .coatingUnit(carLineItem.getCoatingUnit())
-            .postTreatment(carLineItem.getPostTreatment())
-            .direction(carLineItem.getDirection())
-            .raTarget(carLineItem.getRaTarget())
-            .mTolerance(carLineItem.getMTolerance())
-            .pTolerance(carLineItem.getPTolerance())
-            .raUnit(carLineItem.getRaUnit())
-            .raAnotherUnit(carLineItem.getRaAnotherUnit())
-            .qsRequirement(carLineItem.getQsRequirement())
-            .expensePerYear(carLineItem.getExpensePerYear())
-            .customerName(carLineItem.getCustomerName())
-            .completeVehicle(carLineItem.getCompleteVehicle())
-            .regulation(carLineItem.getRegulation())
             .isActivated(carLineItem.getIsActivated())
             .build();
     }

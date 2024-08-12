@@ -20,29 +20,7 @@ public record CarLineItemCreateRequestDTO(
     IxPlate ixPlate,
     String thickness,
     String width,
-    int quantity,
-    Date desiredDeliveryDate,
-    String deliveryDestination,
-    Order order,
-    CoatingCondition coatingCondition,
-    CoatingAnotherCondition coatingAnotherCondition,
-    ContractType contract,
-    Date sop,
-    String fcAmount,
-    String bcAmount,
-    CoatingUnit coatingUnit,
-    PostTreatment postTreatment,
-    Direction direction,
-    String raTarget,
-    int mTolerance,
-    int pTolerance,
-    RaUnit raUnit,
-    RaAnotherUnit raAnotherUnit,
-    String qsRequirement,
-    String expensePerYear,
-    String customerName,
-    String completeVehicle,
-    Regulation regulation
+    int quantity
 ) {
 
     public CarLineItem toCarLineItemEntity(Inquiry inquiry) {
@@ -59,28 +37,6 @@ public record CarLineItemCreateRequestDTO(
             .thickness(thickness)
             .width(width)
             .quantity(quantity)
-            .desiredDeliveryDate(desiredDeliveryDate)
-            .deliveryDestination(deliveryDestination)
-            .order(order)
-            .coatingCondition(coatingCondition)
-            .coatingAnotherCondition(coatingAnotherCondition)
-            .contract(contract)
-            .sop(sop)
-            .fcAmount(fcAmount)
-            .bcAmount(bcAmount)
-            .coatingUnit(coatingUnit)
-            .postTreatment(postTreatment)
-            .direction(direction)
-            .raTarget(raTarget)
-            .mTolerance(mTolerance)
-            .pTolerance(pTolerance)
-            .raUnit(raUnit)
-            .raAnotherUnit(raAnotherUnit)
-            .qsRequirement(qsRequirement)
-            .expensePerYear(expensePerYear)
-            .customerName(customerName)
-            .completeVehicle(completeVehicle)
-            .regulation(regulation)
             .build();
     }
 }
