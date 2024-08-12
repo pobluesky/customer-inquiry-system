@@ -1,8 +1,8 @@
 package com.pobluesky.backend.domain.lineitem.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.InqName;
-import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
+import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
+import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
