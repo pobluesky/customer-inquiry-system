@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class AnswerService {
     private final InquiryRepository inquiryRepository;
     private final CustomerRepository customerRepository;
 
-    // 질문 & 답변 전체 조회 (고객사)
+    // 질문 & 답변 전체 조회 (고객사): 고객별 전제 질문 + 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
     public List<AnswerWithQuestionResponseDTO> getQuestionsAndAnswersByCustomerId(Long customerId) {
         List<Question> questions = questionRepository.findAllByCustomer_CustomerId(customerId);
@@ -39,16 +40,16 @@ public class AnswerService {
             throw new CommonException(ErrorCode.QUESTION_NOT_FOUND);
         }
 
-        List<AnswerWithQuestionResponseDTO> result = new ArrayList<>();
-        for (Question question : questions) {
-            Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId()).orElse(null);
-            result.add(AnswerWithQuestionResponseDTO.from(question, answer));
-        }
+        return questions.stream()
+            .map(question -> {
+                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
-        return result;
+                return AnswerWithQuestionResponseDTO.from(question, answer);
+            })
+            .collect(Collectors.toList());
     }
 
-    // 고객별 답변 전체 조회 (고객사)
+    // 고객별 답변 전체 조회 (고객사): 고객별 전체 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
     public List<AnswerResponseDTO> getAnswerByCustomerId(Long customerId) {
         List<Answer> answers = answerRepository.findAllByCustomer_CustomerId(customerId);
@@ -62,52 +63,30 @@ public class AnswerService {
             .collect(Collectors.toList());
     }
 
-    // 고객별 & 질문별 답변 조회 (고객사)
-    @Transactional(readOnly = true)
-    public AnswerResponseDTO getAnswerById(Long questionId) {
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
-
-        return AnswerResponseDTO.from(answer);
-    }
-
-    // 질문 & 답변 전체 조회 (담당자)
+    // 질문 & 답변 전체 조회 (담당자): 전체 질문 + 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
     public List<AnswerWithQuestionResponseDTO> getAllAnswersWithQuestions() {
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = Optional.ofNullable(customerRepository.findAll())
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (customers.isEmpty()) {
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        return customers.stream()
+            .flatMap(customer -> questionRepository.findAllByCustomer_CustomerId(customer.getCustomerId()).stream()
+                .map(question -> {
+                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
-        List<AnswerWithQuestionResponseDTO> result = new ArrayList<>();
-        for (Customer customer : customers) {
-            List<Question> questions = questionRepository.findAllByCustomer_CustomerId(customer.getCustomerId());
-            for (Question question : questions) {
-                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId()).orElse(null);
-                result.add(AnswerWithQuestionResponseDTO.from(question, answer));
-            }
-        }
-
-        return result;
+                    return AnswerWithQuestionResponseDTO.from(question, answer);
+                }))
+            .collect(Collectors.toList());
     }
 
-    // 답변 전체 조회 (담당자)
+    // 답변 전체 조회 (담당자): 전체 답변 개수를 계산할 수 있다.
     public List<AnswerResponseDTO> getAnswer() {
         List<Answer> answer = answerRepository.findAll();
 
         return answer.stream()
             .map(AnswerResponseDTO::from)
             .collect(Collectors.toList());
-    }
-
-    // 질문별 답변 조회 (담당자)
-    @Transactional(readOnly = true)
-    public AnswerResponseDTO getAnswerByQuestionId(Long questionId) {
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
-
-        return AnswerResponseDTO.from(answer);
     }
 
     // 질문별 답변 작성 (담당자)
@@ -120,9 +99,7 @@ public class AnswerService {
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
         }
 
-        Inquiry inquiry = (question.getInquiry() != null) ?
-            inquiryRepository.findById(question.getInquiry().getInquiryId())
-                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND)) : null;
+        Inquiry inquiry = validateInquiry(question);
 
         Customer customer = customerRepository.findById(question.getCustomer().getCustomerId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -134,5 +111,14 @@ public class AnswerService {
         questionRepository.save(question);
 
         return AnswerResponseDTO.from(savedAnswer);
+    }
+
+    private Inquiry validateInquiry(Question question) {
+        if (question.getInquiry() == null) {
+            return null;
+        }
+
+        return inquiryRepository.findById(question.getInquiry().getInquiryId())
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
     }
 }
