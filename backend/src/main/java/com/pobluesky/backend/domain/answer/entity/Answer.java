@@ -19,7 +19,7 @@ public class Answer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId; // 답변 번호
 
-    @OneToOne(mappedBy = "question_id")
+    @OneToOne
     @JoinColumn(name = "question_id")
     private Question question; // 질문 번호
 

@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.question.entity;
 
+import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
@@ -18,7 +19,7 @@ public class Question extends BaseEntity {
     private Long questionId; // 질문 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inquiry_id", nullable = true)
+    @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,6 +39,10 @@ public class Question extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private QuestionType type;
+
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Answer answer;
 
     @Builder
     private Question(
