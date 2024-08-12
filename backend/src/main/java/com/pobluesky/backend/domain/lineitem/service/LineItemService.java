@@ -159,7 +159,7 @@ public class LineItemService {
                     .collect(Collectors.toList());
 
             case WIRE_ROD:
-                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
+                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(inquiry);
                 return wireRodLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
@@ -200,7 +200,7 @@ public class LineItemService {
                     .collect(Collectors.toList());
 
             case WIRE_ROD:
-                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveHotRolledLineItemByInquiry(
+                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(
                     inquiry);
                 return wireRodLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
@@ -299,7 +299,7 @@ public class LineItemService {
 
             case WIRE_ROD:
 
-                WireRodLineItem wireRodLineItem = wireRodLineItemRepository.findActiveHotRolledLineItemById(lineItemId)
+                WireRodLineItem wireRodLineItem = wireRodLineItemRepository.findActiveWireRodLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 
                 WireRodLineItemUpdateRequestDTO wireDto = objectMapper.convertValue(
@@ -358,7 +358,7 @@ public class LineItemService {
                 break;
 
             case WIRE_ROD:
-                lineItem = wireRodLineItemRepository.findActiveHotRolledLineItemById(lineItemId)
+                lineItem = wireRodLineItemRepository.findActiveWireRodLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 
                 lineItem.deleteLineItem();
