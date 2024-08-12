@@ -2,10 +2,7 @@ package com.pobluesky.backend.domain.lineitem.dto.request.thickplate;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
-import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
-import java.util.Date;
+
 
 public record ThickPlateLineItemCreateRequestDTO(
     String generalDetails,
