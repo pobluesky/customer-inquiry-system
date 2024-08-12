@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
-import com.pobluesky.backend.domain.user.entity.Customer;
 import java.util.Date;
 
 public record ColdRolledLineItemCreateRequestDTO(

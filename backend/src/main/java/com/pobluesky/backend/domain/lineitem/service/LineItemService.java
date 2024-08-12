@@ -80,7 +80,7 @@ public class LineItemService {
                     ColdRolledLineItemCreateRequestDTO.class
                 );
 
-                entity = coldRolledDto.toColdRolledLineItem(inquiry,customer);
+                entity = coldRolledDto.toColdRolledLineItem(inquiry);
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.save((ColdRolledLineItem) entity);
 
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
