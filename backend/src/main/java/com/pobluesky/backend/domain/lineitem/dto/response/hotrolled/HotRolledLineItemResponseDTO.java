@@ -56,6 +56,7 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
             .flatness(hotRolledLineItem.getFlatness())
             .orderEdge(hotRolledLineItem.getOrderEdge())
             .quantity(hotRolledLineItem.getQuantity())
+            .isActivated(hotRolledLineItem.getIsActivated())
             .build();
     }
 
