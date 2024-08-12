@@ -8,7 +8,15 @@ import Button from '../atoms/Button';
 import qmark from '../../assets/css/icons/voc/question_mark.svg';
 import amark from '../../assets/css/icons/voc/answer_mark.svg';
 import folder from '../../assets/css/icons/voc/question_folder.svg';
-import { Modal_Container, Modal_Outside, _Tag, Modal_Part_Question, Modal_Part_Answer, _Button, Answering } from '../../assets/css/Voc.css';
+import {
+    Modal_Container,
+    Modal_Outside,
+    _Tag,
+    Modal_Part_Question,
+    Modal_Part_Answer,
+    _Button,
+    Answering,
+} from '../../assets/css/Voc.css';
 import Swal from 'sweetalert2';
 
 const BeforeAnswer = styled.div`
@@ -36,7 +44,11 @@ function QuestionModal({ title, contents, files, status, onClose }) {
     const [answerContents, setAnswerContents] = useState('');
 
     const BeforeAnswerContainer = ({ status }) => {
-        return <BeforeAnswer $status={status}>{status === 'ready' && '답변 대기 중입니다.'}</BeforeAnswer>;
+        return (
+            <BeforeAnswer $status={status}>
+                {status === 'ready' && '답변 대기 중입니다.'}
+            </BeforeAnswer>
+        );
     };
 
     const answerTitleChange = (e) => {
@@ -44,7 +56,10 @@ function QuestionModal({ title, contents, files, status, onClose }) {
     };
 
     const errorMsgTitle = () => {
-        Swal.fire({ icon: 'warning', text: '제목은 1~20자까지 입력 가능합니다.' });
+        Swal.fire({
+            icon: 'warning',
+            text: '제목은 1~20자까지 입력 가능합니다.',
+        });
     };
 
     const errorMsgContents = () => {
@@ -73,10 +88,24 @@ function QuestionModal({ title, contents, files, status, onClose }) {
 
     return (
         <div className={Modal_Outside}>
-            <Label label={'문의 내용'} width={'96px'} height={'28px'} backgroundColor={'#007aff'} textColor={'#ffffff'} borderRadius={'12px 12px 0 0'} />
+            <Label
+                label={'문의 내용'}
+                width={'96px'}
+                height={'28px'}
+                backgroundColor={'#007aff'}
+                textColor={'#ffffff'}
+                borderRadius={'12px 12px 0 0'}
+            />
             <div className={Modal_Container}>
                 <div className={_Tag}>
-                    <Tag category={'Inquiry 주문 문의'} width={'156px'} height={'32px'} backgroundColor={'#2f4f79'} textColor={'#ffffff'} borderRadius={'10px'} />
+                    <Tag
+                        category={'Inquiry 주문 문의'}
+                        width={'156px'}
+                        height={'32px'}
+                        backgroundColor={'#2f4f79'}
+                        textColor={'#ffffff'}
+                        borderRadius={'10px'}
+                    />
                 </div>
                 <div className={Modal_Part_Question}>
                     <div>
@@ -93,8 +122,19 @@ function QuestionModal({ title, contents, files, status, onClose }) {
                     <BeforeAnswerContainer status={getStatus} />
                 ) : isAnswering && getStatus === 'ready' ? ( // 답변 입력 중
                     <div className={Answering}>
-                        <Input value={answerTitle} onChange={answerTitleChange} width={'840px'} height={'36px'} margin={'8px 0 8px 0'} padding={'0px'} borderRadius={'12px'} />
-                        <TextEditor originalText={originalText} setOriginalText={setOriginalText} />
+                        <Input
+                            value={answerTitle}
+                            onChange={answerTitleChange}
+                            width={'840px'}
+                            height={'36px'}
+                            margin={'8px 0 8px 0'}
+                            padding={'0px'}
+                            borderRadius={'12px'}
+                        />
+                        <TextEditor
+                            originalText={originalText}
+                            setOriginalText={setOriginalText}
+                        />
                     </div>
                 ) : !isAnswering && getStatus === 'completed' ? ( // 답변 등록
                     <div className={Modal_Part_Answer}>
@@ -112,7 +152,18 @@ function QuestionModal({ title, contents, files, status, onClose }) {
                 )}
                 <div className={_Button}>
                     {/* [닫기] */}
-                    <Button btnName={'닫기'} onClick={onClose} width={'96px'} height={'32px'} margin={'0 0 24px 0'} backgroundColor={'#2f4f79'} textColor={'#ffffff'} border={`none`} borderRadius={'10px'} float={'right'} />
+                    <Button
+                        btnName={'닫기'}
+                        onClick={onClose}
+                        width={'96px'}
+                        height={'32px'}
+                        margin={'0 0 24px 0'}
+                        backgroundColor={'#2f4f79'}
+                        textColor={'#ffffff'}
+                        border={`none`}
+                        borderRadius={'10px'}
+                        float={'right'}
+                    />
                     {/* [답변하기] */}
                     {getStatus === 'ready' && !isAnswering && (
                         <Button

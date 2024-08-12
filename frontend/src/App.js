@@ -11,6 +11,7 @@ import { InqItem } from './pages/inqitem';
 import { Voc } from './pages/voc';
 import { DashBoard } from './pages/dashboard';
 import { QuestionAnswer } from './pages/voc';
+import { QuestionRegister } from './pages/voc';
 
 function App() {
     return (
@@ -23,7 +24,8 @@ function App() {
                 <Route path="inq" element={<Inq />} />
                 <Route path="inq-item" element={<InqItem />} />
                 <Route path="voc" element={<Voc />} />
-                <Route path="voc/qna" element={<QuestionAnswer />} />
+                <Route path="voc/qna/list" element={<QuestionAnswer />} />
+                <Route path="voc/qna/register" element={<QuestionRegister />} />
                 <Route path="dashboard" element={<DashBoard />} />
                 {/* Route path="*" element={<Error404 />} /> */}
             </Routes>
