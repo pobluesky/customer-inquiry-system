@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.lineitem.entity;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "wirerod_line_items")
-public class WireRodLineItem {
+public class WireRodLineItem extends LineItem{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,4 +103,7 @@ public class WireRodLineItem {
     }
 
 
+    public Customer getCustomer() {
+        return this.inquiry.getCustomer();
+    }
 }
