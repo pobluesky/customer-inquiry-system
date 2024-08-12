@@ -21,8 +21,8 @@ public record ColdRolledLineItemCreateRequestDTO(
 ) {
 
     public ColdRolledLineItem toColdRolledLineItem(
-        Inquiry inquiry,
-        Customer customer) {
+        Inquiry inquiry
+    ) {
 
         return ColdRolledLineItem.builder()
             .inquiry(inquiry)
