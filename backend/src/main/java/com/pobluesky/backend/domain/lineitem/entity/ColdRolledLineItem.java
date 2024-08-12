@@ -88,6 +88,7 @@ public class ColdRolledLineItem extends LineItem{
         this.orderEdge = orderEdge;
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
+        this.isActivated = true;
 
     }
 

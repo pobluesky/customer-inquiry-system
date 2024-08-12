@@ -31,11 +31,19 @@ public class LineItemController {
 
     private final LineItemService lineItemService;
 
-    @Operation(summary = "inquiryId 별 line-item 조회")
+    @Operation(summary = "inquiryId 별 line-item 요약 조회")
     @GetMapping
     public ResponseEntity<JsonResult> getAllLineItemsByInquiry(@PathVariable Long inquiryId) {
         List<LineItemResponseDTO> response = lineItemService.getLineItemsByInquiry(inquiryId);
 
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "inquiryId 별 line-item 전체 조회")
+    @GetMapping("/full")
+    public ResponseEntity<JsonResult> getFullLineItemsByInquiry(@PathVariable Long inquiryId) {
+        List<LineItemResponseDTO> response = lineItemService.getFullLineItemsByInquiry(inquiryId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
