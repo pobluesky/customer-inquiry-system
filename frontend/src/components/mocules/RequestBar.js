@@ -7,7 +7,6 @@ function RequestBar({ requestBarTitle, role }) {
   const buttonConfig = {
     "Inquiry 등록": ["초기화", "임시저장", "삭제", "검토의뢰"],
     "Inquiry 상세조회 및 영업검토": {
-      "customer": ["품질검토요청", "1차검토완료", "최종검토완료", "닫기"],
       "salesManager": ["품질검토요청", "1차검토완료", "최종검토완료", "닫기"],
       "qualitiesManager": ["품질검토완료", "닫기"]
     },
@@ -25,11 +24,11 @@ function RequestBar({ requestBarTitle, role }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          backgroundColor: '#f0f8fc',
+          backgroundColor: '#ffffff',
           border: 'solid #c1c1c1 1px',
           borderRadius: '20px',
-          fontSize: '20px',
-          fontWeight: 'bold',
+          fontSize: '24px',
+          fontWeight: '800',
           color: '#49454F'
         }}>
           <div style={{ marginLeft: '2vw' }}>{requestBarTitle}</div>
