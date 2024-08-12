@@ -43,6 +43,12 @@ VALUES
     (2, 'HR', 'JS_SI123', 'Category A', '2.0mm', '1500mm', 'Hardness A', 'Flatness A', 'Edge A', 300, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'HRC', 'JS_SI456', 'Category B', '2.5mm', '1600mm', 'Hardness B', 'Flatness B', 'Edge B', 400, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+-- WireRodLineItem
+INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, is_activated, created_date, modified_date)
+VALUES
+    (3, 'SWRH', 'JS_SI123', 'Category A', '8.0mm', 500, '2024-02-15', 100, 'Processing A', 'Final Use A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'SWRM', 'JS_SI456', 'Category B', '10.0mm', 700, '2024-03-01', 200, 'Processing B', 'Final Use B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 -- OfferSheet
