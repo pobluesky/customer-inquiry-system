@@ -15,17 +15,15 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+@RequiredArgsConstructor
 public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public InquiryRepositoryImpl(EntityManager em) {
-        this.queryFactory = new JPAQueryFactory(em);
-    }
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
