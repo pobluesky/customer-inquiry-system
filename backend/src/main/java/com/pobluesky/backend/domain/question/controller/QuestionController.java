@@ -28,16 +28,6 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/manager/{questionId}")
-    @Operation(summary = "질문 번호별 상세 조회(담당자)", description = "담당자는 등록된 질문을 질문 번호로 검색한다.")
-    public ResponseEntity<JsonResult> getQuestionByInquiryIdForManager(@PathVariable Long questionId) {
-        QuestionResponseDTO response = questionService.getQuestionByQuestionId(questionId);
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @GetMapping("/customer/{customerId}")
     @Operation(summary = "질문 전체 조회(고객사)", description = "고객사는 본인의 모든 질문을 고객 번호로 찾는다.")
     public ResponseEntity<JsonResult> getQuestionByCustomerId(@PathVariable Long customerId) {
