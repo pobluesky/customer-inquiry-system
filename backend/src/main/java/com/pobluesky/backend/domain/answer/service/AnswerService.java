@@ -26,9 +26,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
+
     private final QuestionRepository questionRepository;
+
     private final AnswerRepository answerRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
 
     // 질문 & 답변 전체 조회 (고객사): 고객별 전제 질문 + 답변 개수를 계산할 수 있다.

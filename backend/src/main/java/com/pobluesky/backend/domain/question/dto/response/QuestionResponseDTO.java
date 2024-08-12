@@ -18,7 +18,8 @@ public record QuestionResponseDTO(
     QuestionStatus status,
     QuestionType type,
     LocalDateTime createdDate
-    ) {
+) {
+
     public static QuestionResponseDTO from(Question question) {
         return QuestionResponseDTO.builder()
             .inquiryId(Optional.ofNullable(question.getInquiry())
