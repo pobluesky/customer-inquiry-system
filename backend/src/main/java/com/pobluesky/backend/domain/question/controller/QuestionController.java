@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/question")
 public class QuestionController {
+
     private final QuestionService questionService;
 
     @GetMapping("/manager")
