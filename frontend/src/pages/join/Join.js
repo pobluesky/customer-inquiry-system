@@ -40,7 +40,7 @@ function Join() {
 
     return (
         <div>
-            <Header login={false} inq={true} voc={true} dashboard={true} />
+            <Header user={false} login={false} inq={true} voc={true} dashboard={true} />
             <div className={Container_Join}>
                 {!check ? (
                     <>

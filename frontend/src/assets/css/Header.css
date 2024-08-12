@@ -1,3 +1,7 @@
+div {
+    border: solid 1px blue;
+}
+
 .Container {
     width: 100%;
     height: 84px;
@@ -34,6 +38,10 @@
 /* 로그인 아이콘 */
 .Container > div > div:nth-child(6) > img {
     width: 30px;
+}
+
+.Container > div > div:nth-child(6) {
+    width: 120px;
 }
 
 /* 사용자 이름 */

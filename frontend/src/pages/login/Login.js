@@ -7,7 +7,7 @@ import { Container_Login, Login_Title, Login_Email_Password, Join_Line, Join_Lin
 function Login() {
     return (
         <div>
-            <Header login={false} inq={true} voc={true} dashboard={true} />
+            <Header user={true} login={false} inq={true} voc={true} dashboard={true} />
             <div className={Container_Login}>
                 <div className={Login_Title}>로그인</div>
                 <div className={Login_Email_Password}>이메일과 비밀번호를 입력해주세요.</div>
