@@ -31,7 +31,9 @@ public enum ErrorCode {
     COLLABORATION_ALREADY_EXISTS(HttpStatus.INTERNAL_SERVER_ERROR, "C0002", "이미 존재하는 협업입니다."),
     COLLABORATION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "C0003", "이미 완료된 협업입니다."),
     COLLABORATION_STATUS_REFUSED(HttpStatus.INTERNAL_SERVER_ERROR, "C0004", "이미 거절된 협업입니다."),
-    INVALID_PASSWORD(HttpStatus.INTERNAL_SERVER_ERROR, "U0005", "비밀번호가 틀립니다.");
+    INVALID_PASSWORD(HttpStatus.INTERNAL_SERVER_ERROR, "U0005", "비밀번호가 틀립니다."),
+    RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "U0006", "해당 협업의 응답 담당자가 아닙니다."),
+    USER_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "U0005","적합한 사용자가 아닙니다.");
 
     private HttpStatus status;
     private String code;

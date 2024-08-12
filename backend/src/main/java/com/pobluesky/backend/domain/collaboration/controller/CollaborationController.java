@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.collaboration.service.CollaborationService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,19 +31,25 @@ public class CollaborationController {
     private final CollaborationService collaborationService;
 
     @GetMapping
-    public ResponseEntity<JsonResult> getAllCollaborations() {
-        List<CollaborationResponseDTO> response = collaborationService.getAllCollaborations();
+    @Operation(summary = "본인의 협업만 조회")
+    public ResponseEntity<JsonResult> getAllCollaborations(
+        @RequestHeader("Authorization") String token
+    ) {
+        List<CollaborationResponseDTO> response = collaborationService.getAllCollaborations(token);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping("/{questionId}")
+    @Operation(summary = "협업 요청")
     public ResponseEntity<JsonResult> createCollaboration(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
         @RequestBody CollaborationCreateRequestDTO requestDTO
     ) {
         CollaborationResponseDTO response = collaborationService.createCollaboration(
+            token,
             questionId,
             requestDTO
         );
@@ -51,11 +59,14 @@ public class CollaborationController {
     }
 
     @GetMapping("/{questionId}/{collaborationId}")
+    @Operation(summary = "협업 단건 조회")
     public ResponseEntity<JsonResult> getCollaboration(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
         @PathVariable Long collaborationId
     ) {
         CollaborationResponseDTO response = collaborationService.getCollaborationById(
+            token,
             questionId,
             collaborationId
         );
@@ -65,11 +76,14 @@ public class CollaborationController {
     }
 
     @PutMapping("/{collaborationId}/decision")
+    @Operation(summary = "협업 상태 변경", description = "협업 요청을 받은 담당자만 수정 가능")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId,
         @RequestBody CollaborationUpdateRequestDTO requestDTO
     ) {
         CollaborationDetailResponseDTO response = collaborationService.updateCollaborationStatus(
+            token,
             collaborationId,
             requestDTO
         );
@@ -79,10 +93,13 @@ public class CollaborationController {
     }
 
     @PutMapping("/{collaborationId}/decision/complete")
+    @Operation(summary = "협업 상태 변경", description = "협업 요청을 받은 담당자만 수정 가능")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId
     ) {
         CollaborationDetailResponseDTO response = collaborationService.completeCollaboration(
+            token,
             collaborationId
         );
 
