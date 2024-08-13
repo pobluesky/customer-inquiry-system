@@ -14,5 +14,4 @@ public record HotRolledLineItemUpdateRequestDTO(
     String orderEdge,
     Integer quantity
 ) {
-
 }

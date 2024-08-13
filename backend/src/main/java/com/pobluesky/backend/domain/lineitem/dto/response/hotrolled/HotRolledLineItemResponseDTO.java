@@ -58,5 +58,4 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
             .isActivated(hotRolledLineItem.getIsActivated())
             .build();
     }
-
 }

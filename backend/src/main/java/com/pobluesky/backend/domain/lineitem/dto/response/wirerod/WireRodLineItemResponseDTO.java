@@ -57,5 +57,4 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
             .isActivated(wireRodLineItem.getIsActivated())
             .build();
     }
-
 }
