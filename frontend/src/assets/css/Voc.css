@@ -1,93 +1,103 @@
-/* Question Report Component */
+/* Question Report Component *************************/
 .Report_Container {
     width: 1320px;
     margin: 36px auto 0 auto;
-    display: flex;
-    justify-content: space-evenly;
 }
 
-.Report_Container img {
-    margin: 0 0 12px 0;
-}
-
-.Report_Container div {
-    text-align: center;
+.Report_Container > div:first-child {
+    display: grid;
+    grid-template-columns: 360px 120px 360px 120px 360px;
+    justify-content: center;
 }
 
 .Report_Container div div {
+    display: grid;
+    grid-template-rows: 84px 28px 64px;
     font-size: 20px;
     font-weight: 700;
     color: #454545;
+    text-align: center;
 }
 
-.Report_Container .Report_Count {
+/* 카테고리 아이콘 */
+.Report_Container div div img {
+    margin: 0 auto 0 auto;
+}
+
+/* 구분선 */
+.Report_Container > div img {
+    margin: auto;
+}
+
+/* 카테고리별 문의 개수 */
+.Report_Container div:nth-child(3) {
     font-size: 48px;
     font-weight: 400;
     color: #03507d;
 }
 
-/* Search Bar Component */
-.Search_Container {
-    display: flex;
-    justify-content: center;
-    margin: 24px 0 0 0;
-}
-
-.Search_Item_Container {
+/* Search Bar Component ******************************/
+.Question_Search_Container {
     width: 1320px;
     height: 228px;
+    margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
 }
 
-.Item_Center {
-    display: flex;
-    align-items: center;
+.Question_Search_Container > div:first-child {
+    display: grid;
+    grid-template-rows: 52px 52px 36px 32px;
+    margin: 36px 0 0 36px;
 }
 
-.Category_Gap {
-    margin: 24px 0 0 28px;
-}
-
-.Item_Center .Category_Text {
-    margin: 0 0 0 12px;
+/* 아이콘 + 문의 조회 */
+.Question_Search_Container > div > div:nth-child(1) {
+    display: grid;
+    grid-template-columns: 48px 120px;
+    align-items: start;
     font-size: 24px;
+    font-weight: 600;
     color: #49454f;
-    font-weight: bold;
 }
 
-.Item_Center div {
+/* 문의 제목 + 문의 등록일 */
+.Question_Search_Container > div > div:nth-child(2) > :nth-child(1) {
+    display: grid;
+    grid-template-columns: 120px 320px 128px 200px 48px 1fr 1fr 1fr;
+    align-items: center;
+    font-size: 16px;
     color: #8b8b8b;
 }
 
-.Title_Date {
-    display: flex;
+/* 정렬 조건 + 정렬 버튼 */
+.Question_Search_Container > div > div:nth-child(3) {
+    display: grid;
+    grid-template-columns: 120px 96px 96px 96px 96px;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
 }
 
-.Date {
-    margin: 0 12px 0 0;
-}
-
-.Date_Input {
-    margin: 0 12px 0 12px;
-}
-
-.Title_Date,
-._Sort {
-    margin: 32px 0 0 28px;
-}
-
-.Search_List_Count {
-    margin: 0 28px 0 0;
+/* 검색 결과 */
+.Question_Search_Container > div > div:nth-child(4) {
+    display: grid;
+    grid-template-columns: 30fr 1fr 0.5fr 1fr;
+    align-items: center;
+    font-size: 16px;
+    color: #8b8b8b;
     text-align: right;
 }
 
-.Search_List_Count span {
-    color: red;
+/* 검색 결과 개수 */
+.Question_Search_Container > div > div:nth-child(4) > div {
+    margin: 0 0 0 12px;
     font-size: 24px;
+    font-weight: 600;
+    color: red;
 }
 
-/* Question Card Component */
+/* Question Card Component ***************************/
 .Card_Container {
     width: 360px;
     height: 300px;
@@ -127,23 +137,7 @@
     color: #03507d;
 }
 
-/* VoC Page */
-.Question_Title {
-    width: 1320px;
-    margin: 24px auto 24px auto;
-    font-size: 24px;
-    font-weight: bold;
-    color: #49454f;
-}
-
-.Question_Card {
-    width: 1320px;
-    margin: 0 auto 24px auto;
-    display: grid;
-    column-gap: 120px;
-    grid-template-columns: auto auto auto;
-}
-
+/* Question List Component ***************************/
 .Question_Doesnt_Exist {
     width: 360px;
     height: 300px;
@@ -155,6 +149,14 @@
     text-align: center;
     align-content: center;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.Question_Card {
+    width: 1320px;
+    margin: 0 auto 24px auto;
+    display: grid;
+    column-gap: 120px;
+    grid-template-columns: 360px 360px 360px;
 }
 
 /* Question Modal Component */
@@ -271,4 +273,13 @@
     width: 840px;
     height: 228px;
     margin: 24px auto 0 auto;
+}
+
+/* Question & Answer Page ****************************/
+.Question_Title {
+    width: 1320px;
+    margin: 24px auto 24px auto;
+    font-size: 24px;
+    font-weight: bold;
+    color: #49454f;
 }

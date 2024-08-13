@@ -2,6 +2,8 @@ package com.pobluesky.backend.domain.user.entity;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,6 +36,9 @@ public class Customer extends User {
 
     private String customerName;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
@@ -60,6 +65,7 @@ public class Customer extends User {
         this.customerCode = customerCode;
         this.customerName = customerName;
         this.isActivated = true;
+        this.role = UserRole.CUSTOMER;
         this.roles = roles;
     }
 
