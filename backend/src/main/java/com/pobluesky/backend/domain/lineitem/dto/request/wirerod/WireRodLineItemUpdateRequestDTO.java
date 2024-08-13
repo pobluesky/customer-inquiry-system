@@ -15,5 +15,4 @@ public record WireRodLineItemUpdateRequestDTO(
     String customerProcessing,
     String finalUse
 ) {
-
 }

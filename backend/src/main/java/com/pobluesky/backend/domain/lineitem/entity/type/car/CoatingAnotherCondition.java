@@ -10,6 +10,5 @@ public enum CoatingAnotherCondition {
     TEST("예시"),
     TEST_LAB("예시2");
 
-
     private String name;
 }
