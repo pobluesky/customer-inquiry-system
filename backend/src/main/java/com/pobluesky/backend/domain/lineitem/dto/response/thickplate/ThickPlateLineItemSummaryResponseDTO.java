@@ -14,23 +14,15 @@ public class ThickPlateLineItemSummaryResponseDTO extends LineItemResponseDTO {
 
     private InquirySummaryResponseDTO inquirySummaryResponseDTO;
 
-    private String generalDetails;
-
-    private String orderInfo;
-
     private String ladleIngredient;
 
     private String productIngredient;
 
     private String seal;
 
-    private Boolean grainSizeAnalysis;
-
     private String show;
 
     private String curve;
-
-    private String additionalRequests;
 
     private Boolean isActivated;
 
