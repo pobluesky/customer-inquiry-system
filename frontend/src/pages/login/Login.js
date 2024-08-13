@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import Input from '../../components/atoms/Input';
@@ -8,34 +8,32 @@ import Swal from 'sweetalert2';
 import { signInApi } from '../../apis/api/auth/auth';
 
 function Login() {
-    const [auth, setAuth] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // 이메일과 비밀번호 입력 핸들러
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
-    // 로그인 API 호출
+    // 로그인 API
     const fetchGetAuth = async () => {
         try {
             const result = await signInApi(email, password);
-            setAuth(result);
+            signInAlert(result);
         } catch (error) {
             console.error('로그인 실패:', error);
-            Swal.fire({ icon: 'error', title: '로그인 실패' });
         }
     };
 
-    // 로그인 성공 시 알림
-    useEffect(() => {
-        if (auth.success) {
-            Swal.fire({ icon: 'success', title: '로그인되었습니다.' });
+    // 로그인 Alert
+    const signInAlert = (result) => {
+        if (result.success) {
+            Swal.fire({ icon: 'success', title: '로그인 완료' });
+        } else {
+            Swal.fire({ icon: 'error', title: '존재하지 않는 회원입니다.' });
         }
-    }, [auth]);
+    };
 
-    // 반복되는 Input 컴포넌트를 생성하는 함수
-    const renderInput = ({
+    const loginInput = ({
         value,
         onChange,
         type,
@@ -78,10 +76,9 @@ function Login() {
                 <div>
                     <div>로그인</div>
                     <div>이메일과 비밀번호를 입력해주세요.</div>
-
                     {/* 이메일 & 비밀번호 입력 창 */}
                     <div>
-                        {renderInput({
+                        {loginInput({
                             value: email,
                             onChange: emailChange,
                             type: 'email',
@@ -90,7 +87,7 @@ function Login() {
                         })}
                     </div>
                     <div>
-                        {renderInput({
+                        {loginInput({
                             value: password,
                             onChange: passwordChange,
                             type: 'password',
@@ -98,38 +95,22 @@ function Login() {
                             categoryName: '비밀번호',
                         })}
                     </div>
-
                     {/* 로그인 완료 & 비밀번호 찾기 버튼 */}
                     <div style={{ marginTop: '4vh' }}>
-                        <div>
-                            <Button
-                                btnName={'로그인'}
-                                width={'168px'}
-                                height={'44px'}
-                                margin={'12px'}
-                                backgroundColor={'#03507D'}
-                                textColor={'#EEEEEE'}
-                                fontSize={'20px'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                                onClick={fetchGetAuth}
-                            />
-                        </div>
-                        <div>
-                            <Button
-                                btnName={'비밀번호 찾기'}
-                                width={'168px'}
-                                height={'44px'}
-                                margin={'12px'}
-                                backgroundColor={'#EEEEEE'}
-                                textColor={'#03507D'}
-                                fontSize={'20px'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                            />
-                        </div>
+                        <Button
+                            btnName={'로그인'}
+                            width={'360px'}
+                            height={'44px'}
+                            backgroundColor={'#03507D'}
+                            textColor={'#EEEEEE'}
+                            fontSize={'20px'}
+                            border={'solid #c1c1c1 1px'}
+                            borderRadius={'12px'}
+                            onClick={async () => {
+                                await fetchGetAuth();
+                            }}
+                        />
                     </div>
-
                     {/* 회원가입 링크 */}
                     <div>
                         <a href="/join">회원이 아니신가요?</a>

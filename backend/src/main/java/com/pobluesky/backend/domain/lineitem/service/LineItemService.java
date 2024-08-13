@@ -83,18 +83,9 @@ public class LineItemService {
         Map<String, Object> requestDto
     ) {
 
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        
-
-
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         Customer customer = inquiry.getCustomer();
-
         ProductType productType = inquiry.getProductType();
-        LineItem entity;
-
         LineItem entity;
 
         switch (productType) {
@@ -354,8 +345,6 @@ public class LineItemService {
     ) {
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
-        LineItem lineItem;
-
         LineItem lineItem;
 
         switch (productType) {

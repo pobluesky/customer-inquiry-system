@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.lineitem.repository;
 
-
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 

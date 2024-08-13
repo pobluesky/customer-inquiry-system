@@ -1,5 +1,3 @@
-// Join.js
-
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
@@ -10,8 +8,6 @@ import Swal from 'sweetalert2';
 import { signUpApi } from '../../apis/api/auth/auth';
 
 function Join() {
-    const [auth, setAuth] = useState([]);
-
     const nameRef = useRef(null);
     const customerCodeRef = useRef(null);
     const customerNameRef = useRef(null);
@@ -30,9 +26,6 @@ function Join() {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
-
-    // API body
-    const [data, setData] = useState([]);
 
     // 입력값 저장
     const nameChange = (e) => setName(e.target.value);
@@ -66,6 +59,7 @@ function Join() {
         }
     };
 
+    // 회원가입 API
     const fetchGetAuth = async () => {
         try {
             const result = await signUpApi(
@@ -77,7 +71,6 @@ function Join() {
                 phone,
                 password,
             );
-            setAuth(result);
             signUpAlert(result);
         } catch (error) {
             console.error('회원가입 실패:', error);
@@ -85,6 +78,7 @@ function Join() {
         }
     };
 
+    // 회원가입 Alert
     const signUpAlert = (result) => {
         if (result.success) {
             Swal.fire({ icon: 'success', title: '회원가입 완료' });
@@ -93,8 +87,8 @@ function Join() {
         }
     };
 
-    // 반복되는 Input 생성 함수
-    const renderInput = ({
+    const joinInput = ({
+        margin,
         ref,
         value,
         onChange,
@@ -111,7 +105,7 @@ function Join() {
             placeholder={placeholder}
             width={'336px'}
             height={'48px'}
-            margin={'0 0 24px 0'}
+            margin={margin}
             padding={'0 0 0 20px'}
             border={'solid 1px #c1c1c1'}
             borderRadius={'12px'}
@@ -142,23 +136,25 @@ function Join() {
                             <div>회원가입</div>
                             {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
                             <div>
-                                {renderInput({
+                                {joinInput({
                                     ref: nameRef,
                                     value: name,
                                     onChange: nameChange,
                                     type: 'text',
                                     placeholder: '김숙하',
                                     categoryName: '이름',
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     ref: customerCodeRef,
                                     value: customerCode,
                                     onChange: customerCodeChange,
                                     type: 'text',
                                     placeholder: 'CUST100',
                                     categoryName: '고객사 코드',
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     ref: customerNameRef,
                                     value: customerName,
                                     onChange: customerNameChange,
@@ -191,36 +187,40 @@ function Join() {
                             <div />
                             {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
                             <div>
-                                {renderInput({
+                                {joinInput({
                                     value: userRole || '',
                                     onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
                                     type: 'text',
                                     placeholder: '',
                                     categoryName: '권한',
                                     needCategory: true,
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: email || '',
                                     onChange: emailChange,
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: phone || '',
                                     onChange: phoneChange,
                                     type: 'text',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: password || '',
                                     onChange: passwordChange,
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
+                                    margin: '0 0 24px 0',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: passwordCheck || '',
                                     onChange: passwordCheckChange,
                                     type: 'password',
@@ -228,7 +228,6 @@ function Join() {
                                     categoryName: '비밀번호 확인',
                                 })}
                             </div>
-
                             {/* 회원가입 버튼 */}
                             <div>
                                 <Button
@@ -248,15 +247,6 @@ function Join() {
                                             });
                                             return;
                                         }
-                                        setData([
-                                            name,
-                                            customerCode,
-                                            customerName,
-                                            roles,
-                                            email,
-                                            phone,
-                                            password,
-                                        ]);
                                         await fetchGetAuth();
                                     }}
                                 />

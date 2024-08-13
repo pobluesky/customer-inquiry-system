@@ -35,5 +35,4 @@ public record WireRodLineItemCreateRequestDTO(
             .build();
 
     }
-
 }
