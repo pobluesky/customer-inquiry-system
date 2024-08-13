@@ -1,9 +1,12 @@
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
+dotenv.config();
 
-module.exports = function (env) {
+module.exports = function () {
     return {
         mode: 'development',
-        entry: path.resolve(`src/index.js`),
+        entry: path.resolve('src/index.js'),
         output: {
             path: path.resolve('public'),
             filename: 'assets/js/main.js',
@@ -12,7 +15,7 @@ module.exports = function (env) {
         module: {
             rules: [
                 {
-                    test: /\.js/i,
+                    test: /\.js$/i,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
@@ -33,11 +36,16 @@ module.exports = function (env) {
                     ],
                 },
                 {
-                    test: /\.(png|gif|jp?eg|svg|ico|tif?f|bmp)/i,
+                    test: /\.(png|gif|jpe?g|svg|ico|tiff?|bmp)/i,
                     type: 'asset/resource',
                 },
             ],
         },
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env': JSON.stringify(process.env),
+            }),
+        ],
         devServer: {
             host: '0.0.0.0',
             port: 9090,
@@ -49,7 +57,7 @@ module.exports = function (env) {
                 {
                     context: ['/api'],
                     target: 'http://localhost:8080',
-                    changeOrigin: true
+                    changeOrigin: true,
                 },
             ],
         },

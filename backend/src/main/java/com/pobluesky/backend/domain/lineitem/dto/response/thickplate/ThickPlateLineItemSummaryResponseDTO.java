@@ -42,15 +42,11 @@ public class ThickPlateLineItemSummaryResponseDTO extends LineItemResponseDTO {
         return ThickPlateLineItemSummaryResponseDTO.builder()
             .lineItemId(thickPlateLineItem.getLineItemId())
             .inquirySummaryResponseDTO(inquiryDTO)
-            .generalDetails(thickPlateLineItem.getGeneralDetails())
-            .orderInfo(thickPlateLineItem.getOrderInfo())
             .ladleIngredient(thickPlateLineItem.getLadleIngredient())
             .productIngredient(thickPlateLineItem.getProductIngredient())
             .seal(thickPlateLineItem.getSeal())
-            .grainSizeAnalysis(thickPlateLineItem.getGrainSizeAnalysis())
             .show(thickPlateLineItem.getShow())
             .curve(thickPlateLineItem.getCurve())
-            .additionalRequests(thickPlateLineItem.getAdditionalRequests())
             .isActivated(thickPlateLineItem.getIsActivated())
             .build();
     }

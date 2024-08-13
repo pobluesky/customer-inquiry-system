@@ -25,7 +25,6 @@ VALUES
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mrs.Selly', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
@@ -55,7 +54,6 @@ INSERT INTO thickplate_line_items (inquiry_id, general_details, order_info, ladl
 VALUES
     (5, 'General Details A', 'Order Info A', 'Ladle Ingredient A', 'Product Ingredient A', 'Seal A', true, 'Show A', 'Curve A', 'Additional Request A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (5, 'General Details B', 'Order Info B', 'Ladle Ingredient B', 'Product Ingredient B', 'Seal B', false, 'Show B', 'Curve B', 'Additional Request B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
