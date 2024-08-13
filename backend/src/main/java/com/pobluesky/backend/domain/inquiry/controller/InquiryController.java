@@ -4,11 +4,14 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
+import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
+import java.time.LocalDate;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,9 +55,19 @@ public class InquiryController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
         @RequestParam(defaultValue = "latest") String sortBy,
-        @RequestParam(required = false) Progress progress) {
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) String projectName,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(customerId, page, size, sortBy, progress);
+        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(
+            customerId, page, size, sortBy,
+            progress, productType, customerName, inquiryType,
+            projectName, startDate, endDate
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(inquiries));
