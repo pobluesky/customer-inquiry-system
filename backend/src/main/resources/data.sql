@@ -22,7 +22,7 @@ VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- CarLineItem
@@ -31,6 +31,11 @@ VALUES
     (1, 'TEST', 'CAR', 'TEST', 'Project A', 'Vehicle X', 'Part 1', 'TEST', '2mm', '1500mm', 100, '2023-12-31', 'Factory A', 'TEST', 'TEST', 'TEST', 0, '2024-01-01', '1000', '2000', 'TEST', 'TEST', 'TEST', '99.9%', 5, 5, 'TEST', 'TEST', 'QS9000', '10000', 'ABC Corp', 'Complete X', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'TEST_LAB', 'STEEL', 'TEST', 'Project B', 'Vehicle Y', 'Part 2', 'TEST_LAB', '3mm', '1800mm', 200, '2024-01-31', 'Factory B', 'TEST_LAB', 'TEST_LAB', 'TEST_LAB', 1, '2024-02-01', '1500', '2500', 'TEST_LAB', 'TEST_LAB', 'TEST_LAB', '99.5%', 3, 3, 'TEST_LAB', 'TEST_LAB', 'ISO9001', '15000', 'XYZ Inc', 'Complete Y', 'TEST_LAB', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, '2024-02-28', 'Factory C', 'TEST', 'TEST', 'TEST', 0, '2024-03-01', '1200', '2200', 'TEST', 'TEST', 'TEST', '99.7%', 4, 4, 'TEST', 'TEST', 'IATF16949', '12000', '123 Industries', 'Complete Z', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- ColdRolledLineItem
+INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
+VALUES
+    (4, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)

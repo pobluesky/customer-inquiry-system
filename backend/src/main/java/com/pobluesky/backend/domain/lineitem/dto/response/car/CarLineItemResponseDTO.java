@@ -1,22 +1,20 @@
-package com.pobluesky.backend.domain.lineitem.dto.response;
+package com.pobluesky.backend.domain.lineitem.dto.response.car;
 
-import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-
+import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.type.CoatingAnotherCondition;
-import com.pobluesky.backend.domain.lineitem.entity.type.CoatingCondition;
-import com.pobluesky.backend.domain.lineitem.entity.type.CoatingUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.Direction;
-import com.pobluesky.backend.domain.lineitem.entity.type.IxPlate;
-import com.pobluesky.backend.domain.lineitem.entity.type.Lab;
-import com.pobluesky.backend.domain.lineitem.entity.type.Order;
-import com.pobluesky.backend.domain.lineitem.entity.type.PostTreatment;
-import com.pobluesky.backend.domain.lineitem.entity.type.Kind;
-import com.pobluesky.backend.domain.lineitem.entity.type.RaAnotherUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.RaUnit;
-import com.pobluesky.backend.domain.lineitem.entity.type.Regulation;
-import com.pobluesky.backend.domain.lineitem.entity.type.StandardOrg;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingAnotherCondition;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingCondition;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.CoatingUnit;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.Direction;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.Order;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.PostTreatment;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.RaAnotherUnit;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.RaUnit;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.Regulation;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
 import com.pobluesky.backend.domain.review.entity.ContractType;
 

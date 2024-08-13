@@ -1,14 +1,13 @@
-package com.pobluesky.backend.domain.lineitem.entity.type;
+package com.pobluesky.backend.domain.lineitem.entity.type.car;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public enum Lab {
+public enum PostTreatment {
 
-    TEST("광양소"),
+    TEST("예시"),
     TEST_LAB("예시2");
 
     private String name;
