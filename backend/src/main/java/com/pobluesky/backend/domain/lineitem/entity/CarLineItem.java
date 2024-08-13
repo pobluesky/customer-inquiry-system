@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 
+import com.pobluesky.backend.domain.user.entity.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

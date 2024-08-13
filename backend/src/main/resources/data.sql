@@ -21,7 +21,7 @@ INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type
 VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CarLineItem
@@ -41,6 +41,12 @@ INSERT INTO hotrolled_line_items (inquiry_id, kind, inq_name, order_category, th
 VALUES
     (2, 'HR', 'JS_SI123', 'Category A', '2.0mm', '1500mm', 'Hardness A', 'Flatness A', 'Edge A', 300, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'HRC', 'JS_SI456', 'Category B', '2.5mm', '1600mm', 'Hardness B', 'Flatness B', 'Edge B', 400, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- WireRodLineItem
+INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, is_activated, created_date, modified_date)
+VALUES
+    (3, 'SWRH', 'JS_SI123', 'Category A', '8.0mm', 500, '2024-02-15', 100, 'Processing A', 'Final Use A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'SWRM', 'JS_SI456', 'Category B', '10.0mm', 700, '2024-03-01', 200, 'Processing B', 'Final Use B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)

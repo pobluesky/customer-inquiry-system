@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseD
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -40,6 +41,4 @@ public class HotRolledLineItemSummaryResponseDTO extends LineItemResponseDTO {
             .isActivated(hotRolledLineItem.getIsActivated())
             .build();
     }
-
-
 }
