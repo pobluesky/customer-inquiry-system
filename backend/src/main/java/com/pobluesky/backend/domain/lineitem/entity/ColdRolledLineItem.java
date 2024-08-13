@@ -1,13 +1,10 @@
 package com.pobluesky.backend.domain.lineitem.entity;
 
-import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
-import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
+import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 import com.pobluesky.backend.domain.user.entity.Customer;
 
-import com.pobluesky.backend.domain.user.entity.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +27,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "car_line_items")
-public class CarLineItem extends LineItem {
+@Table(name = "coldrolled_line_items")
+public class ColdRolledLineItem extends LineItem{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,22 +39,12 @@ public class CarLineItem extends LineItem {
     private Inquiry inquiry;
 
     @Enumerated(EnumType.STRING)
-    private Lab lab;
-
-    @Enumerated(EnumType.STRING)
     private Kind kind;
 
     @Enumerated(EnumType.STRING)
-    private StandardOrg standardOrg;
+    private InqName inqName;
 
-    private String pjtName;
-
-    private String salesVehicleName;
-
-    private String partName;
-
-    @Enumerated(EnumType.STRING)
-    private IxPlate ixPlate;
+    private String orderCategory;
 
     private String thickness;
 
@@ -63,56 +52,64 @@ public class CarLineItem extends LineItem {
 
     private Integer quantity;
 
+    private Date expectedDeadline;
+
+    private String orderEdge;
+
+    private String inDiameter;
+
+    private String outDiameter;
+
     @Builder
-    public CarLineItem(
+    public ColdRolledLineItem(
         Inquiry inquiry,
-        Lab lab,
         Kind kind,
-        StandardOrg standardOrg,
-        String pjtName,
-        String salesVehicleName,
-        String partName,
-        IxPlate ixPlate,
+        InqName inqName,
+        String orderCategory,
         String thickness,
         String width,
-        Integer quantity
-    ) {
-        this.inquiry=inquiry;
-        this.lab = lab;
+        Integer quantity,
+        Date expectedDeadline,
+        String orderEdge,
+        String inDiameter,
+        String outDiameter
+    ){
+        this.inquiry = inquiry;
         this.kind = kind;
-        this.standardOrg = standardOrg;
-        this.pjtName = pjtName;
-        this.salesVehicleName = salesVehicleName;
-        this.partName = partName;
-        this.ixPlate = ixPlate;
+        this.inqName = inqName;
+        this.orderCategory = orderCategory;
         this.thickness = thickness;
         this.width = width;
         this.quantity = quantity;
+        this.expectedDeadline = expectedDeadline;
+        this.orderEdge = orderEdge;
+        this.inDiameter = inDiameter;
+        this.outDiameter = outDiameter;
         this.isActivated = true;
     }
 
-    public void updateCarLineItem(
-        Lab lab,
+    public void updateColdRolledLineItem(
         Kind kind,
-        StandardOrg standardOrg,
-        String pjtName,
-        String salesVehicleName,
-        String partName,
-        IxPlate ixPlate,
+        InqName inqName,
+        String orderCategory,
         String thickness,
         String width,
-        Integer quantity
-    ) {
-        this.lab = lab;
+        Integer quantity,
+        Date expectedDeadline,
+        String orderEdge,
+        String inDiameter,
+        String outDiameter
+    ){
         this.kind = kind;
-        this.standardOrg = standardOrg;
-        this.pjtName = pjtName;
-        this.salesVehicleName = salesVehicleName;
-        this.partName = partName;
-        this.ixPlate = ixPlate;
+        this.inqName = inqName;
+        this.orderCategory = orderCategory;
         this.thickness = thickness;
         this.width = width;
         this.quantity = quantity;
+        this.expectedDeadline = expectedDeadline;
+        this.orderEdge = orderEdge;
+        this.inDiameter = inDiameter;
+        this.outDiameter = outDiameter;
     }
 
     public Customer getCustomer() {
