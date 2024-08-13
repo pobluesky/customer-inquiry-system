@@ -41,7 +41,7 @@ public class JwtTokenProvider {
     }
 
     public JwtToken generateToken(String email, String role) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(email));
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
         Date now = new Date();
@@ -68,6 +68,7 @@ public class JwtTokenProvider {
             .refreshToken(refreshToken)
             .build();
     }
+
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
@@ -108,7 +109,6 @@ public class JwtTokenProvider {
 
     public Claims parseClaims(String accessToken) {
         try {
-
             return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

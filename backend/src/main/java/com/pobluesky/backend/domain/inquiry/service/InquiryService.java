@@ -3,7 +3,10 @@ package com.pobluesky.backend.domain.inquiry.service;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
+import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
@@ -11,11 +14,16 @@ import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.service.CustomerService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +42,28 @@ public class InquiryService {
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+//    @Transactional(readOnly = true)
+//    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
+//        Sort sort = getSortByOrderCondition(sortBy);
+//        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+//        return inquiryRepository.findInquiries(customerId, sortedPageable, progress);
+//    }
+
+    @Transactional(readOnly = true)
+    public Page<InquirySummaryResponseDTO> getInquiries(
+        Long customerId, int page, int size, String sortBy,
+        Progress progress,
+        ProductType productType, String customerName,
+        InquiryType inquiryType, String projectName,
+        LocalDate startDate, LocalDate endDate) {
+
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return inquiryRepository.findInquiries(
+            customerId, pageable, progress, productType, customerName,
+            inquiryType, projectName, startDate, endDate);
     }
 
     @Transactional
@@ -113,5 +143,16 @@ public class InquiryService {
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    private Sort getSortByOrderCondition(String sortBy) {
+        switch (sortBy) {
+            case "oldest":
+                return Sort.by(Sort.Order.asc("createdDate"), Sort.Order.desc("inquiryId"));
+            case "latest":
+                return Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("inquiryId"));
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 }

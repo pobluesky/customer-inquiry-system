@@ -31,6 +31,8 @@ VALUES
     (1, 'TEST', 'CAR', 'TEST', 'Project A', 'Vehicle X', 'Part 1', 'TEST', '2mm', '1500mm', 100, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'TEST_LAB', 'STEEL', 'TEST', 'Project B', 'Vehicle Y', 'Part 2', 'TEST_LAB', '3mm', '1800mm', 200,  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+<<<<<<< HEAD
+=======
 
 -- ColdRolledLineItem
 INSERT INTO coldrolled_line_items (inquiry_id,  kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
@@ -54,6 +56,7 @@ INSERT INTO thickplate_line_items (inquiry_id, general_details, order_info, ladl
 VALUES
     (5, 'General Details A', 'Order Info A', 'Ladle Ingredient A', 'Product Ingredient A', 'Seal A', true, 'Show A', 'Curve A', 'Additional Request A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (5, 'General Details B', 'Order Info B', 'Ladle Ingredient B', 'Product Ingredient B', 'Seal B', false, 'Show B', 'Curve B', 'Additional Request B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+>>>>>>> b37b46e9ac9946e86eb213254f85ec71ee1b374e
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
