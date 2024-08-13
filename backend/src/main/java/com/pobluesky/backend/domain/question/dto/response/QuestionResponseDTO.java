@@ -12,18 +12,21 @@ import java.util.Optional;
 public record QuestionResponseDTO(
     Optional<Long> inquiryId,
     Long customerId,
+    String customerName,
     String title,
     String contents,
     String files,
     QuestionStatus status,
     QuestionType type,
     LocalDateTime createdDate
-    ) {
+) {
+
     public static QuestionResponseDTO from(Question question) {
         return QuestionResponseDTO.builder()
             .inquiryId(Optional.ofNullable(question.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .customerId(question.getCustomer().getCustomerId())
+            .customerName(question.getCustomer().getCustomerName())
             .title(question.getTitle())
             .contents(question.getContents())
             .files(question.getFiles())

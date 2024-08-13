@@ -41,7 +41,6 @@ public class SecurityConfig {
                     ).permitAll()
                     .requestMatchers("/api/customers/**").permitAll()
                     .requestMatchers("/api/managers/**").permitAll()
-                    .requestMatchers("/api/reviews/**").permitAll()
                     .requestMatchers("/api/line-items/**").permitAll()
                     .requestMatchers("/api/inquiries/**").permitAll()
                     .anyRequest().authenticated()

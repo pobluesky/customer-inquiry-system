@@ -12,10 +12,14 @@ import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -25,15 +29,34 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
+
+    private final SignService signService;
+
     private final QuestionRepository questionRepository;
+
     private final AnswerRepository answerRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
+
+    private final ManagerRepository managerRepository;
 
     // 질문 & 답변 전체 조회 (고객사): 고객별 전제 질문 + 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
-    public List<AnswerWithQuestionResponseDTO> getQuestionsAndAnswersByCustomerId(Long customerId) {
-        List<Question> questions = questionRepository.findAllByCustomer_CustomerId(customerId);
+    public List<AnswerWithQuestionResponseDTO> getQuestionsAndAnswersByCustomerId(
+        String token,
+        Long customerId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!user.getUserId().equals(customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<Question> questions = questionRepository.findAllByCustomer_UserId(customerId);
 
         if (questions.isEmpty()) {
             throw new CommonException(ErrorCode.QUESTION_NOT_FOUND);
@@ -51,8 +74,16 @@ public class AnswerService {
 
     // 고객별 답변 전체 조회 (고객사): 고객별 전체 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
-    public List<AnswerResponseDTO> getAnswerByCustomerId(Long customerId) {
-        List<Answer> answers = answerRepository.findAllByCustomer_CustomerId(customerId);
+    public List<AnswerResponseDTO> getAnswerByCustomerId(String token, Long customerId) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!user.getUserId().equals(customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<Answer> answers = answerRepository.findAllByCustomer_UserId(customerId);
 
         if (answers.isEmpty()) {
             throw new CommonException(ErrorCode.ANSWER_NOT_FOUND);
@@ -65,15 +96,22 @@ public class AnswerService {
 
     // 질문 & 답변 전체 조회 (담당자): 전체 질문 + 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
-    public List<AnswerWithQuestionResponseDTO> getAllAnswersWithQuestions() {
+    public List<AnswerWithQuestionResponseDTO> getAllAnswersWithQuestions(String token) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         List<Customer> customers = Optional.ofNullable(customerRepository.findAll())
             .filter(list -> !list.isEmpty())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         return customers.stream()
-            .flatMap(customer -> questionRepository.findAllByCustomer_CustomerId(customer.getCustomerId()).stream()
+            .flatMap(customer ->
+                questionRepository.findAllByCustomer_UserId(customer.getUserId()).stream()
                 .map(question -> {
-                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId())
+                    Answer answer =
+                        answerRepository.findByQuestion_QuestionId(question.getQuestionId())
                         .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
                     return AnswerWithQuestionResponseDTO.from(question, answer);
@@ -82,7 +120,12 @@ public class AnswerService {
     }
 
     // 답변 전체 조회 (담당자): 전체 답변 개수를 계산할 수 있다.
-    public List<AnswerResponseDTO> getAnswer() {
+    public List<AnswerResponseDTO> getAnswer(String token) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         List<Answer> answer = answerRepository.findAll();
 
         return answer.stream()
@@ -92,7 +135,16 @@ public class AnswerService {
 
     // 질문별 답변 작성 (담당자)
     @Transactional
-    public AnswerResponseDTO createAnswer(Long questionId, AnswerCreateRequestDTO dto) {
+    public AnswerResponseDTO createAnswer(
+        String token,
+        Long questionId,
+        AnswerCreateRequestDTO dto
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND)); // 존재하지 않는 질문인 경우
 
@@ -102,7 +154,7 @@ public class AnswerService {
 
         Inquiry inquiry = validateInquiry(question);
 
-        Customer customer = customerRepository.findById(question.getCustomer().getCustomerId())
+        Customer customer = customerRepository.findById(question.getCustomer().getUserId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         Answer answer = dto.toAnswerEntity(question, inquiry, customer);
@@ -122,4 +174,5 @@ public class AnswerService {
         return inquiryRepository.findById(question.getInquiry().getInquiryId())
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
     }
+
 }

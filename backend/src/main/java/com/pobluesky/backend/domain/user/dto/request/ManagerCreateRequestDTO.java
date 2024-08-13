@@ -12,8 +12,7 @@ public record ManagerCreateRequestDTO(
     String phone,
     String empNo,
     UserRole role,
-    Department department,
-    List<String> roles
+    Department department
 ) {
     public Manager toManagerEntity(String encodedPassword, List<String> roles) {
         return Manager.builder()

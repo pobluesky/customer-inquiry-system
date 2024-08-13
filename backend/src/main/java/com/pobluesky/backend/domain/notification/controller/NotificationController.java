@@ -45,7 +45,7 @@ public class NotificationController {
     @Operation(summary = "고객사 계정별 알림 조회")
     @GetMapping("/customers/{customerId}")
     public ResponseEntity<JsonResult> getCustomerNotificationsById(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long customerId
     ) {
         List<?> notification = notificationService.getNotificationsById(
@@ -61,7 +61,7 @@ public class NotificationController {
     @Operation(summary = "고객사 계정별 읽은 알림 조회")
     @GetMapping("/customers/read/{customerId}")
     public ResponseEntity<JsonResult> getRecentCustomerNotificationById(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long customerId
     ) {
 
@@ -78,7 +78,7 @@ public class NotificationController {
     @Operation(summary = "고객사 계정별 알림 전송")
     @PostMapping("/customers/{customerId}")
     public ResponseEntity<JsonResult> createCustomerNotification(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @RequestBody CustomerNotificationCreateRequestDTO dto,
         @PathVariable Long customerId) {
 
@@ -97,7 +97,7 @@ public class NotificationController {
     @Operation(summary = "고객사 알림 상태 변경(안 읽음 -> 읽음)")
     @PutMapping("/customers/{notificationId}")
     public ResponseEntity<JsonResult> updateCustomerNotificationIsRead(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long notificationId,
         @RequestBody CustomerNotificationUpdateRequestDTO dto
     ) {
@@ -118,7 +118,7 @@ public class NotificationController {
     @Operation(summary = "담당자 계정별 알림 조회")
     @GetMapping("/managers/{managerId}")
     public ResponseEntity<JsonResult> getAllManagerNotifications(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long managerId
     ) {
         List<?> notification = notificationService.getNotificationsById(
@@ -134,7 +134,7 @@ public class NotificationController {
     @Operation(summary = "담당자 계정별 읽은 알림 조회")
     @GetMapping("/managers/read/{managerId}")
     public ResponseEntity<JsonResult> getRecentManagerNotificationById(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long managerId
     ) {
         List<?> notificationById = notificationService.getRecentNotifications(
@@ -150,7 +150,7 @@ public class NotificationController {
     @Operation(summary = "담당자 계정별 알림 전송")
     @PostMapping("/managers/{managerId}")
     public ResponseEntity<JsonResult> createManagerNotification(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @RequestBody ManagerNotificationCreateRequestDTO dto,
         @PathVariable Long managerId
     ) {
@@ -169,7 +169,7 @@ public class NotificationController {
     @Operation(summary = "담당자 알림 상태 변경(안 읽음 -> 읽음)")
     @PutMapping("/managers/{notificationId}")
     public ResponseEntity<JsonResult> updateManagerNotificationIsRead(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long notificationId,
         @RequestBody ManagerNotificationUpdateRequestDTO dto
     ) {

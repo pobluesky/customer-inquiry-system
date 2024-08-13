@@ -34,9 +34,9 @@ public class LineItemController {
     private final LineItemService lineItemService;
 
     @GetMapping
-    @Operation(summary = "Inquiry 내역을 조회한다.", description = "자신의 Inquiry 혹은 담당자만 조회 가능하다.")
+    @Operation(summary = "inquiryId 별 line-item 요약 조회한다.", description = "자신의 Inquiry 혹은 담당자만 조회 가능하다.")
     public ResponseEntity<JsonResult> getAllLineItemsByInquiry(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId
     ) {
         List<LineItemResponseDTO> response = lineItemService.getLineItemsByInquiry(
@@ -48,10 +48,18 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 line-item 전체 조회")
+    @GetMapping("/full")
+    public ResponseEntity<JsonResult> getFullLineItemsByInquiry(@PathVariable Long inquiryId) {
+        List<LineItemResponseDTO> response = lineItemService.getFullLineItemsByInquiry(inquiryId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
     @Operation(summary = "inquiryId 별 line-item 작성")
     @PostMapping
     public ResponseEntity<JsonResult> createLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @RequestBody Map<String, Object> requestDto) {
         LineItemResponseDTO response = lineItemService.createLineItem(
@@ -67,7 +75,7 @@ public class LineItemController {
     @PutMapping("/update/{lineItemId}")
     @Operation(summary = "line item 내역 수정")
     public ResponseEntity<JsonResult> updateLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @PathVariable Long lineItemId,
         @RequestBody Map<String, Object> requestDto
@@ -86,7 +94,7 @@ public class LineItemController {
     @DeleteMapping("/delete/{lineItemId}")
     @Operation(summary = "line item 내역 삭제")
     public ResponseEntity<CommonResult> deleteLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @PathVariable Long lineItemId
     ) {

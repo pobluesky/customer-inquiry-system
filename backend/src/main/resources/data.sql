@@ -17,7 +17,7 @@ VALUES
 ALTER TABLE inquiry ALTER COLUMN department VARCHAR(50);
 
 -- Inquiry
-INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated, created_date, modified_date)
+INSERT INTO inquiry (user_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated, created_date, modified_date)
 VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -61,14 +61,14 @@ VALUES
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
 
 -- CUSTOMER_NOTIFICATION
-INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_contents)
+INSERT INTO customer_notification (is_read, created_date, user_id, modified_date, notification_contents)
 VALUES
     (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
     (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
     (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
 
 -- MANAGER_NOTIFICATION
-INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_contents)
+INSERT INTO manager_notification (is_read, created_date, user_id, modified_date, notification_contents)
 VALUES
     (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
     (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
@@ -78,7 +78,7 @@ ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
 ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
 
 -- QUESTION
-INSERT INTO question (created_date, inquiry_id, customer_id, title, contents, files, type, status)
+INSERT INTO question (created_date, inquiry_id, user_id, title, contents, files, type, status)
 VALUES
     ('2024-08-01 10:00:00', null, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'ETC', 'COMPLETED'),
     ('2024-08-02 11:15:00', null, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'ETC', 'COMPLETED'),
@@ -87,7 +87,7 @@ VALUES
     ('2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'INQ', 'READY');
 
 -- ANSWER
-INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, answer_title, answer_contents)
+INSERT INTO answer (created_date, inquiry_id, user_id, question_id, answer_title, answer_contents)
 VALUES
     (CURRENT_TIMESTAMP, null, 1, 1, 'Thank you for joining with us.', 'We will contact you ASAP.'),
     (CURRENT_TIMESTAMP, null, 2, 2, 'Reply for your question.', 'We are going to check ASAP.');

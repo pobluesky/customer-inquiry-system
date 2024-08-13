@@ -14,9 +14,10 @@ import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
 
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class LineItemService {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final SignService signService;
 
     private final CarLineItemRepository carLineItemRepository;
 
@@ -76,13 +78,18 @@ public class LineItemService {
 
     @Transactional(readOnly = true)
     public List<LineItemResponseDTO> getLineItemsByInquiry(String token, Long inquiryId) {
-        Long userId = userDetailsService.parseToken(token);
-
-        if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId))
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        Long userId = signService.parseToken(token);
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if (!managerRepository.existsById(userId)) {
+            Customer customer = customerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+            if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
+                throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         List<CarLineItem> lineItemList =
             carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
@@ -177,7 +184,7 @@ public class LineItemService {
     }
 
     private Inquiry validateUserAndInquiry(String token, Long inquiryId) {
-        Long userId = userDetailsService.parseToken(token);
+        Long userId = signService.parseToken(token);
 
         customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -185,7 +192,7 @@ public class LineItemService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if(!Objects.equals(inquiry.getCustomer().getCustomerId(), userId))
+        if(!Objects.equals(inquiry.getCustomer().getUserId(), userId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return inquiry;

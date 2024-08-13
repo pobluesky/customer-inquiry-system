@@ -29,7 +29,7 @@ public class ReviewController {
     @GetMapping("/{reviewId}")
     @Operation(summary = "1차 검토 조회", description = "1차 검토는 담당자만 조회가 가능하다.")
     public ResponseEntity<JsonResult> getReviewById(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long reviewId
     ) {
         ReviewResponseDTO reviewById = reviewService.getReviewById(token, reviewId);
@@ -41,7 +41,7 @@ public class ReviewController {
     @PostMapping("/{inquiryId}")
     @Operation(summary = "1차 검토 생성", description = "판매 담당자는 해당 Inquiry에 대한 1차 검토를 시작한다.")
     public ResponseEntity<JsonResult> createReview(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @RequestBody ReviewCreateRequestDTO request,
         @PathVariable Long inquiryId
     ) {
