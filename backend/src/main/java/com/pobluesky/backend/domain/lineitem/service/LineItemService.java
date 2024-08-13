@@ -18,12 +18,8 @@ import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
-
-
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.repository.CustomerRepository;
-
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
@@ -33,15 +29,10 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Map;
-
-import java.util.Optional;
-
 import java.util.Objects;
-
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +53,7 @@ public class LineItemService {
     private final InquiryRepository inquiryRepository;
 
     private final ObjectMapper objectMapper;
+
     private final ColdRolledLineItemRepository coldRolledLineItemRepository;
 
     @Transactional
@@ -70,11 +62,6 @@ public class LineItemService {
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-
-
-        
-
-
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
       
         Customer customer = inquiry.getCustomer();
@@ -95,20 +82,18 @@ public class LineItemService {
 
                 return CarLineItemResponseDTO.of(carLineItem);
 
-
             case COLD_ROLLED:
                 ColdRolledLineItemCreateRequestDTO coldRolledDto = objectMapper.convertValue(
                     requestDto,
                     ColdRolledLineItemCreateRequestDTO.class
                 );
 
-                entity = coldRolledDto.toColdRolledLineItem(inquiry,customer);
+                entity = coldRolledDto.toColdRolledLineItem(inquiry);
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.save((ColdRolledLineItem) entity);
 
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
-
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -124,18 +109,19 @@ public class LineItemService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-
         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
             case CAR:
                 List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
+
                 return carLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
 
             case COLD_ROLLED:
                 List<ColdRolledLineItem> coldRolledLineItemList = coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
+
                 return coldRolledLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
@@ -143,7 +129,6 @@ public class LineItemService {
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
-
     }
 
     @Transactional(readOnly = true)
@@ -153,11 +138,11 @@ public class LineItemService {
 
         ProductType productType = inquiry.getProductType();
 
-
         switch (productType) {
             case CAR:
                 List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(
                     inquiry);
+
                 return carLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
@@ -165,6 +150,7 @@ public class LineItemService {
             case COLD_ROLLED:
                 List<ColdRolledLineItem> coldRolledLineItemList = coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(
                     inquiry);
+
                 return coldRolledLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
@@ -231,9 +217,7 @@ public class LineItemService {
 
                 return CarLineItemResponseDTO.of(carLineItem);
 
-
             case COLD_ROLLED:
-
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.findActiveColdRolledLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 
@@ -258,7 +242,6 @@ public class LineItemService {
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
-
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -272,7 +255,6 @@ public class LineItemService {
     ) {
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
-
         LineItem lineItem;
 
         switch (productType) {
@@ -316,13 +298,11 @@ public class LineItemService {
                 CarLineItem carLineItem = (CarLineItem) lineItem;
                 return CarLineItemSummaryResponseDTO.of(carLineItem);
 
-
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
                 return ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
-
             default:
                 throw new CommonException(ErrorCode.INVALID_REQUEST);
         }
@@ -332,10 +312,12 @@ public class LineItemService {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
+
                 return CarLineItemResponseDTO.of(carLineItem);
 
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
+
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
@@ -343,6 +325,4 @@ public class LineItemService {
                 throw new CommonException(ErrorCode.INVALID_REQUEST);
         }
     }
-
-
 }

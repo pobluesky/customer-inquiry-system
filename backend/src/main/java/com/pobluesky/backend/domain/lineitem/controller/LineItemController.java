@@ -36,7 +36,7 @@ public class LineItemController {
     @GetMapping
     @Operation(summary = "Inquiry 내역을 조회한다.", description = "자신의 Inquiry 혹은 담당자만 조회 가능하다.")
     public ResponseEntity<JsonResult> getAllLineItemsByInquiry(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId
     ) {
         List<LineItemResponseDTO> response = lineItemService.getLineItemsByInquiry(
