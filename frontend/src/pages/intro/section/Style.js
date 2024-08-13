@@ -13,7 +13,7 @@ export const SubTitle = styled.div`
 export const Title = styled.div`
   color: #03507D;
   font-size: 65px;
-  margin-top: 0.5vh;
+  margin-top: ${props => props.marginTop || "0.5vh"};
   font-weight: 800;
 `;
 
@@ -42,7 +42,7 @@ export const Wrapper = styled.div`
 export const Icon = styled.img`
   width: ${props => props.width};
   margin: ${props => props.margin};
-  margin-top: ${props => props.marginTop};
+  margin-top: ${(props) => props.marginTop};
   margin-left: ${props => props.marginLeft};
   z-index: ${props => props.zIndex};
 `;
@@ -126,4 +126,20 @@ export const DataIcon = styled.div`
   font-size: 22px;
   margin-top: 1vh;
   margin-left: 2.5vh;
+`;
+
+export const IntroBox = styled.div`
+  width: 400px;
+  height: 220px;
+  border-radius: 20px;
+  border: 1px solid #c1c1c1;
+  margin-top: 10vh;
+  margin-left: 2.5vh;
+  margin-right: 2.5vh;
+`;
+
+export const IntroIcon = styled.img`
+  width: 30px;
+  margin-top: 3vh;
+  margin-left: 3vh;
 `;

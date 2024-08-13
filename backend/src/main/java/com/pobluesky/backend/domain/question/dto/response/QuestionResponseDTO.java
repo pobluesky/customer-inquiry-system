@@ -12,6 +12,7 @@ import java.util.Optional;
 public record QuestionResponseDTO(
     Optional<Long> inquiryId,
     Long customerId,
+    String customerName,
     String title,
     String contents,
     String files,
@@ -25,6 +26,7 @@ public record QuestionResponseDTO(
             .inquiryId(Optional.ofNullable(question.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .customerId(question.getCustomer().getCustomerId())
+            .customerName(question.getCustomer().getCustomerName())
             .title(question.getTitle())
             .contents(question.getContents())
             .files(question.getFiles())

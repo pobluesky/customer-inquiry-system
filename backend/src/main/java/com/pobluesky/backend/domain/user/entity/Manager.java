@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -34,7 +34,7 @@ public class Manager extends User {
     private String empNo;
 
     @Enumerated(EnumType.STRING)
-    private ManagerRole role;
+    private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private Department department;
@@ -50,7 +50,7 @@ public class Manager extends User {
         String password,
         String phone,
         String empNo,
-        ManagerRole role,
+        UserRole role,
         Department department,
         List<String> roles
     ) {

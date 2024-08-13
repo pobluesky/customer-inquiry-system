@@ -3,7 +3,7 @@ import Category from '../atoms/Category';
 import Terms from '../atoms/Terms';
 import DateInput from '../mocules/DateInput';
 import OfferInfoInput from '../atoms/OfferInfoInput';
-import { Info_Container, Table_Scroll, Info_Table, Border_Space } from '../../assets/css/Offersheet.css';
+import { Info_Container, Table_Scroll, Info_Table, Border_Space } from '../../assets/css/Form.css';
 
 function OfferInfo() {
     return (
