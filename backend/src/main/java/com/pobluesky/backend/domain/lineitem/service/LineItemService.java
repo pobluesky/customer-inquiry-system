@@ -54,7 +54,6 @@ public class LineItemService {
     private final InquiryRepository inquiryRepository;
 
     private final ObjectMapper objectMapper;
-    private final ColdRolledLineItemRepository coldRolledLineItemRepository;
 
     private final ColdRolledLineItemRepository coldRolledLineItemRepository;
 
@@ -234,8 +233,6 @@ public class LineItemService {
     ) {
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
-        LineItem lineItem;
-
         LineItem lineItem;
 
         switch (productType) {
