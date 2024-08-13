@@ -29,6 +29,7 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -62,12 +63,10 @@ public class LineItemService {
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
+
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
-      
         Customer customer = inquiry.getCustomer();
-
         ProductType productType = inquiry.getProductType();
-
         LineItem entity;
 
         switch (productType) {
@@ -94,6 +93,7 @@ public class LineItemService {
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -108,7 +108,7 @@ public class LineItemService {
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
+      
         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
@@ -190,33 +190,11 @@ public class LineItemService {
                     carDto.ixPlate(),
                     carDto.thickness(),
                     carDto.width(),
-                    carDto.quantity(),
-                    carDto.desiredDeliveryDate(),
-                    carDto.deliveryDestination(),
-                    carDto.order(),
-                    carDto.coatingCondition(),
-                    carDto.coatingAnotherCondition(),
-                    carDto.contract(),
-                    carDto.sop(),
-                    carDto.fcAmount(),
-                    carDto.bcAmount(),
-                    carDto.coatingUnit(),
-                    carDto.postTreatment(),
-                    carDto.direction(),
-                    carDto.raTarget(),
-                    carDto.mTolerance(),
-                    carDto.pTolerance(),
-                    carDto.raUnit(),
-                    carDto.raAnotherUnit(),
-                    carDto.qsRequirement(),
-                    carDto.expensePerYear(),
-                    carDto.customerName(),
-                    carDto.completeVehicle(),
-                    carDto.regulation()
+                    carDto.quantity()
                 );
 
                 return CarLineItemResponseDTO.of(carLineItem);
-
+            
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.findActiveColdRolledLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
@@ -296,10 +274,12 @@ public class LineItemService {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
+            
                 return CarLineItemSummaryResponseDTO.of(carLineItem);
 
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
+            
                 return ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리

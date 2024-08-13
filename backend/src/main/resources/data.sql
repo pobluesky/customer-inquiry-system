@@ -24,13 +24,17 @@ VALUES
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
 -- CarLineItem
-INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, desired_delivery_date, delivery_destination, orders, coating_condition, coating_another_condition, contract, sop, fc_amount, bc_amount, coating_unit, post_treatment, direction, ra_target, m_tolerance, p_tolerance, ra_unit, ra_another_unit, qs_requirement, expense_per_year, customer_name, complete_vehicle, regulation, is_activated, created_date, modified_date)
+INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
-    (1, 'TEST', 'CAR', 'TEST', 'Project A', 'Vehicle X', 'Part 1', 'TEST', '2mm', '1500mm', 100, '2023-12-31', 'Factory A', 'TEST', 'TEST', 'TEST', 0, '2024-01-01', '1000', '2000', 'TEST', 'TEST', 'TEST', '99.9%', 5, 5, 'TEST', 'TEST', 'QS9000', '10000', 'ABC Corp', 'Complete X', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'TEST_LAB', 'STEEL', 'TEST', 'Project B', 'Vehicle Y', 'Part 2', 'TEST_LAB', '3mm', '1800mm', 200, '2024-01-31', 'Factory B', 'TEST_LAB', 'TEST_LAB', 'TEST_LAB', 1, '2024-02-01', '1500', '2500', 'TEST_LAB', 'TEST_LAB', 'TEST_LAB', '99.5%', 3, 3, 'TEST_LAB', 'TEST_LAB', 'ISO9001', '15000', 'XYZ Inc', 'Complete Y', 'TEST_LAB', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, '2024-02-28', 'Factory C', 'TEST', 'TEST', 'TEST', 0, '2024-03-01', '1200', '2200', 'TEST', 'TEST', 'TEST', '99.7%', 4, 4, 'TEST', 'TEST', 'IATF16949', '12000', '123 Industries', 'Complete Z', 'TEST', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'TEST', 'CAR', 'TEST', 'Project A', 'Vehicle X', 'Part 1', 'TEST', '2mm', '1500mm', 100, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'TEST_LAB', 'STEEL', 'TEST', 'Project B', 'Vehicle Y', 'Part 2', 'TEST_LAB', '3mm', '1800mm', 200,  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- ColdRolledLineItem
+INSERT INTO coldrolled_line_items (inquiry_id,  kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
+VALUES
+    (4, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
 
 -- ColdRolledLineItem
 INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
