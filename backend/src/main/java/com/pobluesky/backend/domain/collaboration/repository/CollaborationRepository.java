@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.question.entity.Question;
 
 import com.pobluesky.backend.domain.user.entity.Manager;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +26,9 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
         + "where c.colRequestManager = :reqManager and c.colResponseManager = :resManager "
         + "or c.colRequestManager = :reqManager and c.colResponseManager = :resManager")
     Optional<Collaboration> findByColRequestManagerAndColResponseManager(Manager reqManager, Manager resManager);
+
+    @Query("select c "
+        + "from Collaboration c "
+        + "where c.colRequestManager = :manager or c.colResponseManager = :manager ")
+    List<Collaboration> findAllByColRequestManagerOrColResponseManager(Manager manager);
 }

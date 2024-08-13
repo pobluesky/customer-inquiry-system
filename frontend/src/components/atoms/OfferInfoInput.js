@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Info_Input } from '../../assets/css/Offersheet.css';
+import { Info_Input } from '../../assets/css/Form.css';
 
 const OfferInput = forwardRef(({ onChange, value, margin }, ref) => (
     <>
