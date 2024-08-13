@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.question.entity;
 
+import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
@@ -13,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "question")
 public class Question extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId; // 질문 번호
@@ -36,6 +38,13 @@ public class Question extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private QuestionType type;
+
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Answer answer;
+
     @Builder
     private Question(
         Inquiry inquiry,
@@ -43,7 +52,8 @@ public class Question extends BaseEntity {
         String title,
         String contents,
         String files,
-        QuestionStatus status
+        QuestionStatus status,
+        QuestionType type
     ) {
         this.inquiry = inquiry;
         this.customer = customer;
@@ -51,7 +61,9 @@ public class Question extends BaseEntity {
         this.contents = contents;
         this.files = files;
         this.status = status;
+        this.type = type;
     }
+
     public void updateQuestion(
         QuestionStatus status
     ) {

@@ -22,9 +22,9 @@ const InquiryBox = ({
              backgroundColor={'#2f4f79'} justifySelf={"center"} alignSelf={"center"}
              textColor={'#ffffff'} borderRadius={'15px'} fontWeight={'800'}/>
         <Text fontWeight={'900'}
-              fontSize={'25px'}>{salesPerson}</Text>
+              fontSize={'23px'}>{salesPerson}</Text>
         <Text fontWeight={'900'}
-              fontSize={'25px'}>{customer}</Text>
+              fontSize={'23px'}>{customer}</Text>
         <div className={_Product}>
           <Text fontWeight={'800'} alignSelf={"start"}>{productType}</Text>
           <div className={_Size}>

@@ -2,8 +2,8 @@ package com.pobluesky.backend.domain.user.dto.response;
 
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.ManagerRole;
 
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import lombok.Builder;
 
 @Builder
@@ -14,7 +14,7 @@ public record ManagerResponseDTO(
     String password,
     String phone,
     String empNo,
-    ManagerRole role,
+    UserRole role,
     Department department,
 
     Boolean isActivated

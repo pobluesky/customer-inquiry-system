@@ -27,8 +27,6 @@ public class CarLineItemSummaryResponseDTO extends LineItemResponseDTO {
 
     private String width;
 
-    private String customerName;
-
     private Boolean isActivated;
 
     public static CarLineItemSummaryResponseDTO of(CarLineItem carLineItem) {

@@ -20,8 +20,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
+
     private final QuestionRepository questionRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
 
     // 질문 전체 조회 (담당자)
@@ -55,7 +58,7 @@ public class QuestionService {
 
     // 문의별 질문 작성 (고객사)
     @Transactional
-    public QuestionResponseDTO createQuestion(Long customerId, Long inquiryId, QuestionCreateRequestDTO dto) {
+    public QuestionResponseDTO createInquiryQuestion(Long customerId, Long inquiryId, QuestionCreateRequestDTO dto) {
         Customer customer = customerRepository
             .findById(customerId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -65,6 +68,19 @@ public class QuestionService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         Question question = dto.toQuestionEntity(inquiry, customer);
+        Question savedQuestion = questionRepository.save(question);
+
+        return QuestionResponseDTO.from(savedQuestion);
+    }
+
+    // 타입별 질문 작성 (고객사)
+    @Transactional
+    public QuestionResponseDTO createNotInquiryQuestion(Long customerId, QuestionCreateRequestDTO dto) {
+        Customer customer = customerRepository
+            .findById(customerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = dto.toQuestionEntity(null, customer);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);

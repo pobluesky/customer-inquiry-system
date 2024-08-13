@@ -127,3 +127,10 @@
   cursor: pointer;
   font-weight: bolder;
 }
+
+._IntroMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
