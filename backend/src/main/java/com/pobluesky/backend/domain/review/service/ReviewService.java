@@ -8,7 +8,7 @@ import com.pobluesky.backend.domain.review.entity.Review;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
 
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.ManagerRole;
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.global.error.CommonException;
@@ -55,7 +55,7 @@ public class ReviewService {
         Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(manager.getRole() != ManagerRole.SALES)
+        if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
