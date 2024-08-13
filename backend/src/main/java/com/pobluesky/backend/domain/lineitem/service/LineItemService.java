@@ -9,27 +9,31 @@ import com.pobluesky.backend.domain.lineitem.dto.request.car.CarLineItemCreateRe
 import com.pobluesky.backend.domain.lineitem.dto.request.car.CarLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLineItemUpdateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemCreateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemSummaryResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
+import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
+import com.pobluesky.backend.domain.lineitem.repository.HotRolledLineItemRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
-
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -57,15 +61,15 @@ public class LineItemService {
 
     private final ColdRolledLineItemRepository coldRolledLineItemRepository;
 
+    private final HotRolledLineItemRepository hotRolledLineItemRepository;
+
     @Transactional
     public LineItemResponseDTO createLineItem(
         String token,
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
-        Customer customer = inquiry.getCustomer();
         ProductType productType = inquiry.getProductType();
         LineItem entity;
 
@@ -92,8 +96,18 @@ public class LineItemService {
 
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
-            // 다른 제품 유형 처리
+            case HOT_ROLLED:
+                HotRolledLineItemCreateRequestDTO hotRolledDto = objectMapper.convertValue(
+                    requestDto,
+                    HotRolledLineItemCreateRequestDTO.class
+                );
 
+                entity = hotRolledDto.toHotRolledLineItem(inquiry);
+                HotRolledLineItem hotRolledLineItem = hotRolledLineItemRepository.save((HotRolledLineItem) entity);
+
+                return HotRolledLineItemResponseDTO.of(hotRolledLineItem);
+
+            // 다른 제품 유형 처리
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -108,7 +122,7 @@ public class LineItemService {
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-      
+
         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
@@ -123,6 +137,13 @@ public class LineItemService {
                 List<ColdRolledLineItem> coldRolledLineItemList = coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
 
                 return coldRolledLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                    .collect(Collectors.toList());
+
+            case HOT_ROLLED:
+                List<HotRolledLineItem> hotRolledLineItemList = hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
+
+                return hotRolledLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
             // 다른 제품 유형 처리
@@ -153,6 +174,14 @@ public class LineItemService {
 
                 return coldRolledLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
+                    .collect(Collectors.toList());
+
+            case HOT_ROLLED:
+                List<HotRolledLineItem> hotRolledLineItemList = hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(
+                    inquiry);
+
+                return hotRolledLineItemList.stream()
+                    .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
 
             default:
@@ -194,7 +223,7 @@ public class LineItemService {
                 );
 
                 return CarLineItemResponseDTO.of(carLineItem);
-            
+
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.findActiveColdRolledLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
@@ -218,6 +247,29 @@ public class LineItemService {
                 );
 
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
+
+            case HOT_ROLLED:
+                HotRolledLineItem hotRolledLineItem = hotRolledLineItemRepository.findActiveHotRolledLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                HotRolledLineItemUpdateRequestDTO hotDto = objectMapper.convertValue(
+                    requestDto,
+                    HotRolledLineItemUpdateRequestDTO.class
+                );
+
+                hotRolledLineItem.updateHotRolledLineItem(
+                    hotDto.kind(),
+                    hotDto.inqName(),
+                    hotDto.orderCategory(),
+                    hotDto.thickness(),
+                    hotDto.width(),
+                    hotDto.hardness(),
+                    hotDto.flatness(),
+                    hotDto.orderEdge(),
+                    hotDto.quantity()
+                );
+
+                return HotRolledLineItemResponseDTO.of(hotRolledLineItem);
 
             // 다른 제품 유형 처리
             default:
@@ -250,6 +302,13 @@ public class LineItemService {
                 lineItem.deleteLineItem();
                 break;
 
+            case HOT_ROLLED:
+                lineItem = hotRolledLineItemRepository.findActiveHotRolledLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                lineItem.deleteLineItem();
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -277,10 +336,16 @@ public class LineItemService {
             
                 return CarLineItemSummaryResponseDTO.of(carLineItem);
 
+
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
             
                 return ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
+
+            case HOT_ROLLED:
+                HotRolledLineItem hotRolledLineItem = (HotRolledLineItem) lineItem;
+
+                return HotRolledLineItemSummaryResponseDTO.of(hotRolledLineItem);
 
             // 다른 제품 유형 처리
             default:
@@ -299,6 +364,11 @@ public class LineItemService {
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
 
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
+
+            case HOT_ROLLED:
+                HotRolledLineItem hotRolledLineItem = (HotRolledLineItem) lineItem;
+
+                return HotRolledLineItemResponseDTO.of(hotRolledLineItem);
 
             // 다른 제품 유형 처리
             default:
