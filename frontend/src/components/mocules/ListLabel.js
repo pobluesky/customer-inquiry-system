@@ -1,7 +1,8 @@
 import React from 'react';
 
-const ProjectLabel = ({
+const ListLabel = ({
     text,
+    content,
     borderRadius,
     border,
     fontWeight,
@@ -10,7 +11,8 @@ const ProjectLabel = ({
     height,
     fontSize,
     padding,
-    margin
+    margin,
+    backgroundColor,
 }) => {
   return (
       <div style={{
@@ -22,17 +24,18 @@ const ProjectLabel = ({
         height: height || '27px',
         fontSize: fontSize || '17px',
         padding: padding || '7px 9px 0 0',
-        margin: margin
+        margin: margin,
+        backgroundColor: backgroundColor || '#ffffff'
       }}>
         <span style={{
           fontSize: '17px',
           fontWeight: 'bolder',
-          color: '#616161',
+          color: color || '#616161',
           margin: '0 0 0 10px'
-        }}>프로젝트&nbsp;&nbsp;</span>
+        }}>{content}&nbsp;&nbsp;</span>
         {text}
       </div>
   );
 };
 
-export default ProjectLabel;
+export default ListLabel;

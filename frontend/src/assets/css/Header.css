@@ -36,6 +36,10 @@
     width: 30px;
 }
 
+.Container > div > div:nth-child(6) {
+    width: 120px;
+}
+
 /* 사용자 이름 */
 .Container > div > div:nth-child(7) {
     font-size: 1.2em;

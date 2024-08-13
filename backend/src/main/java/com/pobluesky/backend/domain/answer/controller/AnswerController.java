@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/answer")
+@RequestMapping("/api/answers")
 public class AnswerController {
     private final AnswerService answerService;
 
@@ -38,22 +38,12 @@ public class AnswerController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/customer/all/{customerId}")
+    @GetMapping("/customer/{customerId}")
     @Operation(summary = "답변 전체 조회(고객사)", description = "특정 고객사의 모든 질문에 대한 모든 답변을 조회한다.")
     public ResponseEntity<JsonResult> getAnswerByCustomerId(@PathVariable Long customerId) {
         List<AnswerResponseDTO> response = answerService.getAnswerByCustomerId(customerId);
 
         return ResponseEntity.status((HttpStatus.OK))
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @GetMapping("/customer/{questionId}")
-    @Operation(summary = "질문별 답변 조회(고객사)", description = "특정 질문에 대한 상세 답변을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getAnswerByInquiryId(@PathVariable Long questionId) {
-        AnswerResponseDTO response = answerService.getAnswerById(questionId);
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
@@ -63,16 +53,6 @@ public class AnswerController {
         List<AnswerResponseDTO> response = answerService.getAnswer();
 
         return ResponseEntity.status((HttpStatus.OK))
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @GetMapping("/manager/{questionId}")
-    @Operation(summary = "질문별 답변 조회(담당자)", description = "등록된 답변을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getAnswerByQuestionIdForManager(@PathVariable Long questionId) {
-        AnswerResponseDTO response = answerService.getAnswerByQuestionId(questionId);
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
