@@ -8,11 +8,12 @@ import person from '../../assets/css/icons/person.svg';
 import { Container } from '../../assets/css/Header.css';
 
 export const MenuLink = styled(Link)`
+    color: #03507d;
     text-decoration: none;
 `;
 
 // [To do list] 로그인 권한 여부 확인 기능 추가
-function Header({ login, inq, voc, dashboard }) {
+function Header({ user, login, inq, voc, dashboard }) {
     const navigate = useNavigate();
     const backgroundColor = login ? '#EDFAFF' : '';
 
@@ -66,41 +67,50 @@ function Header({ login, inq, voc, dashboard }) {
                         <div>
                             <img src={person} alt="user" />
                         </div>
-                        <div>포청천님</div>
+                        포청천님
+                        {/* <div>포청천님</div> */}
                     </>
                 ) : (
                     <>
                         <div>
-                            <Link to="/inq">Inquiry</Link>
-                            <Link to="/voc">VoC</Link>
-                            <Link to="/dashboard">DashBoard</Link>
+                            <MenuLink to="/inq">Inquiry</MenuLink>
                         </div>
                         <div>
-                            {/* 로그인 & 회원가입 버튼 */}
-                            <Button
-                                onClick={() => navigate('/login')}
-                                btnName={'로그인'}
-                                width={'84px'}
-                                height={'40px'}
-                                backgroundColor={'#03507d'}
-                                textColor={'#eeeeee'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                                fontSize={'16px'}
-                            />
-                            <Button
-                                onClick={() => navigate('/join')}
-                                btnName={'회원가입'}
-                                width={'84px'}
-                                height={'40px'}
-                                margin={'24px'}
-                                backgroundColor={'#ffffff'}
-                                textColor={'#03507d'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                                fontSize={'16px'}
-                            />
+                            <MenuLink to="/voc">VoC</MenuLink>
                         </div>
+                        <div>
+                            <MenuLink to="/dashboard">DashBoard</MenuLink>
+                        </div>
+                        {/* 로그인 & 회원가입 버튼 */}
+                        {!user ? (
+                            <div>
+                                <Button
+                                    onClick={() => navigate('/login')}
+                                    btnName={'로그인'}
+                                    width={'84px'}
+                                    height={'40px'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#eeeeee'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
+                                    fontSize={'16px'}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <Button
+                                    onClick={() => navigate('/join')}
+                                    btnName={'회원가입'}
+                                    width={'84px'}
+                                    height={'40px'}
+                                    backgroundColor={'#ffffff'}
+                                    textColor={'#03507d'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
+                                    fontSize={'16px'}
+                                />
+                            </div>
+                        )}
                     </>
                 )}
             </div>

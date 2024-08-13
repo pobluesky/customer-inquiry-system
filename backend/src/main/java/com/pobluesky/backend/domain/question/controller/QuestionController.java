@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/question")
 public class QuestionController {
+
     private final QuestionService questionService;
 
     @GetMapping("/manager")
@@ -25,16 +26,6 @@ public class QuestionController {
         List<QuestionResponseDTO> response = questionService.getQuestion();
 
         return ResponseEntity.status((HttpStatus.OK))
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @GetMapping("/manager/{questionId}")
-    @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByInquiryIdForManager(@PathVariable Long questionId) {
-        QuestionResponseDTO response = questionService.getQuestionByQuestionId(questionId);
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
@@ -55,8 +46,8 @@ public class QuestionController {
         @PathVariable Long inquiryId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createInquiryQuestion(customerId, inquiryId, questionCreateRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
@@ -66,8 +57,8 @@ public class QuestionController {
         @PathVariable Long customerId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createNotInquiryQuestion(customerId, questionCreateRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 }
