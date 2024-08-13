@@ -10,8 +10,7 @@ public record CustomerCreateRequestDTO(
     String password,
     String phone,
     String customerCode,
-    String customerName,
-    List<String> roles
+    String customerName
 ) {
 
     public Customer toCustomerEntity(String encodedPassword, List<String> roles) {

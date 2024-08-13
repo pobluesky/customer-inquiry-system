@@ -19,15 +19,24 @@ import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
 
+
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+
+import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
+
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Map;
+
 import java.util.Optional;
+
+import java.util.Objects;
+
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -41,7 +50,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class LineItemService {
 
+    private final CustomUserDetailsService userDetailsService;
+
     private final CarLineItemRepository carLineItemRepository;
+
+    private final CustomerRepository customerRepository;
+
+    private final ManagerRepository managerRepository;
 
     private final InquiryRepository inquiryRepository;
 
@@ -50,12 +65,12 @@ public class LineItemService {
 
     @Transactional
     public LineItemResponseDTO createLineItem(
+        String token,
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
+        Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         Customer customer = inquiry.getCustomer();
 
         ProductType productType = inquiry.getProductType();
@@ -74,6 +89,7 @@ public class LineItemService {
 
                 return CarLineItemResponseDTO.of(carLineItem);
 
+
             case COLD_ROLLED:
                 ColdRolledLineItemCreateRequestDTO coldRolledDto = objectMapper.convertValue(
                     requestDto,
@@ -86,15 +102,22 @@ public class LineItemService {
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
     }
 
     @Transactional(readOnly = true)
-    public List<LineItemResponseDTO> getLineItemsByInquiry(Long inquiryId) {
+    public List<LineItemResponseDTO> getLineItemsByInquiry(String token, Long inquiryId) {
+        Long userId = userDetailsService.parseToken(token);
+
+        if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId))
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
 
         ProductType productType = inquiry.getProductType();
 
@@ -124,6 +147,7 @@ public class LineItemService {
 
         ProductType productType = inquiry.getProductType();
 
+
         switch (productType) {
             case CAR:
                 List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(
@@ -146,13 +170,12 @@ public class LineItemService {
 
     @Transactional
     public LineItemResponseDTO updateLineItemById(
+        String token,
         Long inquiryId,
         Long lineItemId,
         Map<String, Object> requestDto
     ) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
+        Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
@@ -180,6 +203,7 @@ public class LineItemService {
 
                 return CarLineItemResponseDTO.of(carLineItem);
 
+
             case COLD_ROLLED:
 
                 ColdRolledLineItem coldRolledLineItem = coldRolledLineItemRepository.findActiveColdRolledLineItemById(lineItemId)
@@ -206,16 +230,19 @@ public class LineItemService {
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
     }
 
     @Transactional
-    public void deleteLineItemById(Long inquiryId, Long lineItemId) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
+    public void deleteLineItemById(
+        String token,
+        Long inquiryId,
+        Long lineItemId
+    ) {
+        Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
 
         LineItem lineItem;
@@ -240,17 +267,34 @@ public class LineItemService {
         }
     }
 
+    private Inquiry validateUserAndInquiry(String token, Long inquiryId) {
+        Long userId = userDetailsService.parseToken(token);
+
+        customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if(!Objects.equals(inquiry.getCustomer().getCustomerId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        return inquiry;
+    }
+
     public LineItemResponseDTO toResponseDTO(ProductType productType, LineItem lineItem) {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
                 return CarLineItemSummaryResponseDTO.of(carLineItem);
 
+
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
                 return ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
 
             // 다른 제품 유형 처리
+
             default:
                 throw new CommonException(ErrorCode.INVALID_REQUEST);
         }
