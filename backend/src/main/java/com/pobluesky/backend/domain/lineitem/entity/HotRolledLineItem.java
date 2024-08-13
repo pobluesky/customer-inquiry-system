@@ -1,11 +1,10 @@
 package com.pobluesky.backend.domain.lineitem.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-
-
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
 import com.pobluesky.backend.domain.user.entity.Customer;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -81,7 +80,6 @@ public class HotRolledLineItem extends LineItem{
         this.orderEdge = orderEdge;
         this.quantity = quantity;
         this.isActivated = true;
-
     }
 
     public void updateHotRolledLineItem(
@@ -106,9 +104,7 @@ public class HotRolledLineItem extends LineItem{
         this.orderEdge = orderEdge;
     }
 
-
     public Customer getCustomer() {
         return this.inquiry.getCustomer();
     }
-
 }
