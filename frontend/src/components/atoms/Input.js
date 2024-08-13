@@ -1,5 +1,66 @@
 import React, { forwardRef } from 'react';
 
-const Input = forwardRef(({ onChange, value, placeholder, width, height, margin, padding, backgroundColor, textColor, border, borderRadius }, ref) => <input ref={ref} value={value} onChange={onChange} type="text" placeholder={placeholder} style={{ width: `${width}`, height: `${height}`, margin: `${margin}`, padding: `${padding}`, backgroundColor: `${backgroundColor}`, color: `${textColor}`, border: `${border}`, borderRadius: `${borderRadius}` }} />);
+const Input = forwardRef(
+    (
+        {
+            needCategory,
+            categoryName,
+            categoryWidth,
+            categoryColor,
+            CategoryFontWeight,
+            categoryMargin,
+            categoryTextAlign,
+
+            placeholder,
+            value,
+            onChange,
+            type,
+            width,
+            height,
+            margin,
+            padding,
+            backgroundColor,
+            textColor,
+            border,
+            borderRadius,
+        },
+        ref,
+    ) => (
+        <div>
+            {needCategory ? (
+                <div
+                    style={{
+                        width: `${categoryWidth}`,
+                        color: `${categoryColor}`,
+                        fontWeight: `${CategoryFontWeight}`,
+                        margin: `${categoryMargin}`,
+                        textAlign: `${categoryTextAlign}`,
+                    }}
+                >
+                    {categoryName}
+                </div>
+            ) : (
+                ''
+            )}
+            <input
+                ref={ref}
+                value={value}
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                style={{
+                    width: `${width}`,
+                    height: `${height}`,
+                    margin: `${margin}`,
+                    padding: `${padding}`,
+                    backgroundColor: `${backgroundColor}`,
+                    color: `${textColor}`,
+                    border: `${border}`,
+                    borderRadius: `${borderRadius}`,
+                }}
+            />
+        </div>
+    ),
+);
 
 export default Input;

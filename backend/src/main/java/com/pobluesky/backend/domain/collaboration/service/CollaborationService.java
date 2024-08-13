@@ -12,10 +12,12 @@ import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CollaborationService {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     private final CollaborationRepository collaborationRepository;
 
     private final QuestionRepository questionRepository;
@@ -34,8 +38,14 @@ public class CollaborationService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<CollaborationResponseDTO> getAllCollaborations() {
-        List<Collaboration> collaborations = collaborationRepository.findAll();
+    public List<CollaborationResponseDTO> getAllCollaborations(String token) {
+        Long userId = customUserDetailsService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        List<Collaboration> collaborations =
+            collaborationRepository.findAllByColRequestManagerOrColResponseManager(manager);
 
         return collaborations.stream()
             .map(CollaborationResponseDTO::from)
@@ -44,30 +54,36 @@ public class CollaborationService {
 
     @Transactional(readOnly = true)
     public CollaborationResponseDTO getCollaborationById(
+        String token,
         Long questionId,
         Long collaborationId
     ) {
+        Long userId = customUserDetailsService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         Collaboration collaboration = collaborationRepository.findByIdAndQuestion(
-                collaborationId, question)
-            .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+                collaborationId,
+                question
+            ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
         return CollaborationResponseDTO.from(collaboration);
     }
 
     @Transactional
     public CollaborationResponseDTO createCollaboration(
+        String token,
         Long questionId,
         CollaborationCreateRequestDTO requestDTO
     ) {
-        /**
-         * question test insert
-         */
-        Question testQuestion = new Question();
-        Question saved = questionRepository.save(testQuestion);
-        //
+        Long userId = customUserDetailsService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
@@ -98,12 +114,14 @@ public class CollaborationService {
 
     @Transactional
     public CollaborationDetailResponseDTO updateCollaborationStatus(
+        String token,
         Long collaborationId,
         CollaborationUpdateRequestDTO requestDTO
     ) {
-        Collaboration collaboration = validateCollaboration(collaborationId);
+        Long userId = customUserDetailsService.parseToken(token);
 
-        collaboration.completeCollaboration();
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         Manager reqManager = managerRepository.findById(requestDTO.colReqId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -111,8 +129,14 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        collaborationRepository.findByColRequestManagerAndColResponseManager(reqManager, resManager)
+        Collaboration foundCollaboration =
+            collaborationRepository.findByRequestManagerAndResponseManager(reqManager, resManager)
             .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+
+        if(!userId.equals(foundCollaboration.getColResponseManager().getManagerId()))
+            throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
+
+        Collaboration collaboration = validateCollaboration(collaborationId);
 
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
@@ -121,8 +145,19 @@ public class CollaborationService {
     }
 
     @Transactional
-    public CollaborationDetailResponseDTO completeCollaboration(Long collaborationId) {
+    public CollaborationDetailResponseDTO completeCollaboration(
+        String token,
+        Long collaborationId
+    ) {
+        Long userId = customUserDetailsService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
         Collaboration collaboration = validateCollaboration(collaborationId);
+
+        if(!userId.equals(collaboration.getColResponseManager().getManagerId()))
+            throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
 
         collaboration.completeCollaboration();
 
