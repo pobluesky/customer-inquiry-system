@@ -1,5 +1,3 @@
-// Join.js
-
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
@@ -28,9 +26,6 @@ function Join() {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
-
-    // API body
-    const [data, setData] = useState([]);
 
     // 입력값 저장
     const nameChange = (e) => setName(e.target.value);
@@ -64,6 +59,7 @@ function Join() {
         }
     };
 
+    // 회원가입 API
     const fetchGetAuth = async () => {
         try {
             const result = await signUpApi(
@@ -82,6 +78,7 @@ function Join() {
         }
     };
 
+    // 회원가입 Alert
     const signUpAlert = (result) => {
         if (result.success) {
             Swal.fire({ icon: 'success', title: '회원가입 완료' });
@@ -91,6 +88,7 @@ function Join() {
     };
 
     const joinInput = ({
+        margin,
         ref,
         value,
         onChange,
@@ -107,7 +105,7 @@ function Join() {
             placeholder={placeholder}
             width={'336px'}
             height={'48px'}
-            margin={'0 0 24px 0'}
+            margin={margin}
             padding={'0 0 0 20px'}
             border={'solid 1px #c1c1c1'}
             borderRadius={'12px'}
@@ -145,6 +143,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: '김숙하',
                                     categoryName: '이름',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     ref: customerCodeRef,
@@ -153,6 +152,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: 'CUST100',
                                     categoryName: '고객사 코드',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     ref: customerNameRef,
@@ -194,6 +194,7 @@ function Join() {
                                     placeholder: '',
                                     categoryName: '권한',
                                     needCategory: true,
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: email || '',
@@ -201,6 +202,7 @@ function Join() {
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: phone || '',
@@ -208,6 +210,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: password || '',
@@ -215,6 +218,7 @@ function Join() {
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: passwordCheck || '',
@@ -224,7 +228,6 @@ function Join() {
                                     categoryName: '비밀번호 확인',
                                 })}
                             </div>
-
                             {/* 회원가입 버튼 */}
                             <div>
                                 <Button

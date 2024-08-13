@@ -26,13 +26,12 @@
     margin: 24px 0 48px 0;
 }
 
-/* 로그인, 비밀번호 찾기 */
+/* 로그인 버튼 */
 .SignIn > div > div:nth-child(5) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 96px;
+    margin: 0 0 36px 0;
 }
 
+/* 회원이 아니신가요? */
 .SignIn > div > div:nth-child(6) a {
     text-decoration: none;
     color: #c1c1c1;
@@ -43,9 +42,9 @@
 }
 
 .SignUp > div > div:nth-child(2) {
-    margin: 48px 0 0 0;
+    margin: px 0 0 0;
 }
 
 .SignUp > div > div:nth-child(3) {
-    margin: 72px 0 0 0;
+    margin: 48px 0 0 0;
 }
