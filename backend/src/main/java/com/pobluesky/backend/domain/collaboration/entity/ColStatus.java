@@ -9,7 +9,6 @@ public enum ColStatus {
     REFUSE("refuse"),
     COMPLETE("complete");
 
-
     private String status;
 
     ColStatus(String status) {
