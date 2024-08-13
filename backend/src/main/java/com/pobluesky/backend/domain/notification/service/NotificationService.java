@@ -48,7 +48,7 @@ public class NotificationService {
 
         if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId))
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        
+
         switch (notificationType) {
             case CUSTOMER:
                 List<CustomerNotification> notifications =

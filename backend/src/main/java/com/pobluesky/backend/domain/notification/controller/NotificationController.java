@@ -66,6 +66,7 @@ public class NotificationController {
     ) {
 
         List<?> notificationById = notificationService.getRecentNotifications(
+            token,
             customerId,
             NotificationType.CUSTOMER
         );
