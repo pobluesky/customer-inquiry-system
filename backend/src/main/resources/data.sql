@@ -3,7 +3,8 @@ INSERT INTO customers (name, email, password, phone, is_activated, customer_code
 VALUES
     ('John Doe', 'john@example.com', 'password123', '123-456-7890', true, 'CUST001', 'ABC Corp', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Jane Smith', 'jane@example.com', 'password456', '987-654-3210', true, 'CUST002', 'XYZ Inc', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Michael Jackson', 'michael@example.com', 'password1011', '777-777-7777', true, 'CUST004', 'Mr.Son', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Managers
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
@@ -20,7 +21,8 @@ INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type
 VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED_GENERAL', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- CarLineItem
@@ -59,15 +61,33 @@ VALUES
     (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
 
 -- CUSTOMER_NOTIFICATION
-INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_id, notification_contents)
+INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_contents)
 VALUES
-    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
-    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
-    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
 
 -- MANAGER_NOTIFICATION
-INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_id, notification_contents)
+INSERT INTO manager_notification (is_read, created_date, manager_id, modified_date, notification_contents)
 VALUES
-    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 1, 'Welcome to our service!'),
-    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 2, 'Your order has been shipped.'),
-    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 3, 'Your invoice is ready.');
+    (TRUE, '2024-08-01 10:00:00', 1, '2024-08-01 10:00:00', 'Welcome to our service!'),
+    (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
+    (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
+
+ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
+ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
+
+-- QUESTION
+INSERT INTO question (created_date, inquiry_id, customer_id, title, contents, files, type, status)
+VALUES
+    ('2024-08-01 10:00:00', null, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'ETC', 'COMPLETED'),
+    ('2024-08-02 11:15:00', null, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'ETC', 'COMPLETED'),
+    ('2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'INQ', 'READY'),
+    ('2024-08-03 14:30:00', 2, 2, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'INQ', 'READY'),
+    ('2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'INQ', 'READY');
+
+-- ANSWER
+INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, answer_title, answer_contents)
+VALUES
+    (CURRENT_TIMESTAMP, null, 1, 1, 'Thank you for joining with us.', 'We will contact you ASAP.'),
+    (CURRENT_TIMESTAMP, null, 2, 2, 'Reply for your question.', 'We are going to check ASAP.');

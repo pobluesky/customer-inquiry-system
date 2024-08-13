@@ -4,15 +4,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,13 +21,13 @@ public class Answer extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "question_id")
-    private Question question; // voc 번호
+    private Question question; // 질문 번호
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의 번호
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer; // 고객사 번호
 
@@ -56,12 +48,6 @@ public class Answer extends BaseEntity {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
-        this.answerTitle = answerTitle;
-        this.answerContents = answerContents;
-    }
-    public void updateAnswer(
-        String answerContents
-    ) {
         this.answerTitle = answerTitle;
         this.answerContents = answerContents;
     }

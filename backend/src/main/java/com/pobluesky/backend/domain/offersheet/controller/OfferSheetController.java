@@ -6,6 +6,7 @@ import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDT
 import com.pobluesky.backend.domain.offersheet.service.OfferSheetService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OfferSheetController {
     private final OfferSheetService offerSheetService;
 
+    @Operation(summary = "inquiryId 별 offersheet 작성")
     @PostMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> createOfferSheet(
         @PathVariable Long inquiryId,
@@ -33,6 +35,7 @@ public class OfferSheetController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 offersheet 조회")
     @GetMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> getOfferSheetByInquiryId(@PathVariable Long inquiryId) {
         OfferSheetResponseDTO response = offerSheetService.getOfferSheetByInquiryId(inquiryId);
@@ -42,6 +45,7 @@ public class OfferSheetController {
                 .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(summary = "inquiryId 별 offersheet 수정")
     @PutMapping("/{inquiryId}")
     public ResponseEntity<JsonResult> updateOfferSheetByInquiryId(
         @PathVariable Long inquiryId,

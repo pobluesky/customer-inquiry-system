@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { getCustomerNotifications } from '../../apis/services/notificationService';
+import { fetchCustomerNotifications } from "../../apis/api/notification/notification";
 
-const Notification = () => {
+const Notification = ({customerId}) => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getCustomerNotifications();
+        const data = await fetchCustomerNotifications(customerId);
         setNotifications(data);
       } catch (error) {
       }
     };
 
     fetchData();
-  }, []);
+  }, [customerId]);
 
   return (
       <div>

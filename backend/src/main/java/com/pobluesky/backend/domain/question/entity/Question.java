@@ -1,25 +1,14 @@
 package com.pobluesky.backend.domain.question.entity;
 
+import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.global.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,6 +37,13 @@ public class Question extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private QuestionType type;
+
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Answer answer;
+
     @Builder
     private Question(
         Inquiry inquiry,
@@ -55,7 +51,8 @@ public class Question extends BaseEntity {
         String title,
         String contents,
         String files,
-        QuestionStatus status
+        QuestionStatus status,
+        QuestionType type
     ) {
         this.inquiry = inquiry;
         this.customer = customer;
@@ -63,16 +60,11 @@ public class Question extends BaseEntity {
         this.contents = contents;
         this.files = files;
         this.status = status;
+        this.type = type;
     }
     public void updateQuestion(
-        String title,
-        String contents,
-        String files,
         QuestionStatus status
     ) {
-        this.title = title;
-        this.contents = contents;
-        this.files = files;
         this.status = status;
     }
 }

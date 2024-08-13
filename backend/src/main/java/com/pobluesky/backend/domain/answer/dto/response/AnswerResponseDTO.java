@@ -1,27 +1,31 @@
 package com.pobluesky.backend.domain.answer.dto.response;
 
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.answer.entity.Answer;
-
+import com.pobluesky.backend.domain.question.entity.Question;
 import lombok.Builder;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Builder
 public record AnswerResponseDTO(
-    Question question,
-    Inquiry inquiry,
-    Customer customer,
+    Long questionId,
+    Optional<Long> inquiryId,
+    Long customerId,
     String answerTitle,
-    String answerContents
+    String answerContents,
+    LocalDateTime createdDate
+
 ) {
     public static AnswerResponseDTO from(Answer answer) {
         return AnswerResponseDTO.builder()
-            .question(answer.getQuestion())
-            .inquiry(answer.getInquiry())
-            .customer(answer.getCustomer())
+            .inquiryId(Optional.ofNullable(answer.getInquiry())
+                .map(inquiry -> inquiry.getInquiryId()))
+            .questionId(answer.getQuestion().getQuestionId())
+            .customerId(answer.getCustomer().getCustomerId())
             .answerTitle(answer.getAnswerTitle())
             .answerContents(answer.getAnswerContents())
+            .createdDate(answer.getCreatedDate())
             .build();
     }
 }

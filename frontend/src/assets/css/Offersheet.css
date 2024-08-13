@@ -189,3 +189,15 @@ body {
     outline: none;
     padding: 2px 4px 2px 12px;
 }
+
+.DatepickerPeriod{
+    width: 90px;
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 2px 4px 2px 12px;
+    color: #65636c;
+    font-weight: bold;
+    margin-left: 25px;
+}
