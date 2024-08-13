@@ -1,3 +1,5 @@
+// Join.js
+
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
@@ -65,25 +67,64 @@ function Join() {
     };
 
     const fetchGetAuth = async () => {
-        const result = await signUpApi(
-            name,
-            customerCode,
-            customerName,
-            roles,
-            email,
-            phone,
-            password,
-        );
-        setAuth(result);
+        try {
+            const result = await signUpApi(
+                name,
+                customerCode,
+                customerName,
+                roles,
+                email,
+                phone,
+                password,
+            );
+            setAuth(result);
+            signUpAlert(result);
+        } catch (error) {
+            console.error('회원가입 실패:', error);
+            Swal.fire({ icon: 'error', title: '회원가입 실패' });
+        }
     };
 
-    const signUpAlert = () => {
-        if (auth.success) {
+    const signUpAlert = (result) => {
+        if (result.success) {
             Swal.fire({ icon: 'success', title: '회원가입 완료' });
         } else {
             Swal.fire({ icon: 'error', title: '이미 존재하는 회원입니다.' });
         }
     };
+
+    // 반복되는 Input 생성 함수
+    const renderInput = ({
+        ref,
+        value,
+        onChange,
+        type,
+        placeholder,
+        categoryName,
+        needCategory = true,
+    }) => (
+        <Input
+            ref={ref}
+            value={value}
+            onChange={onChange}
+            type={type}
+            placeholder={placeholder}
+            width={'336px'}
+            height={'48px'}
+            margin={'0 0 24px 0'}
+            padding={'0 0 0 20px'}
+            border={'solid 1px #c1c1c1'}
+            borderRadius={'12px'}
+            fontSize={'20px'}
+            needCategory={needCategory}
+            categoryName={categoryName}
+            categoryWidth={'360px'}
+            categoryColor={'#03507d'}
+            CategoryFontWeight={'600'}
+            categoryMargin={'0 auto 12px auto'}
+            categoryTextAlign={'left'}
+        />
+    );
 
     return (
         <div>
@@ -101,65 +142,30 @@ function Join() {
                             <div>회원가입</div>
                             {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
                             <div>
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    margin={'0 0 24px 0'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'이름'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'김숙하'}
-                                    onChange={nameChange}
-                                    type={'text'}
-                                    ref={nameRef}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    margin={'0 0 24px 0'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'고객사 코드'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'CUST100'}
-                                    onChange={customerCodeChange}
-                                    type={'text'}
-                                    ref={customerCodeRef}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'고객사명'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'손흥민 주식회사'}
-                                    onChange={customerNameChange}
-                                    type={'text'}
-                                    ref={customerNameRef}
-                                />
+                                {renderInput({
+                                    ref: nameRef,
+                                    value: name,
+                                    onChange: nameChange,
+                                    type: 'text',
+                                    placeholder: '김숙하',
+                                    categoryName: '이름',
+                                })}
+                                {renderInput({
+                                    ref: customerCodeRef,
+                                    value: customerCode,
+                                    onChange: customerCodeChange,
+                                    type: 'text',
+                                    placeholder: 'CUST100',
+                                    categoryName: '고객사 코드',
+                                })}
+                                {renderInput({
+                                    ref: customerNameRef,
+                                    value: customerName,
+                                    onChange: customerNameChange,
+                                    type: 'text',
+                                    placeholder: '손흥민 주식회사',
+                                    categoryName: '고객사명',
+                                })}
                             </div>
 
                             {/* 역할 조회 버튼 */}
@@ -185,101 +191,42 @@ function Join() {
                             <div />
                             {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
                             <div>
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'권한'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    value={userRole || ''}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    margin={'0 0 24px 0'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'이메일'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'poscodx@posco.co.kr'}
-                                    onChange={emailChange}
-                                    type={'email'}
-                                    value={email || ''}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    margin={'0 0 24px 0'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'전화번호'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'01012345678'}
-                                    onChange={phoneChange}
-                                    type={'text'}
-                                    value={phone || ''}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    margin={'0 0 24px 0'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'비밀번호'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'********'}
-                                    onChange={passwordChange}
-                                    type={'password'}
-                                    value={password || ''}
-                                />
-                                <Input
-                                    width={'336px'}
-                                    height={'48px'}
-                                    padding={'0 0 0 20px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'12px'}
-                                    fontSize={'20px'}
-                                    needCategory={true}
-                                    categoryName={'비밀번호 확인'}
-                                    categoryWidth={'360px'}
-                                    categoryColor={'#03507d'}
-                                    CategoryFontWeight={'600'}
-                                    categoryMargin={'0 auto 12px auto'}
-                                    categoryTextAlign={'left'}
-                                    placeholder={'********'}
-                                    onChange={passwordCheckChange}
-                                    type={'password'}
-                                    value={passwordCheck || ''}
-                                />
+                                {renderInput({
+                                    value: userRole || '',
+                                    onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
+                                    type: 'text',
+                                    placeholder: '',
+                                    categoryName: '권한',
+                                    needCategory: true,
+                                })}
+                                {renderInput({
+                                    value: email || '',
+                                    onChange: emailChange,
+                                    type: 'email',
+                                    placeholder: 'poscodx@posco.co.kr',
+                                    categoryName: '이메일',
+                                })}
+                                {renderInput({
+                                    value: phone || '',
+                                    onChange: phoneChange,
+                                    type: 'text',
+                                    placeholder: '01012345678',
+                                    categoryName: '전화번호',
+                                })}
+                                {renderInput({
+                                    value: password || '',
+                                    onChange: passwordChange,
+                                    type: 'password',
+                                    placeholder: '********',
+                                    categoryName: '비밀번호',
+                                })}
+                                {renderInput({
+                                    value: passwordCheck || '',
+                                    onChange: passwordCheckChange,
+                                    type: 'password',
+                                    placeholder: '********',
+                                    categoryName: '비밀번호 확인',
+                                })}
                             </div>
 
                             {/* 회원가입 버튼 */}
@@ -293,17 +240,24 @@ function Join() {
                                     fontSize={'20px'}
                                     border={'solid #c1c1c1 1px'}
                                     borderRadius={'12px'}
-                                    onClick={() => {{
-                                        passwordCheck === password ? ('') : ('')
-                                    }
+                                    onClick={async () => {
+                                        if (password !== passwordCheck) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: '비밀번호가 일치하지 않습니다.',
+                                            });
+                                            return;
+                                        }
                                         setData([
-                                            ...data,
+                                            name,
+                                            customerCode,
+                                            customerName,
+                                            roles,
                                             email,
                                             phone,
                                             password,
                                         ]);
-                                        fetchGetAuth(...data);
-                                        signUpAlert();
+                                        await fetchGetAuth();
                                     }}
                                 />
                             </div>

@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../../components/mocules/Header';
-import Path from './../../components/atoms/Path';
+import VocPath from './../../components/atoms/VocPath';
 
 function Voc() {
     return (
         <>
             <Header login={true} inq={false} voc={true} dashboard={false} />
-            <Path largeCategory={'VoC'} mediumCategory={'문의 목록'} />
+            <VocPath largeCategory={'VoC'} mediumCategory={'문의 목록'} />
         </>
     );
 }
