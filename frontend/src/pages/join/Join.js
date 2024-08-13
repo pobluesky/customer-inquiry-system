@@ -1,89 +1,259 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
-import Input from '../../components/atoms/JoinInput';
-import { Container_Join, Join_Title, Join_Name_No } from '../../assets/css/Member.css';
+import Input from '../../components/atoms/Input';
+import { SignUp } from '../../assets/css/Auth.css';
+import Swal from 'sweetalert2';
+
+import { signUpApi } from '../../apis/api/auth/auth';
 
 function Join() {
     const nameRef = useRef(null);
-    const noRef = useRef(null);
+    const customerCodeRef = useRef(null);
+    const customerNameRef = useRef(null);
+
     const [check, setCheck] = useState(false);
-    const [, setName] = useState('');
-    const [no, setNo] = useState('');
+
+    // 고객 권한 확인
+    const [name, setName] = useState('');
+    const [customerCode, setCustomerCode] = useState('');
+    const [customerName, setCustomerName] = useState('');
+
+    // 고객 권한 확인 완료
+    const [userRole, setUserRole] = useState(''); // 화면에 출력할 데이터
+    const [roles, setRoles] = useState([]); // 서버로 전송할 데이터
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
 
-    /* 입력 값 저장 */
-    const nameInput = (e) => setName(e.target.value);
-    const noInput = (e) => setNo(e.target.value);
-    const emailInput = (e) => setEmail(e.target.value);
-    const passwordInput = (e) => setPassword(e.target.value);
+    // 입력값 저장
+    const nameChange = (e) => setName(e.target.value);
+    const customerCodeChange = (e) => setCustomerCode(e.target.value);
+    const customerNameChange = (e) => setCustomerName(e.target.value);
 
-    /* 입력 창 초기화 */
+    const emailChange = (e) => setEmail(e.target.value);
+    const phoneChange = (e) => setPhone(e.target.value);
+    const passwordChange = (e) => setPassword(e.target.value);
+    const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
+
+    // 입력창 초기화
     const inputClear = () => {
         nameRef.current.value = null;
-        noRef.current.value = null;
+        customerCodeRef.current.value = null;
+        customerNameRef.current.value = null;
     };
 
-    /* 역할 구분 [품질, 판매, 고객] */
-    const findRole = () => {
-        const roleMark = no.substring(0, 1);
+    // 역할 구분
+    const getRole = () => {
+        const roleMark = customerCode.substring(0, 1);
         if (roleMark === 'Q') {
-            setRole('품질관리 담당자');
+            setRoles(['sales']);
+            setUserRole('품질관리 담당자');
         } else if (roleMark === 'S') {
-            setRole('판매관리 담당자');
+            setRoles(['quality']);
+            setUserRole('판매관리 담당자');
         } else {
-            setRole('고객');
+            setRoles(['customer']);
+            setUserRole('고객사');
         }
     };
 
+    // 회원가입 API
+    const fetchGetAuth = async () => {
+        try {
+            const result = await signUpApi(
+                name,
+                customerCode,
+                customerName,
+                roles,
+                email,
+                phone,
+                password,
+            );
+            signUpAlert(result);
+        } catch (error) {
+            console.error('회원가입 실패:', error);
+            Swal.fire({ icon: 'error', title: '회원가입 실패' });
+        }
+    };
+
+    // 회원가입 Alert
+    const signUpAlert = (result) => {
+        if (result.success) {
+            Swal.fire({ icon: 'success', title: '회원가입 완료' });
+        } else {
+            Swal.fire({ icon: 'error', title: '이미 존재하는 회원입니다.' });
+        }
+    };
+
+    const joinInput = ({
+        margin,
+        ref,
+        value,
+        onChange,
+        type,
+        placeholder,
+        categoryName,
+        needCategory = true,
+    }) => (
+        <Input
+            ref={ref}
+            value={value}
+            onChange={onChange}
+            type={type}
+            placeholder={placeholder}
+            width={'336px'}
+            height={'48px'}
+            margin={margin}
+            padding={'0 0 0 20px'}
+            border={'solid 1px #c1c1c1'}
+            borderRadius={'12px'}
+            fontSize={'20px'}
+            needCategory={needCategory}
+            categoryName={categoryName}
+            categoryWidth={'360px'}
+            categoryColor={'#03507d'}
+            CategoryFontWeight={'600'}
+            categoryMargin={'0 auto 12px auto'}
+            categoryTextAlign={'left'}
+        />
+    );
+
     return (
         <div>
-            <Header user={false} login={false} inq={true} voc={true} dashboard={true} />
-            <div className={Container_Join}>
-                {!check ? (
-                    <>
-                        <div className={Join_Title}>회원가입</div>
-                        {/* 이름 & 사번 입력 창 */}
-                        <div style={{ marginTop: '8vh' }} />
-                        <Input category={'이름'} placeholder={'김숙하'} onChange={nameInput} ref={nameRef} />
-                        <Input category={'사번'} placeholder={'123456789'} onChange={noInput} ref={noRef} />
+            <Header
+                user={false}
+                login={false}
+                inq={true}
+                voc={true}
+                dashboard={true}
+            />
+            <div className={SignUp}>
+                <div>
+                    {!check ? (
+                        <>
+                            <div>회원가입</div>
+                            {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
+                            <div>
+                                {joinInput({
+                                    ref: nameRef,
+                                    value: name,
+                                    onChange: nameChange,
+                                    type: 'text',
+                                    placeholder: '김숙하',
+                                    categoryName: '이름',
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    ref: customerCodeRef,
+                                    value: customerCode,
+                                    onChange: customerCodeChange,
+                                    type: 'text',
+                                    placeholder: 'CUST100',
+                                    categoryName: '고객사 코드',
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    ref: customerNameRef,
+                                    value: customerName,
+                                    onChange: customerNameChange,
+                                    type: 'text',
+                                    placeholder: '손흥민 주식회사',
+                                    categoryName: '고객사명',
+                                })}
+                            </div>
 
-                        {/* 역할 조회 버튼 */}
-                        <div style={{ marginTop: '4vh' }}>
-                            <Button
-                                onClick={() => {
-                                    findRole();
-                                    inputClear();
-                                    setCheck(true);
-                                }}
-                                btnName={'역할 조회'}
-                                width={'360px'}
-                                height={'44px'}
-                                margin={'12px'}
-                                backgroundColor={'#03507D'}
-                                textColor={'#EEEEEE'}
-                                borderRadius={'12px'}
-                                fontSize={'20px'}
-                            />
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className={Join_Name_No} style={{ marginTop: '8vh' }} />
-                        {/* 이름 & 사번 입력 창 */}
-                        <Input category={'권한'} value={`${role}`}></Input>
-                        <Input category={'이메일'} placeholder={'poscodx@posco.co.kr'} onChange={emailInput} value={email} />
-                        <Input category={'비밀번호'} placeholder={'********'} onChange={passwordInput} value={password} />
-                        <Input category={'비밀번호 확인'} placeholder={'********'} onChange={passwordInput} value={password} />
-
-                        {/* 회원가입 버튼 */}
-                        <div style={{ marginTop: '4vh' }}>
-                            <Button btnName={'회원가입'} width={'360px'} height={'44px'} margin={'12px'} backgroundColor={'#03507D'} textColor={'#EEEEEE'} fontSize={'20px'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} />
-                        </div>
-                    </>
-                )}
+                            {/* 역할 조회 버튼 */}
+                            <div>
+                                <Button
+                                    onClick={() => {
+                                        getRole();
+                                        inputClear();
+                                        setCheck(true);
+                                    }}
+                                    btnName={'역할 조회'}
+                                    width={'360px'}
+                                    height={'44px'}
+                                    backgroundColor={'#03507D'}
+                                    textColor={'#EEEEEE'}
+                                    borderRadius={'12px'}
+                                    fontSize={'20px'}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div />
+                            {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
+                            <div>
+                                {joinInput({
+                                    value: userRole || '',
+                                    onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
+                                    type: 'text',
+                                    placeholder: '',
+                                    categoryName: '권한',
+                                    needCategory: true,
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    value: email || '',
+                                    onChange: emailChange,
+                                    type: 'email',
+                                    placeholder: 'poscodx@posco.co.kr',
+                                    categoryName: '이메일',
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    value: phone || '',
+                                    onChange: phoneChange,
+                                    type: 'text',
+                                    placeholder: '01012345678',
+                                    categoryName: '전화번호',
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    value: password || '',
+                                    onChange: passwordChange,
+                                    type: 'password',
+                                    placeholder: '********',
+                                    categoryName: '비밀번호',
+                                    margin: '0 0 24px 0',
+                                })}
+                                {joinInput({
+                                    value: passwordCheck || '',
+                                    onChange: passwordCheckChange,
+                                    type: 'password',
+                                    placeholder: '********',
+                                    categoryName: '비밀번호 확인',
+                                })}
+                            </div>
+                            {/* 회원가입 버튼 */}
+                            <div>
+                                <Button
+                                    btnName={'회원가입'}
+                                    width={'360px'}
+                                    height={'44px'}
+                                    backgroundColor={'#03507D'}
+                                    textColor={'#EEEEEE'}
+                                    fontSize={'20px'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
+                                    onClick={async () => {
+                                        if (password !== passwordCheck) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: '비밀번호가 일치하지 않습니다.',
+                                            });
+                                            return;
+                                        }
+                                        await fetchGetAuth();
+                                    }}
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -12,6 +12,9 @@ import { InqItem } from './pages/inq-item';
 import { VocList } from './pages/voc-list';
 import { VocMain } from './pages/voc-main';
 import { DashBoard } from './pages/dashboard';
+import { QuestionAnswer } from './pages/voc';
+import { QuestionRegister } from './pages/voc';
+import { ManagerQuestionAnswer } from './pages/voc';
 
 function App() {
     return (
@@ -24,6 +27,11 @@ function App() {
                 <Route path="inq-list" element={<InqList />} />
                 <Route path="inq-form" element={<InqForm />} />
                 <Route path="inq-item" element={<InqItem />} />
+
+                <Route path="voc/qna/list" element={<QuestionAnswer />} />
+                <Route path="voc/qna/register" element={<QuestionRegister />} />
+                <Route path="voc/qna/list/manager" element={<ManagerQuestionAnswer />} />
+
                 <Route path="voc-main" element={<VocMain />} />
                 <Route path="voc-list" element={<VocList />} />
                 <Route path="dashboard" element={<DashBoard />} />

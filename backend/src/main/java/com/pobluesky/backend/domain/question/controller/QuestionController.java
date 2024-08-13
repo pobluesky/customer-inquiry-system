@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
 public class QuestionController {
+
     private final QuestionService questionService;
 
     @GetMapping("/manager")
@@ -63,7 +64,7 @@ public class QuestionController {
     }
 
     @PostMapping("/customer/{customerId}/{inquiryId}")
-    @Operation(summary = "문의별 질문 작성(고객사)", description = "고객사는 문의에 대해 새로운 질문을 등록한다.")
+    @Operation(summary = "문의별 질문 작성(고객사)", description = "특정 문의에 대한 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long customerId,
@@ -75,13 +76,13 @@ public class QuestionController {
             inquiryId,
             questionCreateRequestDTO
         );
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PostMapping("/customer/{customerId}")
-    @Operation(summary = "타입별 질문 작성(고객사)", description = "고객사는 문의 외적인 새로운 질문을 등록한다.")
+    @Operation(summary = "타입별 질문 작성(고객사)", description = "문의 외적인 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long customerId,
@@ -91,8 +92,8 @@ public class QuestionController {
             customerId,
             questionCreateRequestDTO
         );
-        return ResponseEntity.status(HttpStatus.OK)
 
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 }
