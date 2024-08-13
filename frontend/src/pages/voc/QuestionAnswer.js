@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/mocules/Header';
-import Path from '../../components/atoms/Path';
+import VocPath from './../../components/atoms/VocPath';
 import CustomerQuestionReport from '../../components/organisms/CustomerQuestionReport';
 import CustomerQuestionSearchItem from '../../components/organisms/CustomerQuestionSearchItem';
 import CustomerQuestionList from '../../components/templates/CustomerQuestionList';
@@ -38,7 +38,7 @@ function QuestionAnswer() {
     return (
         <>
             <Header login={true} inq={false} voc={true} dashboard={false} />
-            <Path largeCategory={'VoC'} mediumCategory={'문의 목록'} />
+            <VocPath largeCategory={'VoC'} mediumCategory={'문의 목록'} />
             <CustomerQuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
             <CustomerQuestionSearchItem totalItems={totalItems}/>
             <div className={Question_Title}>문의 목록</div>

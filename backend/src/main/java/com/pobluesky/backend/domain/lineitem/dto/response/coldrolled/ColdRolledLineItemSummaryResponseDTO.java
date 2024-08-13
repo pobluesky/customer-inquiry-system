@@ -41,9 +41,4 @@ public class ColdRolledLineItemSummaryResponseDTO extends LineItemResponseDTO {
             .isActivated(coldRolledLineItem.getIsActivated())
             .build();
     }
-
-
-
-
-
 }

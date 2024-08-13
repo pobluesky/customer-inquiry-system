@@ -6,9 +6,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
-import com.pobluesky.backend.domain.review.entity.ContractType;
-
-import java.util.Date;
 
 public record CarLineItemCreateRequestDTO(
     Lab lab,
@@ -22,7 +19,6 @@ public record CarLineItemCreateRequestDTO(
     String width,
     int quantity
 ) {
-
     public CarLineItem toCarLineItemEntity(Inquiry inquiry) {
 
         return CarLineItem.builder()

@@ -14,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "question")
 public class Question extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId; // 질문 번호
@@ -62,6 +63,7 @@ public class Question extends BaseEntity {
         this.status = status;
         this.type = type;
     }
+
     public void updateQuestion(
         QuestionStatus status
     ) {

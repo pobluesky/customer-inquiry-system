@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 import com.pobluesky.backend.domain.user.entity.Customer;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -83,7 +86,6 @@ public class ColdRolledLineItem extends LineItem{
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
         this.isActivated = true;
-
     }
 
     public void updateColdRolledLineItem(
@@ -109,7 +111,6 @@ public class ColdRolledLineItem extends LineItem{
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
     }
-
 
     public Customer getCustomer() {
         return this.inquiry.getCustomer();

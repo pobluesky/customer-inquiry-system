@@ -24,7 +24,6 @@ VALUES
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
@@ -42,8 +41,6 @@ INSERT INTO hotrolled_line_items (inquiry_id, kind, inq_name, order_category, th
 VALUES
     (2, 'HR', 'JS_SI123', 'Category A', '2.0mm', '1500mm', 'Hardness A', 'Flatness A', 'Edge A', 300, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'HRC', 'JS_SI456', 'Category B', '2.5mm', '1600mm', 'Hardness B', 'Flatness B', 'Edge B', 400, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)

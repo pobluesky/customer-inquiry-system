@@ -18,8 +18,8 @@ public record ColdRolledLineItemCreateRequestDTO(
     String inDiameter,
     String outDiameter
 ) {
-
     public ColdRolledLineItem toColdRolledLineItem(
+        Inquiry inquiry) {
         Inquiry inquiry
     ) {
 
