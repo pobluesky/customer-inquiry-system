@@ -5,7 +5,6 @@ import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
 
-
 public record HotRolledLineItemCreateRequestDTO(
     Kind kind,
     InqName inqName,
@@ -34,5 +33,4 @@ public record HotRolledLineItemCreateRequestDTO(
             .quantity(quantity)
             .build();
     }
-
 }

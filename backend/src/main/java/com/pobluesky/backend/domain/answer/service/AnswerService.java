@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,9 +26,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
+
     private final QuestionRepository questionRepository;
+
     private final AnswerRepository answerRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
 
     // 질문 & 답변 전체 조회 (고객사): 고객별 전제 질문 + 답변 개수를 계산할 수 있다.
@@ -41,8 +46,7 @@ public class AnswerService {
 
         return questions.stream()
             .map(question -> {
-                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId())
-                    .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
                 return AnswerWithQuestionResponseDTO.from(question, answer);
             })
@@ -73,8 +77,7 @@ public class AnswerService {
         return customers.stream()
             .flatMap(customer -> questionRepository.findAllByCustomer_CustomerId(customer.getCustomerId()).stream()
                 .map(question -> {
-                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId())
-                        .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
                     return AnswerWithQuestionResponseDTO.from(question, answer);
                 }))

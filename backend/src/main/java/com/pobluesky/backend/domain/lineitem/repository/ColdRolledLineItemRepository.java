@@ -2,11 +2,11 @@ package com.pobluesky.backend.domain.lineitem.repository;
 
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.LineItem;
+
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -24,7 +24,6 @@ VALUES
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
@@ -48,8 +47,6 @@ INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diam
 VALUES
     (3, 'SWRH', 'JS_SI123', 'Category A', '8.0mm', 500, '2024-02-15', 100, 'Processing A', 'Final Use A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'SWRM', 'JS_SI456', 'Category B', '10.0mm', 700, '2024-03-01', 200, 'Processing B', 'Final Use B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)

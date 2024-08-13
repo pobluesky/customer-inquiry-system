@@ -28,7 +28,6 @@ function App() {
                 <Route path="inq-form" element={<InqForm />} />
                 <Route path="inq-item" element={<InqItem />} />
 
-                <Route path="voc" element={<Voc />} />
                 <Route path="voc/qna/list" element={<QuestionAnswer />} />
                 <Route path="voc/qna/register" element={<QuestionRegister />} />
                 <Route path="voc/qna/list/manager" element={<ManagerQuestionAnswer />} />

@@ -20,8 +20,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
+
     private final QuestionRepository questionRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
 
     // 질문 전체 조회 (담당자)

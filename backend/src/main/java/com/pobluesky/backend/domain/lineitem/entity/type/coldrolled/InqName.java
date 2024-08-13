@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum InqName {
+
     JS_SI123("JS-SI123"),
     JS_SI456("JS-SI456"),
     JS_SI789("JS-SI789");

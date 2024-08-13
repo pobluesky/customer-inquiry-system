@@ -13,6 +13,7 @@ public record QuestionCreateRequestDTO(
     QuestionStatus status,
     QuestionType type
 ) {
+
     public Question toQuestionEntity(Inquiry inquiry, Customer customer) {
         return Question.builder()
             .customer(customer)

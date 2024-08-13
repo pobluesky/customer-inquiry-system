@@ -2,7 +2,6 @@ package com.pobluesky.backend.domain.lineitem.dto.response.hotrolled;
 
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
 import lombok.Builder;
@@ -56,6 +55,7 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
             .flatness(hotRolledLineItem.getFlatness())
             .orderEdge(hotRolledLineItem.getOrderEdge())
             .quantity(hotRolledLineItem.getQuantity())
+            .isActivated(hotRolledLineItem.getIsActivated())
             .build();
     }
 
