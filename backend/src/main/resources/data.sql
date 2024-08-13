@@ -24,7 +24,6 @@ VALUES
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'SURFACE_TREATED_GENERAL', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
@@ -36,7 +35,6 @@ VALUES
 INSERT INTO coldrolled_line_items (inquiry_id,  kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
 VALUES
     (4, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
-
 
 -- ColdRolledLineItem
 INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
