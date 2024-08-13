@@ -12,11 +12,9 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // 이메일과 비밀번호 입력 핸들러
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
-    // 로그인 API 호출
     const fetchGetAuth = async () => {
         try {
             const result = await signInApi(email, password);
@@ -27,15 +25,13 @@ function Login() {
         }
     };
 
-    // 로그인 성공 시 알림
     useEffect(() => {
         if (auth.success) {
             Swal.fire({ icon: 'success', title: '로그인되었습니다.' });
         }
     }, [auth]);
 
-    // 반복되는 Input 컴포넌트를 생성하는 함수
-    const renderInput = ({
+    const loginInput = ({
         value,
         onChange,
         type,
@@ -81,7 +77,7 @@ function Login() {
 
                     {/* 이메일 & 비밀번호 입력 창 */}
                     <div>
-                        {renderInput({
+                        {loginInput({
                             value: email,
                             onChange: emailChange,
                             type: 'email',
@@ -90,7 +86,7 @@ function Login() {
                         })}
                     </div>
                     <div>
-                        {renderInput({
+                        {loginInput({
                             value: password,
                             onChange: passwordChange,
                             type: 'password',
@@ -98,7 +94,6 @@ function Login() {
                             categoryName: '비밀번호',
                         })}
                     </div>
-
                     {/* 로그인 완료 & 비밀번호 찾기 버튼 */}
                     <div style={{ marginTop: '4vh' }}>
                         <div>
@@ -129,7 +124,6 @@ function Login() {
                             />
                         </div>
                     </div>
-
                     {/* 회원가입 링크 */}
                     <div>
                         <a href="/join">회원이 아니신가요?</a>

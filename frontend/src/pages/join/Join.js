@@ -10,8 +10,6 @@ import Swal from 'sweetalert2';
 import { signUpApi } from '../../apis/api/auth/auth';
 
 function Join() {
-    const [auth, setAuth] = useState([]);
-
     const nameRef = useRef(null);
     const customerCodeRef = useRef(null);
     const customerNameRef = useRef(null);
@@ -77,7 +75,6 @@ function Join() {
                 phone,
                 password,
             );
-            setAuth(result);
             signUpAlert(result);
         } catch (error) {
             console.error('회원가입 실패:', error);
@@ -93,8 +90,7 @@ function Join() {
         }
     };
 
-    // 반복되는 Input 생성 함수
-    const renderInput = ({
+    const joinInput = ({
         ref,
         value,
         onChange,
@@ -142,7 +138,7 @@ function Join() {
                             <div>회원가입</div>
                             {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
                             <div>
-                                {renderInput({
+                                {joinInput({
                                     ref: nameRef,
                                     value: name,
                                     onChange: nameChange,
@@ -150,7 +146,7 @@ function Join() {
                                     placeholder: '김숙하',
                                     categoryName: '이름',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     ref: customerCodeRef,
                                     value: customerCode,
                                     onChange: customerCodeChange,
@@ -158,7 +154,7 @@ function Join() {
                                     placeholder: 'CUST100',
                                     categoryName: '고객사 코드',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     ref: customerNameRef,
                                     value: customerName,
                                     onChange: customerNameChange,
@@ -191,7 +187,7 @@ function Join() {
                             <div />
                             {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
                             <div>
-                                {renderInput({
+                                {joinInput({
                                     value: userRole || '',
                                     onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
                                     type: 'text',
@@ -199,28 +195,28 @@ function Join() {
                                     categoryName: '권한',
                                     needCategory: true,
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: email || '',
                                     onChange: emailChange,
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: phone || '',
                                     onChange: phoneChange,
                                     type: 'text',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: password || '',
                                     onChange: passwordChange,
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
                                 })}
-                                {renderInput({
+                                {joinInput({
                                     value: passwordCheck || '',
                                     onChange: passwordCheckChange,
                                     type: 'password',
@@ -248,15 +244,6 @@ function Join() {
                                             });
                                             return;
                                         }
-                                        setData([
-                                            name,
-                                            customerCode,
-                                            customerName,
-                                            roles,
-                                            email,
-                                            phone,
-                                            password,
-                                        ]);
                                         await fetchGetAuth();
                                     }}
                                 />
