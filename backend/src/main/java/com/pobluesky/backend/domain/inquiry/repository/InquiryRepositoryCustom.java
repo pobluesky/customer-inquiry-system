@@ -7,5 +7,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface InquiryRepositoryCustom {
-    Page<InquirySummaryResponseDTO> findInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress);
+    Page<InquirySummaryResponseDTO> findInquiries(Long customerId, Pageable pageable, Progress progress);
 }

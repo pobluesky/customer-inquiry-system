@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +41,18 @@ public class InquiryService {
             .collect(Collectors.toList());
     }
 
+//    @Transactional(readOnly = true)
+//    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
+//        Sort sort = getSortByOrderCondition(sortBy);
+//        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+//        return inquiryRepository.findInquiries(customerId, sortedPageable, progress);
+//    }
+
     @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
-        return inquiryRepository.findInquiries(customerId, pageable, sortBy, progress);
+    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, int page, int size, String sortBy, Progress progress) {
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return inquiryRepository.findInquiries(customerId, pageable, progress);
     }
 
     @Transactional
@@ -121,5 +132,16 @@ public class InquiryService {
         return inquiries.stream()
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    private Sort getSortByOrderCondition(String sortBy) {
+        switch (sortBy) {
+            case "oldest":
+                return Sort.by(Sort.Order.asc("createdDate"), Sort.Order.asc("inquiryId"));
+            case "latest":
+                return Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("inquiryId"));
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 }

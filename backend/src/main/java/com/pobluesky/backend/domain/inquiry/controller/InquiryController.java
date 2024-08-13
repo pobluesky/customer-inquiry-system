@@ -53,8 +53,7 @@ public class InquiryController {
         @RequestParam(defaultValue = "latest") String sortBy,
         @RequestParam(required = false) Progress progress) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(customerId, pageable, sortBy, progress);
+        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(customerId, page, size, sortBy, progress);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(inquiries));

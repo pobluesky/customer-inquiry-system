@@ -16,6 +16,7 @@ public enum ErrorCode {
     REQ_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0002", "존재하지 않는 요청 담당자입니다."),
     RES_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0003", "존재하지 않는 응답 담당자입니다."),
     INQUIRY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0001", "존재하지 않는 문의입니다."),
+    INVALID_ORDER_CONDITION(HttpStatus.INTERNAL_SERVER_ERROR, "I0002", "올바르지 않은 정렬 조건입니다."),
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
     INVALID_PRODUCT_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P0001", "유효하지 않은 제품 유형입니다."),
     LINE_ITEM_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0001", "존재하지 않는 라인아이템입니다."),

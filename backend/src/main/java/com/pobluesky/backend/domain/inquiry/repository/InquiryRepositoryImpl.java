@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
@@ -26,14 +27,16 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<InquirySummaryResponseDTO> findInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
-        //OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortBy);
+    public Page<InquirySummaryResponseDTO> findInquiries(
+        Long customerId,
+        Pageable pageable,
+        Progress progress) {
 
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                 inquiry.inquiryId,
                 inquiry.salesPerson, //판매계약자
-                inquiry.progress, //진행현황
+                inquiry.progress,    //진행현황
                 inquiry.productType, //제품유형
                 inquiry.inquiryType, //문의유형
                 carLineItem.pjtName,
@@ -50,34 +53,26 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.customerId.eq(customerId),
                 progressEq(progress)
             )
-            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
-        JPAQuery<Inquiry> countQuery = queryFactory
+        JPAQuery<Inquiry> countQuery = getCountQuery(customerId, progress);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private JPAQuery<Inquiry> getCountQuery(Long customerId, Progress progress) {
+        return queryFactory
             .selectFrom(inquiry)
             .where(
                 inquiry.isActivated.isTrue(),
                 inquiry.customer.customerId.eq(customerId),
                 progressEq(progress)
             );
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
     private BooleanExpression progressEq(Progress progress) {
         return progress != null ? inquiry.progress.eq(progress) : null;
-    }
-
-    private OrderSpecifier<?> getOrderSpecifier(String sortBy) {
-        switch (sortBy) {
-            case "oldest":
-                return new OrderSpecifier<>(Order.ASC, inquiry.createdDate);
-            case "progress":
-                return new OrderSpecifier<>(Order.ASC, inquiry.progress);
-            default:
-                return new OrderSpecifier<>(Order.DESC, inquiry.createdDate);
-        }
     }
 }
