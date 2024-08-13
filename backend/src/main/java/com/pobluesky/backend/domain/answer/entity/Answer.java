@@ -21,7 +21,7 @@ public class Answer extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "question_id")
-    private Question question; // voc 번호
+    private Question question; // 질문 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")

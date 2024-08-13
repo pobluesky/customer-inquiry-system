@@ -1,7 +1,7 @@
 import React from 'react';
 import OfferTableInput from '../atoms/OfferTableInput';
 import SearchInput from '../mocules/SearchInput';
-import { Table_Container, Table_Scroll, Table_Table, Table_Table_Head, Table_Table_Body, Table_Colspan } from '../../assets/css/Offersheet.css';
+import { Table_Container, Table_Scroll, Table_Table, Table_Table_Head, Table_Table_Body, Table_Colspan } from '../../assets/css/Form.css';
 
 function OfferSheet() {
     const columnSample = ['Product', 'Specification', 'Surface', 'Usage', 'Size', 'Quantity(mt)', 'Price', 'Unit Weight(kg)'];
