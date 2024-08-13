@@ -41,9 +41,9 @@
     color: #808080;
 }
 
-.SignUp > div > div:nth-child(2) {
+/* .SignUp > div > div:nth-child(2) {
     margin: px 0 0 0;
-}
+} */
 
 .SignUp > div > div:nth-child(3) {
     margin: 48px 0 0 0;
