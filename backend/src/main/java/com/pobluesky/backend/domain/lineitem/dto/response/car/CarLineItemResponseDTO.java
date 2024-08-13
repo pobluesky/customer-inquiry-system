@@ -7,10 +7,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
-import com.pobluesky.backend.domain.review.entity.ContractType;
-
-import java.util.Date;
-
 import lombok.Builder;
 import lombok.Getter;
 
