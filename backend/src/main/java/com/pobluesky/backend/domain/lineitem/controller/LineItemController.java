@@ -33,7 +33,6 @@ public class LineItemController {
 
     private final LineItemService lineItemService;
 
-    @Operation(summary = "inquiryId 별 line-item 조회")
     @GetMapping
     @Operation(summary = "Inquiry 내역을 조회한다.", description = "자신의 Inquiry 혹은 담당자만 조회 가능하다.")
     public ResponseEntity<JsonResult> getAllLineItemsByInquiry(
@@ -65,7 +64,6 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "inquiryId 별 line-item 수정")
     @PutMapping("/update/{lineItemId}")
     @Operation(summary = "line item 내역 수정")
     public ResponseEntity<JsonResult> updateLineItem(
@@ -85,7 +83,6 @@ public class LineItemController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "inquiryId 별 line-item 삭제")
     @DeleteMapping("/delete/{lineItemId}")
     @Operation(summary = "line item 내역 삭제")
     public ResponseEntity<CommonResult> deleteLineItem(
