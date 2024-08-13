@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,8 +46,7 @@ public class AnswerService {
 
         return questions.stream()
             .map(question -> {
-                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId())
-                    .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+                Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
                 return AnswerWithQuestionResponseDTO.from(question, answer);
             })
@@ -77,8 +77,7 @@ public class AnswerService {
         return customers.stream()
             .flatMap(customer -> questionRepository.findAllByCustomer_CustomerId(customer.getCustomerId()).stream()
                 .map(question -> {
-                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId())
-                        .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+                    Answer answer = answerRepository.findByQuestion_QuestionId(question.getQuestionId());
 
                     return AnswerWithQuestionResponseDTO.from(question, answer);
                 }))
