@@ -7,8 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Kind {
 
-    CAR("자동차"),
-    STEEL("철");
+    SEDAN("세단"),
+    SUV("SUV"),
+    TRUCK("트럭");
 
     private String name;
 }

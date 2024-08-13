@@ -1,17 +1,19 @@
 -- Customers
 INSERT INTO customers (name, email, password, phone, is_activated, customer_code, customer_name, created_date, modified_date)
 VALUES
-    ('John Doe', 'john@example.com', 'password123', '123-456-7890', true, 'CUST001', 'ABC Corp', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Jane Smith', 'jane@example.com', 'password456', '987-654-3210', true, 'CUST002', 'XYZ Inc', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Bob Johnson', 'bob@example.com', 'password789', '555-555-5555', true, 'CUST003', '123 Industries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Michael Jackson', 'michael@example.com', 'password1011', '777-777-7777', true, 'CUST004', 'Mr.Son', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('김민준', 'john@example.com', 'password123', '010-1234-4560', true, '3GPOA', 'POSCO Asia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('박도윤', 'jane@example.com', 'password456', '010-9876-3210', true, '2BR', 'BORAM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('이서윤', 'bob@example.com', 'password789', '010-5555-55555', true, '3DR', 'DURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('김하윤', 'michael@example.com', 'password1011', '010-7777-7777', true, '4GG', 'GEUMGANG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('이지호', 'jiho@example.com', 'password1011', '010-8888-7777', true, '1SS', 'SESIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('박채원', 'chaewon@example.com', 'password1011', '010-9999-7777', true, '6HW', 'HWAIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
 -- Managers
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
 VALUES
-    ('Alice Manager', 'alice@company.com', 'managerpass1', '111-222-3333', true, 'EMP001', 'SALES', 'SALES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Bob Supervisor', 'bob@company.com', 'managerpass2', '444-555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Charlie Boss', 'charlie@company.com', 'managerpass3', '777-888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('박수아', 'alice@company.com', 'managerpass1', '010-2222-3333', true, 'EMP001', 'SALES', 'SALES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('이현우', 'bob@company.com', 'managerpass2', '010-5555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('김우진', 'charlie@company.com', 'managerpass3', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- department 열의 데이터 타입을 VARCHAR로 변경
 ALTER TABLE inquiry ALTER COLUMN department VARCHAR(50);
@@ -19,54 +21,53 @@ ALTER TABLE inquiry ALTER COLUMN department VARCHAR(50);
 -- Inquiry
 INSERT INTO inquiry (customer_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, quality_manager, department, sales_manager, files, response_deadline, elapsed_days, is_activated, created_date, modified_date)
 VALUES
-    (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'Mrs.Selly', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'RECEIPT', '2023-08-01', '빠른 회신 부탁합니다', '이현우', 'SALES', '박수아', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'JAPAN', 'BR', 'BORAM', 'QUALITY_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', '이전 요청을 참고해주세요', null, 'HR', '김우진', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', '기한 내에 납부 바람', '이현우', 'SALES', '박수아', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', null, null, 'HR', '김우진', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', '후판 품질에 신경써주세요', null, 'SALES', '박수아', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
 VALUES
-    (1, 'TEST', 'CAR', 'TEST', 'Project A', 'Vehicle X', 'Part 1', 'TEST', '2mm', '1500mm', 100, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'TEST_LAB', 'STEEL', 'TEST', 'Project B', 'Vehicle Y', 'Part 2', 'TEST_LAB', '3mm', '1800mm', 200,  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'TEST', 'CAR', 'TEST', 'Project C', 'Vehicle Z', 'Part 3', 'TEST', '2.5mm', '1650mm', 150, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'GWANGYANG', 'SEDAN', 'ASTM', 'Project SEDAN', 'Hyundai Sonata', '엔진 컨트롤 유닛', 'DASH_PANEL', '2mm', '1500mm', 100, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'SUV', 'ANSI', 'Project SUV', 'Kia Sorento', '트랜스퍼 케이스', 'FLOOR_PANEL', '3mm', '1800mm', 200,  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'POHANG', 'TRUCK', 'ANSI', 'Project TRUCK', 'Ford F-150', '리어 액슬', 'TRUNK_LID', '2.5mm', '1650mm', 150, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- ColdRolledLineItem
-INSERT INTO coldrolled_line_items (inquiry_id,  kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated)
+INSERT INTO coldrolled_line_items (inquiry_id,  kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, is_activated, created_date, modified_date)
 VALUES
-    (4, 'CR', 'JS_SI123', 'Category A', '1.5mm', '1200mm', 500, '2024-01-15', 'Edge A', '500mm', '600mm',true);
+    (4, 'CR', 'JS_SI123', '파이프 소재', '1.5mm', '1200mm', 500, '2024-09-15', 'Mill Edge', '500mm', '600mm',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- HotRolledLineItem
 INSERT INTO hotrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, hardness, flatness, order_edge, quantity, is_activated, created_date, modified_date)
 VALUES
-    (2, 'HR', 'JS_SI123', 'Category A', '2.0mm', '1500mm', 'Hardness A', 'Flatness A', 'Edge A', 300, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'HRC', 'JS_SI456', 'Category B', '2.5mm', '1600mm', 'Hardness B', 'Flatness B', 'Edge B', 400, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (2, 'HR', 'JS_SI123', '압력용기', '2mm', '1500mm', '270MPa', '15', 'Mill Edge', 300, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'HRC', 'JS_SI456', '가스탱크', '2mm', '1600mm', '300MPa', '20', 'Slit Edge', 400, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- WireRodLineItem
 INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, is_activated, created_date, modified_date)
 VALUES
-    (3, 'SWRH', 'JS_SI123', 'Category A', '8.0mm', 500, '2024-02-15', 100, 'Processing A', 'Final Use A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'SWRM', 'JS_SI456', 'Category B', '10.0mm', 700, '2024-03-01', 200, 'Processing B', 'Final Use B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (3, 'SWRH', 'JS_SI123', '와이어로프', '8.0mm', 500, '2024-09-15', 100, '냉간 인발', '엘레베이터 와이어로프', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'SWRM', 'JS_SI456', '볼트', '10.0mm', 700, '2024-09-01', 200, '표면 처리', '볼트', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- ThickPlateLineItem
 INSERT INTO thickplate_line_items (inquiry_id, general_details, order_info, ladle_ingredient, product_ingredient, seal, grain_size_analysis, show, curve, additional_requests, is_activated, created_date, modified_date)
 VALUES
-    (5, 'General Details A', 'Order Info A', 'Ladle Ingredient A', 'Product Ingredient A', 'Seal A', true, 'Show A', 'Curve A', 'Additional Request A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'General Details B', 'Order Info B', 'Ladle Ingredient B', 'Product Ingredient B', 'Seal B', false, 'Show B', 'Curve B', 'Additional Request B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (5, '교량용', 'TP001', '마그네시아', 'Carbon', '450 MPa ~ 630 MPa', true, '27 J @ -20°C', '500 MPa', '최대한 빠른 납부 바람', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, '선박용도', 'TP002', '알루미나', 'Silicon', '350 MPa ~ 530 MPa', false, '35 J @ -10°C', '550 MPa', '강도에 특히 신경을 써주세요', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
 VALUES
-    (1, 'Steel Sheet', 'Spec XYZ', 'Polished', 'Automotive', '2mm', '500mm', '1500mm', '1000 units', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Net 30', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
-    (2, 'Steel Plate', 'Spec ABC', 'Matte', 'Construction', '3mm', '600mm', '1800mm', '1500 units', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Net 45', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
-    (3, 'Steel Rod', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
+    (2, 'HOT_ROLLED', 'Spec XYZ', 'Polished', 'Automotive', '2mm', '500mm', '1500mm', '1000 units', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Net 30', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
+    (4, 'COLD_ROLLED', 'Spec ABC', 'Matte', 'Construction', '3mm', '600mm', '1800mm', '1500 units', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Net 45', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
+    (5, 'THICK_PLATE', 'Spec DEF', 'Brushed', 'Manufacturing', '2.5mm', '550mm', '1650mm', '1200 units', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
     (1, 'Passed', 'All tests passed successfully', 1, 'Category A', '10g/m2', '5g/m2', '±0.1mm', 'Smooth', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
-    (2, 'Failed', 'Some tests failed, see details', 2, 'Category B', '15g/m2', '7g/m2', '±0.2mm', 'Rough', 'Customer Quality Requirement 2', false, 'Additional requirement details 2'),
     (3, 'Passed with conditions', 'Most tests passed, minor issues noted', 3, 'Category C', '12g/m2', '6g/m2', '±0.15mm', 'Beveled', 'Customer Quality Requirement 3', true, 'Additional requirement details 3');
 
 -- Review

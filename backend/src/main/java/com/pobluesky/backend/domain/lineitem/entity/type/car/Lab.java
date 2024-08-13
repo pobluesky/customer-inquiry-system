@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Lab {
 
-    TEST("광양소"),
-    TEST_LAB("예시2");
+    GWANGYANG("광양소"),
+    POHANG("포항소");
 
     private String name;
 }
