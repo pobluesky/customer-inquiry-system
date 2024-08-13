@@ -9,6 +9,10 @@ public enum ProductType {
     HOT_ROLLED("Hot Rolled"),
     WIRE_ROD("Wire Rod"),
     THICK_PLATE("Thick Plate"),
+    SURFACE_TREATED_GENERAL("Surface Treated (General)"),
+    SURFACE_TREATED_HOME_APPLIANCES("Surface Treated (Home Appliances)"),
+    STAINLESS("Stainless"),
+    SLAB("Slab"),
     CAR("Car");
 
     private final String type;
@@ -16,5 +20,4 @@ public enum ProductType {
     ProductType(String type) {
         this.type = type;
     }
-
 }
