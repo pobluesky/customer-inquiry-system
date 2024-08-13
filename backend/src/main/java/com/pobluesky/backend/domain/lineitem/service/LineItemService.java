@@ -87,7 +87,6 @@ public class LineItemService {
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
         LineItem entity;
@@ -172,7 +171,7 @@ public class LineItemService {
         List<CarLineItem> lineItemList =
             carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
 
-//         ProductType productType = inquiry.getProductType();
+         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
             case CAR:
@@ -258,7 +257,6 @@ public class LineItemService {
                 return thickPlateLineItemList.stream()
                     .map(lineItem-> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
-
 
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -369,7 +367,6 @@ public class LineItemService {
                 );
 
             case THICK_PLATE:
-
                 ThickPlateLineItem thickPlateLineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 

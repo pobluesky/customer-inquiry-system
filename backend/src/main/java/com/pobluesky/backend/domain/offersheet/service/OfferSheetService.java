@@ -80,7 +80,6 @@ public class OfferSheetService {
         OfferSheet offerSheet = offerSheetRepository.findByInquiry(inquiry)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
 
-
         // 3. offersheet update
         offerSheet.updateOfferSheet(
             offerSheetUpdateRequestDTO.product(),
