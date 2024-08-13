@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollaborationController {
     private final CollaborationService collaborationService;
 
-    @Operation(summary = "협업 전체 조회")
     @GetMapping
     @Operation(summary = "본인의 협업만 조회")
     public ResponseEntity<JsonResult> getAllCollaborations(
@@ -42,9 +41,8 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "questionId 별 협업 작성")
+    @Operation(summary = "questionId 별 협업 요청")
     @PostMapping("/{questionId}")
-    @Operation(summary = "협업 요청")
     public ResponseEntity<JsonResult> createCollaboration(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
@@ -60,7 +58,6 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "questionId, collaborationId 별 협업 조회")
     @GetMapping("/{questionId}/{collaborationId}")
     @Operation(summary = "협업 단건 조회")
     public ResponseEntity<JsonResult> getCollaboration(
@@ -78,9 +75,11 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "collaborationId 별 협업 수락/거절 결정")
+    @Operation(
+        summary = "collaborationId 별 협업 수락/거절 결정",
+        description = "협업 요청을 받은 담당자만 수정 가능"
+    )
     @PutMapping("/{collaborationId}/decision")
-    @Operation(summary = "협업 상태 변경", description = "협업 요청을 받은 담당자만 수정 가능")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId,
@@ -96,9 +95,11 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "collaborationId 별 협업 완료 결정")
+    @Operation(
+        summary = "collaborationId 별 협업 완료 결정",
+        description = "협업 요청을 받은 담당자만 수정 가능"
+    )
     @PutMapping("/{collaborationId}/decision/complete")
-    @Operation(summary = "협업 상태 변경", description = "협업 요청을 받은 담당자만 수정 가능")
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId
