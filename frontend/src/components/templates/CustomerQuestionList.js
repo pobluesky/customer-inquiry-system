@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Tag from '../atoms/Tag';
-import QuestionCard from '../mocules/QuestionCard';
-import QuestionModal from '../organisms/QuestionModal';
-import { Question_Doesnt_Exist, Question_Card } from '../../assets/css/Voc.css';
+import CustomerQuestionCard from '../mocules/CustomerQuestionCard';
+import CustomerQuestionModal from '../organisms/CustomerQuestionModal';
+import { Question_Doesnt_Exist, Customer_Question_Card_List } from '../../assets/css/Voc.css';
 
 const QuestionDoesntExist = () => {
     return <div className={Question_Doesnt_Exist}>아직 문의가 없습니다.</div>;
 };
 
-function QuestionList({ dataList }) {
+function CustomerQuestionList({ dataList }) {
     // [To do] 질문만 조회 API로 코드 정리 필요
     const inqItems = dataList.filter(
         (item) => item.question && item.question.type === 'INQ',
@@ -45,7 +45,7 @@ function QuestionList({ dataList }) {
 
     return (
         <>
-            <div className={Question_Card}>
+            <div className={Customer_Question_Card_List}>
                 <div>
                     <Tag
                         category={'Inquiry 주문 문의'}
@@ -60,7 +60,7 @@ function QuestionList({ dataList }) {
                         dataList.map(
                             (data, dataIdx) =>
                                 data.question.type === 'INQ' && (
-                                    <QuestionCard
+                                    <CustomerQuestionCard
                                         key={dataIdx}
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
@@ -93,7 +93,7 @@ function QuestionList({ dataList }) {
                         dataList.map(
                             (data, dataIdx) =>
                                 data.question.type === 'SITE' && (
-                                    <QuestionCard
+                                    <CustomerQuestionCard
                                         key={dataIdx}
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
@@ -126,7 +126,7 @@ function QuestionList({ dataList }) {
                         dataList.map(
                             (data, dataIdx) =>
                                 data.question.type === 'ETC' && (
-                                    <QuestionCard
+                                    <CustomerQuestionCard
                                         key={dataIdx}
                                         onClick={() => clickCard(data.question)}
                                         status={data.question.status}
@@ -147,7 +147,7 @@ function QuestionList({ dataList }) {
                 </div>
             </div>
             {openCard && (
-                <QuestionModal
+                <CustomerQuestionModal
                     title={title}
                     contents={contents}
                     files={files}
@@ -159,4 +159,4 @@ function QuestionList({ dataList }) {
     );
 }
 
-export default QuestionList;
+export default CustomerQuestionList;
