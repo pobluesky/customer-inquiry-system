@@ -11,6 +11,8 @@ import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLi
 import com.pobluesky.backend.domain.lineitem.dto.request.coldrolled.ColdRolledLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLineItemUpdateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.thickplate.ThickPlateLineItemCreateRequestDTO;
+import com.pobluesky.backend.domain.lineitem.dto.request.thickplate.ThickPlateLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemUpdateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemResponseDTO;
@@ -20,18 +22,21 @@ import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledL
 import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemSummaryResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.thickplate.ThickPlateLineItemResponseDTO;
+import com.pobluesky.backend.domain.lineitem.dto.response.thickplate.ThickPlateLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.wirerod.WireRodLineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.wirerod.WireRodLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.LineItem;
+import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.HotRolledLineItemRepository;
+import com.pobluesky.backend.domain.lineitem.repository.ThickPlateLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.WireRodLineItemRepository;
-import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
@@ -41,14 +46,11 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Map;
-
-import java.util.Optional;
-
 import java.util.Objects;
-
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +77,7 @@ public class LineItemService {
     private final HotRolledLineItemRepository hotRolledLineItemRepository;
 
     private final WireRodLineItemRepository wireRodLineItemRepository;
+    private final ThickPlateLineItemRepository thickPlateLineItemRepository;
 
     @Transactional
     public LineItemResponseDTO createLineItem(
@@ -84,7 +87,6 @@ public class LineItemService {
     ) {
 
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
-        Customer customer = inquiry.getCustomer();
         ProductType productType = inquiry.getProductType();
         LineItem entity;
 
@@ -133,6 +135,17 @@ public class LineItemService {
 
                 return WireRodLineItemResponseDTO.of(wireRodLineItem);
 
+            case THICK_PLATE:
+                ThickPlateLineItemCreateRequestDTO thickPlateDto = objectMapper.convertValue(
+                    requestDto,
+                    ThickPlateLineItemCreateRequestDTO.class
+                );
+
+                entity = thickPlateDto.toThickPlateLineItem(inquiry);
+                ThickPlateLineItem thickPlateLineItem = thickPlateLineItemRepository.save((ThickPlateLineItem) entity);
+
+                return ThickPlateLineItemResponseDTO.of(thickPlateLineItem);
+
             // 다른 제품 유형 처리
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -178,6 +191,12 @@ public class LineItemService {
                 return wireRodLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
+
+            case THICK_PLATE:
+                List<ThickPlateLineItem> thickPlateLineItemList = thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(inquiry);
+                return thickPlateLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                    .collect(Collectors.toList());
             // 다른 제품 유형 처리
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -195,7 +214,7 @@ public class LineItemService {
             case CAR:
                 List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(
                     inquiry);
-            
+
                 return carLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
@@ -222,6 +241,14 @@ public class LineItemService {
                 return wireRodLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
+
+            case THICK_PLATE:
+                List<ThickPlateLineItem> thickPlateLineItemList = thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(
+                    inquiry);
+                return thickPlateLineItemList.stream()
+                    .map(lineItem-> toFullResponseDTO(inquiry.getProductType(),lineItem))
+                    .collect(Collectors.toList());
+
 
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -331,6 +358,28 @@ public class LineItemService {
                     wireDto.finalUse()
                 );
 
+            case THICK_PLATE:
+
+                ThickPlateLineItem thickPlateLineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                ThickPlateLineItemUpdateRequestDTO thickDto = objectMapper.convertValue(
+                    requestDto,
+                    ThickPlateLineItemUpdateRequestDTO.class
+                );
+
+                thickPlateLineItem.updateThickPlateLineItem(
+                    thickDto.generalDetails(),
+                    thickDto.orderInfo(),
+                    thickDto.ladleIngredient(),
+                    thickDto.productIngredient(),
+                    thickDto.seal(),
+                    thickDto.grainSizeAnalysis(),
+                    thickDto.show(),
+                    thickDto.curve(),
+                    thickDto.additionalRequests()
+                );
+
             // 다른 제품 유형 처리
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -376,6 +425,13 @@ public class LineItemService {
                 lineItem.deleteLineItem();
                 break;
 
+            case THICK_PLATE:
+                lineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
+
+                lineItem.deleteLineItem();
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
@@ -400,7 +456,7 @@ public class LineItemService {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
-            
+
                 return CarLineItemSummaryResponseDTO.of(carLineItem);
 
             case COLD_ROLLED:
@@ -415,8 +471,13 @@ public class LineItemService {
 
             case WIRE_ROD:
                 WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
-            
+
                 return WireRodLineItemSummaryResponseDTO.of(wireRodLineItem);
+
+            case THICK_PLATE:
+                ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
+
+                return ThickPlateLineItemSummaryResponseDTO.of(thickPlateLineItem);
 
             // 다른 제품 유형 처리
             default:
@@ -428,23 +489,28 @@ public class LineItemService {
         switch (productType) {
             case CAR :
                 CarLineItem carLineItem = (CarLineItem) lineItem;
-            
+
                 return CarLineItemResponseDTO.of(carLineItem);
 
             case COLD_ROLLED:
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
-            
+
                 return ColdRolledLineItemResponseDTO.of(coldRolledLineItem);
 
             case HOT_ROLLED:
                 HotRolledLineItem hotRolledLineItem = (HotRolledLineItem) lineItem;
-            
+
                 return HotRolledLineItemResponseDTO.of(hotRolledLineItem);
 
             case WIRE_ROD:
                 WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
-            
+
                 return WireRodLineItemResponseDTO.of(wireRodLineItem);
+
+            case THICK_PLATE:
+                ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
+
+                return ThickPlateLineItemResponseDTO.of(thickPlateLineItem);
 
             // 다른 제품 유형 처리
             default:

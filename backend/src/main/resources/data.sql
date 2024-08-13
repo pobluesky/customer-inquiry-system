@@ -22,7 +22,8 @@ VALUES
     (1, 'USA', 'ABC Corp', 'Alice Manager', 'QUOTE_INQUIRY', 'AUTOMOBILE', 'CORP001', 'CAR', 'RECEIPT', '2023-08-01', 'Urgent request', 'Bob Supervisor', 'SALES', 'Charlie Boss', 'file1.pdf', '2023-08-10', '5', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 'JAPAN', 'XYZ Inc', 'Bob Supervisor', 'QUALITY_INQUIRY', 'CONSTRUCTION', 'CORP002', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', 'Special requirements', 'Alice Manager', 'IT', 'Alice Manager', 'file2.pdf', '2023-08-15', '3', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'GERMANY', '123 Industries', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP003', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file3.pdf', '2023-08-20', '7', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (4, 'KOREA', 'Mr.Son', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'KOREA', 'Mrs.Selly', 'Charlie Boss', 'COMMON_INQUIRY', 'ELECTRIC', 'CORP005', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', 'Follow-up needed', 'Bob Supervisor', 'HR', 'Bob Supervisor', 'file4.pdf', '2023-08-21', '9', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CarLineItem
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
@@ -47,6 +48,12 @@ INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diam
 VALUES
     (3, 'SWRH', 'JS_SI123', 'Category A', '8.0mm', 500, '2024-02-15', 100, 'Processing A', 'Final Use A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (3, 'SWRM', 'JS_SI456', 'Category B', '10.0mm', 700, '2024-03-01', 200, 'Processing B', 'Final Use B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- ThickPlateLineItem
+INSERT INTO thickplate_line_items (inquiry_id, general_details, order_info, ladle_ingredient, product_ingredient, seal, grain_size_analysis, show, curve, additional_requests, is_activated, created_date, modified_date)
+VALUES
+    (5, 'General Details A', 'Order Info A', 'Ladle Ingredient A', 'Product Ingredient A', 'Seal A', true, 'Show A', 'Curve A', 'Additional Request A', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 'General Details B', 'Order Info B', 'Ladle Ingredient B', 'Product Ingredient B', 'Seal B', false, 'Show B', 'Curve B', 'Additional Request B', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
@@ -90,20 +97,16 @@ VALUES
     (FALSE, '2024-08-02 11:15:00', 2, '2024-08-02 11:15:00', 'Your order has been shipped.'),
     (TRUE, '2024-08-03 14:30:00', 3, '2024-08-03 14:30:00', 'Your invoice is ready.');
 
-ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
-ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
-
 -- QUESTION
-INSERT INTO question (created_date, inquiry_id, customer_id, title, contents, files, type, status)
+INSERT INTO question (created_date, modified_date, inquiry_id, customer_id, title, contents, files, status)
 VALUES
-    ('2024-08-01 10:00:00', null, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'ETC', 'COMPLETED'),
-    ('2024-08-02 11:15:00', null, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'ETC', 'COMPLETED'),
-    ('2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 2, 2, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'INQ', 'READY');
+    ('2024-08-01 10:00:00', '2024-08-01 10:00:00', 1, 1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf', 'COMPLETED'),
+    ('2024-08-02 11:15:00', '2024-08-02 11:15:00', 2, 2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf', 'COMPLETED'),
+    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 3, 3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx', 'READY'),
+    ('2024-08-03 14:30:00', '2024-08-03 14:30:00', 1, 1, 'Product Quality Issue', 'Customer reported a defect in the product after one week of use', 'voc_report4.pdf', 'READY');
 
 -- ANSWER
-INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, answer_title, answer_contents)
+INSERT INTO answer (created_date, modified_date, inquiry_id, customer_id, question_id, answer_title, answer_contents)
 VALUES
-    (CURRENT_TIMESTAMP, null, 1, 1, 'Thank you for joining with us.', 'We will contact you ASAP.'),
-    (CURRENT_TIMESTAMP, null, 2, 2, 'Reply for your question.', 'We are going to check ASAP.');
+    (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 1, 'Thank you for joining with us.', 'We will contact you ASAP.'),
+    (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2, 2, 'Reply for your question.', 'We are going to check ASAP.');
