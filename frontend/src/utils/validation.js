@@ -48,3 +48,11 @@ export const validatePasswordMatch = (password, confirmPassword) => {
     }
     return '';
 };
+
+// 고객사명
+export const validateCustomerName = (customerName) => {
+    if (customerName.trim() === '') {
+        return '고객사명을 입력해주세요.';
+    }
+    return '';
+};
