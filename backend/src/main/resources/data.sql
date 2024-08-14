@@ -60,9 +60,9 @@ VALUES
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
 VALUES
-    (2, 'HOT_ROLLED', 'Spec XYZ', 'Polished', '압력용기', '2mm', '500mm', '1500mm', '1000', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Net 30', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
-    (4, 'COLD_ROLLED', 'Spec ABC', 'Matte', '파이프 소재', '3mm', '600mm', '1800mm', '1500', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Net 45', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
-    (5, 'THICK_PLATE', 'Spec DEF', 'Brushed', '교량용', '2.5mm', '550mm', '1650mm', '1200', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Net 60', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
+    (2, 'HOT_ROLLED', 'Spec XYZ', 'Polished', '압력용기', '2mm', '500mm', '1500mm', '1000', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
+    (4, 'COLD_ROLLED', 'Spec ABC', 'Matte', '파이프 소재', '3mm', '600mm', '1800mm', '1500', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
+    (5, 'THICK_PLATE', 'Spec DEF', 'Brushed', '교량용', '2.5mm', '550mm', '1650mm', '1200', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
 
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
