@@ -5,7 +5,7 @@ import Header from '../../components/mocules/Header';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 
-import { signInApiByCustomers, signInApiByManagers } from '../../apis/api/auth';
+import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 
 function Login() {
@@ -20,16 +20,10 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByLoginAPI = await signInApiByCustomers(email, password);
-            // const checkByLoginAPI = await signInApiByManagers(email, password);
-            if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
-                console.log('고객사 로그인 성공', checkByLoginAPI);
-                navigate('/');
-            } else {
-                console.log('담당자 로그인 성공', checkByLoginAPI);
-                navigate('/');
-            }
+            const checkByLoginAPI = await signInApiByUsers(email, password);
+            console.log(`${checkByLoginAPI.data.userRole} 로그인 성공`, checkByLoginAPI);
             console.log('ROLE IS ', getCookie('userRole')); // 로그인 userRole 출력
+            navigate('/');
         } catch (error) {
             console.error('로그인 실패:', error);
         }
