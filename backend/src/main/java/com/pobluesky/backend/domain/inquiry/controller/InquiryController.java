@@ -55,6 +55,7 @@ public class InquiryController {
 
     // 페이징 & 정렬
     @GetMapping("/customers/{userId}/inquiries")
+    @Operation(summary = "Inquiry 전체 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiries(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
