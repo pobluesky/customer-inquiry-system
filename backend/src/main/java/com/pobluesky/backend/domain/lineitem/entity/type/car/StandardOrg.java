@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum StandardOrg {
 
-    TEST("예시"),
-    TEST_LAB("예시2");
+    ASTM("ASTM"),
+    ANSI("ANSI");
 
     private String name;
 }

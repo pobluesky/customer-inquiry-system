@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record ManagerNotificationResponseDTO(
     Long notificationId,
-    Long managerId,
+    Long userId,
     String notificationContents,
     boolean isRead,
     LocalDateTime createdDate
@@ -15,7 +15,7 @@ public record ManagerNotificationResponseDTO(
     public static ManagerNotificationResponseDTO from(ManagerNotification managerNotification) {
         return ManagerNotificationResponseDTO.builder()
             .notificationId(managerNotification.getNotificationId())
-            .managerId(managerNotification.getManager().getUserId())
+            .userId(managerNotification.getManager().getUserId())
             .notificationContents(managerNotification.getNotificationContents())
             .isRead(managerNotification.getIsRead())
             .createdDate(managerNotification.getCreatedDate())

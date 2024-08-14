@@ -99,7 +99,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 var customerPage =
-                    customerNotificationRepository.findRecentNotificationsByCustomerIdAndIsRead(
+                    customerNotificationRepository.findRecentNotificationsByuserIdAndIsRead(
                         id,
                         true,
                         pageable
@@ -117,7 +117,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 var managerPage =
-                    managerNotificationRepository.findRecentNotificationsByManagerIdAndIsRead(
+                    managerNotificationRepository.findRecentNotificationsByuserIdAndIsRead(
                         id,
                         true,
                         pageable

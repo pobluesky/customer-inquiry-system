@@ -4,7 +4,9 @@ import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
-import java.util.Date;
+
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +18,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long customerId;
+    private Long userId;
 
     private String customerName;
 
@@ -30,7 +32,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private Date expectedDeadLine;
+    private LocalDate expectedDeadLine;
 
     private Integer initialQuantity;
 
@@ -45,7 +47,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
         return WireRodLineItemResponseDTO.builder()
             .lineItemId(wireRodLineItem.getLineItemId())
             .inquiryId(wireRodLineItem.getInquiry().getInquiryId())
-            .customerId(wireRodLineItem.getCustomer().getUserId())
+            .userId(wireRodLineItem.getCustomer().getUserId())
             .customerName(wireRodLineItem.getCustomer().getCustomerName())
             .kind(wireRodLineItem.getKind())
             .orderCategory(wireRodLineItem.getOrderCategory())

@@ -44,7 +44,7 @@ public class AnswerService {
 
     // 질문 & 답변 전체 조회 (고객사): 고객별 전제 질문 + 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
-    public List<AnswerWithQuestionResponseDTO> getQuestionsAndAnswersByCustomerId(
+    public List<AnswerWithQuestionResponseDTO> getQuestionsAndAnswersByuserId(
         String token,
         Long customerId
     ) {
@@ -73,7 +73,7 @@ public class AnswerService {
 
     // 고객별 답변 전체 조회 (고객사): 고객별 전체 답변 개수를 계산할 수 있다.
     @Transactional(readOnly = true)
-    public List<AnswerResponseDTO> getAnswerByCustomerId(String token, Long customerId) {
+    public List<AnswerResponseDTO> getAnswerByuserId(String token, Long customerId) {
         Long userId = signService.parseToken(token);
 
         Customer user = customerRepository.findById(userId)

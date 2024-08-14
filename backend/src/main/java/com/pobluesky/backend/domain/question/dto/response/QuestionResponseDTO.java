@@ -11,7 +11,7 @@ import java.util.Optional;
 @Builder
 public record QuestionResponseDTO(
     Optional<Long> inquiryId,
-    Long customerId,
+    Long userId,
     String customerName,
     String title,
     String contents,
@@ -25,7 +25,7 @@ public record QuestionResponseDTO(
         return QuestionResponseDTO.builder()
             .inquiryId(Optional.ofNullable(question.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
-            .customerId(question.getCustomer().getUserId())
+            .userId(question.getCustomer().getUserId())
             .customerName(question.getCustomer().getCustomerName())
             .title(question.getTitle())
             .contents(question.getContents())

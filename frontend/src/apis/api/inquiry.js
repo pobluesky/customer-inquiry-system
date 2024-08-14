@@ -2,7 +2,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { getRoleFromCookie } from '../utils/tokenUtils';
 import {getCookie} from "../utils/cookies";
 
-export const getInquiry = async (customerId) => {
+export const getInquiry = async (userId) => {
   try {
     console.log(getCookie('accessToken'));
     const userRole = getRoleFromCookie();
@@ -11,7 +11,7 @@ export const getInquiry = async (customerId) => {
       throw new Error('Access denied: [Role] 오류');
     }
 
-    const response = await axiosInstance.get(`/customers/inquiries/${customerId}`);
+    const response = await axiosInstance.get(`/customers/inquiries/${userId}`);
     // console.log("[getInquiry]: ", response.data);
     return response.data;
 

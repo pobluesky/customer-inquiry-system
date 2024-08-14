@@ -5,9 +5,11 @@ import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.cglib.core.Local;
 
 @Builder
 @Getter
@@ -17,7 +19,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long CustomerId;
+    private Long userId;
 
     private String CustomerName;
 
@@ -33,7 +35,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private Date expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private String orderEdge;
 
@@ -48,7 +50,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
         return ColdRolledLineItemResponseDTO.builder()
             .lineItemId(coldRolledLineItem.getLineItemId())
             .inquiryId(coldRolledLineItem.getInquiry().getInquiryId())
-            .CustomerId(coldRolledLineItem.getCustomer().getUserId())
+            .userId(coldRolledLineItem.getCustomer().getUserId())
             .CustomerName(coldRolledLineItem.getCustomer().getCustomerName())
             .kind(coldRolledLineItem.getKind())
             .inqName(coldRolledLineItem.getInqName())

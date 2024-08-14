@@ -42,5 +42,4 @@ public class ThickPlateLineItemSummaryResponseDTO extends LineItemResponseDTO {
             .isActivated(thickPlateLineItem.getIsActivated())
             .build();
     }
-
 }

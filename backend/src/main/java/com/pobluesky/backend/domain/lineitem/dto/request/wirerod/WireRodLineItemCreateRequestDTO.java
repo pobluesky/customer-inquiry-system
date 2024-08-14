@@ -4,7 +4,8 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public record WireRodLineItemCreateRequestDTO(
     Kind kind,
@@ -12,7 +13,7 @@ public record WireRodLineItemCreateRequestDTO(
     String orderCategory,
     String diameter,
     Integer quantity,
-    Date expectedDeadline,
+    LocalDate expectedDeadline,
     Integer initialQuantity,
     String customerProcessing,
     String finalUse
