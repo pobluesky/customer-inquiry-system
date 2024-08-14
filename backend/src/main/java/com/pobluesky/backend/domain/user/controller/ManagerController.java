@@ -4,8 +4,8 @@ import com.pobluesky.backend.domain.user.dto.request.LogInDto;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.ManagerService;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    private final CustomUserDetailsService userDetailsService;
+    private final SignService signService;
 
     @GetMapping
     @Operation(summary = "담당자 조회")
@@ -54,7 +55,7 @@ public class ManagerController {
         String email = logInDto.email();
         String password = logInDto.password();
 
-        return userDetailsService.signIn(email, password);
+        return signService.signIn(email, password);
     }
 
     @PostMapping("/sign-up")
@@ -69,10 +70,12 @@ public class ManagerController {
     @PutMapping("/{userId}")
     @Operation(summary = "담당자 정보 수정")
     public ResponseEntity<JsonResult> updateManagerById(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestBody ManagerUpdateRequestDTO managerUpdateRequestDTO
     ) {
         ManagerResponseDTO response = managerService.updateManagerById(
+            token,
             userId,
             managerUpdateRequestDTO
         );
@@ -83,8 +86,11 @@ public class ManagerController {
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "담당자 삭제")
-    public ResponseEntity<CommonResult> deleteUserById(@PathVariable Long userId) {
-        managerService.deleteManagerById(userId);
+    public ResponseEntity<CommonResult> deleteUserById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId
+    ) {
+        managerService.deleteManagerById(token, userId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

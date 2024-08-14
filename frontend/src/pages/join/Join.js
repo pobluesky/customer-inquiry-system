@@ -1,22 +1,31 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
-import Input from '../../components/atoms/JoinInput';
-import {
-    Container_Join,
-    Join_Title,
-    Join_Name_No,
-} from '../../assets/css/Member.css';
+import Input from '../../components/atoms/Input';
+import { SignUp } from '../../assets/css/Auth.css';
+import Swal from 'sweetalert2';
+
+import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 
 function Join() {
     const nameRef = useRef(null);
-    const noRef = useRef(null);
+    const customerCodeRef = useRef(null);
+    const customerNameRef = useRef(null);
+
     const [check, setCheck] = useState(false);
-    const [, setName] = useState('');
-    const [no, setNo] = useState('');
+
+    // 고객 권한 확인
+    const [name, setName] = useState('');
+    const [customerCode, setCustomerCode] = useState('');
+    const [customerName, setCustomerName] = useState('');
+
+    // 고객 권한 확인 완료
+    const [userRole, setUserRole] = useState(''); // 화면에 출력할 데이터
+    const [roles, setRoles] = useState([]); // 서버로 전송할 데이터
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
 
     // 입력값 저장
     const nameChange = (e) => setName(e.target.value);
@@ -31,22 +40,26 @@ function Join() {
     // 입력창 초기화
     const inputClear = () => {
         nameRef.current.value = null;
-        noRef.current.value = null;
+        customerCodeRef.current.value = null;
+        customerNameRef.current.value = null;
     };
 
-    /* 역할 구분 [품질, 판매, 고객] */
-    const findRole = () => {
-        const roleMark = no.substring(0, 1);
+    // 역할 구분
+    const getRole = () => {
+        const roleMark = customerCode.substring(0, 1);
         if (roleMark === 'Q') {
-            setRole('품질관리 담당자');
+            setRoles(['sales']);
+            setUserRole('품질관리 담당자');
         } else if (roleMark === 'S') {
-            setRole('판매관리 담당자');
+            setRoles(['quality']);
+            setUserRole('판매관리 담당자');
         } else {
             setRoles(['customer']);
             setUserRole('고객사');
         }
     };
 
+    // 회원가입 API
     const fetchGetAuth = async () => {
         try {
             const result = await signUpApi(
@@ -65,6 +78,7 @@ function Join() {
         }
     };
 
+    // 회원가입 Alert
     const signUpAlert = (result) => {
         if (result.success) {
             Swal.fire({ icon: 'success', title: '회원가입 완료' });
@@ -74,6 +88,7 @@ function Join() {
     };
 
     const joinInput = ({
+        margin,
         ref,
         value,
         onChange,
@@ -90,7 +105,7 @@ function Join() {
             placeholder={placeholder}
             width={'336px'}
             height={'48px'}
-            margin={'0 0 24px 0'}
+            margin={margin}
             padding={'0 0 0 20px'}
             border={'solid 1px #c1c1c1'}
             borderRadius={'12px'}
@@ -119,7 +134,7 @@ function Join() {
                     {!check ? (
                         <>
                             <div>회원가입</div>
-                            {/* 이름, 고객사 코드, 고객사명 */}
+                            {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
                             <div>
                                 {joinInput({
                                     ref: nameRef,
@@ -128,6 +143,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: '김숙하',
                                     categoryName: '이름',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     ref: customerCodeRef,
@@ -136,6 +152,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: 'CUST100',
                                     categoryName: '고객사 코드',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     ref: customerNameRef,
@@ -168,7 +185,7 @@ function Join() {
                     ) : (
                         <>
                             <div />
-                            {/* 이메일, 전화번호, 비밀번호 */}
+                            {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
                             <div>
                                 {joinInput({
                                     value: userRole || '',
@@ -177,6 +194,7 @@ function Join() {
                                     placeholder: '',
                                     categoryName: '권한',
                                     needCategory: true,
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: email || '',
@@ -184,6 +202,7 @@ function Join() {
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: phone || '',
@@ -191,6 +210,7 @@ function Join() {
                                     type: 'text',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: password || '',
@@ -198,6 +218,7 @@ function Join() {
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
+                                    margin: '0 0 24px 0',
                                 })}
                                 {joinInput({
                                     value: passwordCheck || '',
@@ -207,7 +228,6 @@ function Join() {
                                     categoryName: '비밀번호 확인',
                                 })}
                             </div>
-
                             {/* 회원가입 버튼 */}
                             <div>
                                 <Button

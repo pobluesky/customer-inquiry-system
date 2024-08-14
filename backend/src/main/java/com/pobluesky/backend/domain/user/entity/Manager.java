@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -27,14 +27,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Table(name = "managers")
 public class Manager extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long managerId;
-
     private String empNo;
-
-    @Enumerated(EnumType.STRING)
-    private ManagerRole role;
 
     @Enumerated(EnumType.STRING)
     private Department department;
@@ -50,7 +43,7 @@ public class Manager extends User {
         String password,
         String phone,
         String empNo,
-        ManagerRole role,
+        UserRole role,
         Department department,
         List<String> roles
     ) {

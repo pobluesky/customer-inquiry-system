@@ -5,11 +5,10 @@ import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import java.util.List;
 import java.util.Optional;
 
-import com.pobluesky.backend.domain.question.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
-    List<Inquiry> findByCustomer_CustomerIdAndIsActivatedTrue(Long customerId);
-    Optional<Inquiry> findByCustomer_CustomerIdAndInquiryId(Long customerId, Long inquiryId);
+public interface InquiryRepository extends JpaRepository<Inquiry, Long>, InquiryRepositoryCustom{
+    List<Inquiry> findByCustomer_UserIdAndIsActivatedTrue(Long customerId);
+    Optional<Inquiry> findByCustomer_UserIdAndInquiryId(Long customerId, Long inquiryId);
     List<Inquiry> findByProgress(Progress progress);
 }

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import search from '../../assets/css/icons/search.svg';
-import { Search_Input, Input, Button } from '../../assets/css/Offersheet.css';
+import { Search_Input, Input, Button } from '../../assets/css/Form.css';
 
 const SearchInput = forwardRef(({ onChange, value }, ref) => (
     <div className={Search_Input}>

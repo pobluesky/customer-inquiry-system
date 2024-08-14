@@ -21,7 +21,7 @@ public record AnswerResponseDTO(
             .inquiryId(Optional.ofNullable(answer.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
-            .customerId(answer.getCustomer().getCustomerId())
+            .customerId(answer.getCustomer().getUserId())
             .answerTitle(answer.getAnswerTitle())
             .answerContents(answer.getAnswerContents())
             .createdDate(answer.getCreatedDate())

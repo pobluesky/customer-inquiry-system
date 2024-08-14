@@ -7,5 +7,7 @@ import hammer from './hammer.png';
 import gear from './gear.png';
 import increaseArrow from './increase-arrow.svg';
 import decreaseArrow from './decrease-arrow.svg';
+import intro1 from './intro1.svg';
+import intro2 from './intro2.svg';
 
-export { step1, step2, step3, step4, arrow, hammer, gear, increaseArrow, decreaseArrow };
+export { step1, step2, step3, step4, arrow, hammer, gear, increaseArrow, decreaseArrow, intro1, intro2 };

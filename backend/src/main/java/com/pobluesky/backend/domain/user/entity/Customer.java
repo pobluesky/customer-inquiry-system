@@ -2,6 +2,8 @@ package com.pobluesky.backend.domain.user.entity;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,10 +27,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @AllArgsConstructor
 @Table(name = "customers")
 public class Customer extends User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
 
     private String customerCode;
 
@@ -60,6 +58,7 @@ public class Customer extends User {
         this.customerCode = customerCode;
         this.customerName = customerName;
         this.isActivated = true;
+        this.role = UserRole.CUSTOMER;
         this.roles = roles;
     }
 

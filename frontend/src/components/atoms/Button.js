@@ -3,8 +3,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 
 function Button({
-  onClick,
   btnName,
+  onClick,
   width,
   height,
   margin,
@@ -16,7 +16,8 @@ function Button({
   float,
   fontWeight,
   alignSelf,
-  justifySelf
+  justifySelf,
+  padding
 }) {
   return (
       <button
@@ -35,6 +36,7 @@ function Button({
             fontWeight: `${fontWeight}`,
             alignSelf: `${alignSelf}`,
             justifySelf: `${justifySelf}`,
+            padding: `${padding}`
           }}
       >
         {btnName}

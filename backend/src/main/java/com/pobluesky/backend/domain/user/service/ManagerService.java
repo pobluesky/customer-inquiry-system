@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ManagerService {
+    
+    private final SignService signService;
 
     private final ManagerRepository managerRepository;
 
@@ -58,12 +60,12 @@ public class ManagerService {
 
     @Transactional
     public ManagerResponseDTO updateManagerById(
-        Long userId,
+        String token,
+        Long targetId,
         ManagerUpdateRequestDTO managerUpdateRequestDTO
     ) {
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
+        Manager manager = validateUser(token, targetId);
+        
         manager.updateManager(
             managerUpdateRequestDTO.name(),
             managerUpdateRequestDTO.email(),
@@ -75,10 +77,20 @@ public class ManagerService {
     }
 
     @Transactional
-    public void deleteManagerById(Long userId) {
+    public void deleteManagerById(String token, Long targetId) {
+        Manager manager = validateUser(token, targetId);
+
+        manager.deleteUser();
+    }
+
+    private Manager validateUser(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
         Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        manager.deleteUser();
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        return manager;
     }
 }

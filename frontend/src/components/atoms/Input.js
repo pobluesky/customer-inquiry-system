@@ -3,9 +3,18 @@ import React, { forwardRef } from 'react';
 const Input = forwardRef(
     (
         {
-            onChange,
-            value,
+            needCategory,
+            categoryName,
+            categoryWidth,
+            categoryColor,
+            CategoryFontWeight,
+            categoryMargin,
+            categoryTextAlign,
+
             placeholder,
+            value,
+            onChange,
+            type,
             width,
             height,
             margin,
@@ -17,23 +26,40 @@ const Input = forwardRef(
         },
         ref,
     ) => (
-        <input
-            ref={ref}
-            value={value}
-            onChange={onChange}
-            type="text"
-            placeholder={placeholder}
-            style={{
-                width: `${width}`,
-                height: `${height}`,
-                margin: `${margin}`,
-                padding: `${padding}`,
-                backgroundColor: `${backgroundColor}`,
-                color: `${textColor}`,
-                border: `${border}`,
-                borderRadius: `${borderRadius}`
-            }}
-        />
+        <div>
+            {needCategory ? (
+                <div
+                    style={{
+                        width: `${categoryWidth}`,
+                        color: `${categoryColor}`,
+                        fontWeight: `${CategoryFontWeight}`,
+                        margin: `${categoryMargin}`,
+                        textAlign: `${categoryTextAlign}`,
+                    }}
+                >
+                    {categoryName}
+                </div>
+            ) : (
+                ''
+            )}
+            <input
+                ref={ref}
+                value={value}
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                style={{
+                    width: `${width}`,
+                    height: `${height}`,
+                    margin: `${margin}`,
+                    padding: `${padding}`,
+                    backgroundColor: `${backgroundColor}`,
+                    color: `${textColor}`,
+                    border: `${border}`,
+                    borderRadius: `${borderRadius}`,
+                }}
+            />
+        </div>
     ),
 );
 

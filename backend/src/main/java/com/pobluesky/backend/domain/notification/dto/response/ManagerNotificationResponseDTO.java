@@ -15,7 +15,7 @@ public record ManagerNotificationResponseDTO(
     public static ManagerNotificationResponseDTO from(ManagerNotification managerNotification) {
         return ManagerNotificationResponseDTO.builder()
             .notificationId(managerNotification.getNotificationId())
-            .managerId(managerNotification.getManager().getManagerId())
+            .managerId(managerNotification.getManager().getUserId())
             .notificationContents(managerNotification.getNotificationContents())
             .isRead(managerNotification.getIsRead())
             .createdDate(managerNotification.getCreatedDate())

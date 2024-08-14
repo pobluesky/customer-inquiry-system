@@ -1,5 +1,5 @@
 import React from 'react';
-import { Price_Payment, Price_Payment_Std } from '../../assets/css/Offersheet.css';
+import { Price_Payment, Price_Payment_Std } from '../../assets/css/Form.css';
 
 function Terms() {
     const termSample = ['CIF', 'CIP', 'FOB', 'CIP'];
