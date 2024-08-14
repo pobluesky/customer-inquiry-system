@@ -37,24 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
     private final InquiryService inquiryService;
 
-    // 조회 페이지
+    // Inquiry 조회
     @GetMapping("/customers/inquiries/{userId}")
-    @Operation(summary = "고객사 Inquiry 전체 조회")
-    public ResponseEntity<JsonResult> getInquiriesByuserId(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long userId
-    ) {
-        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByUserId(
-            token,
-            userId
-        );
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    // 페이징 & 정렬
-    @GetMapping("/customers/{userId}/inquiries")
     @Operation(summary = "Inquiry 전체 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiries(
         @RequestHeader("Authorization") String token,

@@ -48,24 +48,6 @@ public class InquiryService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByUserId(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        List<Inquiry> inquiries =
-            inquiryRepository.findByCustomer_UserIdAndIsActivatedTrue(customerId);
-
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiries(
         String token, Long customerId, int page, int size, String sortBy,
         Progress progress,
