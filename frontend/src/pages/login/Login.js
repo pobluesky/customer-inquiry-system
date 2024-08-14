@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
-import Input from '../../components/atoms/Input';
+import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
-import Swal from 'sweetalert2';
 
-import { signInApi } from '../../apis/api/auth';
+import { signInApiByCustomers, signInApiByManagers } from '../../apis/api/auth';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -15,53 +14,17 @@ function Login() {
     const passwordChange = (e) => setPassword(e.target.value);
 
     // 로그인 API
-    const fetchGetAuth = async () => {
+    const GetAuth = async () => {
         try {
-            const result = await signInApi(email, password);
-            signInAlert(result);
+            const checkByCustomerLoginAPI = await signInApiByCustomers(email, password);
+            // const checkByManagerLoginAPI = await signInApiByManagers(email, password);
+            console.log('고객사', checkByCustomerLoginAPI.message);
+            // console.log('담당자', checkByManagerLoginAPI.message);
+            // 로그인 확인 Alert
         } catch (error) {
             console.error('로그인 실패:', error);
         }
     };
-
-    // 로그인 Alert
-    const signInAlert = (result) => {
-        if (result.success) {
-            Swal.fire({ icon: 'success', title: '로그인 완료' });
-        } else {
-            Swal.fire({ icon: 'error', title: '존재하지 않는 회원입니다.' });
-        }
-    };
-
-    const loginInput = ({
-        value,
-        onChange,
-        type,
-        placeholder,
-        categoryName,
-        needCategory = true,
-    }) => (
-        <Input
-            value={value}
-            onChange={onChange}
-            type={type}
-            placeholder={placeholder}
-            width={'336px'}
-            height={'48px'}
-            margin={'0 0 24px 0'}
-            padding={'0 0 0 20px'}
-            border={'solid 1px #c1c1c1'}
-            borderRadius={'12px'}
-            fontSize={'20px'}
-            needCategory={needCategory}
-            categoryName={categoryName}
-            categoryWidth={'360px'}
-            categoryColor={'#03507d'}
-            CategoryFontWeight={'600'}
-            categoryMargin={'0 auto 12px auto'}
-            categoryTextAlign={'left'}
-        />
-    );
 
     return (
         <div>
@@ -78,7 +41,7 @@ function Login() {
                     <div>이메일과 비밀번호를 입력해주세요.</div>
                     {/* 이메일 & 비밀번호 입력 창 */}
                     <div>
-                        {loginInput({
+                        {LoginInput({
                             value: email,
                             onChange: emailChange,
                             type: 'email',
@@ -87,7 +50,7 @@ function Login() {
                         })}
                     </div>
                     <div>
-                        {loginInput({
+                        {LoginInput({
                             value: password,
                             onChange: passwordChange,
                             type: 'password',
@@ -101,13 +64,13 @@ function Login() {
                             btnName={'로그인'}
                             width={'360px'}
                             height={'44px'}
-                            backgroundColor={'#03507D'}
-                            textColor={'#EEEEEE'}
+                            backgroundColor={'#03507d'}
+                            textColor={'#eeeeee'}
                             fontSize={'20px'}
                             border={'solid #c1c1c1 1px'}
                             borderRadius={'12px'}
                             onClick={async () => {
-                                await fetchGetAuth();
+                                await GetAuth();
                             }}
                         />
                     </div>
