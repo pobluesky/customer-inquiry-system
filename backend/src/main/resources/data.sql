@@ -67,22 +67,15 @@ VALUES
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
-    (1, '수주 가능', '모든 규격 문제 없음', null, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', '빠른 회신 부탁합니다', true, '품질 검토 이상 없음'),
-    (3, '수주 불가능', '직경 규격 초과', 'JS_SI123', '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', '기한 내에 납부 바람', true, '직경을 조정하여 재문의 바람');
+    (1, '수주 가능', '모든 규격 문제 없음', null, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', '빠른 회신 부탁합니다', '포항소', '품질 검토 이상 없음'),
+    (3, '수주 불가능', '직경 규격 초과', 'JS_SI123', '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', '기한 내에 납부 바람', '광양소', '직경을 조정하여 재문의 바람');
 
 -- Review
 INSERT INTO reviews (inquiry_id, contract, thickness_notify, review_text, attachment_file, final_review_text, ts_review_req, created_date, modified_date)
 VALUES
-    (1, 0, 'Thickness within tolerance', 'Initial review text 1', 'attachment1.pdf', 'Final review completed and approved', 'Technical specification review required', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 1, 'Thickness slightly out of tolerance', 'Initial review text 2', 'attachment2.pdf', 'Final review completed with comments', 'Additional technical review needed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 0, 'Thickness measurement to be repeated', 'Initial review text 3', 'attachment3.pdf', 'Final review pending additional information', 'Awaiting customer clarification on specifications', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
--- VOC
-INSERT INTO voc (inquiry_id, title, contents, files)
-VALUES
-    (1, 'Packaging Feedback', 'Customer reported a minor issue with the packaging', 'voc_report1.pdf'),
-    (2, 'Delivery Time Improvement', 'Customer praised the product quality but requested faster delivery', 'voc_report2.pdf,customer_email.pdf'),
-    (3, 'Documentation Enhancement Request', 'Customer suggested improvements for the product documentation', 'voc_report3.pdf,suggestion_doc.docx');
+    (1, 'CUSTOMER_RELATIONSHIP', '두께 오차가 없어야함', '귀사의 문의에 대해 품질 검토가 필요하며 9월30일까지 회신드릴 것을 약속합니다', 'attachment1.pdf', '품질 검토 완료 후 최종검토 이상 없습니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'MARKET_DEMAND', '두께 허용오차를 벗어나면 안됨', '검토 후 이상 없음', 'attachment2.pdf', '품질검토하지 않고 문제 없이 최종검토 완료합니다', null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'MARKET_DEMAND', null, '귀사의 문의에 대해 품질 검토가 필요하며 10월30일까지 회신드릴 것을 약속합니다', 'attachment3.pdf', '품질 검토 후 이상이 발견되어 전달드립니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CUSTOMER_NOTIFICATION
 INSERT INTO customer_notification (is_read, created_date, customer_id, modified_date, notification_contents)
