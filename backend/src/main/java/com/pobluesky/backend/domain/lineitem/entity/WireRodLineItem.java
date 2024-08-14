@@ -102,7 +102,6 @@ public class WireRodLineItem extends LineItem{
         this.finalUse = finalUse;
     }
 
-
     public Customer getCustomer() {
         return this.inquiry.getCustomer();
     }

@@ -19,6 +19,4 @@ public class InquiryLineItemResponseDTO {
             .lineItemInfo(lineItemInfo)
             .build();
     }
-
-
 }

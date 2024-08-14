@@ -17,6 +17,4 @@ public enum Country {
     Country(String countryName) {
         this.countryName = countryName;
     }
-
-
 }
