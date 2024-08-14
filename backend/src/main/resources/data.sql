@@ -67,8 +67,8 @@ VALUES
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
-    (1, '수주 가능', '모든 규격 문제 없음', 1, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
-    (3, '수주 불가능', '직경 규격 초과', 3, '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', 'Customer Quality Requirement 3', true, 'Additional requirement details 3');
+    (1, '수주 가능', '모든 규격 문제 없음', null, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', '빠른 회신 부탁합니다', true, '품질 검토 이상 없음'),
+    (3, '수주 불가능', '직경 규격 초과', 'JS_SI123', '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', '기한 내에 납부 바람', true, '직경을 조정하여 재문의 바람');
 
 -- Review
 INSERT INTO reviews (inquiry_id, contract, thickness_notify, review_text, attachment_file, final_review_text, ts_review_req, created_date, modified_date)

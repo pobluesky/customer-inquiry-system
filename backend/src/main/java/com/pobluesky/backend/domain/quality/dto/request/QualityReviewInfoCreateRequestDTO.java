@@ -12,7 +12,7 @@ public record QualityReviewInfoCreateRequestDTO(
     String thicknessTolerance,
     String orderEdge,
     String customerQReq,
-    Boolean availableLab
+    String availableLab
 ) {
     // dto -> entity
     public QualityReviewInfo toQualityReviewInfoEntity() {

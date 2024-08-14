@@ -10,6 +10,6 @@ public record QualityReviewInfoUpdateRequestDTO (
     String thicknessTolerance,
     String orderEdge,
     String customerQReq,
-    Boolean availableLab
+    String availableLab
 ) {
 }

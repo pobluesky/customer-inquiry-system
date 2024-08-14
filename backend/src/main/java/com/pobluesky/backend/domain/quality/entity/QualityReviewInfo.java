@@ -30,7 +30,7 @@ public class QualityReviewInfo {
 
     private String customerQReq; // 고객품질요구사항
 
-    private Boolean availableLab; // 생산가능소구분
+    private String availableLab; // 생산가능소구분
 
     /*
   Builder Pattern
@@ -46,7 +46,7 @@ public class QualityReviewInfo {
         String thicknessTolerance,
         String orderEdge,
         String customerQReq,
-        Boolean availableLab
+        String availableLab
     ) {
         this.finalResult = finalResult;
         this.finalResultDetails = finalResultDetails;
