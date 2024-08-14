@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum InquiryType {
+
     QUALITY_INQUIRY("Quality Inquiry"),
     QUOTE_INQUIRY("Quote Inquiry"),
     COMMON_INQUIRY("General (Quote/Quality Inquiry)");

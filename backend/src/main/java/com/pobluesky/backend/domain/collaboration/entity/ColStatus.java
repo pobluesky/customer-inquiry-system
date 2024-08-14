@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ColStatus {
+
     READY("ready"),
     INPROGRESS("inprogress"),
     REFUSE("refuse"),

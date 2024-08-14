@@ -4,6 +4,8 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Country;
+import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -139,20 +141,16 @@ public class InquiryService {
             inquiryUpdateRequestDTO.country(),
             inquiryUpdateRequestDTO.corporate(),
             inquiryUpdateRequestDTO.salesPerson(),
-            inquiryUpdateRequestDTO.industry(),
-            inquiryUpdateRequestDTO.progress(),
-            inquiryUpdateRequestDTO.productType(),
-            inquiryUpdateRequestDTO.qualityManager(),
-            inquiryUpdateRequestDTO.department(),
-            inquiryUpdateRequestDTO.salesManager(),
-            inquiryUpdateRequestDTO.customerRequestDate(),
-            inquiryUpdateRequestDTO.responseDeadline(),
-            inquiryUpdateRequestDTO.elapsedDays(),
-            inquiryUpdateRequestDTO.files(),
             inquiryUpdateRequestDTO.inquiryType(),
-            inquiryUpdateRequestDTO.additionalRequests()
+            inquiryUpdateRequestDTO.industry(),
+            inquiryUpdateRequestDTO.productType(),
+            inquiryUpdateRequestDTO.progress(),
+            inquiryUpdateRequestDTO.customerRequestDate(),
+            inquiryUpdateRequestDTO.additionalRequests(),
+            inquiryUpdateRequestDTO.files(),
+            inquiryUpdateRequestDTO.responseDeadline(),
+            inquiryUpdateRequestDTO.elapsedDays()
         );
-
 
         return InquiryResponseDTO.from(inquiry);
     }
