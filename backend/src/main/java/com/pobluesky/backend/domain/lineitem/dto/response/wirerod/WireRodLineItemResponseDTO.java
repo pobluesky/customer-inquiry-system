@@ -45,7 +45,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
         return WireRodLineItemResponseDTO.builder()
             .lineItemId(wireRodLineItem.getLineItemId())
             .inquiryId(wireRodLineItem.getInquiry().getInquiryId())
-            .customerId(wireRodLineItem.getCustomer().getCustomerId())
+            .customerId(wireRodLineItem.getCustomer().getUserId())
             .customerName(wireRodLineItem.getCustomer().getCustomerName())
             .kind(wireRodLineItem.getKind())
             .orderCategory(wireRodLineItem.getOrderCategory())

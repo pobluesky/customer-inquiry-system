@@ -37,7 +37,7 @@ public class Inquiry extends BaseEntity {
     private Long inquiryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer;
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)

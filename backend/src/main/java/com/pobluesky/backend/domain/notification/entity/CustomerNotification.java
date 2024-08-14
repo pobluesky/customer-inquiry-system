@@ -21,7 +21,7 @@ import lombok.Setter;
 public class CustomerNotification extends Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer;
 
     @Builder

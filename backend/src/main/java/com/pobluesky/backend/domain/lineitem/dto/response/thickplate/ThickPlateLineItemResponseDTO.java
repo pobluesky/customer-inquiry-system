@@ -43,7 +43,7 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
         return ThickPlateLineItemResponseDTO.builder()
             .lineItemId(thickPlateLineItem.getLineItemId())
             .inquiryId(thickPlateLineItem.getInquiry().getInquiryId())
-            .customerId(thickPlateLineItem.getCustomer().getCustomerId())
+            .customerId(thickPlateLineItem.getCustomer().getUserId())
             .customerName(thickPlateLineItem.getCustomer().getCustomerName())
             .generalDetails(thickPlateLineItem.getGeneralDetails())
             .orderInfo(thickPlateLineItem.getOrderInfo())

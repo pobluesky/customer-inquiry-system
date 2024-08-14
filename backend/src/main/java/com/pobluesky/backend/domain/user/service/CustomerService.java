@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final SignService signService;
 
     private final CustomerRepository customerRepository;
 
@@ -33,9 +33,8 @@ public class CustomerService {
 
     @Transactional
     public CustomerResponseDTO signUp(CustomerCreateRequestDTO signUpDto) {
-        if (customerRepository.existsByEmail(signUpDto.email())) {
+        if (customerRepository.existsByEmail(signUpDto.email()))
             throw new CommonException(ErrorCode.ALREADY_EXISTS_EMAIL);
-        }
 
         String encodedPassword = passwordEncoder.encode(signUpDto.password());
 
@@ -59,12 +58,16 @@ public class CustomerService {
     @Transactional
     public CustomerResponseDTO updateCustomerById(
         String token,
+        Long targetId,
         CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
-        Long userId = customUserDetailsService.parseToken(token);
+        Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         customer.updateCustomer(
             customerUpdateRequestDTO.name(),
@@ -77,9 +80,14 @@ public class CustomerService {
     }
 
     @Transactional
-    public void deleteCustomerById(Long userId) {
+    public void deleteCustomerById(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         customer.deleteUser();
     }

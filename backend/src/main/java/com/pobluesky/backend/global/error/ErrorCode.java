@@ -35,7 +35,11 @@ public enum ErrorCode {
     COLLABORATION_STATUS_REFUSED(HttpStatus.INTERNAL_SERVER_ERROR, "C0004", "이미 거절된 협업입니다."),
     INVALID_PASSWORD(HttpStatus.INTERNAL_SERVER_ERROR, "U0005", "비밀번호가 틀립니다."),
     RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "U0006", "해당 협업의 응답 담당자가 아닙니다."),
-    USER_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "U0005","적합한 사용자가 아닙니다.");
+    USER_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "U0007","적합한 사용자가 아닙니다."),
+    UNAUTHORIZED_USER_SALES(HttpStatus.INTERNAL_SERVER_ERROR, "U0008", "판매 담당자가 아닙니다."),
+    UNAUTHORIZED_USER_QUALITY(HttpStatus.INTERNAL_SERVER_ERROR, "U0009", "품질 담당자가 아닙니다."),
+    UNAUTHORIZED_USER_CUSTOMER(HttpStatus.INTERNAL_SERVER_ERROR, "U0010", "고객사가 아닙니다."),
+    UNAUTHORIZED_USER_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "U0011", "담당자가 아닙니다.");
 
     private HttpStatus status;
     private String code;

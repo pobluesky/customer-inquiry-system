@@ -11,6 +11,7 @@ import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final SignService signService;
 
     private final ReviewRepository reviewRepository;
 
@@ -33,7 +34,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewResponseDTO getReviewById(String token, Long reviewId){
-        Long userId = userDetailsService.parseToken(token);
+        Long userId = signService.parseToken(token);
 
         Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -50,7 +51,7 @@ public class ReviewService {
         ReviewCreateRequestDTO dto,
         Long inquiryId
     ) {
-        Long userId = userDetailsService.parseToken(token);
+        Long userId = signService.parseToken(token);
 
         Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));

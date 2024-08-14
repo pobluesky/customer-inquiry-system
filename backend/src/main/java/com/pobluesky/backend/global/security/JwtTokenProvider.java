@@ -1,7 +1,9 @@
 package com.pobluesky.backend.global.security;
 
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
@@ -40,9 +42,9 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken generateToken(String email, String role) {
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("role", role);
+    public JwtToken generateToken(String email, String securityRole, UserRole role) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(email));
+        claims.put("role", securityRole);
 
         Date now = new Date();
 
@@ -66,9 +68,9 @@ public class JwtTokenProvider {
             .grantType("Bearer")
             .accessToken(accessToken)
             .refreshToken(refreshToken)
+            .userRole(role)
             .build();
     }
-
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
@@ -119,5 +121,4 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
-
 }

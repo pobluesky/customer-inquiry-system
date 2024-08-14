@@ -28,16 +28,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Table(name = "customers")
 public class Customer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
-
     private String customerCode;
 
     private String customerName;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

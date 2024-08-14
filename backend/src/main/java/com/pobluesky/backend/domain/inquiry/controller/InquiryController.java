@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +42,14 @@ public class InquiryController {
     // 조회 페이지
     @GetMapping("/customers/inquiries/{customerId}")
     @Operation(summary = "고객사 Inquiry 전체 조회")
-    public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
-        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
+    public ResponseEntity<JsonResult> getInquiriesByCustomerId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long customerId
+    ) {
+        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(
+            token,
+            customerId
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -77,9 +84,14 @@ public class InquiryController {
     @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
     @Operation(summary = "고객사 Inquiry 상세 조회")
     public ResponseEntity<JsonResult> getInquiryDetail(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long customerId,
         @PathVariable Long inquiryId) {
-        InquiryResponseDTO response = inquiryService.getInquiryDetail(customerId,inquiryId);
+        InquiryResponseDTO response = inquiryService.getInquiryDetail(
+            token,
+            customerId,
+            inquiryId
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -88,9 +100,12 @@ public class InquiryController {
     //progress별 조회
     @GetMapping("/inquiries/progress/{code}")
     @Operation(summary = "Progress별 Inquiry 조회")
-    public ResponseEntity<JsonResult> getInquiryByProgress(@PathVariable Integer code) {
+    public ResponseEntity<JsonResult> getInquiryByProgress(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Integer code
+    ) {
         Progress progress = Progress.fromCode(code);
-        List<InquiryResponseDTO> response = inquiryService.getInquiriesByProgress(progress);
+        List<InquiryResponseDTO> response = inquiryService.getInquiriesByProgress(token, progress);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -99,9 +114,14 @@ public class InquiryController {
     @PostMapping("/customers/inquiries/{customerId}")
     @Operation(summary = "고객사 Inquiry 생성")
     public ResponseEntity<JsonResult> createInquiry(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long customerId,
         @RequestBody InquiryCreateRequestDTO dto) {
-        InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
+        InquiryResponseDTO response = inquiryService.createInquiry(
+            token,
+            customerId,
+            dto
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -110,10 +130,15 @@ public class InquiryController {
     @PutMapping("/customers/inquiries/{inquiryId}")
     @Operation(summary = "고객사 Inquiry 수정")
     public ResponseEntity<JsonResult> updateInquiryById(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
-        InquiryResponseDTO response = inquiryService.updateInquiryById(inquiryId, inquiryUpdateRequestDTO);
+        InquiryResponseDTO response = inquiryService.updateInquiryById(
+            token,
+            inquiryId,
+            inquiryUpdateRequestDTO
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -121,16 +146,21 @@ public class InquiryController {
 
     @DeleteMapping("/customers/inquiries/{inquiryId}")
     @Operation(summary = "고객사 Inquiry 삭제")
-    public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
-        inquiryService.deleteInquiryById(inquiryId);
+    public ResponseEntity<CommonResult> deleteInquiryById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        inquiryService.deleteInquiryById(token, inquiryId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
     @GetMapping("/managers/inquiries")
     @Operation(summary = "담당자 Inquiry 조회")
-    public ResponseEntity<JsonResult> getInquiriesForManager() {
-        List<InquiryResponseDTO> response = inquiryService.getInquiries();
+    public ResponseEntity<JsonResult> getInquiriesForManager(
+        @RequestHeader("Authorization") String token
+    ) {
+        List<InquiryResponseDTO> response = inquiryService.getInquiries(token);
 
         return ResponseEntity.status((HttpStatus.OK))
             .body(ResponseFactory.getSuccessJsonResult(response));

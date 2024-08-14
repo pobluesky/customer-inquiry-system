@@ -27,14 +27,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Table(name = "managers")
 public class Manager extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long managerId;
-
     private String empNo;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private Department department;

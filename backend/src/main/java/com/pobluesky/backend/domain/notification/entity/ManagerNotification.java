@@ -21,7 +21,7 @@ import lombok.Setter;
 public class ManagerNotification extends Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id")
+    @JoinColumn(name = "user_id")
     private Manager manager;
 
     @Builder
