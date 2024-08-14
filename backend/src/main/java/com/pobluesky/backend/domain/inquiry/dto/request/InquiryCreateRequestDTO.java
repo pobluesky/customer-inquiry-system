@@ -6,10 +6,8 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
-import com.pobluesky.backend.domain.user.entity.Customer;
 
 public record InquiryCreateRequestDTO(
-    Customer customer,
     Country country,
     String corporate,
     String salesPerson,
@@ -27,7 +25,6 @@ public record InquiryCreateRequestDTO(
 ) {
     public Inquiry toInquiryEntity() {
         return Inquiry.builder()
-            .customer(customer)
             .country(country)
             .corporate(corporate)
             .salesPerson(salesPerson)
