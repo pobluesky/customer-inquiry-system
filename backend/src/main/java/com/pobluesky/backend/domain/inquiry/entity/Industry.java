@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Industry {
+
     AUTOMOBILE("Automobile"),
     OTHERS("Others"),
     CONSTRUCTION("Construction"),

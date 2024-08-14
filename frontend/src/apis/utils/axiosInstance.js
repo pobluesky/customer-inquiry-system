@@ -17,7 +17,6 @@ axiosInstance.interceptors.request.use(
       if (accessToken) {
         config.headers.Authorization = `${accessToken}`;
       }
-      // console.log("[axiosInstance] interceptors request: ", config.headers);
       return config;
     },
     (error) => {
@@ -32,9 +31,8 @@ axiosInstance.interceptors.response.use(
         const accessToken = getCookie('accessToken');
 
         if (accessToken) {
-          const role = getRoleFromCookie();
-          // console.log("[axiosInstance] interceptor response: ", { ...response, role });
-          return { ...response, role };
+          setCookie('userRole', response.data.userRole);
+          return { ...response };
         }
       }
       return response.data;
@@ -95,6 +93,5 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 );
-
 
 export default axiosInstance;

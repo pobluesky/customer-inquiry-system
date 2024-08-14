@@ -5,26 +5,22 @@ import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 
 
 public record InquiryUpdateRequestDTO(
     Country country,
     String corporate,
-    String salesPerson,
-    Industry industry,
-    Progress progress,
-    ProductType productType,
-    String qualityManager,
-    Department department,
-    String salesManager,
-    String customerRequestDate,
-    String responseDeadline,
-    String elapsedDays,
-    String corporationCode,
-    String files,
+    String  salesPerson,
     InquiryType inquiryType,
-    Boolean isActivated,
-    String additionalRequests
+    Industry industry,
+    ProductType productType,
+    Progress progress,
+    String customerRequestDate,
+    String additionalRequests,
+    String files,
+    String responseDeadline,
+    String elapsedDays
 ) {
 }
