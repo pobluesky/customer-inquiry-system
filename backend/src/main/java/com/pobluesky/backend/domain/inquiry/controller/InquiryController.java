@@ -12,9 +12,11 @@ import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,8 +62,13 @@ public class InquiryController {
             projectName, startDate, endDate
         );
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("inquiryInfo", inquiries.getContent());
+        response.put("totalElements", inquiries.getTotalElements());
+        response.put("totalPages", inquiries.getTotalPages());
+
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(inquiries));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     // 상세 조회 페이지
