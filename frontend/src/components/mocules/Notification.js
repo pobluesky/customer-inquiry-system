@@ -1,43 +1,43 @@
 // import React, { useEffect, useState } from 'react';
 // import { fetchCustomerNotifications } from "../../apis/api/notification/notification";
 //
-// const Notification = ({customerId}) => {
+// const Notification = ({userId}) => {
 //   const [notifications, setNotifications] = useState([]);
 //
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const data = await fetchCustomerNotifications(customerId);
+//         const data = await fetchCustomerNotifications(userId);
 //         setNotifications(data);
 //       } catch (error) {
 //       }
 //     };
 //
 //     fetchData();
-//   }, [customerId]);import React, { useEffect, useState } from 'react';
+//   }, [userId]);import React, { useEffect, useState } from 'react';
 // // import { fetchCustomerNotifications } from "../../apis/api/notification/notification";
 // //
-// // const Notification = ({customerId}) => {
+// // const Notification = ({userId}) => {
 // //   const [notifications, setNotifications] = useState([]);
 // //
 // //   useEffect(() => {
 // //     const fetchData = async () => {
 // //       try {
-// //         const data = await fetchCustomerNotifications(customerId);
+// //         const data = await fetchCustomerNotifications(userId);
 // //         setNotifications(data);
 // //       } catch (error) {
 // //       }
 // //     };
 // //
 // //     fetchData();
-// //   }, [customerId]);
+// //   }, [userId]);
 // //
 // //   return (
 // //       <div>
 // //         <ul>
 // //           {notifications?.map(notification => (
 // //               <li key={notification.id}>
-// //                 <p>고객사번호: {notification.customerId}</p>
+// //                 <p>고객사번호: {notification.userId}</p>
 // //                 <p>알림번호: {notification.id}</p>
 // //                 <p>알림내용: {notification.contents}</p>
 // //                 <p>읽음상태: {notification.isRead ? '읽음' : '읽지 않음'}</p>
@@ -56,7 +56,7 @@
 //         <ul>
 //           {notifications?.map(notification => (
 //               <li key={notification.id}>
-//                 <p>고객사번호: {notification.customerId}</p>
+//                 <p>고객사번호: {notification.userId}</p>
 //                 <p>알림번호: {notification.id}</p>
 //                 <p>알림내용: {notification.contents}</p>
 //                 <p>읽음상태: {notification.isRead ? '읽음' : '읽지 않음'}</p>

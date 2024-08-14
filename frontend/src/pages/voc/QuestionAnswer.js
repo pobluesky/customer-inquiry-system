@@ -7,18 +7,18 @@ import CustomerQuestionList from '../../components/templates/CustomerQuestionLis
 import Notification from '../../components/mocules/Notification';
 import { Question_Title } from '../../assets/css/Voc.css';
 
-import { getAnswerAndQuestionByCustomerId } from '../../apis/api/answer/answer';
+import { getAnswerAndQuestionByuserId } from '../../apis/api/answer/answer';
 
 function QuestionAnswer() {
     // 고객 관점
     // N번 고객으로 테스트
     const [dataList, setDataList] = useState([]);
-    const customerId = 1;
+    const userId = 1;
     const token = process.env.REACT_APP_JWT_TOKEN;
 
     useEffect(() => {
         const fetchGetAnswer = async () => {
-            const result = await getAnswerAndQuestionByCustomerId(customerId, token);
+            const result = await getAnswerAndQuestionByuserId(userId, token);
 
             if (Array.isArray(result)) {
                 setDataList(result);
@@ -28,7 +28,7 @@ function QuestionAnswer() {
             }
         };
         fetchGetAnswer();
-    }, [customerId]);
+    }, [userId]);
 
     // 답변 대기, 답변 완료, 전체 질문 개수
     const readyItems = dataList.filter((data) => data.question.status === 'READY').length;
