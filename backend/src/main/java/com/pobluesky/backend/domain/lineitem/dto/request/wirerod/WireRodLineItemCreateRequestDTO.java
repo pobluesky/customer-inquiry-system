@@ -7,7 +7,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 
 import java.time.LocalDate;
 
-
 public record WireRodLineItemCreateRequestDTO(
     Kind kind,
     InqName inqName,

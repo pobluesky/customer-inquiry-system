@@ -7,7 +7,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 
 import java.time.LocalDate;
 
-
 public record ColdRolledLineItemCreateRequestDTO(
     Kind kind,
     InqName inqName,
