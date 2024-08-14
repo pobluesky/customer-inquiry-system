@@ -217,8 +217,8 @@ function Join() {
                                         btnName: '역할 조회',
                                         onClick: () => {
                                             !validateName(name) &&
-                                                !validateUserCode(userCode) &&
-                                                getRoleAndSetNewForm(userCode);
+                                            !validateUserCode(userCode) &&
+                                            getRoleAndSetNewForm(userCode);
                                         },
                                     })}
                                 {/* 권한 부여 버튼 */}
@@ -286,9 +286,7 @@ function Join() {
                                             <option value="IT">IT</option>
                                             <option value="HR">인사</option>
                                             <option value="SALES">판매</option>
-                                            <option value="FINANCE">
-                                                재무
-                                            </option>
+                                            <option value="FINANCE">재무</option>
                                         </select>
                                     </>
                                 )}
@@ -320,9 +318,9 @@ function Join() {
                                     margin: '0 0 84px 0',
                                     onClick: async () => {
                                         !validateEmail(email) &&
-                                            !validatePhone(phone) &&
-                                            !validatePassword(password) &&
-                                            (await GetAuth());
+                                        !validatePhone(phone) &&
+                                        !validatePassword(password) &&
+                                        (await GetAuth());
                                     },
                                 })}
                             </div>

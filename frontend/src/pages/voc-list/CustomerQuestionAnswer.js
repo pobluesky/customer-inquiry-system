@@ -14,10 +14,10 @@ function CustomerQuestionAnswer() {
 
     if (getCookie('accessToken')) {
         console.log('getCookie를 통해 토큰을 성공적으로 가져왔습니다.');
-    } // 절대 삭제
+    }
 
     useEffect(() => {
-        console.log('질문 및 답변 리스트를 요청하는 API가 호출되었습니다.'); // 절대 삭제
+        console.log('질문 및 답변 리스트를 요청하는 API가 호출되었습니다.');
         const fetchGetAnswer = async () => {
             const result = await getAnswerAndQuestionByuserId(
                 userId,

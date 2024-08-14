@@ -15,7 +15,7 @@ function Login() {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [globalRole, setGlobalRole] = useRecoilState(authByRole);
+    const [globalRole, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
@@ -25,7 +25,7 @@ function Login() {
         try {
             const response = await signInApiByUsers(email, password);
             console.log(`${response.data.userRole} 로그인`, response);
-            setGlobalRole(getCookie('userRole')); // 전역 변수에 역할 선언
+            setGlobalRole(getCookie('userRole')); // 전역 역할 수정
             navigate('/');
         } catch (error) {
             console.error('로그인 실패:', error);
