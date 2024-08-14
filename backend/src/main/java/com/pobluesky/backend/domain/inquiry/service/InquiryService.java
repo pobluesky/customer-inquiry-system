@@ -2,8 +2,8 @@ package com.pobluesky.backend.domain.inquiry.service;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -66,7 +66,7 @@ public class InquiryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<InquiryLineItemResponseDTO> getInquiries(
+    public Page<InquirySummaryResponseDTO> getInquiries(
         Long userId, int page, int size, String sortBy,
         Progress progress,
         ProductType productType, String customerName,
