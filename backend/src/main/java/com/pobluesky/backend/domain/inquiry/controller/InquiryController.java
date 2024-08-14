@@ -135,7 +135,6 @@ public class InquiryController {
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiriesByManager(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
         @RequestParam(defaultValue = "latest") String sortBy,
@@ -147,7 +146,7 @@ public class InquiryController {
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManager(
-            token, userId, page, size, sortBy,
+            token, page, size, sortBy,
             progress, productType, customerName,
             inquiryType, startDate, endDate
         );

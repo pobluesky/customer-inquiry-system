@@ -28,7 +28,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<InquirySummaryResponseDTO> findInquiries(
+    public Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
         Long userId, Pageable pageable, Progress progress,
         ProductType productType, String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate) {
@@ -63,7 +63,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .limit(pageable.getPageSize())
             .fetch();
 
-        JPAQuery<Inquiry> countQuery = getCountQuery(
+        JPAQuery<Inquiry> countQuery = getCountQueryForCustomer(
             userId, progress, productType,
             customerName, inquiryType, startDate, endDate
         );
@@ -71,17 +71,76 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
-    private JPAQuery<Inquiry> getCountQuery(
+    @Override
+    public Page<InquirySummaryResponseDTO> findInquiriesByManager(
+        Pageable pageable, Progress progress, ProductType productType,
+        String customerName, InquiryType inquiryType,
+        LocalDate startDate, LocalDate endDate) {
+
+        List<InquirySummaryResponseDTO> content = queryFactory
+            .select(Projections.constructor(InquirySummaryResponseDTO.class,
+                    inquiry.inquiryId,
+                    inquiry.salesPerson,
+                    inquiry.progress,
+                    inquiry.productType,
+                    inquiry.inquiryType,
+                    customer.customerName
+                )
+            )
+            .from(inquiry)
+            .join(inquiry.customer, customer)
+            .where(
+                inquiry.isActivated.isTrue(),
+                progressEq(progress),
+                productTypeEq(productType),
+                customerNameEq(customerName),
+                inquiryTypeEq(inquiryType),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(
+                inquiry.productType.asc(),
+                inquiry.inquiryType.asc(),
+                inquiry.progress.asc()
+            )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Inquiry> countQuery = getCountQueryForManager(
+            progress, productType, customerName,
+            inquiryType, startDate, endDate
+        );
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private JPAQuery<Inquiry> getCountQueryForCustomer(
         Long userId, Progress progress, ProductType productType,
         String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate
     ) {
-
         return queryFactory
             .selectFrom(inquiry)
             .where(
                 inquiry.isActivated.isTrue(),
                 inquiry.customer.userId.eq(userId),
+                progressEq(progress),
+                productTypeEq(productType),
+                customerNameEq(customerName),
+                inquiryTypeEq(inquiryType),
+                createdDateBetween(startDate, endDate)
+            );
+    }
+
+    private JPAQuery<Inquiry> getCountQueryForManager(
+        Progress progress, ProductType productType,
+        String customerName, InquiryType inquiryType,
+        LocalDate startDate, LocalDate endDate
+    ) {
+        return queryFactory
+            .selectFrom(inquiry)
+            .where(
+                inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
                 customerNameEq(customerName),

@@ -63,15 +63,14 @@ public class InquiryService {
         Sort sort = getSortByOrderCondition(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return inquiryRepository.findInquiries(
+        return inquiryRepository.findInquiriesByCustomer(
             customerId, pageable, progress, productType, customerName,
             inquiryType, startDate, endDate);
     }
 
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByManager(
-        String token, Long customerId, int page,
-        int size, String sortBy, Progress progress,
+        String token, int page, int size, String sortBy, Progress progress,
         ProductType productType, String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate) {
 
@@ -86,8 +85,8 @@ public class InquiryService {
         Sort sort = getSortByOrderCondition(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return inquiryRepository.findInquiries(
-            customerId, pageable, progress, productType, customerName,
+        return inquiryRepository.findInquiriesByManager(
+            pageable, progress, productType, customerName,
             inquiryType, startDate, endDate);
     }
 
