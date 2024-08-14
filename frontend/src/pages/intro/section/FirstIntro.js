@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../../../components/mocules/Header';
 import intro from '../../../assets/css/icons/intro/intro-icon.svg';
 import Button from '../../../components/atoms/Button';
 import { Container, SubTitle, Title, Wrapper, Icon } from './Style';
@@ -13,7 +12,6 @@ const FirstIntro = () => {
 
     return (
         <div className={ScrollStyle}>
-            <Header login={true} inq={false} voc={true} dashboard={false} />
             <Container style={{ margin: '10vh' }}>
                 <SubTitle>고객 맞춤형 AI 기반 분석 솔루션</SubTitle>
                 <Title>고객사와 함께하는 VoC</Title>
