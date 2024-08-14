@@ -5,7 +5,7 @@ import Header from '../../components/mocules/Header';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 
-import { signInApiByCustomers, signInApiByManagers } from '../../apis/api/auth';
+import { signInApiByUser } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 
 function Login() {
@@ -20,8 +20,8 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByLoginAPI = await signInApiByCustomers(email, password);
-            // const checkByLoginAPI = await signInApiByManagers(email, password);
+            const checkByLoginAPI = await signInApiByUser(email, password);
+
             if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
                 console.log('고객사 로그인 성공', checkByLoginAPI);
                 navigate('/');
