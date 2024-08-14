@@ -4,7 +4,6 @@ import static com.pobluesky.backend.domain.inquiry.entity.QInquiry.inquiry;
 import static com.pobluesky.backend.domain.lineitem.entity.QCarLineItem.carLineItem;
 import static com.pobluesky.backend.domain.lineitem.entity.QColdRolledLineItem.coldRolledLineItem;
 import static com.pobluesky.backend.domain.lineitem.entity.QHotRolledLineItem.hotRolledLineItem;
-import static com.pobluesky.backend.domain.lineitem.entity.QLineItem.lineItem;
 import static com.pobluesky.backend.domain.lineitem.entity.QThickPlateLineItem.thickPlateLineItem;
 import static com.pobluesky.backend.domain.lineitem.entity.QWireRodLineItem.wireRodLineItem;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
@@ -100,37 +99,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
-//    private Expression<InquirySummaryResponseDTO> getInquirySummaryProjection() {
-//        return Projections.fields(InquirySummaryResponseDTO.class,
-//            inquiry.inquiryId,
-//            inquiry.salesPerson,
-//            inquiry.progress,
-//            inquiry.productType,
-//            inquiry.inquiryType,
-//            customer.customerName
-//        ).as("inquiryInfo");
-//    }
-
-//    private Expression<LineItemResponseDTO> getLineItemProjection(ProductType productType) {
-//        if (productType == null) {
-//            return Expressions.nullExpression();
-//        }
-//        switch (productType) {
-//            case CAR:
-//                return getCarLineItemProjection();
-//            case COLD_ROLLED:
-//                return getColdRolledLineItemProjection();
-//            case HOT_ROLLED:
-//                return getHotRolledLineItemProjection();
-//            case THICK_PLATE:
-//                return getThickPlateLineItemProjection();
-//            case WIRE_ROD:
-//                return getWireRodLineItemProjection();
-//            default:
-//                return Expressions.nullExpression();
-//        }
-//    }
-
     private Expression<LineItemResponseDTO> getCarLineItemProjection() {
         return Projections.fields(CarLineItemSummaryResponseDTO.class,
             carLineItem.lineItemId,
@@ -191,64 +159,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             wireRodLineItem.isActivated
         );
     }
-
-
-//    private Expression<LineItemResponseDTO> getLineItemProjection() {
-//        return new CaseBuilder()
-//            .when(inquiry.productType.eq(ProductType.CAR))
-//            .then(Projections.fields(CarLineItemSummaryResponseDTO.class,
-//                carLineItem.lineItemId,
-//                carLineItem.kind,
-//                carLineItem.standardOrg,
-//                carLineItem.pjtName,
-//                carLineItem.thickness,
-//                carLineItem.width,
-//                carLineItem.isActivated
-//            ))
-//            .when(inquiry.productType.eq(ProductType.COLD_ROLLED))
-//            .then(Projections.fields(ColdRolledLineItemSummaryResponseDTO.class,
-//                coldRolledLineItem.lineItemId,
-//                coldRolledLineItem.kind,
-//                coldRolledLineItem.thickness,
-//                coldRolledLineItem.width,
-//                coldRolledLineItem.quantity,
-//                coldRolledLineItem.isActivated
-//            ))
-//            .when(inquiry.productType.eq(ProductType.HOT_ROLLED))
-//            .then(Projections.constructor(HotRolledLineItemSummaryResponseDTO.class,
-//                hotRolledLineItem.lineItemId,
-//                hotRolledLineItem.kind,
-//                hotRolledLineItem.thickness,
-//                hotRolledLineItem.width,
-//                hotRolledLineItem.quantity,
-//                hotRolledLineItem.isActivated
-//            ))
-//            .when(inquiry.productType.eq(ProductType.THICK_PLATE))
-//            .then(Projections.constructor(ThickPlateLineItemSummaryResponseDTO.class,
-//                thickPlateLineItem.lineItemId,
-//                thickPlateLineItem.ladleIngredient,
-//                thickPlateLineItem.productIngredient,
-//                thickPlateLineItem.seal,
-//                thickPlateLineItem.show,
-//                thickPlateLineItem.curve,
-//                thickPlateLineItem.isActivated
-//            ))
-//            .when(inquiry.productType.eq(ProductType.WIRE_ROD))
-//            .then(Projections.constructor(WireRodLineItemSummaryResponseDTO.class,
-//                wireRodLineItem.lineItemId,
-//                wireRodLineItem.kind,
-//                wireRodLineItem.orderCategory,
-//                wireRodLineItem.diameter,
-//                wireRodLineItem.quantity,
-//                wireRodLineItem.expectedDeadline,
-//                wireRodLineItem.initialQuantity,
-//                wireRodLineItem.customerProcessing,
-//                wireRodLineItem.finalUse,
-//                wireRodLineItem.isActivated
-//            ))
-//            .otherwise(Expressions.nullExpression())
-//            .as("lineItemInfo");
-//    }
 
     private JPAQuery<Inquiry> getCountQuery(
         Long userId, Progress progress,

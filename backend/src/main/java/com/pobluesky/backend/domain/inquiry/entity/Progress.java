@@ -29,6 +29,4 @@ public enum Progress {
         }
         throw new CommonException(ErrorCode.PROGRESS_NOT_FOUND);
     }
-
-
 }

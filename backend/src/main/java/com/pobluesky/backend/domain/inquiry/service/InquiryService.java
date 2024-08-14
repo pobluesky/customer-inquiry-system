@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -32,7 +31,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,13 +64,6 @@ public class InquiryService {
             .map(InquiryResponseDTO::from)
             .collect(Collectors.toList());
     }
-
-    //    @Transactional(readOnly = true)
-    //    public Page<InquirySummaryResponseDTO> getInquiries(Long userId, Pageable pageable, String sortBy, Progress progress) {
-    //        Sort sort = getSortByOrderCondition(sortBy);
-    //        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-    //        return inquiryRepository.findInquiries(userId, sortedPageable, progress);
-    //    }
 
     @Transactional(readOnly = true)
     public Page<InquiryLineItemResponseDTO> getInquiries(
