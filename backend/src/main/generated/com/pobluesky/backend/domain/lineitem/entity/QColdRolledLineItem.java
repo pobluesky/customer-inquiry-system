@@ -27,7 +27,7 @@ public class QColdRolledLineItem extends EntityPathBase<ColdRolledLineItem> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final DateTimePath<java.util.Date> expectedDeadline = createDateTime("expectedDeadline", java.util.Date.class);
+    public final DatePath<java.time.LocalDate> expectedDeadline = createDate("expectedDeadline", java.time.LocalDate.class);
 
     public final StringPath inDiameter = createString("inDiameter");
 

@@ -31,7 +31,7 @@ public class QWireRodLineItem extends EntityPathBase<WireRodLineItem> {
 
     public final StringPath diameter = createString("diameter");
 
-    public final DateTimePath<java.util.Date> expectedDeadline = createDateTime("expectedDeadline", java.util.Date.class);
+    public final DatePath<java.time.LocalDate> expectedDeadline = createDate("expectedDeadline", java.time.LocalDate.class);
 
     public final StringPath finalUse = createString("finalUse");
 

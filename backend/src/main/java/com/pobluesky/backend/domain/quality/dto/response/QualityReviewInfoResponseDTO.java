@@ -8,14 +8,14 @@ public record QualityReviewInfoResponseDTO (
     Long qualityReviewInfoId,
     String finalResult,
     String finalResultDetails,
-    Long standard,
+    String standard,
     String orderCategory,
     String coatingMetalQuantity,
     String coatingOilQuantity,
     String thicknessTolerance,
     String orderEdge,
     String customerQReq,
-    Boolean availableLab
+    String availableLab
 ) {
     // entity -> dto
     public static QualityReviewInfoResponseDTO from(QualityReviewInfo qualityReviewInfo) {

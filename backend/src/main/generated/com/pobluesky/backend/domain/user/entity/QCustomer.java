@@ -27,8 +27,6 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public final StringPath customerCode = createString("customerCode");
 
-    public final NumberPath<Long> customerId = createNumber("customerId", Long.class);
-
     public final StringPath customerName = createString("customerName");
 
     //inherited
@@ -49,9 +47,13 @@ public class QCustomer extends EntityPathBase<Customer> {
     //inherited
     public final StringPath phone = _super.phone;
 
-    public final EnumPath<UserRole> role = createEnum("role", UserRole.class);
+    //inherited
+    public final EnumPath<UserRole> role = _super.role;
 
     public final ListPath<String, StringPath> roles = this.<String, StringPath>createList("roles", String.class, StringPath.class, PathInits.DIRECT2);
+
+    //inherited
+    public final NumberPath<Long> userId = _super.userId;
 
     public QCustomer(String variable) {
         super(Customer.class, forVariable(variable));

@@ -4,7 +4,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
-import java.util.Date;
+
+import java.time.LocalDate;
+
 
 public record ColdRolledLineItemCreateRequestDTO(
     Kind kind,
@@ -13,7 +15,7 @@ public record ColdRolledLineItemCreateRequestDTO(
     String thickness,
     String width,
     Integer quantity,
-    Date expectedDeadline,
+    LocalDate expectedDeadline,
     String orderEdge,
     String inDiameter,
     String outDiameter

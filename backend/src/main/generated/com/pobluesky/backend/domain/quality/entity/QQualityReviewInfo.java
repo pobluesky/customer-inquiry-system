@@ -19,7 +19,7 @@ public class QQualityReviewInfo extends BeanPath<QualityReviewInfo> {
 
     public static final QQualityReviewInfo qualityReviewInfo = new QQualityReviewInfo("qualityReviewInfo");
 
-    public final BooleanPath availableLab = createBoolean("availableLab");
+    public final StringPath availableLab = createString("availableLab");
 
     public final StringPath coatingMetalQuantity = createString("coatingMetalQuantity");
 
@@ -35,7 +35,7 @@ public class QQualityReviewInfo extends BeanPath<QualityReviewInfo> {
 
     public final StringPath orderEdge = createString("orderEdge");
 
-    public final NumberPath<Long> standard = createNumber("standard", Long.class);
+    public final StringPath standard = createString("standard");
 
     public final StringPath thicknessTolerance = createString("thicknessTolerance");
 
