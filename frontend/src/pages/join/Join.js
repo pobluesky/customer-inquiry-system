@@ -16,6 +16,9 @@ import {
     validateCustomerName,
 } from '../../utils/validation';
 
+import { useRecoilState } from 'recoil';
+import { userName, userEmail, userPassword } from '../../index';
+
 function Join() {
     const navigate = useNavigate();
 
@@ -39,6 +42,10 @@ function Join() {
     const [department, setDept] = useState('IT');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [globalName, setGlobalName] = useRecoilState(userName);
+    const [globalEmail, setGlobalEmail] = useRecoilState(userEmail);
+    const [globalPassword, setGlobalPassword] = useRecoilState(userPassword);
 
     const nameChange = (e) => setName(e.target.value);
     const userCodeChange = (e) => setUserCode(e.target.value);
@@ -81,7 +88,7 @@ function Join() {
                 customerName,
             );
             console.log('고객사 회원가입 결과', result.success);
-            { result.success && navigate('/login'); }
+            { result.success && saveGlobalInfo(); navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('고객사 회원가입 실패:', error);
@@ -102,7 +109,7 @@ function Join() {
                 department,
             );
             console.log('담당자 회원가입 결과', result.success);
-            { result.success && navigate('/login'); }
+            { result.success && saveGlobalInfo(); navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('담당자 회원가입 실패:', error);
@@ -121,6 +128,13 @@ function Join() {
         }
         // [Alert] 비밀번호가 일치하지 않습니다.
     };
+
+    // 회원가입 성공시 이름, 이메일, 비밀번호 atom에 저장
+    const saveGlobalInfo = () => {
+        setGlobalName(name);
+        setGlobalEmail(email);
+        setGlobalPassword(password);
+    }
 
     // 역할 조회, 권한 부여, 회원가입 버튼
     const checkButton = ({ btnName, onClick, margin }) => (

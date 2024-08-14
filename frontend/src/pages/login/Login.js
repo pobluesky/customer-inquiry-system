@@ -7,15 +7,19 @@ import { SignIn } from '../../assets/css/Auth.css';
 
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
-import { useRecoilState } from 'recoil';
-import { authByRole } from '../../index';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { authByRole, getUserEmail, getUserPassword } from '../../index';
 
 function Login() {
     const navigate = useNavigate();
-    
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+
+    const currentUserEmail = useRecoilValue(getUserEmail); // selector로부터 계산된 값 읽기
+    const currentUserPassword = useRecoilValue(getUserPassword); // selector로부터 계산된 값 읽기
+
     const [globalRole, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
+
+    const [email, setEmail] = useState(currentUserEmail);
+    const [password, setPassword] = useState(currentUserPassword);
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
