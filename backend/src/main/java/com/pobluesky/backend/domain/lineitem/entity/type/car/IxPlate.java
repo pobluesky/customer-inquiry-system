@@ -7,8 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum IxPlate {
 
-    TEST("예시"),
-    TEST_LAB("예시2");
+    DASH_PANEL("대쉬 패널"),
+    FLOOR_PANEL("플로어 패널"),
+    DOOR_PANEL("도어 패널"),
+    TRUNK_LID("트렁크 리드");
 
     private String name;
 }

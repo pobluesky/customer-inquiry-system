@@ -16,7 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +52,7 @@ public class ColdRolledLineItem extends LineItem{
 
     private Integer quantity;
 
-    private Date expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private String orderEdge;
 
@@ -69,7 +69,7 @@ public class ColdRolledLineItem extends LineItem{
         String thickness,
         String width,
         Integer quantity,
-        Date expectedDeadline,
+        LocalDate expectedDeadline,
         String orderEdge,
         String inDiameter,
         String outDiameter
@@ -95,7 +95,7 @@ public class ColdRolledLineItem extends LineItem{
         String thickness,
         String width,
         Integer quantity,
-        Date expectedDeadline,
+        LocalDate expectedDeadline,
         String orderEdge,
         String inDiameter,
         String outDiameter

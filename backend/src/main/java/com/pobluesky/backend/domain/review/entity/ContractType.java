@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ContractType {
-    TEST("test"),
-    TEST_LAB("test2");
+    CUSTOMER_RELATIONSHIP("customer_relationship"),
+    MARKET_DEMAND("market_demand");
 
     private final String key;
 }

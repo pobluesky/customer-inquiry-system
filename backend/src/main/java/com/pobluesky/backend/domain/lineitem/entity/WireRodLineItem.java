@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 import com.pobluesky.backend.domain.user.entity.Customer;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.Date;
+
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +50,7 @@ public class WireRodLineItem extends LineItem{
 
     private Integer quantity;
 
-    private Date expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private Integer initialQuantity;
 
@@ -63,7 +66,7 @@ public class WireRodLineItem extends LineItem{
         String orderCategory,
         String diameter,
         Integer quantity,
-        Date expectedDeadline,
+        LocalDate expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
         String finalUse
@@ -86,7 +89,7 @@ public class WireRodLineItem extends LineItem{
         String orderCategory,
         String diameter,
         Integer quantity,
-        Date expectedDeadline,
+        LocalDate expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
         String finalUse

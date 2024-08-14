@@ -39,13 +39,13 @@ public class Review extends BaseEntity {
     @Column(nullable = false, columnDefinition="TEXT")
     private String reviewText;
 
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(columnDefinition="TEXT")
     private String attachmentFile;
 
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(columnDefinition="TEXT")
     private String finalReviewText;
 
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(columnDefinition="TEXT")
     private String tsReviewReq;
 
     @Builder

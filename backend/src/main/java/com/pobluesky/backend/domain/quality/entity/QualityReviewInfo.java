@@ -16,7 +16,7 @@ public class QualityReviewInfo {
     @Column(columnDefinition = "TEXT")
     private String finalResultDetails; // 종합결과세부사항
 
-    private Long standard; // 제품규격
+    private String standard; // 제품규격
 
     private String orderCategory; // 주문용도
 
@@ -30,7 +30,7 @@ public class QualityReviewInfo {
 
     private String customerQReq; // 고객품질요구사항
 
-    private Boolean availableLab; // 생산가능소구분
+    private String availableLab; // 생산가능소구분
 
     /*
   Builder Pattern
@@ -39,14 +39,14 @@ public class QualityReviewInfo {
     private QualityReviewInfo(
         String finalResult,
         String finalResultDetails,
-        Long standard,
+        String standard,
         String orderCategory,
         String coatingMetalQuantity,
         String coatingOilQuantity,
         String thicknessTolerance,
         String orderEdge,
         String customerQReq,
-        Boolean availableLab
+        String availableLab
     ) {
         this.finalResult = finalResult;
         this.finalResultDetails = finalResultDetails;

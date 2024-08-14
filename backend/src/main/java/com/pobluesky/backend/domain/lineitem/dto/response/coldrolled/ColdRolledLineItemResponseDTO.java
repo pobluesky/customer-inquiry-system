@@ -5,9 +5,11 @@ import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.cglib.core.Local;
 
 @Builder
 @Getter
@@ -33,7 +35,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private Date expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private String orderEdge;
 
