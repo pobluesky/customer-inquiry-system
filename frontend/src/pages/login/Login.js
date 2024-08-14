@@ -16,7 +16,7 @@ function Login() {
     const currentUserEmail = useRecoilValue(getUserEmail); // selector로부터 계산된 값 읽기
     const currentUserPassword = useRecoilValue(getUserPassword); // selector로부터 계산된 값 읽기
 
-    const [globalRole, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
+    const [, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
 
     const [email, setEmail] = useState(currentUserEmail);
     const [password, setPassword] = useState(currentUserPassword);

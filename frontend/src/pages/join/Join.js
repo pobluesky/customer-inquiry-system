@@ -43,9 +43,9 @@ function Join() {
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
-    const [globalName, setGlobalName] = useRecoilState(userName);
-    const [globalEmail, setGlobalEmail] = useRecoilState(userEmail);
-    const [globalPassword, setGlobalPassword] = useRecoilState(userPassword);
+    const [, setGlobalName] = useRecoilState(userName);
+    const [, setGlobalEmail] = useRecoilState(userEmail);
+    const [, setGlobalPassword] = useRecoilState(userPassword);
 
     const nameChange = (e) => setName(e.target.value);
     const userCodeChange = (e) => setUserCode(e.target.value);
