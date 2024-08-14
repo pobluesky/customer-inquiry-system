@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,13 +108,13 @@ public class AnswerService {
         return customers.stream()
             .flatMap(customer ->
                 questionRepository.findAllByCustomer_UserId(customer.getUserId()).stream()
-                .map(question -> {
-                    Answer answer =
-                        answerRepository.findByQuestion_QuestionId(question.getQuestionId())
-                        .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+                    .map(question -> {
+                        Answer answer = 
+                            answerRepository.findByQuestion_QuestionId(question.getQuestionId())
+                                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
-                    return AnswerWithQuestionResponseDTO.from(question, answer);
-                }))
+                        return AnswerWithQuestionResponseDTO.from(question, answer);
+                    }))
             .collect(Collectors.toList());
     }
 

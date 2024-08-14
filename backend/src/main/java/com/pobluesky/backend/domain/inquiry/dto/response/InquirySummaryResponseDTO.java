@@ -6,7 +6,7 @@ import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.type.StandardOrg;
+import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 import lombok.Builder;
 
 @Builder
