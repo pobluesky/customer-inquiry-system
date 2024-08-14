@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.inquiry.dto.request;
 
-
 import com.pobluesky.backend.domain.inquiry.entity.Country;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -8,50 +7,41 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Department;
-
 
 public record InquiryCreateRequestDTO(
     Customer customer,
     Country country,
     String corporate,
-    String corporateCode,
     String salesPerson,
+    InquiryType inquiryType,
     Industry industry,
-    Progress progress,
+    String corporationCode,
     ProductType productType,
-    String qualityManager,
-    Department department,
-    String salesManager,
+    Progress progress,
     String customerRequestDate,
+    String additionalRequests,
+    String files,
     String responseDeadline,
     String elapsedDays,
-    String corporationCode,
-    String files,
-    InquiryType inquiryType,
-    Boolean isActivated,
-    String additionalRequests
+    Boolean isActivated
 ) {
-
     public Inquiry toInquiryEntity() {
         return Inquiry.builder()
+            .customer(customer)
             .country(country)
             .corporate(corporate)
             .salesPerson(salesPerson)
+            .inquiryType(inquiryType)
             .industry(industry)
-            .progress(progress)
+            .corporationCode("(주) 포스코")
             .productType(productType)
-            .qualityManager(qualityManager)
-            .department(department)
-            .salesManager(salesManager)
+            .progress(progress)
             .customerRequestDate(customerRequestDate)
+            .additionalRequests(additionalRequests)
+            .files(files)
             .responseDeadline(responseDeadline)
             .elapsedDays(elapsedDays)
-            .corporationCode("(주) 포스코")
-            .files(files)
-            .inquiryType(inquiryType)
             .isActivated(true)
-            .additionalRequests(additionalRequests)
             .build();
     }
 }
