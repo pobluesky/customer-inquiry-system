@@ -43,14 +43,14 @@ public class NotificationController {
 
     // 고객사
     @Operation(summary = "고객사 계정별 알림 조회")
-    @GetMapping("/customers/{customerId}")
+    @GetMapping("/customers/{userId}")
     public ResponseEntity<JsonResult> getCustomerNotificationsById(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId
+        @PathVariable Long userId
     ) {
         List<?> notification = notificationService.getNotificationsById(
             token,
-            customerId,
+            userId,
             NotificationType.CUSTOMER
         );
 
@@ -59,15 +59,15 @@ public class NotificationController {
     }
 
     @Operation(summary = "고객사 계정별 읽은 알림 조회")
-    @GetMapping("/customers/read/{customerId}")
+    @GetMapping("/customers/read/{userId}")
     public ResponseEntity<JsonResult> getRecentCustomerNotificationById(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId
+        @PathVariable Long userId
     ) {
 
         List<?> notificationById = notificationService.getRecentNotifications(
             token,
-            customerId,
+            userId,
             NotificationType.CUSTOMER
         );
 
@@ -76,17 +76,17 @@ public class NotificationController {
     }
 
     @Operation(summary = "고객사 계정별 알림 전송")
-    @PostMapping("/customers/{customerId}")
+    @PostMapping("/customers/{userId}")
     public ResponseEntity<JsonResult> createCustomerNotification(
         @RequestHeader("Authorization") String token,
         @RequestBody CustomerNotificationCreateRequestDTO dto,
-        @PathVariable Long customerId) {
+        @PathVariable Long userId) {
 
         CustomerNotificationResponseDTO notification =
             (CustomerNotificationResponseDTO) notificationService.createNotification(
                 token,
                 dto,
-                customerId,
+                userId,
                 NotificationType.CUSTOMER
             );
 

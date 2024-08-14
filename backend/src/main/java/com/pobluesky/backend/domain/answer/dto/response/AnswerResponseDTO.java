@@ -10,7 +10,7 @@ import java.util.Optional;
 public record AnswerResponseDTO(
     Long questionId,
     Optional<Long> inquiryId,
-    Long customerId,
+    Long userId,
     String answerTitle,
     String answerContents,
     LocalDateTime createdDate
@@ -21,7 +21,7 @@ public record AnswerResponseDTO(
             .inquiryId(Optional.ofNullable(answer.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
-            .customerId(answer.getCustomer().getUserId())
+            .userId(answer.getCustomer().getUserId())
             .answerTitle(answer.getAnswerTitle())
             .answerContents(answer.getAnswerContents())
             .createdDate(answer.getCreatedDate())

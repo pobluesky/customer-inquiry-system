@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.inquiry.controller;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
@@ -40,15 +41,15 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     // 조회 페이지
-    @GetMapping("/customers/inquiries/{customerId}")
+    @GetMapping("/customers/inquiries/{userId}")
     @Operation(summary = "고객사 Inquiry 전체 조회")
-    public ResponseEntity<JsonResult> getInquiriesByCustomerId(
+    public ResponseEntity<JsonResult> getInquiriesByuserId(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId
+        @PathVariable Long userId
     ) {
-        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(
+        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByuserId(
             token,
-            customerId
+            userId
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -56,9 +57,9 @@ public class InquiryController {
     }
 
     // 페이징 & 정렬
-    @GetMapping("/customers/{customerId}/inquiries")
+    @GetMapping("/customers/{userId}/inquiries")
     public ResponseEntity<JsonResult> getInquiries(
-        @PathVariable Long customerId,
+        @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
         @RequestParam(defaultValue = "latest") String sortBy,
@@ -70,8 +71,8 @@ public class InquiryController {
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(
-            customerId, page, size, sortBy,
+        Page<InquiryLineItemResponseDTO> inquiries = inquiryService.getInquiries(
+            userId, page, size, sortBy,
             progress, productType, customerName, inquiryType,
             projectName, startDate, endDate
         );
@@ -81,15 +82,15 @@ public class InquiryController {
     }
 
     // 상세 조회 페이지
-    @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
+    @GetMapping("/customers/inquiries/{userId}/{inquiryId}")
     @Operation(summary = "고객사 Inquiry 상세 조회")
     public ResponseEntity<JsonResult> getInquiryDetail(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId,
+        @PathVariable Long userId,
         @PathVariable Long inquiryId) {
         InquiryResponseDTO response = inquiryService.getInquiryDetail(
             token,
-            customerId,
+            userId,
             inquiryId
         );
 
@@ -111,15 +112,15 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customers/inquiries/{customerId}")
+    @PostMapping("/customers/inquiries/{userId}")
     @Operation(summary = "고객사 Inquiry 생성")
     public ResponseEntity<JsonResult> createInquiry(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId,
+        @PathVariable Long userId,
         @RequestBody InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(
             token,
-            customerId,
+            userId,
             dto
         );
 

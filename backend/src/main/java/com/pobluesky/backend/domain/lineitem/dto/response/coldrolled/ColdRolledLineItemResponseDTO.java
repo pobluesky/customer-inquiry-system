@@ -17,7 +17,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long CustomerId;
+    private Long userId;
 
     private String CustomerName;
 
@@ -48,7 +48,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
         return ColdRolledLineItemResponseDTO.builder()
             .lineItemId(coldRolledLineItem.getLineItemId())
             .inquiryId(coldRolledLineItem.getInquiry().getInquiryId())
-            .CustomerId(coldRolledLineItem.getCustomer().getUserId())
+            .userId(coldRolledLineItem.getCustomer().getUserId())
             .CustomerName(coldRolledLineItem.getCustomer().getCustomerName())
             .kind(coldRolledLineItem.getKind())
             .inqName(coldRolledLineItem.getInqName())

@@ -73,7 +73,7 @@ public class QuestionService {
 
     // 고객별 질문 조회 (고객사)
     @Transactional(readOnly = true)
-    public List<QuestionResponseDTO> getQuestionByCustomerId(String token, Long customerId) {
+    public List<QuestionResponseDTO> getQuestionByuserId(String token, Long customerId) {
         Long userId = signService.parseToken(token);
 
         Manager manager = managerRepository.findById(userId)

@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.inquiry.service;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -49,7 +50,7 @@ public class InquiryService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByCustomerId(String token, Long customerId) {
+    public List<InquiryResponseDTO> getInquiriesByuserId(String token, Long customerId) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -67,15 +68,15 @@ public class InquiryService {
     }
 
     //    @Transactional(readOnly = true)
-    //    public Page<InquirySummaryResponseDTO> getInquiries(Long customerId, Pageable pageable, String sortBy, Progress progress) {
+    //    public Page<InquirySummaryResponseDTO> getInquiries(Long userId, Pageable pageable, String sortBy, Progress progress) {
     //        Sort sort = getSortByOrderCondition(sortBy);
     //        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-    //        return inquiryRepository.findInquiries(customerId, sortedPageable, progress);
+    //        return inquiryRepository.findInquiries(userId, sortedPageable, progress);
     //    }
 
     @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiries(
-        Long customerId, int page, int size, String sortBy,
+    public Page<InquiryLineItemResponseDTO> getInquiries(
+        Long userId, int page, int size, String sortBy,
         Progress progress,
         ProductType productType, String customerName,
         InquiryType inquiryType, String projectName,
@@ -84,7 +85,7 @@ public class InquiryService {
         Sort sort = getSortByOrderCondition(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         return inquiryRepository.findInquiries(
-            customerId, pageable, progress, productType, customerName,
+            userId, pageable, progress, productType, customerName,
             inquiryType, projectName, startDate, endDate);
     }
 
@@ -195,7 +196,7 @@ public class InquiryService {
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Inquiry inquiry = inquiryRepository.findByCustomer_UserIdAndInquiryId(customerId,inquiryId)
+        Inquiry inquiry = inquiryRepository.findByCustomer_UserIdAndInquiryId(customerId, inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))

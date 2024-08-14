@@ -45,7 +45,7 @@ public class Inquiry extends BaseEntity {
     private Customer customer;
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CarLineItem> carLineItemList = new ArrayList<>();
+    private List<CarLineItem> carLineItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ColdRolledLineItem> coldRolledLineItems = new ArrayList<>();

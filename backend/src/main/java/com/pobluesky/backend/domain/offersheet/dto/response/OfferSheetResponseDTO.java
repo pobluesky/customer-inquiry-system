@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public record OfferSheetResponseDTO(
     Long offerSheetId,
     Long inquiryId,
-    Long customerId,
+    Long userId,
     String product,
     String specification,
     String surfaceFinish,
@@ -32,7 +32,7 @@ public record OfferSheetResponseDTO(
         return OfferSheetResponseDTO.builder()
             .offerSheetId(offerSheet.getOfferSheetId())
             .inquiryId(offerSheet.getInquiry().getInquiryId())
-            .customerId(offerSheet.getInquiry().getCustomer().getUserId())
+            .userId(offerSheet.getInquiry().getCustomer().getUserId())
             .product(offerSheet.getProduct())
             .specification(offerSheet.getSpecification())
             .surfaceFinish(offerSheet.getSurfaceFinish())

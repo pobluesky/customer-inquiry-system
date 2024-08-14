@@ -47,15 +47,15 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/customer/{customerId}")
+    @GetMapping("/customer/{userId}")
     @Operation(summary = "질문 전체 조회(고객사)", description = "특정 고객의 모든 질문을 고객 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByCustomerId(
+    public ResponseEntity<JsonResult> getQuestionByuserId(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId
+        @PathVariable Long userId
     ) {
-        List<QuestionResponseDTO> response = questionService.getQuestionByCustomerId(
+        List<QuestionResponseDTO> response = questionService.getQuestionByuserId(
             token,
-            customerId
+            userId
         );
 
         return ResponseEntity
@@ -63,16 +63,16 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customer/{customerId}/{inquiryId}")
+    @PostMapping("/customer/{userId}/{inquiryId}")
     @Operation(summary = "문의별 질문 작성(고객사)", description = "특정 문의에 대한 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId,
+        @PathVariable Long userId,
         @PathVariable Long inquiryId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createInquiryQuestion(
             token,
-            customerId,
+            userId,
             inquiryId,
             questionCreateRequestDTO
         );
@@ -81,15 +81,15 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customer/{customerId}")
+    @PostMapping("/customer/{userId}")
     @Operation(summary = "타입별 질문 작성(고객사)", description = "문의 외적인 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long customerId,
+        @PathVariable Long userId,
         @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createNotInquiryQuestion(
             token,
-            customerId,
+            userId,
             questionCreateRequestDTO
         );
 

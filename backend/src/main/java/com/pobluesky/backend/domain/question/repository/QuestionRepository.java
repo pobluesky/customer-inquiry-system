@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findAllByCustomer_UserId(Long customerId);
+    List<Question> findAllByCustomer_UserId(Long userId);
 
-    List<Question> findByCustomer_UserId(Long customerId);
+    List<Question> findByCustomer_UserId(Long userId);
 }
