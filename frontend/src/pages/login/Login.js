@@ -7,28 +7,31 @@ import { SignIn } from '../../assets/css/Auth.css';
 
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
+import { useRecoilState } from 'recoil';
+import { authByRole } from '../../index';
 
 function Login() {
     const navigate = useNavigate();
-
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [globalRole, setGlobalRole] = useRecoilState(authByRole);
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
-
+    
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByLoginAPI = await signInApiByUsers(email, password);
-            console.log(`${checkByLoginAPI.data.userRole} 로그인 성공`, checkByLoginAPI);
-            console.log('ROLE IS ', getCookie('userRole')); // 로그인 userRole 출력
+            const response = await signInApiByUsers(email, password);
+            console.log(`${response.data.userRole} 로그인`, response);
+            setGlobalRole(getCookie('userRole')); // 전역 변수에 역할 선언
             navigate('/');
         } catch (error) {
             console.error('로그인 실패:', error);
         }
     };
-
+    
     return (
         <div>
             <Header

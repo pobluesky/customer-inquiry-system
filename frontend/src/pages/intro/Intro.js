@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FirstIntro, SecondIntro, ThirdIntro, FourthIntro } from './section';
 
-function Intro() {
+import { useRecoilValue } from 'recoil';
+import { getAuthByRole } from '../../index';
 
-  return (
-      <>{/*
+function Intro() {
+    const currentUserRole = useRecoilValue(getAuthByRole); // selector로부터 계산된 값 읽기
+
+    useEffect(() => {
+        console.log(
+            `현재 로그인 중인 유저의 권한은 *${currentUserRole}* 입니다.`,
+        );
+    }, [currentUserRole]);
+
+    return (
+        <>
+            {/*
         <div>
           <Link to="/login">로그인</Link>
         </div>
@@ -21,12 +32,12 @@ function Intro() {
           <Link to="/dashboard">DashBoard</Link>
         </div>
         */}
-        <FirstIntro/>
-        <SecondIntro/>
-        <ThirdIntro/>
-        <FourthIntro/>
-      </>
-  );
+            <FirstIntro />
+            <SecondIntro />
+            <ThirdIntro />
+            <FourthIntro />
+        </>
+    );
 }
 
 export default Intro;

@@ -286,7 +286,9 @@ function Join() {
                                             <option value="IT">IT</option>
                                             <option value="HR">인사</option>
                                             <option value="SALES">판매</option>
-                                            <option value="FINANCE">재무</option>
+                                            <option value="FINANCE">
+                                                재무
+                                            </option>
                                         </select>
                                     </>
                                 )}
