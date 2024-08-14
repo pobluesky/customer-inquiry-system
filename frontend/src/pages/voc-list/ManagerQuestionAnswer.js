@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/mocules/Header';
-import VocPath from '../../components/atoms/VocPath';
 import ManagerQuestionReport from '../../components/organisms/ManagerQuestionReport';
 import ManagerQuestionSearchItem from '../../components/organisms/ManagerQuestionSearchItem';
 import ManagerQuestionList from '../../components/templates/ManagerQuestionList';
 import Notification from '../../components/mocules/Notification';
 import { Question_Title } from '../../assets/css/Voc.css';
 
-import { getAnswerAndQuestionByuserId } from '../../apis/api/answer/answer';
+import { getAnswerAndQuestionByuserId } from '../../apis/api/answer';
 
 function QuestionAnswer() {
     // 고객 관점
@@ -37,8 +35,6 @@ function QuestionAnswer() {
 
     return (
         <>
-            <Header login={true} inq={false} voc={true} dashboard={false} />
-            <VocPath largeCategory={'VoC'} mediumCategory={'문의 목록'} />
             <ManagerQuestionReport question_total={totalItems} question_ready={readyItems} question_completed={completedItems} />
             <ManagerQuestionSearchItem totalItems={totalItems}/>
             <div className={Question_Title}>문의 목록</div>
