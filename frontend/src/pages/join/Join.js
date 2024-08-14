@@ -74,12 +74,11 @@ function Join() {
         try {
             const result = await signUpApiByCustomers(
                 name,
+                email,
+                password,
+                phone,
                 customerCode,
                 customerName,
-                role,
-                email,
-                phone,
-                password,
             );
             console.log('고객사 회원가입 완료', result);
             navigate('/login');
