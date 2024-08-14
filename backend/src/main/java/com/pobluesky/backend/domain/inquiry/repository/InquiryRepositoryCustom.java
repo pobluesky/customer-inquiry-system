@@ -11,6 +11,6 @@ import org.springframework.data.domain.Pageable;
 public interface InquiryRepositoryCustom {
     Page<InquirySummaryResponseDTO> findInquiries(
         Long userId, Pageable pageable, Progress progress,
-        ProductType productType, String customerName, InquiryType inquiryType,
-        String projectName, LocalDate startDate, LocalDate endDate);
+        ProductType productType, String customerName,
+        InquiryType inquiryType, LocalDate startDate, LocalDate endDate);
 }

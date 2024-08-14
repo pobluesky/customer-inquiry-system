@@ -49,10 +49,9 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiries(
-        String token, Long customerId, int page, int size, String sortBy,
-        Progress progress,
-        ProductType productType, String customerName,
-        InquiryType inquiryType, String projectName,
+        String token, Long customerId, int page,
+        int size, String sortBy, Progress progress,
+        ProductType productType, String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate) {
 
         Long userId = signService.parseToken(token);
@@ -67,7 +66,7 @@ public class InquiryService {
         Pageable pageable = PageRequest.of(page, size, sort);
         return inquiryRepository.findInquiries(
             customerId, pageable, progress, productType, customerName,
-            inquiryType, projectName, startDate, endDate);
+            inquiryType, startDate, endDate);
     }
 
     @Transactional

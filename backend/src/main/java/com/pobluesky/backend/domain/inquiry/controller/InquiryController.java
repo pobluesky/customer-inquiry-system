@@ -52,14 +52,13 @@ public class InquiryController {
         @RequestParam(required = false) ProductType productType,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
-        @RequestParam(required = false) String projectName,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(
             token, userId, page, size, sortBy,
-            progress, productType, customerName, inquiryType,
-            projectName, startDate, endDate
+            progress, productType, customerName,
+            inquiryType, startDate, endDate
         );
 
         Map<String, Object> response = new HashMap<>();

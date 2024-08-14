@@ -32,7 +32,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     public Page<InquirySummaryResponseDTO> findInquiries(
         Long userId, Pageable pageable, Progress progress,
         ProductType productType, String customerName, InquiryType inquiryType,
-        String projectName, LocalDate startDate, LocalDate endDate) {
+        LocalDate startDate, LocalDate endDate) {
 
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -53,7 +53,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 productTypeEq(productType),
                 customerNameEq(customerName),
                 inquiryTypeEq(inquiryType),
-                projectNameEq(projectName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(
@@ -67,16 +66,15 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
         JPAQuery<Inquiry> countQuery = getCountQuery(
             userId, progress, productType,
-            customerName, inquiryType, projectName, startDate, endDate
+            customerName, inquiryType, startDate, endDate
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
     private JPAQuery<Inquiry> getCountQuery(
-        Long userId, Progress progress,
-        ProductType productType, String customerName,
-        InquiryType inquiryType, String projectName,
+        Long userId, Progress progress, ProductType productType,
+        String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate
     ) {
 
@@ -89,7 +87,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 productTypeEq(productType),
                 customerNameEq(customerName),
                 inquiryTypeEq(inquiryType),
-                projectNameEq(projectName),
                 createdDateBetween(startDate, endDate)
             );
     }
@@ -108,10 +105,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     private BooleanExpression inquiryTypeEq(InquiryType inquiryType) {
         return inquiryType != null ? inquiry.inquiryType.eq(inquiryType) : null;
-    }
-
-    private BooleanExpression projectNameEq(String projectName) {
-        return StringUtils.hasText(projectName) ? carLineItem.pjtName.eq(projectName) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
