@@ -1,7 +1,6 @@
 package com.pobluesky.backend.domain.inquiry.repository;
 
 import static com.pobluesky.backend.domain.inquiry.entity.QInquiry.inquiry;
-import static com.pobluesky.backend.domain.lineitem.entity.QCarLineItem.carLineItem;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
 
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;

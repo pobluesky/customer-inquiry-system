@@ -46,7 +46,7 @@ public class InquiryService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiries(
+    public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
         String token, Long customerId, int page,
         int size, String sortBy, Progress progress,
         ProductType productType, String customerName, InquiryType inquiryType,
@@ -62,26 +62,33 @@ public class InquiryService {
 
         Sort sort = getSortByOrderCondition(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
+
         return inquiryRepository.findInquiries(
             customerId, pageable, progress, productType, customerName,
             inquiryType, startDate, endDate);
     }
 
-    @Transactional
-    public List<InquiryResponseDTO> getInquiries(String token) {
+    @Transactional(readOnly = true)
+    public Page<InquirySummaryResponseDTO> getInquiriesByManager(
+        String token, Long customerId, int page,
+        int size, String sortBy, Progress progress,
+        ProductType productType, String customerName, InquiryType inquiryType,
+        LocalDate startDate, LocalDate endDate) {
+
         Long userId = signService.parseToken(token);
 
-        Manager user =managerRepository.findById(userId)
+        Manager user = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         if(user.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        List<Inquiry> inquiries = inquiryRepository.findAll();
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
+        return inquiryRepository.findInquiries(
+            customerId, pageable, progress, productType, customerName,
+            inquiryType, startDate, endDate);
     }
 
     @Transactional
