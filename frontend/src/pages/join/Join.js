@@ -5,6 +5,7 @@ import JoinInput from '../../components/mocules/JoinInput';
 import { SignUp } from '../../assets/css/Auth.css';
 
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
+import { useNavigate } from 'react-router-dom';
 import {
     validateName,
     validateUserCode,
@@ -16,6 +17,8 @@ import {
 } from '../../utils/validation';
 
 function Join() {
+    const navigate = useNavigate();
+
     const [isFirstPage, setFirst] = useState(true);
     const [isCustomer, setCustomer] = useState(true);
     const [isManager, setManager] = useState(false);
@@ -79,6 +82,7 @@ function Join() {
                 password,
             );
             console.log('고객사 회원가입 완료', result);
+            navigate('/login');
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('고객사 회원가입 실패:', error);
@@ -99,6 +103,7 @@ function Join() {
                 department,
             );
             console.log('담당자 회원가입 완료', result);
+            navigate('/login');
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('담당자 회원가입 실패:', error);
