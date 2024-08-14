@@ -21,9 +21,7 @@ import com.pobluesky.backend.global.error.ErrorCode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -183,25 +181,6 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return InquiryResponseDTO.from(inquiry);
-    }
-
-    @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByProgress(String token, Progress progress) {
-        Long userId = signService.parseToken(token);
-
-        Stream.of(
-                customerRepository.findById(userId),
-                managerRepository.findById(userId)
-            )
-            .flatMap(Optional::stream)
-            .findFirst()
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        List<Inquiry> inquiries = inquiryRepository.findByProgress(progress);
-
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
     }
 
     private Sort getSortByOrderCondition(String sortBy) {

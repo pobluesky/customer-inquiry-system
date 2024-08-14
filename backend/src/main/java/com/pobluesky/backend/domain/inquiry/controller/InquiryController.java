@@ -87,20 +87,6 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    //progress별 조회
-    @GetMapping("/inquiries/progress/{code}")
-    @Operation(summary = "Progress별 Inquiry 조회")
-    public ResponseEntity<JsonResult> getInquiryByProgress(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Integer code
-    ) {
-        Progress progress = Progress.fromCode(code);
-        List<InquiryResponseDTO> response = inquiryService.getInquiriesByProgress(token, progress);
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @PostMapping("/customers/inquiries/{userId}")
     @Operation(summary = "고객사 Inquiry 생성")
     public ResponseEntity<JsonResult> createInquiry(
