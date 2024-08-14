@@ -5,8 +5,7 @@ import { getCookie } from './cookies';
 export const getRoleFromToken = (token) => {
   try {
     const decodedToken = jwtDecode(token);
-    // console.log("[tokenUtils-getRoleFromToken]: ", decodedToken.role);
-    return decodedToken.role || null;
+    return decodedToken.userRole || null;
   } catch (error) {
     console.error('Invalid token', error);
     return null;
@@ -16,6 +15,5 @@ export const getRoleFromToken = (token) => {
 // 쿠키에서 액세스 토큰을 가져와 역할을 추출하는 함수
 export const getRoleFromCookie = () => {
   const token = getCookie('accessToken');
-  // console.log("[tokenUtils-getRoleFromCookie]: ", getRoleFromToken(token));
   return token ? getRoleFromToken(token) : null;
 };
