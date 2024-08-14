@@ -6,7 +6,7 @@ VALUES
     ('이서윤', 'bob@example.com', 'password789', '010-5555-55555', true, '3DR', 'DURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('김하윤', 'michael@example.com', 'password1011', '010-7777-7777', true, '4GG', 'GEUMGANG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('이지호', 'jiho@example.com', 'password1011', '010-8888-7777', true, '1SS', 'SESIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('박채원', 'chaewon@example.com', 'password1011', '010-9999-7777', true, '6HW', 'HWAIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('박채원', 'chaewon@example.com', 'password1011', '010-9999-7777', true, '6HW', 'HWAIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Managers
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
@@ -60,15 +60,15 @@ VALUES
 -- OfferSheet
 INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
 VALUES
-    (2, 'HOT_ROLLED', 'Spec XYZ', 'Polished', '압력용기', '2mm', '500mm', '1500mm', '1000', '50000', '900kg', '1000kg', 'Smooth', 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', 'Factory A', 'Subject to mill’s final confirmation'),
-    (4, 'COLD_ROLLED', 'Spec ABC', 'Matte', '파이프 소재', '3mm', '600mm', '1800mm', '1500', '75000', '1100kg', '1200kg', 'Rough', 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', 'Factory B', 'Subject to mill’s final confirmation2'),
-    (5, 'THICK_PLATE', 'Spec DEF', 'Brushed', '교량용', '2.5mm', '550mm', '1650mm', '1200', '60000', '1000kg', '1100kg', 'Beveled', 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', 'Factory C', 'Subject to mill’s final confirmation3');
+    (2, 'HOT_ROLLED', 'specification(규격) A', 'Polished', '압력용기', '2mm', '500mm', '1500mm', '1000', '50000', '900kg', '1000kg', 'Mill Edge', 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', '보람', '최종검토바람'),
+    (4, 'COLD_ROLLED', 'specification(규격) B', 'Matte', '파이프 소재', '3mm', '600mm', '1800mm', '1500', '75000', '1100kg', '1200kg', 'Slit Edge', 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', '금강', '유효기간 내 제품 배송 확인'),
+    (5, 'THICK_PLATE', 'specification(규격) C', 'Brushed', '교량용', '2.5mm', '550mm', '1650mm', '1200', '60000', '1000kg', '1100kg', 'Slit Edge', 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료');
 
 -- Quality
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
 VALUES
-    (1, 'Passed', 'All tests passed successfully', 1, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
-    (3, 'Passed with conditions', 'Most tests passed, minor issues noted', 3, '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', 'Customer Quality Requirement 3', true, 'Additional requirement details 3');
+    (1, '수주 가능', '모든 규격 문제 없음', 1, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', 'Customer Quality Requirement 1', true, 'Additional requirement details 1'),
+    (3, '수주 불가능', '직경 규격 초과', 3, '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', 'Customer Quality Requirement 3', true, 'Additional requirement details 3');
 
 -- Review
 INSERT INTO reviews (inquiry_id, contract, thickness_notify, review_text, attachment_file, final_review_text, ts_review_req, created_date, modified_date)

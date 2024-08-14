@@ -3,7 +3,7 @@ package com.pobluesky.backend.domain.quality.dto.request;
 public record QualityReviewInfoUpdateRequestDTO (
     String finalResult,
     String finalResultDetails,
-    Long standard,
+    String standard,
     String orderCategory,
     String coatingMetalQuantity,
     String coatingOilQuantity,
