@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 
 import { signInApiByCustomers, signInApiByManagers } from '../../apis/api/auth';
+import { getCookie } from '../../apis/utils/cookies';
 
 function Login() {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,11 +20,16 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByCustomerLoginAPI = await signInApiByCustomers(email, password);
-            // const checkByManagerLoginAPI = await signInApiByManagers(email, password);
-            console.log('고객사', checkByCustomerLoginAPI.message);
-            // console.log('담당자', checkByManagerLoginAPI.message);
-            // 로그인 확인 Alert
+            const checkByLoginAPI = await signInApiByCustomers(email, password);
+            // const checkByLoginAPI = await signInApiByManagers(email, password);
+            if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
+                console.log('고객사 로그인 성공', checkByLoginAPI);
+                navigate('/');
+            } else {
+                console.log('담당자 로그인 성공', checkByLoginAPI);
+                navigate('/');
+            }
+            console.log('ROLE IS ', getCookie('userRole')); // 로그인 userRole 출력
         } catch (error) {
             console.error('로그인 실패:', error);
         }
