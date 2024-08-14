@@ -1,7 +1,7 @@
 // 이름
 export const validateName = (name) => {
     if (name.trim() === '') {
-        return '이름을 입력해주세요.';
+        return '이름을 입력하세요.';
     }
     return '';
 };
@@ -10,7 +10,7 @@ export const validateName = (name) => {
 export const validateUserCode = (userCode) => {
     const codeRegex = /^(CUS|EMP)/;
     if (!codeRegex.test(userCode)) {
-      return '인증되지 않는 코드입니다.';
+      return '유효한 코드를 입력하세요.';
     }
     return '';
   };
@@ -19,7 +19,7 @@ export const validateUserCode = (userCode) => {
 export const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        return '이메일 형식이 올바르지 않습니다.';
+        return '올바른 이메일을 입력하세요.';
     }
     return '';
 };
@@ -28,7 +28,7 @@ export const validateEmail = (email) => {
 export const validatePhone = (phone) => {
     const phoneRegex = /^\d{10,11}$/;
     if (!phoneRegex.test(phone)) {
-        return '유효한 전화번호를 입력해주세요.';
+        return '유효한 전화번호를 입력하세요.';
     }
     return '';
 };
@@ -52,7 +52,7 @@ export const validatePasswordMatch = (password, confirmPassword) => {
 // 고객사명
 export const validateCustomerName = (customerName) => {
     if (customerName.trim() === '') {
-        return '고객사명을 입력해주세요.';
+        return '고객사명을 입력하세요.';
     }
     return '';
 };

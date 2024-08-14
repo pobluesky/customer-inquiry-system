@@ -80,8 +80,8 @@ function Join() {
                 customerCode,
                 customerName,
             );
-            console.log('고객사 회원가입 완료', result);
-            navigate('/login');
+            console.log('고객사 회원가입 결과', result.success);
+            { result.success && navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('고객사 회원가입 실패:', error);
@@ -101,8 +101,8 @@ function Join() {
                 role,
                 department,
             );
-            console.log('담당자 회원가입 완료', result);
-            navigate('/login');
+            console.log('담당자 회원가입 결과', result.success);
+            { result.success && navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('담당자 회원가입 실패:', error);
@@ -176,7 +176,7 @@ function Join() {
                                     value: name,
                                     onChange: nameChange,
                                     type: 'text',
-                                    placeholder: '김숙하',
+                                    placeholder: '홍길동',
                                     categoryName: '이름',
                                     warningMsg: `${validateName(name)}`,
                                 })}
@@ -269,7 +269,7 @@ function Join() {
                                         value: customerName,
                                         onChange: customerNameChange,
                                         type: 'text',
-                                        placeholder: '(주)손흥민',
+                                        placeholder: '(주)포스코',
                                         categoryName: '고객사명',
                                         warningMsg: `${validateCustomerName(
                                             customerName,
