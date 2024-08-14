@@ -44,7 +44,7 @@ public class InquiryController {
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId
     ) {
-        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByuserId(
+        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByUserId(
             token,
             userId
         );
@@ -56,6 +56,7 @@ public class InquiryController {
     // 페이징 & 정렬
     @GetMapping("/customers/{userId}/inquiries")
     public ResponseEntity<JsonResult> getInquiries(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
@@ -69,7 +70,7 @@ public class InquiryController {
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiries(
-            userId, page, size, sortBy,
+            token, userId, page, size, sortBy,
             progress, productType, customerName, inquiryType,
             projectName, startDate, endDate
         );

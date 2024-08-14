@@ -48,7 +48,7 @@ public class InquiryService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByuserId(String token, Long customerId) {
+    public List<InquiryResponseDTO> getInquiriesByUserId(String token, Long customerId) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -67,16 +67,24 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiries(
-        Long userId, int page, int size, String sortBy,
+        String token, Long customerId, int page, int size, String sortBy,
         Progress progress,
         ProductType productType, String customerName,
         InquiryType inquiryType, String projectName,
         LocalDate startDate, LocalDate endDate) {
 
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
         Sort sort = getSortByOrderCondition(sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         return inquiryRepository.findInquiries(
-            userId, pageable, progress, productType, customerName,
+            customerId, pageable, progress, productType, customerName,
             inquiryType, projectName, startDate, endDate);
     }
 
