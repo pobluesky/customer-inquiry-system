@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ManagerNotificationRepository extends JpaRepository<ManagerNotification, Long> {
 
-    List<ManagerNotification> findByManager_UserId(Long managerId);
+    List<ManagerNotification> findByManager_UserId(Long userId);
 
-    @Query("SELECT mn FROM ManagerNotification mn WHERE mn.manager.userId = :managerId AND mn.isRead = :isRead ORDER BY mn.createdDate DESC")
-    Page<ManagerNotification> findRecentNotificationsByManagerIdAndIsRead(
-        @Param("managerId") Long managerId,
+    @Query("SELECT mn FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = :isRead ORDER BY mn.createdDate DESC")
+    Page<ManagerNotification> findRecentNotificationsByuserIdAndIsRead(
+        @Param("userId") Long userId,
         @Param("isRead") Boolean isRead,
         Pageable pageable
     );

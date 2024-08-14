@@ -116,14 +116,14 @@ public class NotificationController {
 
     // 담당자
     @Operation(summary = "담당자 계정별 알림 조회")
-    @GetMapping("/managers/{managerId}")
+    @GetMapping("/managers/{userId}")
     public ResponseEntity<JsonResult> getAllManagerNotifications(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long managerId
+        @PathVariable Long userId
     ) {
         List<?> notification = notificationService.getNotificationsById(
             token,
-            managerId,
+            userId,
             NotificationType.MANAGER
         );
 
@@ -132,14 +132,14 @@ public class NotificationController {
     }
 
     @Operation(summary = "담당자 계정별 읽은 알림 조회")
-    @GetMapping("/managers/read/{managerId}")
+    @GetMapping("/managers/read/{userId}")
     public ResponseEntity<JsonResult> getRecentManagerNotificationById(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long managerId
+        @PathVariable Long userId
     ) {
         List<?> notificationById = notificationService.getRecentNotifications(
             token,
-            managerId,
+            userId,
             NotificationType.MANAGER
         );
 
@@ -148,17 +148,17 @@ public class NotificationController {
     }
 
     @Operation(summary = "담당자 계정별 알림 전송")
-    @PostMapping("/managers/{managerId}")
+    @PostMapping("/managers/{userId}")
     public ResponseEntity<JsonResult> createManagerNotification(
         @RequestHeader("Authorization") String token,
         @RequestBody ManagerNotificationCreateRequestDTO dto,
-        @PathVariable Long managerId
+        @PathVariable Long userId
     ) {
         ManagerNotificationResponseDTO notification =
             (ManagerNotificationResponseDTO) notificationService.createNotification(
                 token,
                 dto,
-                managerId,
+                userId,
                 NotificationType.MANAGER
             );
 
