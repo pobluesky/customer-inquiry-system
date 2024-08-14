@@ -2,6 +2,11 @@ package com.pobluesky.backend.domain.user.entity;
 
 import com.pobluesky.backend.global.BaseEntity;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 import lombok.Getter;
@@ -12,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 @MappedSuperclass
 public abstract class User extends BaseEntity implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+
     protected String name;
 
     protected String email;
@@ -21,6 +30,9 @@ public abstract class User extends BaseEntity implements UserDetails {
     protected String phone;
 
     protected Boolean isActivated;
+
+    @Enumerated(EnumType.STRING)
+    protected UserRole role;
 
     public void deleteUser(){
         this.isActivated = false;

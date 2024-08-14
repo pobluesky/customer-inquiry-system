@@ -13,5 +13,4 @@ public enum UserRole {
 
 
     private final String role;
-
 }

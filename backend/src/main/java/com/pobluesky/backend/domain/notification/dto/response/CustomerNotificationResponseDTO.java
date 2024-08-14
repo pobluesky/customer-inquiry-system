@@ -16,7 +16,7 @@ public record CustomerNotificationResponseDTO(
     public static CustomerNotificationResponseDTO from(CustomerNotification customerNotification) {
         return CustomerNotificationResponseDTO.builder()
             .notificationId(customerNotification.getNotificationId())
-            .customerId(customerNotification.getCustomer().getCustomerId())
+            .customerId(customerNotification.getCustomer().getUserId())
             .notificationContents(customerNotification.getNotificationContents())
             .isRead(customerNotification.getIsRead())
             .createdDate(customerNotification.getCreatedDate())

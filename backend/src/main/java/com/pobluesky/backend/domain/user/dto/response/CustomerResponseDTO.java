@@ -19,7 +19,7 @@ public record CustomerResponseDTO(
     public static CustomerResponseDTO from(Customer customer) {
 
         return CustomerResponseDTO.builder()
-            .userId(customer.getCustomerId())
+            .userId(customer.getUserId())
             .name(customer.getName())
             .email(customer.getEmail())
             .password(customer.getPassword())

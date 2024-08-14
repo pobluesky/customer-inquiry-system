@@ -1,6 +1,6 @@
 package com.pobluesky.backend.domain.user.controller;
 
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.CustomerUpdateRequestDTO;
@@ -38,7 +38,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    private final CustomUserDetailsService userDetailsService;
+    private final SignService signService;
 
     @GetMapping
     @Operation(summary = "고객사 조회")
@@ -55,7 +55,7 @@ public class CustomerController {
         String email = logInDto.email();
         String password = logInDto.password();
 
-        return userDetailsService.signIn(email, password);
+        return signService.signIn(email, password);
     }
 
     @PostMapping("/sign-up")
@@ -71,10 +71,12 @@ public class CustomerController {
     @Operation(summary = "고객사 정보 수정")
     public ResponseEntity<JsonResult> updateUserByNo(
         @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
         CustomerResponseDTO response = customerService.updateCustomerById(
             token,
+            userId,
             customerUpdateRequestDTO
         );
 
@@ -84,8 +86,11 @@ public class CustomerController {
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "고객사 삭제")
-    public ResponseEntity<CommonResult> deleteUserByNo(@PathVariable Long userId) {
-        customerService.deleteCustomerById(userId);
+    public ResponseEntity<CommonResult> deleteUserByNo(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId
+    ) {
+        customerService.deleteCustomerById(token, userId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }

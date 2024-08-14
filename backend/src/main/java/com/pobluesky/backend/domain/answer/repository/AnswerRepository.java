@@ -11,5 +11,5 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Answer findByQuestion_QuestionId(Long questionId);
 
-    List<Answer> findAllByCustomer_CustomerId(Long customerId);
+    List<Answer> findAllByCustomer_UserId(Long customerId);
 }

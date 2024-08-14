@@ -59,7 +59,7 @@ public class LineItemController {
     @Operation(summary = "inquiryId 별 line-item 작성")
     @PostMapping
     public ResponseEntity<JsonResult> createLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @RequestBody Map<String, Object> requestDto) {
         LineItemResponseDTO response = lineItemService.createLineItem(
@@ -75,7 +75,7 @@ public class LineItemController {
     @PutMapping("/update/{lineItemId}")
     @Operation(summary = "line item 내역 수정")
     public ResponseEntity<JsonResult> updateLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @PathVariable Long lineItemId,
         @RequestBody Map<String, Object> requestDto
@@ -94,7 +94,7 @@ public class LineItemController {
     @DeleteMapping("/delete/{lineItemId}")
     @Operation(summary = "line item 내역 삭제")
     public ResponseEntity<CommonResult> deleteLineItem(
-        @RequestHeader String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @PathVariable Long lineItemId
     ) {

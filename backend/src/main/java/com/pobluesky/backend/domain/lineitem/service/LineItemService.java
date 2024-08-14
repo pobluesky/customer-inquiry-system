@@ -33,14 +33,14 @@ import com.pobluesky.backend.domain.lineitem.entity.LineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.repository.CarLineItemRepository;
+import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.domain.lineitem.repository.ColdRolledLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.HotRolledLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.ThickPlateLineItemRepository;
 import com.pobluesky.backend.domain.lineitem.repository.WireRodLineItemRepository;
-import com.pobluesky.backend.domain.user.repository.CustomerRepository;
-import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
-
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
@@ -52,6 +52,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class LineItemService {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final SignService signService;
 
     private final CarLineItemRepository carLineItemRepository;
 
@@ -77,6 +78,7 @@ public class LineItemService {
     private final HotRolledLineItemRepository hotRolledLineItemRepository;
 
     private final WireRodLineItemRepository wireRodLineItemRepository;
+
     private final ThickPlateLineItemRepository thickPlateLineItemRepository;
 
     @Transactional
@@ -85,7 +87,6 @@ public class LineItemService {
         Long inquiryId,
         Map<String, Object> requestDto
     ) {
-
         Inquiry inquiry = validateUserAndInquiry(token, inquiryId);
         ProductType productType = inquiry.getProductType();
         LineItem entity;
@@ -154,15 +155,23 @@ public class LineItemService {
 
     @Transactional(readOnly = true)
     public List<LineItemResponseDTO> getLineItemsByInquiry(String token, Long inquiryId) {
-        Long userId = userDetailsService.parseToken(token);
-
-        if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId))
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        Long userId = signService.parseToken(token);
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        ProductType productType = inquiry.getProductType();
+        if (!managerRepository.existsById(userId)) {
+            Customer customer = customerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+            if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
+                throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
+
+        List<CarLineItem> lineItemList =
+            carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
+
+         ProductType productType = inquiry.getProductType();
 
         switch (productType) {
             case CAR:
@@ -248,7 +257,6 @@ public class LineItemService {
                 return thickPlateLineItemList.stream()
                     .map(lineItem-> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
-
 
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
@@ -359,7 +367,6 @@ public class LineItemService {
                 );
 
             case THICK_PLATE:
-
                 ThickPlateLineItem thickPlateLineItem = thickPlateLineItemRepository.findActiveThickPlateLineItemById(lineItemId)
                     .orElseThrow(() -> new CommonException(ErrorCode.LINE_ITEM_NOT_FOUND));
 
@@ -438,7 +445,7 @@ public class LineItemService {
     }
 
     private Inquiry validateUserAndInquiry(String token, Long inquiryId) {
-        Long userId = userDetailsService.parseToken(token);
+        Long userId = signService.parseToken(token);
 
         customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -446,7 +453,7 @@ public class LineItemService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if(!Objects.equals(inquiry.getCustomer().getCustomerId(), userId))
+        if(!Objects.equals(inquiry.getCustomer().getUserId(), userId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return inquiry;

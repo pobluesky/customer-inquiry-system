@@ -4,7 +4,9 @@ import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Getter
@@ -24,7 +26,7 @@ public class Question extends BaseEntity {
     private Inquiry inquiry; // 문의 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer; // 고객사 번호
 
     private String title; // 제목

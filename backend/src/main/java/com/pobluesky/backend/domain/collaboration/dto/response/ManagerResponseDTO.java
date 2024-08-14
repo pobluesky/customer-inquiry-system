@@ -15,7 +15,7 @@ public record ManagerResponseDTO(
 
     public static ManagerResponseDTO from(Manager manager) {
         return ManagerResponseDTO.builder()
-            .managerId(manager.getManagerId())
+            .managerId(manager.getUserId())
             .empNo(manager.getEmpNo())
             .name(manager.getName())
             .department(manager.getDepartment())

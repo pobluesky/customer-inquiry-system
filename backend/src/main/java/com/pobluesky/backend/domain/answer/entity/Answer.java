@@ -30,7 +30,7 @@ public class Answer extends BaseEntity {
     private Inquiry inquiry; // 문의 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer; // 고객사 번호
 
     @Column(columnDefinition = "TEXT")
