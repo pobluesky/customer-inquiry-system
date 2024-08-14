@@ -32,7 +32,7 @@ public class CarLineItemSummaryResponseDTO extends LineItemResponseDTO {
     public static CarLineItemSummaryResponseDTO of(CarLineItem carLineItem) {
 
         InquirySummaryResponseDTO inquiryDTO =
-            InquirySummaryResponseDTO.from(carLineItem.getInquiry(), carLineItem);
+            InquirySummaryResponseDTO.from(carLineItem.getInquiry());
 
         return CarLineItemSummaryResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())

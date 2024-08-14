@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.lineitem.dto.response.hotrolled;
 
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;

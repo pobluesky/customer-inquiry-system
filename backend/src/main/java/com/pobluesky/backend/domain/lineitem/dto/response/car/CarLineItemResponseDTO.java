@@ -49,7 +49,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
             .inquiryId(carLineItem.getInquiry().getInquiryId())
-            .CustomerId(carLineItem.getCustomer().getCustomerId())
+            .CustomerId(carLineItem.getCustomer().getUserId())
             .CustomerName(carLineItem.getCustomer().getCustomerName())
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())

@@ -60,7 +60,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .join(inquiry.customer, customer)
             .where(
                 inquiry.isActivated.isTrue(),
-                inquiry.customer.customerId.eq(customerId),
+                inquiry.customer.userId.eq(customerId),
                 progressEq(progress),
                 productTypeEq(productType),
                 customerNameEq(customerName),
@@ -97,7 +97,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .selectFrom(inquiry)
             .where(
                 inquiry.isActivated.isTrue(),
-                inquiry.customer.customerId.eq(customerId),
+                inquiry.customer.userId.eq(customerId),
                 progressEq(progress),
                 productTypeEq(productType),
                 customerNameEq(customerName),
