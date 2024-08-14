@@ -111,7 +111,7 @@ public class AnswerService {
                 questionRepository.findAllByCustomer_UserId(customer.getUserId()).stream()
                 .map(question -> {
                     Answer answer =
-                        answerRepository.findByQuestion_QuestionId(question.getQuestionId())
+                        Optional.ofNullable(answerRepository.findByQuestion_QuestionId(question.getQuestionId()))
                         .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
                     return AnswerWithQuestionResponseDTO.from(question, answer);
