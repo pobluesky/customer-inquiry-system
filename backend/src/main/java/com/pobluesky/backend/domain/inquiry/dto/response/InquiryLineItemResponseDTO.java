@@ -1,11 +1,14 @@
 package com.pobluesky.backend.domain.inquiry.dto.response;
 
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
+@AllArgsConstructor
 public class InquiryLineItemResponseDTO {
     private InquirySummaryResponseDTO inquiryInfo;
     private LineItemResponseDTO lineItemInfo;
@@ -16,4 +19,6 @@ public class InquiryLineItemResponseDTO {
             .lineItemInfo(lineItemInfo)
             .build();
     }
+
+
 }

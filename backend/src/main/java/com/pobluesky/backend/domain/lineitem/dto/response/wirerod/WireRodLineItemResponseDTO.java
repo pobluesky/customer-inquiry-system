@@ -16,7 +16,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long customerId;
+    private Long userId;
 
     private String customerName;
 
@@ -45,7 +45,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
         return WireRodLineItemResponseDTO.builder()
             .lineItemId(wireRodLineItem.getLineItemId())
             .inquiryId(wireRodLineItem.getInquiry().getInquiryId())
-            .customerId(wireRodLineItem.getCustomer().getUserId())
+            .userId(wireRodLineItem.getCustomer().getUserId())
             .customerName(wireRodLineItem.getCustomer().getCustomerName())
             .kind(wireRodLineItem.getKind())
             .orderCategory(wireRodLineItem.getOrderCategory())

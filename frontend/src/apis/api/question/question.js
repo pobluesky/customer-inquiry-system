@@ -1,6 +1,6 @@
-export const getQuestionByCustomerId = async (customerId, token) => {
+export const getQuestionByuserId = async (userId, token) => {
     try {
-        const response = await fetch(`/api/question/customer/${customerId}`, {
+        const response = await fetch(`/api/question/customer/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',

@@ -1,6 +1,10 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
+import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
+import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
+import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
+import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.global.BaseEntity;
@@ -41,7 +45,19 @@ public class Inquiry extends BaseEntity {
     private Customer customer;
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CarLineItem> carLineItemList = new ArrayList<>();
+    private List<CarLineItem> carLineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ColdRolledLineItem> coldRolledLineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HotRolledLineItem> hotRolledLineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ThickPlateLineItem> thickPlateLineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WireRodLineItem> wireRodLineItems = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Country country;

@@ -18,7 +18,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long CustomerId;
+    private Long userId;
 
     private String CustomerName;
 
@@ -49,7 +49,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
             .inquiryId(carLineItem.getInquiry().getInquiryId())
-            .CustomerId(carLineItem.getCustomer().getUserId())
+            .userId(carLineItem.getCustomer().getUserId())
             .CustomerName(carLineItem.getCustomer().getCustomerName())
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
