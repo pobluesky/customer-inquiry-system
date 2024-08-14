@@ -66,7 +66,7 @@ axiosInstance.interceptors.response.use(
                   token: refreshToken,
                 },
                 headers: {
-                  Authorization: `Bearer ${refreshToken}`,
+                  Authorization: `${refreshToken}`,
                 },
               }
           );
