@@ -16,15 +16,22 @@ import {
     getUserPassword,
     getLoginErrorMsg,
 } from '../../index';
-import { LoginFailedAlert } from '../../utils/actions';
+import { LoginCompleteAlert, LoginFailedAlert } from '../../utils/actions';
 
 function Login() {
     const navigate = useNavigate();
 
     const [, setGlobalRole] = useRecoilState(authByRole);
 
+    // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
+    const currentUserEmail = useRecoilValue(getUserEmail);
+    const currentUserPassword = useRecoilValue(getUserPassword);
     const [email, setEmail] = useState(currentUserEmail);
     const [password, setPassword] = useState(currentUserPassword);
+
+    // 기존 사용자 정보: 로그인 단계에서 저장
+    const [, setGlobalEmail] = useRecoilState(userEmail);
+    const [, setGlobalPassword] = useRecoilState(userPassword);
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
@@ -33,14 +40,6 @@ function Login() {
     const [showAlert, canShowAlert] = useState(false);
     const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
     const currentLoginErrorMsg = useRecoilValue(getLoginErrorMsg);
-
-    // 회원가입을 통해 유입된 사용자
-    const currentUserEmail = useRecoilValue(getUserEmail);
-    const currentUserPassword = useRecoilValue(getUserPassword);
-
-    // 기존 사용자
-    const [, setGlobalEmail] = useRecoilState(userEmail);
-    const [, setGlobalPassword] = useRecoilState(userPassword);
 
     useEffect(() => {
         if (currentLoginErrorMsg) {
@@ -54,6 +53,7 @@ function Login() {
             setGlobalRole(getCookie('userRole')); // 전역 역할 수정
             setGlobalEmail(email);
             setGlobalPassword(password);
+            LoginCompleteAlert();
             setTimeout(() => {
                 navigate('/');
             }, '3000');

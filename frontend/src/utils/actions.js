@@ -91,6 +91,17 @@ const JoinFailedAlert = (message) => {
     });
 };
 
+const LoginCompleteAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        titleText: '로그인이 완료되었습니다.',
+        text: '잠시 후 메인 화면으로 이동합니다.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+};
+
 const LoginFailedAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -113,5 +124,6 @@ export {
     ManagerRoleIsNullAlert,
     JoinCompleteAlert,
     JoinFailedAlert,
+    LoginCompleteAlert,
     LoginFailedAlert,
 };
