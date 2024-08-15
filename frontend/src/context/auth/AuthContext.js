@@ -1,8 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getCookie, removeCookie } from '../../apis/utils/cookies';
-import {
-    getUserNameByEmail
-} from '../../apis/api/auth';
 
 export const AuthContext = createContext();
 
@@ -33,7 +30,8 @@ export const AuthProvider = ({children}) => {
         setToken(null);
     };
 
-    console.log(isLoggedIn);
+    console.log("현재 로그인 상태: ", isLoggedIn);
+    console.log("현재 유저의 role: ", role);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, role, logout }}>

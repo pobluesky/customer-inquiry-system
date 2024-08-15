@@ -27,6 +27,7 @@ function App() {
                         <Route index path="" element={<Intro />} />
                         <Route path="login" element={<Login />} />
                         <Route path="join" element={<Join />} />
+
                         <Route path="inq-main" element={<InqMain />} />
                         <Route path="inq-list" element={<InqList />} />
                         <Route path="inq-form" element={<InqForm />} />

@@ -14,10 +14,10 @@ export const MenuLink = styled(Link)`
 `;
 
 // [To do list] 로그인 권한 여부 확인 기능 추가
-function Header({ user, login, inq, voc, dashboard }) {
+function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const backgroundColor = login ? '#EDFAFF' : '';
     const { isLoggedIn, logout } = useAuth();
+    const backgroundColor = isLoggedIn ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
 
     const handleLogout = () => {
@@ -56,7 +56,7 @@ function Header({ user, login, inq, voc, dashboard }) {
                     <>
                         <div>
                             <MenuLink
-                                to="/inq-list"
+                                to="/inq-main"
                                 style={{
                                     color:
                                         inq && !voc && !dashboard
@@ -69,7 +69,7 @@ function Header({ user, login, inq, voc, dashboard }) {
                         </div>
                         <div>
                             <MenuLink
-                                to="/voc"
+                                to="/voc-main"
                                 style={{
                                     color:
                                         !inq && voc && !dashboard
@@ -115,16 +115,16 @@ function Header({ user, login, inq, voc, dashboard }) {
                 ) : (
                     <>
                         <div>
-                            <MenuLink to="/inq-list">Inquiry</MenuLink>
+                            <MenuLink to="/inq-main">Inquiry</MenuLink>
                         </div>
                         <div>
-                            <MenuLink to="/voc">VoC</MenuLink>
+                            <MenuLink to="/voc-main">VoC</MenuLink>
                         </div>
                         <div>
                             <MenuLink to="/dashboard">DashBoard</MenuLink>
                         </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        {!user ? (
+                        {isLoggedIn ? (
                             <div>
                                 <Button
                                     onClick={() => navigate('/login')}
