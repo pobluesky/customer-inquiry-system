@@ -7,7 +7,6 @@ export const AuthProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState(null);
     const [token, setToken] = useState(null);
-    const [userName, setUserName] = useState(null);
 
     useEffect(() => {
         // 페이지 새로고침 시 쿠키에서 토큰을 가져와 로그인 상태를 설정

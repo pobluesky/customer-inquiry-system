@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from "../../components/atoms/Button";
-import Header from "../../components/mocules/Header";
 import VocPath from "../../components/atoms/VocPath";
 import { intro1, intro2 } from "../../assets/css/icons/intro";
 import {
