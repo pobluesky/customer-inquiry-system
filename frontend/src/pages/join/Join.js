@@ -16,6 +16,9 @@ import {
     validateCustomerName,
 } from '../../utils/validation';
 
+import { useRecoilState } from 'recoil';
+import { userName, userEmail, userPassword } from '../../index';
+
 function Join() {
     const navigate = useNavigate();
 
@@ -39,6 +42,10 @@ function Join() {
     const [department, setDept] = useState('IT');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [, setGlobalName] = useRecoilState(userName);
+    const [, setGlobalEmail] = useRecoilState(userEmail);
+    const [, setGlobalPassword] = useRecoilState(userPassword);
 
     const nameChange = (e) => setName(e.target.value);
     const userCodeChange = (e) => setUserCode(e.target.value);
@@ -80,8 +87,8 @@ function Join() {
                 customerCode,
                 customerName,
             );
-            console.log('고객사 회원가입 완료', result);
-            navigate('/login');
+            console.log('고객사 회원가입 결과', result.success);
+            { result.success && saveGlobalInfo(); navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('고객사 회원가입 실패:', error);
@@ -101,8 +108,8 @@ function Join() {
                 role,
                 department,
             );
-            console.log('담당자 회원가입 완료', result);
-            navigate('/login');
+            console.log('담당자 회원가입 결과', result.success);
+            { result.success && saveGlobalInfo(); navigate('/login'); }
             // [Alert] 회원가입 성공
         } catch (error) {
             console.error('담당자 회원가입 실패:', error);
@@ -121,6 +128,13 @@ function Join() {
         }
         // [Alert] 비밀번호가 일치하지 않습니다.
     };
+
+    // 회원가입 성공시 이름, 이메일, 비밀번호 atom에 저장
+    const saveGlobalInfo = () => {
+        setGlobalName(name);
+        setGlobalEmail(email);
+        setGlobalPassword(password);
+    }
 
     // 역할 조회, 권한 부여, 회원가입 버튼
     const checkButton = ({ btnName, onClick, margin }) => (
@@ -176,7 +190,7 @@ function Join() {
                                     value: name,
                                     onChange: nameChange,
                                     type: 'text',
-                                    placeholder: '김숙하',
+                                    placeholder: '홍길동',
                                     categoryName: '이름',
                                     warningMsg: `${validateName(name)}`,
                                 })}
@@ -217,8 +231,8 @@ function Join() {
                                         btnName: '역할 조회',
                                         onClick: () => {
                                             !validateName(name) &&
-                                                !validateUserCode(userCode) &&
-                                                getRoleAndSetNewForm(userCode);
+                                            !validateUserCode(userCode) &&
+                                            getRoleAndSetNewForm(userCode);
                                         },
                                     })}
                                 {/* 권한 부여 버튼 */}
@@ -269,7 +283,7 @@ function Join() {
                                         value: customerName,
                                         onChange: customerNameChange,
                                         type: 'text',
-                                        placeholder: '(주)손흥민',
+                                        placeholder: '(주)포스코',
                                         categoryName: '고객사명',
                                         warningMsg: `${validateCustomerName(
                                             customerName,
@@ -284,9 +298,9 @@ function Join() {
                                             onChange={deptChange}
                                         >
                                             <option value="IT">IT</option>
-                                            <option value="HR">HR</option>
-                                            <option value="SALES">SALES</option>
-                                            <option value="FINANCE">FIN</option>
+                                            <option value="HR">인사</option>
+                                            <option value="SALES">판매</option>
+                                            <option value="FINANCE">재무</option>
                                         </select>
                                     </>
                                 )}
@@ -318,9 +332,9 @@ function Join() {
                                     margin: '0 0 84px 0',
                                     onClick: async () => {
                                         !validateEmail(email) &&
-                                            !validatePhone(phone) &&
-                                            !validatePassword(password) &&
-                                            (await GetAuth());
+                                        !validatePhone(phone) &&
+                                        !validatePassword(password) &&
+                                        (await GetAuth());
                                     },
                                 })}
                             </div>
