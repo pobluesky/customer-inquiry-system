@@ -77,7 +77,7 @@ axiosInstance.interceptors.response.use(
 
                 error.config.headers.Authorization = `${newAccessToken}`;
 
-                const newRole = getRoleFromCookie(newAccessToken);
+                const newRole = refreshResponse.data.result.userRole;
 
                 const updatedResponse = await axios(error.config);
 
