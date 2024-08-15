@@ -1,4 +1,4 @@
-import { signInApi, signUpApi } from '../utils/authUtils';
+import { findNameByEmail, signInApi, signUpApi } from '../utils/authUtils';
 import { getCookie } from '../utils/cookies';
 import { getEmailFromToken } from '../utils/tokenUtils';
 
