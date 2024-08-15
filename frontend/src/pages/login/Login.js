@@ -21,6 +21,7 @@ function Login() {
     const GetAuth = async () => {
         try {
             const checkByLoginAPI = await signInApiByUser(email, password);
+            console.log(checkByLoginAPI);
 
             if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
                 console.log('고객사 로그인 성공', checkByLoginAPI);

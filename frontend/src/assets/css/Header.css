@@ -7,7 +7,7 @@
 
 .Container > div {
     display: grid;
-    grid-template-columns: 24px 804px 120px 84px 156px 48px 108px;
+    grid-template-columns: 24px 804px 120px 84px 156px 48px 108px 108px;
     justify-content: center;
     align-items: center;
 }

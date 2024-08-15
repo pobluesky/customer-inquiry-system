@@ -1,4 +1,11 @@
-import { signInApi, signUpApi } from '../utils/authUtils';
+import {
+    findNameByEmail,
+    getUserInfoApi,
+    signInApi,
+    signUpApi,
+} from '../utils/authUtils';
+import { getCookie } from '../utils/cookies';
+import { getEmailFromToken } from '../utils/tokenUtils';
 
 // 고객사 & 담당자 로그인
 export const signInApiByUser = (email, password) => {
@@ -43,4 +50,18 @@ export const signUpApiByManagers = (
         role,
         department,
     });
+};
+
+// 고객사 유저 정보 조회
+export const getCustomerInfo = () => {
+    const token = getCookie('accessToken');
+    const email = getEmailFromToken(token);
+    return findNameByEmail(email, '/customers');
+};
+
+// 담당자 유저 정보 조회
+export const getManagerInfo = () => {
+    const token = getCookie('accessToken');
+    const email = getEmailFromToken(token);
+    return findNameByEmail(email, '/managers');
 };

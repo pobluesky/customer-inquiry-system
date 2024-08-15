@@ -17,6 +17,7 @@ axiosInstance.interceptors.request.use(
         if (accessToken) {
             config.headers.Authorization = `${accessToken}`;
         }
+        // console.log(config);
         return config;
     },
     (error) => {
@@ -27,15 +28,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     // 응답이 성공적일 때
     (response) => {
-        if (response && response.data) {
-            const accessToken = getCookie('accessToken');
-
-            if (accessToken) {
-                setCookie('userRole', response.data.userRole);
-                return { ...response };
-            }
-        }
-        return response.data;
+        return response;
     },
 
     // 토큰이 유효하지 않을 경우

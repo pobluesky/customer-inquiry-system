@@ -15,29 +15,35 @@ import { DashBoard } from './pages/dashboard';
 import { QuestionAnswer } from './pages/voc';
 import { QuestionRegister } from './pages/voc';
 import { ManagerQuestionAnswer } from './pages/voc';
+import { AuthProvider } from './context/auth/AuthContext';
+import Layout from './components/templates/Layout';
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route index path="" element={<Intro />} />
-                <Route path="login" element={<Login />} />
-                <Route path="join" element={<Join />} />
-                <Route path="inq-main" element={<InqMain />} />
-                <Route path="inq-list" element={<InqList />} />
-                <Route path="inq-form" element={<InqForm />} />
-                <Route path="inq-item" element={<InqItem />} />
+        <AuthProvider>
+            <Router>
+                <Layout>
+                    <Routes>
+                        <Route index path="" element={<Intro />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="join" element={<Join />} />
+                        <Route path="inq-main" element={<InqMain />} />
+                        <Route path="inq-list" element={<InqList />} />
+                        <Route path="inq-form" element={<InqForm />} />
+                        <Route path="inq-item" element={<InqItem />} />
 
-                <Route path="voc/qna/list" element={<QuestionAnswer />} />
-                <Route path="voc/qna/register" element={<QuestionRegister />} />
-                <Route path="voc/qna/list/manager" element={<ManagerQuestionAnswer />} />
+                        <Route path="voc/qna/list" element={<QuestionAnswer />} />
+                        <Route path="voc/qna/register" element={<QuestionRegister />} />
+                        <Route path="voc/qna/list/manager" element={<ManagerQuestionAnswer />} />
 
-                <Route path="voc-main" element={<VocMain />} />
-                <Route path="voc-list" element={<VocList />} />
-                <Route path="dashboard" element={<DashBoard />} />
-                {/* Route path="*" element={<Error404 />} /> */}
-            </Routes>
-        </Router>
+                        <Route path="voc-main" element={<VocMain />} />
+                        <Route path="voc-list" element={<VocList />} />
+                        <Route path="dashboard" element={<DashBoard />} />
+                        {/* Route path="*" element={<Error404 />} /> */}
+                    </Routes>
+                </Layout>
+            </Router>
+        </AuthProvider>
     );
 }
 
