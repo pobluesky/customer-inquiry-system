@@ -59,7 +59,7 @@ const Input = forwardRef(
             ) : (
                 ''
             )}
-            <input
+            <form><input
                 ref={ref}
                 value={value}
                 onChange={onChange}
@@ -76,7 +76,8 @@ const Input = forwardRef(
                     borderRadius: `${borderRadius}`,
                     fontSize: `${fontSize}`,
                 }}
-            />
+                autoComplete='off'
+            /></form>
         </div>
     ),
 );

@@ -1,41 +1,81 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import Header from '../../components/mocules/Header';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
-
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { authByRole, getUserEmail, getUserPassword } from '../../index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+    authByRole,
+    userEmail,
+    userPassword,
+    loginErrorMsg,
+    getUserEmail,
+    getUserPassword,
+    getLoginErrorMsg,
+} from '../../index';
+import { LoginFailedAlert } from '../../utils/actions';
 
 function Login() {
     const navigate = useNavigate();
 
-    const currentUserEmail = useRecoilValue(getUserEmail); // selector로부터 계산된 값 읽기
-    const currentUserPassword = useRecoilValue(getUserPassword); // selector로부터 계산된 값 읽기
-
-    const [, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
+    const [, setGlobalRole] = useRecoilState(authByRole);
 
     const [email, setEmail] = useState(currentUserEmail);
     const [password, setPassword] = useState(currentUserPassword);
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
-    
+
+    const [didLogin, tryLogin] = useState(false);
+    const [showAlert, canShowAlert] = useState(false);
+    const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
+    const currentLoginErrorMsg = useRecoilValue(getLoginErrorMsg);
+
+    // 회원가입을 통해 유입된 사용자
+    const currentUserEmail = useRecoilValue(getUserEmail);
+    const currentUserPassword = useRecoilValue(getUserPassword);
+
+    // 기존 사용자
+    const [, setGlobalEmail] = useRecoilState(userEmail);
+    const [, setGlobalPassword] = useRecoilState(userPassword);
+
+    useEffect(() => {
+        if (currentLoginErrorMsg) {
+            canShowAlert(true);
+        }
+    }, [didLogin]);
+
+    // [로그인 성공] 메인 페이지로 이동
+    const goToMain = (result) => {
+        if (result.success) {
+            setGlobalRole(getCookie('userRole')); // 전역 역할 수정
+            setGlobalEmail(email);
+            setGlobalPassword(password);
+            setTimeout(() => {
+                navigate('/');
+            }, '3000');
+            return;
+        }
+        tryLogin(!didLogin);
+    };
+
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const response = await signInApiByUsers(email, password);
-            console.log(`${response.data.userRole} 로그인 결과`, response.success);
-            setGlobalRole(getCookie('userRole')); // 전역 역할 수정
-            navigate('/');
+            const result = await signInApiByUsers(
+                email,
+                password,
+                setLoginErrorMsg,
+            );
+            goToMain(result);
         } catch (error) {
             console.error('로그인 실패:', error);
         }
     };
-    
+
     return (
         <div>
             <Header
@@ -86,6 +126,13 @@ function Login() {
                     </div>
                     {/* 회원가입 링크 */}
                     <div>
+                        <LoginFailedAlert
+                            showAlert={showAlert}
+                            onClose={() => {
+                                canShowAlert(false);
+                            }}
+                            message={currentLoginErrorMsg}
+                        />
                         <a href="/join">회원이 아니신가요?</a>
                     </div>
                 </div>
