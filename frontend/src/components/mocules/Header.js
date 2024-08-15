@@ -21,8 +21,8 @@ function Header({ inq, voc, dashboard }) {
     const [username, setUsername] = useState(null);
 
     const handleLogout = () => {
-        logout();          // 로그아웃 실행
-        navigate('/login'); // 로그아웃 후 로그인 페이지로 이동
+        logout();
+        navigate('/login');
     };
 
     const findUserName = async () => {
