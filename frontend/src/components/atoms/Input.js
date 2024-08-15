@@ -59,25 +59,27 @@ const Input = forwardRef(
             ) : (
                 ''
             )}
-            <form><input
-                ref={ref}
-                value={value}
-                onChange={onChange}
-                type={type}
-                placeholder={placeholder}
-                style={{
-                    width: `${width}`,
-                    height: `${height}`,
-                    margin: `${margin}`,
-                    padding: `${padding}`,
-                    backgroundColor: `${backgroundColor}`,
-                    color: `${textColor}`,
-                    border: `${border}`,
-                    borderRadius: `${borderRadius}`,
-                    fontSize: `${fontSize}`,
-                }}
-                autoComplete='off'
-            /></form>
+            <form>
+                <input
+                    ref={ref}
+                    value={value}
+                    onChange={onChange}
+                    type={type}
+                    placeholder={placeholder}
+                    style={{
+                        width: `${width}`,
+                        height: `${height}`,
+                        margin: `${margin}`,
+                        padding: `${padding}`,
+                        backgroundColor: `${backgroundColor}`,
+                        color: `${textColor}`,
+                        border: `${border}`,
+                        borderRadius: `${borderRadius}`,
+                        fontSize: `${fontSize}`,
+                    }}
+                    autoComplete="off"
+                />
+            </form>
         </div>
     ),
 );
