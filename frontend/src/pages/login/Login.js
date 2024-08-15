@@ -4,7 +4,7 @@ import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 
-import { signInApiByUser } from '../../apis/api/auth';
+import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 
 function Login() {
@@ -19,7 +19,7 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByLoginAPI = await signInApiByUser(email, password);
+            const checkByLoginAPI = await signInApiByUsers(email, password);
             console.log(checkByLoginAPI);
 
             if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
