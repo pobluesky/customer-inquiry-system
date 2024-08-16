@@ -201,13 +201,6 @@ function Join() {
 
     return (
         <div>
-            <Header
-                user={false}
-                login={false}
-                inq={true}
-                voc={true}
-                dashboard={true}
-            />
             <div className={SignUp}>
                 <div>
                     {isFirstPage ? (

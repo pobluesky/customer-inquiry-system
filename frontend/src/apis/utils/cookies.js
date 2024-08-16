@@ -13,3 +13,8 @@ export const getCookie = (name) => {
 export const removeCookie = (name) => {
   return cookies.remove(name);
 };
+
+// 쿠키에서 역할을 추출하는 함수
+export const getRoleFromCookie = () => {
+  return getCookie('userRole');
+};
