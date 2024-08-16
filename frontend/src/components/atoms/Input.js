@@ -11,6 +11,9 @@ const Input = forwardRef(
             categoryMargin,
             categoryTextAlign,
 
+            needWarningMsg,
+            warningMsg,
+
             placeholder,
             value,
             onChange,
@@ -23,6 +26,7 @@ const Input = forwardRef(
             textColor,
             border,
             borderRadius,
+            fontSize,
         },
         ref,
     ) => (
@@ -37,7 +41,20 @@ const Input = forwardRef(
                         textAlign: `${categoryTextAlign}`,
                     }}
                 >
-                    {categoryName}
+                    {categoryName}&nbsp;&nbsp;&nbsp;
+                    {needWarningMsg ? (
+                        <span
+                            style={{
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                color: '#ff4d4d',
+                            }}
+                        >
+                            {warningMsg}
+                        </span>
+                    ) : (
+                        ''
+                    )}
                 </div>
             ) : (
                 ''
@@ -57,6 +74,7 @@ const Input = forwardRef(
                     color: `${textColor}`,
                     border: `${border}`,
                     borderRadius: `${borderRadius}`,
+                    fontSize: `${fontSize}`,
                 }}
             />
         </div>

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ContractType {
+
     CUSTOMER_RELATIONSHIP("customer_relationship"),
     MARKET_DEMAND("market_demand");
 

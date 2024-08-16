@@ -49,15 +49,6 @@ public class CustomerController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/sign-in")
-    @Operation(summary = "고객사 로그인")
-    public JwtToken signIn(@RequestBody LogInDto logInDto) {
-        String email = logInDto.email();
-        String password = logInDto.password();
-
-        return signService.signIn(email, password);
-    }
-
     @PostMapping("/sign-up")
     @Operation(summary = "고객사 회원가입")
     public ResponseEntity<JsonResult> signUp(@RequestBody CustomerCreateRequestDTO signUpDto) {

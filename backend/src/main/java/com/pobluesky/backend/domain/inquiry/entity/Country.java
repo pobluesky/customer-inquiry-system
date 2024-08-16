@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Country {
+
     USA("United States"),
     CANADA("Canada"),
     KOREA("South Korea"),

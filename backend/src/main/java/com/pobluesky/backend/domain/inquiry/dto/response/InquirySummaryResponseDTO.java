@@ -5,7 +5,6 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
-import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import lombok.Builder;
 
 @Builder

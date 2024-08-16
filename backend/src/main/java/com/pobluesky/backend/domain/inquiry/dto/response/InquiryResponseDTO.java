@@ -6,47 +6,52 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 import lombok.Builder;
 
 @Builder
 public record InquiryResponseDTO(
     Long inquiryId,
+    Long customerId,
+    String name,
+    String customerName,
     Country country,
     String corporate,
-    String salesPerson,
+    String  salesPerson,
+    InquiryType inquiryType,
     Industry industry,
-    Progress progress,
+    String corporationCode,
     ProductType productType,
-    String qualityManager,
-    Department department,
-    String salesManager,
+    Progress progress,
     String customerRequestDate,
+    String additionalRequests,
+    String files,
     String responseDeadline,
     String elapsedDays,
-    String corporationCode,
-    String files,
-    InquiryType inquiryType
+    Boolean isActivated
 ) {
 
     public static InquiryResponseDTO from(Inquiry inquiry) {
         return InquiryResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())
+            .customerId(inquiry.getCustomer().getUserId())
+            .name(inquiry.getCustomer().getName())
+            .customerName(inquiry.getCustomer().getCustomerName())
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())
+            .inquiryType(inquiry.getInquiryType())
             .industry(inquiry.getIndustry())
-            .progress(inquiry.getProgress())
+            .corporationCode(inquiry.getCorporationCode())
             .productType(inquiry.getProductType())
-            .qualityManager(inquiry.getQualityManager())
-            .department(inquiry.getDepartment())
-            .salesManager(inquiry.getSalesManager())
+            .progress(inquiry.getProgress())
             .customerRequestDate(inquiry.getCustomerRequestDate())
+            .additionalRequests(inquiry.getAdditionalRequests())
+            .files(inquiry.getFiles())
             .responseDeadline(inquiry.getResponseDeadline())
             .elapsedDays(inquiry.getElapsedDays())
-            .corporationCode(inquiry.getCorporationCode())
-            .files(inquiry.getFiles())
-            .inquiryType(inquiry.getInquiryType())
+            .isActivated(inquiry.getIsActivated())
             .build();
     }
 }

@@ -1,9 +1,9 @@
 export const getAnswerAndQuestionByuserId = async (userId, token) => {
     try {
-        const response = await fetch(`/api/answer/customer/complex/${userId}`, {
+        const response = await fetch(`/api/answers/customer/complex/${userId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json',
             },
         });
