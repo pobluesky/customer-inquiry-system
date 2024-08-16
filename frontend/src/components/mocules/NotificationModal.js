@@ -13,11 +13,12 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 
 const NotificationModal = ({ onClose }) => {
+    const { role, userId } = useAuth();
+
     const [activeTab, setActiveTab] = useState('new');
-    const [userId, setUserId] = useState(4); // getUserId API 구현 이후 제대로 설정
+    const [currentUserId, setCurrentUserId] = useState(userId);
     const [newNotificationList, setNewNotificationList] = useState([]);
     const [readNotificationList, setReadNotificationList] = useState([]);
-    const { role } = useAuth();
 
     const switchTab = (tab) => {
         setActiveTab(tab);
@@ -27,9 +28,9 @@ const NotificationModal = ({ onClose }) => {
         try {
             let notificationData;
             if (role === 'CUSTOMER') {
-                notificationData = await getNotificationByCustomers(userId);
+                notificationData = await getNotificationByCustomers(currentUserId);
             } else if (role === 'QUALITY' || role === 'SALES') {
-                notificationData = await getNotificationByManagers(userId);
+                notificationData = await getNotificationByManagers(currentUserId);
             }
             setNewNotificationList(notificationData.filter(notification => !notification.isRead));
         } catch (error) {
@@ -41,9 +42,9 @@ const NotificationModal = ({ onClose }) => {
         try {
             let readNotificationData;
             if (role === 'CUSTOMER') {
-                readNotificationData = await getReadNotificationByCustomers(userId);
+                readNotificationData = await getReadNotificationByCustomers(currentUserId);
             } else if (role === 'QUALITY' || role === 'SALES') {
-                readNotificationData = await getReadNotificationByManagers(userId);
+                readNotificationData = await getReadNotificationByManagers(currentUserId);
             }
             setReadNotificationList(readNotificationData);
         } catch (error) {
@@ -53,13 +54,13 @@ const NotificationModal = ({ onClose }) => {
 
     useEffect(() => {
         fetchNotifications();
-    }, [userId]);
+    }, [currentUserId]);
 
     useEffect(() => {
         if (activeTab === 'read') {
             fetchReadNotifications();
         }
-    }, [activeTab, userId]);
+    }, [activeTab, currentUserId]);
 
     const handleNotificationClick = async (notificationId) => {
         try {

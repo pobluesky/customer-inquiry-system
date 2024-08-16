@@ -7,8 +7,8 @@
 
 .Container > div {
     display: grid;
-    /*grid-template-columns: 24px 804px 120px 84px 156px 48px 70px 70px 108px; 헤더 잘림 이슈로 fr 비율로 교체 */
-    grid-template-columns: 1fr 4fr 1.5fr 1.3fr 2fr 1.4fr 0.4fr 1.5fr 0.5fr;
+    /*grid-template-columns: 45px 340px 170px 144px 150px 150px 44px 166px 55px;*/
+    /*grid-template-columns: 0.5fr 1.6fr 1.5fr 1.3fr 1.6fr 1.4fr 0.4fr 1.5fr 0.5fr; 알림 컴포넌트가 가려서 결국 px로.. */
     justify-content: center;
     align-items: center;
     gap: 10px;
