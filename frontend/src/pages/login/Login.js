@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/mocules/Header';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 
@@ -38,13 +37,6 @@ function Login() {
     
     return (
         <div>
-            <Header
-                user={true}
-                login={false}
-                inq={true}
-                voc={true}
-                dashboard={true}
-            />
             <div className={SignIn}>
                 <div>
                     <div>로그인</div>

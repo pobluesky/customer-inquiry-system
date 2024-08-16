@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atoms/Button';
-import Header from '../../components/mocules/Header';
 import JoinInput from '../../components/mocules/JoinInput';
 import { SignUp } from '../../assets/css/Auth.css';
 
@@ -170,13 +169,6 @@ function Join() {
 
     return (
         <div>
-            <Header
-                user={false}
-                login={false}
-                inq={true}
-                voc={true}
-                dashboard={true}
-            />
             <div className={SignUp}>
                 <div>
                     {isFirstPage ? (
