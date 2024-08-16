@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.pobluesky.backend.domain.file.dto.SimpleMultipartFile;
 import com.pobluesky.backend.domain.file.entity.FileInfo;
 import com.pobluesky.backend.global.error.FileUploadException;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,9 +19,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class FileService {
+
     private final AmazonS3 amazonS3;
 
-    private final String bucketName = System.getenv("S3_BUCKET_NAME");
+    Dotenv dotenv = Dotenv.load();
+
+    // private final String bucketName = System.getenv("S3_BUCKET_NAME");
+    private final String bucketName = dotenv.get("S3_BUCKET_NAME");
 
     public FileInfo uploadFileFromPath(String filePath){
         File file = new File(filePath);
@@ -56,6 +61,7 @@ public class FileService {
         String ext = originName.substring(originName.lastIndexOf(".") + 1);
         String changedName = changedFileName(originName);
         ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
 
         switch (ext.toLowerCase()) {
             case "png":
