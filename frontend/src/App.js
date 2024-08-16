@@ -19,6 +19,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { FileUpload } from './pages/fileupload';
 
 function App() {
     return (
@@ -26,6 +27,15 @@ function App() {
             <Router>
                 <Layout>
                     <Routes>
+                        {/* Test Code, Need to Delete */}
+                        <Route path="fileupload" element={<FileUpload />} />
+
+
+
+
+
+
+
                         <Route index path="" element={<Intro />} />
                         <Route path="login" element={<Login />} />
                         <Route path="join" element={<Join />} />

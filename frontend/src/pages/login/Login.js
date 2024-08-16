@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
@@ -30,7 +30,7 @@ function Login() {
     const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
     const currentLoginErrorMsg = useRecoilValue(getLoginErrorMsg);
     const [tryLogin, setTryLogin] = useState(false);
-    const [showAlert, canShowAlert] = useState(false);    
+    const [showAlert, canShowAlert] = useState(false);
     const [resetAtom, setResetAtom] = useState(false);
 
     const { didLogin, setDidLogin, setRole } = useAuth();
