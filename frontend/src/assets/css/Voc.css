@@ -1,4 +1,4 @@
-/* Question Report Component *************************/
+/* 질문 현황 정보 그룹 *********************************************/
 .Customer_Question_Report {
     width: 1320px;
     margin: 36px auto 0 auto;
@@ -73,7 +73,7 @@
     color: #03507d;
 }
 
-/* Search Bar Component ******************************/
+/* 질문 조회 시 사용하는 조건 그룹 **********************************/
 .Customer_Question_Search {
     width: 1320px;
     height: 228px;
@@ -210,7 +210,7 @@
     color: red;
 }
 
-/* Question Type Select Component ********************/
+/* 질문 등록 시 선택하는 유형 그룹 **********************************/
 .Question_Type_Select_Container {
     width: 1320px;
     height: 228px;
@@ -267,7 +267,7 @@
     margin: 0 0 0 48px;
 }
 
-/* Question Content Component ************************/
+/* 질문 제목 및 내용 출력 그룹 *************************************/
 .Question_Content_Container {
     width: 1320px;
     height: 600px;
@@ -344,8 +344,7 @@
     text-align: center;
 }
 
-/* Question Card Component ***************************/
-
+/* 질문 카드 컴포넌트 **********************************************/
 .Question_Card {
     width: 360px;
     height: 300px;
@@ -355,24 +354,27 @@
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
         rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.Question_Card:hover {
-    background-color: #cbefff;
-    cursor: pointer;
+    cursor: default;
 }
 
 .Question_Card > div {
     display: grid;
-    grid-template-rows: 48px 84px 84px 32px;
-    margin: 24px 24px 0 24px; 
+    grid-template-rows: 52px 84px 80px 32px;
+    margin: 24px 24px 0 24px;
+}
+
+/* 답변 대기/완료 버튼, 문의 번호 그룹 */
+.Question_Card > div > div:nth-child(1) {
+    display: grid;
+    grid-template-columns: 176px 128px;
+    align-items: center;
+    color: #808080;
 }
 
 /* 고객사명, 문의 등록일, 답변 등록일 그룹 */
 .Question_Card > div > div:nth-child(2) {
     display: grid;
-    grid-template-columns: 144px 132px;
-    margin: 0 0 0 24px;
+    grid-template-columns: 176px 132px;
     font-size: 12px;
 }
 
@@ -401,9 +403,10 @@
     font-size: 16px;
     font-weight: 600;
     color: #03507d;
+    cursor: pointer;
 }
 
-/* Question List Component ***************************/
+/* 질문 카드 리스트 나열 *******************************************/
 .Question_Doesnt_Exist {
     width: 360px;
     height: 300px;
@@ -434,7 +437,7 @@
     grid-template-columns: 360px 360px 360px;
 }
 
-/* Question Modal Component */
+/* 질문 및 답변 모달 컴포넌트 ***************************************/
 .Modal_Container {
     width: 900px;
     height: 600px;
