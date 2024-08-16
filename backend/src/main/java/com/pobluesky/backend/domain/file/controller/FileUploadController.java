@@ -13,7 +13,7 @@ public class FileUploadController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping("/uploadFile")
+    @PostMapping("/uploadfile")
     public FileInfo uploadFile(@RequestParam("filePath") String filePath) {
 
         return fileService.uploadFileFromPath(filePath);

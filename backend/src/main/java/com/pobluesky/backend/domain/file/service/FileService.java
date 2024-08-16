@@ -94,5 +94,4 @@ public class FileService {
         String random = UUID.randomUUID().toString();
         return random + originName;
     }
-
 }

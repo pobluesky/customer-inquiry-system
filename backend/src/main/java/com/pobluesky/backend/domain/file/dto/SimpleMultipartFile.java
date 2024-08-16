@@ -14,8 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class SimpleMultipartFile implements MultipartFile {
 
     private final String name;
+
     private final String originalFilename;
+
     private final String contentType;
+
     private final byte[] content;
 
     @Override

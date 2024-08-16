@@ -1,13 +1,13 @@
 package com.pobluesky.backend.domain.file.entity;
 
-
 import lombok.Builder;
 import lombok.Getter;
 
-
 @Getter
 public class FileInfo {
+
     private String originName;
+
     private String storedFilePath;
 
     @Builder
