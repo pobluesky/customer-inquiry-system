@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
+import readBell from '../../assets/css/icons/readBell.svg';
+import readCircle from '../../assets/css/icons/readCircle.svg';
+
 import {
     getNotificationByCustomers, getNotificationByManagers,
     getReadNotificationByCustomers, getReadNotificationByManagers,
@@ -10,11 +13,12 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 
 const NotificationModal = ({ onClose }) => {
+    const { role, userId } = useAuth();
+
     const [activeTab, setActiveTab] = useState('new');
-    const [userId, setUserId] = useState(4); // getUserId API 구현 이후 제대로 설정
-    const [newNotiList, setNewNotiList] = useState([]);
-    const [readNotiList, setReadNotiList] = useState([]);
-    const { role } = useAuth();
+    const [currentUserId, setCurrentUserId] = useState(userId);
+    const [newNotificationList, setNewNotificationList] = useState([]);
+    const [readNotificationList, setReadNotificationList] = useState([]);
 
     const switchTab = (tab) => {
         setActiveTab(tab);
@@ -24,11 +28,11 @@ const NotificationModal = ({ onClose }) => {
         try {
             let notificationData;
             if (role === 'CUSTOMER') {
-                notificationData = await getNotificationByCustomers(userId);
+                notificationData = await getNotificationByCustomers(currentUserId);
             } else if (role === 'QUALITY' || role === 'SALES') {
-                notificationData = await getNotificationByManagers(userId);
+                notificationData = await getNotificationByManagers(currentUserId);
             }
-            setNewNotiList(notificationData.filter(notification => !notification.isRead));
+            setNewNotificationList(notificationData.filter(notification => !notification.isRead));
         } catch (error) {
             console.error(error);
         }
@@ -38,11 +42,11 @@ const NotificationModal = ({ onClose }) => {
         try {
             let readNotificationData;
             if (role === 'CUSTOMER') {
-                readNotificationData = await getReadNotificationByCustomers(userId);
+                readNotificationData = await getReadNotificationByCustomers(currentUserId);
             } else if (role === 'QUALITY' || role === 'SALES') {
-                readNotificationData = await getReadNotificationByManagers(userId);
+                readNotificationData = await getReadNotificationByManagers(currentUserId);
             }
-            setReadNotiList(readNotificationData);
+            setReadNotificationList(readNotificationData);
         } catch (error) {
             console.error(error);
         }
@@ -50,13 +54,13 @@ const NotificationModal = ({ onClose }) => {
 
     useEffect(() => {
         fetchNotifications();
-    }, [userId]);
+    }, [currentUserId]);
 
     useEffect(() => {
         if (activeTab === 'read') {
             fetchReadNotifications();
         }
-    }, [activeTab, userId]);
+    }, [activeTab, currentUserId]);
 
     const handleNotificationClick = async (notificationId) => {
         try {
@@ -89,8 +93,8 @@ const NotificationModal = ({ onClose }) => {
             <div>
                 {activeTab === 'new' ? (
                     <NotificationList>
-                        {newNotiList.length > 0 ? (
-                            newNotiList.map(notification => (
+                        {newNotificationList.length > 0 ? (
+                            newNotificationList.map(notification => (
                                 <NotificationBox key={notification.id} read={false}>
                                     <div>
                                         <img src={bell} alt="notification" />
@@ -110,18 +114,18 @@ const NotificationModal = ({ onClose }) => {
                     </NotificationList>
                 ) : (
                     <NotificationList>
-                        {readNotiList.length > 0 ? (
-                            readNotiList.map(notification => (
+                        {readNotificationList.length > 0 ? (
+                            readNotificationList.map(notification => (
                                 <NotificationBox key={notification.id} read={true}>
                                     <div>
-                                        <img src={bell} alt="notification" />
+                                        <img src={readBell} alt="notification" />
                                     </div>
                                     <NotificationText>
                                         {notification.date}
                                         <span>&nbsp;{notification.contents}</span>
                                     </NotificationText>
                                     <div>
-                                        <img src={circle} alt="notification" />
+                                        <img src={readCircle} alt="notification" />
                                     </div>
                                 </NotificationBox>
                             ))
@@ -203,6 +207,16 @@ const NotificationBox = styled.div`
       }
     `}
   }
+
+  ${({ read }) => read && `
+      background-color: #ffffff;
+      border: 1px solid #ababab;
+      color: #ababab;
+
+      span {
+        color: #ababab;
+      }
+    `}
 `;
 
 const Title = styled.h2`

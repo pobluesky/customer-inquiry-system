@@ -18,6 +18,11 @@ export const MenuLink = styled(Link)`
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout } = useAuth();
+
+    const columns = didLogin
+        ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
+        : '45px 340px 170px 144px 150px 150px';
+
     const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
 
@@ -61,7 +66,9 @@ function Header({ inq, voc, dashboard }) {
     return (
         <div>
         <div className={Container} style={{ backgroundColor }}>
-            <div>
+            <div style={{
+                gridTemplateColumns: columns
+            }}>
                 <div></div>
                 {/* 로그인 완료 */}
                 <img src={mainlogo} alt="poscodx" />
