@@ -59,11 +59,11 @@ VALUES
     (5, '선박용도', 'TP002', '알루미나', 'Silicon', '350 MPa ~ 530 MPa', false, '35 J @ -10°C', '550 MPa', '강도에 특히 신경을 써주세요', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- OFFERSHEET
-INSERT INTO offersheet (inquiry_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge, price_terms, payment_terms, shipment, validity, destination, remark)
+INSERT INTO offersheet (inquiry_id, price_terms, payment_terms, shipment, validity, destination, remark)
 VALUES
-    (2, 'HOT_ROLLED', 'specification(규격) A', 'Polished', '압력용기', '2mm', '500mm', '1500mm', '1000', '50000', '900kg', '1000kg', 'Mill Edge', 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', '보람', '최종검토바람'),
-    (4, 'COLD_ROLLED', 'specification(규격) B', 'Matte', '파이프 소재', '3mm', '600mm', '1800mm', '1500', '75000', '1100kg', '1200kg', 'Slit Edge', 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', '금강', '유효기간 내 제품 배송 확인'),
-    (5, 'THICK_PLATE', 'specification(규격) C', 'Brushed', '교량용', '2.5mm', '550mm', '1650mm', '1200', '60000', '1000kg', '1100kg', 'Slit Edge', 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료');
+    (2, 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', '보람', '최종검토바람'),
+    (4, 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', '금강', '유효기간 내 제품 배송 확인'),
+    (5, 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료');
 
 -- QUALITY
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
