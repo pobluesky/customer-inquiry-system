@@ -41,6 +41,17 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @GetMapping
+    @Operation(summary = "협업 조회")
+    public ResponseEntity<JsonResult> getCollaborations(
+        @RequestHeader("Authorization") String token
+    ) {
+        List<CollaborationResponseDTO> response = collaborationService.getAllCollaborations(token);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
     @Operation(summary = "questionId 별 협업 요청")
     @PostMapping("/{questionId}")
     public ResponseEntity<JsonResult> createCollaboration(
