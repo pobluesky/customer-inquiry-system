@@ -1,11 +1,10 @@
 package com.pobluesky.backend.domain.receipt.dto.response;
 
 import com.pobluesky.backend.domain.receipt.entity.Receipt;
+
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
-@Getter
 public record ReceiptResponse (
     String product,
     String specification,

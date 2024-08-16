@@ -25,6 +25,8 @@ public record ReceiptCreateRequestDTO(
             .specification(specification)
             .surfaceFinish(surfaceFinish)
             .usage(usage)
+            .thickness(thickness)
+            .diameter(diameter)
             .width(width)
             .quantity(quantity)
             .price(price)

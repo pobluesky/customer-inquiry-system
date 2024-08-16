@@ -2,9 +2,6 @@ package com.pobluesky.backend.domain.offersheet.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 
-import com.pobluesky.backend.domain.receipt.entity.Receipt;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +12,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,10 +35,6 @@ public class OfferSheet {
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
-    @ElementCollection
-    @CollectionTable(name = "order_receipts", joinColumns = @JoinColumn(name = "order_id"))
-    private List<Receipt> receipts;
-
     private String priceTerms;
 
     private String paymentTerms;
@@ -58,7 +50,6 @@ public class OfferSheet {
     @Builder
     public OfferSheet(
         Inquiry inquiry,
-        List<Receipt> receipts,
         String priceTerms,
         String paymentTerms,
         LocalDate shipment,
@@ -67,7 +58,6 @@ public class OfferSheet {
         String remark
     ) {
         this.inquiry = inquiry;
-        this.receipts = receipts;
         this.priceTerms = priceTerms;
         this.paymentTerms = paymentTerms;
         this.shipment = shipment;

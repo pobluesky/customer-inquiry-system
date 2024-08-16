@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +38,7 @@ public class ReceiptController {
     )
     public ResponseEntity<JsonResult> getReceiptsByOfferSheet(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long offerSheetId
+        @PathVariable("offerSheetId") Long offerSheetId
     ) {
         List<ReceiptResponse> response = receiptService.getReceiptsByInquiry(
             token,
@@ -52,7 +53,7 @@ public class ReceiptController {
     @PostMapping
     public ResponseEntity<JsonResult> createReceipt(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long offerSheetId,
+        @PathVariable("offerSheetId") Long offerSheetId,
         @RequestBody ReceiptCreateRequestDTO requestDto) {
         ReceiptResponse response = receiptService.createReceipt(
             token,
@@ -68,8 +69,8 @@ public class ReceiptController {
     @Operation(summary = "receipt 내역 수정")
     public ResponseEntity<JsonResult> updateLineItem(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long offerSheetId,
-        @PathVariable Long receiptId,
+        @PathVariable("offerSheetId") Long offerSheetId,
+        @PathVariable("receiptId") Long receiptId,
         @RequestBody ReceiptUpdateRequestDTO requestDto
     ) {
         ReceiptResponse response = receiptService.updateReceiptById(
@@ -84,11 +85,11 @@ public class ReceiptController {
     }
 
     @DeleteMapping("/delete/{receiptId}")
-    @Operation(summary = "receiptId내역 삭제")
+    @Operation(summary = "receipt 내역 삭제")
     public ResponseEntity<CommonResult> deleteLineItem(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long offerSheetId,
-        @PathVariable Long receiptId
+        @PathVariable("offerSheetId") Long offerSheetId,
+        @PathVariable("receiptId") Long receiptId
     ) {
         receiptService.deleteReceiptById(
             token,

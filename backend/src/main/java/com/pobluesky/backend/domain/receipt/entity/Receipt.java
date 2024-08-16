@@ -1,9 +1,7 @@
 package com.pobluesky.backend.domain.receipt.entity;
 
-import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.offersheet.entity.OfferSheet;
 import com.pobluesky.backend.global.BaseEntity;
-import jakarta.persistence.Embeddable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "receipts")
 public class Receipt extends BaseEntity {
 
     @Id
@@ -26,7 +29,7 @@ public class Receipt extends BaseEntity {
     private Long receiptId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "offersheet_id")
+    @JoinColumn(name = "offer_sheet_id")
     private OfferSheet offerSheet;
 
     private String product;
@@ -84,6 +87,7 @@ public class Receipt extends BaseEntity {
         this.unitMinWeight = unitMinWeight;
         this.unitMaxWeight = unitMaxWeight;
         this.edge = edge;
+        this.isActivated = true;
     }
 
     public void updateReceipt(
