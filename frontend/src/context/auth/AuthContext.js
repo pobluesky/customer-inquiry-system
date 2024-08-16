@@ -8,25 +8,17 @@ export const AuthProvider = ({children}) => {
     const [role, setRole] = useState(null);
     const [token, setToken] = useState(null);
 
-    console.log("111", isLoggedIn);
-
     useEffect(() => {
         // 페이지 새로고침 시 쿠키에서 토큰을 가져와 로그인 상태를 설정
         const token = getCookie('accessToken');
         const currentUserRole = getCookie('userRole');
 
         if (token) {
-            console.log('tt', isLoggedIn);
             setToken(token);
             setIsLoggedIn(true);
             setRole(currentUserRole);
         }
     }, []);
-
-    useEffect(() => {
-        console.log('야', isLoggedIn);
-
-    }, [isLoggedIn]);
 
     // 로그아웃 함수
     const logout = () => {

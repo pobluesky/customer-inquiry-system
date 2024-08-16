@@ -24,7 +24,7 @@ function Login() {
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, setIsLoggedIn, setRole } = useAuth();
 
     // 로그인 API
     const GetAuth = async () => {
@@ -32,8 +32,9 @@ function Login() {
             const response = await signInApiByUsers(email, password);
             console.log(`${response.data.userRole} 로그인 결과`, response.success);
             setGlobalRole(getCookie('userRole')); // 전역 역할 수정
-            // navigate('/');
-            console.log("Login.js", isLoggedIn);
+            navigate('/');
+            setIsLoggedIn(true);
+            setRole(getCookie('userRole'));
         } catch (error) {
             console.error('로그인 실패:', error);
         }
