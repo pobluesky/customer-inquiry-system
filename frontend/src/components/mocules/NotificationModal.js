@@ -12,8 +12,8 @@ import { useAuth } from '../../hooks/useAuth';
 const NotificationModal = ({ onClose }) => {
     const [activeTab, setActiveTab] = useState('new');
     const [userId, setUserId] = useState(4); // getUserId API 구현 이후 제대로 설정
-    const [newNotiList, setNewNotiList] = useState([]);
-    const [readNotiList, setReadNotiList] = useState([]);
+    const [newNotificationList, setNewNotificationList] = useState([]);
+    const [readNotificationList, setReadNotificationList] = useState([]);
     const { role } = useAuth();
 
     const switchTab = (tab) => {
@@ -28,7 +28,7 @@ const NotificationModal = ({ onClose }) => {
             } else if (role === 'QUALITY' || role === 'SALES') {
                 notificationData = await getNotificationByManagers(userId);
             }
-            setNewNotiList(notificationData.filter(notification => !notification.isRead));
+            setNewNotificationList(notificationData.filter(notification => !notification.isRead));
         } catch (error) {
             console.error(error);
         }
@@ -42,7 +42,7 @@ const NotificationModal = ({ onClose }) => {
             } else if (role === 'QUALITY' || role === 'SALES') {
                 readNotificationData = await getReadNotificationByManagers(userId);
             }
-            setReadNotiList(readNotificationData);
+            setReadNotificationList(readNotificationData);
         } catch (error) {
             console.error(error);
         }
@@ -89,8 +89,8 @@ const NotificationModal = ({ onClose }) => {
             <div>
                 {activeTab === 'new' ? (
                     <NotificationList>
-                        {newNotiList.length > 0 ? (
-                            newNotiList.map(notification => (
+                        {newNotificationList.length > 0 ? (
+                            newNotificationList.map(notification => (
                                 <NotificationBox key={notification.id} read={false}>
                                     <div>
                                         <img src={bell} alt="notification" />
@@ -110,8 +110,8 @@ const NotificationModal = ({ onClose }) => {
                     </NotificationList>
                 ) : (
                     <NotificationList>
-                        {readNotiList.length > 0 ? (
-                            readNotiList.map(notification => (
+                        {readNotificationList.length > 0 ? (
+                            readNotificationList.map(notification => (
                                 <NotificationBox key={notification.id} read={true}>
                                     <div>
                                         <img src={bell} alt="notification" />
