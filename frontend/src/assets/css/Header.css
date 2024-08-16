@@ -46,3 +46,10 @@
     font-weight: bold;
     color: #03507d;
 }
+
+/* 로그아웃 버튼 */
+.Container > div > div:nth-child(7) Button:hover {
+    background-color: #03507d !important;
+    color: #ffffff !important;
+    border: none !important;
+}

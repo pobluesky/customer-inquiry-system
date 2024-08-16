@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
@@ -19,6 +19,10 @@ function Header({ inq, voc, dashboard }) {
     const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
 
+    const location = useLocation();
+    const isLoginPage = location.pathname === '/login';
+    const isJoinPage = location.pathname === '/join';
+
     const handleLogout = () => {
         logout();
         navigate('/login');
@@ -37,7 +41,7 @@ function Header({ inq, voc, dashboard }) {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
         if (didLogin) {
@@ -102,14 +106,13 @@ function Header({ inq, voc, dashboard }) {
                                 btnName={'로그아웃'}
                                 width={'84px'}
                                 height={'40px'}
-                                backgroundColor={'#03507d'}
-                                textColor={'#eeeeee'}
+                                backgroundColor={'#edfaff'}
+                                textColor={'#c1c1c1'}
                                 border={'solid #c1c1c1 1px'}
                                 borderRadius={'12px'}
                                 fontSize={'16px'}
                             />
                         </div>
-                        {/* <div>포청천님</div> */}
                     </>
                 ) : (
                     <>
@@ -123,21 +126,22 @@ function Header({ inq, voc, dashboard }) {
                             <MenuLink to="/dashboard">DashBoard</MenuLink>
                         </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        {!didLogin ? (
+                        {!didLogin && !isLoginPage && isJoinPage && (
                             <div>
                                 <Button
                                     onClick={() => navigate('/login')}
                                     btnName={'로그인'}
                                     width={'84px'}
-                                        height={'40px'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#eeeeee'}
-                                        border={'solid #c1c1c1 1px'}
-                                        borderRadius={'12px'}
-                                        fontSize={'16px'}
-                                    />
-                                </div>
-                        ) : (
+                                    height={'40px'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#eeeeee'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
+                                    fontSize={'16px'}
+                                />
+                            </div>
+                        )}
+                        {!didLogin && !isJoinPage && isLoginPage && (
                             <div>
                                 <Button
                                     onClick={() => navigate('/join')}
