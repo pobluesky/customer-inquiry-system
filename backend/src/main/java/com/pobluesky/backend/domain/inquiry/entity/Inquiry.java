@@ -1,7 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Department;
+import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,14 +24,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inquiry")
-public class Inquiry {
+public class Inquiry extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inquiryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
@@ -59,12 +59,6 @@ public class Inquiry {
 
     private String additionalRequests;
 
-    private String qualityManager;
-
-    private Department department;
-
-    private String salesManager;
-
     private String files;
 
     private String responseDeadline;
@@ -75,76 +69,68 @@ public class Inquiry {
 
     @Builder
     private Inquiry(
+        Customer customer,
         Country country,
         String corporate,
-        String corporationCode,
         String  salesPerson,
+        InquiryType inquiryType,
         Industry industry,
-        Progress progress,
+        String corporationCode,
         ProductType productType,
-        String qualityManager,
-        Department department,
-        String salesManager,
+        Progress progress,
         String customerRequestDate,
+        String additionalRequests,
+        String files,
         String responseDeadline,
         String elapsedDays,
-        String files,
-        InquiryType inquiryType,
-        Boolean isActivated,
-        String additionalRequests
+        Boolean isActivated
+
     ){
+        this.customer = customer;
         this.country = country;
         this.corporate = corporate;
         this.salesPerson = salesPerson;
+        this.inquiryType = inquiryType;
         this.industry = industry;
-        this.progress = progress;
+        this.corporationCode = corporationCode;
         this.productType = productType;
-        this.qualityManager = qualityManager;
-        this.department = department;
-        this.salesManager = salesManager;
+        this.progress = progress;
         this.customerRequestDate = customerRequestDate;
+        this.additionalRequests = additionalRequests;
+        this.files = files;
         this.responseDeadline = responseDeadline;
         this.elapsedDays = elapsedDays;
-        this.corporationCode = corporationCode;
-        this.files = files;
-        this.inquiryType = inquiryType;
         this.isActivated = isActivated;
-        this.additionalRequests = additionalRequests;
     }
 
     public void updateInquiry(
         Country country,
         String corporate,
         String  salesPerson,
-        Industry industry,
-        Progress progress,
-        ProductType productType,
-        String qualityManager,
-        Department department,
-        String salesManager,
-        String customerRequestDate,
-        String responseDeadline,
-        String elapsedDays,
-        String files,
         InquiryType inquiryType,
-        String additionalRequests
+        Industry industry,
+        ProductType productType,
+        Progress progress,
+        String customerRequestDate,
+        String additionalRequests,
+        String files,
+        String responseDeadline,
+        String elapsedDays
     ){
         this.country = country;
         this.corporate = corporate;
         this.salesPerson = salesPerson;
+        this.inquiryType = inquiryType;
         this.industry = industry;
-        this.progress = progress;
         this.productType = productType;
-        this.qualityManager = qualityManager;
-        this.department = department;
-        this.salesManager = salesManager;
+        this.progress = progress;
         this.customerRequestDate = customerRequestDate;
+        this.additionalRequests = additionalRequests;
+        this.files = files;
         this.responseDeadline = responseDeadline;
         this.elapsedDays = elapsedDays;
-        this.files = files;
-        this.inquiryType = inquiryType;
-        this.additionalRequests = additionalRequests;
     }
+
     public void deleteInquiry() {
         this.isActivated = false;
     }

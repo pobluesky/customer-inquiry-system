@@ -5,14 +5,14 @@ import com.pobluesky.backend.domain.quality.entity.QualityReviewInfo;
 public record QualityReviewInfoCreateRequestDTO(
     String finalResult,
     String finalResultDetails,
-    Long standard,
+    String standard,
     String orderCategory,
     String coatingMetalQuantity,
     String coatingOilQuantity,
     String thicknessTolerance,
     String orderEdge,
     String customerQReq,
-    Boolean availableLab
+    String availableLab
 ) {
     // dto -> entity
     public QualityReviewInfo toQualityReviewInfoEntity() {

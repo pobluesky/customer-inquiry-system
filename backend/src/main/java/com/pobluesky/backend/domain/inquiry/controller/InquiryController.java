@@ -3,12 +3,22 @@ package com.pobluesky.backend.domain.inquiry.controller;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
+import com.pobluesky.backend.domain.inquiry.entity.ProductType;
+import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+
+import io.swagger.v3.oas.annotations.Operation;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -26,61 +38,125 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
     private final InquiryService inquiryService;
 
-    // 조회 페이지
-    @GetMapping("/customers/inquiries/{customerId}")
-    public ResponseEntity<JsonResult> getInquiriesByCustomerId(@PathVariable Long customerId) {
-        List<InquiryResponseDTO> response  = inquiryService.getInquiriesByCustomerId(customerId);
+    // 고객 Inquiry 조회
+    @GetMapping("/customers/inquiries/{userId}")
+    @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getInquiriesByCustomer(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "4") int size,
+        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
+            token, userId, page, size, sortBy,
+            progress, productType, customerName,
+            inquiryType, startDate, endDate
+        );
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("inquiryInfo", inquiries.getContent());
+        response.put("totalElements", inquiries.getTotalElements());
+        response.put("totalPages", inquiries.getTotalPages());
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     // 상세 조회 페이지
-    @GetMapping("/customers/inquiries/{customerId}/{inquiryId}")
-    public ResponseEntity<JsonResult> getInquiryDetail(@PathVariable Long customerId, @PathVariable Long inquiryId) {
-        InquiryResponseDTO response = inquiryService.getInquiryDetail(customerId,inquiryId);
+    @GetMapping("/customers/inquiries/{userId}/{inquiryId}")
+    @Operation(summary = "고객사 Inquiry 상세 조회")
+    public ResponseEntity<JsonResult> getInquiryDetail(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long inquiryId) {
+        InquiryResponseDTO response = inquiryService.getInquiryDetail(
+            token,
+            userId,
+            inquiryId
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customers/inquiries/{customerId}")
-    public ResponseEntity<JsonResult> createInquiry(@PathVariable Long customerId,
+    @PostMapping("/customers/inquiries/{userId}")
+    @Operation(summary = "고객사 Inquiry 생성")
+    public ResponseEntity<JsonResult> createInquiry(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
         @RequestBody InquiryCreateRequestDTO dto) {
-        InquiryResponseDTO response = inquiryService.createInquiry(customerId,dto);
+        InquiryResponseDTO response = inquiryService.createInquiry(
+            token,
+            userId,
+            dto
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @PutMapping("/customers/inquiries/{inquiryId}")
+    @Operation(summary = "고객사 Inquiry 수정")
     public ResponseEntity<JsonResult> updateInquiryById(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
         @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
-        InquiryResponseDTO response = inquiryService.updateInquiryById(inquiryId, inquiryUpdateRequestDTO);
+        InquiryResponseDTO response = inquiryService.updateInquiryById(
+            token,
+            inquiryId,
+            inquiryUpdateRequestDTO
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @DeleteMapping("/customers/inquiries/{inquiryId}")
-    public ResponseEntity<CommonResult> deleteInquiryById(@PathVariable Long inquiryId) {
-        inquiryService.deleteInquiryById(inquiryId);
+    @Operation(summary = "고객사 Inquiry 삭제")
+    public ResponseEntity<CommonResult> deleteInquiryById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        inquiryService.deleteInquiryById(token, inquiryId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
-    // 매니저면 inquiryId나 managerId 안써도 될까
-    @GetMapping("/managers/inquiries/{managerId}")
-    public ResponseEntity<JsonResult> getInquiriesForManager(@PathVariable Long managerId) {
-        List<InquiryResponseDTO> response = inquiryService.getInquiries();
+    // 담당자 Inquiry 조회
+    @GetMapping("/managers/inquiries")
+    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getInquiriesByManager(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "4") int size,
+        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        return ResponseEntity.status((HttpStatus.OK))
+        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManager(
+            token, page, size, sortBy,
+            progress, productType, customerName,
+            inquiryType, startDate, endDate
+        );
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("inquiryInfo", inquiries.getContent());
+        response.put("totalElements", inquiries.getTotalElements());
+        response.put("totalPages", inquiries.getTotalPages());
+
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
-
-
-
-
 }

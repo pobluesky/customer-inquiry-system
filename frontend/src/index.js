@@ -2,17 +2,43 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { RecoilRoot, atom, selector } from 'recoil';
+
+// Atom 생성 함수
+const createAtom = (key, defaultValue = '') => {
+    return atom({
+        key: key,
+        default: defaultValue,
+    });
+};
+
+// Selector 생성 함수
+const createSelector = (key, atom) => {
+    return selector({
+        key: key,
+        get: ({ get }) => {
+            return get(atom);
+        },
+    });
+};
+
+// [Recoil] 고유 키 값으로 역할 및 사용자 정보 변수 선언
+export const authByRole = createAtom('authByRole');
+export const userName = createAtom('userName');
+export const userEmail = createAtom('userEmail');
+export const userPassword = createAtom('userPassword');
+
+// [Recoil] Selector로 변수 Get 호출
+export const getAuthByRole = createSelector('getAuthByRole', authByRole);
+export const getUserName = createSelector('getUserName', userName);
+export const getUserEmail = createSelector('getUserEmail', userEmail);
+export const getUserPassword = createSelector('getUserPassword', userPassword);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router>
-        <App />
-    </Router>
+    <React.StrictMode>
+        <RecoilRoot>
+            <App />
+        </RecoilRoot>
+    </React.StrictMode>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

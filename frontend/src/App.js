@@ -1,22 +1,47 @@
 import React from 'react';
-import { useRoutes } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 
 import { Intro } from './pages/intro';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
-import { Inq } from './pages/inq';
-import { Voc } from './pages/voc';
+import { InqMain } from './pages/inq-main';
+import { InqList } from "./pages/inq-list";
+import { InqForm } from "./pages/inq-form";
+import { InqItem } from './pages/inq-item';
+import { VocList } from './pages/voc-list';
+import { VocMain } from './pages/voc-main';
 import { DashBoard } from './pages/dashboard';
+import { QuestionAnswer } from './pages/voc';
+import { QuestionRegister } from './pages/voc';
+import { ManagerQuestionAnswer } from './pages/voc';
+import { AuthProvider } from './context/auth/AuthContext';
+import Layout from './components/templates/Layout';
 
 function App() {
-    return useRoutes([
-        { path: '/', element: <Intro /> }, // 메인 화면
-        { path: '/login', element: <Login /> },
-        { path: '/join', element: <Join /> },
-        { path: '/inq', element: <Inq /> },
-        { path: '/voc', element: <Voc /> },
-        { path: '/dashboard', element: <DashBoard /> },
-    ]);
+    return (
+        <AuthProvider>
+            <Router>
+                <Layout>
+                    <Routes>
+                        <Route index path="" element={<Intro />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="join" element={<Join />} />
+                        <Route path="inq-main" element={<InqMain />} />
+                        <Route path="inq-list" element={<InqList />} />
+                        <Route path="inq-form" element={<InqForm />} />
+                        <Route path="inq-item" element={<InqItem />} />
+
+                        <Route path="voc-main" element={<VocMain />} />
+                        <Route path="voc-list" element={<VocList />} />
+
+                        <Route path="dashboard" element={<DashBoard />} />
+                        {/* Route path="*" element={<Error404 />} /> */}
+                    </Routes>
+                </Layout>
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;

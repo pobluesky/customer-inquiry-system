@@ -1,56 +1,163 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
 import person from '../../assets/css/icons/person.svg';
-// import PropTypes from 'prop-types';
+import { Container } from '../../assets/css/Header.css';
+import { useAuth } from '../../hooks/useAuth';
+import { getCustomerInfo, getManagerInfo } from '../../apis/api/auth';
+
+export const MenuLink = styled(Link)`
+    color: #03507d;
+    text-decoration: none;
+`;
 
 // [To do list] 로그인 권한 여부 확인 기능 추가
-function Header({ login, inq, voc, dashboard }) {
+function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const backgroundColor = login ? '#EDFAFF' : '';
+    const { isLoggedIn, logout } = useAuth();
+    const backgroundColor = isLoggedIn ? '#EDFAFF' : '';
+    const [username, setUsername] = useState(null);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    const findUserName = async () => {
+        try {
+            const customer = await getCustomerInfo();
+            setUsername(customer);
+
+            if (customer === null) {
+                const manager = await getManagerInfo();
+                setUsername(manager);
+            }
+            return username;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            findUserName();
+        }
+    }, [isLoggedIn]);
 
     return (
-        <div style={{ width: '100%', height: '84px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor, boxShadow: '0 4px 8px rgba(0,0,0,0.10)' }}>
-            {login ? (
-                <>  
-                    {/* 로그인 완료 */}
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5em', fontWeight: 'bold' }}>
-                        <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '4vw' }} />
-                    </div>
-                    <div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Link to="/inq" style={{ marginRight: '6vw', textDecoration: 'none', color: inq && !voc && !dashboard ? '#03507d' : '#c1c1c1', fontSize: '1.5em', fontWeight: 'bold' }}>Inquiry</Link>
-                            <Link to="/voc" style={{ marginRight: '6vw', textDecoration: 'none', color: !inq && voc && !dashboard ? '#03507d' : '#c1c1c1', fontSize: '1.5em', fontWeight: 'bold' }}>VoC</Link>
-                            <Link to="/dashboard" style={{ marginRight: '6vw', textDecoration: 'none', color: !inq && !voc && dashboard ? '#03507d' : '#c1c1c1', fontSize: '1.5em', fontWeight: 'bold' }}>DashBoard</Link>
-
-                            <img src={person} alt="user" width="30px" style={{ marginRight: '1vw' }} />
-                            <span style={{ marginRight: '4vw', fontSize: '1.2em', fontWeight: 'bold', color: '#03507d' }}>포청천님</span>
+        <div className={Container} style={{ backgroundColor }}>
+            <div>
+                <div></div>
+                {/* 로그인 완료 */}
+                <img src={mainlogo} alt="poscodx" />
+                {isLoggedIn ? (
+                    <>
+                        <div>
+                            <MenuLink
+                                to="/inq-main"
+                                style={{
+                                    color:
+                                        inq && !voc && !dashboard
+                                            ? '#03507d'
+                                            : '#c1c1c1',
+                                }}
+                            >
+                                Inquiry
+                            </MenuLink>
                         </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={mainlogo} alt="poscodx" width="120px" style={{ marginLeft: '4vw' }} />
-                            <Link to="/inq" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>Inquiry</Link>
-                            <Link to="/voc" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>VoC</Link>
-                            <Link to="/dashboard" style={{ marginLeft: '6vw', textDecoration: 'none', color: '#03507d', fontSize: '1.5em', fontWeight: 'bold' }}>DashBoard</Link>
-                    </div>
-                    <div>
+                        <div>
+                            <MenuLink
+                                to="/voc-main"
+                                style={{
+                                    color:
+                                        !inq && voc && !dashboard
+                                            ? '#03507d'
+                                            : '#c1c1c1',
+                                }}
+                            >
+                                VoC
+                            </MenuLink>
+                        </div>
+                        <div>
+                            <MenuLink
+                                to="/dashboard"
+                                style={{
+                                    color:
+                                        !inq && !voc && dashboard
+                                            ? '#03507d'
+                                            : '#c1c1c1',
+                                }}
+                            >
+                                DashBoard
+                            </MenuLink>
+                        </div>
+                        <div>
+                            <img src={person} alt="user" />
+                        </div>
+                        {username}
+                        <div>
+                            <Button
+                                onClick={() => handleLogout()}
+                                btnName={'로그아웃'}
+                                width={'84px'}
+                                height={'40px'}
+                                backgroundColor={'#03507d'}
+                                textColor={'#eeeeee'}
+                                border={'solid #c1c1c1 1px'}
+                                borderRadius={'12px'}
+                                fontSize={'16px'}
+                            />
+                        </div>
+                        {/* <div>포청천님</div> */}
+                    </>
+                ) : (
+                    <>
+                        <div>
+                            <MenuLink to="/inq-main">Inquiry</MenuLink>
+                        </div>
+                        <div>
+                            <MenuLink to="/voc-main">VoC</MenuLink>
+                        </div>
+                        <div>
+                            <MenuLink to="/dashboard">DashBoard</MenuLink>
+                        </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        <Button onClick={() => navigate('/login')} btnName={'로그인'} width={'84px'} height={'40px'} backgroundColor={'#03507d'} textColor={'#eeeeee'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} fontSize={'16px'} />
-                        <Button onClick={() => navigate('/join')} btnName={'회원가입'} width={'84px'} height={'40px'} margin={'24px'} backgroundColor={'#ffffff'} textColor={'#03507d'} border={'solid #c1c1c1 1px'} borderRadius={'12px'} fontSize={'16px'} />
-                    </div>
-                </>
-            )}
+                        {isLoggedIn ? (
+                            <div>
+                                <Button
+                                    onClick={() => navigate('/login')}
+                                    btnName={'로그인'}
+                                    width={'84px'}
+                                        height={'40px'}
+                                        backgroundColor={'#03507d'}
+                                        textColor={'#eeeeee'}
+                                        border={'solid #c1c1c1 1px'}
+                                        borderRadius={'12px'}
+                                        fontSize={'16px'}
+                                    />
+                                </div>
+                        ) : (
+                            <div>
+                                <Button
+                                    onClick={() => navigate('/join')}
+                                    btnName={'회원가입'}
+                                    width={'84px'}
+                                    height={'40px'}
+                                    backgroundColor={'#ffffff'}
+                                    textColor={'#03507d'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
+                                    fontSize={'16px'}
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 }
-
-// Header.propTypes = {
-//     username: PropTypes.string.isRequired,
-// };
 
 export default Header;

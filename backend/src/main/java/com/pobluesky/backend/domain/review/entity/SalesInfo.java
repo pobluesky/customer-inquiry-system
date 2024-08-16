@@ -2,6 +2,8 @@ package com.pobluesky.backend.domain.review.entity;
 
 import jakarta.persistence.Embeddable;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SalesInfo {
+
+    @Enumerated(EnumType.STRING)
     private ContractType contract;
     private String thicknessNotify;
 }

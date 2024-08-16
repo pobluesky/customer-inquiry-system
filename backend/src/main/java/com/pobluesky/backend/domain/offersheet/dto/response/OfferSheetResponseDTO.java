@@ -8,8 +8,7 @@ import java.time.LocalDate;
 public record OfferSheetResponseDTO(
     Long offerSheetId,
     Long inquiryId,
-    Long customerId,
-//    String customerName,
+    Long userId,
     String product,
     String specification,
     String surfaceFinish,
@@ -26,14 +25,14 @@ public record OfferSheetResponseDTO(
     String paymentTerms,
     LocalDate shipment,
     LocalDate validity,
-    String destination
+    String destination,
+    String remark
 ) {
     public static OfferSheetResponseDTO from(OfferSheet offerSheet) {
         return OfferSheetResponseDTO.builder()
             .offerSheetId(offerSheet.getOfferSheetId())
             .inquiryId(offerSheet.getInquiry().getInquiryId())
-            .customerId(offerSheet.getCustomer().getCustomerId())
-            //.customerName(offerSheet.getCustomer().getCustomerName())
+            .userId(offerSheet.getInquiry().getCustomer().getUserId())
             .product(offerSheet.getProduct())
             .specification(offerSheet.getSpecification())
             .surfaceFinish(offerSheet.getSurfaceFinish())
@@ -51,6 +50,7 @@ public record OfferSheetResponseDTO(
             .shipment(offerSheet.getShipment())
             .validity(offerSheet.getValidity())
             .destination(offerSheet.getDestination())
+            .remark(offerSheet.getRemark())
             .build();
     }
 }

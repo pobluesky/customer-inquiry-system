@@ -5,28 +5,15 @@ import lombok.Getter;
 @Getter
 public enum ProductType {
 
-    COLD_ROLLED_GENERAL("Cold Rolled (General)"),
-    COLD_ROLLED_HOME_APPLIANCES("Cold Rolled (Home Appliances)"),
-    COLD_ROLLED_OTHERS("Cold Rolled (Others)"),
-    ELECTRICAL_STEEL("Electrical Steel"),
-    HOT_ROLLED_GENERAL("Hot Rolled (General)"),
-    HOT_ROLLED_ENERGY_PIPE("Hot Rolled (Energy Pipe)"),
-    HOT_ROLLED_CONSTRUCTION("Hot Rolled (Construction)"),
+    COLD_ROLLED("Cold Rolled"),
+    HOT_ROLLED("Hot Rolled"),
     WIRE_ROD("Wire Rod"),
-    HEAVY_PLATE_GENERAL("Heavy Plate (General/Classification Society)"),
-    HEAVY_PLATE_ENERGY_PIPE("Heavy Plate (Energy Pipe)"),
-    HEAVY_PLATE_CONSTRUCTION("Heavy Plate (Construction)"),
-    HEAVY_PLATE_ONSHORE_PLANT("Heavy Plate (Onshore Plant)"),
-    HEAVY_PLATE_SHIPBUILDING_OFFSHORE_PLANT("Heavy Plate (Shipbuilding/Offshore Plant)"),
-    SURFACE_TREATED_GENERAL("Surface Treated (General)"),
-    SURFACE_TREATED_HOME_APPLIANCES("Surface Treated (Home Appliances)"),
-    STAINLESS("Stainless"),
-    SLAB("Slab");
+    THICK_PLATE("Thick Plate"),
+    CAR("Car");
 
     private final String type;
 
     ProductType(String type) {
         this.type = type;
     }
-
 }

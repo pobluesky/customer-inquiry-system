@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.quality.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "quality")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quality {
+public class Quality extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long qualityId; // 품질번호
@@ -33,7 +35,7 @@ public class Quality {
     private QualityReviewInfo qualityReviewInfo; // 품질검토정보
 
     @Column(columnDefinition = "TEXT")
-    private String requireAddContents; // 추가요청내용
+    private String qualityComments; // 추가요청내용
     /*
       Builder Pattern
      */
@@ -41,17 +43,17 @@ public class Quality {
     private Quality(
         Inquiry inquiry,
         QualityReviewInfo qualityReviewInfo,
-        String requireAddContents
+        String qualityComments
     ) {
         this.inquiry = inquiry;
         this.qualityReviewInfo = qualityReviewInfo;
-        this.requireAddContents = requireAddContents;
+        this.qualityComments = qualityComments;
     }
     public void updateQuality(
         QualityReviewInfo qualityReviewInfo,
         String requireAddContents
     ) {
         this.qualityReviewInfo = qualityReviewInfo;
-        this.requireAddContents = requireAddContents;
+        this.qualityComments = qualityComments;
     }
 }

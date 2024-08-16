@@ -6,14 +6,14 @@ import com.pobluesky.backend.domain.quality.entity.QualityReviewInfo;
 
 public record QualityCreateRequestDTO(
     QualityReviewInfo qualityReviewInfo,
-    String requireAddContents
+    String qualityComments
 ) {
     // dto -> entity
     public Quality toQualityEntity(Inquiry inquiry) {
         return Quality.builder()
             .inquiry(inquiry)
             .qualityReviewInfo(qualityReviewInfo)
-            .requireAddContents(requireAddContents)
+            .qualityComments(qualityComments)
             .build();
     }
 }

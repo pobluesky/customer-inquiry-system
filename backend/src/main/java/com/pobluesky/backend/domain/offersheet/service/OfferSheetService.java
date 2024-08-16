@@ -6,45 +6,79 @@ import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDT
 import com.pobluesky.backend.domain.offersheet.entity.OfferSheet;
 import com.pobluesky.backend.domain.offersheet.repository.OfferSheetRepository;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
+import com.pobluesky.backend.domain.user.entity.User;
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+import com.pobluesky.backend.domain.user.repository.ManagerRepository;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class OfferSheetService {
+
+    private final SignService signService;
+
     private final OfferSheetRepository offerSheetRepository;
+
     private final InquiryRepository inquiryRepository;
+
     private final CustomerRepository customerRepository;
 
-    @Transactional(readOnly = true)
-    public OfferSheetResponseDTO getOfferSheetByInquiryId(Long inquiryId) {
-        Inquiry inquiry = inquiryRepository
-            .findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    private final ManagerRepository managerRepository;
 
-        OfferSheet offerSheet = offerSheetRepository.findByInquiry(inquiry)
+    @Transactional(readOnly = true)
+    public OfferSheetResponseDTO getOfferSheetByInquiryId(String token, Long inquiryId) {
+        Long userId = signService.parseToken(token);
+
+        OfferSheet offerSheet = offerSheetRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
+
+        if (!managerRepository.existsById(userId)) {
+            Customer customer = customerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+            if(!Objects.equals(customer.getUserId(), offerSheet.getInquiry().getCustomer().getUserId()))
+                throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         return OfferSheetResponseDTO.from(offerSheet);
     }
 
     @Transactional
-    public OfferSheetResponseDTO updateOfferSheetByInquiryId(Long inquiryId, OfferSheetUpdateRequestDTO offerSheetUpdateRequestDTO) {
-        // 1. inquiryId가 존재하는지 확인
-        Inquiry inquiry = inquiryRepository
-            .findById(inquiryId)
+    public OfferSheetResponseDTO updateOfferSheetByInquiryId(
+        String token,
+        Long inquiryId,
+        OfferSheetUpdateRequestDTO offerSheetUpdateRequestDTO
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(manager.getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         // 2. 해당 inquiry에 연결된 offersheet가 있는지 확인
         OfferSheet offerSheet = offerSheetRepository.findByInquiry(inquiry)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
-
 
         // 3. offersheet update
         offerSheet.updateOfferSheet(
@@ -64,7 +98,8 @@ public class OfferSheetService {
             offerSheetUpdateRequestDTO.paymentTerms(),
             offerSheetUpdateRequestDTO.shipment(),
             offerSheetUpdateRequestDTO.validity(),
-            offerSheetUpdateRequestDTO.destination()
+            offerSheetUpdateRequestDTO.destination(),
+            offerSheetUpdateRequestDTO.remark()
         );
 
         //4. entity -> dto
@@ -72,23 +107,28 @@ public class OfferSheetService {
     }
 
     @Transactional
-    public OfferSheetResponseDTO createOfferSheet(Long inquiryId, OfferSheetCreateRequestDTO offerSheetCreateRequestDTO) {
-        Inquiry inquiry =
-            inquiryRepository
-                .findById(inquiryId)
-                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    public OfferSheetResponseDTO createOfferSheet(
+        String token,
+        Long inquiryId,
+        OfferSheetCreateRequestDTO offerSheetCreateRequestDTO
+    ) {
+        Long userId = signService.parseToken(token);
 
-        Long customerId = inquiry.getCustomer().getCustomerId();
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Customer customer =
-            customerRepository
-                .findById(customerId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        if(manager.getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
 
-        OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry, customer);
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry);
 
         OfferSheet savedOfferSheet = offerSheetRepository.save(offerSheet);
 
         return OfferSheetResponseDTO.from(savedOfferSheet);
     }
+
 }

@@ -1,9 +1,9 @@
 package com.pobluesky.backend.domain.user.dto.response;
 
-import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.ManagerRole;
+
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import lombok.Builder;
 
 @Builder
@@ -14,12 +14,15 @@ public record ManagerResponseDTO(
     String password,
     String phone,
     String empNo,
-    ManagerRole role,
-    Department department
+    UserRole role,
+    Department department,
+
+    Boolean isActivated
 ) {
     public static ManagerResponseDTO from(Manager manager) {
+
         return ManagerResponseDTO.builder()
-            .userId(manager.getManagerId())
+            .userId(manager.getUserId())
             .name(manager.getName())
             .email(manager.getEmail())
             .password(manager.getPassword())
@@ -27,6 +30,7 @@ public record ManagerResponseDTO(
             .empNo(manager.getEmpNo())
             .role(manager.getRole())
             .department(manager.getDepartment())
+            .isActivated(manager.getIsActivated())
             .build();
     }
 }

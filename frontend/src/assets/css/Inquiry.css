@@ -1,0 +1,136 @@
+._Label {
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #C1C1C1;
+  width: 160px;
+  height: 20px;
+  padding: 3px;
+  margin-left: 7vh;
+  margin-bottom: 10vh;
+}
+
+._text1 {
+  color: #616161;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._text2 {
+  color: #007AFF;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._InquiryItem {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding: 10px 80px 30px 80px;
+}
+
+._InquiryBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1.5fr;
+  justify-content: center;
+  border-radius: 0 20px 20px 20px;
+  border: 1px solid #C1C1C1;
+}
+
+._Inquiry {
+  display: grid;
+}
+
+._Product {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5vh;
+  margin-top: 0.4vh;
+}
+
+._Size {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  margin-top: -2vh;
+}
+
+._InquirySearch {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  height: 280px;
+  border-radius: 15px;
+  border: 1px solid #C1C1C1;
+  padding: 5px;
+  margin: 60px;
+}
+
+._InquirySearchBox {
+  display: grid;
+  grid-template-rows: auto auto auto;
+}
+
+._SearchBox {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 2.5fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-rows: repeat(3, 50px); /* 3행의 높이를 100px로 설정 */
+}
+
+._Text {
+  color: #49454F;
+  font-size: 26px;
+  font-weight: 800;
+  margin-left: 25px;
+}
+
+._Title {
+  color: #49454F;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-top: -4px;
+  margin-left: 25px;
+}
+
+._Input {
+  width: 123px;
+  height: 25px;
+  border-radius: 7px;
+  font-size: 16px;
+  border: 1px solid #c1c1c1;
+  color: #c1c1c1;
+  margin-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+._searchResult {
+  display: flex;
+  margin-left: 50px;
+}
+
+._searchCount {
+  color: #F02323;
+  font-weight: bold;
+}
+
+._Link {
+  text-decoration: none;
+  color: inherit;
+}
+
+._Link:hover {
+  color: #007AFF;
+  transition: color 0.1s ease-in-out;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+._IntroMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

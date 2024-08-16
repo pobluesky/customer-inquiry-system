@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Country {
+
     USA("United States"),
     CANADA("Canada"),
     KOREA("South Korea"),
@@ -17,6 +18,4 @@ public enum Country {
     Country(String countryName) {
         this.countryName = countryName;
     }
-
-
 }

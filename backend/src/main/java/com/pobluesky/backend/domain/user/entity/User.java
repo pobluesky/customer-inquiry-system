@@ -1,14 +1,40 @@
 package com.pobluesky.backend.domain.user.entity;
 
 import com.pobluesky.backend.global.BaseEntity;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
 import lombok.Getter;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Getter
-@MappedSuperclass // 상위 추상 클래스. 속성을 하위 클래스에 전달해줌
-public abstract class User extends BaseEntity {
+@MappedSuperclass
+public abstract class User extends BaseEntity implements UserDetails {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+
     protected String name;
+
     protected String email;
+
     protected String password;
+
     protected String phone;
+
+    protected Boolean isActivated;
+
+    @Enumerated(EnumType.STRING)
+    protected UserRole role;
+
+    public void deleteUser(){
+        this.isActivated = false;
+    }
 }
