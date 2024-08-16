@@ -42,13 +42,11 @@ export const AuthProvider = ({ children }) => {
         setJoinErrorMsg('');
     };
 
-    console.log('현재 로그인 상태: ', didLogin);
-    console.log('현재 유저의 role: ', role);
+    console.log("현재 로그인 상태: ", didLogin);
+    console.log("현재 유저의 role: ", role);
 
     return (
-        <AuthContext.Provider
-            value={{ didLogin, role, logout, setDidLogin, setRole }}
-        >
+        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole }}>
             {children}
         </AuthContext.Provider>
     );

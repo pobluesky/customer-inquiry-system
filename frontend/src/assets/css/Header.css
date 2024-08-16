@@ -7,9 +7,11 @@
 
 .Container > div {
     display: grid;
-    grid-template-columns: 24px 804px 120px 84px 156px 48px 108px 108px;
+    /*grid-template-columns: 24px 804px 120px 84px 156px 48px 70px 70px 108px; 헤더 잘림 이슈로 fr 비율로 교체 */
+    grid-template-columns: 1fr 4fr 1.5fr 1.3fr 2fr 1.4fr 0.4fr 1.5fr 0.5fr;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 /* POSCO 로고 */
@@ -52,4 +54,12 @@
     background-color: #03507d !important;
     color: #ffffff !important;
     border: none !important;
+}
+
+.User {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    color: #03507D;
+    font-weight: 700;
 }

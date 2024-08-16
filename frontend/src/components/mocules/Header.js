@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
 import person from '../../assets/css/icons/person.svg';
-import { Container } from '../../assets/css/Header.css';
+import { Container, User } from '../../assets/css/Header.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCustomerInfo, getManagerInfo } from '../../apis/api/auth';
+import NotificationModal from '../mocules/NotificationModal';
 
 export const MenuLink = styled(Link)`
     color: #03507d;
     text-decoration: none;
 `;
 
+// [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout } = useAuth();
     const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const notificationButtonRef = useRef(null);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
 
     const location = useLocation();
     const isLoginPage = location.pathname === '/login';
@@ -33,7 +42,7 @@ function Header({ inq, voc, dashboard }) {
             const customer = await getCustomerInfo();
             setUsername(customer);
 
-            if (customer === null) {
+            if (customer === 'Name not found') {
                 const manager = await getManagerInfo();
                 setUsername(manager);
             }
@@ -41,7 +50,7 @@ function Header({ inq, voc, dashboard }) {
         } catch (error) {
             console.error(error);
         }
-    };
+    }
 
     useEffect(() => {
         if (didLogin) {
@@ -50,6 +59,7 @@ function Header({ inq, voc, dashboard }) {
     }, [didLogin]);
 
     return (
+        <div>
         <div className={Container} style={{ backgroundColor }}>
             <div>
                 <div></div>
@@ -96,10 +106,32 @@ function Header({ inq, voc, dashboard }) {
                                 DashBoard
                             </MenuLink>
                         </div>
-                        <div>
-                            <img src={person} alt="user" />
+                        <div className={User}>
+                            <div><img src={person} alt="user" /></div>
+                            <div>{username}님</div>
                         </div>
-                        {username}
+                        <div style={{
+                            position: 'relative',
+                            display: 'inline-block',
+                        }}>
+                            <Button
+                                ref={notificationButtonRef}
+                                onClick={toggleModal}
+                                btnName={'알림'}
+                                width={'40px'}
+                                height={'40px'}
+                                backgroundColor={'#ffffff'}
+                                textColor={'#03507d'}
+                                border={'solid #c1c1c1 1px'}
+                                borderRadius={'12px'}
+                                fontSize={'13px'}
+                            />
+                            {isModalOpen && (
+                                <NotificationModal
+                                    onClose={toggleModal}
+                                />
+                            )}
+                        </div>
                         <div>
                             <Button
                                 onClick={() => handleLogout()}
@@ -160,7 +192,8 @@ function Header({ inq, voc, dashboard }) {
                 )}
             </div>
         </div>
-    );
+</div>
+);
 }
 
 export default Header;
