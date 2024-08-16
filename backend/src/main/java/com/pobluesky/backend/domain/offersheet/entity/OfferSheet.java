@@ -81,5 +81,4 @@ public class OfferSheet {
         this.destination = destination;
         this.remark = remark;
     }
-
 }
