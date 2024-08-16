@@ -4,14 +4,12 @@ import static com.pobluesky.backend.domain.question.entity.QQuestion.question;
 
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
-import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
@@ -69,8 +67,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.title,
                 question.status,
                 question.type,
-                //Expressions.dateTemplate(LocalDate.class, "CAST({0} AS DATE)", question.createdDate).as("questionCreatedAt"),
-                //Expressions.dateTemplate(LocalDate.class, "CAST({0} AS DATE)", question.answer.createdDate).as("answerCreatedAt")
                 question.createdDate.as("questionCreatedAt"),
                 question.answer.createdDate.as("answerCreatedAt")
             ))
