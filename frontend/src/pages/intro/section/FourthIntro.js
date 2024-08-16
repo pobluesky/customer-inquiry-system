@@ -9,7 +9,7 @@ const FourthIntro = () => {
 
     return (
         <div>
-            <Container style={{ $margin: '20vh' }}>
+            <Container style={{ margin: '20vh' }}>
                 <Title>내가 찾는 제품이 어떤 유형으로</Title>
                 <Title>자주 문의되는지 찾아보세요</Title>
 

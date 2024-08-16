@@ -23,11 +23,7 @@ const ThirdIntro = () => {
                 <Title>반복되는 입력 작업은</Title>
                 <Title style={{ color: '#4F95F4' }}>AI에게 맡기세요</Title>
 
-                <Text
-                    color={'#49454F'}
-                    fontSize={'24px'}
-                    $margin={'3.5vh 0 0 0'}
-                >
+                <Text color={'#49454F'} fontSize={'24px'} $margin={'3.5vh 0 0 0'}>
                     어떤 정보를 어느 곳에 작성해야할 지 헷갈린다면 활용해 보세요
                 </Text>
 
