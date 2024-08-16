@@ -1,8 +1,7 @@
 package com.pobluesky.backend.domain.offersheet.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetUpdateRequestDTO;
-import com.pobluesky.backend.domain.user.entity.Customer;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,13 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -35,10 +35,6 @@ public class OfferSheet {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
-
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "customer_id")
-//    private Customer customer;
 
     private String product;
 
