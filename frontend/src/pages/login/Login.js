@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
@@ -8,6 +8,7 @@ import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { authByRole, getUserEmail, getUserPassword } from '../../index';
+import { useAuth } from '../../hooks/useAuth';
 
 function Login() {
     const navigate = useNavigate();
@@ -22,18 +23,29 @@ function Login() {
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
-    
+
+    const { isLoggedIn } = useAuth();
+
     // 로그인 API
     const GetAuth = async () => {
         try {
             const response = await signInApiByUsers(email, password);
             console.log(`${response.data.userRole} 로그인 결과`, response.success);
             setGlobalRole(getCookie('userRole')); // 전역 역할 수정
-            navigate('/');
+            // navigate('/');
+            console.log("Login.js", isLoggedIn);
         } catch (error) {
             console.error('로그인 실패:', error);
         }
     };
+
+    useEffect(() => {
+        console.log('1');
+        if (isLoggedIn) {
+            console.log('2');
+            // findUserName();
+        }
+    }, [isLoggedIn]);
     
     return (
         <div>
