@@ -20,7 +20,7 @@ const signInApi = async (endpoint, credentials, setLoginErrorMsg) => {
                 maxAge: 7 * 24 * 60 * 60, // 7일 동안 유효
             });
 
-            setLoginErrorMsg(''); // 로그인 성공시 에러 메시지화초기화
+            setLoginErrorMsg(''); // 로그인 성공하면 에러 메시지 초기화
 
             setCookie('userRole', userRole);
 
