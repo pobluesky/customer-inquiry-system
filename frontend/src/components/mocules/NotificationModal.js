@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
+import readBell from '../../assets/css/icons/readBell.svg';
+import readCircle from '../../assets/css/icons/readCircle.svg';
+
 import {
     getNotificationByCustomers, getNotificationByManagers,
     getReadNotificationByCustomers, getReadNotificationByManagers,
@@ -114,14 +117,14 @@ const NotificationModal = ({ onClose }) => {
                             readNotificationList.map(notification => (
                                 <NotificationBox key={notification.id} read={true}>
                                     <div>
-                                        <img src={bell} alt="notification" />
+                                        <img src={readBell} alt="notification" />
                                     </div>
                                     <NotificationText>
                                         {notification.date}
                                         <span>&nbsp;{notification.contents}</span>
                                     </NotificationText>
                                     <div>
-                                        <img src={circle} alt="notification" />
+                                        <img src={readCircle} alt="notification" />
                                     </div>
                                 </NotificationBox>
                             ))
@@ -203,6 +206,16 @@ const NotificationBox = styled.div`
       }
     `}
   }
+
+  ${({ read }) => read && `
+      background-color: #ffffff;
+      border: 1px solid #ababab;
+      color: #ababab;
+
+      span {
+        color: #ababab;
+      }
+    `}
 `;
 
 const Title = styled.h2`
