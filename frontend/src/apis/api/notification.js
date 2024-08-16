@@ -16,9 +16,7 @@ const processNotifications = (data) => {
 const fetchNotifications = async (url) => {
   try {
     const response = await axiosInstance.get(url);
-    const notifications = processNotifications(response.data.data);
-    console.log(notifications);
-    return notifications;
+    return processNotifications(response.data.data);
   } catch (error) {
     console.error(`[Fetch Notifications Error]: ${error}`);
     throw error;
@@ -31,7 +29,6 @@ const updateNotificationIsRead = async (url, notificationId) => {
     await axiosInstance.put(`${url}/${notificationId}`, {
       isRead: true,
     });
-    console.log('Notification is read successfully');
   } catch (error) {
     console.error(`[Update Notification Read Error]: ${error}`);
     throw error;
