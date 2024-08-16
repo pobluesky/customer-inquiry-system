@@ -4,7 +4,7 @@ import { getCookie, removeCookie } from '../../apis/utils/cookies';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [didLogin, setDidLogin] = useState(false);
     const [role, setRole] = useState(null);
     const [token, setToken] = useState(null);
 
@@ -15,7 +15,7 @@ export const AuthProvider = ({children}) => {
 
         if (token) {
             setToken(token);
-            setIsLoggedIn(true);
+            setDidLogin(true);
             setRole(currentUserRole);
         }
     }, []);
@@ -24,16 +24,16 @@ export const AuthProvider = ({children}) => {
     const logout = () => {
         removeCookie('accessToken');
         removeCookie('userRole');
-        setIsLoggedIn(false);
+        setDidLogin(false);
         setRole(null);
         setToken(null);
     };
 
-    console.log("현재 로그인 상태: ", isLoggedIn);
+    console.log("현재 로그인 상태: ", didLogin);
     console.log("현재 유저의 role: ", role);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, role, logout }}>
+        <AuthContext.Provider value={{ didLogin, role, logout }}>
             {children}
         </AuthContext.Provider>
     );

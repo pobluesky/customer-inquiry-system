@@ -16,8 +16,8 @@ export const MenuLink = styled(Link)`
 // [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const { isLoggedIn, logout } = useAuth();
-    const backgroundColor = isLoggedIn ? '#EDFAFF' : '';
+    const { didLogin, logout } = useAuth();
+    const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
 
     const handleLogout = () => {
@@ -41,10 +41,10 @@ function Header({ inq, voc, dashboard }) {
     }
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (didLogin) {
             findUserName();
         }
-    }, [isLoggedIn]);
+    }, [didLogin]);
 
     return (
         <div className={Container} style={{ backgroundColor }}>
@@ -52,7 +52,7 @@ function Header({ inq, voc, dashboard }) {
                 <div></div>
                 {/* 로그인 완료 */}
                 <img src={mainlogo} alt="poscodx" />
-                {isLoggedIn ? (
+                {didLogin ? (
                     <>
                         <div>
                             <MenuLink
@@ -124,7 +124,7 @@ function Header({ inq, voc, dashboard }) {
                             <MenuLink to="/dashboard">DashBoard</MenuLink>
                         </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        {isLoggedIn ? (
+                        {!didLogin ? (
                             <div>
                                 <Button
                                     onClick={() => navigate('/login')}
