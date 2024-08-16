@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from "../../components/atoms/Button";
-import Header from "../../components/mocules/Header";
 import VocPath from "../../components/atoms/VocPath";
 import { intro1, intro2 } from "../../assets/css/icons/intro";
 import {
@@ -18,7 +17,6 @@ const VocMain = () => {
 
   return (
       <div>
-        <Header login={true} inq={false} voc={true} dashboard={false} />
         <VocPath largeCategory={'Voc'} mediumCategory={'문의목록'} />
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
@@ -51,7 +49,7 @@ const VocMain = () => {
           </IntroBox>
         </Wrapper>
           <Button
-              onClick={() => navigate('/inq-form')}
+              onClick={() => navigate('/voc-list')}
               btnName={'Voc 문의하기 ►'}
               width={'250px'}
               height={'60px'}
