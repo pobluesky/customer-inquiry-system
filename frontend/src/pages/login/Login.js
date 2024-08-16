@@ -61,7 +61,7 @@ function Login() {
             LoginCompleteAlert();
             setTimeout(() => {
                 navigate('/');
-            }, '3000');
+            }, '2000');
             return;
         }
         setTryLogin(!tryLogin);

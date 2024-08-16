@@ -75,8 +75,9 @@ const JoinCompleteAlert = () => {
         titleText: '회원가입이 완료되었습니다.',
         text: '잠시 후 로그인 페이지로 이동합니다.',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
+        allowOutsideClick: false
     });
 };
 
@@ -87,7 +88,7 @@ const JoinFailedAlert = (message) => {
         text: `${message}`,
         showConfirmButton: false,
         timer: 1000,
-        // timerProgressBar: true,
+        allowOutsideClick: false
     });
 };
 
@@ -97,8 +98,9 @@ const LoginCompleteAlert = () => {
         titleText: '로그인이 완료되었습니다.',
         text: '잠시 후 메인 화면으로 이동합니다.',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
+        allowOutsideClick: false
     });
 };
 

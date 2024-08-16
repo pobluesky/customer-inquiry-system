@@ -135,7 +135,7 @@ function Join() {
             JoinCompleteAlert();
             setTimeout(() => {
                 navigate('/login');
-            }, '3000');
+            }, '2000');
             return;
         }
         setTryJoin(!tryJoin);
