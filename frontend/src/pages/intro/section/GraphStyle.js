@@ -18,7 +18,7 @@ export const BarContainer = styled.div`
 export const Bar = styled.div`
     width: 70px;
     height: ${(props) => props.height - 180}px;
-    background-color: ${(props) => props.backgroundColor};
+    background-color: ${(props) => props.$backgroundColor};
     opacity: 50%;
     position: relative;
     display: flex;

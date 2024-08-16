@@ -10,17 +10,11 @@ export const SubTitle = styled.div`
     font-weight: bold;
 `;
 
-// export const Title = styled.div`
-//     color: #03507d;
-//     font-size: 65px;
-//     margin: ${(props) => props.$margin || '0.5vh 0 0 0'};
-//     font-weight: 800;
-// `;
 export const Title = styled.div`
-  color: #03507D;
-  font-size: 65px;
-  margin-top: ${props => props.marginTop || "0.5vh"};
-  font-weight: 800;
+    color: #03507d;
+    font-size: 65px;
+    margin: ${(props) => props.$margin || '0.5vh 0 0 0'};
+    font-weight: 800;
 `;
 
 export const Text = styled.div`
@@ -28,8 +22,8 @@ export const Text = styled.div`
     font-size: ${(props) => props.fontSize};
     margin: ${(props) => props.$margin};
     font-weight: ${(props) => props.fontWeight};
-    text-align: ${(props) => props.textAlign};
-    line-height: ${(props) => props.lineHeight};
+    text-align: ${(props) => props.$textAlign};
+    line-height: ${(props) => props.$lineHeight};
 `;
 
 export const Wrapper = styled.div`
@@ -37,13 +31,13 @@ export const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: ${(props) => props.gap};
+    gap: ${(props) => props.$gap};
 `;
 
 export const Icon = styled.img`
     width: ${(props) => props.width};
     margin: ${(props) => props.$margin};
-    z-index: ${(props) => props.zIndex};
+    z-index: ${(props) => props.$zindex};
 `;
 
 export const Arrow = styled.img`
@@ -98,9 +92,9 @@ export const CustomerWrapper = styled.div`
 `;
 
 export const HighLighter = styled.span`
-    background-color: ${(props) => props.backgroundColor};
-    padding: ${(props) => props.padding};
-    border-radius: ${(props) => props.borderRadius};
+    background-color: ${(props) => props.$backgroundColor};
+    padding: ${(props) => props.$padding};
+    border-radius: ${(props) => props.$borderRadius};
     opacity: 90%;
 `;
 
@@ -113,7 +107,7 @@ export const DataBox = styled.div`
 `;
 
 export const DataIcon = styled.div`
-    background-color: ${(props) => props.backgroundColor};
+    background-color: ${(props) => props.$backgroundColor};
     border-radius: 20px;
     color: #ffffff;
     width: 84px;

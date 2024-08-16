@@ -33,7 +33,7 @@ const Graph = ({
     return (
         <GraphContainer>
             <BarContainer>
-                <Bar height={lastMonth} backgroundColor={barColor}>
+                <Bar height={lastMonth} $backgroundColor={barColor}>
                     <Value fontSize={'45px'} opacity={'50%'} color={textColor}>
                         {formattedLastMonth}
                     </Value>
@@ -42,7 +42,7 @@ const Graph = ({
             </BarContainer>
             <Arrow src={arrow} alt={arrow} />
             <BarContainer>
-                <Bar height={thisMonth} backgroundColor={barColor}>
+                <Bar height={thisMonth} $backgroundColor={barColor}>
                     <Value fontSize={'45px'} color={textColor}>
                         {formattedThisMonth}
                     </Value>

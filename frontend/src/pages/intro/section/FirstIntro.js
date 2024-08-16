@@ -21,8 +21,8 @@ const FirstIntro = () => {
                         src={intro}
                         alt="intro-icon"
                         width={'50%'}
-                        zIndex={'-1'}
-                        margin={'-6vh 0 0 0'}
+                        $zindex={'-1'}
+                        $margin={'-6vh'}
                     />
                 </Wrapper>
 
@@ -31,7 +31,7 @@ const FirstIntro = () => {
                     btnName={'Inquiry 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}
-                    margin={'-10vh 3vh 12vh 0'}
+                    $margin={'-10vh 3vh 12vh 0'}
                     fontWeight={'bolder'}
                     fontSize={'26px'}
                     border={'solid #c1c1c1 1px'}
@@ -44,7 +44,7 @@ const FirstIntro = () => {
                     btnName={'VoC 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}
-                    margin={'-10vh 0 12vh 0'}
+                    $margin={'-10vh 0 12vh 0'}
                     fontWeight={'bolder'}
                     fontSize={'26px'}
                     border={'solid #c1c1c1 1px'}

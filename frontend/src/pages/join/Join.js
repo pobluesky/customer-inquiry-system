@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/mocules/Header';
 import JoinInput from '../../components/mocules/JoinInput';
 import {
     CheckButton,
