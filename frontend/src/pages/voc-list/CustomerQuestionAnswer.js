@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CustomerQuestionReport from '../../components/organisms/CustomerQuestionReport';
 import CustomerQuestionSearchItem from '../../components/organisms/CustomerQuestionSearchItem';
 import CustomerQuestionList from '../../components/templates/CustomerQuestionList';
-import Notification from '../../components/mocules/Notification';
+import Notification from '../../components/mocules/NotificationModal';
 import { Question_Title } from '../../assets/css/Voc.css';
 
 import { getAnswerAndQuestionByuserId } from '../../apis/api/answer';

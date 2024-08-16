@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
+
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -17,6 +18,7 @@ function Login() {
     // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
     const currentUserEmail = useRecoilValue(getUserEmail);
     const currentUserPassword = useRecoilValue(getUserPassword);
+
     const [email, setEmail] = useState(currentUserEmail);
     const [password, setPassword] = useState(currentUserPassword);
 
@@ -81,7 +83,7 @@ function Login() {
             console.error('로그인 실패', error);
         }
     };
-
+    
     return (
         <div>
             <div className={SignIn}>

@@ -7,7 +7,7 @@ const signInApi = async (endpoint, credentials, setLoginErrorMsg) => {
         const response = await axiosInstance.post(endpoint, credentials);
 
         if (response.status === 200) {
-            const { accessToken, refreshToken, userRole } = response.data;
+            const { accessToken, refreshToken, userRole, userId } = response.data;
 
             // AccessToken과 RefreshToken을 쿠키에 저장
             setCookie('accessToken', accessToken, {
@@ -23,6 +23,7 @@ const signInApi = async (endpoint, credentials, setLoginErrorMsg) => {
             setLoginErrorMsg(''); // 로그인 성공하면 에러 메시지 초기화
 
             setCookie('userRole', userRole);
+            setCookie('userId', userId);
 
             return {
                 success: true,
