@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
@@ -158,7 +158,7 @@ function Header({ inq, voc, dashboard }) {
                             <MenuLink to="/dashboard">DashBoard</MenuLink>
                         </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        {!didLogin && !isLoginPage && isJoinPage && (
+                        {!didLogin && !isLoginPage && (
                             <div>
                                 <Button
                                     onClick={() => navigate('/login')}
