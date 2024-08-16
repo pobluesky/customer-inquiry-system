@@ -18,7 +18,6 @@ const InqMain = () => {
 
   return (
       <div>
-        <Header login={true} inq={true} voc={false} dashboard={false} />
         <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
