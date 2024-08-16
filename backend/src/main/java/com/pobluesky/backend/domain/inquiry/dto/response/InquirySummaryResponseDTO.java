@@ -14,8 +14,7 @@ public record InquirySummaryResponseDTO(
     Progress progress,
     ProductType productType,
     InquiryType inquiryType,
-    String customerName,
-    String name
+    String customerName
 ) {
 
     public static InquirySummaryResponseDTO from(Inquiry inquiry) {
@@ -26,7 +25,6 @@ public record InquirySummaryResponseDTO(
             .productType(inquiry.getProductType())
             .inquiryType(inquiry.getInquiryType())
             .customerName(inquiry.getCustomer().getCustomerName())
-            .name(inquiry.getCustomer().getName())
             .build();
     }
 }
