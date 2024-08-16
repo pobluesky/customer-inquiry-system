@@ -39,14 +39,6 @@ function Login() {
             console.error('로그인 실패:', error);
         }
     };
-
-    useEffect(() => {
-        console.log('1');
-        if (isLoggedIn) {
-            console.log('2');
-            // findUserName();
-        }
-    }, [isLoggedIn]);
     
     return (
         <div>
