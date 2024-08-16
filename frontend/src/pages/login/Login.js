@@ -22,7 +22,7 @@ function Login() {
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
-
+    
     // 로그인 API
     const GetAuth = async () => {
         try {
@@ -34,7 +34,7 @@ function Login() {
             console.error('로그인 실패:', error);
         }
     };
-
+    
     return (
         <div>
             <div className={SignIn}>
