@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.file.entity;
+package com.pobluesky.backend.domain.file.dto;
 
 import lombok.Builder;
 import lombok.Getter;

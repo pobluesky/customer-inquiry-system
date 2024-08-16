@@ -1,25 +1,27 @@
 package com.pobluesky.backend.domain.file.controller;
 
-import com.pobluesky.backend.domain.file.entity.FileInfo;
+import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
-import java.util.Map;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api")
+@RequiredArgsConstructor
+@RequestMapping("/api/upload")
 public class FileUploadController {
 
     @Autowired
-    private FileService fileService;
+    private final FileService fileService;
 
-    @PostMapping("/uploadfile")
-    public FileInfo uploadFile(@RequestBody Map<String, String> requestBody) {
-        String filePath = requestBody.get("filePath");
-        return fileService.uploadFileFromPath(filePath);
+    @PostMapping
+    public FileInfo uploadFile(@RequestParam("file") MultipartFile file) {
+        return fileService.uploadFile(file);
     }
 }
