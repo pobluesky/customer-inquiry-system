@@ -72,15 +72,29 @@ function Join() {
     const passwordChange = (e) => setPassword(e.target.value);
     const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
 
-    const [joined, tryJoined] = useState(false);
     const [, setJoinErrorMsg] = useRecoilState(joinErrorMsg);
     const currentJoinErrorMsg = useRecoilValue(getJoinErrorMsg);
+    const [tryJoin, setTryJoin] = useState(false);
+    const [resetAtom, setResetAtom] = useState(false);
+
+    /* [시작] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
+    useEffect(() => {
+        setJoinErrorMsg('');
+        setResetAtom(true);
+    }, []);
 
     useEffect(() => {
-        if (currentJoinErrorMsg) {
+        if (resetAtom && currentJoinErrorMsg) {
+            canShowAlert(true);
+        }
+    }, [resetAtom, tryJoin]);
+
+    useEffect(() => {
+        if (resetAtom && currentJoinErrorMsg) {
             JoinFailedAlert(currentJoinErrorMsg);
         }
-    }, [joined]);
+    }, [tryJoin]);
+    /* [끝] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
 
     // 고유 코드를 통해 고객사와 담당자를 구분
     const getRoleAndSetNewForm = () => {
@@ -124,7 +138,7 @@ function Join() {
             }, '3000');
             return;
         }
-        tryJoined(!joined);
+        setTryJoin(!tryJoin);
     };
 
     // [회원가입 성공] 이름, 이메일, 비밀번호 atom에 저장

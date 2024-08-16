@@ -35,6 +35,7 @@ function Login() {
 
     const { didLogin, setDidLogin, setRole } = useAuth();
 
+    /* [시작] 로그인 실패 후 새로고침 시 경고 메시지 초기화 */
     useEffect(() => {
         if (!didLogin) {
             setGlobalEmail('');
@@ -49,6 +50,7 @@ function Login() {
             canShowAlert(true);
         }
     }, [resetAtom, tryLogin, didLogin]);
+    /* [끝] 로그인 실패 후 새로고침 시 경고 메시지 초기화 */
 
     // [로그인 성공] 메인 페이지로 이동
     const goToMain = (result) => {
