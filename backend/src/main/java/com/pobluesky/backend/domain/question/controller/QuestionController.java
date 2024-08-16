@@ -2,11 +2,15 @@ package com.pobluesky.backend.domain.question.controller;
 
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
+import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
+import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/questions")
+@RequestMapping("/api/questions/")
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -60,6 +64,26 @@ public class QuestionController {
 
         return ResponseEntity
             .status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/customers/{userId}")
+    @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionsByCustomer(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        QuestionSummaryResponseDTO response = questionService.getQuestionsByCustomer(
+            token, userId, page, size, sortBy, status, startDate, endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
