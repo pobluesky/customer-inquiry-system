@@ -12,7 +12,6 @@ import { useAuth } from '../../hooks/useAuth';
 const NotificationModal = ({ onClose }) => {
     const [activeTab, setActiveTab] = useState('new');
     const [userId, setUserId] = useState(4); // getUserId API 구현 이후 제대로 설정
-    const [notifications, setNotifications] = useState([]);
     const [newNotiList, setNewNotiList] = useState([]);
     const [readNotiList, setReadNotiList] = useState([]);
     const { role } = useAuth();
@@ -21,47 +20,21 @@ const NotificationModal = ({ onClose }) => {
         setActiveTab(tab);
     };
 
-    useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                let notificationData;
-                if (role === 'CUSTOMER') {
-                    notificationData = await getNotificationByCustomers(userId);
-                } else if (role === 'QUALITY' || role === 'SALES') {
-                    notificationData = await getNotificationByManagers(userId);
-                    console.log(notificationData)
-                }
-                setNotifications(notificationData);
-                setNewNotiList(notificationData.filter(notification => !notification.isRead));
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchNotifications();
-    }, [userId]);
-
-    const updateIsRead = async (notificationId) => {
+    const fetchNotifications = async () => {
         try {
+            let notificationData;
             if (role === 'CUSTOMER') {
-                await updateNotificationIsReadByCustomer(notificationId);
+                notificationData = await getNotificationByCustomers(userId);
             } else if (role === 'QUALITY' || role === 'SALES') {
-                await updateNotificationIsReadByManager(notificationId);
+                notificationData = await getNotificationByManagers(userId);
             }
-
-            setNotifications((prevNotifications) =>
-                prevNotifications.map(notification =>
-                    notification.id === notificationId
-                        ? { ...notification, isRead: true }
-                        : notification
-                )
-            );
+            setNewNotiList(notificationData.filter(notification => !notification.isRead));
         } catch (error) {
-            console.error('Failed to update notification:', error);
+            console.error(error);
         }
     };
 
-    const fetchReadNotifications = async (userId) => {
+    const fetchReadNotifications = async () => {
         try {
             let readNotificationData;
             if (role === 'CUSTOMER') {
@@ -76,11 +49,29 @@ const NotificationModal = ({ onClose }) => {
     };
 
     useEffect(() => {
-        fetchReadNotifications(userId);
+        fetchNotifications();
     }, [userId]);
 
-    const handleNotificationClick = (notificationId) => {
-        updateIsRead(notificationId);
+    useEffect(() => {
+        if (activeTab === 'read') {
+            fetchReadNotifications();
+        }
+    }, [activeTab, userId]);
+
+    const handleNotificationClick = async (notificationId) => {
+        try {
+            if (role === 'CUSTOMER') {
+                await updateNotificationIsReadByCustomer(notificationId);
+            } else if (role === 'QUALITY' || role === 'SALES') {
+                await updateNotificationIsReadByManager(notificationId);
+            }
+            fetchNotifications();
+            if (activeTab === 'read') {
+                fetchReadNotifications();
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
