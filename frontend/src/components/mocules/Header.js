@@ -13,7 +13,6 @@ export const MenuLink = styled(Link)`
     text-decoration: none;
 `;
 
-// [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout } = useAuth();

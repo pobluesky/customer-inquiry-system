@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
@@ -6,21 +6,13 @@ import { SignIn } from '../../assets/css/Auth.css';
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-    authByRole,
-    userEmail,
-    userPassword,
-    loginErrorMsg,
-    getUserEmail,
-    getUserPassword,
-    getLoginErrorMsg,
-} from '../../index';
+import { userEmail, userPassword, loginErrorMsg } from '../../index';
+import { getUserEmail, getUserPassword, getLoginErrorMsg } from '../../index';
 import { LoginCompleteAlert, LoginFailedAlert } from '../../utils/actions';
+import { useAuth } from '../../hooks/useAuth';
 
 function Login() {
     const navigate = useNavigate();
-
-    const [, setGlobalRole] = useRecoilState(authByRole);
 
     // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
     const currentUserEmail = useRecoilValue(getUserEmail);
@@ -35,30 +27,42 @@ function Login() {
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
-    const [didLogin, tryLogin] = useState(false);
-    const [showAlert, canShowAlert] = useState(false);
     const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
     const currentLoginErrorMsg = useRecoilValue(getLoginErrorMsg);
+    const [tryLogin, setTryLogin] = useState(false);
+    const [showAlert, canShowAlert] = useState(false);    
+    const [resetAtom, setResetAtom] = useState(false);
+
+    const { didLogin, setDidLogin, setRole } = useAuth();
 
     useEffect(() => {
-        if (currentLoginErrorMsg) {
+        if (!didLogin) {
+            setGlobalEmail('');
+            setGlobalPassword('');
+            setLoginErrorMsg('');
+        }
+        setResetAtom(true);
+    }, [didLogin]);
+
+    useEffect(() => {
+        if (resetAtom && !didLogin && currentLoginErrorMsg) {
             canShowAlert(true);
         }
-    }, [didLogin]);
+    }, [resetAtom, tryLogin, didLogin]);
 
     // [로그인 성공] 메인 페이지로 이동
     const goToMain = (result) => {
         if (result.success) {
-            setGlobalRole(getCookie('userRole')); // 전역 역할 수정
-            setGlobalEmail(email);
-            setGlobalPassword(password);
+            setDidLogin(true); // 로그인 상태 변화
+            setRole(getCookie('userRole')); // 전역 역할 저장
+            setGlobalEmail(email); // 이메일 저장
             LoginCompleteAlert();
             setTimeout(() => {
                 navigate('/');
             }, '3000');
             return;
         }
-        tryLogin(!didLogin);
+        setTryLogin(!tryLogin);
     };
 
     // 로그인 API
@@ -69,9 +73,10 @@ function Login() {
                 password,
                 setLoginErrorMsg,
             );
+            console.log('로그인 결과', result.success);
             goToMain(result);
         } catch (error) {
-            console.error('로그인 실패:', error);
+            console.error('로그인 실패', error);
         }
     };
 

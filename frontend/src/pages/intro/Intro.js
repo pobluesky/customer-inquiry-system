@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { FirstIntro, SecondIntro, ThirdIntro, FourthIntro } from './section';
-
+import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilValue } from 'recoil';
-import { getAuthByRole, getUserEmail } from '../../index';
+import { getUserEmail } from '../../index';
 
 function Intro() {
-    const currentUserRole = useRecoilValue(getAuthByRole);
+    const currentUserRole = getCookie('userRole') || '';
     const currentUserEmail = useRecoilValue(getUserEmail);
 
     useEffect(() => {
