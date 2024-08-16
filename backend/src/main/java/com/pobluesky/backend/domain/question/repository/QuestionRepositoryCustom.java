@@ -9,4 +9,9 @@ public interface QuestionRepositoryCustom {
     QuestionSummaryResponseDTO findQuestionsByCustomer(
         Long userId, Pageable pageable, QuestionStatus status,
         LocalDate startDate, LocalDate endDate);
+
+    QuestionSummaryResponseDTO findQuestionsByManager(
+        Pageable pageable, QuestionStatus status,
+        LocalDate startDate, LocalDate endDate
+    );
 }
