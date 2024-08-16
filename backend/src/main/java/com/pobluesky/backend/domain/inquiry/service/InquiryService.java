@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.service;
 
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
@@ -29,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -40,6 +43,8 @@ public class InquiryService {
     private final InquiryRepository inquiryRepository;
 
     private final CustomerRepository customerRepository;
+
+    private final FileService fileService;
 
     private final ManagerRepository managerRepository;
 
@@ -92,7 +97,8 @@ public class InquiryService {
     public InquiryResponseDTO createInquiry(
         String token,
         Long customerId,
-        InquiryCreateRequestDTO dto
+        InquiryCreateRequestDTO dto,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -102,8 +108,15 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Inquiry inquiry = dto.toInquiryEntity();
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Inquiry inquiry = dto.toInquiryEntity(filePath);
         inquiry.setCustomer(customer);
+
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         return InquiryResponseDTO.from(savedInquiry);
@@ -113,7 +126,8 @@ public class InquiryService {
     public InquiryResponseDTO updateInquiryById(
         String token,
         Long inquiryId,
-        InquiryUpdateRequestDTO inquiryUpdateRequestDTO
+        InquiryUpdateRequestDTO inquiryUpdateRequestDTO,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -126,6 +140,12 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
         inquiry.updateInquiry(
             inquiryUpdateRequestDTO.country(),
             inquiryUpdateRequestDTO.corporate(),
@@ -136,7 +156,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.progress(),
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
-            inquiryUpdateRequestDTO.files(),
+            filePath,
             inquiryUpdateRequestDTO.responseDeadline(),
             inquiryUpdateRequestDTO.elapsedDays()
         );
