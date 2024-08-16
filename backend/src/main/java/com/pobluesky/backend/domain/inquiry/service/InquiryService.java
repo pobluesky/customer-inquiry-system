@@ -2,10 +2,8 @@ package com.pobluesky.backend.domain.inquiry.service;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
-import com.pobluesky.backend.domain.inquiry.entity.Country;
-import com.pobluesky.backend.domain.inquiry.entity.Industry;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -21,11 +19,7 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +44,12 @@ public class InquiryService {
     private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByuserId(String token, Long customerId) {
+    public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
+        String token, Long customerId, int page,
+        int size, String sortBy, Progress progress,
+        ProductType productType, String customerName, InquiryType inquiryType,
+        LocalDate startDate, LocalDate endDate) {
+
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -59,44 +58,34 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        List<Inquiry> inquiries =
-            inquiryRepository.findByCustomer_UserIdAndIsActivatedTrue(customerId);
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
+        return inquiryRepository.findInquiriesByCustomer(
+            customerId, pageable, progress, productType, customerName,
+            inquiryType, startDate, endDate);
     }
 
     @Transactional(readOnly = true)
-    public Page<InquiryLineItemResponseDTO> getInquiries(
-        Long userId, int page, int size, String sortBy,
-        Progress progress,
-        ProductType productType, String customerName,
-        InquiryType inquiryType, String projectName,
+    public Page<InquirySummaryResponseDTO> getInquiriesByManager(
+        String token, int page, int size, String sortBy, Progress progress,
+        ProductType productType, String customerName, InquiryType inquiryType,
         LocalDate startDate, LocalDate endDate) {
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return inquiryRepository.findInquiries(
-            userId, pageable, progress, productType, customerName,
-            inquiryType, projectName, startDate, endDate);
-    }
-
-    @Transactional
-    public List<InquiryResponseDTO> getInquiries(String token) {
         Long userId = signService.parseToken(token);
 
-        Manager user =managerRepository.findById(userId)
+        Manager user = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         if(user.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        List<Inquiry> inquiries = inquiryRepository.findAll();
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
+        return inquiryRepository.findInquiriesByManager(
+            pageable, progress, productType, customerName,
+            inquiryType, startDate, endDate);
     }
 
     @Transactional
@@ -192,25 +181,6 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return InquiryResponseDTO.from(inquiry);
-    }
-
-    @Transactional(readOnly = true)
-    public List<InquiryResponseDTO> getInquiriesByProgress(String token, Progress progress) {
-        Long userId = signService.parseToken(token);
-
-        Stream.of(
-                customerRepository.findById(userId),
-                managerRepository.findById(userId)
-            )
-            .flatMap(Optional::stream)
-            .findFirst()
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        List<Inquiry> inquiries = inquiryRepository.findByProgress(progress);
-
-        return inquiries.stream()
-            .map(InquiryResponseDTO::from)
-            .collect(Collectors.toList());
     }
 
     private Sort getSortByOrderCondition(String sortBy) {
