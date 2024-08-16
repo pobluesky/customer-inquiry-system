@@ -1,22 +1,35 @@
-import React, { useRef, useState } from 'react';
-import Button from '../../components/atoms/Button';
-import JoinInput from '../../components/mocules/JoinInput';
-import { SignUp } from '../../assets/css/Auth.css';
-
-import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/mocules/Header';
+import JoinInput from '../../components/mocules/JoinInput';
+import {
+    CheckButton,
+    RoleSelectButton,
+} from '../../components/mocules/JoinButton';
+import { SignUp } from '../../assets/css/Auth.css';
+import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {
     validateName,
     validateUserCode,
     validateEmail,
     validatePhone,
-    validatePassword,
-    validatePasswordMatch,
     validateCustomerName,
+    validatePassword,
+    validateMatch,
 } from '../../utils/validation';
-
-import { useRecoilState } from 'recoil';
-import { userName, userEmail, userPassword } from '../../index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+    userName,
+    userEmail,
+    userPassword,
+    joinErrorMsg,
+    getJoinErrorMsg,
+} from '../../index';
+import {
+    JoinCompleteAlert,
+    JoinFailedAlert,
+    ManagerRoleIsNullAlert,
+} from '../../utils/actions';
 
 function Join() {
     const navigate = useNavigate();
@@ -35,12 +48,16 @@ function Join() {
 
     const [userRole, setUserRole] = useState(''); // 화면에 출력할 권한명
     const [role, setRole] = useState(''); // 서버로 전송할 권한명
+    const [showAlert, canShowAlert] = useState(false); // 역할 미선택 시 경고
+
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [customerName, setCustomerName] = useState('');
     const [department, setDept] = useState('IT');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [checkValidationTest, setValidationTest] = useState(false);
 
     const [, setGlobalName] = useRecoilState(userName);
     const [, setGlobalEmail] = useRecoilState(userEmail);
@@ -55,24 +72,80 @@ function Join() {
     const passwordChange = (e) => setPassword(e.target.value);
     const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
 
-    // 고유 코드를 통해 고객사와 담당자를 구분
-    const getRoleAndSetNewForm = (userCode) => {
-        const data = userCode.substring(0, 3);
-        if (data === 'EMP') {
-            // 담당자일 경우
-            setName(name);
-            setEmpNo(userCode);
-            setManager(true);
-            setCustomer(false);
-        } else if (data === 'CUS') {
-            // 고객사일 경우
-            setName(name);
-            setCustomerCode(userCode);
-            setUserRole('고객사');
-            setFirst(false);
+    const [, setJoinErrorMsg] = useRecoilState(joinErrorMsg);
+    const currentJoinErrorMsg = useRecoilValue(getJoinErrorMsg);
+    const [tryJoin, setTryJoin] = useState(false);
+    const [resetAtom, setResetAtom] = useState(false);
+
+    /* [시작] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
+    useEffect(() => {
+        setJoinErrorMsg('');
+        setResetAtom(true);
+    }, []);
+
+    useEffect(() => {
+        if (resetAtom && currentJoinErrorMsg) {
+            canShowAlert(true);
         }
-        nameRef.current.value = null; // name 입력 값 초기화
-        userCodeRef.current.value = null; // userCode 입력 값 초기화
+    }, [resetAtom, tryJoin]);
+
+    useEffect(() => {
+        if (resetAtom && currentJoinErrorMsg) {
+            JoinFailedAlert(currentJoinErrorMsg);
+        }
+    }, [tryJoin]);
+    /* [끝] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
+
+    // 고유 코드를 통해 고객사와 담당자를 구분
+    const getRoleAndSetNewForm = () => {
+        const wrongName = validateName(name);
+        const wrongCode = validateUserCode(userCode);
+
+        if (wrongName || wrongCode) {
+            return;
+        }
+
+        const roleActions = {
+            EMP: () => {
+                setEmpNo(userCode);
+                setManager(true);
+                setCustomer(false);
+            },
+            CUS: () => {
+                setCustomerCode(userCode);
+                setUserRole('고객사');
+                setFirst(false);
+            },
+        };
+
+        const codePrefix = userCode.substring(0, 3);
+        roleActions[codePrefix]?.();
+
+        // 입력 값 초기화
+        nameRef.current.value = '';
+        userCodeRef.current.value = '';
+
+        setValidationTest(false);
+    };
+
+    // [회원가입 성공] 로그인 페이지로 이동
+    const goToLogin = (result) => {
+        if (result.success) {
+            saveGlobalInfo();
+            JoinCompleteAlert();
+            setTimeout(() => {
+                navigate('/login');
+            }, '2000');
+            return;
+        }
+        setTryJoin(!tryJoin);
+    };
+
+    // [회원가입 성공] 이름, 이메일, 비밀번호 atom에 저장
+    const saveGlobalInfo = () => {
+        setGlobalName(name);
+        setGlobalEmail(email);
+        setGlobalPassword(password);
     };
 
     // 고객사 회원가입 API
@@ -85,14 +158,11 @@ function Join() {
                 phone,
                 customerCode,
                 customerName,
+                setJoinErrorMsg,
             );
             console.log('고객사 회원가입 결과', result.success);
-            { result.success && saveGlobalInfo(); navigate('/login'); }
-            // [Alert] 회원가입 성공
-        } catch (error) {
-            console.error('고객사 회원가입 실패:', error);
-            // [Alert] 회원가입 실패
-        }
+            goToLogin(result);
+        } catch (error) {}
     };
 
     // 담당자 회원가입 API
@@ -106,66 +176,42 @@ function Join() {
                 empNo,
                 role,
                 department,
+                setJoinErrorMsg,
             );
             console.log('담당자 회원가입 결과', result.success);
-            { result.success && saveGlobalInfo(); navigate('/login'); }
-            // [Alert] 회원가입 성공
-        } catch (error) {
-            console.error('담당자 회원가입 실패:', error);
-            // [Alert] 회원가입 실패
-        }
+            goToLogin(result);
+        } catch (error) {}
     };
 
     // 회원가입 API 요청
     const GetAuth = async () => {
+        const wrongEmail = validateEmail(email);
+        const wrongPhone = validatePhone(phone);
+        const wrongCustomerName = validateCustomerName(customerName); // 고객사 전용
+        const wrongPassword = validatePassword(password);
+        const wrongMatch = validateMatch(password, passwordCheck);
+
+        // 입력된 정보 중 유효하지 않은 정보가 있을 경우 경고 문구 출력
         if (role) {
+            if (wrongEmail || wrongPhone || wrongPassword || wrongMatch) {
+                return;
+            }
             await GetManagerAuth();
             return;
         } else {
+            if (
+                wrongEmail ||
+                wrongPhone ||
+                wrongCustomerName ||
+                wrongPassword ||
+                wrongMatch
+            ) {
+                return;
+            }
             await GetCustomerAuth();
             return;
         }
-        // [Alert] 비밀번호가 일치하지 않습니다.
     };
-
-    // 회원가입 성공시 이름, 이메일, 비밀번호 atom에 저장
-    const saveGlobalInfo = () => {
-        setGlobalName(name);
-        setGlobalEmail(email);
-        setGlobalPassword(password);
-    }
-
-    // 역할 조회, 권한 부여, 회원가입 버튼
-    const checkButton = ({ btnName, onClick, margin }) => (
-        <Button
-            btnName={btnName}
-            onClick={onClick}
-            margin={margin}
-            width={'360px'}
-            height={'44px'}
-            backgroundColor={'#03507d'}
-            textColor={'#eeeeee'}
-            border={'none'}
-            borderRadius={'12px'}
-            fontSize={'20px'}
-        />
-    );
-
-    // 역할 선택 버튼
-    const selectRoleButton = ({ btnName, onClick, margin }) => (
-        <Button
-            btnName={btnName}
-            onClick={onClick}
-            margin={margin}
-            width={'144px'}
-            height={'44px'}
-            backgroundColor={'#ffffff'}
-            textColor={'#000000'}
-            border={'solid 1px #c1c1c1'}
-            borderRadius={'12px'}
-            fontSize={'20px'}
-        />
-    );
 
     return (
         <div>
@@ -184,7 +230,9 @@ function Join() {
                                     type: 'text',
                                     placeholder: '홍길동',
                                     categoryName: '이름',
-                                    warningMsg: `${validateName(name)}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validateName(name),
                                 })}
                                 {JoinInput({
                                     ref: userCodeRef,
@@ -193,11 +241,13 @@ function Join() {
                                     type: 'text',
                                     placeholder: 'ABC123',
                                     categoryName: '고유 코드',
-                                    warningMsg: `${validateUserCode(userCode)}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validateUserCode(userCode),
                                 })}
                                 {isManager && (
                                     <>
-                                        {selectRoleButton({
+                                        {RoleSelectButton({
                                             onClick: () => {
                                                 setUserRole('품질 담당자');
                                                 setRole('QUALITY');
@@ -205,7 +255,7 @@ function Join() {
                                             btnName: '품질 담당자',
                                             margin: '48px 0 0 0',
                                         })}
-                                        {selectRoleButton({
+                                        {RoleSelectButton({
                                             onClick: () => {
                                                 setUserRole('판매 담당자');
                                                 setRole('SALES');
@@ -217,25 +267,34 @@ function Join() {
                                 )}
                             </div>
                             <div>
-                                {/* 역할 조회 버튼 */}
+                                {/* 권한 조회 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
                                 {!isManager &&
-                                    checkButton({
-                                        btnName: '역할 조회',
+                                    CheckButton({
+                                        btnName: '권한 조회',
                                         onClick: () => {
-                                            !validateName(name) &&
-                                            !validateUserCode(userCode) &&
-                                            getRoleAndSetNewForm(userCode);
+                                            setValidationTest(true);
+                                            getRoleAndSetNewForm();
                                         },
                                     })}
-                                {/* 권한 부여 버튼 */}
+                                {/* 권한 부여 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
                                 {isManager &&
-                                    checkButton({
+                                    CheckButton({
                                         btnName: '권한 부여',
                                         onClick: () => {
-                                            setFirst(false);
+                                            if (role) {
+                                                setFirst(false);
+                                            } else {
+                                                canShowAlert(true);
+                                            }
                                         },
                                     })}
                             </div>
+                            <ManagerRoleIsNullAlert
+                                showAlert={showAlert}
+                                onClose={() => {
+                                    canShowAlert(false);
+                                }}
+                            />
                         </>
                     ) : (
                         <>
@@ -258,7 +317,9 @@ function Join() {
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
-                                    warningMsg: `${validateEmail(email)}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validateEmail(email),
                                 })}
                                 {JoinInput({
                                     margin: '0 0 24px 0',
@@ -267,7 +328,9 @@ function Join() {
                                     type: 'tel',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
-                                    warningMsg: `${validatePhone(phone)}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validatePhone(phone),
                                 })}
                                 {isCustomer ? (
                                     JoinInput({
@@ -277,9 +340,9 @@ function Join() {
                                         type: 'text',
                                         placeholder: '(주)포스코',
                                         categoryName: '고객사명',
-                                        warningMsg: `${validateCustomerName(
-                                            customerName,
-                                        )}`,
+                                        warningMsg:
+                                            checkValidationTest &&
+                                            validateCustomerName(customerName),
                                     })
                                 ) : (
                                     <>
@@ -292,7 +355,9 @@ function Join() {
                                             <option value="IT">IT</option>
                                             <option value="HR">인사</option>
                                             <option value="SALES">판매</option>
-                                            <option value="FINANCE">재무</option>
+                                            <option value="FINANCE">
+                                                재무
+                                            </option>
                                         </select>
                                     </>
                                 )}
@@ -303,7 +368,9 @@ function Join() {
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
-                                    warningMsg: `${validatePassword(password)}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validatePassword(password),
                                 })}
                                 {JoinInput({
                                     value: passwordCheck || '',
@@ -311,22 +378,19 @@ function Join() {
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호 확인',
-                                    warningMsg: `${validatePasswordMatch(
-                                        password,
-                                        passwordCheck,
-                                    )}`,
+                                    warningMsg:
+                                        checkValidationTest &&
+                                        validateMatch(password, passwordCheck),
                                 })}
                             </div>
                             {/* 회원가입 버튼 */}
                             <div>
-                                {checkButton({
+                                {CheckButton({
                                     btnName: '회원가입',
                                     margin: '0 0 84px 0',
                                     onClick: async () => {
-                                        !validateEmail(email) &&
-                                        !validatePhone(phone) &&
-                                        !validatePassword(password) &&
-                                        (await GetAuth());
+                                        setValidationTest(true);
+                                        await GetAuth();
                                     },
                                 })}
                             </div>
