@@ -6,12 +6,19 @@ import { SignIn } from '../../assets/css/Auth.css';
 
 import { signInApiByUsers } from '../../apis/api/auth';
 import { getCookie } from '../../apis/utils/cookies';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { authByRole, getUserEmail, getUserPassword } from '../../index';
 
 function Login() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const currentUserEmail = useRecoilValue(getUserEmail); // selector로부터 계산된 값 읽기
+    const currentUserPassword = useRecoilValue(getUserPassword); // selector로부터 계산된 값 읽기
+
+    const [, setGlobalRole] = useRecoilState(authByRole); // 전역 역할을 수정하기 위한 state 선언
+
+    const [email, setEmail] = useState(currentUserEmail);
+    const [password, setPassword] = useState(currentUserPassword);
 
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
@@ -19,17 +26,10 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const checkByLoginAPI = await signInApiByUsers(email, password);
-            console.log(checkByLoginAPI);
-
-            if (checkByLoginAPI.data.userRole === 'CUSTOMER') {
-                console.log('고객사 로그인 성공', checkByLoginAPI);
-                navigate('/');
-            } else {
-                console.log('담당자 로그인 성공', checkByLoginAPI);
-                navigate('/');
-            }
-            console.log('ROLE IS ', getCookie('userRole')); // 로그인 userRole 출력
+            const response = await signInApiByUsers(email, password);
+            console.log(`${response.data.userRole} 로그인 결과`, response.success);
+            setGlobalRole(getCookie('userRole')); // 전역 역할 수정
+            navigate('/');
         } catch (error) {
             console.error('로그인 실패:', error);
         }
