@@ -1,10 +1,7 @@
 package com.pobluesky.backend.domain.user.controller;
 
-import com.pobluesky.backend.domain.user.service.SignService;
-import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.domain.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.CustomerUpdateRequestDTO;
-import com.pobluesky.backend.domain.user.dto.request.LogInDto;
 import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.backend.domain.user.service.CustomerService;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -38,12 +35,22 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    private final SignService signService;
-
     @GetMapping
+    @Operation(summary = "고객사 전체 조회")
+    public ResponseEntity<JsonResult> getCustomers() {
+        List<CustomerResponseDTO> response = customerService.getCustomers();
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/{userId}")
     @Operation(summary = "고객사 조회")
-    public ResponseEntity<JsonResult> getUsers() {
-        List<CustomerResponseDTO> response = customerService.getAllCustomers();
+    public ResponseEntity<JsonResult> getCustomerById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable("userId") Long userId
+    ) {
+        CustomerResponseDTO response = customerService.getCustomerById(token, userId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
@@ -60,9 +67,9 @@ public class CustomerController {
 
     @PutMapping("/{userId}")
     @Operation(summary = "고객사 정보 수정")
-    public ResponseEntity<JsonResult> updateUserByNo(
+    public ResponseEntity<JsonResult> updateCustomerById(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long userId,
+        @PathVariable("userId") Long userId,
         @RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO
     ) {
         CustomerResponseDTO response = customerService.updateCustomerById(
@@ -77,9 +84,9 @@ public class CustomerController {
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "고객사 삭제")
-    public ResponseEntity<CommonResult> deleteUserByNo(
+    public ResponseEntity<CommonResult> deleteCustomerById(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long userId
+        @PathVariable("userId") Long userId
     ) {
         customerService.deleteCustomerById(token, userId);
 
