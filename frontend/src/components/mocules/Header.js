@@ -37,7 +37,7 @@ function Header({ inq, voc, dashboard }) {
             const customer = await getCustomerInfo();
             setUsername(customer);
 
-            if (customer === null) {
+            if (customer === 'Name not found') {
                 const manager = await getManagerInfo();
                 setUsername(manager);
             }

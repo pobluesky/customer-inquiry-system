@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
 import {
-    getNotificationByCustomers,
-    updateNotificationIsReadByCustomer,
+    getNotificationByCustomers, getNotificationByManagers,
+    getReadNotificationByCustomers, getReadNotificationByManagers,
+    updateNotificationIsReadByCustomer, updateNotificationIsReadByManager,
 } from '../../apis/api/notification';
 
 const NotificationModal = ({ onClose }) => {
@@ -12,6 +13,7 @@ const NotificationModal = ({ onClose }) => {
     const [userId, setUserId] = useState(7); // getUserId API 구현 이후 제대로 설정
     const [notifications, setNotifications] = useState([]);
     const [newNotiList, setNewNotiList] = useState([]);
+    const [readNotiList, setReadNotiList] = useState([]);
 
     const switchTab = (tab) => {
         setActiveTab(tab);
@@ -20,9 +22,15 @@ const NotificationModal = ({ onClose }) => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const data = await getNotificationByCustomers(userId);
-                setNotifications(data);
-                setNewNotiList(data.filter(notification => !notification.isRead)); // 새 알림 목록 설정
+                const customer = await getNotificationByCustomers(userId);
+                setNotifications(customer);
+                setNewNotiList(customer.filter(notification => !notification.isRead)); // 새 알림 목록 설정
+
+                if (notifications === null) {
+                    const manager = await getNotificationByManagers(userId);
+                    setNotifications(manager);
+                    setNewNotiList(manager.filter(notification => !notification.isRead));
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -33,11 +41,11 @@ const NotificationModal = ({ onClose }) => {
 
     // 새 알림과 읽은 알림으로 필터링
     const newNotifications = notifications.filter(notification => !notification.isRead);
-    const readNotifications = notifications.filter(notification => notification.isRead);
 
     const updateIsRead = async (notificationId) => {
         try {
             await updateNotificationIsReadByCustomer(notificationId);
+            await updateNotificationIsReadByManager(notificationId);
             // 업데이트 후 새 알림 목록에서 해당 알림을 제거하고, 읽은 알림으로 옮김
             setNotifications((prevNotifications) =>
                 prevNotifications.map(notification =>
@@ -54,6 +62,25 @@ const NotificationModal = ({ onClose }) => {
     const handleNotificationClick = (notificationId) => {
         updateIsRead(notificationId);
     };
+
+    useEffect(() => {
+        // 읽은 알림 조회
+        const fetchNotifications = async () => {
+            try {
+                const customer = await getReadNotificationByCustomers(userId);
+                setReadNotiList(customer);
+
+                if (readNotiList === null) {
+                    const manager = await getReadNotificationByManagers(userId);
+                    setReadNotiList(manager);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchNotifications();
+    }, [userId])
 
     return (
         <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -91,8 +118,8 @@ const NotificationModal = ({ onClose }) => {
                     </NotificationList>
                 ) : (
                     <NotificationList>
-                        {readNotifications.length > 0 ? (
-                            readNotifications.map(notification => (
+                        {readNotiList.length > 0 ? (
+                            readNotiList.map(notification => (
                                 <NotificationBox key={notification.id} read={true}>
                                     <div>
                                         <img src={bell} alt="notification" />
