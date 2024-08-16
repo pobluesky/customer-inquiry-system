@@ -7,13 +7,15 @@ import {
     getReadNotificationByCustomers, getReadNotificationByManagers,
     updateNotificationIsReadByCustomer, updateNotificationIsReadByManager,
 } from '../../apis/api/notification';
+import { useAuth } from '../../hooks/useAuth';
 
 const NotificationModal = ({ onClose }) => {
     const [activeTab, setActiveTab] = useState('new');
-    const [userId, setUserId] = useState(7); // getUserId API 구현 이후 제대로 설정
+    const [userId, setUserId] = useState(4); // getUserId API 구현 이후 제대로 설정
     const [notifications, setNotifications] = useState([]);
     const [newNotiList, setNewNotiList] = useState([]);
     const [readNotiList, setReadNotiList] = useState([]);
+    const { role } = useAuth();
 
     const switchTab = (tab) => {
         setActiveTab(tab);
@@ -22,15 +24,15 @@ const NotificationModal = ({ onClose }) => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const customer = await getNotificationByCustomers(userId);
-                setNotifications(customer);
-                setNewNotiList(customer.filter(notification => !notification.isRead)); // 새 알림 목록 설정
-
-                if (notifications === null) {
-                    const manager = await getNotificationByManagers(userId);
-                    setNotifications(manager);
-                    setNewNotiList(manager.filter(notification => !notification.isRead));
+                let notificationData;
+                if (role === 'CUSTOMER') {
+                    notificationData = await getNotificationByCustomers(userId);
+                } else if (role === 'QUALITY' || role === 'SALES') {
+                    notificationData = await getNotificationByManagers(userId);
+                    console.log(notificationData)
                 }
+                setNotifications(notificationData);
+                setNewNotiList(notificationData.filter(notification => !notification.isRead));
             } catch (error) {
                 console.error(error);
             }
@@ -39,14 +41,14 @@ const NotificationModal = ({ onClose }) => {
         fetchNotifications();
     }, [userId]);
 
-    // 새 알림과 읽은 알림으로 필터링
-    const newNotifications = notifications.filter(notification => !notification.isRead);
-
     const updateIsRead = async (notificationId) => {
         try {
-            await updateNotificationIsReadByCustomer(notificationId);
-            await updateNotificationIsReadByManager(notificationId);
-            // 업데이트 후 새 알림 목록에서 해당 알림을 제거하고, 읽은 알림으로 옮김
+            if (role === 'CUSTOMER') {
+                await updateNotificationIsReadByCustomer(notificationId);
+            } else if (role === 'QUALITY' || role === 'SALES') {
+                await updateNotificationIsReadByManager(notificationId);
+            }
+
             setNotifications((prevNotifications) =>
                 prevNotifications.map(notification =>
                     notification.id === notificationId
@@ -59,28 +61,27 @@ const NotificationModal = ({ onClose }) => {
         }
     };
 
-    const handleNotificationClick = (notificationId) => {
-        updateIsRead(notificationId);
+    const fetchReadNotifications = async (userId) => {
+        try {
+            let readNotificationData;
+            if (role === 'CUSTOMER') {
+                readNotificationData = await getReadNotificationByCustomers(userId);
+            } else if (role === 'QUALITY' || role === 'SALES') {
+                readNotificationData = await getReadNotificationByManagers(userId);
+            }
+            setReadNotiList(readNotificationData);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
-        // 읽은 알림 조회
-        const fetchNotifications = async () => {
-            try {
-                const customer = await getReadNotificationByCustomers(userId);
-                setReadNotiList(customer);
+        fetchReadNotifications(userId);
+    }, [userId]);
 
-                if (readNotiList === null) {
-                    const manager = await getReadNotificationByManagers(userId);
-                    setReadNotiList(manager);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchNotifications();
-    }, [userId])
+    const handleNotificationClick = (notificationId) => {
+        updateIsRead(notificationId);
+    };
 
     return (
         <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -97,8 +98,8 @@ const NotificationModal = ({ onClose }) => {
             <div>
                 {activeTab === 'new' ? (
                     <NotificationList>
-                        {newNotifications.length > 0 ? (
-                            newNotifications.map(notification => (
+                        {newNotiList.length > 0 ? (
+                            newNotiList.map(notification => (
                                 <NotificationBox key={notification.id} read={false}>
                                     <div>
                                         <img src={bell} alt="notification" />
@@ -198,7 +199,7 @@ const NotificationBox = styled.div`
   span {
     color: #121212;
   }
-  
+
   &:hover {
     ${({ read }) => !read && `
       background-color: #9bccff;
@@ -232,4 +233,3 @@ const NoNotifications = styled.div`
   font-size: 14px;
   margin-top: 20px;
 `;
-
