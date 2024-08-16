@@ -17,15 +17,20 @@ export const MenuLink = styled(Link)`
 // [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const { isLoggedIn, logout } = useAuth();
-    const backgroundColor = isLoggedIn ? '#EDFAFF' : '';
+    const { didLogin, logout } = useAuth();
+    const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [username, setUsername] = useState(null);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const notificationButtonRef = useRef(null);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
+
+    const location = useLocation();
+    const isLoginPage = location.pathname === '/login';
+    const isJoinPage = location.pathname === '/join';
 
     const handleLogout = () => {
         logout();
@@ -48,10 +53,10 @@ function Header({ inq, voc, dashboard }) {
     }
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (didLogin) {
             findUserName();
         }
-    }, [isLoggedIn]);
+    }, [didLogin]);
 
     return (
         <div>
@@ -60,7 +65,7 @@ function Header({ inq, voc, dashboard }) {
                 <div></div>
                 {/* 로그인 완료 */}
                 <img src={mainlogo} alt="poscodx" />
-                {isLoggedIn ? (
+                {didLogin ? (
                     <>
                         <div>
                             <MenuLink
@@ -133,14 +138,13 @@ function Header({ inq, voc, dashboard }) {
                                 btnName={'로그아웃'}
                                 width={'84px'}
                                 height={'40px'}
-                                backgroundColor={'#03507d'}
-                                textColor={'#eeeeee'}
+                                backgroundColor={'#edfaff'}
+                                textColor={'#c1c1c1'}
                                 border={'solid #c1c1c1 1px'}
                                 borderRadius={'12px'}
                                 fontSize={'16px'}
                             />
                         </div>
-                        {/* <div>포청천님</div> */}
                     </>
                 ) : (
                     <>
@@ -154,7 +158,7 @@ function Header({ inq, voc, dashboard }) {
                             <MenuLink to="/dashboard">DashBoard</MenuLink>
                         </div>
                         {/* 로그인 & 회원가입 버튼 */}
-                        {isLoggedIn ? (
+                        {!didLogin && !isLoginPage && isJoinPage && (
                             <div>
                                 <Button
                                     onClick={() => navigate('/login')}
@@ -164,11 +168,12 @@ function Header({ inq, voc, dashboard }) {
                                     backgroundColor={'#03507d'}
                                     textColor={'#eeeeee'}
                                     border={'solid #c1c1c1 1px'}
-                                        borderRadius={'12px'}
-                                        fontSize={'16px'}
-                                    />
-                                </div>
-                        ) : (
+                                    borderRadius={'12px'}
+                                    fontSize={'16px'}
+                                />
+                            </div>
+                        )}
+                        {!didLogin && !isJoinPage && isLoginPage && (
                             <div>
                                 <Button
                                     onClick={() => navigate('/join')}
