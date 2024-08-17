@@ -228,6 +228,7 @@ body {
     background-color: #ffffff;
     height: 85%;
     padding: 3px;
+    width: 100%;
 }
 
 label {
@@ -245,6 +246,12 @@ label {
     color: #49454F;
     font-weight: bolder;
     margin-right: 20px;
+    width: 60%;
+    outline: none;
+}
+
+select {
+    text-align: center;
 }
 
 ._TextArea {
@@ -264,6 +271,7 @@ label {
     display: flex;
     justify-content: flex-end;
     margin-right: 20px;
+    margin-bottom: 15px;
 }
 
 .LineItemColumn {
