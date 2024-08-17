@@ -7,7 +7,8 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 
 public record AnswerCreateRequestDTO(
     String answerTitle,
-    String answerContents
+    String answerContents,
+    String answerFiles
 ) {
     public Answer toAnswerEntity(Question question, Inquiry inquiry, Customer customer) {
         return Answer.builder()
@@ -16,6 +17,7 @@ public record AnswerCreateRequestDTO(
             .customer(customer)
             .answerTitle(answerTitle)
             .answerContents(answerContents)
+            .answerFiles(answerFiles)
             .build();
     }
 }

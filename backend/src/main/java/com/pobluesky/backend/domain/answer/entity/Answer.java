@@ -39,18 +39,23 @@ public class Answer extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String answerContents; // 답변 내용
 
+    @Column(columnDefinition = "TEXT")
+    private String answerFiles; // 첨부파일
+
     @Builder
     private Answer(
         Question question,
         Inquiry inquiry,
         Customer customer,
         String answerTitle,
-        String answerContents
+        String answerContents,
+        String answerFiles
     ) {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
         this.answerTitle = answerTitle;
         this.answerContents = answerContents;
+        this.answerFiles = answerFiles;
     }
 }

@@ -31,6 +31,7 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    // 삭제 예정
     @GetMapping("/manager/{questionId}")
     @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByInquiryIdForManager(
@@ -49,11 +50,11 @@ public class QuestionController {
 
     @GetMapping("/customer/{userId}")
     @Operation(summary = "질문 전체 조회(고객사)", description = "특정 고객의 모든 질문을 고객 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByuserId(
+    public ResponseEntity<JsonResult> getQuestionByUserId(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId
     ) {
-        List<QuestionResponseDTO> response = questionService.getQuestionByuserId(
+        List<QuestionResponseDTO> response = questionService.getQuestionByUserId(
             token,
             userId
         );

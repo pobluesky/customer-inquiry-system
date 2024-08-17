@@ -13,6 +13,7 @@ public record AnswerResponseDTO(
     Long userId,
     String answerTitle,
     String answerContents,
+    String answerFiles,
     LocalDateTime createdDate
 
 ) {
@@ -25,6 +26,7 @@ public record AnswerResponseDTO(
             .answerTitle(answer.getAnswerTitle())
             .answerContents(answer.getAnswerContents())
             .createdDate(answer.getCreatedDate())
+            .answerFiles(answer.getAnswerFiles())
             .build();
     }
 }
