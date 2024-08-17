@@ -4,7 +4,8 @@ import Category from '../../atoms/Category';
 import OfferInfoInput from '../../atoms/OfferInfoInput';
 import OfferInfo from '../../organisms/OfferInfo';
 import OfferTable from '../../organisms/OfferTable';
-import { Container, Sheet, Opend, _Category, Detail } from '../../../assets/css/Form.css';
+import Button from '../../atoms/Button';
+import { Container, Sheet, Opend, _Category, Detail, buttonWrapper } from '../../../assets/css/Form.css';
 import ToggleBar from "../../mocules/ToggleBar";
 
 function Offersheet({ inquiryId, addTask }) {
@@ -70,6 +71,48 @@ function Offersheet({ inquiryId, addTask }) {
     };
     */
 
+    const [rows, setRows] = useState([{ id: Date.now(), items: Array(8).fill('') }]);
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const addRow = () => {
+        const newRow = { id: Date.now(), items: Array(8).fill('') };
+        setRows([...rows, newRow]);
+    };
+
+    const deleteRows = () => {
+        const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
+        setRows(remainingRows);
+        setSelectedRows([]);
+    };
+
+    const copyRows = () => {
+        const copiedRows = selectedRows.map(id => {
+            const rowToCopy = rows.find(row => row.id === id);
+            return { ...rowToCopy, id: Date.now() + Math.random() }; // Create new ID
+        });
+        setRows([...rows, ...copiedRows]);
+        setSelectedRows([]);
+    };
+
+    const handleRowSelect = (id) => {
+        setSelectedRows(prevSelected =>
+            prevSelected.includes(id)
+                ? prevSelected.filter(rowId => rowId !== id)
+                : [...prevSelected, id]
+        );
+    };
+
+    const handleInputChange = (rowId, field, value) => {
+        setRows(prevRows =>
+            prevRows.map(row =>
+                row.id === rowId
+                    ? { ...row, items: { ...row.items, [field]: value } }
+                    : row
+            )
+        );
+    };
+
+
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
             <div className={Sheet}>
@@ -77,8 +120,47 @@ function Offersheet({ inquiryId, addTask }) {
               <ToggleBar title={"Offersheet"} isChecked={isChecked} setCheck={setCheck} />
 
               {/* 토글 클릭 후 오퍼시트 열림 */}
-                {isChecked ? (
+                {isChecked && (
                     <div className={Opend}>
+                        <div className={buttonWrapper}>
+                            <Button
+                                onClick={addRow}
+                                btnName={"행추가"}
+                                margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                backgroundColor={'#03507d'}
+                                textColor={'#ffffff'}
+                                border={'none'}
+                                borderRadius={'18px'}
+                                fontSize={'17px'}
+                                fontWeight={"500"}
+                                padding={'10px'}
+                            />
+                            <Button
+                                onClick={deleteRows}
+                                btnName={"행삭제"}
+                                margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                backgroundColor={'#03507d'}
+                                textColor={'#ffffff'}
+                                border={'none'}
+                                borderRadius={'18px'}
+                                fontSize={'17px'}
+                                fontWeight={"500"}
+                                padding={'10px'}
+                            />
+                            <Button
+                                onClick={copyRows}
+                                btnName={"행복사"}
+                                margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                backgroundColor={'#03507d'}
+                                textColor={'#ffffff'}
+                                border={'none'}
+                                borderRadius={'18px'}
+                                fontSize={'17px'}
+                                fontWeight={"500"}
+                                padding={'10px'}
+                            />
+                        </div>
+
                         <TextEditor originalText={originalText} setOriginalText={setOriginalText} />
                         <div className={_Category}>
                             <div className={Detail}>
@@ -91,11 +173,14 @@ function Offersheet({ inquiryId, addTask }) {
                                 <Category categoryName={'2. Offer-Sheet'} />
                             </div>
                         </div>
-                        <OfferTable />
+                        <OfferTable
+                            rows={rows}
+                            onRowSelect={handleRowSelect}
+                            onInputChange={handleInputChange}
+                            selectedRows={selectedRows}
+                        />
                         <OfferInfo />
                     </div>
-                ) : (
-                    ''
                 )}
             </div>
         </div>
