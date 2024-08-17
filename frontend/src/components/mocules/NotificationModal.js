@@ -100,8 +100,8 @@ const NotificationModal = ({ onClose }) => {
                                         <img src={bell} alt="notification" />
                                     </div>
                                     <NotificationText onClick={() => handleNotificationClick(notification.id)}>
-                                        {notification.date}
-                                        <span>&nbsp;{notification.contents}</span>
+                                        {notification.date}<br/>
+                                        <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
                                         <img src={circle} alt="notification" />
@@ -122,7 +122,7 @@ const NotificationModal = ({ onClose }) => {
                                     </div>
                                     <NotificationText>
                                         {notification.date}
-                                        <span>&nbsp;{notification.contents}</span>
+                                        <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
                                         <img src={readCircle} alt="notification" />
@@ -228,8 +228,12 @@ const Title = styled.h2`
 const NotificationText = styled.div`
   font-size: 15px;
   line-height: 20px;
-  font-weight: 400;
+  font-weight: 700;
   text-align: left;
+  
+  span {
+    font-weight: 400;
+  }
 `;
 
 const NoNotifications = styled.div`
