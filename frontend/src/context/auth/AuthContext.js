@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         const currentUserId = getCookie('userId');
 
         if (token) {
+            console.log("aaa")
             setToken(token);
             setDidLogin(true);
             setRole(currentUserRole);
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     console.log("현재 유저의 userId: ", userId);
 
     return (
-        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId }}>
+        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId }}>
             {children}
         </AuthContext.Provider>
     );
