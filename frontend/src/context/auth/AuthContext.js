@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         const currentUserId = getCookie('userId');
 
         if (token) {
+            console.log("aaa")
             setToken(token);
             setDidLogin(true);
             setRole(currentUserRole);
