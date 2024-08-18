@@ -48,13 +48,13 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/manager/{questionId}")
-    @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByInquiryIdForManager(
+    @GetMapping("manager/{questionId}")
+    @Operation(summary = "질문별 상세 조회(담당자용)", description = "등록된 질문을 질문 번호로 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionByQuestionIdForManager(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId
     ) {
-        QuestionResponseDTO response = questionService.getQuestionByQuestionId(
+        QuestionResponseDTO response = questionService.getQuestionByQuestionIdForManager(
             token,
             questionId
         );
@@ -88,6 +88,22 @@ public class QuestionController {
         );
 
         return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("customer/{questionId}")
+    @Operation(summary = "질문별 상세 조회(고객용)", description = "등록된 질문을 질문 번호로 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionByQuestionId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        QuestionResponseDTO response = questionService.getQuestionByQuestionId(
+            token,
+            questionId
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 

@@ -88,20 +88,6 @@ public class QuestionService {
         return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
     }
 
-    // 질문 번호별 질문 조회 (담당자)
-    @Transactional(readOnly = true)
-    public QuestionResponseDTO getQuestionByQuestionId(String token, Long questionId) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
-
-        return QuestionResponseDTO.from(question);
-    }
-
     // 고객별 질문 조회 (고객사), 특정 고객이 볼 수 있는 질문 게시판에 사용
     @Transactional(readOnly = true)
     public List<QuestionResponseDTO> getQuestionByUserId(String token, Long customerId) {
@@ -124,6 +110,34 @@ public class QuestionService {
         return question.stream()
             .map(QuestionResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    // 질문 번호별 질문 조회 (담당자용)
+    @Transactional(readOnly = true)
+    public QuestionResponseDTO getQuestionByQuestionIdForManager(String token, Long questionId) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return QuestionResponseDTO.from(question);
+    }
+
+    // 질문 번호별 질문 조회 (고객사용)
+    @Transactional(readOnly = true)
+    public QuestionResponseDTO getQuestionByQuestionId(String token, Long questionId) {
+        Long userId = signService.parseToken(token);
+
+        customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return QuestionResponseDTO.from(question);
     }
 
     // 문의별 질문 작성 (고객사)

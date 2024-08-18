@@ -80,10 +80,32 @@ public class AnswerController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/{questionId}")
-    @Operation(summary = "질문별 답변 상세 조회", description = "질문에 대한 상세 답변을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getAnswerByQuestionId(@PathVariable Long questionId) {
-        AnswerResponseDTO response = answerService.getAnswerByQuestionId(questionId);
+    @GetMapping("/manager/{questionId}")
+    @Operation(summary = "질문별 답변 상세 조회(담당자용)", description = "질문에 대한 상세 답변을 질문 번호로 조회한다.")
+    public ResponseEntity<JsonResult> getAnswerByQuestionIdForManager(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        AnswerResponseDTO response = answerService.getAnswerByQuestionIdForManager(
+            token,
+            questionId
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/customer/{questionId}")
+    @Operation(summary = "질문별 답변 상세 조회(고객사용)", description = "질문에 대한 상세 답변을 질문 번호로 조회한다.")
+    public ResponseEntity<JsonResult> getAnswerByQuestionId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        AnswerResponseDTO response = answerService.getAnswerByQuestionId(
+            token,
+            questionId
+        );
 
         return ResponseEntity
             .status(HttpStatus.OK)

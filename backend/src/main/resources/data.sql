@@ -100,11 +100,10 @@ VALUES
     ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf,customer_email.pdf', 'ETC', 'COMPLETED'),
     ('2024-08-03 14:30:00', 3, 3, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf,suggestion_doc.docx', 'INQ', 'READY'),
     ('2024-08-03 14:30:00', 2, 2, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report4.pdf', 'INQ', 'COMPLETED');
+    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report4.pdf', 'INQ', 'READY');
 
 -- ANSWER
 INSERT INTO answer (created_date, inquiry_id, user_id, question_id, answer_title, answer_contents, answer_files)
 VALUES
     (CURRENT_TIMESTAMP, null, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_review1.pdf'),
-    (CURRENT_TIMESTAMP, null, 2, 2, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다', 'voc_review2.pdf'),
-        (CURRENT_TIMESTAMP, 1, 1, 5, '문의해주셔서 감사합니다', '후판 제품 가격에 대한 명세를 첨부합니다.', 'voc_review3.pdf');
+    (CURRENT_TIMESTAMP, null, 2, 2, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다', 'voc_review2.pdf');
