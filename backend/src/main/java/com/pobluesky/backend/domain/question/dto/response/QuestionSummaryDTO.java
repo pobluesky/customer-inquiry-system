@@ -11,7 +11,6 @@ public record QuestionSummaryDTO(
     String title,
     QuestionStatus status,
     String contents,
-    String files,
     LocalDateTime questionCreatedAt,  //문의 등록일
     LocalDateTime answerCreatedAt    //문의 답변일
 ) {
@@ -22,7 +21,6 @@ public record QuestionSummaryDTO(
             .title(question.getTitle())
             .status(question.getStatus())
             .contents(question.getContents())
-            .files(question.getFiles())
             .questionCreatedAt(question.getCreatedDate())
             .answerCreatedAt(question.getAnswer() != null ? question.getAnswer().getCreatedDate() : null)
             .build();

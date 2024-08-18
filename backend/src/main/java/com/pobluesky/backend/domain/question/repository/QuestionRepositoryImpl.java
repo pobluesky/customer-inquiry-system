@@ -59,7 +59,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.title,
                 question.status,
                 question.contents,
-                question.files,
                 question.createdDate.as("questionCreatedAt"),
                 question.answer.createdDate.as("answerCreatedAt")
             ))
@@ -115,7 +114,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.title,
                 question.status,
                 question.contents,
-                question.files,
                 question.createdDate.as("questionCreatedAt"),
                 question.answer.createdDate.as("answerCreatedAt")
             ))
