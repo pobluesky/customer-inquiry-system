@@ -38,10 +38,27 @@ export const postInquiry = async (userId, inquiryData) => {
         `/customers/inquiries/${userId}`,
         formData,
     );
-
+    console.log(inquiryData);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error('Error posting inquiry:', error);
+    throw error;
+  }
+};
+
+// 고객사 LineItem 등록
+export const postLineItems = async (inquiryId, lineItemData) => {
+  try {
+    const response = await axiosInstance.post(
+        `/line-items/${inquiryId}`,
+        lineItemData,
+    );
+    console.log(lineItemData);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error('Error posting line item:', error);
     throw error;
   }
 };

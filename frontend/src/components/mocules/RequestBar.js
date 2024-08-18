@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../atoms/Button';
-import { actions } from "../../utils/actions";
 
 function RequestBar({ requestBarTitle, role, onSubmit }) {
 
