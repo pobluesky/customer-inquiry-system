@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../assets/css/Form.css";
 import ToggleBar from "../../mocules/ToggleBar";
 import Button from "../../atoms/Button";
 import FileItem from "../../mocules/FileItem";
 
-const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
+const FileForm = ({ fileForm }) => {
   const [isChecked, setCheck] = useState(true);
-  const [files, setFiles] = useState(formData.files || null);
+  const [files, setFiles] = useState([]);
+  const fileInputRef = useRef(null); // 파일 input을 참조하기 위한 ref
 
-  const btnName = ["파일업로드", "파일삭제"];
+  const btnName = ["파일선택", "파일삭제"];
 
-  const handleFileUpload = (event) => {
-    const selectedFile = event.target.files[0];
-    setFiles(selectedFile);
-    handleFormDataChange('files', selectedFile);
+  // 파일 선택 핸들러
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // 선택된 파일을 파일 목록에 추가
+      setFiles([...files, file]);
+    }
   };
 
+  // 파일 삭제 핸들러
   const handleFileDelete = () => {
-    setFiles(null);
-    handleFormDataChange('files', null);
+    // 마지막 파일 삭제
+    setFiles(files.slice(0, -1));
+  };
+
+  // 파일 선택 input을 열기 위한 핸들러
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
   };
 
   const isUploadSection = fileForm === "파일첨부" || fileForm === "첨부파일";
-
-  console.log(formData.files);
 
   return (
       <div className={Container} style={{ marginTop: "-2vh" }}>
@@ -36,12 +44,12 @@ const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
                       <div className={buttonWrapper}>
                         <input
                             type="file"
-                            onChange={handleFileUpload}
+                            ref={fileInputRef}
                             style={{ display: 'none' }}
-                            id="fileUploadInput"
+                            onChange={handleFileChange}
                         />
                         <Button
-                            onClick={() => document.getElementById('fileUploadInput').click()}
+                            onClick={triggerFileInput}
                             btnName={btnName[0]}
                             margin={'-0.5vw 0.7vw 0 0.3vw'}
                             backgroundColor={'#03507d'}
@@ -71,7 +79,7 @@ const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
                         <div>첨부파일명</div>
                       </div>
                       {/* 파일 목록 */}
-                      <FileItem files={files ? [files] : []} />
+                      <FileItem files={files} />
                     </div>
                 ) : (
                     <div>
@@ -80,7 +88,7 @@ const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
                         <div>진행단계</div>
                         <div>첨부파일명</div>
                       </div>
-                      <FileItem files={files ? [files] : ["조회된 파일이 없습니다."]} />
+                      <FileItem files={files.length > 0 ? files : ["조회된 파일이 없습니다."]} />
                     </div>
                 )}
               </div>
