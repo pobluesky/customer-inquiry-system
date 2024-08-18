@@ -13,29 +13,45 @@ import {
   QualityReviewTextForm,
   FinalReviewTextForm
 } from '../../components/organisms/inquiry-form';
-import { getInquiry } from '../../apis/api/inquiry';
+import { getInquiry, postInquiry } from '../../apis/api/inquiry';
+import { useAuth } from '../../hooks/useAuth';
 
 function InqForm() {
-    useEffect(() => {
-        getInquiry();
-    }, []);
+    const { userId } = useAuth();
+
+    const [formData, setFormData] = useState({
+        country: '',
+        corporate: '',
+        salesPerson: '',
+        inquiryType: '',
+        industry: '',
+        corporationCode: '',
+        productType: '',
+        progress: 'RECEIPT',
+        customerRequestDate: '',
+        additionalRequests: '',
+        files: '',
+        responseDeadline: '',
+        elapsedDays: '',
+        isActivated: true,
+    });
 
     return (
         <div>
           <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
           <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} />
-          <InquiryNewForm />
-          <BasicInfoForm />
-          <InquiryHistoryForm />
-          <SalesInfoForm />
-          <AdditionalRequestForm />
-          <ReviewTextForm />
-          <FileForm fileForm={"협업첨부파일"}/>
-          <FileForm fileForm={"첨부파일"}/>
-          <FileForm fileForm={"파일첨부"}/>
-          <Offersheet />
-          <QualityReviewTextForm />
-          <FinalReviewTextForm />
+          <InquiryNewForm userId={userId} />
+          {/*<BasicInfoForm />*/}
+          <InquiryHistoryForm userId={userId} />
+          {/*<SalesInfoForm />*/}
+          <AdditionalRequestForm userId={userId} />
+          {/*<ReviewTextForm />*/}
+          {/*<FileForm fileForm={"협업첨부파일"}/>*/}
+          {/*<FileForm fileForm={"첨부파일"}/>*/}
+          <FileForm fileForm={"파일첨부"} userId={userId} />
+          {/*<Offersheet />*/}
+          {/*<QualityReviewTextForm />*/}
+          {/*<FinalReviewTextForm />*/}
         </div>
     );
 }
