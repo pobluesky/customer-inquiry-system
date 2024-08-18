@@ -54,7 +54,18 @@ public class AnswerController {
 //            .body(ResponseFactory.getSuccessJsonResult(response));
 //    }
 
-    @GetMapping("/customer/{userId}")
+    @GetMapping("/managers")
+    @Operation(summary = "답변 전체 조회(담당자)", description = "등록된 모든 답변을 조회한다. 답변 대기 및 답변 완료 현황을 알 수 있다.")
+    public ResponseEntity<JsonResult> getAnswerForManager(
+        @RequestHeader("Authorization") String token
+    ) {
+        List<AnswerResponseDTO> response = answerService.getAnswer(token);
+
+        return ResponseEntity.status((HttpStatus.OK))
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/customers/{userId}")
     @Operation(
         summary = "답변 전체 조회(고객사)",
         description = "특정 고객사의 모든 질문에 대한 모든 답변을 조회한다. 답변 대기 및 답변 완료 현황을 알 수 있다."
@@ -64,17 +75,6 @@ public class AnswerController {
         @PathVariable Long userId
     ) {
         List<AnswerResponseDTO> response = answerService.getAnswerByUserId(token, userId);
-
-        return ResponseEntity.status((HttpStatus.OK))
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @GetMapping("/manager")
-    @Operation(summary = "답변 전체 조회(담당자)", description = "등록된 모든 답변을 조회한다. 답변 대기 및 답변 완료 현황을 알 수 있다.")
-    public ResponseEntity<JsonResult> getAnswerForManager(
-        @RequestHeader("Authorization") String token
-    ) {
-        List<AnswerResponseDTO> response = answerService.getAnswer(token);
 
         return ResponseEntity.status((HttpStatus.OK))
             .body(ResponseFactory.getSuccessJsonResult(response));
