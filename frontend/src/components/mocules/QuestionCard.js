@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import { Question_Card } from '../../assets/css/Voc.css';
 
-function CustomerQuestionCard({
+function QuestionCard({
     onClick,
     status,
     customerName = '룰루랄라손흥민주식회사',
@@ -10,8 +10,8 @@ function CustomerQuestionCard({
     answerCreatedDate,
     title = '정말 간절하게 화장실 가고 싶습니다.',
 }) {
-    const btnName = status === 'completed' ? '답변 완료' : '답변 대기';
-    const backgroundColor = status === 'completed' ? '#f02323' : '#007aff';
+    const btnName = status === 'COMPLETED' ? '답변 완료' : '답변 대기';
+    const backgroundColor = status === 'COMPLETED' ? '#f02323' : '#007aff';
 
     const [isHovered, setIsHovered] = useState(false);
 
@@ -89,4 +89,4 @@ function CustomerQuestionCard({
     );
 }
 
-export default CustomerQuestionCard;
+export default QuestionCard;

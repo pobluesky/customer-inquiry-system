@@ -6,8 +6,8 @@ import { Intro } from './pages/intro';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
 import { InqMain } from './pages/inq-main';
-import { InqList } from "./pages/inq-list";
-import { InqForm } from "./pages/inq-form";
+import { InqList } from './pages/inq-list';
+import { InqForm } from './pages/inq-form';
 import { InqItem } from './pages/inq-item';
 import { VocList } from './pages/voc-list';
 import { VocMain } from './pages/voc-main';
@@ -19,7 +19,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+
 import { FileUpload } from './pages/fileupload';
+import QuestionDashboard from './components/templates/QuestionDashboard';
+import QuestionModal from './components/organisms/QuestionModal';
 
 function App() {
     return (
@@ -27,15 +30,6 @@ function App() {
             <Router>
                 <Layout>
                     <Routes>
-                        {/* Test Code, Need to Delete */}
-                        <Route path="fileupload" element={<FileUpload />} />
-
-
-
-
-
-
-
                         <Route index path="" element={<Intro />} />
                         <Route path="login" element={<Login />} />
                         <Route path="join" element={<Join />} />
@@ -49,6 +43,11 @@ function App() {
 
                         <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}
+
+                        {/* Test Code, Need to Delete */}
+                        <Route path="fileupload" element={<FileUpload />} />
+                        <Route path="questiondashboard" element={<QuestionDashboard />} />
+                        <Route path="questionmodal" element={<QuestionModal />} />
                     </Routes>
                 </Layout>
             </Router>

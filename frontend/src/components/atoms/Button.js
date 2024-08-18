@@ -6,16 +6,25 @@ function Button({
     width,
     height,
     margin,
+    padding,
     backgroundColor,
     textColor,
     fontSize,
+    fontWeight,
     border,
     borderRadius,
+    boxShadow,
     float,
-    fontWeight,
     alignSelf,
+    alignItems,
     justifySelf,
-    padding,
+    justifyContent,
+    imgSrc,
+    imgAlt,
+    imgWidth,
+    imgHeight,
+    imgMargin,
+    imgOnClick,
 }) {
     return (
         <button
@@ -24,19 +33,34 @@ function Button({
                 width,
                 height,
                 margin,
+                padding,
                 backgroundColor,
                 color: textColor,
                 fontSize,
+                fontWeight,
                 border,
                 borderRadius,
+                boxShadow,
                 float,
                 cursor: 'pointer',
-                fontWeight,
                 alignSelf,
+                alignItems,
                 justifySelf,
-                padding,
+                justifyContent,
             }}
         >
+            {imgSrc && (
+                <img
+                    src={imgSrc}
+                    alt={imgAlt}
+                    style={{
+                        width: imgWidth,
+                        height: imgHeight,
+                        margin: imgMargin,
+                    }}
+                    onClick={imgOnClick}
+                />
+            )}
             {btnName}
         </button>
     );

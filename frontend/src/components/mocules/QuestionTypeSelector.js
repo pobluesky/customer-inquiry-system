@@ -2,11 +2,11 @@ import React from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import search from '../../assets/css/icons/voc/search.svg';
-import { Question_Type_Select_Container } from '../../assets/css/Voc.css';
+import { Question_Type_Selector } from '../../assets/css/Voc.css';
 
-function QuestionTypeSelectItem() {
+function QuestionTypeSelector() {
     return (
-        <div className={Question_Type_Select_Container}>
+        <div className={Question_Type_Selector}>
             <div>
                 {/* 아이콘 + VoC 문의하기 */}
                 <div>
@@ -74,4 +74,4 @@ function QuestionTypeSelectItem() {
     );
 }
 
-export default QuestionTypeSelectItem;
+export default QuestionTypeSelector;

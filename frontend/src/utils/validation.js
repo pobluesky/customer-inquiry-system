@@ -57,3 +57,19 @@ export const validateCustomerName = (customerName) => {
     }
     return '';
 };
+
+// 답변 제목 길이
+export const validateAnswerTitle = (answerTitle) => {
+    if (answerTitle.length > 21 || answerTitle.length < 1) {
+        return true;
+    }
+    return '';
+}
+
+// 답변 내용 길이
+export const validateAnswerContents = (answerContents) => {
+    if (answerContents.length < 10) {
+        return true;
+    }
+    return '';
+}
