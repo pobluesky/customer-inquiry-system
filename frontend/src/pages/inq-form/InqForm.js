@@ -19,23 +19,6 @@ import { useAuth } from '../../hooks/useAuth';
 function InqForm() {
     const { userId } = useAuth();
 
-    const [formData, setFormData] = useState({
-        country: '',
-        corporate: '',
-        salesPerson: '',
-        inquiryType: '',
-        industry: '',
-        corporationCode: '',
-        productType: '',
-        progress: 'RECEIPT',
-        customerRequestDate: '',
-        additionalRequests: '',
-        files: '',
-        responseDeadline: '',
-        elapsedDays: '',
-        isActivated: true,
-    });
-
     return (
         <div>
           <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
