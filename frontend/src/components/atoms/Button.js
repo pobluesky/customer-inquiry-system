@@ -17,7 +17,8 @@ function Button({
   fontWeight,
   alignSelf,
   justifySelf,
-  padding
+  padding,
+  display
 }) {
   return (
       <button
@@ -36,7 +37,8 @@ function Button({
             fontWeight: `${fontWeight}`,
             alignSelf: `${alignSelf}`,
             justifySelf: `${justifySelf}`,
-            padding: `${padding}`
+            padding: `${padding}`,
+            display: `${display}`
           }}
       >
         {btnName}
