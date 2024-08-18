@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../atoms/Button';
 import { actions } from "../../utils/actions";
 
-function RequestBar({ requestBarTitle, role }) {
+function RequestBar({ requestBarTitle, role, onSubmit }) {
 
   const buttonConfig = {
     "Inquiry 등록": ["초기화", "임시저장", "삭제", "검토의뢰"],
@@ -14,6 +14,14 @@ function RequestBar({ requestBarTitle, role }) {
   };
 
   const buttons = buttonConfig[requestBarTitle]?.[role] || buttonConfig[requestBarTitle] || [];
+
+  const handleButtonClick = (btnName) => {
+    if (btnName === "검토의뢰") {
+      onSubmit();
+    } else {
+      console.log(`Action for ${btnName} is not implemented`);
+    }
+  };
 
   return (
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2vh' }}>
@@ -36,7 +44,7 @@ function RequestBar({ requestBarTitle, role }) {
             {buttons.map((btnName, index) => (
                 <Button
                     key={index}
-                    onClick={actions[btnName]}
+                    onClick={() => handleButtonClick(btnName)}
                     btnName={btnName}
                     margin={'0 1.5vw 0 0'}
                     backgroundColor={'#03507d'}

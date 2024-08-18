@@ -19,6 +19,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import CustomerInqForm from './pages/inq-form/CustomerInqForm';
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path="inq-main" element={<InqMain />} />
                         <Route path="inq-list" element={<InqList />} />
                         <Route path="inq-form" element={<InqForm />} />
+                        <Route path="inq-form/customer" element={<CustomerInqForm />} />
                         <Route path="inq-item" element={<InqItem />} />
 
                         <Route path="voc-main" element={<VocMain />} />
