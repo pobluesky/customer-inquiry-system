@@ -1,7 +1,19 @@
 import React from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import styled from 'styled-components';
+
+const FilterButton = ({ btnName, margin, onClick }) => (
+    <Button
+        btnName={btnName}
+        width={'84px'}
+        height={'28px'}
+        margin={margin}
+        backgroundColor={'#ffffff'}
+        border={'solid 1px #c1c1c1'}
+        borderRadius={'20px'}
+        onClick={onClick}
+    />
+);
 
 const AnswerTitleInput = ({ answerTitle, answerTitleChange }) => (
     <Input
@@ -79,6 +91,7 @@ const AnswerButton = ({ btnName, onClick }) => (
 );
 
 export {
+    FilterButton,
     AnswerTitleInput,
     AnswerContentInput,
     AnswerContent,

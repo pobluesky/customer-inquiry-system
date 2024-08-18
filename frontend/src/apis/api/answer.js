@@ -1,6 +1,30 @@
+// 담당자용
+export const getAnswerByQuestionIdForManager = async (questionId, token) => {
+    try {
+        const response = await fetch(`/api/answers/manager/${questionId}`, {
+            headers: {
+                'Authorization': `${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+
+        if (data.result === 'success') {
+            return data.data;
+        } else {
+            console.error('Failed to fetch data:', data.message);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+    }
+};
+
+// 고객사용
 export const getAnswerByQuestionId = async (questionId, token) => {
     try {
-        const response = await fetch(`/api/answers/${questionId}`, {
+        const response = await fetch(`/api/answers/customer/${questionId}`, {
             headers: {
                 'Authorization': `${token}`,
                 'Content-Type': 'application/json',

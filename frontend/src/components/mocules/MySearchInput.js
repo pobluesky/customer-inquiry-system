@@ -17,9 +17,9 @@ const MySearchInput = forwardRef(
             imgWidth,
             imgHeight,
             imgMargin,
-            imgOnClick,
             btnHeight,
             btnMargin,
+            onClick,
         },
         ref,
     ) => (
@@ -43,13 +43,13 @@ const MySearchInput = forwardRef(
                 imgWidth={imgWidth}
                 imgHeight={imgHeight}
                 imgMargin={imgMargin}
-                imgOnClick={imgOnClick}
                 height={btnHeight}
                 margin={btnMargin}
                 backgroundColor={'transparent'}
                 border={'none'}
                 boxShadow={'none'}
                 borderRadius={'0'}
+                onClick={onClick}
             />
         </div>
     ),

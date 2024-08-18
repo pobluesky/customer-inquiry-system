@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import { Question_Card } from '../../assets/css/Voc.css';
+import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionCard({
     onClick,
     status,
-    customerName = '룰루랄라손흥민주식회사',
+    customerName = '고객사명 추가',
     questionCreatedDate,
     answerCreatedDate,
-    title = '정말 간절하게 화장실 가고 싶습니다.',
+    title,
 }) {
+    const thisRole = getCookie('userRole');
     const btnName = status === 'COMPLETED' ? '답변 완료' : '답변 대기';
     const backgroundColor = status === 'COMPLETED' ? '#f02323' : '#007aff';
 
@@ -54,10 +56,14 @@ function QuestionCard({
                             onMouseLeave={() => setIsHovered(false)}
                         />
                     </div>
-                    <div>문의 번호</div>
+                    <div>
+                        {thisRole !== 'CUSTOMER' && '문의 번호 공간'}
+                    </div>
                 </div>
                 <div>
-                    <div style={customerNameEllipsis}>{customerName}</div>
+                    <div style={customerNameEllipsis}>
+                        {thisRole !== 'CUSTOMER' && customerName}
+                    </div>
                     <div>
                         <div>문의 등록일&nbsp;&nbsp;{questionCreatedDate}</div>
                         <div>답변 등록일&nbsp;&nbsp;{answerCreatedDate}</div>
@@ -66,22 +72,24 @@ function QuestionCard({
                 <div style={titleEllipsis}>{title}</div>
                 <div>
                     <div>
-                        <Button
-                            btnName={'협업 요청'}
-                            width={'72px'}
-                            height={'24px'}
-                            backgroundColor={'#03507d'}
-                            textColor={'#ffffff'}
-                            fontSize={'12px'}
-                            border={'none'}
-                            borderRadius={'8px'}
-                        />
+                        {thisRole !== 'CUSTOMER' && (
+                            <Button
+                                btnName={'협업 요청'}
+                                width={'72px'}
+                                height={'24px'}
+                                backgroundColor={'#03507d'}
+                                textColor={'#ffffff'}
+                                fontSize={'12px'}
+                                border={'none'}
+                                borderRadius={'8px'}
+                            />
+                        )}
                     </div>
                     <div
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                     >
-                        답변 달기
+                        {thisRole !== 'CUSTOMER' ? '답변 달기' : '답변 확인'}
                     </div>
                 </div>
             </div>

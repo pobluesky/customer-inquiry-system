@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../atoms/Button';
-import MySearchInput from './../mocules/MySearchInput';
-import MyDateInput from '../mocules/MyDateInput';
+import MySearchInput from './MySearchInput';
+import MyDateInput from './MyDateInput';
+import { FilterButton } from './VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Filter_Panel } from '../../assets/css/Voc.css';
 import { Datepicker } from '../../assets/css/Form.css';
 import { getCookie } from '../../apis/utils/cookies';
 
-function QuestionFilterPanel({ totalItems, startDate, setStartDate }) {
+function QuestionFilterPanel({
+    totalItems,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    setFilter,
+    setSearchByTitle,
+}) {
     const thisRole = getCookie('userRole');
     const height = thisRole === 'CUSTOMER' ? '228px' : '288px';
     const gridTemplateRows =
         thisRole === 'CUSTOMER'
             ? '52px 52px 36px 32px' // isCustomer
             : '52px 52px 52px 36px 32px'; // isManager
+    const [curSearchTitle, setCurSearchTitle] = useState('');
 
     return (
         <>
@@ -37,17 +47,24 @@ function QuestionFilterPanel({ totalItems, startDate, setStartDate }) {
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
+                                value={curSearchTitle}
+                                onChange={(e) =>
+                                    setCurSearchTitle(e.target.value)
+                                }
+                                onClick={() => {
+                                    setSearchByTitle(curSearchTitle);
+                                }}
                             />
                             <div>문의 등록일</div>
                             <MyDateInput
-                                startDate={startDate}
-                                setStartDate={setStartDate}
+                                checkDate={startDate}
+                                setCheckDate={setStartDate}
                                 className={Datepicker}
                             />
                             <div>~</div>
                             <MyDateInput
-                                startDate={startDate}
-                                setStartDate={setStartDate}
+                                checkDate={endDate}
+                                setCheckDate={setEndDate}
                                 className={Datepicker}
                             />
                             <Button
@@ -59,6 +76,7 @@ function QuestionFilterPanel({ totalItems, startDate, setStartDate }) {
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'20px'}
+                                onClick={() => {}}
                             />
                         </div>
                     </div>
@@ -96,41 +114,24 @@ function QuestionFilterPanel({ totalItems, startDate, setStartDate }) {
                     {/* 정렬 버튼 */}
                     <div>
                         <div>정렬 조건</div>
-                        <Button
+                        <FilterButton
                             btnName={'최신순'}
-                            width={'84px'}
-                            height={'28px'}
-                            // margin={'0 0 0 12px'}
-                            backgroundColor={'#ffffff'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'20px'}
+                            onClick={() => setFilter('latest')}
                         />
-                        <Button
+                        <FilterButton
                             btnName={'과거순'}
-                            width={'84px'}
-                            height={'28px'}
                             margin={'0 12px 0 0'}
-                            backgroundColor={'#ffffff'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'20px'}
+                            onClick={() => setFilter('oldest')}
                         />
-                        <Button
+                        <FilterButton
                             btnName={'답변 대기'}
-                            width={'84px'}
-                            height={'28px'}
                             margin={'0 12px 0 0'}
-                            backgroundColor={'#ffffff'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'20px'}
+                            onClick={() => setFilter('READY')}
                         />
-                        <Button
+                        <FilterButton
                             btnName={'답변 완료'}
-                            width={'84px'}
-                            height={'28px'}
                             margin={'0 12px 0 0'}
-                            backgroundColor={'#ffffff'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'20px'}
+                            onClick={() => setFilter('COMPLETED')}
                         />
                     </div>
 

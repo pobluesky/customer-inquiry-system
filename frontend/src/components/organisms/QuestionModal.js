@@ -28,13 +28,17 @@ import {
     validateAnswerTitle,
     validateAnswerContents,
 } from '../../utils/validation';
-import { getQuestionByQuestionId } from '../../apis/api/question';
+import {
+    getQuestionByQuestionId,
+    getQuestionByQuestionIdForManager,
+} from '../../apis/api/question';
 import {
     getAnswerByQuestionId,
+    getAnswerByQuestionIdForManager,
     postAnswerByQuestionId,
 } from '../../apis/api/answer';
 
-function QuestionModal({ questionId, status, onClose }) {
+function QuestionModal({ questionId, status, setStatus, onClose }) {
     const thisRole = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
@@ -70,7 +74,8 @@ function QuestionModal({ questionId, status, onClose }) {
                 answerContents,
                 answerFiles,
             );
-            fetchGetAnswerByQuestionId(questionId);
+            fetchGetQuestionDetail(questionId);
+            setStatus('COMPLETED');
             AnswerCompleteAlert();
             setAnswering(false);
         }
@@ -79,33 +84,55 @@ function QuestionModal({ questionId, status, onClose }) {
     const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
 
-    const fetchGetQuestionByQuestionId = async (questionId) => {
-        const result = await getQuestionByQuestionId(
-            questionId,
-            getCookie('accessToken'),
-        );
-        if (result) {
-            console.log('응답받은 데이터는 다음과 같습니다.', result);
-            setQuestionDetail(result);
-        } else {
-            console.error('Fetched data is not an array or is invalid.');
-            setQuestionDetail([]);
-        }
-    };
+    const fetchGetQuestionDetail =
+        getCookie('userRole') === 'CUSTOMER'
+            ? async () => {
+                  const result = await getQuestionByQuestionId(
+                      questionId,
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setQuestionDetail(result);
+                  } else {
+                      setQuestionDetail([]);
+                  }
+              }
+            : async () => {
+                  const result = await getQuestionByQuestionIdForManager(
+                      questionId,
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setQuestionDetail(result);
+                  } else {
+                      setQuestionDetail([]);
+                  }
+              };
 
-    const fetchGetAnswerByQuestionId = async (questionId) => {
-        const result = await getAnswerByQuestionId(
-            questionId,
-            getCookie('accessToken'),
-        );
-        if (result) {
-            console.log('응답받은 데이터는 다음과 같습니다.', result);
-            setAnswerDetail(result);
-        } else {
-            console.error('Fetched data is not an array or is invalid.');
-            setAnswerDetail([]);
-        }
-    };
+    const fetchGetAnswerDetail =
+        getCookie('userRole') === 'CUSTOMER'
+            ? async () => {
+                  const result = await getAnswerByQuestionId(
+                      questionId,
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setAnswerDetail(result);
+                  } else {
+                      setAnswerDetail([]);
+                  }
+              }
+            : async () => {
+                  const result = await getAnswerByQuestionIdForManager(
+                      questionId,
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setAnswerDetail(result);
+                  } else {
+                      setAnswerDetail([]);
+                  }
+              };
 
     const fetchPostAnswerByQuestionId = async (
         questionId,
@@ -135,8 +162,8 @@ function QuestionModal({ questionId, status, onClose }) {
     };
 
     useEffect(() => {
-        fetchGetAnswerByQuestionId(questionId);
-        fetchGetQuestionByQuestionId(questionId);
+        fetchGetQuestionDetail(questionId);
+        fetchGetAnswerDetail(questionId);
     }, [questionId, status]);
 
     console.log('상세 질문 =========>', questionDetail);
@@ -194,7 +221,6 @@ function QuestionModal({ questionId, status, onClose }) {
                     <div>{questionDetail.contents}</div>
                 </div>
 
-
                 {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면
                     <div>
                         <AnswerContent />
@@ -217,7 +243,9 @@ function QuestionModal({ questionId, status, onClose }) {
                             <div>{answerDetail.answerTitle}</div>
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
-                            <div style={filesEllipsis}>{answerDetail.answerFiles}</div>
+                            <div style={filesEllipsis}>
+                                {answerDetail.answerFiles}
+                            </div>
                         </div>
                         <div>{answerDetail.answerContents}</div>
                     </div>

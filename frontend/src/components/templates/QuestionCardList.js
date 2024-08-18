@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tag from '../atoms/Tag';
 import QuestionCard from '../mocules/QuestionCard';
 import QuestionModal from '../organisms/QuestionModal';
@@ -6,11 +6,15 @@ import {
     Question_Doesnt_Exist,
     Question_Card_List,
 } from '../../assets/css/Voc.css';
+import { getCookie } from '../../apis/utils/cookies';
+import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 
+// "문의 없음" 대체 카드
 const QuestionDoesntExist = () => {
     return <div className={Question_Doesnt_Exist}>아직 문의가 없습니다.</div>;
 };
 
+// 문의 타입 태그
 const VocTag = ({ category }) => (
     <Tag
         category={category}
@@ -23,18 +27,93 @@ const VocTag = ({ category }) => (
     />
 );
 
-function QuestionCardList({ questionSummary }) {
+function QuestionCardList({
+    setTotalItems,
+    startDate,
+    endDate,
+    filter,
+    searchByTitle,
+}) {
+    const [filterArgs, setFilterArgs] = useState('');
+    const [questionSummary, setQuestionSummary] = useState({});
     const [openCard, setOpenCard] = useState(false);
     const [questionId, setQuestionId] = useState(0);
-    const [status, setStatus] = useState('ready');
+    const [status, setStatus] = useState('READY');
 
     const closeModal = () => {
         setOpenCard(false);
     };
 
-    const inqQuestions = questionSummary.inqQuestions || [];
-    const siteQuestions = questionSummary.siteQuestions || [];
-    const etcQuestions = questionSummary.etcQuestions || [];
+    useEffect(() => {
+        let args = '';
+        if (startDate && endDate) {
+            const s = `startDate=${startDate.toISOString().split('T')[0]}`;
+            const e = `endDate=${endDate.toISOString().split('T')[0]}`;
+            args = `${s}&${e}`;
+        } else if (filter) {
+            switch (filter) {
+                case 'latest':
+                case 'oldest':
+                    args = `sortBy=${filter}`;
+                    break;
+                case 'COMPLETED':
+                case 'READY':
+                    args = `status=${filter}`;
+                    break;
+                default:
+                    break;
+            }
+        }
+        setFilterArgs(args);
+    }, [startDate, endDate, filter]);
+
+    const fetchGetQuestions =
+        getCookie('userRole') === 'CUSTOMER'
+            ? async () => {
+                  const result = await getQuestionByUserId(
+                      getCookie('userId'),
+                      getCookie('accessToken'),
+                      filterArgs,
+                  );
+                  if (result) {
+                      setQuestionSummary(result);
+                  } else {
+                      setQuestionSummary([]);
+                  }
+              }
+            : async () => {
+                  const result = await getAllQuestion(getCookie('accessToken'));
+                  if (result) {
+                      setQuestionSummary(result);
+                  } else {
+                      setQuestionSummary([]);
+                  }
+              };
+
+    useEffect(() => {
+        fetchGetQuestions();
+    }, [startDate, endDate, filterArgs, openCard]);
+
+    const filterByTitle = (questions) => {
+        if (!searchByTitle) return questions;
+        return questions.filter((question) =>
+            question.title.toLowerCase().includes(searchByTitle.toLowerCase()),
+        );
+    };
+
+    const inqQuestions = filterByTitle(questionSummary.inqQuestions || []);
+    const siteQuestions = filterByTitle(questionSummary.siteQuestions || []);
+    const etcQuestions = filterByTitle(questionSummary.etcQuestions || []);
+
+    // 전체 게시글 개수
+    useEffect(() => {
+        const total = Object.values(questionSummary).reduce(
+            (acc, questions) => acc + (questions?.length || 0),
+            0,
+        );
+
+        setTotalItems(total);
+    }, [questionSummary, searchByTitle]);
 
     return (
         <>
@@ -67,8 +146,8 @@ function QuestionCardList({ questionSummary }) {
                     )}
                 </div>
                 <div>
-                <VocTag category={'사이트 문의'} />
-                {siteQuestions.length > 0 ? (
+                    <VocTag category={'사이트 문의'} />
+                    {siteQuestions.length > 0 ? (
                         siteQuestions.map((site, siteIdx) => (
                             <QuestionCard
                                 key={siteIdx}
@@ -94,7 +173,7 @@ function QuestionCardList({ questionSummary }) {
                     )}
                 </div>
                 <div>
-                <VocTag category={'기타 문의'} />
+                    <VocTag category={'기타 문의'} />
                     {etcQuestions.length > 0 ? (
                         etcQuestions.map((etc, etcIdx) => (
                             <QuestionCard
@@ -125,6 +204,7 @@ function QuestionCardList({ questionSummary }) {
                 <QuestionModal
                     questionId={questionId}
                     status={status}
+                    setStatus={setStatus}
                     onClose={closeModal}
                 />
             )}

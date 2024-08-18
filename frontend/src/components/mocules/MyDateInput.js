@@ -3,19 +3,18 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import { ko } from 'date-fns/locale';
 
-function DateInput({ className, startDate, setStartDate }) {
+function MyDateInput({ className, checkDate, setCheckDate }) {
     return (
         <DatePicker
             className={className}
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            selected={checkDate}
+            onChange={(date) => setCheckDate(date)}
             locale={ko}
             dateFormat="yyyy-MM-dd"
-            minDate={new Date()}
             closeOnScroll={true}
-            withPortal />
-        );
+            withPortal
+        />
+    );
 }
 
-export default DateInput;
-
+export default MyDateInput;
