@@ -64,12 +64,12 @@ const BasicInfoForm = () => {
                       </div>
                       <div className={inputWrapper}>
                           <label>의뢰인 E-mail</label>
-                          <input type="text" className={_Input}
+                          <input type="email" className={_Input}
                                  placeholder="zhaofeng@posco.net" />
                       </div>
                       <div className={inputWrapper}>
                           <label>의뢰인 연락처</label>
-                          <input type="text" className={_Input}
+                          <input type="tel" className={_Input}
                                  placeholder="86-18901251225" />
                       </div>
 
@@ -91,7 +91,8 @@ const BasicInfoForm = () => {
                       </div>
                       <div className={inputWrapper}>
                           <label>고객요청일</label>
-                          <input type="text" className={_Input}
+                          <input type="date" className={_Input}
+                                 value="2024-07-23"
                                  placeholder="2024-07-23" />
                       </div>
                   </div>
