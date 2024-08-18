@@ -119,7 +119,7 @@ public class QuestionService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        List<Question> question = questionRepository.findByCustomer_UserId(customerId);
+        List<Question> question = questionRepository.findAllByCustomer_UserId(customerId);
 
         return question.stream()
             .map(QuestionResponseDTO::from)
