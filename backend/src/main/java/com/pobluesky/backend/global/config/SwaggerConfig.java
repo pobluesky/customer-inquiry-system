@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,6 +29,6 @@ public class SwaggerConfig {
 
         return new OpenAPI()
             .components(new Components().addSecuritySchemes("apiKeyAuth", securityScheme))
-            .security(Arrays.asList(securityRequirement));
+            .security(Collections.singletonList(securityRequirement));
     }
 }
