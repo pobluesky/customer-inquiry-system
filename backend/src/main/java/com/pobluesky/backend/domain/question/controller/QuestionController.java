@@ -49,7 +49,7 @@ public class QuestionController {
     }
 
     @GetMapping("manager/{questionId}")
-    @Operation(summary = "질문별 상세 조회(담당자용)", description = "등록된 질문을 질문 번호로 조회한다.")
+    @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByQuestionIdForManager(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId
@@ -92,7 +92,7 @@ public class QuestionController {
     }
 
     @GetMapping("customer/{questionId}")
-    @Operation(summary = "질문별 상세 조회(고객용)", description = "등록된 질문을 질문 번호로 조회한다.")
+    @Operation(summary = "질문별 상세 조회(고객사)", description = "등록된 질문을 질문 번호로 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByQuestionId(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId

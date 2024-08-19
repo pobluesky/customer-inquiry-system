@@ -33,7 +33,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         LocalDate startDate,
         LocalDate endDate
     ) {
-
+      
         List<QuestionSummaryDTO> inqQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.INQ, pageable, status, startDate, endDate);
         List<QuestionSummaryDTO> siteQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.SITE, pageable, status, startDate, endDate);
         List<QuestionSummaryDTO> etcQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.ETC, pageable, status, startDate, endDate);

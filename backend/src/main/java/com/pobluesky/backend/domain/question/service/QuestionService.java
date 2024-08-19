@@ -48,6 +48,22 @@ public class QuestionService {
 
     private final ManagerRepository managerRepository;
 
+    // 질문 전체 조회 (담당자)
+    @Transactional(readOnly = true)
+    public QuestionSummaryResponseDTO getQuestionsByManager(
+        String token, int page, int size, String sortBy,
+        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
+    }
 
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
@@ -71,48 +87,7 @@ public class QuestionService {
             customerId, pageable, status, startDate, endDate);
     }
 
-    // 질문 전체 조회 (담당자)
-    @Transactional(readOnly = true)
-    public QuestionSummaryResponseDTO getQuestionsByManager(
-        String token, int page, int size, String sortBy,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
-
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
-    }
-
-    // 고객별 질문 조회 (고객사), 특정 고객이 볼 수 있는 질문 게시판에 사용
-    @Transactional(readOnly = true)
-    public List<QuestionResponseDTO> getQuestionByUserId(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
-
-//        Manager manager = managerRepository.findById(userId)
-//            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-//        if(!Objects.equals(manager.getUserId(), customerId))
-//            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        if(!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        List<Question> question = questionRepository.findAllByCustomer_UserId(customerId);
-
-        return question.stream()
-            .map(QuestionResponseDTO::from)
-            .collect(Collectors.toList());
-    }
-
-    // 질문 번호별 질문 조회 (담당자용)
+    // 질문 번호별 질문 조회 (담당자)
     @Transactional(readOnly = true)
     public QuestionResponseDTO getQuestionByQuestionIdForManager(String token, Long questionId) {
         Long userId = signService.parseToken(token);
@@ -126,7 +101,7 @@ public class QuestionService {
         return QuestionResponseDTO.from(question);
     }
 
-    // 질문 번호별 질문 조회 (고객사용)
+    // 질문 번호별 질문 조회 (고객사)
     @Transactional(readOnly = true)
     public QuestionResponseDTO getQuestionByQuestionId(String token, Long questionId) {
         Long userId = signService.parseToken(token);
