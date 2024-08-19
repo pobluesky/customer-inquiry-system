@@ -76,10 +76,10 @@ public class QuestionService {
     public List<QuestionResponseDTO> getQuestionByuserId(String token, Long customerId) {
         Long userId = signService.parseToken(token);
 
-        Manager manager = managerRepository.findById(userId)
+        Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(!Objects.equals(manager.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         List<Question> question = questionRepository.findByCustomer_UserId(customerId);
