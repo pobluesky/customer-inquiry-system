@@ -2,7 +2,9 @@ package com.pobluesky.backend.domain.offersheet.dto.request;
 
 import com.pobluesky.backend.domain.offersheet.entity.OfferSheet;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.receipt.dto.request.ReceiptCreateRequestDTO;
 import java.time.LocalDate;
+import java.util.List;
 
 public record OfferSheetCreateRequestDTO(
     String priceTerms,
@@ -10,7 +12,8 @@ public record OfferSheetCreateRequestDTO(
     LocalDate shipment,
     LocalDate validity,
     String destination,
-    String remark
+    String remark,
+    List<ReceiptCreateRequestDTO> receipts
 ) {
     public OfferSheet toOfferSheetEntity(Inquiry inquiry) {
 

@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.offersheet.service;
 
+import com.pobluesky.backend.domain.receipt.repository.ReceiptRepository;
+import java.util.stream.Collectors;
 import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetCreateRequestDTO;
 import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetUpdateRequestDTO;
 import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDTO;
@@ -7,6 +9,7 @@ import com.pobluesky.backend.domain.offersheet.entity.OfferSheet;
 import com.pobluesky.backend.domain.offersheet.repository.OfferSheetRepository;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.receipt.entity.Receipt;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
@@ -16,6 +19,7 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
@@ -31,11 +35,14 @@ public class OfferSheetService {
 
     private final OfferSheetRepository offerSheetRepository;
 
+    private final ReceiptRepository receiptRepository;
+
     private final InquiryRepository inquiryRepository;
 
     private final CustomerRepository customerRepository;
 
     private final ManagerRepository managerRepository;
+
 
     @Transactional(readOnly = true)
     public OfferSheetResponseDTO getOfferSheetByInquiryId(String token, Long inquiryId) {
@@ -110,6 +117,12 @@ public class OfferSheetService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry);
+
+        List<Receipt> receipts = offerSheetCreateRequestDTO.receipts().stream()
+            .map(receiptCreateDTO -> receiptCreateDTO.toReceipt(offerSheet))
+            .collect(Collectors.toList());
+
+        offerSheet.getReceipts().addAll(receipts);
 
         OfferSheet savedOfferSheet = offerSheetRepository.save(offerSheet);
 
