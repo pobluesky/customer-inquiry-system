@@ -205,12 +205,12 @@ public class CollaborationService {
 
     private Sort getSortByOrderCondition(String sortBy) {
         return switch (sortBy) {
-            case "oldest" -> Sort.by(
+            case "OLDEST" -> Sort.by(
                 Sort.Order.asc("createdDate"),
                 Sort.Order.desc("colId")
             );
 
-            case "latest" -> Sort.by(
+            case "LATEST" -> Sort.by(
                 Sort.Order.desc("createdDate"),
                 Sort.Order.desc("colId")
             );

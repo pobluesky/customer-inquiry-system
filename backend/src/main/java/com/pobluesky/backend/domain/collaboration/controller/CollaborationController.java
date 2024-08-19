@@ -44,7 +44,7 @@ public class CollaborationController {
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) ColStatus colStatus,
         @RequestParam(required = false) String colReqManager,
         @RequestParam(required = false) Long colReqId,
