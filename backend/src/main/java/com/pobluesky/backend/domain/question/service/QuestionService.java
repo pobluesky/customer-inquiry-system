@@ -150,13 +150,18 @@ public class QuestionService {
     }
 
     private Sort getSortByOrderCondition(String sortBy) {
-        switch (sortBy) {
-            case "oldest":
-                return Sort.by(Sort.Order.asc("createdDate"), Sort.Order.desc("questionId"));
-            case "latest":
-                return Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("questionId"));
-            default:
-                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        }
+        return switch (sortBy) {
+            case "OLDEST" -> Sort.by(
+                Sort.Order.asc("createdDate"),
+                Sort.Order.desc("questionId")
+            );
+
+            case "LATEST" -> Sort.by(
+                Sort.Order.desc("createdDate"),
+                Sort.Order.desc("questionId")
+            );
+
+            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        };
     }
 }
