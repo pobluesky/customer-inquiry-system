@@ -47,12 +47,25 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public List<CustomerResponseDTO> getAllCustomers() {
+    public List<CustomerResponseDTO> getCustomers() {
         List<Customer> customers = customerRepository.findAll();
 
         return customers.stream()
             .map(CustomerResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerResponseDTO getCustomerById(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return  CustomerResponseDTO.from(customer);
     }
 
     @Transactional
@@ -91,4 +104,6 @@ public class CustomerService {
 
         customer.deleteUser();
     }
+
+
 }

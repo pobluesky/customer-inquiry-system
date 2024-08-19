@@ -20,8 +20,10 @@ import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import java.time.LocalDate;
 import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,11 +52,18 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
-        String token, Long customerId, int page,
-        int size, String sortBy, Progress progress,
-        ProductType productType, String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
-
+        String token,
+        Long customerId,
+        int page,
+        int size,
+        String sortBy,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -73,16 +82,23 @@ public class InquiryService {
 
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByManager(
-        String token, int page, int size, String sortBy, Progress progress,
-        ProductType productType, String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
-
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
         Long userId = signService.parseToken(token);
 
-        Manager user = managerRepository.findById(userId)
+        Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(user.getRole() == UserRole.CUSTOMER)
+        if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
         Sort sort = getSortByOrderCondition(sortBy);
@@ -204,13 +220,18 @@ public class InquiryService {
     }
 
     private Sort getSortByOrderCondition(String sortBy) {
-        switch (sortBy) {
-            case "oldest":
-                return Sort.by(Sort.Order.asc("createdDate"), Sort.Order.desc("inquiryId"));
-            case "latest":
-                return Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("inquiryId"));
-            default:
-                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        }
+        return switch (sortBy) {
+            case "oldest" -> Sort.by(
+                Sort.Order.asc("createdDate"),
+                Sort.Order.desc("inquiryId")
+            );
+
+            case "latest" -> Sort.by(
+                Sort.Order.desc("createdDate"),
+                Sort.Order.desc("inquiryId")
+            );
+
+            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        };
     }
 }

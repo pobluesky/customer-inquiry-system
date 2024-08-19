@@ -9,7 +9,6 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
@@ -18,8 +17,6 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 
@@ -82,18 +79,6 @@ public class OfferSheetService {
 
         // 3. offersheet update
         offerSheet.updateOfferSheet(
-            offerSheetUpdateRequestDTO.product(),
-            offerSheetUpdateRequestDTO.specification(),
-            offerSheetUpdateRequestDTO.surfaceFinish(),
-            offerSheetUpdateRequestDTO.usage(),
-            offerSheetUpdateRequestDTO.thickness(),
-            offerSheetUpdateRequestDTO.diameter(),
-            offerSheetUpdateRequestDTO.width(),
-            offerSheetUpdateRequestDTO.quantity(),
-            offerSheetUpdateRequestDTO.price(),
-            offerSheetUpdateRequestDTO.unitMinWeight(),
-            offerSheetUpdateRequestDTO.unitMaxWeight(),
-            offerSheetUpdateRequestDTO.edge(),
             offerSheetUpdateRequestDTO.priceTerms(),
             offerSheetUpdateRequestDTO.paymentTerms(),
             offerSheetUpdateRequestDTO.shipment(),
@@ -130,5 +115,4 @@ public class OfferSheetService {
 
         return OfferSheetResponseDTO.from(savedOfferSheet);
     }
-
 }

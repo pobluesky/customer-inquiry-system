@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../atoms/Input';
 
-const JoinInput = ({
+export const JoinInput = ({
     margin,
     ref,
     value,

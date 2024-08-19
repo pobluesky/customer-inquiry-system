@@ -11,12 +11,15 @@ import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
+
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 public class InquiryController {
+
     private final InquiryService inquiryService;
 
     // 고객 Inquiry 조회
@@ -54,15 +58,24 @@ public class InquiryController {
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
-            token, userId, page, size, sortBy,
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            token,
+            userId,
+            page,
+            size,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         Map<String, Object> response = new HashMap<>();
+
         response.put("inquiryInfo", inquiries.getContent());
         response.put("totalElements", inquiries.getTotalElements());
         response.put("totalPages", inquiries.getTotalPages());
@@ -77,7 +90,8 @@ public class InquiryController {
     public ResponseEntity<JsonResult> getInquiryDetail(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @PathVariable Long inquiryId) {
+        @PathVariable Long inquiryId
+    ) {
         InquiryResponseDTO response = inquiryService.getInquiryDetail(
             token,
             userId,
@@ -149,15 +163,23 @@ public class InquiryController {
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManager(
-            token, page, size, sortBy,
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            token,
+            page,
+            size,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         Map<String, Object> response = new HashMap<>();
+
         response.put("inquiryInfo", inquiries.getContent());
         response.put("totalElements", inquiries.getTotalElements());
         response.put("totalPages", inquiries.getTotalPages());

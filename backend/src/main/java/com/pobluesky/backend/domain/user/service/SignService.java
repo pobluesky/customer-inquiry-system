@@ -43,7 +43,11 @@ public class SignService {
             throw new CommonException(ErrorCode.INVALID_PASSWORD);
         }
 
-        return jwtTokenProvider.generateToken(email, "USER", user.getRole());
+        return jwtTokenProvider.generateToken(
+            email,
+            "USER",
+            user.getRole(),
+            user.getUserId());
     }
 
 
