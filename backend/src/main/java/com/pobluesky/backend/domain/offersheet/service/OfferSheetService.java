@@ -1,7 +1,5 @@
 package com.pobluesky.backend.domain.offersheet.service;
 
-import com.pobluesky.backend.domain.receipt.repository.ReceiptRepository;
-import java.util.stream.Collectors;
 import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetCreateRequestDTO;
 import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetUpdateRequestDTO;
 import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDTO;
@@ -21,6 +19,7 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
