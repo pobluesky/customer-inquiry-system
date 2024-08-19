@@ -17,4 +17,6 @@ public class JwtToken {
     private String refreshToken;
 
     private UserRole userRole;
+
+    private Long userId;
 }

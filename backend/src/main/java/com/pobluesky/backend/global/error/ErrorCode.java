@@ -39,7 +39,8 @@ public enum ErrorCode {
     UNAUTHORIZED_USER_SALES(HttpStatus.INTERNAL_SERVER_ERROR, "U0008", "판매 담당자가 아닙니다."),
     UNAUTHORIZED_USER_QUALITY(HttpStatus.INTERNAL_SERVER_ERROR, "U0009", "품질 담당자가 아닙니다."),
     UNAUTHORIZED_USER_CUSTOMER(HttpStatus.INTERNAL_SERVER_ERROR, "U0010", "고객사가 아닙니다."),
-    UNAUTHORIZED_USER_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "U0011", "담당자가 아닙니다.");
+    UNAUTHORIZED_USER_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "U0011", "담당자가 아닙니다."),
+    RECEIPT_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 내역입니다.");
 
     private HttpStatus status;
     private String code;
