@@ -17,11 +17,11 @@ function InqPath({largeCategory, mediumCategory, smallCategory}) {
           <span>{largeCategory}</span>
         </Link>
         <img src={arrow} alt="arrow"/>
-        <Link to="/inq-list" className={_Link}>
+        <Link to="/inq-list/customer" className={_Link}>
           <span>{mediumCategory}</span>
         </Link>
         <img src={arrow} alt="arrow"/>
-        <Link to="/inq-item" className={_Link}>
+        <Link to="/inq-item/customer/:id" className={_Link}>
           <span>{smallCategory}</span>
         </Link>
       </div>

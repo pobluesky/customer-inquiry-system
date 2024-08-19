@@ -4,7 +4,7 @@ import ToggleBar from "../../mocules/ToggleBar";
 import ReviewText from "../../mocules/ReviewText";
 import QualityItem from "../QualityItem";
 
-const QualityReviewTextForm = () => { // 최종 검토 내용 작성
+const QualityReviewTextForm = () => { // 최종 검토 내용 조회
   const [isChecked, setCheck] = useState(true);
 
   const lineItems = [

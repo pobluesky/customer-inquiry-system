@@ -43,7 +43,7 @@ function App() {
                         {/*<Route path="inq-form/sales" element={<SalesManagerInqForm />} />*/}
                         {/*<Route path="inq-form/quality" element={<QualityManagerInqForm />} />*/}
 
-                        <Route path="inq-item/customer" element={<CustomerInqItem />} />
+                        <Route path="inq-item/customer/:id" element={<CustomerInqItem />} />
                         {/*<Route path="inq-item/sales" element={<SalesManagerInqItem />} />*/}
                         {/*<Route path="inq-item/quality" element={<QualityManagerInqItem />} />*/}
 
