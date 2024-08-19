@@ -33,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -105,12 +107,13 @@ public class InquiryController {
     public ResponseEntity<JsonResult> createInquiry(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestBody InquiryCreateRequestDTO dto
-    ) {
+        @RequestPart("inquiry") InquiryCreateRequestDTO dto,
+        @RequestPart(value = "files", required = false) MultipartFile file) {
         InquiryResponseDTO response = inquiryService.createInquiry(
             token,
             userId,
-            dto
+            dto,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -122,12 +125,14 @@ public class InquiryController {
     public ResponseEntity<JsonResult> updateInquiryById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
-        @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
+        @RequestPart("inquiry") InquiryUpdateRequestDTO inquiryUpdateRequestDTO,
+        @RequestPart(value = "files", required = false) MultipartFile file
     ) {
         InquiryResponseDTO response = inquiryService.updateInquiryById(
             token,
             inquiryId,
-            inquiryUpdateRequestDTO
+            inquiryUpdateRequestDTO,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)

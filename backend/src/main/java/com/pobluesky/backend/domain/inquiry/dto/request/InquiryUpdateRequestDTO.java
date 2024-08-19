@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public record InquiryUpdateRequestDTO(
@@ -19,7 +20,7 @@ public record InquiryUpdateRequestDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    String files,
+    MultipartFile files,
     String responseDeadline,
     String elapsedDays
 ) {
