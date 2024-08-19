@@ -3,7 +3,7 @@ import ToggleBar from "../../mocules/ToggleBar";
 import { Container, Sheet, Opend } from "../../../assets/css/Form.css";
 import ReviewText from "../../mocules/ReviewText";
 
-const ReviewTextForm = () => {
+const ReviewTextForm = ({ formData }) => {
   const [isChecked, setCheck] = useState(true);
 
   return (
@@ -12,7 +12,7 @@ const ReviewTextForm = () => {
           <ToggleBar title={"검토내용"} isChecked={isChecked} setCheck={setCheck} />
           {isChecked ? (
               <div className={Opend}>
-                <ReviewText title={"1차검토"} width="80px" height="80px" />
+                <ReviewText title={"1차검토"} width="80px" height="80px" content={formData.reviewText} />
               </div>
           ) : (
               ''
