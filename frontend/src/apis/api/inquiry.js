@@ -18,6 +18,18 @@ export const getInquiry = async (userId, page = 0) => {
   }
 };
 
+// 고객사 inquiry 상세 조회 가져오기
+export const getInquiryDetail = async (userId, inquiryId) => {
+  try {
+    const response = await axiosInstance.get(`/customers/inquiries/${userId}/${inquiryId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching Inquiry:', error);
+    throw error;
+  }
+};
+
 // inquiry 데이터 가공
 const processInquiries = (data) => {
   return data.map(inquiry => {
