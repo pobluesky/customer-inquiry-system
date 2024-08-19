@@ -5,7 +5,7 @@ import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
 import DateInput from '../../mocules/MyDateInput';
-import OfferTable from '../Offertable';
+import OfferTable from '../../mocules/Offertable';
 import Terms from '../../atoms/Terms';
 import { Offer_Sheet, Datepicker } from '../../../assets/css/Form.css';
 
@@ -173,7 +173,7 @@ function Offersheet({ inquiryId, addTask }) {
                         </div>
                         {/* 텍스트 에디터 */}
                         <TextEditor
-                            width={'1420px'} // 원하는 대로
+                            width={'85vw'} // 원하는 대로
                             margin={'0 auto 0 auto'} // 원하는 대로
                             inputHeight={'120px'} // 입력창 높이 (원하는 대로)
                             inputMaxHeight={'120px'} // 입력창 높이와 동일하게
