@@ -1,4 +1,9 @@
-import { findNameByEmail, signInApi, signUpApi } from '../utils/authUtils';
+import {
+    findNameByEmail,
+    getUserInfoApi,
+    signInApi,
+    signUpApi,
+} from '../utils/authUtils';
 import { getCookie } from '../utils/cookies';
 import { getEmailFromToken } from '../utils/tokenUtils';
 
@@ -29,4 +34,9 @@ export const getManagerInfo = () => {
     const token = getCookie('accessToken');
     const email = getEmailFromToken(token);
     return findNameByEmail(email, '/managers');
+};
+
+// 고객사 정보 조회
+export const getUserInfoByCustomers = (userId) => {
+    return getUserInfoApi(`/customers/${userId}`);
 };
