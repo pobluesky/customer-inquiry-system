@@ -45,7 +45,7 @@ public class OfferSheetService {
     public OfferSheetResponseDTO getOfferSheetByInquiryId(String token, Long inquiryId) {
         Long userId = signService.parseToken(token);
 
-        OfferSheet offerSheet = offerSheetRepository.findById(inquiryId)
+        OfferSheet offerSheet = offerSheetRepository.findByInquiryInquiryId(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
 
         if (!managerRepository.existsById(userId)) {
