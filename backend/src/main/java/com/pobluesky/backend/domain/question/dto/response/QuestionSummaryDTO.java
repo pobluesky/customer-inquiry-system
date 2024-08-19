@@ -2,7 +2,9 @@ package com.pobluesky.backend.domain.question.dto.response;
 
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
+
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 
 @Builder
@@ -12,8 +14,8 @@ public record QuestionSummaryDTO(
     QuestionStatus status,
     String contents,
     String customerName,
-    LocalDateTime questionCreatedAt,  //문의 등록일
-    LocalDateTime answerCreatedAt    //문의 답변일
+    LocalDateTime questionCreatedAt,
+    LocalDateTime answerCreatedAt
 ) {
 
     public static QuestionSummaryDTO from(Question question) {

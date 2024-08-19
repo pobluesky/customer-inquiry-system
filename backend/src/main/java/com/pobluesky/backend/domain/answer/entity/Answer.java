@@ -4,7 +4,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,13 +36,13 @@ public class Answer extends BaseEntity {
     private Customer customer; // 고객사 번호
 
     @Column(columnDefinition = "TEXT")
-    private String answerTitle; // 답변 제목
+    private String answerTitle;
 
     @Column(columnDefinition = "TEXT")
-    private String answerContents; // 답변 내용
+    private String answerContents;
 
     @Column(columnDefinition = "TEXT")
-    private String answerFiles; // 첨부파일
+    private String answerFiles;
 
     @Builder
     private Answer(
