@@ -24,7 +24,7 @@ function CustomerInqForm() {
         progress: 'RECEIPT',
         customerRequestDate: '',
         additionalRequests: '',
-        files: '',
+        files: [],
         responseDeadline: '',
         elapsedDays: '',
         isActivated: true,
@@ -53,15 +53,12 @@ function CustomerInqForm() {
     // Inquiry 등록 버튼 클릭 핸들러
     const handleSubmit = async () => {
         try {
-            // Post the inquiry data
             const response = await postInquiry(userId, formData);
             console.log('Inquiry submitted successfully:', response);
 
-            // Assuming the response contains the inquiry ID
             const inquiryId = response.data.inquiryId;
             console.log('Inquiry ID:', inquiryId);
 
-            // Post the line items data
             console.log('Line items');
             const lineItemsResponse = await postLineItems(inquiryId, lineItems);
             console.log('Line items submitted successfully:', lineItemsResponse);
