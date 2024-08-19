@@ -21,7 +21,6 @@ public record InquiryUpdateRequestDTO(
     String customerRequestDate,
     String additionalRequests,
     MultipartFile files,
-    String responseDeadline,
-    String elapsedDays
+    String responseDeadline
 ) {
 }

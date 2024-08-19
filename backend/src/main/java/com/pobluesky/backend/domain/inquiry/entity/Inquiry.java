@@ -63,8 +63,6 @@ public class Inquiry extends BaseEntity {
 
     private String responseDeadline;
 
-    private String elapsedDays;
-
     private Boolean isActivated;
 
     @Builder
@@ -82,9 +80,7 @@ public class Inquiry extends BaseEntity {
         String additionalRequests,
         String files,
         String responseDeadline,
-        String elapsedDays,
         Boolean isActivated
-
     ){
         this.customer = customer;
         this.country = country;
@@ -99,7 +95,6 @@ public class Inquiry extends BaseEntity {
         this.additionalRequests = additionalRequests;
         this.files = files;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
         this.isActivated = isActivated;
     }
 
@@ -114,8 +109,7 @@ public class Inquiry extends BaseEntity {
         String customerRequestDate,
         String additionalRequests,
         String files,
-        String responseDeadline,
-        String elapsedDays
+        String responseDeadline
     ){
         this.country = country;
         this.corporate = corporate;
@@ -128,7 +122,6 @@ public class Inquiry extends BaseEntity {
         this.additionalRequests = additionalRequests;
         this.files = files;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
     }
 
     public void deleteInquiry() {

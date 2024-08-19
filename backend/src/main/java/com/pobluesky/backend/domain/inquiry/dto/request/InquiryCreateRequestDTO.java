@@ -21,7 +21,6 @@ public record InquiryCreateRequestDTO(
     String additionalRequests,
     MultipartFile files,
     String responseDeadline,
-    String elapsedDays,
     Boolean isActivated
 ) {
     public Inquiry toInquiryEntity(String filePath) {
@@ -38,7 +37,6 @@ public record InquiryCreateRequestDTO(
             .additionalRequests(additionalRequests)
             .files(filePath)
             .responseDeadline(responseDeadline)
-            .elapsedDays(elapsedDays)
             .isActivated(true)
             .build();
     }
