@@ -4,20 +4,21 @@ import ToggleBar from "../../mocules/ToggleBar";
 import Button from "../../atoms/Button";
 import FileItem from "../../mocules/FileItem";
 
-const FileForm = ({ fileForm }) => {
+const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
   const [isChecked, setCheck] = useState(true);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(formData.files || null);
 
   const btnName = ["파일업로드", "파일삭제"];
 
-  const handleFileUpload = () => {
-    // 파일 업로드 로직 (여기서는 예시로 고정된 파일 추가)
-    setFiles([...files, `파일 ${files.length + 1}`]);
+  const handleFileUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    setFiles(selectedFile);
+    handleFormDataChange('files', selectedFile);
   };
 
   const handleFileDelete = () => {
-    // 선택된 파일 삭제 로직 (여기서는 예시로 마지막 파일 삭제)
-    setFiles(files.slice(0, -1));
+    setFiles(null);
+    handleFormDataChange('files', null);
   };
 
   const isUploadSection = fileForm === "파일첨부" || fileForm === "첨부파일";
@@ -31,8 +32,14 @@ const FileForm = ({ fileForm }) => {
                 {isUploadSection ? (
                     <div>
                       <div className={buttonWrapper}>
+                        <input
+                            type="file"
+                            onChange={handleFileUpload}
+                            style={{ display: 'none' }}
+                            id="fileUploadInput"
+                        />
                         <Button
-                            onClick={handleFileUpload}
+                            onClick={() => document.getElementById('fileUploadInput').click()}
                             btnName={btnName[0]}
                             margin={'-0.5vw 0.7vw 0 0.3vw'}
                             backgroundColor={'#03507d'}
@@ -62,7 +69,7 @@ const FileForm = ({ fileForm }) => {
                         <div>첨부파일명</div>
                       </div>
                       {/* 파일 목록 */}
-                      <FileItem files={files} />
+                      <FileItem files={files ? [files] : []} />
                     </div>
                 ) : (
                     <div>
@@ -71,7 +78,7 @@ const FileForm = ({ fileForm }) => {
                         <div>진행단계</div>
                         <div>첨부파일명</div>
                       </div>
-                      <FileItem files={files.length > 0 ? files : ["조회된 파일이 없습니다."]} />
+                      <FileItem files={files ? [files] : ["조회된 파일이 없습니다."]} />
                     </div>
                 )}
               </div>

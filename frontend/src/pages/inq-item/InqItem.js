@@ -18,16 +18,16 @@ function InqItem() {
         <div>
           <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
           <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
-          <InquiryNewForm />
-          <BasicInfoForm />
-          <InquiryHistoryForm />
+          {/*<InquiryNewForm />*/}
+          {/*<BasicInfoForm />*/}
+          {/*<InquiryHistoryForm />*/}
           <SalesInfoForm />
-          <AdditionalRequestForm />
+          {/*<AdditionalRequestForm />*/}
           <ReviewTextForm />
-          <FileForm fileForm={"협업첨부파일"}/>
-          <FileForm fileForm={"첨부파일"}/>
-          <FileForm fileForm={"파일첨부"}/>
-          <Offersheet inquiryId={1} />
+          {/*<FileForm fileForm={"협업첨부파일"}/>*/}
+          {/*<FileForm fileForm={"첨부파일"}/>*/}
+          {/*<FileForm fileForm={"파일첨부"}/>*/}
+          {/*<Offersheet inquiryId={1} />*/}
           <QualityReviewTextForm />
           <FinalReviewTextForm />
         </div>
