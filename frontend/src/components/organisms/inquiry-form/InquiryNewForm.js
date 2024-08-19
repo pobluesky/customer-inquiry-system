@@ -2,7 +2,7 @@ import React from 'react';
 import ToggleBar from "../../mocules/ToggleBar";
 import { Container, Sheet, Opend, Wrapper, _Input, inputWrapper } from "../../../assets/css/Form.css";
 
-const InquiryNewForm = ({ formData, handleFormDataChange }) => {
+const   InquiryNewForm = ({ formData, handleFormDataChange }) => {
     const {
         country,
         corporate,
