@@ -2,11 +2,15 @@ package com.pobluesky.backend.domain.question.controller;
 
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
+import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
+import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +24,27 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/manager")
-    @Operation(summary = "전체 질문 조회(담당자)", description = "등록된 모든 질문을 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionForManager(
-        @RequestHeader("Authorization") String token
-    ) {
-        List<QuestionResponseDTO> response = questionService.getQuestions(token);
+    @GetMapping("/managers")
+    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionByManager(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        return ResponseEntity.status((HttpStatus.OK))
+        QuestionSummaryResponseDTO response = questionService.getQuestionsByManager(
+            token,
+            page,
+            size,
+            sortBy,
+            status,
+            startDate, endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
@@ -47,19 +64,30 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/customer/{userId}")
-    @Operation(summary = "질문 전체 조회(고객사)", description = "특정 고객의 모든 질문을 고객 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByuserId(
+    @GetMapping("/customers/{userId}")
+    @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionsByCustomer(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long userId
-    ) {
-        List<QuestionResponseDTO> response = questionService.getQuestionByuserId(
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        QuestionSummaryResponseDTO response = questionService.getQuestionsByCustomer(
             token,
-            userId
+            userId,
+            page,
+            size,
+            sortBy,
+            status,
+            startDate,
+            endDate
         );
 
-        return ResponseEntity
-            .status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
