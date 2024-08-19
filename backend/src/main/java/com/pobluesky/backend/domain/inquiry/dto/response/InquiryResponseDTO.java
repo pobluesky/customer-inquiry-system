@@ -28,7 +28,6 @@ public record InquiryResponseDTO(
     String additionalRequests,
     String files,
     String responseDeadline,
-    String elapsedDays,
     Boolean isActivated
 ) {
 
@@ -50,7 +49,6 @@ public record InquiryResponseDTO(
             .additionalRequests(inquiry.getAdditionalRequests())
             .files(inquiry.getFiles())
             .responseDeadline(inquiry.getResponseDeadline())
-            .elapsedDays(inquiry.getElapsedDays())
             .isActivated(inquiry.getIsActivated())
             .build();
     }
