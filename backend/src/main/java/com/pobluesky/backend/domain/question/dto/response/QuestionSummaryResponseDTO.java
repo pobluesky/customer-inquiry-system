@@ -11,7 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionSummaryResponseDTO {
     private List<QuestionSummaryDTO> inqQuestions;
+
     private List<QuestionSummaryDTO> siteQuestions;
+
     private List<QuestionSummaryDTO> etcQuestions;
+
     private Long totalQuestionCount;
 }
