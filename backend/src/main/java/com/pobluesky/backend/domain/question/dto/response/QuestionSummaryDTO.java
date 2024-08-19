@@ -11,6 +11,7 @@ public record QuestionSummaryDTO(
     String title,
     QuestionStatus status,
     String contents,
+    String customerName,
     LocalDateTime questionCreatedAt,  //문의 등록일
     LocalDateTime answerCreatedAt    //문의 답변일
 ) {
@@ -21,6 +22,7 @@ public record QuestionSummaryDTO(
             .title(question.getTitle())
             .status(question.getStatus())
             .contents(question.getContents())
+            .customerName(question.getCustomer().getCustomerName())
             .questionCreatedAt(question.getCreatedDate())
             .answerCreatedAt(question.getAnswer() != null ? question.getAnswer().getCreatedDate() : null)
             .build();
