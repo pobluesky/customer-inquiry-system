@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.file.controller;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class FileUploadController {
     private final FileService fileService;
 
     @PostMapping
+    @Operation(summary = "file 업로드")
     public FileInfo uploadFile(@RequestParam("file") MultipartFile file) {
         return fileService.uploadFile(file);
     }

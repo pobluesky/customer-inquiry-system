@@ -1,28 +1,24 @@
 package com.pobluesky.backend.domain.user.entity;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "managers")
 public class Manager extends User {
@@ -32,9 +28,7 @@ public class Manager extends User {
     @Enumerated(EnumType.STRING)
     private Department department;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private String securityRole;
 
     @Builder
     private Manager(
@@ -45,7 +39,7 @@ public class Manager extends User {
         String empNo,
         UserRole role,
         Department department,
-        List<String> roles
+        String securityRole
     ) {
         this.name = name;
         this.email = email;
@@ -55,10 +49,7 @@ public class Manager extends User {
         this.role = role;
         this.department = department;
         this.isActivated = true;
-        this.roles = roles;
-    }
-
-    public Manager() {
+        this.securityRole = securityRole;
     }
 
     public void updateManager(
@@ -75,9 +66,10 @@ public class Manager extends User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(securityRole));
+        return authorities;
     }
 
     @Override

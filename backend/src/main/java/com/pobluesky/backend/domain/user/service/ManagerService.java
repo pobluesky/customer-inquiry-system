@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +37,7 @@ public class ManagerService {
 
         String encodedPassword = passwordEncoder.encode(signUpDto.password());
 
-        List<String> roles = new ArrayList<>();
-        roles.add("USER");
-
-        Manager manager = signUpDto.toManagerEntity(
-            encodedPassword,
-            roles
-        );
+        Manager manager = signUpDto.toManagerEntity(encodedPassword, "USER");
 
         return ManagerResponseDTO.from(managerRepository.save(manager));
     }
