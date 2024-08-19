@@ -12,6 +12,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
+import { getReviews } from '../../apis/api/review';
 
 function CustomerInqItem() {
     const { userId } = useAuth();
@@ -19,6 +20,7 @@ function CustomerInqItem() {
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
+    const [reviewData, setReviewData] = useState(null);
 
     const [formData, setFormData] = useState({
         additionalRequests: '',
@@ -38,9 +40,8 @@ function CustomerInqItem() {
         productType: '',
         progress: '',
         salesPerson: '',
-        responseDeadline: '',
-        elapsedDays: '',
-        isActivated: true,
+        reviewText: '',
+        finalReviewText: '',
     });
 
     const getInquiryDataDetail = async () => {
@@ -69,6 +70,19 @@ function CustomerInqItem() {
         }
     }
 
+    const getReview = async () => {
+        if (!userId) {
+            return;
+        }
+        try {
+            const response = await getReviews(id);
+            setReviewData(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching Reviews:', error);
+        }
+    }
+
     console.log('inquiryId: ', inquiriesDataDetail?.inquiryId);
 
     useEffect(() => {
@@ -92,29 +106,31 @@ function CustomerInqItem() {
                 productType: inquiriesDataDetail.productType || '',
                 progress: inquiriesDataDetail.progress || '',
                 salesPerson: inquiriesDataDetail.salesPerson || '',
-
+                reviewText: reviewData?.reviewText || '',
+                finalReviewText: reviewData?.finalReviewText || '',
             }));
         }
-    }, [inquiriesDataDetail, userInfo]);
+    }, [inquiriesDataDetail, userInfo, reviewData]);
 
     useEffect(() => {
         getInquiryDataDetail();
-        getUserInfo()
+        getUserInfo();
+        getReview();
     }, [userId, id]);
 
     return (
         <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={'20180829495'} />
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
 
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm onLineItemsChange={() => {}} />
             <AdditionalRequestForm formData={formData} />
-            <ReviewTextForm />
+            <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />
             <Offersheet />
             <QualityReviewTextForm />
-            <FinalReviewTextForm />
+            <FinalReviewTextForm formData={formData} />
         </div>
     )
 }

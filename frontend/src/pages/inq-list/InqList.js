@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import InquiryItem from '../../components/organisms/InquiryItem';
 import dummyInquiryData from './dummyInquiryData';
 import InqPath from "../../components/atoms/InqPath";

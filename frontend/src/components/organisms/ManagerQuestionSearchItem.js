@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../atoms/Button';
 import SearchInput from '../mocules/SearchInput';
-import DateInput from '../mocules/DateInput';
+import MyDateInput from '../mocules/MyDateInput';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Manager_Question_Search } from '../../assets/css/Voc.css';
 
@@ -37,11 +37,11 @@ function ManagerQuestionSearchItem({ totalItems }) {
                             {/* 7 */}
                             <div>문의 등록일</div>
                             {/* 8 */}
-                            <DateInput />
+                            <MyDateInput />
                             {/* 9 */}
                             <div>~</div>
                             {/* 10 */}
-                            <DateInput />
+                            <MyDateInput />
                             <Button
                                 btnName={'조회'}
                                 width={'84px'}

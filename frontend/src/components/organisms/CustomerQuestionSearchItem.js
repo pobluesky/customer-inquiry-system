@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../atoms/Button';
 import SearchInput from '../mocules/SearchInput';
-import DateInput from '../mocules/DateInput';
+import MyDateInput from '../atoms/MyDateInput';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Customer_Question_Search } from '../../assets/css/Voc.css';
 
@@ -18,9 +18,9 @@ function CustomerQuestionSearchItem({ totalItems }) {
                         <div>문의 제목</div>
                         <SearchInput />
                         <div>문의 등록일</div>
-                        <DateInput />
+                        <MyDateInput />
                         <div>~</div>
-                        <DateInput />
+                        <MyDateInput />
                         <Button btnName={'조회'} width={'84px'} height={'28px'} margin={'0 0 0 24px'} backgroundColor={'#03507d'} textColor={'#ffffff'} border={'solid 1px #c1c1c1'} borderRadius={'20px'} />
                     </div>
                 </div>

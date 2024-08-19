@@ -1,7 +1,7 @@
 import React from 'react';
 import Category from '../atoms/Category';
 import Terms from '../atoms/Terms';
-import DateInput from '../mocules/DateInput';
+import MyDateInput from '../atoms/MyDateInput';
 import OfferInfoInput from '../atoms/OfferInfoInput';
 import { Info_Container, Table_Scroll, Info_Table, Border_Space } from '../../assets/css/Form.css';
 
@@ -22,7 +22,7 @@ function OfferInfo() {
                                 <Category categoryName={'4. Shipment'} />
                             </td>
                             <td>
-                                <DateInput />
+                                <MyDateInput />
                             </td>
                             <td>
                                 <Category categoryName={'5. Payment Term'} />
@@ -47,7 +47,7 @@ function OfferInfo() {
                                 <Category categoryName={'7. Validity'} />
                             </td>
                             <td>
-                                <DateInput />
+                                <MyDateInput />
                             </td>
                             <td>
                                 <Category categoryName={'8. Remark'} />
