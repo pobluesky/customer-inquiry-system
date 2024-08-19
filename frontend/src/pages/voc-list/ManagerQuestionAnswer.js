@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ManagerQuestionReport from '../../components/organisms/ManagerQuestionReport';
 import ManagerQuestionSearchItem from '../../components/organisms/ManagerQuestionSearchItem';
 import ManagerQuestionList from '../../components/templates/ManagerQuestionList';
-import Notification from '../../components/mocules/Notification';
+import Notification from '../../components/mocules/NotificationModal';
 import { Question_Title } from '../../assets/css/Voc.css';
 
 import { getAnswerAndQuestionByuserId } from '../../apis/api/answer';

@@ -50,12 +50,25 @@ public class ManagerService {
     }
 
     @Transactional(readOnly = true)
-    public List<ManagerResponseDTO> getAllManagers() {
+    public List<ManagerResponseDTO> getManagers() {
         List<Manager> managers = managerRepository.findAll();
 
         return managers.stream()
             .map(ManagerResponseDTO::from)
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ManagerResponseDTO getManagerById(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return  ManagerResponseDTO.from(manager);
     }
 
     @Transactional

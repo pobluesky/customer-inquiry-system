@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { FirstIntro, SecondIntro, ThirdIntro, FourthIntro } from './section';
-
+import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilValue } from 'recoil';
-import { getAuthByRole, getUserEmail, getUserName } from '../../index';
+import { getUserEmail } from '../../index';
 
 function Intro() {
-    const currentUserRole = useRecoilValue(getAuthByRole); // selector로부터 계산된 값 읽기
-    const currentUserName = useRecoilValue(getUserName); // selector로부터 계산된 값 읽기
-    const currentUserEmail = useRecoilValue(getUserEmail); // selector로부터 계산된 값 읽기
+    const currentUserRole = getCookie('userRole') || '';
+    const currentUserEmail = useRecoilValue(getUserEmail);
 
     useEffect(() => {
         console.log(
-            `현재 로그인 중인 유저 정보: *${currentUserRole}*, *${currentUserName}*, *${currentUserEmail}*`,
+            `현재 로그인 중인 유저 정보: *${currentUserRole}*, *${currentUserEmail}*`,
         );
     }, [currentUserRole]);
 

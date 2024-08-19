@@ -7,9 +7,11 @@
 
 .Container > div {
     display: grid;
-    grid-template-columns: 24px 804px 120px 84px 156px 48px 108px 108px;
+    /*grid-template-columns: 45px 340px 170px 144px 150px 150px 44px 166px 55px;*/
+    /*grid-template-columns: 0.5fr 1.6fr 1.5fr 1.3fr 1.6fr 1.4fr 0.4fr 1.5fr 0.5fr; 알림 컴포넌트가 가려서 결국 px로.. */
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 /* POSCO 로고 */
@@ -45,4 +47,26 @@
     font-size: 1.2em;
     font-weight: bold;
     color: #03507d;
+}
+
+/* 알림 버튼 */
+.Container > div > div:nth-child(7) Button:hover {
+    background-color: #03507d !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* 로그아웃 버튼 */
+.Container > div > div:nth-child(8) Button:hover {
+    background-color: #03507d !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.User {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    color: #03507D;
+    font-weight: 700;
 }
