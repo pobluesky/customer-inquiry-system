@@ -51,26 +51,6 @@ public class ReceiptService {
     }
 
     @Transactional
-    public ReceiptResponse createReceipt(
-        String token,
-        Long offerSheetId,
-        ReceiptCreateRequestDTO requestDto
-    ) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        OfferSheet offerSheet = offerSheetRepository.findById(offerSheetId)
-            .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
-
-        Receipt receipt = requestDto.toReceipt(offerSheet);
-        Receipt savedReceipt = receiptRepository.save(receipt);
-
-        return ReceiptResponse.from(savedReceipt);
-    }
-
-    @Transactional
     public ReceiptResponse updateReceiptById(
         String token,
         Long offerSheetId,

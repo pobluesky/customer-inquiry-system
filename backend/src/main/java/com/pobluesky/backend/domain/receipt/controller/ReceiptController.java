@@ -51,22 +51,6 @@ public class ReceiptController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "OfferSheet 별  receipt 작성")
-    @PostMapping
-    public ResponseEntity<JsonResult> createReceipt(
-        @RequestHeader("Authorization") String token,
-        @PathVariable("offerSheetId") Long offerSheetId,
-        @RequestBody ReceiptCreateRequestDTO requestDto) {
-        ReceiptResponse response = receiptService.createReceipt(
-            token,
-            offerSheetId,
-            requestDto
-        );
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @PutMapping("/update/{receiptId}")
     @Operation(summary = "receipt 내역 수정")
     public ResponseEntity<JsonResult> updateLineItem(

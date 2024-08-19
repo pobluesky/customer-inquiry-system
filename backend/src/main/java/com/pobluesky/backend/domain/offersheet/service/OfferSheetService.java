@@ -35,8 +35,6 @@ public class OfferSheetService {
 
     private final OfferSheetRepository offerSheetRepository;
 
-    private final ReceiptRepository receiptRepository;
-
     private final InquiryRepository inquiryRepository;
 
     private final CustomerRepository customerRepository;
@@ -119,7 +117,7 @@ public class OfferSheetService {
         OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry);
 
         List<Receipt> receipts = offerSheetCreateRequestDTO.receipts().stream()
-            .map(receiptCreateDTO -> receiptCreateDTO.toReceipt(offerSheet))
+            .map(receiptCreateRequestDTO -> receiptCreateRequestDTO.toReceiptEntity(offerSheet))
             .collect(Collectors.toList());
 
         offerSheet.getReceipts().addAll(receipts);
