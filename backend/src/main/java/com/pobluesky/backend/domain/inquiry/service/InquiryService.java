@@ -173,8 +173,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
             filePath,
-            inquiryUpdateRequestDTO.responseDeadline(),
-            inquiryUpdateRequestDTO.elapsedDays()
+            inquiryUpdateRequestDTO.responseDeadline()
         );
 
         return InquiryResponseDTO.from(inquiry);
