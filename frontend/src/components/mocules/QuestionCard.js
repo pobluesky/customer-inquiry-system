@@ -6,7 +6,8 @@ import { getCookie } from '../../apis/utils/cookies';
 function QuestionCard({
     onClick,
     status,
-    customerName = '고객사명 추가',
+    vocNo,
+    customerName,
     questionCreatedDate,
     answerCreatedDate,
     title,
@@ -16,6 +17,14 @@ function QuestionCard({
     const backgroundColor = status === 'COMPLETED' ? '#f02323' : '#007aff';
 
     const [isHovered, setIsHovered] = useState(false);
+
+    // 긴 질문 번호는 Ellipsis 처리 (176px)
+    const vocNoEllipsis = {
+        maxWidth: '144px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    };
 
     // 긴 고객사명은 Ellipsis 처리 (176px)
     const customerNameEllipsis = {
@@ -56,7 +65,9 @@ function QuestionCard({
                             onMouseLeave={() => setIsHovered(false)}
                         />
                     </div>
-                    <div>{thisRole !== 'CUSTOMER' && '문의 번호 공간'}</div>
+                    <div style={vocNoEllipsis}>
+                        #{thisRole !== 'CUSTOMER' && vocNo}
+                    </div>
                 </div>
                 <div>
                     <div style={customerNameEllipsis}>

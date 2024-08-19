@@ -8,7 +8,7 @@ import {
     AnswerContent,
     CloseButton,
     AnswerButton,
-} from '../mocules/VocButton';
+} from '../atoms/VocButton';
 import qmark from '../../assets/css/icons/voc/question_mark.svg';
 import amark from '../../assets/css/icons/voc/answer_mark.svg';
 import folder from '../../assets/css/icons/voc/question_folder.svg';
@@ -41,9 +41,6 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
     const thisRole = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
-
-    // const [originalText, setOriginalText] = useState('');
-
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
 
@@ -88,6 +85,7 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
             ? async () => {
                   const result = await getQuestionByQuestionId(
                       questionId,
+                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -113,6 +111,7 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
             ? async () => {
                   const result = await getAnswerByQuestionId(
                       questionId,
+                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -164,9 +163,6 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
         fetchGetQuestionDetail(questionId);
         fetchGetAnswerDetail(questionId);
     }, [questionId, status]);
-
-    console.log('상세 질문 =========>', questionDetail);
-    console.log('상제 답변 =========>', answerDetail);
 
     const filesEllipsis = {
         maxWidth: '96px',

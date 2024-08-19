@@ -20,8 +20,8 @@ const MySearchInput = forwardRef(
             imgMargin,
             btnHeight,
             btnMargin,
-            btnFloat,
             onClick,
+            btnFloat,
         },
         ref,
     ) => (

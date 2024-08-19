@@ -8,6 +8,7 @@ import {
 } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
+import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 
 // "문의 없음" 대체 카드
 const QuestionDoesntExist = () => {
@@ -29,13 +30,19 @@ const VocTag = ({ category }) => (
 
 function QuestionCardList({
     setTotalItems,
+    setReadyItems,
+    setCompletedItems,
+    title,
     startDate,
     endDate,
-    filter,
-    searchByTitle,
+    customerName,
+    timeFilter,
+    statusFilter,
 }) {
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState({});
+    const [questionCount, setQuestionCount] = useState({});
+    const [answerCount, setAnswerCount] = useState({});
     const [openCard, setOpenCard] = useState(false);
     const [questionId, setQuestionId] = useState(0);
     const [status, setStatus] = useState('READY');
@@ -49,31 +56,50 @@ function QuestionCardList({
         if (startDate && endDate) {
             const s = `startDate=${startDate.toISOString().split('T')[0]}`;
             const e = `endDate=${endDate.toISOString().split('T')[0]}`;
-            args = `${s}&${e}`;
-        } else if (filter) {
-            switch (filter) {
-                case 'latest':
-                case 'oldest':
-                    args = `sortBy=${filter}`;
-                    break;
-                case 'COMPLETED':
-                case 'READY':
-                    args = `status=${filter}`;
-                    break;
-                default:
-                    break;
-            }
+            args += `${s}&${e}`;
+        }
+        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
+            args += `${args ? '&' : ''}sortBy=${timeFilter}`;
+        }
+        if (statusFilter == 'COMPLETED' || statusFilter == 'READY') {
+            args += `${args ? '&' : ''}status=${statusFilter}`;
         }
         setFilterArgs(args);
-    }, [startDate, endDate, filter]);
+    }, [title, startDate, endDate, timeFilter, statusFilter]);
 
     const fetchGetQuestions =
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getQuestionByUserId(
                       getCookie('userId'),
+                      'sortBy=LATEST',
                       getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setQuestionCount(result);
+                  } else {
+                      setQuestionCount([]);
+                  }
+              }
+            : async () => {
+                  const result = await getAllQuestion(
+                      'sortBy=LATEST',
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setQuestionCount(result);
+                  } else {
+                      setQuestionCount([]);
+                  }
+              };
+
+    const fetchGetQuestionsByFilter =
+        getCookie('userRole') === 'CUSTOMER'
+            ? async () => {
+                  const result = await getQuestionByUserId(
+                      getCookie('userId'),
                       filterArgs,
+                      getCookie('accessToken'),
                   );
                   if (result) {
                       setQuestionSummary(result);
@@ -82,7 +108,10 @@ function QuestionCardList({
                   }
               }
             : async () => {
-                  const result = await getAllQuestion(getCookie('accessToken'));
+                  const result = await getAllQuestion(
+                      filterArgs,
+                      getCookie('accessToken'),
+                  );
                   if (result) {
                       setQuestionSummary(result);
                   } else {
@@ -90,30 +119,75 @@ function QuestionCardList({
                   }
               };
 
+    const fetchGetAnswers =
+        getCookie('userRole') === 'CUSTOMER'
+            ? async () => {
+                  const result = await getAnswerByUserId(
+                      getCookie('userId'),
+                      getCookie('accessToken'),
+                  );
+                  if (result) {
+                      setAnswerCount(result);
+                  } else {
+                      setAnswerCount([]);
+                  }
+              }
+            : async () => {
+                  const result = await getAllAnswer(getCookie('accessToken'));
+                  if (result) {
+                      setAnswerCount(result);
+                  } else {
+                      setAnswerCount([]);
+                  }
+              };
+
     useEffect(() => {
         fetchGetQuestions();
-    }, [startDate, endDate, filterArgs, openCard]);
+        fetchGetQuestionsByFilter();
+        fetchGetAnswers();
+    }, [filterArgs, openCard]);
 
-    const filterByTitle = (questions) => {
-        if (!searchByTitle) return questions;
-        return questions.filter((question) =>
-            question.title.toLowerCase().includes(searchByTitle.toLowerCase()),
-        );
+    // 게시판 전체 질문, 답변 대기 질문, 답변 완료 질문 현황 계산 (고정되도록 수정 필요)
+    useEffect(() => {
+        const q = questionCount.totalQuestionCount;
+        const a = answerCount.length;
+        setTotalItems(q);
+        setReadyItems(q - a);
+        setCompletedItems(a);
+    }, [questionCount, answerCount]);
+
+    // 질문 제목과 고객 이름 기준 검색
+    const filterByTitleAndCustomerName = (questions) => {
+        if (!title && !customerName) return questions;
+        return questions.filter((question) => {
+            const titleMatch = title
+                ? question.title.toLowerCase().includes(title.toLowerCase())
+                : true;
+            const customerNameMatch = customerName
+                ? question.customerName
+                      .toLowerCase()
+                      .includes(customerName.toLowerCase())
+                : true;
+            return titleMatch && customerNameMatch;
+        });
     };
 
-    const inqQuestions = filterByTitle(questionSummary.inqQuestions || []);
-    const siteQuestions = filterByTitle(questionSummary.siteQuestions || []);
-    const etcQuestions = filterByTitle(questionSummary.etcQuestions || []);
+    const inqQuestions = filterByTitleAndCustomerName(
+        questionSummary.inqQuestions || [],
+    );
+    const siteQuestions = filterByTitleAndCustomerName(
+        questionSummary.siteQuestions || [],
+    );
+    const etcQuestions = filterByTitleAndCustomerName(
+        questionSummary.etcQuestions || [],
+    );
 
-    // 전체 게시글 개수
-    useEffect(() => {
-        const total = Object.values(questionSummary).reduce(
-            (acc, questions) => acc + (questions?.length || 0),
-            0,
-        );
-
-        setTotalItems(total);
-    }, [questionSummary, searchByTitle]);
+    // Voc번호로 사용할 시분초
+    const calDateNo = (datetime) => {
+        const [, timePart] = datetime.split('T');
+        const [hours, minutes, seconds] = timePart.split(':');
+        return `${hours}${minutes}${seconds}`;
+    };
 
     return (
         <>
@@ -130,6 +204,12 @@ function QuestionCardList({
                                     setOpenCard(true);
                                 }}
                                 status={inq.status}
+                                vocNo={
+                                    getCookie('userId') +
+                                    inq.questionId +
+                                    calDateNo(inq.questionCreatedAt)
+                                }
+                                customerName={inq.customerName}
                                 questionCreatedDate={inq.questionCreatedAt.substr(
                                     0,
                                     10,
@@ -157,6 +237,12 @@ function QuestionCardList({
                                     setOpenCard(true);
                                 }}
                                 status={site.status}
+                                vocNo={
+                                    getCookie('userId') +
+                                    site.questionId +
+                                    calDateNo(site.questionCreatedAt)
+                                }
+                                customerName={site.customerName}
                                 questionCreatedDate={site.questionCreatedAt.substr(
                                     0,
                                     10,
@@ -184,6 +270,12 @@ function QuestionCardList({
                                     setOpenCard(true);
                                 }}
                                 status={etc.status}
+                                vocNo={
+                                    getCookie('userId') +
+                                    etc.questionId +
+                                    calDateNo(etc.questionCreatedAt)
+                                }
+                                customerName={etc.customerName}
                                 questionCreatedDate={etc.questionCreatedAt.substr(
                                     0,
                                     10,

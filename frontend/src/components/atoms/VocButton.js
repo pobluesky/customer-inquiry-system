@@ -1,14 +1,15 @@
 import React from 'react';
-import Input from '../atoms/Input';
-import Button from '../atoms/Button';
+import Input from './Input';
+import Button from './Button';
 
-const FilterButton = ({ btnName, margin, onClick }) => (
+const FilterButton = ({ btnName, margin, backgroundColor, textColor, onClick }) => (
     <Button
         btnName={btnName}
         width={'84px'}
         height={'28px'}
         margin={margin}
-        backgroundColor={'#ffffff'}
+        backgroundColor={backgroundColor}
+        textColor={textColor}
         border={'solid 1px #c1c1c1'}
         borderRadius={'20px'}
         onClick={onClick}
