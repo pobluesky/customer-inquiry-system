@@ -30,7 +30,7 @@ public class QuestionController {
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "5") int size,
-        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
@@ -71,7 +71,7 @@ public class QuestionController {
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "5") int size,
-        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {

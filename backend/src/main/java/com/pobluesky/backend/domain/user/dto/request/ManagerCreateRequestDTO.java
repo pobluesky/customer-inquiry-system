@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.user.dto.request;
 import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
-import java.util.List;
 
 public record ManagerCreateRequestDTO(
     String name,
@@ -14,7 +13,8 @@ public record ManagerCreateRequestDTO(
     UserRole role,
     Department department
 ) {
-    public Manager toManagerEntity(String encodedPassword, List<String> roles) {
+    public Manager toManagerEntity(String encodedPassword, String securityRole) {
+
         return Manager.builder()
             .name(name)
             .email(email)
@@ -23,7 +23,7 @@ public record ManagerCreateRequestDTO(
             .empNo(empNo)
             .role(role)
             .department(department)
-            .roles(roles)
+            .securityRole(securityRole)
             .build();
     }
 }

@@ -1,6 +1,8 @@
 package com.pobluesky.backend.domain.question.repository;
 
+import static com.pobluesky.backend.domain.answer.entity.QAnswer.answer;
 import static com.pobluesky.backend.domain.question.entity.QQuestion.question;
+import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
 
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
@@ -25,9 +27,13 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     @Override
     public QuestionSummaryResponseDTO findQuestionsByCustomer(
-        Long userId, Pageable pageable, QuestionStatus status,
-        LocalDate startDate, LocalDate endDate) {
-
+        Long userId,
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+      
         List<QuestionSummaryDTO> inqQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.INQ, pageable, status, startDate, endDate);
         List<QuestionSummaryDTO> siteQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.SITE, pageable, status, startDate, endDate);
         List<QuestionSummaryDTO> etcQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.ETC, pageable, status, startDate, endDate);
@@ -38,7 +44,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     }
 
     private JPAQuery<Question> getCountQueryForCustomer(
-        Long userId, QuestionStatus status, LocalDate startDate, LocalDate endDate
+        Long userId,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         return queryFactory
             .selectFrom(question)
@@ -50,8 +59,12 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     }
 
     private List<QuestionSummaryDTO> getQuestionsByTypeForCustomer(
-        Long userId, QuestionType type, Pageable pageable,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+        Long userId,
+        QuestionType type,
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate) {
 
         return queryFactory
             .select(Projections.constructor(QuestionSummaryDTO.class,
@@ -59,11 +72,13 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.title,
                 question.status,
                 question.contents,
+                customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
-                question.answer.createdDate.as("answerCreatedAt")
+                answer.createdDate.as("answerCreatedAt")
             ))
             .from(question)
-            .leftJoin(question.answer)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
             .where(
                 question.customer.userId.eq(userId),
                 question.type.eq(type),
@@ -79,7 +94,11 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     @Override
     public QuestionSummaryResponseDTO findQuestionsByManager(
-        Pageable pageable, QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
 
         List<QuestionSummaryDTO> inqQuestions =
             getQuestionsByTypeForManager(QuestionType.INQ, pageable, status, startDate, endDate);
@@ -94,7 +113,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     }
 
     private JPAQuery<Question> getCountQueryForManager(
-        QuestionStatus status, LocalDate startDate, LocalDate endDate
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         return queryFactory
             .selectFrom(question)
@@ -105,8 +126,12 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     }
 
     private List<QuestionSummaryDTO> getQuestionsByTypeForManager(
-        QuestionType type, Pageable pageable,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+        QuestionType type,
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
 
         return queryFactory
             .select(Projections.constructor(QuestionSummaryDTO.class,
@@ -114,11 +139,13 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.title,
                 question.status,
                 question.contents,
+                customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
-                question.answer.createdDate.as("answerCreatedAt")
+                answer.createdDate.as("answerCreatedAt")
             ))
             .from(question)
-            .leftJoin(question.answer)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
             .where(
                 question.type.eq(type),
                 statusEq(status),

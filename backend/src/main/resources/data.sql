@@ -1,19 +1,21 @@
 -- CUSTOMERS
-INSERT INTO customers (name, email, password, phone, is_activated, customer_code, customer_name, created_date, modified_date)
+INSERT INTO customers (name, email, password, phone, is_activated, customer_code, customer_name, created_date, modified_date, role, security_role)
 VALUES
-    ('김민준', 'john@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-1234-4560', true, 'CUST001', 'POSCO Asia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('박도윤', 'jane@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-9876-3210', true, 'CUST002', 'BORAM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('이서윤', 'bob@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-5555-55555', true, 'CUST003', 'DURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('김하윤', 'michael@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-7777-7777', true, 'CUST004', 'GEUMGANG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('이지호', 'jiho@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-8888-7777', true, 'CUST005', 'SESIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('박채원', 'chaewon@example.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-9999-7777', true, 'CUST006', 'HWAIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('김민준', 'john@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-1234-4560', true, '3GPOA', 'POSCO Asia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'CUSTOMER', 'USER'),
+    ('박도윤', 'jane@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-9876-3210', true, '2BR', 'BORAM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CUSTOMER', 'USER'),
+    ('이서윤', 'bob@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-5555-55555', true, '3DR', 'DURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CUSTOMER', 'USER'),
+    ('김하윤', 'michael@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-7777-7777', true, '4GG', 'GEUMGANG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CUSTOMER', 'USER'),
+    ('이지호', 'jiho@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-8888-7777', true, '1SS', 'SESIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CUSTOMER', 'USER'),
+    ('박채원', 'chaewon@example.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-9999-7777', true, '6HW', 'HWAIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'CUSTOMER', 'USER');
 
 -- MANAGERS
-INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date)
+INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date, security_role)
 VALUES
-    ('박수아', 'alice@company.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-2222-3333', true, 'EMP001', 'SALES', 'SALES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('이현우', 'bob@company.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-5555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('김우진', 'charlie@company.com', '{bcrypt}$2a$10$j4blWKaImqjIR23qxI1X3eGyEhNZ6cikC51T/DbwlNxXmqyvH9Hcu', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('박수아', 'alice@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-2222-3333', true, 'EMP001', 'SALES', 'SALES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('이현우', 'bob@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-5555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('김우진', 'charlie@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('신보나', 'bona@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'QUALITY', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('최민기', 'danny@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER');
 
 -- INQUIRY
 INSERT INTO inquiry (user_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, files, response_deadline, elapsed_days, is_activated, created_date, modified_date)
