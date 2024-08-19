@@ -1,37 +1,33 @@
 package com.pobluesky.backend.global.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@OpenAPIDefinition(
+    info=@Info(title = "포청천 Swagger UI",
+        description = "customer-inquiry-system API 명세서",
+        version ="v1"))
 @Configuration
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        String jwt = "JWT";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
-        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
-            .name(jwt)
-            .type(SecurityScheme.Type.HTTP)
-            .scheme("bearer")
-            .bearerFormat("JWT")
-        );
-        return new OpenAPI()
-            .components(new Components())
-            .info(apiInfo())
-            .addSecurityItem(securityRequirement)
-            .components(components);
-    }
+        SecurityScheme securityScheme = new SecurityScheme()
+            .type(SecurityScheme.Type.APIKEY)
+            .in(SecurityScheme.In.HEADER)
+            .name("Authorization");
 
-    private Info apiInfo() {
-        return new Info()
-            .title("포청천 Swagger UI") // API의 제목
-            .description("customer-inquiry-system") // API에 대한 설명
-            .version("1.0.0"); // API의 버전
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("apiKeyAuth");
+
+        return new OpenAPI()
+            .components(new Components().addSecuritySchemes("apiKeyAuth", securityScheme))
+            .security(Arrays.asList(securityRequirement));
     }
 }
