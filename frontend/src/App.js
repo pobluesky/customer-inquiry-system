@@ -20,10 +20,6 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { FileUpload } from './pages/fileupload';
-import QuestionDashboard from './components/templates/QuestionDashboard';
-import QuestionModal from './components/organisms/QuestionModal';
-
 function App() {
     return (
         <AuthProvider>
@@ -43,11 +39,6 @@ function App() {
 
                         <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}
-
-                        {/* Test Code, Need to Delete */}
-                        <Route path="fileupload" element={<FileUpload />} />
-                        <Route path="questiondashboard" element={<QuestionDashboard />} />
-                        <Route path="questionmodal" element={<QuestionModal />} />
                     </Routes>
                 </Layout>
             </Router>

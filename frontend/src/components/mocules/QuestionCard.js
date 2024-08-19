@@ -56,9 +56,7 @@ function QuestionCard({
                             onMouseLeave={() => setIsHovered(false)}
                         />
                     </div>
-                    <div>
-                        {thisRole !== 'CUSTOMER' && '문의 번호 공간'}
-                    </div>
+                    <div>{thisRole !== 'CUSTOMER' && '문의 번호 공간'}</div>
                 </div>
                 <div>
                     <div style={customerNameEllipsis}>

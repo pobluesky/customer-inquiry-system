@@ -12,6 +12,7 @@ const MySearchInput = forwardRef(
             padding,
             border,
             borderRadius,
+            display,
             onChange,
             value,
             imgWidth,
@@ -19,11 +20,12 @@ const MySearchInput = forwardRef(
             imgMargin,
             btnHeight,
             btnMargin,
+            btnFloat,
             onClick,
         },
         ref,
     ) => (
-        <div>
+        <div style={{ display }}>
             <Input
                 width={width}
                 height={height}
@@ -50,6 +52,7 @@ const MySearchInput = forwardRef(
                 boxShadow={'none'}
                 borderRadius={'0'}
                 onClick={onClick}
+                float={btnFloat}
             />
         </div>
     ),

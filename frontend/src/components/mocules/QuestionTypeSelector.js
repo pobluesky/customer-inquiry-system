@@ -27,7 +27,7 @@ function QuestionTypeSelector() {
                         </label>
                     </div>
                     <div>주문 문의</div>
- 
+
                     <div className="radio">
                         <label>
                             <input type="radio" value="option2" />
