@@ -1,3 +1,4 @@
+// 통합 후 삭제 예정
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -17,8 +18,9 @@ function DateInput({ margin }) {
             dateFormat="yyyy-MM-dd"
             minDate={new Date()}
             closeOnScroll={true}
-            withPortal />
-        );
+            withPortal
+        />
+    );
 }
 
 export default DateInput;

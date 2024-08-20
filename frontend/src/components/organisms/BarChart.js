@@ -78,7 +78,12 @@ class BarChart extends Component {
             <>
                 <div className="row">
                     <div className="mixed-chart">
-                        <Chart options={this.state.options} series={this.state.series} type="bar" width="500" />
+                        <Chart
+                            options={this.state.options}
+                            series={this.state.series}
+                            type="bar"
+                            width="500"
+                        />
                     </div>
                 </div>
             </>

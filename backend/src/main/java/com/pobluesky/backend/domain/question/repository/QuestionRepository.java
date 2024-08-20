@@ -8,6 +8,4 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
-
-    List<Question> findAllByCustomer_UserId(Long userId);
 }
