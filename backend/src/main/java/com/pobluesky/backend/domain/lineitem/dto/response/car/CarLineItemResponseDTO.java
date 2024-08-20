@@ -18,10 +18,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long userId;
-
-    private String CustomerName;
-
     private Lab lab;
 
     private Kind kind;
@@ -44,13 +40,11 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
-    public static CarLineItemResponseDTO of(CarLineItem carLineItem) {
+    public static CarLineItemResponseDTO from(CarLineItem carLineItem) {
 
         return CarLineItemResponseDTO.builder()
             .lineItemId(carLineItem.getLineItemId())
             .inquiryId(carLineItem.getInquiry().getInquiryId())
-            .userId(carLineItem.getCustomer().getUserId())
-            .CustomerName(carLineItem.getCustomer().getCustomerName())
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
             .standardOrg(carLineItem.getStandardOrg())

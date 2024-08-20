@@ -10,11 +10,23 @@ import org.springframework.data.domain.Pageable;
 
 public interface InquiryRepositoryCustom {
     Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId, Pageable pageable, Progress progress,
-        ProductType productType, String customerName,
-        InquiryType inquiryType, LocalDate startDate, LocalDate endDate);
+        Long userId,
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    );
 
     Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType, LocalDate startDate, LocalDate endDate);
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    );
 }

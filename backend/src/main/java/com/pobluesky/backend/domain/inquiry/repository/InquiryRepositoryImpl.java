@@ -29,10 +29,15 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId, Pageable pageable, Progress progress,
-        ProductType productType, String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
-
+        Long userId,
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                     inquiry.inquiryId,
@@ -46,7 +51,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .from(inquiry)
             .join(inquiry.customer, customer)
             .where(
-                inquiry.isActivated.isTrue(),
+                inquiry.isActivated.eq(true),
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
