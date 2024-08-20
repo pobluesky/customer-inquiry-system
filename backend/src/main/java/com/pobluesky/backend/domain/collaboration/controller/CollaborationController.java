@@ -101,7 +101,7 @@ public class CollaborationController {
         @PathVariable Long questionId,
         @PathVariable Long collaborationId
     ) {
-        CollaborationResponseDTO response = collaborationService.getCollaborationById(
+        CollaborationDetailResponseDTO response = collaborationService.getCollaborationById(
             token,
             questionId,
             collaborationId

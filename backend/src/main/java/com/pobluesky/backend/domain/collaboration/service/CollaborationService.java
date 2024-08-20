@@ -76,7 +76,7 @@ public class CollaborationService {
     }
 
     @Transactional(readOnly = true)
-    public CollaborationResponseDTO getCollaborationById(
+    public CollaborationDetailResponseDTO getCollaborationById(
         String token,
         Long questionId,
         Long collaborationId
@@ -94,7 +94,7 @@ public class CollaborationService {
                 question
             ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
-        return CollaborationResponseDTO.from(collaboration);
+        return CollaborationDetailResponseDTO.from(collaboration);
     }
 
     @Transactional
