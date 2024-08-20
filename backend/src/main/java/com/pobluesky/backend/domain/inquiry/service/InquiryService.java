@@ -157,14 +157,14 @@ public class InquiryService {
         }
 
         Inquiry inquiry = dto.toInquiryEntity(filePath);
+        inquiry.setCustomer(customer);
+
+        Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
             inquiry,
             dto.lineItemRequestDTOs()
         );
-
-        inquiry.setCustomer(customer);
-        Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         return InquiryResponseDTO.of(savedInquiry, lineItems);
     }
@@ -236,7 +236,7 @@ public class InquiryService {
     }
 
     @Transactional(readOnly = true)
-    public InquiryResponseDTO getInquiryDetail(
+    public InquiryResponseDTO getInquiryDetailForCustomer(
         String token,
         Long customerId,
         Long inquiryId
@@ -257,6 +257,28 @@ public class InquiryService {
 
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
+    }
+
+    @Transactional(readOnly = true)
+    public InquiryResponseDTO getInquiryDetailForManager(
+        String token,
+        Long inquiryId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        List<LineItemResponseDTO> lineItemsByInquiry =
+            lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
     }
