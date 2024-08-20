@@ -10,10 +10,10 @@ export const validateName = (name) => {
 export const validateUserCode = (userCode) => {
     const codeRegex = /^(CUS|EMP)/;
     if (!codeRegex.test(userCode)) {
-      return '존재하지 않는 고객 코드입니다.';
+        return '존재하지 않는 고객 코드입니다.';
     }
     return '';
-  };
+};
 
 // 이메일
 export const validateEmail = (email) => {
@@ -54,6 +54,22 @@ export const validateMatch = (password, confirmPassword) => {
 export const validateCustomerName = (customerName) => {
     if (customerName.trim() === '') {
         return '고객사명을 입력하세요.';
+    }
+    return '';
+};
+
+// 답변 제목 길이
+export const validateAnswerTitle = (answerTitle) => {
+    if (answerTitle.length > 21 || answerTitle.length < 1) {
+        return true;
+    }
+    return '';
+};
+
+// 답변 내용 길이
+export const validateAnswerContents = (answerContents) => {
+    if (answerContents.length < 10) {
+        return true;
     }
     return '';
 };

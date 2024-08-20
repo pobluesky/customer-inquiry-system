@@ -77,7 +77,7 @@ const JoinCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
-        allowOutsideClick: false
+        allowOutsideClick: false,
     });
 };
 
@@ -88,7 +88,7 @@ const JoinFailedAlert = (message) => {
         text: `${message}`,
         showConfirmButton: false,
         timer: 1000,
-        allowOutsideClick: false
+        allowOutsideClick: false,
     });
 };
 
@@ -100,7 +100,7 @@ const LoginCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
-        allowOutsideClick: false
+        allowOutsideClick: false,
     });
 };
 
@@ -122,10 +122,60 @@ const LoginFailedAlert = ({ showAlert, onClose, message }) => {
     );
 };
 
+const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                제목은 1자 이상 20자 이하로 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                답변을 10자 이상 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+const AnswerCompleteAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        // title: `<div style="font-size: 16px; font-weight : bolder;">답변이 등록되었습니다.</div>`,
+        title: '답변이 등록되었습니다.',
+        showConfirmButton: false,
+        timer: 1000,
+        allowOutsideClick: false,
+    });
+};
+
 export {
     ManagerRoleIsNullAlert,
     JoinCompleteAlert,
     JoinFailedAlert,
     LoginCompleteAlert,
     LoginFailedAlert,
+    WrongAnswerTitleAlert,
+    WrongAnswerContentAlert,
+    AnswerCompleteAlert,
 };

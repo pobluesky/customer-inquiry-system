@@ -29,13 +29,13 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Customer customer; // 고객사 번호
 
-    private String title; // 제목
+    private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String contents; // 내용
+    private String contents;
 
     @Column(columnDefinition = "TEXT")
-    private String files; // 첨부파일
+    private String files;
 
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
