@@ -21,7 +21,7 @@ const FileFormItem = ({ fileForm, formData }) => {
                             <div>진행단계</div>
                             <div>첨부파일명</div>
                         </div>
-                        <FileGetItem files={[formData.files]} />
+                        <FileGetItem files={formData.files} />
                     </div>
                 )}
             </div>
