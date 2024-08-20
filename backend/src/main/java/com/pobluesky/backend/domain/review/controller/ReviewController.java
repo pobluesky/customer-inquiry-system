@@ -21,37 +21,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/reviews/{inquiryId}")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/{reviewId}")
     @Operation(summary = "1차 검토 조회")
-    public ResponseEntity<JsonResult> getReviewById(
+    @GetMapping
+    public ResponseEntity<JsonResult> getReviewByInquiry(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long reviewId
+        @PathVariable Long inquiryId
     ) {
-        ReviewResponseDTO reviewById = reviewService.getReviewById(token, reviewId);
+        ReviewResponseDTO response = reviewService.getReviewByInquiry(token, inquiryId);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(reviewById));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
-
-    @PostMapping("/{inquiryId}")
+  
     @Operation(summary = "1차 검토 생성", description = "판매 담당자는 해당 Inquiry에 대한 1차 검토를 시작한다.")
+    @PostMapping
     public ResponseEntity<JsonResult> createReview(
         @RequestHeader("Authorization") String token,
         @RequestBody ReviewCreateRequestDTO request,
         @PathVariable Long inquiryId
     ) {
-        ReviewResponseDTO review = reviewService.createReview(
+        ReviewResponseDTO response = reviewService.createReview(
             token,
             request,
             inquiryId
         );
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(review));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 }

@@ -55,7 +55,7 @@ function Header({ inq, voc, dashboard }) {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
         if (didLogin) {
@@ -65,142 +65,146 @@ function Header({ inq, voc, dashboard }) {
 
     return (
         <div>
-        <div className={Container} style={{ backgroundColor }}>
-            <div style={{
-                gridTemplateColumns: columns
-            }}>
-                <div></div>
-                {/* 로그인 완료 */}
-                <img src={mainlogo} alt="poscodx" />
-                {didLogin ? (
-                    <>
-                        <div>
-                            <MenuLink
-                                to="/inq-main"
-                                style={{
-                                    color:
-                                        inq && !voc && !dashboard
-                                            ? '#03507d'
-                                            : '#c1c1c1',
-                                }}
-                            >
-                                Inquiry
-                            </MenuLink>
-                        </div>
-                        <div>
-                            <MenuLink
-                                to="/voc-main"
-                                style={{
-                                    color:
-                                        !inq && voc && !dashboard
-                                            ? '#03507d'
-                                            : '#c1c1c1',
-                                }}
-                            >
-                                VoC
-                            </MenuLink>
-                        </div>
-                        <div>
-                            <MenuLink
-                                to="/dashboard"
-                                style={{
-                                    color:
-                                        !inq && !voc && dashboard
-                                            ? '#03507d'
-                                            : '#c1c1c1',
-                                }}
-                            >
-                                DashBoard
-                            </MenuLink>
-                        </div>
-                        <div className={User}>
-                            <div><img src={person} alt="user" /></div>
-                            <div>{username}님</div>
-                        </div>
-                        <div style={{
-                            position: 'relative',
-                            display: 'inline-block',
-                        }}>
-                            <Button
-                                ref={notificationButtonRef}
-                                onClick={toggleModal}
-                                btnName={'알림'}
-                                width={'40px'}
-                                height={'40px'}
-                                backgroundColor={'#ffffff'}
-                                textColor={'#03507d'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                                fontSize={'13px'}
-                            />
-                            {isModalOpen && (
-                                <NotificationModal
-                                    onClose={toggleModal}
-                                />
-                            )}
-                        </div>
-                        <div>
-                            <Button
-                                onClick={() => handleLogout()}
-                                btnName={'로그아웃'}
-                                width={'84px'}
-                                height={'40px'}
-                                backgroundColor={'#edfaff'}
-                                textColor={'#c1c1c1'}
-                                border={'solid #c1c1c1 1px'}
-                                borderRadius={'12px'}
-                                fontSize={'16px'}
-                            />
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div>
-                            <MenuLink to="/inq-main">Inquiry</MenuLink>
-                        </div>
-                        <div>
-                            <MenuLink to="/voc-main">VoC</MenuLink>
-                        </div>
-                        <div>
-                            <MenuLink to="/dashboard">DashBoard</MenuLink>
-                        </div>
-                        {/* 로그인 & 회원가입 버튼 */}
-                        {!didLogin && !isLoginPage && (
+            <div className={Container} style={{ backgroundColor }}>
+                <div
+                    style={{
+                        gridTemplateColumns: columns,
+                    }}
+                >
+                    <div></div>
+                    {/* 로그인 완료 */}
+                    <img src={mainlogo} alt="poscodx" />
+                    {didLogin ? (
+                        <>
                             <div>
-                                <Button
-                                    onClick={() => navigate('/login')}
-                                    btnName={'로그인'}
-                                    width={'84px'}
-                                    height={'40px'}
-                                    backgroundColor={'#03507d'}
-                                    textColor={'#eeeeee'}
-                                    border={'solid #c1c1c1 1px'}
-                                    borderRadius={'12px'}
-                                    fontSize={'16px'}
-                                />
+                                <MenuLink
+                                    to="/inq-main"
+                                    style={{
+                                        color:
+                                            inq && !voc && !dashboard
+                                                ? '#03507d'
+                                                : '#c1c1c1',
+                                    }}
+                                >
+                                    Inquiry
+                                </MenuLink>
                             </div>
-                        )}
-                        {!didLogin && !isJoinPage && isLoginPage && (
                             <div>
+                                <MenuLink
+                                    to="/voc-main"
+                                    style={{
+                                        color:
+                                            !inq && voc && !dashboard
+                                                ? '#03507d'
+                                                : '#c1c1c1',
+                                    }}
+                                >
+                                    VoC
+                                </MenuLink>
+                            </div>
+                            <div>
+                                <MenuLink
+                                    to="/dashboard"
+                                    style={{
+                                        color:
+                                            !inq && !voc && dashboard
+                                                ? '#03507d'
+                                                : '#c1c1c1',
+                                    }}
+                                >
+                                    DashBoard
+                                </MenuLink>
+                            </div>
+                            <div className={User}>
+                                <div>
+                                    <img src={person} alt="user" />
+                                </div>
+                                <div>{username}님</div>
+                            </div>
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    display: 'inline-block',
+                                }}
+                            >
                                 <Button
-                                    onClick={() => navigate('/join')}
-                                    btnName={'회원가입'}
-                                    width={'84px'}
+                                    ref={notificationButtonRef}
+                                    onClick={toggleModal}
+                                    btnName={'알림'}
+                                    width={'40px'}
                                     height={'40px'}
                                     backgroundColor={'#ffffff'}
                                     textColor={'#03507d'}
                                     border={'solid #c1c1c1 1px'}
                                     borderRadius={'12px'}
+                                    fontSize={'13px'}
+                                />
+                                {isModalOpen && (
+                                    <NotificationModal onClose={toggleModal} />
+                                )}
+                            </div>
+                            <div>
+                                <Button
+                                    onClick={() => handleLogout()}
+                                    btnName={'로그아웃'}
+                                    width={'84px'}
+                                    height={'40px'}
+                                    backgroundColor={'#edfaff'}
+                                    textColor={'#c1c1c1'}
+                                    border={'solid #c1c1c1 1px'}
+                                    borderRadius={'12px'}
                                     fontSize={'16px'}
                                 />
                             </div>
-                        )}
-                    </>
-                )}
+                        </>
+                    ) : (
+                        <>
+                            <div>
+                                <MenuLink to="/inq-main">Inquiry</MenuLink>
+                            </div>
+                            <div>
+                                <MenuLink to="/voc-main">VoC</MenuLink>
+                            </div>
+                            <div>
+                                <MenuLink to="/dashboard">DashBoard</MenuLink>
+                            </div>
+                            {/* 로그인 & 회원가입 버튼 */}
+                            {!didLogin && !isLoginPage && (
+                                <div>
+                                    <Button
+                                        onClick={() => navigate('/login')}
+                                        btnName={'로그인'}
+                                        width={'84px'}
+                                        height={'40px'}
+                                        backgroundColor={'#03507d'}
+                                        textColor={'#eeeeee'}
+                                        border={'solid #c1c1c1 1px'}
+                                        borderRadius={'12px'}
+                                        fontSize={'16px'}
+                                    />
+                                </div>
+                            )}
+                            {!didLogin && !isJoinPage && isLoginPage && (
+                                <div>
+                                    <Button
+                                        onClick={() => navigate('/join')}
+                                        btnName={'회원가입'}
+                                        width={'84px'}
+                                        height={'40px'}
+                                        backgroundColor={'#ffffff'}
+                                        textColor={'#03507d'}
+                                        border={'solid #c1c1c1 1px'}
+                                        borderRadius={'12px'}
+                                        fontSize={'16px'}
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
-</div>
-);
+    );
 }
 
 export default Header;

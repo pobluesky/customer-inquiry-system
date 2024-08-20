@@ -7,9 +7,13 @@ import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
+
 import io.swagger.v3.oas.annotations.Operation;
+
 import java.time.LocalDate;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,13 +50,13 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/manager/{questionId}")
+    @GetMapping("/managers/{questionId}")
     @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")
-    public ResponseEntity<JsonResult> getQuestionByInquiryIdForManager(
+    public ResponseEntity<JsonResult> getQuestionByQuestionIdForManager(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId
     ) {
-        QuestionResponseDTO response = questionService.getQuestionByQuestionId(
+        QuestionResponseDTO response = questionService.getQuestionByQuestionIdForManager(
             token,
             questionId
         );
@@ -89,7 +93,25 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customer/{userId}/{inquiryId}")
+    @GetMapping("/customers/{userId}/{questionId}")
+    @Operation(summary = "질문별 상세 조회(고객사)", description = "등록된 질문을 질문 번호로 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionByQuestionId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long questionId
+    ) {
+        QuestionResponseDTO response = questionService.getQuestionByQuestionId(
+            token,
+            userId,
+            questionId
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @PostMapping("/customers/{userId}/{inquiryId}")
     @Operation(summary = "문의별 질문 작성(고객사)", description = "특정 문의에 대한 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
@@ -107,7 +129,7 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PostMapping("/customer/{userId}")
+    @PostMapping("/customers/{userId}")
     @Operation(summary = "타입별 질문 작성(고객사)", description = "문의 외적인 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,

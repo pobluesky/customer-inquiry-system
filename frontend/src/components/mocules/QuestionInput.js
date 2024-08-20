@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import { Question_Content_Container } from '../../assets/css/Voc.css';
-import TextEditor from '../mocules/TextEditor';
+import TextEditor from './TextEditor';
 
-function QuestionContentItem() {
+function QuestionInput() {
     const [originalText, setOriginalText] = useState('');
 
     return (
@@ -63,7 +63,8 @@ function QuestionContentItem() {
                         />
                     </div>
                     <div>
-                        * 파일은 최대 1개까지 첨부 가능하며, 최대 용량은 총 10MB의 용량 제한이 있습니다.
+                        * 파일은 최대 1개까지 첨부 가능하며, 최대 용량은 총
+                        10MB의 용량 제한이 있습니다.
                     </div>
                 </div>
                 <div>
@@ -86,4 +87,4 @@ function QuestionContentItem() {
     );
 }
 
-export default QuestionContentItem;
+export default QuestionInput;

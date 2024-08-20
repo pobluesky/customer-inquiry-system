@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.request.QualityUpdateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.service.QualityService;
+import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -31,10 +32,22 @@ public class QualityController {
     @Operation(summary = "품질검토 전체 조회")
     @GetMapping
     public ResponseEntity<JsonResult> getQualities(@RequestHeader("Authorization") String token) {
-        List<QualityResponseDTO> allQualities = qualityService.getAllQualities(token);
+        List<QualityResponseDTO> response = qualityService.getAllQualities(token);
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(allQualities));
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "품질검토 조회", description = "품질 검토는 담당자만 조회가 가능하다.")
+    @GetMapping("/{inquiryId}")
+    public ResponseEntity<JsonResult> getReviewByInquiry(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        QualityResponseDTO response = qualityService.getReviewByInquiry(token, inquiryId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @Operation(summary = "inquiryId 별 품질검토 작성")
@@ -51,33 +64,5 @@ public class QualityController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @Operation(summary = "품질검토 조회 수정")
-    @PutMapping("/{qualityId}")
-    public ResponseEntity<JsonResult> updateQualityById(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long qualityId,
-        @RequestBody QualityUpdateRequestDTO qualityUpdateRequestDTO
-    ) {
-        QualityResponseDTO response = qualityService.updateQualityById(
-            token,
-            qualityId,
-            qualityUpdateRequestDTO
-        );
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @Operation(summary = "품질검토 삭제")
-    @DeleteMapping("/{qualityId}")
-    public ResponseEntity<CommonResult> deleteQualityById(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long qualityId
-    ) {
-        qualityService.deleteQualityById(token, qualityId);
-
-        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 }

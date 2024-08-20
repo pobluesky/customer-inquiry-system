@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.quality.service;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
-import com.pobluesky.backend.domain.quality.dto.request.QualityUpdateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.entity.Quality;
 import com.pobluesky.backend.domain.quality.repository.QualityRepository;
@@ -67,47 +66,29 @@ public class QualityService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
+        if(qualityRepository.existsByInquiry(inquiry)) {
+            throw new CommonException(ErrorCode.QUALITY_ALREADY_EXISTS);
+        }
+
         Quality quality = dto.toQualityEntity(inquiry);
         Quality savedQuality = qualityRepository.save(quality);
 
         return QualityResponseDTO.from(savedQuality);
     }
 
-    @Transactional
-    public QualityResponseDTO updateQualityById(
-        String token,
-        Long qualityId,
-        QualityUpdateRequestDTO qualityUpdateRequestDTO
-    ) {
+    @Transactional(readOnly = true)
+    public QualityResponseDTO getReviewByInquiry(String token, Long inquiryId) {
         Long userId = signService.parseToken(token);
 
-        Manager manager = managerRepository.findById(userId)
+        managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(manager.getRole() != UserRole.QUALITY)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Quality quality = qualityRepository.findById(qualityId)
+        Quality quality = qualityRepository.findByInquiry(inquiry)
             .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
 
-        quality.updateQuality(
-            qualityUpdateRequestDTO.qualityReviewInfo(),
-            qualityUpdateRequestDTO.qualityComments()
-        );
-
         return QualityResponseDTO.from(quality);
-    }
-
-    @Transactional
-    public void deleteQualityById(String token, Long qualityId) {
-        Long userId = signService.parseToken(token);
-
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(manager.getRole() != UserRole.QUALITY)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
-
-        qualityRepository.deleteById(qualityId);
     }
 }

@@ -71,7 +71,7 @@ public class CollaborationService {
     }
 
     @Transactional(readOnly = true)
-    public CollaborationResponseDTO getCollaborationById(
+    public CollaborationDetailResponseDTO getCollaborationById(
         String token,
         Long questionId,
         Long collaborationId
@@ -89,7 +89,7 @@ public class CollaborationService {
                 question
             ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
-        return CollaborationResponseDTO.from(collaboration);
+        return CollaborationDetailResponseDTO.from(collaboration);
     }
 
     @Transactional
@@ -111,13 +111,6 @@ public class CollaborationService {
 
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
-
-        if(collaborationRepository
-            .findByRequestManagerAndResponseManager(reqManager, resManager)
-            .isPresent()
-        ) {
-            throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
-        }
 
         Collaboration collaborationEntity = requestDTO.toCollaborationEntity(
             reqManager,

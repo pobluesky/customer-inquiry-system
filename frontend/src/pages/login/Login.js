@@ -35,7 +35,7 @@ function Login() {
     const [showAlert, canShowAlert] = useState(false);
     const [resetAtom, setResetAtom] = useState(false);
 
-    const { didLogin, setDidLogin, setRole } = useAuth();
+    const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
     /* [시작] 로그인 실패 후 새로고침 시 경고 메시지 초기화 */
     useEffect(() => {
@@ -58,6 +58,7 @@ function Login() {
     const goToMain = (result) => {
         if (result.success) {
             setDidLogin(true); // 로그인 상태 변화
+            setUserId(getCookie('userId')); // 전역 userId 저장
             setRole(getCookie('userRole')); // 전역 역할 저장
             setGlobalEmail(email); // 이메일 저장
             LoginCompleteAlert();

@@ -7,8 +7,10 @@ import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
+
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 

@@ -36,9 +36,7 @@ public class Quality extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String qualityComments; // 추가요청내용
-    /*
-      Builder Pattern
-     */
+
     @Builder
     private Quality(
         Inquiry inquiry,
@@ -49,9 +47,10 @@ public class Quality extends BaseEntity {
         this.qualityReviewInfo = qualityReviewInfo;
         this.qualityComments = qualityComments;
     }
+
     public void updateQuality(
         QualityReviewInfo qualityReviewInfo,
-        String requireAddContents
+        String qualityComments
     ) {
         this.qualityReviewInfo = qualityReviewInfo;
         this.qualityComments = qualityComments;

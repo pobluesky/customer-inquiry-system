@@ -12,9 +12,7 @@ const Layout = ({ children }) => {
     return (
         <div>
             <Header inq={inq} voc={voc} dashboard={dashboard} />
-            <div>
-                {children}
-            </div>
+            <div>{children}</div>
         </div>
     );
 };

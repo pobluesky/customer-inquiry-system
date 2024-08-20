@@ -10,7 +10,11 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import ToolbarPlugin from '../../plugins/ToolbarPlugin';
 import Theme from '../atoms/Theme';
 
-import { Editor_Container, Editor_Inner, Editor_Input } from '../../assets/css/Editor.css';
+import {
+    Editor_Container,
+    Editor_Inner,
+    Editor_Input,
+} from '../../assets/css/Editor.css';
 
 const editorConfig = {
     namespace: 'React.js Demo',
@@ -77,7 +81,12 @@ function TextEditor({ originalText, setOriginalText }) {
                 <div className={Editor_Container}>
                     <ToolbarPlugin />
                     <div className={Editor_Inner}>
-                        <RichTextPlugin contentEditable={<ContentEditable className={Editor_Input} />} ErrorBoundary={LexicalErrorBoundary} />
+                        <RichTextPlugin
+                            contentEditable={
+                                <ContentEditable className={Editor_Input} />
+                            }
+                            ErrorBoundary={LexicalErrorBoundary}
+                        />
                         <HistoryPlugin />
                         <AutoFocusPlugin />
                     </div>

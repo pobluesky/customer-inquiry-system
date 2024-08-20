@@ -11,12 +11,410 @@ body {
     display: none; /* 크롬, 사파리, 오페라, 엣지 */
 }
 
-/***********************************************/
-/* Offer Sheet */
+/******************************************************************/
+/* 날짜 선택란 *****************************************************/
+/******************************************************************/
+.Datepicker {
+    width: 144px;
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 0 8px 0 8px;
+}
+
+.DatepickerPeriod {
+    width: 90px;
+    height: 24px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    padding: 2px 4px 2px 12px;
+    color: #65636c;
+    font-weight: bold;
+    margin-left: 25px;
+}
+
+/******************************************************************/
+/* 오퍼 시트 *******************************************************/
+/******************************************************************/
+.Offer_Sheet {
+    display: grid;
+    margin: 0 0 36px 0;
+}
+
+/* 오퍼시트 전체 */
+.Offer_Sheet > div:first-child {
+    width: 90vw;
+    height: max-content;
+    margin: 0 auto 24px auto;
+    border: solid #c1c1c1 1px;
+    border-radius: 20px;
+    background-color: #f0f8fc;
+}
+
+/* 행 추가, 행 삭제, 행 복사 */
+.Offer_Sheet > div:first-child > div:nth-child(2) > div:first-child {
+    display: grid;
+    grid-template-columns: 108px 108px 96px;
+    justify-content: right;
+    margin: 24px 40px 16px 0;
+}
+
+/* 고객사 카테고리 + Input */
+.Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(3) {
+    display: grid;
+    width: 85vw;
+    grid-template-columns: 180px 1fr;
+    margin: 16px auto 0 auto;
+}
+
+/* 오퍼시트 카테고리 + 오퍼 테이블 */
+.Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(4) {
+    width: 85vw;
+    grid-template-rows: 28px 144px;
+    margin: 16px auto 0 auto;
+}
+
+/* 오퍼시트 테이블 하단 데이터 */
+.Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(5) {
+    display: grid;
+    width: 85vw;
+    margin: 16px auto 0 auto;
+    grid-template-rows: 48px 72px;
+    grid-template-columns: 1.2fr 1fr 1fr;
+}
+
+/* Price Term, Payment Terms */
+.Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(5) > div {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+}
+/******************************************************************/
+/* 오퍼 시트에 포함되는 오퍼 테이블 **********************************/
+/******************************************************************/
+.Offer_Table {
+    width: 85vw;
+    height: max-content;
+    margin: 16px 0 0 0;
+    border: solid 1px #c1c1c1;
+    border-radius: 12px;
+}
+
+.Offer_Table > div:first-child {
+    text-align: center;
+    overflow-x: auto;
+    padding: 12px 0 12px 0;
+}
+
+.Offer_Table table {
+    border-collapse: separate;
+    padding: 0 0 0 8px;
+}
+
+.Offer_Table thead {
+    color: #03507d;
+}
+
+.Offer_Table tbody {
+    line-height: 8px;
+}
+
+.Offer_Table select {
+    color: #03507d;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+/* Scroll Bar */
+.Offer_Table > div::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+}
+
+/* Scroll Bar Thumb */
+.Offer_Table > div::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+}
+
+/******************************************************************/
+/* 오퍼 시트에 포함되는 오퍼 테이블 외 정보 **************************/
+/******************************************************************/
+.Offer_Sheet_Terms {
+    display: grid;
+    grid-template-columns: 144px 1fr;
+}
+
+/* CIF */
+.Offer_Sheet_Terms > div:first-child select {
+    width: 120px;
+}
+
+/* Busan Seaport */
+.Offer_Sheet_Terms > div:nth-child(2) select {
+    width: 188px;
+}
+
+.Offer_Sheet_Terms > div:first-child select,
+.Offer_Sheet_Terms > div:nth-child(2) select {
+    color: #03507d;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+/******************************************************************/
+/* 주석 추가 부탁드립니다. ******************************************/
+/******************************************************************/
+.Wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 15px;
+    padding: 2px 35px 2px 35px;
+}
+
+.inputWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    height: 85%;
+    padding: 3px;
+    width: 100%;
+}
+
+label {
+    color: #49454f;
+    font-weight: 400;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+._Input {
+    border: none;
+    background-color: #ffffff;
+    text-align: right;
+    font-size: 20px;
+    color: #49454f;
+    font-weight: bolder;
+    margin-right: 20px;
+    width: 60%;
+    outline: none;
+}
+
+select {
+    text-align: center;
+}
+
+._TextArea {
+    display: grid;
+    place-items: center;
+    border: 1px solid #c1c1c1;
+    font-size: 17px;
+    color: #49454f;
+    width: 96%;
+    height: 160px;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 0 20px 0 20px;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-bottom: 15px;
+}
+
+.LineItemColumn {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px;
+    font-size: 20px;
+}
+
+.LineItemRow {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #ffffff;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px;
+    font-size: 20px;
+    align-items: center;
+}
+
+.LineItemInput {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #444444;
+    font-weight: 400;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+}
+
+._none {
+    display: none;
+}
+
+._checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 7px;
+}
+
+._checkbox:checked {
+    background-color: #03507d;
+    border: 1px solid #c1c1c1;
+    border-radius: 7px;
+}
+
+.SalesInfoItem {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.8fr 1fr;
+    gap: 10px;
+    width: 26%;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+.SalesInfoRow {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 15px;
+    width: 26%;
+    color: #7b7b7b;
+    background-color: #ffffff;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+.ReviewWrapper {
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+}
+
+.QualityItemColumn {
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1rem;
+}
+
+.QualityItemColumn > div {
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.QualityItemRow {
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0;
+    color: #7B7B7B;
+    background-color: #ffffff;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1rem;
+}
+
+.QualityItemRow > div {
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.QualityItemInput {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #444444;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+}
+
+.FileColumn {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 8fr;
+    gap: 10px;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 20px;
+}
+
+._FileItem {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr;
+    color: #7b7b7b;
+    background-color: #ffffff;
+    font-weight: 400;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px 20px 10px 20px;
+    font-size: 16px;
+}
+
 .Container {
     display: flex;
     justify-content: center;
-    margin: 2vh 0 0 0;
+    /* margin: 0 auto 0 auto; */
 }
 
 .Sheet {
@@ -30,14 +428,14 @@ body {
     display: flex;
     align-content: center;
     padding: 1vw 1vw 1vw 1vw;
-    background-color: #03507D;
+    background-color: #03507d;
 }
 
 ._ToggleClose {
     display: flex;
     align-content: center;
     padding: 1vw 1vw 1vw 1vw;
-    background-color: #E3F5FE;
+    background-color: #e3f5fe;
 }
 
 .Container .Opend {
@@ -59,378 +457,8 @@ body {
     justify-content: left;
 }
 
-/***********************************************/
-/* Offer Table */
-.Table_Container {
-    display: flex;
-    justify-content: center;
-}
-
-.Table_Scroll {
-    width: 85vw;
-    overflow-x: auto;
-    text-align: center;
-    padding: 0 0 10px 0;
-}
-
-.Table_Table {
-    /* background-color: #ffffff; */
-    border-collapse: separate;
-    border: solid 1px #c1c1c1;
-    border-radius: 12px;
-    padding: 4px;
-}
-
-.Table_Table_Head {
-    color: #03507d;
-}
-
-.Table_Table_Body {
-    line-height: 8px;
-}
-
-.Table_Table select {
-    color: #03507d;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    padding: 4px;
-}
-
-.Table_Colspan {
-    display: flex;
-    justify-content: center;
-}
-
-/* Scroll Bar */
-.Table_Scroll::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-}
-
-/* Scroll Bar Thumb */
-.Table_Scroll::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
-}
-
-/***********************************************/
-/* Offer Info */
-.Info_Container {
-    display: flex;
-    justify-content: center;
-    margin: 3vh 0 0 0;
-}
-
-.Info_Table {
-    width: 85vw;
-    border-collapse: separate;
-}
-
-.Info_Container .Info_Table .Border_Space {
-    height: 28px;
-    border: none;
-}
-
-/***********************************************/
-/* Input */
-.input::placeholder {
-    color: #9b9b9b;
-}
-
-.Input {
-    height: 24px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 0 12px 0 8px;
-}
-
-.Search_Input {
-    display: flex;
-    align-items: center;
-    padding: 0 16px 0 16px;
-}
-
-.Button {
-    background: inherit;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-    margin: 0 4px 0 4px;
-    cursor: pointer;
-}
-
-.Info_Input,
-.Price_Payment {
-    height: 28px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 0 0 0 8px;
-}
-
-.Info_Input {
-    width: 240px;
-}
-
-.Price_Payment {
-    width: 180px;
-}
-
-.Price_Payment_Std {
-    width: 56px;
-    height: 28px;
-    margin: 0 8px 0 0;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 0 0 0 4px;
-}
-
-.Datepicker {
-    width: 144px;
-    height: 24px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 2px 4px 2px 12px;
-}
-
-.DatepickerPeriod{
-    width: 90px;
-    height: 24px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 2px 4px 2px 12px;
-    color: #65636c;
-    font-weight: bold;
-    margin-left: 25px;
-}
-
-/***********************************************/
-/* Form */
-.Wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 15px;
-    padding: 2px 35px 2px 35px;
-}
-
-.inputWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
-    background-color: #ffffff;
-    height: 85%;
-    padding: 3px;
-}
-
-label {
-    color: #49454F;
-    font-weight: 400;
-    font-size: 20px;
-    margin-left: 20px;
-}
-
-._Input {
-    border: none;
-    background-color: #ffffff;
-    text-align: right;
-    font-size: 20px;
-    color: #49454F;
-    font-weight: bolder;
-    margin-right: 20px;
-}
-
-._TextArea {
-    display: grid;
-    place-items: center;
-    border: 1px solid #c1c1c1;
-    font-size: 17px;
-    color: #49454f;
-    width: 96%;
-    height: 160px;
-    border-radius: 12px;
-    padding: 10px;
-    margin: 0 20px 0 20px;
-}
-
-.buttonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 20px;
-}
-
-.LineItemColumn {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 15px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+._FileName {
+    color: #007AFF;
     font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-._none {
-    display: none;
-}
-
-._checkbox {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #c1c1c1;
-    border-radius: 7px;
-}
-
-._checkbox:checked {
-    background-color: #03507D;
-    border: 1px solid #c1c1c1;
-    border-radius: 7px;
-}
-
-.LineItemRow {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    color: #7B7B7B;
-    background-color: #ffffff;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.LineItemInput {
-    background-color: #ffffff;
-    text-align: center;
-    padding: 3px;
-    font-size: 19px;
-    color: #444444;
-    font-weight: 400;
-    width: 120px;
-    margin-left: 15px;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
-}
-
-.SalesInfoItem {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 0.8fr 1fr;
-    gap: 10px;
-    width: 26%;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.SalesInfoRow {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 15px;
-    width: 26%;
-    color: #7B7B7B;
-    background-color: #ffffff;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.ReviewWrapper {
-    display: grid;
-    grid-template-rows: 1fr 3fr;
-}
-
-.QualityItemColumn {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.QualityItemRow {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 12px;
-    color: #7B7B7B;
-    background-color: #ffffff;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.QualityItemInput {
-    background-color: #ffffff;
-    font-size: 19px;
-    color: #444444;
-    font-weight: 500;
-    text-align: center;
-    padding: 3px;
-    width: 132px;
-    margin-left: 15px;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
-}
-
-.FileColumn {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 1fr 8fr;
-    gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-._FileItem {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 1fr;
-    color: #7B7B7B;
-    background-color: #ffffff;
-    font-weight: 400;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
     font-size: 16px;
 }
