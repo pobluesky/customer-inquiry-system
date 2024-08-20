@@ -22,7 +22,7 @@ function RequestBar({ requestBarTitle, role, onSubmit }) {
         [];
 
     const handleButtonClick = (btnName) => {
-        if (btnName === '검토의뢰') {
+        if (btnName === '검토의뢰' || btnName === '품질검토요청') {
             onSubmit();
         } else {
             console.log(`Action for ${btnName} is not implemented`);

@@ -120,7 +120,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
     useEffect(() => {
         getInquiryDataDetail();
         getUserInfo();
-        // getReview();
+        getReview();
     }, [userId, id]);
 
     console.log(reviewData)

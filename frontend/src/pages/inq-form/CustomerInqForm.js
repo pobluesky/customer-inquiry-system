@@ -36,7 +36,7 @@ function CustomerInqForm() {
         salesPerson: '',
         reviewText: '',
         finalReviewText: '',
-    });
+});
 
     const getUserInfo = async () => {
         if (!userId) {
@@ -63,12 +63,11 @@ function CustomerInqForm() {
 
     // 라인아이템 변경 핸들러
     const handleLineItemsChange = (newLineItems) => {
-        setLineItems(prevLineItems => {
-            if (JSON.stringify(prevLineItems) !== JSON.stringify(newLineItems)) {
-                return newLineItems;
-            }
-            return prevLineItems;
-        });
+        setLineItems(newLineItems);
+        setFormData(prevData => ({
+            ...prevData,
+            lineItemResponseDTOs: newLineItems,  // formData에 lineItems 데이터를 포함시킴
+        }));
     };
 
     // Inquiry 등록 버튼 클릭 핸들러

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     LineItemRow,
     LineItemInput,
@@ -6,11 +6,9 @@ import {
 } from '../../assets/css/Form.css';
 
 const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
-    const [selected, setSelected] = useState(isChecked);
-
     return (
         <div className={LineItemRow}>
-            {isChecked ? (
+            {isChecked && (
                 <div>
                     <input
                         type="checkbox"
@@ -18,16 +16,17 @@ const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
                         onChange={() => onRowSelect(id)}
                     />
                 </div>
-            ) : null}
-
-            {lineItems?.map((item, index) => (
-                <input
-                    key={index}
-                    type="text"
-                    className={LineItemInput}
-                    value={item}
-                    onChange={(e) => onChange(id, index, e.target.value)}
-                />
+            )}
+            {Object.keys(lineItems).map((key, index) => (
+                key !== 'lineItemId' && key !== 'selected' && (
+                    <input
+                        key={index}
+                        type="text"
+                        className={LineItemInput}
+                        value={lineItems[key]}
+                        onChange={(e) => onChange(id, key, e.target.value)}
+                    />
+                )
             ))}
         </div>
     );

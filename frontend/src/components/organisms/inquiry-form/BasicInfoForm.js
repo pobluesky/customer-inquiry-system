@@ -11,23 +11,17 @@ import {
 
 const BasicInfoForm = ({ formData }) => {
     const {
-        additionalRequests,
         corporate,
         corporationCode,
         country,
         customerCode,
-        customerId,
-        customerName,
         customerRequestDate,
-        files,
         industry,
-        inquiryId,
         inquiryType,
         name,
         email,
         phone,
         productType,
-        progress,
         salesPerson,
     } = formData;
 

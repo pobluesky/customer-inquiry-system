@@ -11,7 +11,7 @@ import {
   _none
 } from "../../../assets/css/Form.css";
 
-const InquiryHistoryForm = ({ userId, productType, onLineItemsChange }) => {
+const InquiryHistoryForm = ({ productType, onLineItemsChange }) => {
   const [isChecked, setChecked] = useState(true);
   const [rows, setRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -60,7 +60,7 @@ const InquiryHistoryForm = ({ userId, productType, onLineItemsChange }) => {
     setSelectedRows([]);
   };
 
-  const copyRows = () => {
+  const copyRows = () => { // copy 했을 때 id 가 같아서 행 삭제 안됨
     const copiedRows = selectedRows.map(id => {
       const rowToCopy = rows.find(row => row.id === id);
       return { ...rowToCopy, id: Date.now() + Math.random() };

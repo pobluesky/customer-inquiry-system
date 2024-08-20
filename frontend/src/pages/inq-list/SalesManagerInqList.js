@@ -7,6 +7,7 @@ import { _Link, Paging, PagingButton, PagingArrowButton } from "../../assets/css
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiry, getInquiryByManagers } from '../../apis/api/inquiry';
 import { Link } from 'react-router-dom';
+import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
 const SalesManagerInqList = () => {
     const { userId } = useAuth();
@@ -46,7 +47,7 @@ const SalesManagerInqList = () => {
 
     return (
         <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${totalElements}`} />
 

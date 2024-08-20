@@ -3,7 +3,7 @@ import arrow from '../../assets/css/icons/arrow.svg';
 import { Link } from 'react-router-dom';
 import { _Link } from '../../assets/css/Inquiry.css';
 
-function InqPath({ largeCategory, mediumCategory, smallCategory }) {
+function ManagerInqPath({ largeCategory, mediumCategory, smallCategory }) {
     return (
         <div
             style={{
@@ -19,15 +19,15 @@ function InqPath({ largeCategory, mediumCategory, smallCategory }) {
                 <span>{largeCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/inq-list/customer" className={_Link}>
+            <Link to="/inq-list/manager" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/inq-list/customer/:id" className={_Link}>
+            <Link to="/inq-list/manager/:id" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>
         </div>
     );
 }
 
-export default InqPath;
+export default ManagerInqPath;

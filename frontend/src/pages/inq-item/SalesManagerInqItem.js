@@ -9,12 +9,16 @@ import {
     Offersheet, SalesInfoForm, FileForm,
 } from '../../components/organisms/inquiry-form';
 import { useAuth } from '../../hooks/useAuth';
-import { getInquiryDetail } from '../../apis/api/inquiry';
+import {
+    getInquiryDetail,
+    getInquiryDetailByManagers,
+} from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews, postReviews } from '../../apis/api/review';
 import offersheet from '../../components/organisms/inquiry-form/Offersheet';
 import { postOffersheet } from '../../apis/api/offersheet';
+import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -52,11 +56,11 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     });
 
     const getInquiryDataDetail = async () => {
-        if (!customerId) {
+        if (!id) {
             return;
         }
         try {
-            const response = await getInquiryDetail(customerId, id);
+            const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
             console.log(response.data);
         } catch (error) {
@@ -65,7 +69,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     };
 
     const getUserInfo = async () => {
-        if (!customerId) {
+        if (!id) {
             return;
         }
         try {
@@ -78,7 +82,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     }
 
     const getReview = async () => {
-        if (!customerId) {
+        if (!id) {
             return;
         }
         try {
@@ -116,6 +120,10 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
+                contract: reviewData?.salesInfo?.contract || '',
+                thicknessNotify: reviewData?.salesInfo?.thicknessNotify || '',
+                attachmentFile: reviewData?.attachmentFile || '',
+                tsReviewReq: reviewData?.tsReviewReq || ''
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
@@ -126,13 +134,25 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         getInquiryDataDetail();
         getUserInfo();
         getReview();
-    }, [customerId, id]);
+    }, [id]);
+
+    console.log("review: ", reviewData);
+    console.log("inquiry: ", inquiriesDataDetail);
 
     const handleSubmit = async () => {
         if (formData.inquiryId) {
             try {
-                const offerSheetResponse = await postOffersheet(id);
-                const reviewResponse = await postReviews(id);
+                // const offerSheetResponse = await postOffersheet(id);
+                const reviewResponse = await postReviews(id, {
+                    salesInfo: {
+                        contract: formData.contract,
+                        thicknessNotify: formData.thicknessNotify,
+                    },
+                    reviewText: formData.reviewText,
+                    attachmentFile: formData.attachmentFile,
+                    finalReviewText: formData.finalReviewText,
+                    tsReviewReq: formData.tsReviewReq
+                });
 
                 console.log('Offer sheet posted successfully:', offerSheetResponse);
                 console.log('Review posted successfully:', reviewResponse);
@@ -151,15 +171,15 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
 
     return (
         <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} onSubmit={handleSubmit} />
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm onLineItemsChange={() => {}} />
 
             {/* Review Post & Get */}
-            <SalesInfoForm formData={formData} />
-            <ReviewTextForm formData={formData} />
-            <FinalReviewTextForm formData={formData} />
+            <SalesInfoForm formData={formData} handleFormDataChange={handleFormDataChange} />
+            <ReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
+            <FinalReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
 
 
             <QualityReviewTextForm />

@@ -155,3 +155,16 @@ export const getInquiryByManagers = async (page = 0) => {
     throw error;
   }
 };
+
+// 담당자 inquiry 상세 조회
+export const getInquiryDetailByManagers = async (inquiryId) => {
+  try {
+    const response = await axiosInstance.get(`/managers/inquiries/${inquiryId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching Inquiry:', error);
+    throw error;
+  }
+};
+
