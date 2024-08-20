@@ -89,4 +89,8 @@ public class Collaboration extends BaseEntity {
     public void writeColReply(String reply) {
         this.colReply = reply;
     }
+
+    public void updateFiles(String filePath){
+        this.files = filePath;
+    }
 }

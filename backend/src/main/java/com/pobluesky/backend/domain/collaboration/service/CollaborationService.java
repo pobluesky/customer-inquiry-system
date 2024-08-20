@@ -8,6 +8,8 @@ import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationSumm
 import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
@@ -34,6 +36,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +49,8 @@ public class CollaborationService {
     private final QuestionRepository questionRepository;
 
     private final ManagerRepository managerRepository;
+
+    private final FileService fileService;
 
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
@@ -96,7 +101,8 @@ public class CollaborationService {
     public CollaborationResponseDTO createCollaboration(
         String token,
         Long questionId,
-        CollaborationCreateRequestDTO requestDTO
+        CollaborationCreateRequestDTO requestDTO,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -119,10 +125,17 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
         }
 
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
         Collaboration collaborationEntity = requestDTO.toCollaborationEntity(
             reqManager,
             resManager,
-            question
+            question,
+            filePath
         );
 
         Collaboration savedCollaboration = collaborationRepository.save(collaborationEntity);
@@ -134,7 +147,8 @@ public class CollaborationService {
     public CollaborationDetailResponseDTO updateCollaborationStatus(
         String token,
         Long collaborationId,
-        CollaborationUpdateRequestDTO requestDTO
+        CollaborationUpdateRequestDTO requestDTO,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -158,6 +172,14 @@ public class CollaborationService {
 
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
+
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(filePath);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }
