@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -97,12 +98,14 @@ public class QuestionController {
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @PathVariable Long inquiryId,
-        @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
+        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO,
+        @RequestPart(value = "files", required = false) MultipartFile file) {
         QuestionResponseDTO response = questionService.createInquiryQuestion(
             token,
             userId,
             inquiryId,
-            questionCreateRequestDTO
+            questionCreateRequestDTO,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -114,11 +117,13 @@ public class QuestionController {
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestBody QuestionCreateRequestDTO questionCreateRequestDTO) {
+        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO,
+        @RequestPart(value = "files", required = false) MultipartFile file) {
         QuestionResponseDTO response = questionService.createNotInquiryQuestion(
             token,
             userId,
-            questionCreateRequestDTO
+            questionCreateRequestDTO,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)

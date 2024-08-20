@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.question.service;
 
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,7 @@ public class QuestionService {
 
     private final ManagerRepository managerRepository;
 
+    private final FileService fileService;
 
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
@@ -108,7 +112,8 @@ public class QuestionService {
         String token,
         Long customerId,
         Long inquiryId,
-        QuestionCreateRequestDTO dto
+        QuestionCreateRequestDTO dto,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -122,7 +127,13 @@ public class QuestionService {
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Question question = dto.toQuestionEntity(inquiry, customer);
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Question question = dto.toQuestionEntity(inquiry, customer,filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
@@ -133,7 +144,8 @@ public class QuestionService {
     public QuestionResponseDTO createNotInquiryQuestion(
         String token,
         Long customerId,
-        QuestionCreateRequestDTO dto
+        QuestionCreateRequestDTO dto,
+        MultipartFile file
     ) {
         Long userId = signService.parseToken(token);
 
@@ -143,7 +155,13 @@ public class QuestionService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Question question = dto.toQuestionEntity(null, customer);
+        String filePath = null;
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Question question = dto.toQuestionEntity(null, customer,filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
