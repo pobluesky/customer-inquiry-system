@@ -90,6 +90,7 @@ export const getAnswerByQuestionId = async (questionId, userId, token) => {
     }
 };
 
+// 답변 등록
 export const postAnswerByQuestionId = async (questionId, token, answerTitle, answerContents, answerFiles) => {
     try {
         const response = await fetch(`/api/answers/managers/${questionId}`, {

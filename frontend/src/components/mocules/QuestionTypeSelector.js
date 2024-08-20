@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Type_Selector } from '../../assets/css/Voc.css';
 
 function QuestionTypeSelector() {
+    const [selectedOption, setSelectedOption] = useState('inq');
+
+    const optionSelect = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
     return (
         <div className={Question_Type_Selector}>
             <div>
@@ -21,8 +27,10 @@ function QuestionTypeSelector() {
                         <label>
                             <input
                                 type="radio"
-                                value="option1"
-                                checked={true}
+                                name="inquiryType" // 같은 name으로 설정
+                                value="inq"
+                                checked={selectedOption === 'inq'}
+                                onChange={optionSelect}
                             />
                         </label>
                     </div>
@@ -30,14 +38,26 @@ function QuestionTypeSelector() {
 
                     <div className="radio">
                         <label>
-                            <input type="radio" value="option2" />
+                            <input
+                                type="radio"
+                                name="inquiryType" // 같은 name으로 설정
+                                value="site"
+                                checked={selectedOption === 'site'}
+                                onChange={optionSelect}
+                            />
                         </label>
                     </div>
                     <div>사이트 이용 문의</div>
 
                     <div className="radio">
                         <label>
-                            <input type="radio" value="option3" />
+                            <input
+                                type="radio"
+                                name="inquiryType" // 같은 name으로 설정
+                                value="etc"
+                                checked={selectedOption === 'etc'}
+                                onChange={optionSelect}
+                            />
                         </label>
                     </div>
                     <div>기타 문의</div>

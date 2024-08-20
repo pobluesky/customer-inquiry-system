@@ -47,6 +47,7 @@ function QuestionCardList({
     const [answerCount, setAnswerCount] = useState({});
     const [openCard, setOpenCard] = useState(false);
     const [questionId, setQuestionId] = useState(0);
+    const [vocNo, setVocNo] = useState(0);
     const [status, setStatus] = useState('READY');
 
     const closeModal = () => {
@@ -207,11 +208,16 @@ function QuestionCardList({
                                 key={inqIdx}
                                 onClick={() => {
                                     setQuestionId(inq.questionId);
+                                    setVocNo(
+                                        getCookie('userId') +
+                                            inq.questionId +
+                                            calDateNo(inq.questionCreatedAt),
+                                    );
                                     setStatus(inq.status);
                                     setOpenCard(true);
                                 }}
                                 status={inq.status}
-                                vocNo={
+                                questionNo={
                                     getCookie('userId') +
                                     inq.questionId +
                                     calDateNo(inq.questionCreatedAt)
@@ -240,11 +246,16 @@ function QuestionCardList({
                                 key={siteIdx}
                                 onClick={() => {
                                     setQuestionId(site.questionId);
+                                    setVocNo(
+                                        getCookie('userId') +
+                                            site.questionId +
+                                            calDateNo(site.questionCreatedAt),
+                                    );
                                     setStatus(site.status);
                                     setOpenCard(true);
                                 }}
                                 status={site.status}
-                                vocNo={
+                                questionNo={
                                     getCookie('userId') +
                                     site.questionId +
                                     calDateNo(site.questionCreatedAt)
@@ -273,11 +284,16 @@ function QuestionCardList({
                                 key={etcIdx}
                                 onClick={() => {
                                     setQuestionId(etc.questionId);
+                                    setVocNo(
+                                        getCookie('userId') +
+                                            etc.questionId +
+                                            calDateNo(etc.questionCreatedAt),
+                                    );
                                     setStatus(etc.status);
                                     setOpenCard(true);
                                 }}
                                 status={etc.status}
-                                vocNo={
+                                questionNo={
                                     getCookie('userId') +
                                     etc.questionId +
                                     calDateNo(etc.questionCreatedAt)
@@ -302,6 +318,7 @@ function QuestionCardList({
             {openCard && (
                 <QuestionModal
                     questionId={questionId}
+                    vocNo={vocNo}
                     status={status}
                     setStatus={setStatus}
                     onClose={closeModal}

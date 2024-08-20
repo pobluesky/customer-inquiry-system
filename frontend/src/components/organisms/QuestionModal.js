@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dompurify from 'dompurify';
 import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
@@ -37,7 +38,9 @@ import {
     postAnswerByQuestionId,
 } from '../../apis/api/answer';
 
-function QuestionModal({ questionId, status, setStatus, onClose }) {
+function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
+    const sanitizer = dompurify.sanitize;
+
     const thisRole = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
@@ -47,6 +50,9 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
     const [answerTitle, setAnswerTitle] = useState('');
     const [answerContents, setAnswerContents] = useState('');
     const [answerFiles, setAnswerFiles] = useState('기본 파일명');
+
+    const [questionDetail, setQuestionDetail] = useState([]);
+    const [answerDetail, setAnswerDetail] = useState([]);
 
     const answerTitleChange = (e) => {
         setAnswerTitle(e.target.value);
@@ -76,9 +82,6 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
             setAnswering(false);
         }
     };
-
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
 
     const fetchGetQuestionDetail =
         getCookie('userRole') === 'CUSTOMER'
@@ -191,7 +194,7 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                                 name={'VoC 문의 번호'}
                                 textColor={'#6e6e6e'}
                             />
-                            <Text name={'000000'} fontWeight={'600'} />
+                            <Text name={vocNo} fontWeight={'600'} />
                         </>
                     )}
                 </div>
@@ -213,7 +216,8 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                         <div>고객사 첨부파일</div>
                         <div style={filesEllipsis}>{questionDetail.files}</div>
                     </div>
-                    <div>{questionDetail.contents}</div>
+                    {/* <div>{questionDetail.contents}</div> */}
+                    <div dangerouslySetInnerHTML={{ __html: sanitizer(`${questionDetail.contents}`) }} />
                 </div>
 
                 {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면

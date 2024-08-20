@@ -137,7 +137,7 @@
 /* 문의 유형 + 라디오 버튼 */
 .Question_Type_Selector > div > div:nth-child(2) {
     display: grid;
-    grid-template-columns: 228px 48px 108px 48px 164px 48px 108px;
+    grid-template-columns: 200px 48px 108px 48px 164px 48px 108px;
     /* align-items: center; */
     font-size: 20px;
     font-weight: 600;
@@ -168,24 +168,24 @@
 }
 
 /******************************************************************/
-/* 질문 제목 및 내용 출력 그룹 **************************************/
+/* 질문 제목 및 내용 입력 그룹 **************************************/
 /******************************************************************/
-.Question_Content_Container {
+.Question_Input {
     width: 1320px;
-    height: 600px;
-    margin: 36px auto 0 auto;
+    height: 580px;
+    margin: 36px auto 72px auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
 }
 
-.Question_Content_Container > div:first-child {
+.Question_Input > div:first-child {
     display: grid;
-    grid-template-rows: 72px 64px 176px 84px 64px 48px;
+    grid-template-rows: 72px 56px 176px 84px 64px 48px;
     margin: 36px 0 0 36px;
 }
 
 /* 성명, 이메일 */
-.Question_Content_Container > div > div:nth-child(1) {
+.Question_Input > div > div:nth-child(1) {
     display: grid;
     grid-template-columns: 180px 228px 180px 480px;
     align-items: center;
@@ -195,17 +195,17 @@
 }
 
 /* 성명, 이메일 */
-.Question_Content_Container > div > div:nth-child(1) > div:nth-child(even) {
+.Question_Input > div > div:nth-child(1) > div:nth-child(even) {
     color: #03507d;
 }
 
 /* 성명 + 이메일 + 문의 작성 Margin */
-.Question_Content_Container > div > div {
+.Question_Input > div > div {
     margin: 0 0 0 48px;
 }
 
 /* 첨부파일, 파일 추가, 파일 삭제 */
-.Question_Content_Container > div > div:nth-child(4) {
+.Question_Input > div > div:nth-child(4) {
     display: grid;
     grid-template-columns: 120px 96px 96px 600px;
     align-items: center;
@@ -215,19 +215,19 @@
 }
 
 /* 첨부파일 안내 문구 */
-.Question_Content_Container > div > div:nth-child(4) > div:nth-child(4) {
+.Question_Input > div > div:nth-child(4) > div:nth-child(4) {
     font-size: 12px;
     font-weight: 400;
 }
 
 /* 첨부파일 안내 문구 */
-.Question_Content_Container > div > div:nth-child(5) {
+.Question_Input > div > div:nth-child(5) {
     font-size: 12px;
     font-weight: 400;
 }
 
 /* 첨부파일 박스 */
-.Question_Content_Container > div > div:nth-child(5) {
+.Question_Input > div > div:nth-child(5) {
     width: 1144px;
     height: 36px;
     align-content: center;
@@ -236,12 +236,12 @@
 }
 
 /* 첨부파일명 */
-.Question_Content_Container > div > div:nth-child(5) > div {
+.Question_Input > div > div:nth-child(5) > div {
     text-align: center;
 }
 
 /* 문의 등록 버튼 */
-.Question_Content_Container > div > div:nth-child(6) {
+.Question_Input > div > div:nth-child(6) {
     margin: 0 84px 0 48px;
     text-align: center;
 }
