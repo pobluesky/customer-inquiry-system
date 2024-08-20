@@ -28,7 +28,7 @@ const BasicInfoForm = ({formData}) => {
     const [isChecked, setCheck] = React.useState(true);
 
     return (
-      <div className={Container} style={{ marginTop: "-2vh" }}>
+      <div className={Container} style={{ marginTop: "2vh" }}>
         <div className={Sheet}>
           <ToggleBar title={"기본정보"} isChecked={isChecked} setCheck={setCheck} />
           {isChecked ? (
