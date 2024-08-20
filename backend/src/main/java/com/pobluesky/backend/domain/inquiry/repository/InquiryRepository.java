@@ -13,4 +13,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
 
     @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.customer.userId = :userId AND i.isActivated = true")
     Optional<Inquiry> findByCustomer_UserIdAndInquiryId(Long userId, Long inquiryId);
+
+    @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.isActivated = true")
+    Optional<Inquiry> findActiveInquiryByInquiryId(Long inquiryId);
 }

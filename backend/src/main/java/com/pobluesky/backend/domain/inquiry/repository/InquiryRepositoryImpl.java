@@ -14,9 +14,12 @@ import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.time.LocalDate;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -69,8 +72,13 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .fetch();
 
         JPAQuery<Inquiry> countQuery = getCountQueryForCustomer(
-            userId, progress, productType,
-            customerName, inquiryType, startDate, endDate
+            userId,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
@@ -112,17 +120,25 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .fetch();
 
         JPAQuery<Inquiry> countQuery = getCountQueryForManager(
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
     private JPAQuery<Inquiry> getCountQueryForCustomer(
-        Long userId, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate
+        Long userId,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         return queryFactory
             .selectFrom(inquiry)

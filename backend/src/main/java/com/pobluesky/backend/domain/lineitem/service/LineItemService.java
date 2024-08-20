@@ -179,7 +179,7 @@ public class LineItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<LineItemResponseDTO> getLineItemsByInquiry(Long inquiryId) {
+    public List<LineItemResponseDTO> getLineItemsByInquiryForCustomer(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
