@@ -30,8 +30,8 @@ public record InquiryResponseDTO(
     String additionalRequests,
     String files,
     String responseDeadline,
-    Boolean isActivated,
-    List<LineItemResponseDTO> lineItemResponseDTOs
+    List<LineItemResponseDTO> lineItemResponseDTOs,
+    Boolean isActivated
 ) {
 
     public static InquiryResponseDTO of(
