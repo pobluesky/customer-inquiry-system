@@ -7,6 +7,8 @@ import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Department;
+import java.util.List;
+import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -22,6 +24,6 @@ public record InquiryUpdateRequestDTO(
     String additionalRequests,
     MultipartFile files,
     String responseDeadline,
-    String elapsedDays
+    List<Map<String, Object>> lineItemRequestDTOs
 ) {
 }

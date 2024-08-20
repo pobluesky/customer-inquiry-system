@@ -6,6 +6,10 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public record InquiryCreateRequestDTO(
@@ -21,10 +25,10 @@ public record InquiryCreateRequestDTO(
     String additionalRequests,
     MultipartFile files,
     String responseDeadline,
-    String elapsedDays,
-    Boolean isActivated
+    List<Map<String, Object>> lineItemRequestDTOs
 ) {
     public Inquiry toInquiryEntity(String filePath) {
+
         return Inquiry.builder()
             .country(country)
             .corporate(corporate)
@@ -38,8 +42,6 @@ public record InquiryCreateRequestDTO(
             .additionalRequests(additionalRequests)
             .files(filePath)
             .responseDeadline(responseDeadline)
-            .elapsedDays(elapsedDays)
-            .isActivated(true)
             .build();
     }
 }
