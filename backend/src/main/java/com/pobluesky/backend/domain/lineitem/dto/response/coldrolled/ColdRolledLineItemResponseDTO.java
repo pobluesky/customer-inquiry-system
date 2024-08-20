@@ -45,13 +45,11 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
-    public static ColdRolledLineItemResponseDTO of(ColdRolledLineItem coldRolledLineItem) {
+    public static ColdRolledLineItemResponseDTO from(ColdRolledLineItem coldRolledLineItem) {
 
         return ColdRolledLineItemResponseDTO.builder()
             .lineItemId(coldRolledLineItem.getLineItemId())
             .inquiryId(coldRolledLineItem.getInquiry().getInquiryId())
-            .userId(coldRolledLineItem.getCustomer().getUserId())
-            .CustomerName(coldRolledLineItem.getCustomer().getCustomerName())
             .kind(coldRolledLineItem.getKind())
             .inqName(coldRolledLineItem.getInqName())
             .orderCategory(coldRolledLineItem.getOrderCategory())

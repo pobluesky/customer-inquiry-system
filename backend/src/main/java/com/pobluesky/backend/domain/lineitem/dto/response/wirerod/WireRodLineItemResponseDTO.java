@@ -42,13 +42,11 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
-    public static WireRodLineItemResponseDTO of(WireRodLineItem wireRodLineItem) {
+    public static WireRodLineItemResponseDTO from(WireRodLineItem wireRodLineItem) {
 
         return WireRodLineItemResponseDTO.builder()
             .lineItemId(wireRodLineItem.getLineItemId())
             .inquiryId(wireRodLineItem.getInquiry().getInquiryId())
-            .userId(wireRodLineItem.getCustomer().getUserId())
-            .customerName(wireRodLineItem.getCustomer().getCustomerName())
             .kind(wireRodLineItem.getKind())
             .orderCategory(wireRodLineItem.getOrderCategory())
             .diameter(wireRodLineItem.getDiameter())
