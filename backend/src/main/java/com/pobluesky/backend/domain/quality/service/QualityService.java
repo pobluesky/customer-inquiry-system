@@ -8,19 +8,15 @@ import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.entity.Quality;
 import com.pobluesky.backend.domain.quality.repository.QualityRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
 import com.pobluesky.backend.domain.user.entity.UserRole;
-import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,8 +33,6 @@ public class QualityService {
     private final QualityRepository qualityRepository;
 
     private final InquiryRepository inquiryRepository;
-
-    private final CustomerRepository customerRepository;
 
     private final ManagerRepository managerRepository;
 
@@ -116,5 +110,4 @@ public class QualityService {
 
         qualityRepository.deleteById(qualityId);
     }
-
 }
