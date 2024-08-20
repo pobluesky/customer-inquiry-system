@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 
 @Builder
 @Getter
@@ -18,10 +17,6 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
     private Long lineItemId;
 
     private Long inquiryId;
-
-    private Long userId;
-
-    private String CustomerName;
 
     private Kind kind;
 

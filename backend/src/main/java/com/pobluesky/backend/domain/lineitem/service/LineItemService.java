@@ -84,6 +84,7 @@ public class LineItemService {
 
                     lineItemResponseDTOs.add(CarLineItemResponseDTO.from(savedCarLineItem));
                 }
+
                 yield lineItemResponseDTOs;
             }
 
@@ -104,6 +105,7 @@ public class LineItemService {
                         .add(ColdRolledLineItemResponseDTO
                             .from(savedColdRolledLineItem));
                 }
+
                 yield lineItemResponseDTOs;
             }
 
@@ -124,6 +126,7 @@ public class LineItemService {
                         .add(HotRolledLineItemResponseDTO
                             .from(savedHotRolledLineitem));
                 }
+
                 yield lineItemResponseDTOs;
             }
 
@@ -144,6 +147,7 @@ public class LineItemService {
                         .add(WireRodLineItemResponseDTO
                             .from(savedWireRodLineItem));
                 }
+
                 yield lineItemResponseDTOs;
             }
 
@@ -164,6 +168,7 @@ public class LineItemService {
                         .add(ThickPlateLineItemResponseDTO
                             .from(savedThickPlateLineItem));
                 }
+
                 yield lineItemResponseDTOs;
             }
 
@@ -180,43 +185,54 @@ public class LineItemService {
 
          ProductType productType = inquiry.getProductType();
 
-        switch (productType) {
-            case CAR:
-                List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
+        return switch (productType) {
+            case CAR -> {
+                List<CarLineItem> carLineItemList =
+                    carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
 
-                return carLineItemList.stream()
+                yield carLineItemList.stream()
                     .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
+            }
 
-            case COLD_ROLLED:
-                List<ColdRolledLineItem> coldRolledLineItemList = coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
+            case COLD_ROLLED -> {
+                List<ColdRolledLineItem> coldRolledLineItemList =
+                    coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
 
-                return coldRolledLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                yield coldRolledLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
+            }
 
-            case HOT_ROLLED:
-                List<HotRolledLineItem> hotRolledLineItemList = hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
+            case HOT_ROLLED -> {
+                List<HotRolledLineItem> hotRolledLineItemList =
+                    hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
 
-                return hotRolledLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                yield hotRolledLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
+            }
 
-            case WIRE_ROD:
-                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(inquiry);
-                return wireRodLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
-                    .collect(Collectors.toList());
+            case WIRE_ROD -> {
+                List<WireRodLineItem> wireRodLineItemList =
+                    wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(inquiry);
 
-            case THICK_PLATE:
-                List<ThickPlateLineItem> thickPlateLineItemList = thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(inquiry);
-                return thickPlateLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(),lineItem))
+                yield wireRodLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
-            // 다른 제품 유형 처리
-            default:
-                throw new IllegalArgumentException("Unknown product type: " + productType);
-        }
+            }
+
+            case THICK_PLATE -> {
+                List<ThickPlateLineItem> thickPlateLineItemList =
+                    thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(inquiry);
+
+                yield thickPlateLineItemList.stream()
+                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
+                    .collect(Collectors.toList());
+            }
+
+            default -> throw new IllegalArgumentException("Unknown product type: " + productType);
+        };
     }
 
     @Transactional(readOnly = true)
@@ -228,39 +244,41 @@ public class LineItemService {
 
         switch (productType) {
             case CAR:
-                List<CarLineItem> carLineItemList = carLineItemRepository.findActiveCarLineItemByInquiry(
-                    inquiry);
+                List<CarLineItem> carLineItemList =
+                    carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
 
                 return carLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
 
             case COLD_ROLLED:
-                List<ColdRolledLineItem> coldRolledLineItemList = coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(
-                    inquiry);
+                List<ColdRolledLineItem> coldRolledLineItemList =
+                    coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
 
                 return coldRolledLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(), lineItem))
                     .collect(Collectors.toList());
 
             case HOT_ROLLED:
-                List<HotRolledLineItem> hotRolledLineItemList = hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(
-                    inquiry);
+                List<HotRolledLineItem> hotRolledLineItemList =
+                    hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
 
                 return hotRolledLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
 
             case WIRE_ROD:
-                List<WireRodLineItem> wireRodLineItemList = wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(
-                    inquiry);
+                List<WireRodLineItem> wireRodLineItemList =
+                    wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(inquiry);
+
                 return wireRodLineItemList.stream()
                     .map(lineItem -> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
 
             case THICK_PLATE:
-                List<ThickPlateLineItem> thickPlateLineItemList = thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(
-                    inquiry);
+                List<ThickPlateLineItem> thickPlateLineItemList =
+                    thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(inquiry);
+
                 return thickPlateLineItemList.stream()
                     .map(lineItem-> toFullResponseDTO(inquiry.getProductType(),lineItem))
                     .collect(Collectors.toList());
@@ -269,6 +287,7 @@ public class LineItemService {
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
     }
+
 
     @Transactional
     public void deleteLineItemsByInquiry(Inquiry inquiry) {
@@ -288,7 +307,6 @@ public class LineItemService {
 
                     carLineItem.deleteLineItem();
                 }
-
                 break;
 
             case COLD_ROLLED:
@@ -304,7 +322,6 @@ public class LineItemService {
 
                     coldRolledLineItem.deleteLineItem();
                 }
-
                 break;
 
             case HOT_ROLLED:
@@ -320,7 +337,6 @@ public class LineItemService {
 
                     hotRolledLineItem.deleteLineItem();
                 }
-
                 break;
 
             case WIRE_ROD:
@@ -336,7 +352,6 @@ public class LineItemService {
 
                     wireRodLineItem.deleteLineItem();
                 }
-
                 break;
 
             case THICK_PLATE:
@@ -360,36 +375,35 @@ public class LineItemService {
     }
 
     public LineItemResponseDTO toResponseDTO(ProductType productType, LineItem lineItem) {
-        switch (productType) {
-            case CAR :
+
+        return switch (productType) {
+            case CAR -> {
                 CarLineItem carLineItem = (CarLineItem) lineItem;
+                yield CarLineItemSummaryResponseDTO.of(carLineItem);
+            }
 
-                return CarLineItemSummaryResponseDTO.of(carLineItem);
-
-            case COLD_ROLLED:
+            case COLD_ROLLED -> {
                 ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
+                yield ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
+            }
 
-                return ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
-
-            case HOT_ROLLED:
+            case HOT_ROLLED -> {
                 HotRolledLineItem hotRolledLineItem = (HotRolledLineItem) lineItem;
+                yield HotRolledLineItemSummaryResponseDTO.of(hotRolledLineItem);
+            }
 
-                return HotRolledLineItemSummaryResponseDTO.of(hotRolledLineItem);
-
-            case WIRE_ROD:
+            case WIRE_ROD -> {
                 WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
+                yield WireRodLineItemSummaryResponseDTO.of(wireRodLineItem);
+            }
 
-                return WireRodLineItemSummaryResponseDTO.of(wireRodLineItem);
-
-            case THICK_PLATE:
+            case THICK_PLATE -> {
                 ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
+                yield ThickPlateLineItemSummaryResponseDTO.of(thickPlateLineItem);
+            }
 
-                return ThickPlateLineItemSummaryResponseDTO.of(thickPlateLineItem);
-
-            // 다른 제품 유형 처리
-            default:
-                throw new CommonException(ErrorCode.INVALID_REQUEST);
-        }
+            default -> throw new CommonException(ErrorCode.INVALID_REQUEST);
+        };
     }
 
     public LineItemResponseDTO toFullResponseDTO(ProductType productType, LineItem lineItem) {

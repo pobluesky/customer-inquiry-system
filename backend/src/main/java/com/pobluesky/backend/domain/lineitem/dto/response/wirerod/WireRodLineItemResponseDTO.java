@@ -18,10 +18,6 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long userId;
-
-    private String customerName;
-
     private Kind kind;
 
     private InqName inqName;
