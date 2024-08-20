@@ -118,13 +118,6 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
-        if(collaborationRepository
-            .findByRequestManagerAndResponseManager(reqManager, resManager)
-            .isPresent()
-        ) {
-            throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
-        }
-
         String filePath = null;
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
