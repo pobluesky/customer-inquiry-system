@@ -7,6 +7,8 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public record InquiryCreateRequestDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    MultipartFile files,
+    @Schema(hidden = true) MultipartFile files,
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {

@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,12 +80,14 @@ public class CollaborationController {
     public ResponseEntity<JsonResult> createCollaboration(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
-        @RequestBody CollaborationCreateRequestDTO requestDTO
+        @RequestPart("collaboration") CollaborationCreateRequestDTO requestDTO,
+        @RequestPart(value = "files", required = false) MultipartFile file
     ) {
         CollaborationResponseDTO response = collaborationService.createCollaboration(
             token,
             questionId,
-            requestDTO
+            requestDTO,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -115,12 +119,14 @@ public class CollaborationController {
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId,
-        @RequestBody CollaborationUpdateRequestDTO requestDTO
+        @RequestPart("collaboration") CollaborationUpdateRequestDTO requestDTO,
+        @RequestPart(value = "files", required = false) MultipartFile file
     ) {
         CollaborationDetailResponseDTO response = collaborationService.updateCollaborationStatus(
             token,
             collaborationId,
-            requestDTO
+            requestDTO,
+            file
         );
 
         return ResponseEntity.status(HttpStatus.OK)
