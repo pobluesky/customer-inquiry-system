@@ -27,7 +27,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{reviewId}")
-    @Operation(summary = "1차 검토 조회", description = "1차 검토는 담당자만 조회가 가능하다.")
+    @Operation(summary = "1차 검토 조회")
     public ResponseEntity<JsonResult> getReviewById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long reviewId
