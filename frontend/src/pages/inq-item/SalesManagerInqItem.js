@@ -6,15 +6,15 @@ import {
     AdditionalRequestForm,
     BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
     QualityReviewTextForm, ReviewTextForm, FileFormItem,
-    OfferSheet
+    Offersheet
 } from "../../components/organisms/inquiry-form";
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews } from '../../apis/api/review';
-import offersheet from '../../components/organisms/inquiry-form/OfferSheet';
-import { postOfferSheet } from '../../apis/api/offersheet';
+import offersheet from '../../components/organisms/inquiry-form/Offersheet';
+import { postOffersheet } from '../../apis/api/offersheet';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -23,7 +23,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
 
-    const [offerSheetData, setOfferSheetData] = useState({
+    const [offerSheetData, setOffersheetData] = useState({
         priceTerms: '',
         paymentTerms: '',
         shipment: '',
@@ -135,7 +135,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const handleSubmit = async () => {
         if (formData.inquiryId) {
             try {
-                const response = await postOfferSheet(customerId, offerSheetData);
+                const response = await postOffersheet(customerId, offerSheetData);
                 console.log('Offer sheet posted successfully:', response);
             } catch (error) {
                 console.error('Error posting offer sheet:', error);
@@ -153,7 +153,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <AdditionalRequestForm formData={formData} />
             <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />
-            <OfferSheet offerSheet={offerSheetData} setOfferSheet={setOfferSheetData} />
+            <Offersheet offerSheet={offerSheetData} setOffersheet={setOffersheetData} />
             <QualityReviewTextForm />
             <FinalReviewTextForm formData={formData} />
         </div>

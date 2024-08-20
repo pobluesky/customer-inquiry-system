@@ -9,7 +9,7 @@ import {
   AdditionalRequestForm,
   ReviewTextForm,
   FileForm,
-  OfferSheet,
+  Offersheet,
   QualityReviewTextForm,
   FinalReviewTextForm
 } from '../../components/organisms/inquiry-form';
@@ -33,7 +33,7 @@ function InqForm() {
           <FileForm fileForm={"협업첨부파일"}/>
           <FileForm fileForm={"첨부파일"}/>
           <FileForm fileForm={"파일첨부"}/>
-          <OfferSheet />
+          <Offersheet />
           <QualityReviewTextForm />
           <FinalReviewTextForm />
         </div>

@@ -1,6 +1,6 @@
 import axiosInstance from '../utils/axiosInstance'
 
-export const postOfferSheet = async (inquiryId, offerSheetData) => {
+export const postOffersheet = async (inquiryId, offerSheetData) => {
     try {
         const response = await axiosInstance.post(
             `/offersheet/${inquiryId}`,

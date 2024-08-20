@@ -6,7 +6,7 @@ import {
     AdditionalRequestForm,
     BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
     QualityReviewTextForm, ReviewTextForm, FileFormItem,
-    OfferSheet
+    Offersheet
 } from "../../components/organisms/inquiry-form";
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
@@ -128,7 +128,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             <AdditionalRequestForm formData={formData} />
             <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />
-            <OfferSheet />
+            <Offersheet />
             <QualityReviewTextForm />
             <FinalReviewTextForm formData={formData} />
         </div>
