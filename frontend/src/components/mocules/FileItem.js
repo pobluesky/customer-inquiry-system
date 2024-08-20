@@ -1,33 +1,22 @@
 import React from 'react';
 import { _FileItem, _FileName } from "../../assets/css/Form.css";
+import { useParams } from 'react-router-dom';
 
 const FileItem = ({ files }) => {
-
-    const extractFileNameFromUUID = (url) => {
-        // URL이 문자열인지 확인
-        if (typeof url !== 'string') {
-            return "파일 이름 없음";
-        }
-        // UUID는 36자, 파일 이름은 UUID 뒤에 위치
-        const match = url.match(/([a-zA-Z0-9-]{36})([a-zA-Z0-9_.-]+\.[a-zA-Z]{3,4})$/);
-        return match ? match[2] : "파일 이름 없음";
-    };
+    console.log(files)
+    const { id } = useParams();
 
     return (
         <div className={_FileItem}>
-            {files && files.length > 0 ? (
+            {files.length === 1 ? (
                 files.map((file, index) => {
-                    const fileName = extractFileNameFromUUID(file);
                     return (
-                        <a
+                        <div
                             key={index}
-                            href={files[0]}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className={_FileName}
                         >
-                            {fileName}
-                        </a>
+                            {file.name}
+                        </div>
                     );
                 })
             ) : (

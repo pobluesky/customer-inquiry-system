@@ -71,7 +71,7 @@ const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
                         <div>첨부파일명</div>
                       </div>
                       {/* 파일 목록 */}
-                      <FileItem files={files ? [files] : []} />
+                      <FileItem inquiryId={formData.inquiryId} files={files ? [files] : []} />
                     </div>
                 ) : (
                     <div>

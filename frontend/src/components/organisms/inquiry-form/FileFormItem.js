@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../assets/css/Form.css";
 import ToggleBar from "../../mocules/ToggleBar";
-import Button from "../../atoms/Button";
-import FileItem from "../../mocules/FileItem";
+import FileGetItem from '../../mocules/FileGetItem';
 
 const FileFormItem = ({ fileForm, formData }) => {
     const [isChecked, setCheck] = useState(true);
@@ -22,7 +21,7 @@ const FileFormItem = ({ fileForm, formData }) => {
                             <div>진행단계</div>
                             <div>첨부파일명</div>
                         </div>
-                        <FileItem files={[formData.files]} />
+                        <FileGetItem files={[formData.files]} />
                     </div>
                 )}
             </div>
