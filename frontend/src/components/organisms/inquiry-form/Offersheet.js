@@ -14,6 +14,64 @@ function Offersheet({ inquiryId, addTask }) {
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
+    /*
+    const fetchOffersheet = async () => {
+        try {
+            const response = await fetch(`/api/offersheet/${inquiryId}`, {
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: null,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const json = await response.json();
+
+            if (json.result !== 'success') {
+                throw new Error(`API request Error ${json.message}`);
+            } else {
+                setOffersheet(json.data);
+                console.log(json.data);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    */
+
+    /*
+    const addOffersheet = async (offersheet) => {
+        try {
+            const response = await fetch(`/api/offersheet/${inquiryId}`, {
+                method: 'post',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(offersheet),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const json = await response.json();
+
+            if (json.result !== 'success') {
+                throw new Error(`API request Error ${json.message}`);
+            }
+            console.log(json.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    */
+
     const [rows, setRows] = useState([
         { id: Date.now(), items: Array(8).fill('') },
     ]);
