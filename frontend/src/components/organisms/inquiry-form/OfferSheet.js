@@ -8,80 +8,24 @@ import Button from '../../atoms/Button';
 import { Container, Sheet, Opend, _Category, Detail, buttonWrapper } from '../../../assets/css/Form.css';
 import ToggleBar from "../../mocules/ToggleBar";
 
-function Offersheet({ inquiryId, addTask }) {
+function OfferSheet({ offerSheet, setOfferSheet }) {
     const [originalText, setOriginalText] = useState('');
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
-    /*
-    const fetchOffersheet = async () => {
-        try {
-            const response = await fetch(`/api/offersheet/${inquiryId}`, {
-                method: 'get',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: null,
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
-
-            const json = await response.json();
-
-            if (json.result !== 'success') {
-                throw new Error(`API request Error ${json.message}`);
-            } else {
-                setOffersheet(json.data);
-                console.log(json.data);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    */
-
-    /*
-    const addOffersheet = async (offersheet) => {
-        try {
-            const response = await fetch(`/api/offersheet/${inquiryId}`, {
-                method: 'post',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(offersheet),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
-
-            const json = await response.json();
-
-            if (json.result !== 'success') {
-                throw new Error(`API request Error ${json.message}`);
-            }
-            console.log(json.data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    */
-
-    const [rows, setRows] = useState([{ id: Date.now(), items: Array(8).fill('') }]);
+    const [rows, setRows] = useState(offerSheet?.receipts || []);
     const [selectedRows, setSelectedRows] = useState([]);
 
     const addRow = () => {
-        const newRow = { id: Date.now(), items: Array(8).fill('') };
+        const newRow = { id: Date.now(), product: '', specification: '', surfaceFinish: '', usage: '', thickness: '', diameter: '', width: '', quantity: '', price: '', unitMinWeight: '', unitMaxWeight: '', edge: '' };
         setRows([...rows, newRow]);
+        updateOfferSheet([...rows, newRow]);
     };
 
     const deleteRows = () => {
         const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
         setRows(remainingRows);
+        updateOfferSheet(remainingRows);
         setSelectedRows([]);
     };
 
@@ -90,7 +34,9 @@ function Offersheet({ inquiryId, addTask }) {
             const rowToCopy = rows.find(row => row.id === id);
             return { ...rowToCopy, id: Date.now() + Math.random() }; // Create new ID
         });
-        setRows([...rows, ...copiedRows]);
+        const newRows = [...rows, ...copiedRows];
+        setRows(newRows);
+        updateOfferSheet(newRows);
         setSelectedRows([]);
     };
 
@@ -106,18 +52,25 @@ function Offersheet({ inquiryId, addTask }) {
         setRows(prevRows =>
             prevRows.map(row =>
                 row.id === rowId
-                    ? { ...row, items: { ...row.items, [field]: value } }
+                    ? { ...row, [field]: value }
                     : row
             )
         );
+        updateOfferSheet(rows);
     };
 
+    const updateOfferSheet = (newRows) => {
+        setOfferSheet(prevState => ({
+            ...prevState,
+            receipts: newRows
+        }));
+    };
 
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
             <div className={Sheet}>
               {/* 토글 바 */}
-              <ToggleBar title={"Offersheet"} isChecked={isChecked} setCheck={setCheck} />
+              <ToggleBar title={"OfferSheet"} isChecked={isChecked} setCheck={setCheck} />
 
               {/* 토글 클릭 후 오퍼시트 열림 */}
                 {isChecked && (
@@ -187,4 +140,4 @@ function Offersheet({ inquiryId, addTask }) {
     );
 }
 
-export default Offersheet;
+export default OfferSheet;

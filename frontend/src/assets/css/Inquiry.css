@@ -24,6 +24,8 @@
   display: grid;
   grid-template-rows: 1fr;
   padding: 10px 80px 30px 80px;
+  color: inherit;
+  cursor: pointer;
 }
 
 ._InquiryBox {
@@ -32,6 +34,10 @@
   justify-content: center;
   border-radius: 20px;
   border: 1px solid #C1C1C1;
+}
+
+._InquiryBox:hover {
+  background-color: #cbefff;
 }
 
 ._Inquiry {

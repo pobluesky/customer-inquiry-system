@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/mocules/RequestBar';
-import Offersheet from '../../components/organisms/inquiry-form/Offersheet';
+import OfferSheet from '../../components/organisms/inquiry-form/OfferSheet';
 import '../../assets/css/Form.css';
 import {
   AdditionalRequestForm,
@@ -27,7 +27,7 @@ function InqItem() {
           {/*<FileForm fileForm={"협업첨부파일"}/>*/}
           {/*<FileForm fileForm={"첨부파일"}/>*/}
           {/*<FileForm fileForm={"파일첨부"}/>*/}
-          {/*<Offersheet inquiryId={1} />*/}
+          {/*<OfferSheet inquiryId={1} />*/}
           <QualityReviewTextForm />
           <FinalReviewTextForm />
         </div>

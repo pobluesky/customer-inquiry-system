@@ -4,7 +4,7 @@ import FileForm from "./FileForm";
 import FinalReviewTextForm from "./FinalReviewTextForm";
 import InquiryHistoryForm from "./InquiryHistoryForm";
 import InquiryNewForm from "./InquiryNewForm";
-import Offersheet from "./Offersheet";
+import OfferSheet from "./OfferSheet";
 import QualityReviewTextForm from "./QualityReviewTextForm";
 import ReviewTextForm from "./ReviewTextForm";
 import SalesInfoForm from "./SalesInfoForm";
@@ -18,7 +18,7 @@ export {
   FinalReviewTextForm,
   InquiryHistoryForm,
   InquiryNewForm,
-  Offersheet,
+  OfferSheet,
   QualityReviewTextForm,
   ReviewTextForm,
   SalesInfoForm

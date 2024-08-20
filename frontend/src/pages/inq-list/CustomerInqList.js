@@ -56,8 +56,7 @@ const CustomerInqList = () => {
                         <Link
                             to={`/inq-item/customer/${data.inquiryId}`}
                             key={data.inquiryId}
-                            className={_Link}
-                            style={{ paddingBottom: "20px" }}
+                            style={{ paddingBottom: "20px", textDecoration: "none" }}
                         >
                             <InquiryItem inquiryData={data} />
                         </Link>
