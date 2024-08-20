@@ -20,7 +20,7 @@ body {
     border: solid 1px #c1c1c1;
     border-radius: 8px;
     outline: none;
-    padding: 2px 4px 2px 12px;
+    padding: 0 8px 0 8px;
 }
 
 .DatepickerPeriod {

@@ -29,6 +29,7 @@ const VocTag = ({ category }) => (
 );
 
 function QuestionCardList({
+    setSearchedItems,
     setTotalItems,
     setReadyItems,
     setCompletedItems,
@@ -36,6 +37,7 @@ function QuestionCardList({
     startDate,
     endDate,
     customerName,
+    questionNo,
     timeFilter,
     statusFilter,
 }) {
@@ -65,14 +67,14 @@ function QuestionCardList({
             args += `${args ? '&' : ''}status=${statusFilter}`;
         }
         setFilterArgs(args);
-    }, [title, startDate, endDate, timeFilter, statusFilter]);
+    }, [questionNo, title, startDate, endDate, timeFilter, statusFilter]);
 
     const fetchGetQuestions =
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getQuestionByUserId(
                       getCookie('userId'),
-                      'sortBy=LATEST',
+                      '',
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -83,7 +85,7 @@ function QuestionCardList({
               }
             : async () => {
                   const result = await getAllQuestion(
-                      'sortBy=LATEST',
+                      '',
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -147,18 +149,9 @@ function QuestionCardList({
         fetchGetAnswers();
     }, [filterArgs, openCard]);
 
-    // 게시판 전체 질문, 답변 대기 질문, 답변 완료 질문 현황 계산 (고정되도록 수정 필요)
-    useEffect(() => {
-        const q = questionCount.totalQuestionCount;
-        const a = answerCount.length;
-        setTotalItems(q);
-        setReadyItems(q - a);
-        setCompletedItems(a);
-    }, [questionCount, answerCount]);
-
-    // 질문 제목과 고객 이름 기준 검색
-    const filterByTitleAndCustomerName = (questions) => {
-        if (!title && !customerName) return questions;
+    // 질문 제목 + 고객 이름 + 질문 번호 검색
+    const filterByTitleAndCustomerNameAndQuestionNo = (questions) => {
+        if (!title && !customerName && !questionNo) return questions;
         return questions.filter((question) => {
             const titleMatch = title
                 ? question.title.toLowerCase().includes(title.toLowerCase())
@@ -168,19 +161,33 @@ function QuestionCardList({
                       .toLowerCase()
                       .includes(customerName.toLowerCase())
                 : true;
-            return titleMatch && customerNameMatch;
+            const questionNoMatch = questionNo
+                ? question.questionId == parseInt(questionNo, 10)
+                : true;
+            return titleMatch && customerNameMatch && questionNoMatch;
         });
     };
 
-    const inqQuestions = filterByTitleAndCustomerName(
+    const inqQuestions = filterByTitleAndCustomerNameAndQuestionNo(
         questionSummary.inqQuestions || [],
     );
-    const siteQuestions = filterByTitleAndCustomerName(
+    const siteQuestions = filterByTitleAndCustomerNameAndQuestionNo(
         questionSummary.siteQuestions || [],
     );
-    const etcQuestions = filterByTitleAndCustomerName(
+    const etcQuestions = filterByTitleAndCustomerNameAndQuestionNo(
         questionSummary.etcQuestions || [],
     );
+
+    // 검색 결과, 전체 질문, 답변 대기 질문, 답변 완료 질문 현황
+    useEffect(() => {
+        const filteredQuestions = questionSummary.totalQuestionCount; // 필터링 질문 카운트
+        const totalQuestions = questionCount.totalQuestionCount; // 전체 질문 카운트
+        const totalAnswers = answerCount.length; // 전체 답변 카운트
+        setSearchedItems(filteredQuestions);
+        setTotalItems(totalQuestions);
+        setReadyItems(totalQuestions - totalAnswers);
+        setCompletedItems(totalAnswers);
+    }, [questionSummary, questionCount, answerCount]);
 
     // Voc번호로 사용할 시분초
     const calDateNo = (datetime) => {

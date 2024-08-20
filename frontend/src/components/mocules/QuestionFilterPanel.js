@@ -9,15 +9,17 @@ import { Datepicker } from '../../assets/css/Form.css';
 import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterPanel({
-    totalItems,
+    searchedItems,
     title,
     startDate,
     endDate,
     customerName,
+    questionNo,
     setTitle,
     setEndDate,
     setStartDate,
     setCustomerName,
+    setQuestionNo,
     setTimeFilter,
     setStatusFilter,
     searchByFilter,
@@ -108,6 +110,10 @@ function QuestionFilterPanel({
                                     outline={'none'}
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
+                                    value={questionNo}
+                                    onChange={
+                                        (e) => setQuestionNo(e.target.value)
+                                    }
                                 />
                                 {/* 3 */}
                                 <div>고객사명</div>
@@ -195,7 +201,7 @@ function QuestionFilterPanel({
 
                     {/* 검색 결과 개수 */}
                     <div>
-                        검색 결과: 총 <div>{totalItems}</div>건
+                        검색 결과: 총 <div>{searchedItems}</div>건
                     </div>
                     <div></div>
                 </div>

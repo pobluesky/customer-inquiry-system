@@ -66,7 +66,7 @@ function QuestionCard({
                         />
                     </div>
                     <div style={vocNoEllipsis}>
-                        #{thisRole !== 'CUSTOMER' && vocNo}
+                        #{vocNo}
                     </div>
                 </div>
                 <div>
