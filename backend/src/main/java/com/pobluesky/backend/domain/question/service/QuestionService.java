@@ -102,11 +102,16 @@ public class QuestionService {
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), customerId))
+        if (!Objects.equals(customer.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if (!Objects.equals(question.getCustomer().getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         return QuestionResponseDTO.from(question);
     }
