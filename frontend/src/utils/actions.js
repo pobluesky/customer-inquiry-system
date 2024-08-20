@@ -87,7 +87,7 @@ const JoinFailedAlert = (message) => {
         titleText: '회원가입 실패',
         text: `${message}`,
         showConfirmButton: false,
-        timer: 1000,
+        timer: 2000,
         allowOutsideClick: false,
     });
 };

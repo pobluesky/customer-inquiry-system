@@ -17,6 +17,7 @@ const Input = forwardRef(
             placeholder,
             value,
             onChange,
+            onKeyDown,
             type,
             width,
             height,
@@ -65,6 +66,7 @@ const Input = forwardRef(
                     ref={ref}
                     value={value}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
                     type={type}
                     placeholder={placeholder}
                     style={{

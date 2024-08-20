@@ -1,10 +1,11 @@
 import React from 'react';
 import Button from '../atoms/Button';
 
-const CheckButton = ({ btnName, onClick, margin }) => (
+const CheckButton = ({ btnName, onClick, onKeyDown, margin }) => (
     <Button
         btnName={btnName}
         onClick={onClick}
+        onKeyDown={onKeyDown}
         margin={margin}
         width={'360px'}
         height={'44px'}
@@ -16,10 +17,11 @@ const CheckButton = ({ btnName, onClick, margin }) => (
     />
 );
 
-const RoleSelectButton = ({ btnName, onClick, margin }) => (
+const RoleSelectButton = ({ btnName, onClick, onKeyDown, margin }) => (
     <Button
         btnName={btnName}
         onClick={onClick}
+        onKeyDown={onKeyDown}
         margin={margin}
         width={'144px'}
         height={'44px'}
