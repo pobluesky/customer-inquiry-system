@@ -138,18 +138,20 @@ export const postInquiry = async (userId, inquiryData) => {
   }
 };
 
-// 고객사 LineItem 등록
-export const postLineItems = async (inquiryId, lineItemData) => {
+// 담당자 inquiry list 가져오기 (summary)
+export const getInquiryByManagers = async (page = 0) => {
   try {
-    const response = await axiosInstance.post(
-        `/line-items/${inquiryId}`,
-        lineItemData,
-    );
-    console.log(lineItemData);
-    console.log(response);
-    return response.data;
+    const response = await axiosInstance.get(`/managers/inquiries?page=${page}`);
+    console.log(response.data);
+    const { inquiryInfo, totalPages, totalElements } = response.data.data;
+    return {
+      inquiryInfo: processInquiries(inquiryInfo),
+      totalPages,
+      totalElements
+    };
+
   } catch (error) {
-    console.error('Error posting line item:', error);
+    console.error('Error fetching Inquiry:', error);
     throw error;
   }
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from "../../components/mocules/RequestBar";
 import {
@@ -7,28 +7,49 @@ import {
     AdditionalRequestForm,
     FileForm,
 } from '../../components/organisms/inquiry-form';
-import { postInquiry, postLineItems } from '../../apis/api/inquiry';
+import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
+import { getUserInfoByCustomers } from '../../apis/api/auth';
 
 function CustomerInqForm() {
     const { userId } = useAuth();
+    const [userInfo, setUserInfo] = useState(null);
 
     const [formData, setFormData] = useState({
-        country: '',
+        additionalRequests: '',
         corporate: '',
-        salesPerson: '',
-        inquiryType: '',
+        corporationCode: '(주)포스코',
+        country: '',
+        customerCode: '',
+        customerId: null,
+        customerName: '',
+        customerRequestDate: '',
+        files: [],
         industry: '',
-        corporationCode: '',
+        inquiryId: null,
+        inquiryType: '',
+        name: '',
+        email: '',
+        phone: '',
         productType: '',
         progress: 'RECEIPT',
-        customerRequestDate: '',
-        additionalRequests: '',
-        files: [],
-        responseDeadline: '',
-        elapsedDays: '',
-        isActivated: true,
+        salesPerson: '',
+        reviewText: '',
+        finalReviewText: '',
     });
+
+    const getUserInfo = async () => {
+        if (!userId) {
+            return;
+        }
+        try {
+            const response = await getUserInfoByCustomers(userId);
+            setUserInfo(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching User Info:', error);
+        }
+    }
 
     // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
@@ -69,6 +90,23 @@ function CustomerInqForm() {
 
     console.log(formData);
     console.log(lineItems);
+
+    useEffect(() => {
+        if (userInfo) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                customerCode: userInfo.data.customerCode || '',
+                customerName: userInfo.data.customerName || '',
+                name: userInfo.data.name || '',
+                email: userInfo.data.email || '',
+                phone: userInfo.data.phone || '',
+            }));
+        }
+    }, [userInfo]);
+
+    useEffect(() => {
+        getUserInfo();
+    }, [userId]);
 
     return (
         <div>
