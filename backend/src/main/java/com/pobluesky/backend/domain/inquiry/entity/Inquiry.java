@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,8 +65,6 @@ public class Inquiry extends BaseEntity {
 
     private String responseDeadline;
 
-    private String elapsedDays;
-
     private Boolean isActivated;
 
     @Builder
@@ -81,10 +81,7 @@ public class Inquiry extends BaseEntity {
         String customerRequestDate,
         String additionalRequests,
         String files,
-        String responseDeadline,
-        String elapsedDays,
-        Boolean isActivated
-
+        String responseDeadline
     ){
         this.customer = customer;
         this.country = country;
@@ -99,8 +96,7 @@ public class Inquiry extends BaseEntity {
         this.additionalRequests = additionalRequests;
         this.files = files;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
-        this.isActivated = isActivated;
+        this.isActivated = true;
     }
 
     public void updateInquiry(
@@ -114,8 +110,7 @@ public class Inquiry extends BaseEntity {
         String customerRequestDate,
         String additionalRequests,
         String files,
-        String responseDeadline,
-        String elapsedDays
+        String responseDeadline
     ){
         this.country = country;
         this.corporate = corporate;
@@ -128,7 +123,6 @@ public class Inquiry extends BaseEntity {
         this.additionalRequests = additionalRequests;
         this.files = files;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
     }
 
     public void deleteInquiry() {
