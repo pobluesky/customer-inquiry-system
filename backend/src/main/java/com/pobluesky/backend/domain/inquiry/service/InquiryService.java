@@ -11,6 +11,8 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
+import com.pobluesky.backend.domain.lineitem.service.LineItemService;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
@@ -22,6 +24,7 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
@@ -41,6 +44,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class InquiryService {
 
     private final SignService signService;
+
+    private final LineItemService lineItemService;
 
     private final InquiryRepository inquiryRepository;
 
@@ -73,11 +78,22 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(
+            page,
+            size,
+            sort
+        );
 
         return inquiryRepository.findInquiriesByCustomer(
-            customerId, pageable, progress, productType, customerName,
-            inquiryType, startDate, endDate);
+            customerId,
+            pageable,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
+        );
     }
 
     @Transactional(readOnly = true)
@@ -102,11 +118,21 @@ public class InquiryService {
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
         Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(
+            page,
+            size,
+            sort
+        );
 
         return inquiryRepository.findInquiriesByManager(
-            pageable, progress, productType, customerName,
-            inquiryType, startDate, endDate);
+            pageable,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
+        );
     }
 
     @Transactional
@@ -131,11 +157,16 @@ public class InquiryService {
         }
 
         Inquiry inquiry = dto.toInquiryEntity(filePath);
-        inquiry.setCustomer(customer);
 
+        List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
+            inquiry,
+            dto.lineItemRequestDTOs()
+        );
+
+        inquiry.setCustomer(customer);
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
-        return InquiryResponseDTO.from(savedInquiry);
+        return InquiryResponseDTO.of(savedInquiry, lineItems);
     }
 
     @Transactional
@@ -162,6 +193,13 @@ public class InquiryService {
             filePath = fileInfo.getStoredFilePath();
         }
 
+        lineItemService.deleteLineItemsByInquiry(inquiry);
+
+        List<LineItemResponseDTO> lineItemResponseDTOS = lineItemService.createLineItems(
+            inquiry,
+            inquiryUpdateRequestDTO.lineItemRequestDTOs()
+        );
+
         inquiry.updateInquiry(
             inquiryUpdateRequestDTO.country(),
             inquiryUpdateRequestDTO.corporate(),
@@ -173,11 +211,10 @@ public class InquiryService {
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
             filePath,
-            inquiryUpdateRequestDTO.responseDeadline(),
-            inquiryUpdateRequestDTO.elapsedDays()
+            inquiryUpdateRequestDTO.responseDeadline()
         );
 
-        return InquiryResponseDTO.from(inquiry);
+        return InquiryResponseDTO.of(inquiry, lineItemResponseDTOS);
     }
 
     @Transactional
@@ -192,6 +229,8 @@ public class InquiryService {
 
         if (!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        lineItemService.deleteLineItemsByInquiry(inquiry);
 
         inquiry.deleteInquiry();
     }
@@ -213,10 +252,13 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findByCustomer_UserIdAndInquiryId(customerId, inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
+        List<LineItemResponseDTO> lineItemsByInquiry =
+            lineItemService.getLineItemsByInquiry(inquiryId);
+
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        return InquiryResponseDTO.from(inquiry);
+        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
     }
 
     private Sort getSortByOrderCondition(String sortBy) {
