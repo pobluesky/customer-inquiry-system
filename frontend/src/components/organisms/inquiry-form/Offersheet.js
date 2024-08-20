@@ -83,16 +83,14 @@ function Offersheet({ inquiryId, addTask }) {
     };
 
     const deleteRows = () => {
-        const remainingRows = rows.filter(
-            (row) => !selectedRows.includes(row.id),
-        );
+        const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
         setRows(remainingRows);
         setSelectedRows([]);
     };
 
     const copyRows = () => {
-        const copiedRows = selectedRows.map((id) => {
-            const rowToCopy = rows.find((row) => row.id === id);
+        const copiedRows = selectedRows.map(id => {
+            const rowToCopy = rows.find(row => row.id === id);
             return { ...rowToCopy, id: Date.now() + Math.random() }; // Create new ID
         });
         setRows([...rows, ...copiedRows]);
@@ -100,20 +98,20 @@ function Offersheet({ inquiryId, addTask }) {
     };
 
     const handleRowSelect = (id) => {
-        setSelectedRows((prevSelected) =>
+        setSelectedRows(prevSelected =>
             prevSelected.includes(id)
-                ? prevSelected.filter((rowId) => rowId !== id)
-                : [...prevSelected, id],
+                ? prevSelected.filter(rowId => rowId !== id)
+                : [...prevSelected, id]
         );
     };
 
     const handleInputChange = (rowId, field, value) => {
-        setRows((prevRows) =>
-            prevRows.map((row) =>
+        setRows(prevRows =>
+            prevRows.map(row =>
                 row.id === rowId
                     ? { ...row, items: { ...row.items, [field]: value } }
-                    : row,
-            ),
+                    : row
+            )
         );
     };
 

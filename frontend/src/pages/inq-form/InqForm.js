@@ -13,9 +13,13 @@ import {
   QualityReviewTextForm,
   FinalReviewTextForm
 } from '../../components/organisms/inquiry-form';
+import { getInquiry } from '../../apis/api/inquiry';
 
 function InqForm() {
-    console.log('check');
+    useEffect(() => {
+        getInquiry();
+    }, []);
+
     return (
         <div>
           <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />

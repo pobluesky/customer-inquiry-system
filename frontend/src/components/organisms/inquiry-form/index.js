@@ -8,11 +8,13 @@ import Offersheet from './Offersheet';
 import QualityReviewTextForm from './QualityReviewTextForm';
 import ReviewTextForm from './ReviewTextForm';
 import SalesInfoForm from './SalesInfoForm';
+import FileFormItem from './FileFormItem';
 
 export {
     AdditionalRequestForm,
     BasicInfoForm,
     FileForm,
+    FileFormItem,
     FinalReviewTextForm,
     InquiryHistoryForm,
     InquiryNewForm,

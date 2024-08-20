@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ToggleBar from '../../mocules/ToggleBar';
 import {
     Container,
@@ -9,8 +9,18 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = () => {
-    const [isChecked, setCheck] = useState(true);
+const InquiryNewForm = ({ formData, handleFormDataChange }) => {
+    const {
+        country,
+        corporate,
+        salesPerson,
+        inquiryType,
+        industry,
+        corporationCode,
+        productType,
+        customerRequestDate,
+    } = formData;
+    const [isChecked, setCheck] = React.useState(true);
 
     return (
         <div className={Container}>
@@ -25,20 +35,36 @@ const InquiryNewForm = () => {
                         <div className={Wrapper}>
                             {/* 1행 */}
                             <div className={inputWrapper}>
-                                <label>고객사구분</label>
+                                <label>고객사구분</label> {/* customerCode */}
                                 <input
                                     type="text"
                                     className={_Input}
-                                    placeholder="20180829495"
+                                    placeholder="20182134504"
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>국가</label>
-                                <input
-                                    type="text"
+                                <select
                                     className={_Input}
-                                    placeholder="홍콩"
-                                />
+                                    value={country}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'country',
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        선택
+                                    </option>
+                                    <option value="USA">미국</option>
+                                    <option value="CANADA">캐나다</option>
+                                    <option value="KOREA">한국</option>
+                                    <option value="JAPAN">일본</option>
+                                    <option value="CHINA">중국</option>
+                                    <option value="GERMANY">독일</option>
+                                    <option value="FRANCE">프랑스</option>
+                                </select>
                             </div>
                             <div className={inputWrapper}>
                                 <label>판매상사</label>
@@ -46,6 +72,13 @@ const InquiryNewForm = () => {
                                     type="text"
                                     className={_Input}
                                     placeholder="POA"
+                                    value={corporate}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'corporate',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
 
@@ -56,23 +89,88 @@ const InquiryNewForm = () => {
                                     type="text"
                                     className={_Input}
                                     placeholder="POSCO Asia Co., Ltd."
+                                    value={salesPerson}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'salesPerson',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>Inquiry 유형</label>
-                                <input
-                                    type="text"
+                                <select
                                     className={_Input}
-                                    placeholder="품질 + 견적"
-                                />
+                                    value={inquiryType}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'inquiryType',
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        문의유형
+                                    </option>
+                                    <option value="COMMON_INQUIRY">
+                                        품질 + 견적
+                                    </option>
+                                    <option value="QUALITY_INQUIRY">
+                                        품질
+                                    </option>
+                                    <option value="QUOTE_INQUIRY">견적</option>
+                                </select>
                             </div>
                             <div className={inputWrapper}>
                                 <label>산업분류</label>
-                                <input
-                                    type="text"
+                                <select
                                     className={_Input}
-                                    placeholder="자동차산업(Automobile)"
-                                />
+                                    value={industry}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'industry',
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        선택
+                                    </option>
+                                    <option value="AUTOMOBILE">
+                                        Automobile
+                                    </option>
+                                    <option value="CONSTRUCTION">
+                                        Construction
+                                    </option>
+                                    <option value="DISTRIBUTION">
+                                        Distribution
+                                    </option>
+                                    <option value="ELECTRIC">Electric</option>
+                                    <option value="FURNITURE">Furniture</option>
+                                    <option value="PLATING">Plating</option>
+                                    <option value="HIGH_CARBON">
+                                        High-Carbon
+                                    </option>
+                                    <option value="KITCHEN">Kitchen</option>
+                                    <option value="LOW_CARBON">
+                                        Low-Carbon
+                                    </option>
+                                    <option value="MARCHINERY">
+                                        Machinery
+                                    </option>
+                                    <option value="PIPE">Pipe</option>
+                                    <option value="REROLLING">Rerolling</option>
+                                    <option value="SHIPBUILDING">
+                                        Shipbuilding
+                                    </option>
+                                    <option value="TRANSPORTATION">
+                                        Transportation
+                                    </option>
+                                    <option value="VESSEL">Vessel</option>
+                                    <option value="BEAM">Beam</option>
+                                    <option value="OTHER">기타</option>
+                                </select>
                             </div>
 
                             {/* 3행 */}
@@ -87,7 +185,7 @@ const InquiryNewForm = () => {
                             <div className={inputWrapper}>
                                 <label>의뢰인 E-mail</label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     className={_Input}
                                     placeholder="zhaofeng@posco.net"
                                 />
@@ -95,7 +193,7 @@ const InquiryNewForm = () => {
                             <div className={inputWrapper}>
                                 <label>의뢰인 연락처</label>
                                 <input
-                                    type="text"
+                                    type="tel"
                                     className={_Input}
                                     placeholder="86-18901251225"
                                 />
@@ -108,32 +206,56 @@ const InquiryNewForm = () => {
                                     type="text"
                                     className={_Input}
                                     placeholder="(주)포스코"
+                                    value={corporationCode}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'corporationCode',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>제품</label>
-                                <input
-                                    type="text"
+                                <select
                                     className={_Input}
-                                    placeholder="자동차"
-                                />
+                                    value={productType}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'productType',
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        선택
+                                    </option>
+                                    <option value="CAR">자동차</option>
+                                    <option value="HOT_ROLLED">열연</option>
+                                    <option value="COLD_ROLLED">냉연</option>
+                                    <option value="THICK_PLATE">후판</option>
+                                    <option value="WIRE_ROD">선재</option>
+                                </select>
                             </div>
                             <div className={inputWrapper}>
-                                <label>고객요청일</label>
+                                <label>고객요청일자</label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     className={_Input}
-                                    placeholder="2024-07-23"
+                                    value={customerRequestDate}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'customerRequestDate',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                         </div>
                     </div>
-                ) : (
-                    ''
-                )}
+                ) : null}
             </div>
         </div>
     );
 };
-
 export default InquiryNewForm;
