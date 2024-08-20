@@ -7,9 +7,10 @@ import {
     _TextArea,
 } from '../../../assets/css/Form.css';
 
-const AdditionalRequestForm = () => {
+const AdditionalRequestForm = ({ formData, handleFormDataChange }) => {
     // 추가요청사항
     const [isChecked, setCheck] = useState(true);
+    const { additionalRequests } = formData;
 
     return (
         <div className={Container} style={{ marginTop: '-2vh' }}>
@@ -25,6 +26,13 @@ const AdditionalRequestForm = () => {
                             className={_TextArea}
                             placeholder="내용을 입력해 주세요"
                             wrap="hard"
+                            value={additionalRequests}
+                            onChange={(e) =>
+                                handleFormDataChange(
+                                    'additionalRequests',
+                                    e.target.value,
+                                )
+                            }
                         />
                     </div>
                 ) : (
