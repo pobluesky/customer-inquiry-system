@@ -20,6 +20,11 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import CustomerInqForm from './pages/inq-form/CustomerInqForm';
+import SalesManagerInqForm from './pages/inq-form/SalesManagerInqForm';
+import QualityManagerInqForm from './pages/inq-form/QualityManagerInqForm';
+import CustomerInqList from './pages/inq-list/CustomerInqList';
+import CustomerInqItem from './pages/inq-item/CustomerInqItem';
 
 function App() {
     return (
@@ -31,9 +36,17 @@ function App() {
                         <Route path="login" element={<Login />} />
                         <Route path="join" element={<Join />} />
                         <Route path="inq-main" element={<InqMain />} />
-                        <Route path="inq-list" element={<InqList />} />
-                        <Route path="inq-form" element={<InqForm />} />
-                        <Route path="inq-item" element={<InqItem />} />
+
+                        <Route path="inq-list/customer" element={<CustomerInqList />} />
+                        {/*<Route path="inq-list/manager" element={<ManagerInqList />} />*/}
+
+                        <Route path="inq-form/customer" element={<CustomerInqForm />} />
+                        {/*<Route path="inq-form/sales" element={<SalesManagerInqForm />} />*/}
+                        {/*<Route path="inq-form/quality" element={<QualityManagerInqForm />} />*/}
+
+                        <Route path="inq-item/customer/:id" element={<CustomerInqItem />} />
+                        {/*<Route path="inq-item/sales" element={<SalesManagerInqItem />} />*/}
+                        {/*<Route path="inq-item/quality" element={<QualityManagerInqItem />} />*/}
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />

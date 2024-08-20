@@ -1,35 +1,27 @@
 import React from 'react';
-import ListLabel from '../mocules/ListLabel';
 import { _InquiryItem } from '../../assets/css/Inquiry.css';
 import InquiryBox from '../mocules/InquiryBox';
 
+// InquiryItem 컴포넌트는 각 문의 항목의 세부 정보를 표시합니다.
 const InquiryItem = ({ inquiryData }) => {
     const {
-        project,
         inquiryId,
         inquiryType,
         salesPerson,
-        customer,
+        customerName,
         progress,
         productType,
-        inquiryStandard,
-        thickness,
-        width,
     } = inquiryData;
 
     return (
         <div className={_InquiryItem}>
-            <ListLabel content={'프로젝트'} text={project} />
             <InquiryBox
                 inquiryId={inquiryId}
                 inquiryType={inquiryType}
                 salesPerson={salesPerson}
                 progress={progress}
-                customer={customer}
+                customerName={customerName}
                 productType={productType}
-                inquiryStandard={inquiryStandard}
-                thickness={thickness}
-                width={width}
             />
         </div>
     );

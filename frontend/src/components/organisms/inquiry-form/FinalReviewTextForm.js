@@ -7,7 +7,7 @@ import {
     _TextArea,
 } from '../../../assets/css/Form.css';
 
-const FinalReviewTextForm = () => {
+const FinalReviewTextForm = ({ formData }) => {
     const [isChecked, setCheck] = useState(true);
 
     return (
@@ -24,6 +24,7 @@ const FinalReviewTextForm = () => {
                             className={_TextArea}
                             placeholder="내용을 입력해 주세요"
                             wrap="hard"
+                            value={formData.finalReviewText}
                         />
                     </div>
                 ) : (

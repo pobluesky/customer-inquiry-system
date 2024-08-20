@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import { ko } from 'date-fns/locale';
 import { Datepicker } from '../../assets/css/Form.css';
 
-function DateInput({ margin }) {
+function MyDateInput({ margin }) {
     const [startDate, setStartDate] = useState(new Date());
 
     return (
@@ -23,4 +23,4 @@ function DateInput({ margin }) {
     );
 }
 
-export default DateInput;
+export default MyDateInput;

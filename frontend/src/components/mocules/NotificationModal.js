@@ -4,6 +4,7 @@ import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
 import readBell from '../../assets/css/icons/readBell.svg';
 import readCircle from '../../assets/css/icons/readCircle.svg';
+
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
@@ -128,9 +129,8 @@ const NotificationModal = ({ onClose }) => {
                                         }
                                     >
                                         {notification.date}
-                                        <span>
-                                            &nbsp;{notification.contents}
-                                        </span>
+                                        <br />
+                                        <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
                                         <img src={circle} alt="notification" />
@@ -159,9 +159,7 @@ const NotificationModal = ({ onClose }) => {
                                     </div>
                                     <NotificationText>
                                         {notification.date}
-                                        <span>
-                                            &nbsp;{notification.contents}
-                                        </span>
+                                        <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
                                         <img
@@ -276,8 +274,12 @@ const Title = styled.h2`
 const NotificationText = styled.div`
     font-size: 15px;
     line-height: 20px;
-    font-weight: 400;
+    font-weight: 700;
     text-align: left;
+
+    span {
+        font-weight: 400;
+    }
 `;
 
 const NoNotifications = styled.div`

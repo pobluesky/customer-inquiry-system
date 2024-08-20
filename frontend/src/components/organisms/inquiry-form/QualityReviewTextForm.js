@@ -11,7 +11,7 @@ import ReviewText from '../../mocules/ReviewText';
 import QualityItem from '../QualityItem';
 
 const QualityReviewTextForm = () => {
-    // 최종 검토 내용
+    // 최종 검토 내용 작성
     const [isChecked, setCheck] = useState(true);
 
     const lineItems = [
