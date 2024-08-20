@@ -19,9 +19,8 @@ public record WireRodLineItemCreateRequestDTO(
     String finalUse
 ) {
 
-    public WireRodLineItem toWireRodLineItem(
-        Inquiry inquiry
-    ) {
+    public WireRodLineItem toWireRodLineItemEntity(Inquiry inquiry) {
+
         return WireRodLineItem.builder()
             .inquiry(inquiry)
             .kind(kind)

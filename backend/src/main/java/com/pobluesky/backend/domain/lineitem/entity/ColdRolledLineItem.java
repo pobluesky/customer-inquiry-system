@@ -111,8 +111,4 @@ public class ColdRolledLineItem extends LineItem{
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
     }
-
-    public Customer getCustomer() {
-        return this.inquiry.getCustomer();
-    }
 }

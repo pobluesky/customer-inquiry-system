@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.review.entity.Review;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
+import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
@@ -28,14 +29,17 @@ public class ReviewService {
 
     private final ManagerRepository managerRepository;
 
+    private final CustomerRepository customerRepository;
+
     private final InquiryRepository inquiryRepository;
 
     @Transactional(readOnly = true)
     public ReviewResponseDTO getReviewByInquiry(String token, Long inquiryId){
         Long userId = signService.parseToken(token);
 
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        if (!customerRepository.existsById(userId) && !managerRepository.existsById(userId)) {
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));

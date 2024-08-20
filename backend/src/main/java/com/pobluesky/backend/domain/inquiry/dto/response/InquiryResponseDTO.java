@@ -6,8 +6,10 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
-import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Department;
+import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
+
+import java.util.List;
+
 import lombok.Builder;
 
 @Builder
@@ -28,10 +30,14 @@ public record InquiryResponseDTO(
     String additionalRequests,
     String files,
     String responseDeadline,
-    Boolean isActivated
+    List<LineItemResponseDTO> lineItemResponseDTOs
 ) {
 
-    public static InquiryResponseDTO from(Inquiry inquiry) {
+    public static InquiryResponseDTO of(
+        Inquiry inquiry,
+        List<LineItemResponseDTO> lineItemResponseDTOs
+    ) {
+
         return InquiryResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())
             .customerId(inquiry.getCustomer().getUserId())
@@ -49,6 +55,7 @@ public record InquiryResponseDTO(
             .additionalRequests(inquiry.getAdditionalRequests())
             .files(inquiry.getFiles())
             .responseDeadline(inquiry.getResponseDeadline())
+            .lineItemResponseDTOs(lineItemResponseDTOs)
             .isActivated(inquiry.getIsActivated())
             .build();
     }

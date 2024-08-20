@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarLineItemRepository extends JpaRepository<CarLineItem, Long> {
 
-    List<CarLineItem> findAllByInquiry(Inquiry inquiry);
+    @Query("SELECT c FROM CarLineItem c WHERE c.inquiry = :inquiry AND c.isActivated = true")
+    List<CarLineItem> findAllActiveCarLineItemByInquiry(@Param("inquiry") Inquiry inquiry);
 
     @Query("SELECT c FROM CarLineItem c WHERE c.lineItemId = :lineItemId AND c.isActivated = true")
     Optional<CarLineItem> findActiveCarLineItemById(@Param("lineItemId") Long lineItemId);

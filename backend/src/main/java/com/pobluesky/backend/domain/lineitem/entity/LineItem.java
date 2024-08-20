@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.lineitem.entity;
 import com.pobluesky.backend.global.BaseEntity;
 
 import jakarta.persistence.MappedSuperclass;
+
 import lombok.Getter;
 
 @MappedSuperclass

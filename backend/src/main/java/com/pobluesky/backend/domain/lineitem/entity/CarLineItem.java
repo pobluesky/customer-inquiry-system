@@ -113,8 +113,4 @@ public class CarLineItem extends LineItem {
         this.width = width;
         this.quantity = quantity;
     }
-
-    public Customer getCustomer() {
-        return this.inquiry.getCustomer();
-    }
 }
