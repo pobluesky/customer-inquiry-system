@@ -6,9 +6,6 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
-import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
@@ -19,9 +16,8 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
+
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +41,22 @@ public class QuestionService {
 
     private final ManagerRepository managerRepository;
 
+    // 질문 전체 조회 (담당자)
+    @Transactional(readOnly = true)
+    public QuestionSummaryResponseDTO getQuestionsByManager(
+        String token, int page, int size, String sortBy,
+        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
+    }
 
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
@@ -71,30 +80,30 @@ public class QuestionService {
             customerId, pageable, status, startDate, endDate);
     }
 
-    // 질문 전체 조회 (담당자)
-    @Transactional(readOnly = true)
-    public QuestionSummaryResponseDTO getQuestionsByManager(
-        String token, int page, int size, String sortBy,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
-
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
-    }
-
     // 질문 번호별 질문 조회 (담당자)
     @Transactional(readOnly = true)
-    public QuestionResponseDTO getQuestionByQuestionId(String token, Long questionId) {
+    public QuestionResponseDTO getQuestionByQuestionIdForManager(String token, Long questionId) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return QuestionResponseDTO.from(question);
+    }
+
+    // 질문 번호별 질문 조회 (고객사)
+    @Transactional(readOnly = true)
+    public QuestionResponseDTO getQuestionByQuestionId(String token, Long customerId, Long questionId) {
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
