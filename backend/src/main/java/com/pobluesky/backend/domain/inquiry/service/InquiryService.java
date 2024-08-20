@@ -253,7 +253,7 @@ public class InquiryService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         List<LineItemResponseDTO> lineItemsByInquiry =
-            lineItemService.getLineItemsByInquiry(inquiryId);
+            lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
