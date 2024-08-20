@@ -45,9 +45,9 @@ function App() {
                         {/*<Route path="inq-form/sales" element={<SalesManagerInqForm />} />*/}
                         {/*<Route path="inq-form/quality" element={<QualityManagerInqForm />} />*/}
 
-                        <Route path="inq-item/customer/:id" element={<CustomerInqItem />} />
-                        <Route path="inq-item/manager/:id" element={<SalesManagerInqItem />} />
-                        {/*<Route path="inq-item/quality" element={<QualityManagerInqItem />} />*/}
+                        <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
+                        <Route path="inq-list/manager/:id" element={<SalesManagerInqItem />} />
+                        {/*<Route path="inq-list/quality" element={<QualityManagerInqItem />} />*/}
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
