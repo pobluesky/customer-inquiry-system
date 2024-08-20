@@ -6,13 +6,13 @@ import {
     AdditionalRequestForm,
     BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
     QualityReviewTextForm, ReviewTextForm, FileFormItem,
-    Offersheet
-} from "../../components/organisms/inquiry-form";
+    Offersheet, SalesInfoForm, FileForm,
+} from '../../components/organisms/inquiry-form';
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getReviews } from '../../apis/api/review';
+import { getReviews, postReviews } from '../../apis/api/review';
 import offersheet from '../../components/organisms/inquiry-form/Offersheet';
 import { postOffersheet } from '../../apis/api/offersheet';
 
@@ -21,23 +21,13 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
-    const [reviewData, setReviewData] = useState(null);
-
-    const [offerSheetData, setOffersheetData] = useState({
-        priceTerms: '',
-        paymentTerms: '',
-        shipment: '',
-        validity: '',
-        destination: '',
-        remark: '',
-        receipts: []
-    });
+    const [reviewData, setReviewData] = useState();
 
     const [formData, setFormData] = useState({
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
-        country: inquiriesDataDetail?.country,
+        country: '',
         customerId: null,
         customerName: '',
         customerRequestDate: '',
@@ -51,8 +41,14 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         productType: '',
         progress: '',
         salesPerson: '',
+
+        // review
+        contract: '',
+        thicknessNotify: '',
         reviewText: '',
+        attachmentFile: '',
         finalReviewText: '',
+        tsReviewReq: ''
     });
 
     const getInquiryDataDetail = async () => {
@@ -135,27 +131,43 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const handleSubmit = async () => {
         if (formData.inquiryId) {
             try {
-                const response = await postOffersheet(customerId, offerSheetData);
-                console.log('Offer sheet posted successfully:', response);
+                const offerSheetResponse = await postOffersheet(id);
+                const reviewResponse = await postReviews(id);
+
+                console.log('Offer sheet posted successfully:', offerSheetResponse);
+                console.log('Review posted successfully:', reviewResponse);
             } catch (error) {
                 console.error('Error posting offer sheet:', error);
             }
         }
     }
 
+    const handleFormDataChange = (field, value) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [field]: value
+        }));
+    };
+
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} onSubmit={handleSubmit} />
-
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm onLineItemsChange={() => {}} />
-            <AdditionalRequestForm formData={formData} />
+
+            {/* Review Post & Get */}
+            <SalesInfoForm formData={formData} />
             <ReviewTextForm formData={formData} />
-            <FileFormItem fileForm={"첨부파일"} formData={formData} />
-            <Offersheet offerSheet={offerSheetData} setOffersheet={setOffersheetData} />
-            <QualityReviewTextForm />
             <FinalReviewTextForm formData={formData} />
+
+
+            <QualityReviewTextForm />
+            <AdditionalRequestForm formData={formData} />
+
+            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
+            <FileFormItem fileForm={"첨부파일"} formData={formData} />
+            <Offersheet />
         </div>
     )
 }

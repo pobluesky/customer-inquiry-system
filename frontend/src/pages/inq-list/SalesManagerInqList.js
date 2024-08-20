@@ -54,7 +54,7 @@ const SalesManagerInqList = () => {
                 {inquiryData.length > 0 ? (
                     inquiryData.map(data => (
                         <Link
-                            to={`/inq-item/manager/${data.inquiryId}`}
+                            to={`/inq-list/manager/${data.inquiryId}`}
                             key={data.inquiryId}
                             style={{ paddingBottom: "20px", textDecoration: "none" }}
                         >
