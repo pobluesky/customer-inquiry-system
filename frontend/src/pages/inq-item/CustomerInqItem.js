@@ -26,7 +26,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
-        country: inquiriesDataDetail?.country,
+        country: '',
+        customerCode: '',
         customerId: null,
         customerName: '',
         customerRequestDate: '',
@@ -77,13 +78,16 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
+            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching Reviews:', error);
         }
     }
 
-    console.log('inquiryId: ', inquiriesDataDetail?.inquiryId);
+    // console.log("reviews..: ", getReviews());
+
+    // console.log('inquiryId: ', inquiriesDataDetail.data.inquiryId);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -93,6 +97,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
+                customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
@@ -110,13 +115,15 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 finalReviewText: reviewData?.finalReviewText || '',
             }));
         }
-    }, [inquiriesDataDetail, userInfo, reviewData]);
+    }, [inquiriesDataDetail, userInfo]);
 
     useEffect(() => {
         getInquiryDataDetail();
         getUserInfo();
-        getReview();
+        // getReview();
     }, [userId, id]);
+
+    console.log(reviewData)
 
     return (
         <div>
@@ -125,7 +132,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
 
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm onLineItemsChange={() => {}} />
-            <AdditionalRequestForm formData={formData} />
+            <AdditionalRequestForm formData={formData} readOnly={true} />
             <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />
             <Offersheet />

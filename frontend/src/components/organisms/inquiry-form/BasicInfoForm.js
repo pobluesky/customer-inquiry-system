@@ -15,6 +15,7 @@ const BasicInfoForm = ({ formData }) => {
         corporate,
         corporationCode,
         country,
+        customerCode,
         customerId,
         customerName,
         customerRequestDate,
@@ -51,12 +52,13 @@ const BasicInfoForm = ({ formData }) => {
                                 <input
                                     type="text"
                                     className={_Input}
-                                    value={customerId + 20241011}
+                                    value={customerCode}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>국가</label>
-                                <select className={_Input} value={country}>
+                                <select className={_Input} value={country} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
                                     </option>
@@ -76,6 +78,7 @@ const BasicInfoForm = ({ formData }) => {
                                     className={_Input}
                                     placeholder="POA"
                                     value={corporate}
+                                    readOnly={true}
                                 />
                             </div>
 
@@ -85,13 +88,13 @@ const BasicInfoForm = ({ formData }) => {
                                 <input
                                     type="text"
                                     className={_Input}
-                                    placeholder="POSCO Asia Co., Ltd."
                                     value={salesPerson}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>Inquiry 유형</label>
-                                <select className={_Input} value={inquiryType}>
+                                <select className={_Input} value={inquiryType} aria-readonly={true}>
                                     <option value="" disabled>
                                         문의유형
                                     </option>
@@ -106,7 +109,7 @@ const BasicInfoForm = ({ formData }) => {
                             </div>
                             <div className={inputWrapper}>
                                 <label>산업분류</label>
-                                <select className={_Input} value={industry}>
+                                <select className={_Input} value={industry} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
                                     </option>
@@ -153,6 +156,7 @@ const BasicInfoForm = ({ formData }) => {
                                     type="text"
                                     className={_Input}
                                     value={name}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
@@ -161,6 +165,7 @@ const BasicInfoForm = ({ formData }) => {
                                     type="email"
                                     className={_Input}
                                     value={email}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
@@ -169,6 +174,7 @@ const BasicInfoForm = ({ formData }) => {
                                     type="tel"
                                     className={_Input}
                                     value={phone}
+                                    readOnly={true}
                                 />
                             </div>
 
@@ -180,11 +186,12 @@ const BasicInfoForm = ({ formData }) => {
                                     className={_Input}
                                     placeholder="(주)포스코"
                                     value={corporationCode}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
                                 <label>제품</label>
-                                <select className={_Input} value={productType}>
+                                <select className={_Input} value={productType} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
                                     </option>
@@ -201,6 +208,7 @@ const BasicInfoForm = ({ formData }) => {
                                     type="date"
                                     className={_Input}
                                     value={customerRequestDate}
+                                    readOnly={true}
                                 />
                             </div>
                         </div>

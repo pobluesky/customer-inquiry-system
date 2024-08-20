@@ -40,3 +40,8 @@ export const getManagerInfo = () => {
 export const getUserInfoByCustomers = (userId) => {
     return getUserInfoApi(`/customers/${userId}`);
 };
+
+// 담당자 정보 조회
+export const getUserInfoByManagers = (userId) => {
+    return getUserInfoApi(`/managers/${userId}`);
+};
