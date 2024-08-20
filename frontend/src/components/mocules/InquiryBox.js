@@ -11,17 +11,14 @@ const InquiryBox = ({
     customer,
     progress,
     productType,
-    inquiryStandard,
-    thickness,
-    width,
 }) => {
     return (
         <div className={_InquiryBox}>
             <Text>{inquiryId}</Text>
             <Tag
                 category={inquiryType}
-                width={'105px'}
-                height={'28px'}
+                width={'125px'}
+                height={'35px'}
                 backgroundColor={'#2f4f79'}
                 justifySelf={'center'}
                 alignSelf={'center'}
@@ -39,14 +36,6 @@ const InquiryBox = ({
                 <Text fontWeight={'800'} alignSelf={'start'}>
                     {productType}
                 </Text>
-                <div className={_Size}>
-                    <Text>규격</Text>
-                    <Text>{inquiryStandard}</Text>
-                    <Text>두께</Text>
-                    <Text>{thickness}</Text>
-                    <Text>폭</Text>
-                    <Text>{width}</Text>
-                </div>
             </div>
             <Button
                 btnName={progress}

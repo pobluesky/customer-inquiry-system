@@ -103,8 +103,4 @@ public class HotRolledLineItem extends LineItem{
         this.quantity = quantity;
         this.orderEdge = orderEdge;
     }
-
-    public Customer getCustomer() {
-        return this.inquiry.getCustomer();
-    }
 }

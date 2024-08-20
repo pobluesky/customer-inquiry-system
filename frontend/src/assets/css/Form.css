@@ -185,6 +185,7 @@ body {
     background-color: #ffffff;
     height: 85%;
     padding: 3px;
+    width: 100%;
 }
 
 label {
@@ -202,6 +203,12 @@ label {
     color: #49454f;
     font-weight: bolder;
     margin-right: 20px;
+    width: 60%;
+    outline: none;
+}
+
+select {
+    text-align: center;
 }
 
 ._TextArea {
@@ -221,21 +228,51 @@ label {
     display: flex;
     justify-content: flex-end;
     margin-right: 20px;
+    margin-bottom: 15px;
 }
 
 .LineItemColumn {
     display: grid;
     text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 15px;
-    color: #7b7b7b;
-    background-color: #e3e3e3;
+    grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
     padding: 8px;
-    margin: 20px 20px 10px 20px;
+    margin: 20px;
     font-size: 20px;
+}
+
+.LineItemRow {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #ffffff;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px;
+    font-size: 20px;
+    align-items: center;
+}
+
+.LineItemInput {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #444444;
+    font-weight: 400;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
 }
 
 ._none {
@@ -253,34 +290,6 @@ label {
     background-color: #03507d;
     border: 1px solid #c1c1c1;
     border-radius: 7px;
-}
-
-.LineItemRow {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    color: #7b7b7b;
-    background-color: #ffffff;
-    font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
-}
-
-.LineItemInput {
-    background-color: #ffffff;
-    text-align: center;
-    padding: 3px;
-    font-size: 19px;
-    color: #444444;
-    font-weight: 400;
-    width: 120px;
-    margin-left: 15px;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
 }
 
 .SalesInfoItem {
@@ -323,42 +332,52 @@ label {
 .QualityItemColumn {
     display: grid;
     text-align: center;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    color: #7b7b7b;
-    background-color: #e3e3e3;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1rem;
+}
+
+.QualityItemColumn > div {
+    padding: 0.5rem;
+    box-sizing: border-box;
 }
 
 .QualityItemRow {
     display: grid;
     text-align: center;
-    grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 12px;
-    color: #7b7b7b;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0;
+    color: #7B7B7B;
     background-color: #ffffff;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
-    padding: 8px;
-    margin: 20px 20px 10px 20px;
-    font-size: 20px;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1rem;
+}
+
+.QualityItemRow > div {
+    padding: 0.5rem;
+    box-sizing: border-box;
 }
 
 .QualityItemInput {
     background-color: #ffffff;
-    font-size: 19px;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
     color: #444444;
     font-weight: 500;
-    text-align: center;
-    padding: 3px;
-    width: 132px;
-    margin-left: 15px;
+    width: 100%;
+    box-sizing: border-box;
     border: 1px solid #c1c1c1;
     border-radius: 8px;
 }
@@ -392,6 +411,12 @@ label {
     font-size: 16px;
 }
 
+.Container {
+    display: flex;
+    justify-content: center;
+    /* margin: 0 auto 0 auto; */
+}
+
 .Sheet {
     width: 90vw;
     border: solid #c1c1c1 1px;
@@ -420,8 +445,20 @@ label {
     padding: 4vh 0 4vh 0;
 }
 
-.Container {
+.Container ._Category {
     display: flex;
     justify-content: center;
-    /* margin: 0 auto 0 auto; */
+    margin: 28px 0 28px 0;
+}
+
+.Container ._Category .Detail {
+    width: 85vw;
+    display: flex;
+    justify-content: left;
+}
+
+._FileName {
+    color: #007AFF;
+    font-weight: 800;
+    font-size: 16px;
 }

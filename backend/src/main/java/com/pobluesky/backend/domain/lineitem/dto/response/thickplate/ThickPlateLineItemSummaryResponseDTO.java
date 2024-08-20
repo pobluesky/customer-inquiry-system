@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.lineitem.dto.response.thickplate;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
+
 import lombok.Builder;
 import lombok.Getter;
 

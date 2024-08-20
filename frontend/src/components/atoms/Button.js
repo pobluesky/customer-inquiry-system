@@ -19,6 +19,7 @@ function Button({
     alignItems,
     justifySelf,
     justifyContent,
+    display,
     imgSrc,
     imgAlt,
     imgWidth,
@@ -47,6 +48,7 @@ function Button({
                 alignItems,
                 justifySelf,
                 justifyContent,
+                display,
             }}
         >
             {imgSrc && (

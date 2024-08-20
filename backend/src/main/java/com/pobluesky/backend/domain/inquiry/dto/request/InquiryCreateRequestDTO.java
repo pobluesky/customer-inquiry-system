@@ -9,6 +9,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public record InquiryCreateRequestDTO(
@@ -24,9 +27,10 @@ public record InquiryCreateRequestDTO(
     String additionalRequests,
     @Schema(hidden = true) MultipartFile files,
     String responseDeadline,
-    Boolean isActivated
+    List<Map<String, Object>> lineItemRequestDTOs
 ) {
     public Inquiry toInquiryEntity(String filePath) {
+
         return Inquiry.builder()
             .country(country)
             .corporate(corporate)
@@ -40,7 +44,6 @@ public record InquiryCreateRequestDTO(
             .additionalRequests(additionalRequests)
             .files(filePath)
             .responseDeadline(responseDeadline)
-            .isActivated(true)
             .build();
     }
 }

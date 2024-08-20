@@ -94,9 +94,4 @@ public class ThickPlateLineItem extends LineItem{
         this.curve = curve;
         this.additionalRequests = additionalRequests;
     }
-
-    public Customer getCustomer(){
-        return this.inquiry.getCustomer();
-    }
-
 }

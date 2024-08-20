@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.hotrolled.Kind;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -39,13 +40,11 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
-    public static HotRolledLineItemResponseDTO of(HotRolledLineItem hotRolledLineItem) {
+    public static HotRolledLineItemResponseDTO from(HotRolledLineItem hotRolledLineItem) {
 
         return HotRolledLineItemResponseDTO.builder()
             .lineItemId(hotRolledLineItem.getLineItemId())
             .inquiryId(hotRolledLineItem.getInquiry().getInquiryId())
-            .userId(hotRolledLineItem.getCustomer().getUserId())
-            .CustomerName(hotRolledLineItem.getCustomer().getCustomerName())
             .kind(hotRolledLineItem.getKind())
             .inqName(hotRolledLineItem.getInqName())
             .orderCategory(hotRolledLineItem.getOrderCategory())
