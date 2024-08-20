@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import TextEditor from '../atoms/TextEditor';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilValue } from 'recoil';
 import { getUserEmail } from './../../index';
@@ -9,36 +10,33 @@ import { postQuestionByUserId } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
 function QuestionInput() {
-    const [editorValue, setEditorValue] = useState('');
+    const { userId } = useAuth();
+
+    const [editorValue, setEditorValue] = useState('<p>답변을 입력하세요.</p>');
     console.log('텍스트 에디터 입력 값', editorValue);
 
-    // findUserName 추가 필요
-    const currentUserName = '홍길동';
+    const currentUserName = '홍길동'; // findUserName 추가 필요
     const currentUserEmail = useRecoilValue(getUserEmail);
 
     const titleRef = useRef(null);
     const [title, setTitle] = useState('');
     const [files, setFiles] = useState('기본 파일명');
-    const [type, setType] = useState('INQ');
+    const [type,] = useState('INQ');
+    const [status,] = useState('READY');
 
-    const fetchPostQuestionByUserId = async (
-        title,
-        editorValue,
-        files,
-        type,
-    ) => {
+    const fetchPostQuestionByUserId = async () => {
         const questionData = {
             title,
-            editorValue,
+            contents: editorValue,
             files,
             type,
+            status,
         };
 
         const result = await postQuestionByUserId(
-            getCookie('userId'),
+            userId,
             getCookie('accessToken'),
             questionData,
-            'READY',
         );
 
         if (result) {
@@ -49,13 +47,9 @@ function QuestionInput() {
         }
     };
 
-    // useEffect(() => {
-    //     fetchPostQuestionByUserId();
-    // }, []);
-
     const resetForm = () => {
         setTitle('');
-        setEditorValue('');
+        setEditorValue('<p>답변을 입력하세요.</p>');
         if (titleRef.current) {
             titleRef.current.value = '';
         }

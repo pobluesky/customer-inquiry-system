@@ -6,6 +6,7 @@ import {
     Question_Doesnt_Exist,
     Question_Card_List,
 } from '../../assets/css/Voc.css';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
@@ -41,6 +42,8 @@ function QuestionCardList({
     timeFilter,
     statusFilter,
 }) {
+    const { userId } = useAuth();
+
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState({});
     const [questionCount, setQuestionCount] = useState({});
@@ -209,7 +212,7 @@ function QuestionCardList({
                                 onClick={() => {
                                     setQuestionId(inq.questionId);
                                     setVocNo(
-                                        getCookie('userId') +
+                                        userId +
                                             inq.questionId +
                                             calDateNo(inq.questionCreatedAt),
                                     );
@@ -218,7 +221,7 @@ function QuestionCardList({
                                 }}
                                 status={inq.status}
                                 questionNo={
-                                    getCookie('userId') +
+                                    userId +
                                     inq.questionId +
                                     calDateNo(inq.questionCreatedAt)
                                 }
@@ -247,7 +250,7 @@ function QuestionCardList({
                                 onClick={() => {
                                     setQuestionId(site.questionId);
                                     setVocNo(
-                                        getCookie('userId') +
+                                        userId +
                                             site.questionId +
                                             calDateNo(site.questionCreatedAt),
                                     );
@@ -256,7 +259,7 @@ function QuestionCardList({
                                 }}
                                 status={site.status}
                                 questionNo={
-                                    getCookie('userId') +
+                                    userId +
                                     site.questionId +
                                     calDateNo(site.questionCreatedAt)
                                 }
@@ -285,7 +288,7 @@ function QuestionCardList({
                                 onClick={() => {
                                     setQuestionId(etc.questionId);
                                     setVocNo(
-                                        getCookie('userId') +
+                                        userId +
                                             etc.questionId +
                                             calDateNo(etc.questionCreatedAt),
                                     );
@@ -294,7 +297,7 @@ function QuestionCardList({
                                 }}
                                 status={etc.status}
                                 questionNo={
-                                    getCookie('userId') +
+                                    userId +
                                     etc.questionId +
                                     calDateNo(etc.questionCreatedAt)
                                 }

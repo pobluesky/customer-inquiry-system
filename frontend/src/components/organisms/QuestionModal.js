@@ -18,6 +18,7 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -41,6 +42,7 @@ import {
 function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const sanitizer = dompurify.sanitize;
 
+    const { userId } = useAuth();
     const thisRole = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
@@ -87,8 +89,8 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getQuestionByQuestionId(
+                      userId,
                       questionId,
-                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -113,8 +115,8 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getAnswerByQuestionId(
+                      userId,
                       questionId,
-                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -188,15 +190,8 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             </div>
             <div className={Question_Modal}>
                 <div>
-                    {thisRole !== 'CUSTOMER' && (
-                        <>
-                            <Text
-                                name={'VoC 문의 번호'}
-                                textColor={'#6e6e6e'}
-                            />
-                            <Text name={vocNo} fontWeight={'600'} />
-                        </>
-                    )}
+                    <Text name={'VoC 문의 번호'} textColor={'#6e6e6e'} />
+                    <Text name={vocNo} fontWeight={'600'} />
                 </div>
                 <div>
                     <Tag
@@ -217,7 +212,11 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         <div style={filesEllipsis}>{questionDetail.files}</div>
                     </div>
                     {/* <div>{questionDetail.contents}</div> */}
-                    <div dangerouslySetInnerHTML={{ __html: sanitizer(`${questionDetail.contents}`) }} />
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizer(`${questionDetail.contents}`),
+                        }}
+                    />
                 </div>
 
                 {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면

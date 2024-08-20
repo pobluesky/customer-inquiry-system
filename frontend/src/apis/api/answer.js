@@ -68,7 +68,7 @@ export const getAnswerByQuestionIdForManager = async (questionId, token) => {
 };
 
 // 고객사용 답변 상세 조회
-export const getAnswerByQuestionId = async (questionId, userId, token) => {
+export const getAnswerByQuestionId = async (userId, questionId, token) => {
     try {
         const response = await fetch(`/api/answers/customers/${userId}/${questionId}`, {
             headers: {
