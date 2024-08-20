@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfferSheetRepository extends JpaRepository<OfferSheet, Long> {
     Optional<OfferSheet> findByInquiry(Inquiry inquiry);
+
+    Optional<OfferSheet> findByInquiryInquiryId(Long inquiryId);
 }

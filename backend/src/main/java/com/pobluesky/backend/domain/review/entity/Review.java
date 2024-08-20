@@ -65,5 +65,4 @@ public class Review extends BaseEntity {
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
     }
-
 }

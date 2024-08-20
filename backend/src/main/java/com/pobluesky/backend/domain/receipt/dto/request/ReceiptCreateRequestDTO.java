@@ -17,7 +17,7 @@ public record ReceiptCreateRequestDTO(
     String unitMaxWeight,
     String edge
 ) {
-    public Receipt toReceipt(OfferSheet offerSheet) {
+    public Receipt toReceiptEntity(OfferSheet offerSheet) {
 
         return Receipt.builder()
             .offerSheet(offerSheet)
