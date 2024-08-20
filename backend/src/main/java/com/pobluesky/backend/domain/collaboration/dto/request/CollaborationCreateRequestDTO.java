@@ -3,13 +3,16 @@ package com.pobluesky.backend.domain.collaboration.dto.request;
 import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.user.entity.Manager;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public record CollaborationCreateRequestDTO(
     Long colReqId,
     Long colResId,
     String colContents,
-    MultipartFile files
+    @Schema(hidden = true) MultipartFile files
 ) {
 
     public Collaboration toCollaborationEntity(

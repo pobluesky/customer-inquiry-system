@@ -5,12 +5,15 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public record QuestionCreateRequestDTO(
     String title,
     String contents,
-    MultipartFile files,
+    @Schema(hidden = true) MultipartFile files,
     QuestionStatus status,
     QuestionType type
 ) {

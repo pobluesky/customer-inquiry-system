@@ -5,8 +5,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
-import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Department;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,7 +21,7 @@ public record InquiryUpdateRequestDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    MultipartFile files,
+    @Schema(hidden = true) MultipartFile files,
     String responseDeadline
 ) {
 }
