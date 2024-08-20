@@ -6,11 +6,9 @@ import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
 import com.pobluesky.backend.domain.review.entity.Review;
 import com.pobluesky.backend.domain.review.repository.ReviewRepository;
-
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
@@ -33,13 +31,16 @@ public class ReviewService {
     private final InquiryRepository inquiryRepository;
 
     @Transactional(readOnly = true)
-    public ReviewResponseDTO getReviewById(String token, Long reviewId){
+    public ReviewResponseDTO getReviewByInquiry(String token, Long inquiryId){
         Long userId = signService.parseToken(token);
 
-        Manager manager = managerRepository.findById(userId)
+        managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Review review = reviewRepository.findById(reviewId)
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Review review = reviewRepository.findByInquiry(inquiry)
             .orElseThrow(() -> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
 
         return ReviewResponseDTO.from(review);
@@ -61,6 +62,10 @@ public class ReviewService {
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if(reviewRepository.existsByInquiry(inquiry)) {
+            throw new CommonException(ErrorCode.REVIEW_ALREADY_EXISTS);
+        }
 
         Review review = dto.toReviewEntity(inquiry);
         Review savedReview = reviewRepository.save(review);
