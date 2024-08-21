@@ -50,7 +50,7 @@ public class WireRodLineItem extends LineItem{
 
     private Integer quantity;
 
-    private LocalDate expectedDeadline;
+    private String expectedDeadline;
 
     private Integer initialQuantity;
 
@@ -66,7 +66,7 @@ public class WireRodLineItem extends LineItem{
         String orderCategory,
         String diameter,
         Integer quantity,
-        LocalDate expectedDeadline,
+        String expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
         String finalUse
@@ -81,27 +81,6 @@ public class WireRodLineItem extends LineItem{
         this.initialQuantity = initialQuantity;
         this.customerProcessing = customerProcessing;
         this.finalUse = finalUse;
-    }
-
-    public void updateWireRodLineItem(
-        Kind kind,
-        InqName inqName,
-        String orderCategory,
-        String diameter,
-        Integer quantity,
-        LocalDate expectedDeadline,
-        Integer initialQuantity,
-        String customerProcessing,
-        String finalUse
-    ){
-        this.kind = kind;
-        this.inqName = inqName;
-        this.orderCategory = orderCategory;
-        this.diameter = diameter;
-        this.quantity = quantity;
-        this.expectedDeadline = expectedDeadline;
-        this.initialQuantity = initialQuantity;
-        this.customerProcessing = customerProcessing;
-        this.finalUse = finalUse;
+        this.isActivated = true;
     }
 }

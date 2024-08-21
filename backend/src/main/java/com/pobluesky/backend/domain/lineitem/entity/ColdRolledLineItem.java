@@ -87,28 +87,4 @@ public class ColdRolledLineItem extends LineItem{
         this.outDiameter = outDiameter;
         this.isActivated = true;
     }
-
-    public void updateColdRolledLineItem(
-        Kind kind,
-        InqName inqName,
-        String orderCategory,
-        String thickness,
-        String width,
-        Integer quantity,
-        LocalDate expectedDeadline,
-        String orderEdge,
-        String inDiameter,
-        String outDiameter
-    ){
-        this.kind = kind;
-        this.inqName = inqName;
-        this.orderCategory = orderCategory;
-        this.thickness = thickness;
-        this.width = width;
-        this.quantity = quantity;
-        this.expectedDeadline = expectedDeadline;
-        this.orderEdge = orderEdge;
-        this.inDiameter = inDiameter;
-        this.outDiameter = outDiameter;
-    }
 }
