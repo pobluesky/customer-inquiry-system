@@ -67,12 +67,15 @@ function QuestionInput() {
             const fileData =
                 file && (await uploadFile(file, getCookie('accessToken')));
 
+            console.log('fileData ==============>', fileData);
+            // fileDate == {originName:   , storedFilePath:  }
+
             const questionData = {
                 title,
                 contents: editorValue,
+                // files,
                 fileName: fileData.originName,
                 filePath: fileData.storedFilePath,
-                // files: fileData,
                 type,
                 status,
             };
