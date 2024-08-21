@@ -11,16 +11,11 @@ import com.pobluesky.backend.domain.lineitem.dto.request.hotrolled.HotRolledLine
 import com.pobluesky.backend.domain.lineitem.dto.request.thickplate.ThickPlateLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.request.wirerod.WireRodLineItemCreateRequestDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemResponseDTO;
-import com.pobluesky.backend.domain.lineitem.dto.response.car.CarLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemResponseDTO;
-import com.pobluesky.backend.domain.lineitem.dto.response.coldrolled.ColdRolledLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemResponseDTO;
-import com.pobluesky.backend.domain.lineitem.dto.response.hotrolled.HotRolledLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.thickplate.ThickPlateLineItemResponseDTO;
-import com.pobluesky.backend.domain.lineitem.dto.response.thickplate.ThickPlateLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.dto.response.wirerod.WireRodLineItemResponseDTO;
-import com.pobluesky.backend.domain.lineitem.dto.response.wirerod.WireRodLineItemSummaryResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.CarLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.HotRolledLineItem;
@@ -179,63 +174,6 @@ public class LineItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<LineItemResponseDTO> getLineItemsByInquiryForCustomer(Long inquiryId) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
-         ProductType productType = inquiry.getProductType();
-
-        return switch (productType) {
-            case CAR -> {
-                List<CarLineItem> carLineItemList =
-                    carLineItemRepository.findActiveCarLineItemByInquiry(inquiry);
-
-                yield carLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
-                    .collect(Collectors.toList());
-            }
-
-            case COLD_ROLLED -> {
-                List<ColdRolledLineItem> coldRolledLineItemList =
-                    coldRolledLineItemRepository.findActiveColdRolledLineItemByInquiry(inquiry);
-
-                yield coldRolledLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
-                    .collect(Collectors.toList());
-            }
-
-            case HOT_ROLLED -> {
-                List<HotRolledLineItem> hotRolledLineItemList =
-                    hotRolledLineItemRepository.findActiveHotRolledLineItemByInquiry(inquiry);
-
-                yield hotRolledLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
-                    .collect(Collectors.toList());
-            }
-
-            case WIRE_ROD -> {
-                List<WireRodLineItem> wireRodLineItemList =
-                    wireRodLineItemRepository.findActiveWireRodLineItemByInquiry(inquiry);
-
-                yield wireRodLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
-                    .collect(Collectors.toList());
-            }
-
-            case THICK_PLATE -> {
-                List<ThickPlateLineItem> thickPlateLineItemList =
-                    thickPlateLineItemRepository.findActiveThickPlateLineItemByInquiry(inquiry);
-
-                yield thickPlateLineItemList.stream()
-                    .map(lineItem -> toResponseDTO(inquiry.getProductType(), lineItem))
-                    .collect(Collectors.toList());
-            }
-
-            default -> throw new IllegalArgumentException("Unknown product type: " + productType);
-        };
-    }
-
-    @Transactional(readOnly = true)
     public List<LineItemResponseDTO> getFullLineItemsByInquiry(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -372,38 +310,6 @@ public class LineItemService {
             default:
                 throw new IllegalArgumentException("Unknown product type: " + productType);
         }
-    }
-
-    public LineItemResponseDTO toResponseDTO(ProductType productType, LineItem lineItem) {
-
-        return switch (productType) {
-            case CAR -> {
-                CarLineItem carLineItem = (CarLineItem) lineItem;
-                yield CarLineItemSummaryResponseDTO.of(carLineItem);
-            }
-
-            case COLD_ROLLED -> {
-                ColdRolledLineItem coldRolledLineItem = (ColdRolledLineItem) lineItem;
-                yield ColdRolledLineItemSummaryResponseDTO.of(coldRolledLineItem);
-            }
-
-            case HOT_ROLLED -> {
-                HotRolledLineItem hotRolledLineItem = (HotRolledLineItem) lineItem;
-                yield HotRolledLineItemSummaryResponseDTO.of(hotRolledLineItem);
-            }
-
-            case WIRE_ROD -> {
-                WireRodLineItem wireRodLineItem = (WireRodLineItem) lineItem;
-                yield WireRodLineItemSummaryResponseDTO.of(wireRodLineItem);
-            }
-
-            case THICK_PLATE -> {
-                ThickPlateLineItem thickPlateLineItem = (ThickPlateLineItem) lineItem;
-                yield ThickPlateLineItemSummaryResponseDTO.of(thickPlateLineItem);
-            }
-
-            default -> throw new CommonException(ErrorCode.INVALID_REQUEST);
-        };
     }
 
     public LineItemResponseDTO toFullResponseDTO(ProductType productType, LineItem lineItem) {
