@@ -19,7 +19,7 @@ public record ReviewResponseDTO (
             .inquiryId(review.getInquiry().getInquiryId())
             .salesInfo(review.getSalesInfo())
             .reviewText(review.getReviewText())
-            .attachmentFile(review.getAttachmentFile())
+            .attachmentFile(review.getAttachmentFilePath())
             .attachmentFileName(review.getAttachmentFileName())
             .finalReviewText(review.getFinalReviewText())
             .tsReviewReq(review.getTsReviewReq())

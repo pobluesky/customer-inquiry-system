@@ -41,10 +41,10 @@ public class Review extends BaseEntity {
     private String reviewText;
 
     @Column(columnDefinition="TEXT")
-    private String attachmentFile;
+    private String attachmentFileName;
 
     @Column(columnDefinition="TEXT")
-    private String attachmentFileName;
+    private String attachmentFilePath;
 
     @Column(columnDefinition="TEXT")
     private String finalReviewText;
@@ -57,16 +57,16 @@ public class Review extends BaseEntity {
         Inquiry inquiry,
         SalesInfo salesInfo,
         String reviewText,
-        String attachmentFile,
         String attachmentFileName,
+        String attachmentFilePath,
         String finalReviewText,
         String tsReviewReq
     ) {
         this.inquiry = inquiry;
         this.salesInfo = salesInfo;
         this.reviewText = reviewText;
-        this.attachmentFile = attachmentFile;
         this.attachmentFileName = attachmentFileName;
+        this.attachmentFilePath = attachmentFilePath;
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
     }

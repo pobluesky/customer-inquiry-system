@@ -33,9 +33,9 @@ public class QualityReviewInfo {
 
     private String availableLab; // 생산가능소구분
 
-    private String files;
-
     private String fileName;
+
+    private String filePath;
 
     /*
   Builder Pattern
@@ -52,8 +52,8 @@ public class QualityReviewInfo {
         String orderEdge,
         String customerQReq,
         String availableLab,
-        String files,
-        String fileName
+        String fileName,
+        String filePath
     ) {
         this.finalResult = finalResult;
         this.finalResultDetails = finalResultDetails;
@@ -65,8 +65,8 @@ public class QualityReviewInfo {
         this.orderEdge = orderEdge;
         this.customerQReq = customerQReq;
         this.availableLab = availableLab;
-        this.files = files;
         this.fileName = fileName;
+        this.filePath = filePath;
     }
 }
 

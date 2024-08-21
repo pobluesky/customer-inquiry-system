@@ -15,8 +15,8 @@ public record ReviewCreateRequestDTO(
             .inquiry(inquiry)
             .salesInfo(salesInfo.toSalesInfoEntity())
             .reviewText(reviewText)
-            .attachmentFile(inquiry.getFiles())
             .attachmentFileName(inquiry.getFileName())
+            .attachmentFilePath(inquiry.getFilePath())
             .finalReviewText(finalReviewText)
             .tsReviewReq(tsReviewReq)
             .build();

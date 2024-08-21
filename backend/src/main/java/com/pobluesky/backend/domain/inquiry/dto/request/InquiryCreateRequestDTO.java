@@ -23,7 +23,7 @@ public record InquiryCreateRequestDTO(
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {
-    public Inquiry toInquiryEntity(String filePath,String fileName) {
+    public Inquiry toInquiryEntity(String fileName,String filePath) {
 
         return Inquiry.builder()
             .country(country)
@@ -36,8 +36,8 @@ public record InquiryCreateRequestDTO(
             .progress(progress)
             .customerRequestDate(customerRequestDate)
             .additionalRequests(additionalRequests)
-            .files(filePath)
             .fileName(fileName)
+            .filePath(filePath)
             .responseDeadline(responseDeadline)
             .build();
     }
