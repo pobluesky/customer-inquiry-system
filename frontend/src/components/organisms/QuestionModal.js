@@ -259,7 +259,9 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         </div>
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: sanitizer(`${answerDetail.contents || ''}`),
+                                __html: sanitizer(
+                                    `${answerDetail.contents || ''}`,
+                                ),
                             }}
                         />
                         {/* <div>{answerDetail.contents}</div> */}

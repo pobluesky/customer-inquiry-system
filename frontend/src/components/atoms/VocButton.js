@@ -2,7 +2,13 @@ import React from 'react';
 import Input from './Input';
 import Button from './Button';
 
-const FilterButton = ({ btnName, margin, backgroundColor, textColor, onClick }) => (
+const FilterButton = ({
+    btnName,
+    margin,
+    backgroundColor,
+    textColor,
+    onClick,
+}) => (
     <Button
         btnName={btnName}
         width={'84px'}
