@@ -7,7 +7,6 @@ import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
 import {
     AnswerTitleInput,
-    AnswerContentInput,
     AnswerContent,
     CloseButton,
     AnswerButton,
@@ -73,10 +72,6 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             return;
         } else {
             fetchPostAnswerByQuestionId();
-            fetchGetQuestionDetail();
-            setStatus('COMPLETED');
-            AnswerCompleteAlert();
-            setAnswering(false);
         }
     };
 
@@ -148,6 +143,10 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             if (result) {
                 console.log('응답받은 데이터는 다음과 같습니다.', result);
                 setAnswerDetail(result);
+                fetchGetQuestionDetail();
+                setStatus('COMPLETED');
+                AnswerCompleteAlert();
+                setAnswering(false);
             } else {
                 console.error('Fetched data is not an array or is invalid.');
                 setAnswerDetail([]);
@@ -216,7 +215,6 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         </div>
                         <div style={filesEllipsis}></div>
                     </div>
-                    {/* <div>{questionDetail.contents}</div> */}
                     <div
                         dangerouslySetInnerHTML={{
                             __html: sanitizer(`${questionDetail.contents}`),
@@ -264,7 +262,6 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                                 ),
                             }}
                         />
-                        {/* <div>{answerDetail.contents}</div> */}
                     </div>
                 ) : (
                     ''
@@ -272,7 +269,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                 <div>
                     <div>
                         {/* 하단 버튼 좌측 첨부파일란 */}
-                        {thisRole !== 'CUSTOMER' && (
+                        {thisRole !== 'CUSTOMER' && status === 'READY' && (
                             <>
                                 <img src={folder} />
                                 <span>첨부파일</span>

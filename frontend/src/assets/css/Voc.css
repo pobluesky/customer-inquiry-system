@@ -376,7 +376,7 @@
 /* 질문 그룹 */
 .Question_Modal > div:nth-child(3) {
     display: grid;
-    grid-template-rows: 60px 80px;
+    grid-template-rows: 56px 120px;
     width: 852px;
     height: 164px;
     border: solid 1px #c1c1c1;
@@ -405,13 +405,25 @@
 .Question_Modal > div:nth-child(3) > div:nth-child(2) {
     font-size: 16px;
     color: #6e6e6e;
-    margin: 12px 72px 0 72px;
+    margin: 4px 72px 0 72px;
+    max-height: 84px;
+    overflow-y: auto;
+}
+
+.Question_Modal > div:nth-child(3) > div:nth-child(2)::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+}
+
+.Question_Modal > div:nth-child(3) > div:nth-child(2)::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
 }
 
 /* 답변 그룹 */
 .Question_Modal > div:nth-child(4).Completed {
     display: grid;
-    grid-template-rows: 60px 80px;
+    grid-template-rows: 56px 120px;
     width: 852px;
     height: 204px;
     border: solid 1px #c1c1c1;
@@ -437,6 +449,7 @@
     font-size: 24px;
     font-weight: 600;
     color: #6e6e6e;
+    padding: 0 0 0 8px;
 }
 
 /* 답변 내용 */
@@ -444,6 +457,18 @@
     font-size: 16px;
     color: #6e6e6e;
     margin: 12px 72px 0 72px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.Question_Modal > div:nth-child(4).Completed > div:nth-child(2)::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+}
+
+.Question_Modal > div:nth-child(4).Completed > div:nth-child(2)::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
 }
 
 /* 버튼 그룹 */

@@ -135,9 +135,9 @@ function QuestionInput() {
                     <div>
                         <Input
                             type="text"
-                            width={'1126px'}
+                            width={'1118px'}
                             height={'32px'}
-                            padding={'0 8px 0 8px'}
+                            padding={'0 12px 0 12px'}
                             border={'solid 1px #c1c1c1'}
                             borderRadius={'8px'}
                             ref={titleRef}
