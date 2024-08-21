@@ -136,7 +136,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />
             <Offersheet />
-            <QualityReviewTextForm />
             <FinalReviewTextForm formData={formData} />
         </div>
     )

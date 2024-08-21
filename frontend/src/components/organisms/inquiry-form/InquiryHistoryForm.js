@@ -41,13 +41,13 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange }) => {
 
   const lineItems = columnLabels[productType] || columnLabels["CAR"];
 
-  useEffect(() => {
-    const lineItemsObject = rows.reduce((acc, row) => {
-      acc[`lineItem${row.id}`] = row.items;
-      return acc;
-    }, {});
-    onLineItemsChange(lineItemsObject);
-  }, [rows, onLineItemsChange]);
+  // useEffect(() => {
+  //   const lineItemsObject = rows.reduce((acc, row) => {
+  //     acc[`lineItem${row.id}`] = row.items;
+  //     return acc;
+  //   }, {});
+  //   onLineItemsChange(lineItemsObject);
+  // }, [rows, onLineItemsChange]);
 
   const createRow = () => {
     const newRow = { id: Date.now(), items: Array(lineItems.length).fill('') };

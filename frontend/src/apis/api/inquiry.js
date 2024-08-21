@@ -100,10 +100,120 @@ const processInquiries = (data) => {
 
 
 // FormData 객체 생성 함수
+// const createFormData = (formData) => {
+//   const form = new FormData();
+//
+//   const inquiryData = { ...formData };
+//   delete inquiryData.files;
+//   form.append('inquiry', new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }));
+//
+//   if (formData.files) {
+//     form.append('files', formData.files);
+//   }
+//
+//   return form;
+// };
+
+// Inquiry 데이터 포맷 변환 함수
+const processInquiryData = (data) => {
+  const { productType, ...rest } = data;
+
+  let formattedData;
+  switch (productType) {
+    case 'CAR':
+      formattedData = {
+        ...rest,
+        lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
+          lab: item.lab,
+          kind: item.kind,
+          standardOrg: item.standardOrg,
+          pjtName: item.pjtName,
+          salesVehicleName: item.salesVehicleName,
+          partName: item.partName,
+          ixPlate: item.ixPlate,
+          thickness: item.thickness,
+          width: item.width,
+          quantity: item.quantity,
+        })),
+      };
+      break;
+    case 'COLD_ROLLED':
+      formattedData = {
+        ...rest,
+        lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
+          kind: item.kind,
+          inqName: item.inqName,
+          orderCategory: item.orderCategory,
+          thickness: item.thickness,
+          width: item.width,
+          quantity: item.quantity,
+          expectedDeadline: item.expectedDeadline,
+          orderEdge: item.orderEdge,
+          inDiameter: item.inDiameter,
+          outDiameter: item.outDiameter,
+        })),
+      };
+      break;
+    case 'HOT_ROLLED':
+      formattedData = {
+        ...rest,
+        lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
+          kind: item.kind,
+          inqName: item.inqName,
+          orderCategory: item.orderCategory,
+          thickness: item.thickness,
+          width: item.width,
+          hardness: item.hardness,
+          flatness: item.flatness,
+          orderEdge: item.orderEdge,
+          quantity: item.quantity,
+        })),
+      };
+      break;
+    case 'THICK_PLATE':
+      formattedData = {
+        ...rest,
+        lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
+          generalDetails: item.generalDetails,
+          orderInfo: item.orderInfo,
+          ladleIngredient: item.ladleIngredient,
+          productIngredient: item.productIngredient,
+          seal: item.seal,
+          grainSizeAnalysis: item.grainSizeAnalysis,
+          show: item.show,
+          curve: item.curve,
+          additionalRequests: item.additionalRequests,
+        })),
+      };
+      break;
+    case 'WIRE_ROD':
+      formattedData = {
+        ...rest,
+        lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
+          kind: item.kind,
+          inqName: item.inqName,
+          orderCategory: item.orderCategory,
+          diameter: item.diameter,
+          quantity: item.quantity,
+          expectedDeadline: item.expectedDeadline,
+          initialQuantity: item.initialQuantity,
+          customerProcessing: item.customerProcessing,
+          finalUsage: item.finalUsage,
+        })),
+      };
+      break;
+    default:
+      throw new Error('Unknown productType');
+  }
+
+  return formattedData;
+};
+
+// FormData 객체 생성 함수
 const createFormData = (formData) => {
   const form = new FormData();
 
-  const inquiryData = { ...formData };
+  const inquiryData = processInquiryData(formData);
   delete inquiryData.files;
   form.append('inquiry', new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }));
 
@@ -113,7 +223,6 @@ const createFormData = (formData) => {
 
   return form;
 };
-
 
 // 고객사 Inquiry 등록
 export const postInquiry = async (userId, inquiryData) => {

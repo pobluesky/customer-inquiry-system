@@ -6,6 +6,10 @@ import {
 } from '../../assets/css/Form.css';
 
 const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
+    const handleInputChange = (index, event) => {
+        onChange(id, index, event.target.value);
+    };
+
     return (
         <div className={LineItemRow}>
             {isChecked && (
@@ -17,16 +21,14 @@ const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
                     />
                 </div>
             )}
-            {Object.keys(lineItems).map((key, index) => (
-                key !== 'lineItemId' && key !== 'selected' && (
-                    <input
-                        key={index}
-                        type="text"
-                        className={LineItemInput}
-                        value={lineItems[key]}
-                        onChange={(e) => onChange(id, key, e.target.value)}
-                    />
-                )
+            {lineItems.map((item, index) => (
+                <input
+                    key={index}
+                    type="text"
+                    className={LineItemInput}
+                    value={item}
+                    onChange={(event) => handleInputChange(index, event)}
+                />
             ))}
         </div>
     );

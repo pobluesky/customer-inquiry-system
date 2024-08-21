@@ -36,6 +36,7 @@ function CustomerInqForm() {
         salesPerson: '',
         reviewText: '',
         finalReviewText: '',
+        lineItemResponseDTOs: [],
 });
 
     const getUserInfo = async () => {
@@ -66,29 +67,23 @@ function CustomerInqForm() {
         setLineItems(newLineItems);
         setFormData(prevData => ({
             ...prevData,
-            lineItemResponseDTOs: newLineItems,  // formData에 lineItems 데이터를 포함시킴
+            lineItemResponseDTOs: newLineItems,
         }));
     };
 
     // Inquiry 등록 버튼 클릭 핸들러
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
         try {
-            const response = await postInquiry(userId, formData);
-            console.log('Inquiry submitted successfully:', response);
-
-            const inquiryId = response.data.inquiryId;
-            console.log('Inquiry ID:', inquiryId);
-
-            console.log('Line items');
-            const lineItemsResponse = await postLineItems(inquiryId, lineItems);
-            console.log('Line items submitted successfully:', lineItemsResponse);
+          const response = await postInquiry(userId, {
+            ...formData,
+            lineItemRequestDTOs: Object.values(lineItems),
+          });
+          console.log('Inquiry posted successfully:', response);
+          // 성공적으로 제출 후의 로직
         } catch (error) {
-            console.error('Error submitting inquiry:', error);
+          console.error('Error submitting inquiry:', error);
         }
     };
-
-    console.log(formData);
-    console.log(lineItems);
 
     useEffect(() => {
         if (userInfo) {
@@ -104,6 +99,9 @@ function CustomerInqForm() {
     }, [userInfo]);
 
     useEffect(() => {
+        if (!userId) {
+            return;
+        }
         getUserInfo();
     }, [userId]);
 
@@ -112,8 +110,7 @@ function CustomerInqForm() {
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit} />
             <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <InquiryHistoryForm userId={userId}
-                                productType={formData.productType}
+            <InquiryHistoryForm productType={formData.productType}
                                 onLineItemsChange={handleLineItemsChange} />
             <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />

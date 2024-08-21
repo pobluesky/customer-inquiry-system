@@ -162,6 +162,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }
     }
 
+    // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,

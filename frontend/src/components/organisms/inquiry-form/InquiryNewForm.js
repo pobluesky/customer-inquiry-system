@@ -26,7 +26,6 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
         customerRequestDate,
     } = formData;
     const [isChecked, setCheck] = React.useState(true);
-    console.log("name: ", name)
 
     return (
         <div className={Container}>
