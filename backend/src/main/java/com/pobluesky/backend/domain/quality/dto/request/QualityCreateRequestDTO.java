@@ -5,14 +5,16 @@ import com.pobluesky.backend.domain.quality.entity.Quality;
 import com.pobluesky.backend.domain.quality.entity.QualityReviewInfo;
 
 public record QualityCreateRequestDTO(
-    QualityReviewInfo qualityReviewInfo,
+    QualityReviewInfoCreateRequestDTO qualityReviewInfo,
     String qualityComments
 ) {
     // dto -> entity
-    public Quality toQualityEntity(Inquiry inquiry) {
+    public Quality toQualityEntity(Inquiry inquiry, String filePath, String fileName) {
+        QualityReviewInfo qualityReviewInfoEntity = qualityReviewInfo.toQualityReviewInfoEntity(filePath, fileName);
+
         return Quality.builder()
             .inquiry(inquiry)
-            .qualityReviewInfo(qualityReviewInfo)
+            .qualityReviewInfo(qualityReviewInfoEntity)
             .qualityComments(qualityComments)
             .build();
     }

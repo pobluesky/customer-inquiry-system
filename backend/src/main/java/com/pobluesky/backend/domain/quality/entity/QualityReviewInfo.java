@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.quality.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,10 @@ public class QualityReviewInfo {
 
     private String availableLab; // 생산가능소구분
 
+    private String files;
+
+    private String fileName;
+
     /*
   Builder Pattern
  */
@@ -46,7 +51,9 @@ public class QualityReviewInfo {
         String thicknessTolerance,
         String orderEdge,
         String customerQReq,
-        String availableLab
+        String availableLab,
+        String files,
+        String fileName
     ) {
         this.finalResult = finalResult;
         this.finalResultDetails = finalResultDetails;
@@ -58,6 +65,8 @@ public class QualityReviewInfo {
         this.orderEdge = orderEdge;
         this.customerQReq = customerQReq;
         this.availableLab = availableLab;
+        this.files = files;
+        this.fileName = fileName;
     }
 }
 
