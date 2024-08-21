@@ -10,7 +10,7 @@ public record QualityCreateRequestDTO(
 ) {
     // dto -> entity
     public Quality toQualityEntity(Inquiry inquiry, String fileName, String filePath) {
-        QualityReviewInfo qualityReviewInfoEntity = qualityReviewInfo.toQualityReviewInfoEntity(fileName,filePath);
+        QualityReviewInfo qualityReviewInfoEntity = qualityReviewInfo.toQualityReviewInfoEntity(fileName, filePath);
 
         return Quality.builder()
             .inquiry(inquiry)

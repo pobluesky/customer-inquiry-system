@@ -6,22 +6,23 @@ import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.user.entity.Customer;
 
 public record AnswerCreateRequestDTO(
-    String answerTitle,
-    String answerContents,
+    String title,
+    String contents
 //    String answerFiles
-    String answerFileName,
-    String answerFilePath
+//    String fileName,
+//    String filePath
 ) {
-    public Answer toAnswerEntity(Question question, Inquiry inquiry, Customer customer) {
+    public Answer toAnswerEntity(Question question, Inquiry inquiry, Customer customer, String fileName, String filePath) {
         return Answer.builder()
             .question(question)
             .inquiry(inquiry)
             .customer(customer)
-            .answerTitle(answerTitle)
-            .answerContents(answerContents)
-//            .answerFiles(answerFiles)
-            .answerFileName(answerFileName)
-            .answerFilePath(answerFilePath)
+            .title(title)
+            .contents(contents)
+            .fileName(fileName)
+            .filePath(filePath)
+//            .answerFileName(answerFileName)
+//            .answerFilePath(answerFilePath)
             .build();
     }
 }

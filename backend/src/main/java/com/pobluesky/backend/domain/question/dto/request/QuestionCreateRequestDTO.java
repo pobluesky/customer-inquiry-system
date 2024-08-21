@@ -6,37 +6,21 @@ import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import org.springframework.web.multipart.MultipartFile;
-
 public record QuestionCreateRequestDTO(
     String title,
     String contents,
-//<<<<<<< HEAD
-//    String files,
-//    String fileName,
-//    String filePath,
-//=======
-    @Schema(hidden = true) MultipartFile files,
-//>>>>>>> 4e02df8618f2ca6e26a90322ffab9a6acd4df308
     QuestionStatus status,
     QuestionType type
 ) {
 
-    public Question toQuestionEntity(Inquiry inquiry, Customer customer, String filePath) {
+    public Question toQuestionEntity(Inquiry inquiry, Customer customer, String fileName, String filePath) {
         return Question.builder()
             .customer(customer)
             .inquiry(inquiry)
             .title(title)
             .contents(contents)
-//<<<<<<< HEAD
-//            .files(files)
-//            .fileName(fileName)
-//            .filePath(filePath)
-//=======
-            .files(filePath)
-//>>>>>>> 4e02df8618f2ca6e26a90322ffab9a6acd4df308
+            .fileName(fileName)
+            .filePath(filePath)
             .status(status)
             .type(type)
             .build();

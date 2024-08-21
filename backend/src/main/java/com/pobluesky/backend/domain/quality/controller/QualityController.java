@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/qualities")
 public class QualityController {
+
     private final QualityService qualityService;
 
     @Operation(summary = "품질검토 전체 조회")

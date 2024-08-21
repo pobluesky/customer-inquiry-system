@@ -23,7 +23,7 @@ public record InquiryCreateRequestDTO(
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {
-    public Inquiry toInquiryEntity(String fileName,String filePath) {
+    public Inquiry toInquiryEntity(String fileName, String filePath) {
 
         return Inquiry.builder()
             .country(country)

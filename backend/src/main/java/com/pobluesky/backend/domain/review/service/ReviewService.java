@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.review.service;
 
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class ReviewService {
     private final CustomerRepository customerRepository;
 
     private final InquiryRepository inquiryRepository;
+
 
     @Transactional(readOnly = true)
     public ReviewResponseDTO getReviewByInquiry(String token, Long inquiryId){
@@ -53,9 +57,9 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDTO createReview(
         String token,
-        ReviewCreateRequestDTO dto,
-        Long inquiryId
-    ) {
+        Long inquiryId,
+        ReviewCreateRequestDTO dto
+        ) {
         Long userId = signService.parseToken(token);
 
         Manager manager = managerRepository.findById(userId)

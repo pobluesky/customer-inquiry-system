@@ -76,15 +76,16 @@ public class QualityService {
             throw new CommonException(ErrorCode.QUALITY_ALREADY_EXISTS);
         }
 
-        String filePath = null;
         String fileName = null;
+        String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
-            filePath = fileInfo.getStoredFilePath();
             fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
         }
 
-        Quality quality = dto.toQualityEntity(inquiry,filePath,fileName);
+        Quality quality = dto.toQualityEntity(inquiry, fileName, filePath);
         Quality savedQuality = qualityRepository.save(quality);
 
         return QualityResponseDTO.from(savedQuality);

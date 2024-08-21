@@ -17,9 +17,9 @@ public record QuestionResponseDTO(
     String customerName,
     String title,
     String contents,
-    String files,
-//    String fileName,
-//    String filePath,
+//    String files,
+    String fileName,
+    String filePath,
     QuestionStatus status,
     QuestionType type,
     LocalDateTime createdDate
@@ -34,7 +34,8 @@ public record QuestionResponseDTO(
             .customerName(question.getCustomer().getCustomerName())
             .title(question.getTitle())
             .contents(question.getContents())
-            .files(question.getFiles())
+            .fileName(question.getFileName())
+            .filePath(question.getFilePath())
 //            .fileName(question.getFileName())
 //            .filePath(question.getFilePath())
             .status(question.getStatus())

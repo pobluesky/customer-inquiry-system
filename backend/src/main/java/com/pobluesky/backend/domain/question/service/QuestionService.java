@@ -145,8 +145,8 @@ public class QuestionService {
         String token,
         Long customerId,
         Long inquiryId,
-        QuestionCreateRequestDTO dto,
-        MultipartFile file
+        MultipartFile file,
+        QuestionCreateRequestDTO dto
     ) {
         Long userId = signService.parseToken(token);
 
@@ -160,17 +160,16 @@ public class QuestionService {
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-//<<<<<<< HEAD
-//        Question question = dto.toQuestionEntity(inquiry, user);
-//=======
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(inquiry, user, filePath);
-//>>>>>>> 4e02df8618f2ca6e26a90322ffab9a6acd4df308
+        Question question = dto.toQuestionEntity(inquiry, user, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
@@ -181,9 +180,9 @@ public class QuestionService {
     public QuestionResponseDTO createNotInquiryQuestion(
         String token,
         Long customerId,
-        QuestionCreateRequestDTO dto,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        QuestionCreateRequestDTO dto
+        ) {
         Long userId = signService.parseToken(token);
 
         Customer user = customerRepository.findById(userId)
@@ -192,17 +191,16 @@ public class QuestionService {
         if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-//<<<<<<< HEAD
-//        Question question = dto.toQuestionEntity(null, user);
-//=======
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(null, user,filePath);
-//>>>>>>> 4e02df8618f2ca6e26a90322ffab9a6acd4df308
+        Question question = dto.toQuestionEntity(null, user, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);

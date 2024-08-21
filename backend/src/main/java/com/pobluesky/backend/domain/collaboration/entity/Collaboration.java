@@ -56,13 +56,10 @@ public class Collaboration extends BaseEntity {
     private String colReply;
 
     @Column(columnDefinition="TEXT")
-    private String files;
+    private String fileName;
 
-//    @Column(columnDefinition="TEXT")
-//    private String fileName;
-//
-//    @Column(columnDefinition="TEXT")
-//    private String filePath;
+    @Column(columnDefinition="TEXT")
+    private String filePath;
 
     @Builder
     public Collaboration(
@@ -70,9 +67,8 @@ public class Collaboration extends BaseEntity {
         Manager colRequestManager,
         Manager colResponseManager,
         String colContents,
-        String files
-//        String fileName,
-//        String filePath
+        String fileName,
+        String filePath
     ) {
         this.question = question;
         this.colRequestManager = colRequestManager;
@@ -80,9 +76,8 @@ public class Collaboration extends BaseEntity {
         this.colStatus = ColStatus.READY;
         this.colContents = colContents;
         this.colReply = null;
-        this.files = files;
-//        this.fileName = fileName;
-//        this.filePath = filePath;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 
     public void decideCollaboration(Boolean isAccepted) {
@@ -101,7 +96,8 @@ public class Collaboration extends BaseEntity {
         this.colReply = reply;
     }
 
-    public void updateFiles(String filePath){
-        this.files = filePath;
+    public void updateFiles(String fileName, String filePath){
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 }

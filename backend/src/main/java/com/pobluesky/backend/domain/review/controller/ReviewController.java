@@ -11,13 +11,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,13 +37,13 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<JsonResult> createReview(
         @RequestHeader("Authorization") String token,
-        @RequestBody ReviewCreateRequestDTO request,
-        @PathVariable Long inquiryId
-    ) {
+        @PathVariable Long inquiryId,
+        @RequestBody ReviewCreateRequestDTO request
+        ) {
         ReviewResponseDTO response = reviewService.createReview(
             token,
-            request,
-            inquiryId
+            inquiryId,
+            request
         );
 
         return ResponseEntity.status(HttpStatus.OK)

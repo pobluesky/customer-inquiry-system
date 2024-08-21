@@ -3,6 +3,8 @@ package com.pobluesky.backend.domain.answer.service;
 import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +43,8 @@ public class AnswerService {
     private final CustomerRepository customerRepository;
 
     private final ManagerRepository managerRepository;
+
+    private final FileService fileService;
 
     // 답변 전체 조회 (담당자)
     public List<AnswerResponseDTO> getAnswers(String token) {
@@ -118,6 +123,7 @@ public class AnswerService {
     public AnswerResponseDTO createAnswer(
         String token,
         Long questionId,
+        MultipartFile file,
         AnswerCreateRequestDTO dto
     ) {
         Long userId = signService.parseToken(token);
@@ -137,7 +143,16 @@ public class AnswerService {
         Customer customer = customerRepository.findById(question.getCustomer().getUserId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Answer answer = dto.toAnswerEntity(question, inquiry, customer);
+        String fileName = null;
+        String filePath = null;
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Answer answer = dto.toAnswerEntity(question, inquiry, customer, fileName, filePath);
         Answer savedAnswer = answerRepository.save(answer);
 
         question.setStatus(QuestionStatus.COMPLETED);
