@@ -10,6 +10,7 @@ public record ReviewResponseDTO (
     SalesInfo salesInfo,
     String reviewText,
     String attachmentFile,
+    String attachmentFileName,
     String finalReviewText,
     String tsReviewReq
 ) {
@@ -18,7 +19,8 @@ public record ReviewResponseDTO (
             .inquiryId(review.getInquiry().getInquiryId())
             .salesInfo(review.getSalesInfo())
             .reviewText(review.getReviewText())
-            .attachmentFile(review.getAttachmentFile())
+            .attachmentFile(review.getAttachmentFilePath())
+            .attachmentFileName(review.getAttachmentFileName())
             .finalReviewText(review.getFinalReviewText())
             .tsReviewReq(review.getTsReviewReq())
             .build();

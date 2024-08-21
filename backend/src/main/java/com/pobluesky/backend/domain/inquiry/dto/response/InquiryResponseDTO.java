@@ -28,7 +28,8 @@ public record InquiryResponseDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    String files,
+    String fileName,
+    String filePath,
     String responseDeadline,
     List<LineItemResponseDTO> lineItemResponseDTOs,
     Boolean isActivated
@@ -54,7 +55,8 @@ public record InquiryResponseDTO(
             .progress(inquiry.getProgress())
             .customerRequestDate(inquiry.getCustomerRequestDate())
             .additionalRequests(inquiry.getAdditionalRequests())
-            .files(inquiry.getFiles())
+            .fileName(inquiry.getFileName())
+            .filePath(inquiry.getFilePath())
             .responseDeadline(inquiry.getResponseDeadline())
             .lineItemResponseDTOs(lineItemResponseDTOs)
             .isActivated(inquiry.getIsActivated())
