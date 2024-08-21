@@ -7,12 +7,8 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.web.multipart.MultipartFile;
 
 public record InquiryCreateRequestDTO(
     Country country,
@@ -20,13 +16,10 @@ public record InquiryCreateRequestDTO(
     String salesPerson,
     InquiryType inquiryType,
     Industry industry,
-    String corporationCode,
     ProductType productType,
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    @Schema(hidden = true) MultipartFile files,
-    @Schema(hidden = true) String fileName,
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {
