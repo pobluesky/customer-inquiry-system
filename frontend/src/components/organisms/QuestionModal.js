@@ -4,6 +4,7 @@ import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
 import Input from '../atoms/Input';
+import TextEditor from '../atoms/TextEditor';
 import {
     AnswerTitleInput,
     AnswerContentInput,
@@ -38,7 +39,6 @@ import {
     getAnswerByQuestionId,
     getAnswerByQuestionIdForManager,
     postAnswerByQuestionId,
-    uploadFile,
 } from '../../apis/api/answer';
 
 function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
@@ -51,9 +51,8 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
 
-    const [answerTitle, setAnswerTitle] = useState('');
-    const [answerContents, setAnswerContents] = useState('');
-    const [answerFiles, setAnswerFiles] = useState('기본 파일명');
+    const [title, setTitle] = useState('');
+    const [editorValue, setEditorValue] = useState('');
     const [file, setFile] = useState('');
 
     const [questionDetail, setQuestionDetail] = useState([]);
@@ -61,19 +60,15 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
 
     const fileInputRef = useRef(null);
 
-    const answerTitleChange = (e) => {
-        setAnswerTitle(e.target.value);
-    };
-
-    const answerContentsChange = (e) => {
-        setAnswerContents(e.target.value);
+    const titleChange = (e) => {
+        setTitle(e.target.value);
     };
 
     const completedAnswering = () => {
-        if (validateAnswerTitle(answerTitle)) {
+        if (validateAnswerTitle(title)) {
             canShowTitleAlert(true);
             return;
-        } else if (validateAnswerContents(answerContents)) {
+        } else if (validateAnswerContents(editorValue)) {
             canShowContentAlert(true);
             return;
         } else {
@@ -139,21 +134,15 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
 
     const fetchPostAnswerByQuestionId = async () => {
         try {
-            const fileData =
-                file && (await uploadFile(file, getCookie('accessToken')));
-
             const answerData = {
-                answerTitle,
-                answerContents,
-                answerFileName: fileData.originName,
-                answerFilePath: fileData.storedFilePath,
+                title,
+                contents: editorValue,
             };
-            console.log(answerData);
-
             const result = await postAnswerByQuestionId(
+                file,
+                answerData,
                 questionId,
                 getCookie('accessToken'),
-                answerData,
             );
 
             if (result) {
@@ -243,27 +232,37 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                   status === 'READY' &&
                   thisRole !== 'CUSTOMER' ? ( // 답변 입력 중
                     <div>
-                        <AnswerTitleInput
-                            answerTitleChange={answerTitleChange}
-                        />
-                        <AnswerContentInput
-                            answerContentsChange={answerContentsChange}
+                        <AnswerTitleInput titleChange={titleChange} />
+                        <TextEditor
+                            placeholder={'답변을 입력하세요.'}
+                            width={'852px'}
+                            inputHeight={'112px'}
+                            inputMaxHeight={'112px'}
+                            margin={'12px 0 0 20px'}
+                            padding={'0px'}
+                            value={editorValue}
+                            onChange={setEditorValue}
                         />
                     </div>
                 ) : status === 'COMPLETED' ? ( // 답변 등록
                     <div className={Completed}>
                         <div>
                             <img src={amark} />
-                            <div>{answerDetail.answerTitle}</div>
+                            <div>{answerDetail.title}</div>
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
                             <div style={filesEllipsis}>
-                                <a href={answerDetail.answerFilePath} download>
-                                    {answerDetail.answerFileName}
+                                <a href={answerDetail.filePath} download>
+                                    {answerDetail.fileName}
                                 </a>
                             </div>
                         </div>
-                        <div>{answerDetail.answerContents}</div>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizer(`${answerDetail.contents || ''}`),
+                            }}
+                        />
+                        {/* <div>{answerDetail.contents}</div> */}
                     </div>
                 ) : (
                     ''

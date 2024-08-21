@@ -97,51 +97,24 @@ export const getQuestionByQuestionId = async (userId, questionId, token) => {
 };
 
 // Inquiry 관련 질문 등록 추가
-
-// 기타 질문 등록
 export const postQuestionByUserId = async (
+    file,
+    questionData,
     userId,
     token,
-    title,
-    contents,
-    // files,
-    fileName,
-    filePath,
-    type,
-    status,
 ) => {
     try {
-        const response = await fetch(`/api/questions/customers/${userId}`, {
-            method: 'POST',
-            headers: {
-                Authorization: `${token}`,
-                'Content-Type': 'application/json',
-            },
-            // body: JSON.stringify(title, contents, files, type, status),
-            body: JSON.stringify(title, contents, fileName, filePath, type, status),
-        });
-
-        const data = await response.json();
-
-        if (data.result === 'success') {
-            return data.data;
-        } else {
-            console.error('Failed to fetch data:', data.message);
-            return [];
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-    }
-};
-
-// 파일 업로드
-export const uploadFile = async (file, token) => {
-    try {
         const formData = new FormData();
-        formData.append('file', file);
+        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
+            type: 'application/json',
+        });
+        formData.append('question', blobQuestionData);
 
-        const response = await fetch('/api/upload', {
+        if (file) {
+            formData.append('files', file);
+        }
+
+        const response = await fetch(`/api/questions/customers/${userId}`, {
             method: 'POST',
             headers: {
                 Authorization: `${token}`,
@@ -150,13 +123,17 @@ export const uploadFile = async (file, token) => {
         });
 
         if (!response.ok) {
-            throw new Error('File upload failed');
+            throw `${response.status} ${response.statusText}`;
         }
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('File upload failed:', error);
-        throw error;
+        const json = await response.json();
+
+        if (json.result !== 'success') {
+            throw json.message;
+        }
+
+        return json;
+    } catch (err) {
+        console.error(err);
     }
 };

@@ -64,35 +64,27 @@ function QuestionInput() {
     // Inquiry 무관 질문 등록 API
     const fetchPostQuestionByUserId = async () => {
         try {
-            const fileData =
-                file && (await uploadFile(file, getCookie('accessToken')));
-
-            console.log('fileData ==============>', fileData);
-            // fileDate == {originName:   , storedFilePath:  }
-
             const questionData = {
                 title,
                 contents: editorValue,
-                // files,
-                fileName: fileData.originName,
-                filePath: fileData.storedFilePath,
                 type,
                 status,
             };
-            console.log(questionData);
-
             const result = await postQuestionByUserId(
+                file,
+                questionData,
                 userId,
                 getCookie('accessToken'),
-                questionData,
             );
 
             if (result) {
                 console.log('응답받은 데이터는 다음과 같습니다.', result);
-                resetForm();
+                setAnswerDetail(result);
             } else {
                 console.error('Fetched data is not an array or is invalid.');
+                setAnswerDetail([]);
             }
+            resetForm();
         } catch (error) {
             console.error('Error in posting question:', error);
         }

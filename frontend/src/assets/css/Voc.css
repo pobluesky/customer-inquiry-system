@@ -206,6 +206,7 @@
 
 /* 첨부파일, 파일 추가, 파일 삭제 */
 .Question_Input > div > div:nth-child(4) {
+    height: 92px;
     display: grid;
     grid-template-columns: 120px 96px 96px 600px;
     align-items: center;
