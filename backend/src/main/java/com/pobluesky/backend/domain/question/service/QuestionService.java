@@ -57,10 +57,10 @@ public class QuestionService {
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        //Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size);
 
-        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
+        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate, sortBy);
     }
 
     // 질문 전체 조회 (고객사)
@@ -78,11 +78,11 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        //Sort sort = getSortByOrderCondition(sortBy);
+        Pageable pageable = PageRequest.of(page, size);
 
         return questionRepository.findQuestionsByCustomer(
-            customerId, pageable, status, startDate, endDate);
+            customerId, pageable, status, startDate, endDate, sortBy);
     }
 
     // 질문 번호별 질문 조회 (담당자)

@@ -10,6 +10,9 @@ import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTemplate;
@@ -36,12 +39,12 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Pageable pageable,
         QuestionStatus status,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     ) {
-      
-        List<QuestionSummaryDTO> inqQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.INQ, pageable, status, startDate, endDate);
-        List<QuestionSummaryDTO> siteQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.SITE, pageable, status, startDate, endDate);
-        List<QuestionSummaryDTO> etcQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.ETC, pageable, status, startDate, endDate);
+        List<QuestionSummaryDTO> inqQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.INQ, pageable, status, startDate, endDate, sortBy);
+        List<QuestionSummaryDTO> siteQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.SITE, pageable, status, startDate, endDate, sortBy);
+        List<QuestionSummaryDTO> etcQuestions = getQuestionsByTypeForCustomer(userId, QuestionType.ETC, pageable, status, startDate, endDate, sortBy);
 
         long totalCount = getCountQueryForCustomer(userId, status, startDate, endDate).fetchCount();
 
@@ -69,9 +72,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Pageable pageable,
         QuestionStatus status,
         LocalDate startDate,
-        LocalDate endDate) {
-
-        return queryFactory
+        LocalDate endDate,
+        String sortBy
+    ) {
+        JPAQuery<QuestionSummaryDTO> query = queryFactory
             .select(Projections.constructor(QuestionSummaryDTO.class,
                 question.questionId,
                 question.title,
@@ -90,27 +94,25 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 statusEq(status),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(question.createdDate.desc())
+            .orderBy(getOrderSpecifier(sortBy));
+
+        return query
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
     }
-
 
     @Override
     public QuestionSummaryResponseDTO findQuestionsByManager(
         Pageable pageable,
         QuestionStatus status,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     ) {
-
-        List<QuestionSummaryDTO> inqQuestions =
-            getQuestionsByTypeForManager(QuestionType.INQ, pageable, status, startDate, endDate);
-        List<QuestionSummaryDTO> siteQuestions =
-            getQuestionsByTypeForManager(QuestionType.SITE, pageable, status, startDate, endDate);
-        List<QuestionSummaryDTO> etcQuestions =
-            getQuestionsByTypeForManager(QuestionType.ETC, pageable, status, startDate, endDate);
+        List<QuestionSummaryDTO> inqQuestions = getQuestionsByTypeForManager(QuestionType.INQ, pageable, status, startDate, endDate, sortBy);
+        List<QuestionSummaryDTO> siteQuestions = getQuestionsByTypeForManager(QuestionType.SITE, pageable, status, startDate, endDate, sortBy);
+        List<QuestionSummaryDTO> etcQuestions = getQuestionsByTypeForManager(QuestionType.ETC, pageable, status, startDate, endDate, sortBy);
 
         long totalCount = getCountQueryForManager(status, startDate, endDate).fetchCount();
 
@@ -135,10 +137,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Pageable pageable,
         QuestionStatus status,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     ) {
-
-        return queryFactory
+        JPAQuery<QuestionSummaryDTO> query = queryFactory
             .select(Projections.constructor(QuestionSummaryDTO.class,
                 question.questionId,
                 question.title,
@@ -156,7 +158,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 statusEq(status),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(question.createdDate.desc())
+            .orderBy(getOrderSpecifier(sortBy));
+
+        return query
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -183,6 +187,23 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             return dateTemplate.goe(startDate);
         } else {
             return dateTemplate.loe(endDate);
+        }
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return new OrderSpecifier[]{
+                    question.createdDate.desc().nullsLast(),
+                    question.questionId.desc()
+                };
+            case "OLDEST":
+                return new OrderSpecifier[]{
+                    question.createdDate.asc().nullsFirst(),
+                    question.questionId.asc()
+                };
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
         }
     }
 }
