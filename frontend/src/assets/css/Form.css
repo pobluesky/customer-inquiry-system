@@ -262,6 +262,26 @@ select {
     align-items: center;
 }
 
+.LineItemGetRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.LineItemInputRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    /*gap: 10px;*/
+    /*color: #7B7B7B;*/
+    /*background-color: #ffffff;*/
+    /*font-weight: 800;*/
+    /*border: 1px solid #c1c1c1;*/
+    /*border-radius: 9px;*/
+    /*padding: 8px;*/
+    /*margin: 20px;*/
+    /*font-size: 20px;*/
+    /*align-items: center;*/
+}
+
 .LineItemInput {
     background-color: #ffffff;
     text-align: center;

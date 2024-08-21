@@ -10,12 +10,22 @@ import {
   LineItemColumn,
   _none
 } from "../../../assets/css/Form.css";
+import GetLineItem from '../../mocules/GetLineItem';
 
-const InquiryHistoryForm = ({ productType, onLineItemsChange }) => {
+const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) => {
   const [isChecked, setChecked] = useState(true);
   const [rows, setRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [lineItems, setLineItems] = useState([]);
+
+  console.log("lineItemData Type: ", typeof lineItemData);
+  console.log("lineItemData: ", typeof lineItemData[0] === 'undefined');
+
+  const [lineItemsExistence, setLineItemsExistence] = useState(true);
+
+  useEffect(() => {
+    setLineItemsExistence(typeof lineItemData[0] !== 'undefined');
+  }, [lineItemData]);
 
   const columnFieldMappings = {
     "CAR": {
@@ -94,7 +104,7 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange }) => {
     onLineItemsChange(remainingRows.map(row => ({
       id: row.id,
       ...Object.fromEntries(lineItems.map((label, index) => [label, row.items[index]]))
-    }))); // Map to match requestDTO
+    })));
   };
 
   const copyRows = () => {
@@ -155,50 +165,68 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange }) => {
     })));
   }, [productType]);
 
+  console.log("isChecked: ", isChecked);
+
   return (
       <div className={Container} style={{ marginTop: "-2vh" }}>
         <div className={Sheet}>
           <ToggleBar title={"Inquiry 내역"} isChecked={isChecked} setCheck={setChecked} />
           {isChecked ? (
-              <div className={Opend}>
-                <div className={buttonWrapper}>
-                  {["행추가", "행삭제", "행복사"].map((name, index) => (
-                      <Button
-                          key={index}
-                          onClick={[createRow, deleteRows, copyRows][index]}
-                          btnName={name}
-                          margin={'-0.5vw 0.7vw 0 0.3vw'}
-                          backgroundColor={'#03507d'}
-                          textColor={'#ffffff'}
-                          border={'none'}
-                          borderRadius={'18px'}
-                          fontSize={'17px'}
-                          fontWeight={"500"}
-                          padding={'10px'}
-                      />
-                  ))}
-                </div>
-                <div className={LineItemColumn}>
-                  <div>
-                    <input type="checkbox" className={_none} />
-                  </div>
-                  {lineItems.map((item, index) => (
-                      <div key={index}>
-                        {item}
+              !lineItemsExistence ? (
+                  <div className={Opend}>
+                    <div className={buttonWrapper}>
+                      {["행추가", "행삭제", "행복사"].map((name, index) => (
+                          <Button
+                              key={index}
+                              onClick={[createRow, deleteRows, copyRows][index]}
+                              btnName={name}
+                              margin={'-0.5vw 0.7vw 0 0.3vw'}
+                              backgroundColor={'#03507d'}
+                              textColor={'#ffffff'}
+                              border={'none'}
+                              borderRadius={'18px'}
+                              fontSize={'17px'}
+                              fontWeight={"500"}
+                              padding={'10px'}
+                          />
+                      ))}
+                    </div>
+                    <div className={LineItemColumn}>
+                      <div>
+                        <input type="checkbox" className={_none} />
                       </div>
-                  ))}
-                </div>
-                {rows.map(row => (
-                    <LineItem
-                        key={row.id}
-                        id={row.id}
-                        lineItems={row.items}
-                        onRowSelect={onRowSelected}
-                        onChange={handleInputChange}
-                        isChecked={isChecked}
-                    />
-                ))}
-              </div>
+                      {lineItems.map((item, index) => (
+                          <div key={index}>
+                            {item}
+                          </div>
+                      ))}
+                    </div>
+                    {rows.map(row => (
+                        <LineItem
+                            key={row.id}
+                            id={row.id}
+                            lineItems={row.items}
+                            onRowSelect={onRowSelected}
+                            onChange={handleInputChange}
+                            isChecked={isChecked}
+                        />
+                    ))}
+                  </div>
+              ) : (
+                  <div>
+                    <div className={LineItemColumn}>
+                    <div>
+                      <input type="checkbox" className={_none} />
+                    </div>
+                    {lineItems.map((item, index) => (
+                        <div key={index}>
+                          {item}
+                        </div>
+                    ))}
+                  </div>
+                    <GetLineItem lineItems={lineItemData} />
+                  </div>
+              )
           ) : (
               ''
           )}

@@ -6,6 +6,7 @@ import {
 } from '../../assets/css/Form.css';
 
 const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
+
     const handleInputChange = (index, value) => {
         onChange(id, index, value);
     };
@@ -26,7 +27,7 @@ const LineItem = ({ id, lineItems, onRowSelect, onChange, isChecked }) => {
                     key={index}
                     type="text"
                     className={LineItemInput}
-                    value={item || ''}
+                    value={item}
                     onChange={(e) => handleInputChange(index, e.target.value)}
                 />
             ))}

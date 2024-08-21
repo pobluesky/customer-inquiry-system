@@ -57,7 +57,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 ...prevData,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
-            console.log(response.data);
+            console.log("getInquiryDataDetail: ", response.data);
+            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
             console.error('Error fetching InquiryDetail:', error);
         }
@@ -125,6 +126,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
+    console.log("formData.lineItemResponseDTOs: ", formData.lineItemResponseDTOs);
+    console.log("formData.lineItemResponseDTOs[0]: ", formData.lineItemResponseDTOs[0]);
+    console.log("formData.lineItemResponseDTOs[1].ixPlate: ", formData.lineItemResponseDTOs[1]?.ixPlate);
+
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
@@ -133,7 +138,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm
                 productType={formData.productType}
-                lineItems={formData.lineItemResponseDTOs}
+                lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
