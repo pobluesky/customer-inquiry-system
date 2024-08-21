@@ -13,10 +13,6 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long userId;
-
-    private String customerName;
-
     private String generalDetails;
 
     private String orderInfo;

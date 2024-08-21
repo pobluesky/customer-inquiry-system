@@ -16,10 +16,6 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private Long userId;
-
-    private String CustomerName;
-
     private Kind kind;
 
     private InqName inqName;
