@@ -25,7 +25,6 @@ public record CollaborationCreateRequestDTO(
             .colContents(colContents)
             .fileName(fileName)
             .filePath(filePath)
-//            .files(filePath)
             .build();
     }
 }

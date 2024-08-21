@@ -8,9 +8,6 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 public record AnswerCreateRequestDTO(
     String title,
     String contents
-//    String answerFiles
-//    String fileName,
-//    String filePath
 ) {
     public Answer toAnswerEntity(Question question, Inquiry inquiry, Customer customer, String fileName, String filePath) {
         return Answer.builder()
@@ -21,8 +18,6 @@ public record AnswerCreateRequestDTO(
             .contents(contents)
             .fileName(fileName)
             .filePath(filePath)
-//            .answerFileName(answerFileName)
-//            .answerFilePath(answerFilePath)
             .build();
     }
 }

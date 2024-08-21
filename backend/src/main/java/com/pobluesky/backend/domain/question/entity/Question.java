@@ -34,9 +34,6 @@ public class Question extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String contents;
 
-//    @Column(columnDefinition = "TEXT")
-//    private String files;
-
     @Column(columnDefinition = "TEXT")
     private String fileName;
 
@@ -59,7 +56,6 @@ public class Question extends BaseEntity {
         Customer customer,
         String title,
         String contents,
-//        String files,
         String fileName,
         String filePath,
         QuestionStatus status,
@@ -69,7 +65,6 @@ public class Question extends BaseEntity {
         this.customer = customer;
         this.title = title;
         this.contents = contents;
-//        this.files = files;
         this.fileName = fileName;
         this.filePath = filePath;
         this.status = status;
