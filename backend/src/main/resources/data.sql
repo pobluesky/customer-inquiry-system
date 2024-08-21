@@ -99,10 +99,10 @@ ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
 INSERT INTO question (created_date, inquiry_id, user_id, title, contents, file_name, file_path, type, status)
 VALUES
     ('2024-08-01 10:00:00', null, 1, '문의 소요 기간', '평균 문의 소요 기간에 대해 알고 싶습니다', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED'),
-    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf,customer_email.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'COMPLETED'),
-    ('2024-08-03 14:30:00', 3, 3, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf,suggestion_doc.docx', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'READY'),
+    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'COMPLETED'),
+    ('2024-08-03 14:30:00', 3, 3, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'READY'),
     ('2024-08-03 14:30:00', 2, 2, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report4.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'READY');
+    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'READY');
 
 -- ANSWER
 INSERT INTO answer (created_date, inquiry_id, user_id, question_id, answer_title, answer_contents, answer_file_name, answer_file_path)

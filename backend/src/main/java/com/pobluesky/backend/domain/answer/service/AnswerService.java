@@ -106,6 +106,10 @@ public class AnswerService {
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
+        if (!Objects.equals(answer.getCustomer().getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
+
         return AnswerResponseDTO.from(answer);
     }
 
@@ -119,7 +123,7 @@ public class AnswerService {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 담당자가 아닐 경우에 에러가 출력되지 않는 문제
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 존재하지 않는 담당자일 경우
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND)); // 존재하지 않는 질문인 경우

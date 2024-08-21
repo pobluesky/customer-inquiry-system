@@ -66,10 +66,10 @@ public class QuestionService {
 
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), customerId)) {
+        if (!Objects.equals(user.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
@@ -126,17 +126,17 @@ public class QuestionService {
     ) {
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         Inquiry inquiry = inquiryRepository
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Question question = dto.toQuestionEntity(inquiry, customer);
+        Question question = dto.toQuestionEntity(inquiry, user);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
@@ -151,13 +151,13 @@ public class QuestionService {
     ) {
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Question question = dto.toQuestionEntity(null, customer);
+        Question question = dto.toQuestionEntity(null, user);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
