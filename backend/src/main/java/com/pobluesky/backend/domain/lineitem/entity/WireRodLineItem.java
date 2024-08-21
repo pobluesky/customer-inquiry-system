@@ -16,8 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,7 +48,7 @@ public class WireRodLineItem extends LineItem{
 
     private Integer quantity;
 
-    private LocalDate expectedDeadline;
+    private String expectedDeadline;
 
     private Integer initialQuantity;
 
@@ -66,7 +64,7 @@ public class WireRodLineItem extends LineItem{
         String orderCategory,
         String diameter,
         Integer quantity,
-        LocalDate expectedDeadline,
+        String expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
         String finalUse
@@ -89,7 +87,7 @@ public class WireRodLineItem extends LineItem{
         String orderCategory,
         String diameter,
         Integer quantity,
-        LocalDate expectedDeadline,
+        String expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
         String finalUse

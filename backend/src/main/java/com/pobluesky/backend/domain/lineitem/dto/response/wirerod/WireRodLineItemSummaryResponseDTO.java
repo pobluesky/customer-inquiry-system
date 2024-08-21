@@ -5,8 +5,6 @@ import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 
-import java.time.LocalDate;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,7 +24,7 @@ public class WireRodLineItemSummaryResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private LocalDate expectedDeadLine;
+    private String expectedDeadLine;
 
     private Integer initialQuantity;
 
