@@ -1,5 +1,8 @@
 package com.pobluesky.backend.domain.collaboration.repository;
 
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -29,8 +32,13 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
     @Override
     public Page<CollaborationSummaryResponseDTO> findAllCollaborationsRequest(
-        Pageable pageable, ColStatus colStatus, String colReqManager, Long colReqId,
-        LocalDate startDate, LocalDate endDate) {
+        Pageable pageable,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy) {
 
         List<CollaborationSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
@@ -48,11 +56,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
                 colReqIdEq(colReqId),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(
-                collaboration.createdDate.desc(),
-                collaboration.colId.desc(),
-                collaboration.colStatus.asc()
-                )
+            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -73,6 +77,23 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
                 colReqIdEq(colReqId),
                 createdDateBetween(startDate, endDate)
             );
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return new OrderSpecifier[]{
+                    collaboration.createdDate.desc().nullsLast(),
+                    collaboration.colId.desc()
+                };
+            case "OLDEST":
+                return new OrderSpecifier[]{
+                    collaboration.createdDate.asc().nullsFirst(),
+                    collaboration.colId.asc()
+                };
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 
     private BooleanExpression colStatusEq(ColStatus colStatus) {

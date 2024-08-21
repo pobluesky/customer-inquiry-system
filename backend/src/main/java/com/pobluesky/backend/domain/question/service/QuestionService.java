@@ -23,7 +23,6 @@ import java.util.Objects;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,25 +48,40 @@ public class QuestionService {
     // 질문 전체 조회 (담당자)
     @Transactional(readOnly = true)
     public QuestionSummaryResponseDTO getQuestionsByManager(
-        String token, int page, int size, String sortBy,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate) {
 
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size);
 
-        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate);
+        return questionRepository.findQuestionsByManager(
+            pageable,
+            status,
+            startDate,
+            endDate,
+            sortBy);
     }
 
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
     public QuestionSummaryResponseDTO getQuestionsByCustomer(
-        String token, Long customerId, int page, int size, String sortBy,
-        QuestionStatus status, LocalDate startDate, LocalDate endDate) {
+        String token,
+        Long customerId,
+        int page,
+        int size,
+        String sortBy,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate) {
 
         Long userId = signService.parseToken(token);
 
@@ -78,11 +92,15 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size);
 
         return questionRepository.findQuestionsByCustomer(
-            customerId, pageable, status, startDate, endDate);
+            customerId,
+            pageable,
+            status,
+            startDate,
+            endDate,
+            sortBy);
     }
 
     // 질문 번호별 질문 조회 (담당자)
@@ -175,21 +193,5 @@ public class QuestionService {
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
-    }
-
-    private Sort getSortByOrderCondition(String sortBy) {
-        return switch (sortBy) {
-            case "OLDEST" -> Sort.by(
-                Sort.Order.asc("createdDate"),
-                Sort.Order.desc("questionId")
-            );
-
-            case "LATEST" -> Sort.by(
-                Sort.Order.desc("createdDate"),
-                Sort.Order.desc("questionId")
-            );
-
-            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        };
     }
 }
