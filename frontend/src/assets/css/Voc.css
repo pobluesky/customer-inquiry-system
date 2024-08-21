@@ -461,12 +461,16 @@
     overflow-y: auto;
 }
 
-.Question_Modal > div:nth-child(4).Completed > div:nth-child(2)::-webkit-scrollbar {
+.Question_Modal
+    > div:nth-child(4).Completed
+    > div:nth-child(2)::-webkit-scrollbar {
     display: block;
     width: 8px;
 }
 
-.Question_Modal > div:nth-child(4).Completed > div:nth-child(2)::-webkit-scrollbar-thumb {
+.Question_Modal
+    > div:nth-child(4).Completed
+    > div:nth-child(2)::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
     border-radius: 10px;
 }
@@ -516,3 +520,46 @@
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
         rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
+
+.Question_Inquiry_Modal > div:nth-child(n) {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 4fr 4fr 2fr 2fr;
+    column-gap: 8px;
+    padding: 0 24px 0 24px;
+    width: 684px;
+    height: 84px;
+    border: 1px solid #c1c1c1;
+    border-radius: 24px;
+    text-align: center;
+    align-items: center;
+}
+
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(1) {
+    font-size: 20px;
+    font-weight: 600;
+    color: #454545;
+}
+
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(2) {
+    /* background-color: pink; */
+}
+
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(3),
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(4) {
+    font-size: 20px;
+    font-weight: 600;
+    color: #454545;
+    /* background-color: orange; */
+}
+
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(5) {
+    /* background-color: greenyellow; */
+}
+
+.Question_Inquiry_Modal > div:nth-child(n) > div:nth-child(6) {
+    /* background-color: skyblue; */
+}
+/* ************************************************* */
+/* div {
+    border: 1px solid blue;
+} */

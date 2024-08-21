@@ -26,6 +26,8 @@ import QualityManagerInqForm from './pages/inq-form/QualityManagerInqForm';
 import CustomerInqList from './pages/inq-list/CustomerInqList';
 import CustomerInqItem from './pages/inq-item/CustomerInqItem';
 
+import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
+
 function App() {
     return (
         <AuthProvider>
@@ -51,6 +53,7 @@ function App() {
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
                         <Route path="voc-form" element={<VocForm />} />
+                        <Route path="voc-inq" element={<QuestionInquirySearchModal />} />
 
                         <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}
