@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import dompurify from 'dompurify';
 import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
+import Input from '../atoms/Input';
 import {
     AnswerTitleInput,
     AnswerContentInput,
@@ -37,6 +38,7 @@ import {
     getAnswerByQuestionId,
     getAnswerByQuestionIdForManager,
     postAnswerByQuestionId,
+    uploadFile,
 } from '../../apis/api/answer';
 
 function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
@@ -52,9 +54,12 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const [answerTitle, setAnswerTitle] = useState('');
     const [answerContents, setAnswerContents] = useState('');
     const [answerFiles, setAnswerFiles] = useState('기본 파일명');
+    const [file, setFile] = useState('');
 
     const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
+
+    const fileInputRef = useRef(null);
 
     const answerTitleChange = (e) => {
         setAnswerTitle(e.target.value);
@@ -72,13 +77,8 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostAnswerByQuestionId(
-                questionId,
-                answerTitle,
-                answerContents,
-                answerFiles,
-            );
-            fetchGetQuestionDetail(questionId);
+            fetchPostAnswerByQuestionId();
+            fetchGetQuestionDetail();
             setStatus('COMPLETED');
             AnswerCompleteAlert();
             setAnswering(false);
@@ -137,37 +137,48 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                   }
               };
 
-    const fetchPostAnswerByQuestionId = async (
-        questionId,
-        answerTitle,
-        answerContents,
-        answerFiles,
-    ) => {
-        const answerData = {
-            answerTitle,
-            answerContents,
-            answerFiles,
-        };
+    const fetchPostAnswerByQuestionId = async () => {
+        try {
+            const fileData =
+                file && (await uploadFile(file, getCookie('accessToken')));
 
-        const result = await postAnswerByQuestionId(
-            questionId,
-            getCookie('accessToken'),
-            answerData,
-        );
+            const answerData = {
+                answerTitle,
+                answerContents,
+                answerFileName: fileData.originName,
+                answerFilePath: fileData.storedFilePath,
+            };
+            console.log(answerData);
 
-        if (result) {
-            console.log('응답받은 데이터는 다음과 같습니다.', result);
-            setAnswerDetail(result);
-        } else {
-            console.error('Fetched data is not an array or is invalid.');
-            setAnswerDetail([]);
+            const result = await postAnswerByQuestionId(
+                questionId,
+                getCookie('accessToken'),
+                answerData,
+            );
+
+            if (result) {
+                console.log('응답받은 데이터는 다음과 같습니다.', result);
+                setAnswerDetail(result);
+            } else {
+                console.error('Fetched data is not an array or is invalid.');
+                setAnswerDetail([]);
+            }
+        } catch (error) {
+            console.error('Error in posting question:', error);
         }
     };
 
     useEffect(() => {
-        fetchGetQuestionDetail(questionId);
-        fetchGetAnswerDetail(questionId);
+        fetchGetQuestionDetail();
+        fetchGetAnswerDetail();
     }, [questionId, status]);
+
+    const attachFile = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+        }
+    };
 
     const filesEllipsis = {
         maxWidth: '96px',
@@ -209,7 +220,12 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         <div>{questionDetail.title}</div>
                         <img src={folder} />
                         <div>고객사 첨부파일</div>
-                        <div style={filesEllipsis}>{questionDetail.files}</div>
+                        <div style={filesEllipsis}>
+                            <a href={questionDetail.filePath} download>
+                                {questionDetail.fileName}
+                            </a>
+                        </div>
+                        <div style={filesEllipsis}></div>
                     </div>
                     {/* <div>{questionDetail.contents}</div> */}
                     <div
@@ -242,7 +258,9 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
                             <div style={filesEllipsis}>
-                                {answerDetail.answerFiles}
+                                <a href={answerDetail.answerFilePath} download>
+                                    {answerDetail.answerFileName}
+                                </a>
                             </div>
                         </div>
                         <div>{answerDetail.answerContents}</div>
@@ -251,6 +269,18 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     ''
                 )}
                 <div>
+                    <div>
+                        {/* 하단 버튼 좌측 첨부파일란 */}
+                        {thisRole !== 'CUSTOMER' && (
+                            <>
+                                <img src={folder} />
+                                <span>첨부파일</span>
+                                <span style={filesEllipsis}>
+                                    {file ? file.name : ''}
+                                </span>
+                            </>
+                        )}
+                    </div>
                     {/* [닫기] */}
                     <div>
                         <CloseButton onClick={onClose} />
@@ -280,10 +310,29 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                                         />
                                     </div>
                                     <div>
-                                        <AnswerButton
-                                            btnName={'파일 업로드'}
-                                            onClick={() => {}}
+                                        <Input
+                                            type="file"
+                                            display={'none'}
+                                            ref={fileInputRef}
+                                            onChange={attachFile}
                                         />
+                                        <div>
+                                            {file ? (
+                                                <AnswerButton
+                                                    btnName={'파일 삭제'}
+                                                    onClick={() =>
+                                                        setFile(null)
+                                                    }
+                                                />
+                                            ) : (
+                                                <AnswerButton
+                                                    btnName={'파일 업로드'}
+                                                    onClick={() =>
+                                                        fileInputRef.current.click()
+                                                    }
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 </>
                             )}

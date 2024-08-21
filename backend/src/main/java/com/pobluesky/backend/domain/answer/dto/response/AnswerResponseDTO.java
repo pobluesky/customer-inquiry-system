@@ -14,7 +14,9 @@ public record AnswerResponseDTO(
     Long userId,
     String answerTitle,
     String answerContents,
-    String answerFiles,
+//    String answerFiles,
+    String answerFileName,
+    String answerFilePath,
     LocalDateTime createdDate
 
 ) {
@@ -27,7 +29,9 @@ public record AnswerResponseDTO(
             .answerTitle(answer.getAnswerTitle())
             .answerContents(answer.getAnswerContents())
             .createdDate(answer.getCreatedDate())
-            .answerFiles(answer.getAnswerFiles())
+//            .answerFiles(answer.getAnswerFiles())
+            .answerFileName(answer.getAnswerFileName())
+            .answerFilePath(answer.getAnswerFilePath())
             .build();
     }
 }

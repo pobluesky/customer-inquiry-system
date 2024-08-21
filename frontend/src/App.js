@@ -25,6 +25,8 @@ import SalesManagerInqForm from './pages/inq-form/SalesManagerInqForm';
 import QualityManagerInqForm from './pages/inq-form/QualityManagerInqForm';
 import CustomerInqList from './pages/inq-list/CustomerInqList';
 import CustomerInqItem from './pages/inq-item/CustomerInqItem';
+import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
+import QuestionModal from './components/organisms/QuestionModal';
 
 function App() {
     return (
@@ -53,6 +55,8 @@ function App() {
                         <Route path="voc-form" element={<VocForm />} />
 
                         <Route path="dashboard" element={<DashBoard />} />
+                        <Route path="modal" element={<QuestionInquirySearchModal />} />
+                        <Route path="questionModal" element={<QuestionModal /> } />
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>

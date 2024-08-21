@@ -9,7 +9,9 @@ import com.pobluesky.backend.domain.question.entity.QuestionType;
 public record QuestionCreateRequestDTO(
     String title,
     String contents,
-    String files,
+//    String files,
+    String fileName,
+    String filePath,
     QuestionStatus status,
     QuestionType type
 ) {
@@ -20,7 +22,9 @@ public record QuestionCreateRequestDTO(
             .inquiry(inquiry)
             .title(title)
             .contents(contents)
-            .files(files)
+//            .files(files)
+            .fileName(fileName)
+            .filePath(filePath)
             .status(status)
             .type(type)
             .build();

@@ -41,8 +41,14 @@ public class Answer extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String answerContents;
 
+//    @Column(columnDefinition = "TEXT")
+//    private String answerFiles;
+
     @Column(columnDefinition = "TEXT")
-    private String answerFiles;
+    private String answerFileName;
+
+    @Column(columnDefinition = "TEXT")
+    private String answerFilePath;
 
     @Builder
     private Answer(
@@ -51,13 +57,17 @@ public class Answer extends BaseEntity {
         Customer customer,
         String answerTitle,
         String answerContents,
-        String answerFiles
+//        String answerFiles
+        String answerFileName,
+        String answerFilePath
     ) {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
         this.answerTitle = answerTitle;
         this.answerContents = answerContents;
-        this.answerFiles = answerFiles;
+//        this.answerFiles = answerFiles;
+        this.answerFileName = answerFileName;
+        this.answerFilePath = answerFilePath;
     }
 }

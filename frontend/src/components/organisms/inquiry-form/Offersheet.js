@@ -4,7 +4,6 @@ import Button from '../../atoms/Button';
 import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
-import DateInput from '../../mocules/MyDateInput';
 import OfferTable from '../../mocules/Offertable';
 import Terms from '../../atoms/Terms';
 import { Offer_Sheet, Datepicker } from '../../../assets/css/Form.css';
@@ -207,7 +206,7 @@ function Offersheet({ inquiryId, addTask }) {
                             </div>
                             <div>
                                 <Category categoryName={'4. Shipment'} />
-                                <DateInput className={Datepicker} />
+                                {/* <DateInput className={Datepicker} /> */}
                             </div>
                             <div>
                                 <Category categoryName={'5. Payment Term'} />
@@ -225,7 +224,7 @@ function Offersheet({ inquiryId, addTask }) {
                             </div>
                             <div>
                                 <Category categoryName={'7. Validity'} />
-                                <DateInput className={Datepicker} />
+                                {/* <DateInput className={Datepicker} /> */}
                             </div>
                             <div>
                                 <Category categoryName={'8. Remark'} />

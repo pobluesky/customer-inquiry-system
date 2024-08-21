@@ -28,6 +28,7 @@ const Input = forwardRef(
             border,
             borderRadius,
             fontSize,
+            display,
             float,
         },
         ref,
@@ -80,6 +81,7 @@ const Input = forwardRef(
                         borderRadius,
                         fontSize,
                         float,
+                        display,
                     }}
                     autoComplete="off"
                 />

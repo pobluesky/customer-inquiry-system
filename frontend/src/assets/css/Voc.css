@@ -339,7 +339,7 @@
 /* 질문 및 답변 모달 컴포넌트 ***************************************/
 /******************************************************************/
 .Question_Modal_Container {
-    position: fixed;    
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -357,7 +357,7 @@
     border-radius: 12px;
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 /* VoC 문의 번호 + 문의 번호 */
@@ -429,7 +429,10 @@
 }
 
 /* 답변 제목 */
-.Question_Modal > div:nth-child(4).Completed > div:first-child > div:nth-child(2) {
+.Question_Modal
+    > div:nth-child(4).Completed
+    > div:first-child
+    > div:nth-child(2) {
     font-size: 24px;
     font-weight: 600;
     color: #6e6e6e;
@@ -447,7 +450,43 @@
     margin: 0 24px 0 0;
 }
 
+/* 버튼 그룹 좌측의 폴더 아이콘 및 첨부파일란 */
+.Question_Modal > div:nth-child(5) img,
+.Question_Modal > div:nth-child(5) span {
+    float: left;
+}
+
+/* 버튼 그룹 좌측의 첨부파일란 */
+.Question_Modal > div:nth-child(5) span {
+    line-height: 20px;
+    margin: 0 0 0 12px;
+}
+
 /* 마크(Q, A) */
 .Question_Modal img:nth-child(1) {
     margin: 0 0 0 24px;
+}
+
+/******************************************************************/
+/* Inquiry 번호 조회 모달 컴포넌트 **********************************/
+/******************************************************************/
+.Question_Inquiry_Modal_Container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.Question_Inquiry_Modal {
+    display: grid;
+    width: 900px;
+    height: 600px;
+    margin: 0 auto 0 auto;
+    border: solid 1px #ffffff;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }

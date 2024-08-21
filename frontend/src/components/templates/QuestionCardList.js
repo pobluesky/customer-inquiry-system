@@ -45,9 +45,9 @@ function QuestionCardList({
     const { userId } = useAuth();
 
     const [filterArgs, setFilterArgs] = useState('');
-    const [questionSummary, setQuestionSummary] = useState({});
-    const [questionCount, setQuestionCount] = useState({});
-    const [answerCount, setAnswerCount] = useState({});
+    const [questionSummary, setQuestionSummary] = useState('');
+    const [questionCount, setQuestionCount] = useState('');
+    const [answerCount, setAnswerCount] = useState('');
     const [openCard, setOpenCard] = useState(false);
     const [questionId, setQuestionId] = useState(0);
     const [vocNo, setVocNo] = useState(0);
@@ -60,8 +60,8 @@ function QuestionCardList({
     useEffect(() => {
         let args = '';
         if (startDate && endDate) {
-            const s = `startDate=${startDate.toISOString().split('T')[0]}`;
-            const e = `endDate=${endDate.toISOString().split('T')[0]}`;
+            const s = `startDate=${new Date(startDate).toISOString().split('T')[0]}`;
+            const e = `endDate=${new Date(endDate).toISOString().split('T')[0]}`;
             args += `${s}&${e}`;
         }
         if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
