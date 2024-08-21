@@ -151,12 +151,14 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         String filePath = null;
+        String fileName = null;
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             filePath = fileInfo.getStoredFilePath();
+            fileName = fileInfo.getOriginName();
         }
 
-        Inquiry inquiry = dto.toInquiryEntity(filePath);
+        Inquiry inquiry = dto.toInquiryEntity(filePath,fileName);
         inquiry.setCustomer(customer);
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
@@ -188,9 +190,11 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         String filePath = null;
+        String fileName = null;
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             filePath = fileInfo.getStoredFilePath();
+            fileName = fileInfo.getOriginName();
         }
 
         lineItemService.deleteLineItemsByInquiry(inquiry);
@@ -211,6 +215,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
             filePath,
+            fileName,
             inquiryUpdateRequestDTO.responseDeadline()
         );
 

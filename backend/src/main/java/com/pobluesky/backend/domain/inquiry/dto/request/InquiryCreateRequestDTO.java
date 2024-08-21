@@ -26,10 +26,11 @@ public record InquiryCreateRequestDTO(
     String customerRequestDate,
     String additionalRequests,
     @Schema(hidden = true) MultipartFile files,
+    @Schema(hidden = true) String fileName,
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {
-    public Inquiry toInquiryEntity(String filePath) {
+    public Inquiry toInquiryEntity(String filePath,String fileName) {
 
         return Inquiry.builder()
             .country(country)
@@ -43,6 +44,7 @@ public record InquiryCreateRequestDTO(
             .customerRequestDate(customerRequestDate)
             .additionalRequests(additionalRequests)
             .files(filePath)
+            .fileName(fileName)
             .responseDeadline(responseDeadline)
             .build();
     }

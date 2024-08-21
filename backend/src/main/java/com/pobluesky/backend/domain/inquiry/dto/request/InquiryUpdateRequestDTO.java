@@ -27,6 +27,7 @@ public record InquiryUpdateRequestDTO(
     String customerRequestDate,
     String additionalRequests,
     @Schema(hidden = true) MultipartFile files,
+    @Schema(hidden = true) String fileName,
     String responseDeadline,
     List<Map<String, Object>> lineItemRequestDTOs
 ) {

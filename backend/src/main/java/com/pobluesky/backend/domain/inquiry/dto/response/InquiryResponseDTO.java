@@ -29,6 +29,7 @@ public record InquiryResponseDTO(
     String customerRequestDate,
     String additionalRequests,
     String files,
+    String fileName,
     String responseDeadline,
     Boolean isActivated,
     List<LineItemResponseDTO> lineItemResponseDTOs
@@ -55,6 +56,7 @@ public record InquiryResponseDTO(
             .customerRequestDate(inquiry.getCustomerRequestDate())
             .additionalRequests(inquiry.getAdditionalRequests())
             .files(inquiry.getFiles())
+            .fileName(inquiry.getFileName())
             .responseDeadline(inquiry.getResponseDeadline())
             .lineItemResponseDTOs(lineItemResponseDTOs)
             .isActivated(inquiry.getIsActivated())
