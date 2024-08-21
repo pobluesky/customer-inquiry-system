@@ -19,7 +19,8 @@ public interface InquiryRepositoryCustom {
         String customerName,
         InquiryType inquiryType,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     );
 
     Page<InquirySummaryResponseDTO> findInquiriesByManager(
@@ -29,6 +30,7 @@ public interface InquiryRepositoryCustom {
         String customerName,
         InquiryType inquiryType,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     );
 }
