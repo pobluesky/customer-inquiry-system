@@ -10,6 +10,7 @@ import {
 import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
+import lineItem from '../../components/mocules/LineItem';
 
 function CustomerInqForm() {
     const { userId } = useAuth();
@@ -21,7 +22,7 @@ function CustomerInqForm() {
         corporationCode: '(주)포스코',
         country: '',
         customerCode: '',
-        customerId: null,
+        customerId: userId,
         customerName: '',
         customerRequestDate: '',
         files: [],
@@ -37,7 +38,7 @@ function CustomerInqForm() {
         reviewText: '',
         finalReviewText: '',
         lineItemResponseDTOs: [],
-});
+    });
 
     const getUserInfo = async () => {
         if (!userId) {
@@ -60,28 +61,21 @@ function CustomerInqForm() {
         }));
     };
 
-    const [lineItems, setLineItems] = useState([]);
-
-    // 라인아이템 변경 핸들러
-    const handleLineItemsChange = (newLineItems) => {
-        setLineItems(newLineItems);
-        setFormData(prevData => ({
-            ...prevData,
-            lineItemResponseDTOs: newLineItems,
-        }));
-    };
-
     // Inquiry 등록 버튼 클릭 핸들러
     const handleSubmit = async (event) => {
+        if (event) {
+            event.preventDefault();
+        }
         try {
-          const response = await postInquiry(userId, {
-            ...formData,
-            lineItemRequestDTOs: Object.values(lineItems),
-          });
-          console.log('Inquiry posted successfully:', response);
-          // 성공적으로 제출 후의 로직
+            console.log('Submitting inquiry with data:', formData);
+            const response = await postInquiry(userId, {
+                ...formData,
+                lineItemRequestDTOs: formData.lineItemRequestDTOs,
+            });
+            console.log("formData.lineItemRequestDTOs: ", formData.lineItemRequestDTOs);
+            console.log('Inquiry posted successfully:', response);
         } catch (error) {
-          console.error('Error submitting inquiry:', error);
+            console.error('Error submitting inquiry:', error);
         }
     };
 
@@ -110,8 +104,10 @@ function CustomerInqForm() {
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit} />
             <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <InquiryHistoryForm productType={formData.productType}
-                                onLineItemsChange={handleLineItemsChange} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
+            />
             <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
         </div>

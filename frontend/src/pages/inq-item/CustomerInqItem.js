@@ -43,6 +43,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         salesPerson: '',
         reviewText: '',
         finalReviewText: '',
+        lineItemResponseDTOs: [],
     });
 
     const getInquiryDataDetail = async () => {
@@ -52,6 +53,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getInquiryDetail(userId, id);
             setInquiriesDataDetail(response.data);
+            setFormData(prevData => ({
+                ...prevData,
+                lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
+            }));
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching InquiryDetail:', error);
@@ -85,9 +90,11 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         }
     }
 
-    // console.log("reviews..: ", getReviews());
-
-    // console.log('inquiryId: ', inquiriesDataDetail.data.inquiryId);
+    useEffect(() => {
+        getInquiryDataDetail();
+        getUserInfo();
+        getReview();
+    }, [userId, id]);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -113,17 +120,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || []
             }));
         }
-    }, [inquiriesDataDetail, userInfo]);
-
-    useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-    }, [userId, id]);
-
-    console.log(reviewData)
+    }, [inquiriesDataDetail, userInfo, reviewData]);
 
     return (
         <div>
@@ -131,7 +131,11 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
 
             <BasicInfoForm formData={formData} />
-            <InquiryHistoryForm onLineItemsChange={() => {}} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                lineItems={formData.lineItemResponseDTOs}
+                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
+            />
             <AdditionalRequestForm formData={formData} readOnly={true} />
             <ReviewTextForm formData={formData} />
             <FileFormItem fileForm={"첨부파일"} formData={formData} />

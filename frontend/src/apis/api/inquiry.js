@@ -97,24 +97,7 @@ const processInquiries = (data) => {
   });
 };
 
-
-
-// FormData 객체 생성 함수
-// const createFormData = (formData) => {
-//   const form = new FormData();
-//
-//   const inquiryData = { ...formData };
-//   delete inquiryData.files;
-//   form.append('inquiry', new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }));
-//
-//   if (formData.files) {
-//     form.append('files', formData.files);
-//   }
-//
-//   return form;
-// };
-
-// Inquiry 데이터 포맷 변환 함수
+// Inquiry 데이터 LineItem 포맷 변환 함수
 const processInquiryData = (data) => {
   const { productType, ...rest } = data;
 
@@ -123,6 +106,7 @@ const processInquiryData = (data) => {
     case 'CAR':
       formattedData = {
         ...rest,
+        productType,
         lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
           lab: item.lab,
           kind: item.kind,
@@ -140,6 +124,7 @@ const processInquiryData = (data) => {
     case 'COLD_ROLLED':
       formattedData = {
         ...rest,
+        productType,
         lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
           kind: item.kind,
           inqName: item.inqName,
@@ -157,6 +142,7 @@ const processInquiryData = (data) => {
     case 'HOT_ROLLED':
       formattedData = {
         ...rest,
+        productType,
         lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
           kind: item.kind,
           inqName: item.inqName,
@@ -173,6 +159,7 @@ const processInquiryData = (data) => {
     case 'THICK_PLATE':
       formattedData = {
         ...rest,
+        productType,
         lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
           generalDetails: item.generalDetails,
           orderInfo: item.orderInfo,
@@ -189,6 +176,7 @@ const processInquiryData = (data) => {
     case 'WIRE_ROD':
       formattedData = {
         ...rest,
+        productType,
         lineItemRequestDTOs: data.lineItemRequestDTOs.map(item => ({
           kind: item.kind,
           inqName: item.inqName,
@@ -198,14 +186,14 @@ const processInquiryData = (data) => {
           expectedDeadline: item.expectedDeadline,
           initialQuantity: item.initialQuantity,
           customerProcessing: item.customerProcessing,
-          finalUsage: item.finalUsage,
+          finalUse: item.finalUse,
         })),
       };
       break;
     default:
       throw new Error('Unknown productType');
   }
-
+  console.log("processInquiryData: ", formattedData);
   return formattedData;
 };
 
@@ -214,12 +202,14 @@ const createFormData = (formData) => {
   const form = new FormData();
 
   const inquiryData = processInquiryData(formData);
+  console.log("createFormData: ", inquiryData);
   delete inquiryData.files;
   form.append('inquiry', new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }));
 
   if (formData.files) {
     form.append('files', formData.files);
   }
+  console.log("createFormData [form]: ", form);
 
   return form;
 };
@@ -228,6 +218,7 @@ const createFormData = (formData) => {
 export const postInquiry = async (userId, inquiryData) => {
   try {
     const formData = createFormData(inquiryData);
+    console.log("postInquiryFormData: ", formData);
 
     const response = await axiosInstance.post(
         `/customers/inquiries/${userId}`,
@@ -238,8 +229,7 @@ export const postInquiry = async (userId, inquiryData) => {
           },
         }
     );
-    console.log(inquiryData);
-    console.log(response);
+    console.log("postInquiryResponse: ", response);
     return response.data;
   } catch (error) {
     console.error('Error posting inquiry:', error);
