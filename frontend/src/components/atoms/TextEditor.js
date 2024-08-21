@@ -9,6 +9,7 @@ export default function QuillEditor({
     height,
     margin,
     padding,
+    placeholder,
     inputWidth,
     inputHeight,
     inputMaxHeight,
@@ -70,6 +71,7 @@ export default function QuillEditor({
                 formats={formats}
                 value={value}
                 onChange={onChange}
+                placeholder={placeholder}
             />
             {/* 필요한 경우 주석 해제 후 브라우저 확인 */}
             {/* <div dangerouslySetInnerHTML={{ __html: sanitizer(`${value}`) }} /> */}

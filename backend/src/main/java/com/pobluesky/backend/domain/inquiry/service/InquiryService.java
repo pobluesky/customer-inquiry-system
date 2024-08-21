@@ -130,8 +130,8 @@ public class InquiryService {
     public InquiryResponseDTO createInquiry(
         String token,
         Long customerId,
-        InquiryCreateRequestDTO dto,
-        MultipartFile file
+        MultipartFile file,
+        InquiryCreateRequestDTO dto
     ) {
         Long userId = signService.parseToken(token);
 
@@ -141,13 +141,16 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Inquiry inquiry = dto.toInquiryEntity(filePath);
+        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
         inquiry.setCustomer(customer);
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
@@ -164,9 +167,9 @@ public class InquiryService {
     public InquiryResponseDTO updateInquiryById(
         String token,
         Long inquiryId,
-        InquiryUpdateRequestDTO inquiryUpdateRequestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        InquiryUpdateRequestDTO inquiryUpdateRequestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -178,9 +181,12 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
@@ -201,6 +207,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.progress(),
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
+            fileName,
             filePath,
             inquiryUpdateRequestDTO.responseDeadline()
         );

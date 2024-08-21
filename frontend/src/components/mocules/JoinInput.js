@@ -6,6 +6,7 @@ export const JoinInput = ({
     ref,
     value,
     onChange,
+    onKeyDown,
     type,
     placeholder,
     categoryName,
@@ -17,6 +18,7 @@ export const JoinInput = ({
         ref={ref}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         type={type}
         placeholder={placeholder}
         width={'336px'}

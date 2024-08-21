@@ -17,6 +17,7 @@ const Input = forwardRef(
             placeholder,
             value,
             onChange,
+            onKeyDown,
             type,
             width,
             height,
@@ -27,6 +28,7 @@ const Input = forwardRef(
             border,
             borderRadius,
             fontSize,
+            display,
             float,
         },
         ref,
@@ -65,6 +67,7 @@ const Input = forwardRef(
                     ref={ref}
                     value={value}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
                     type={type}
                     placeholder={placeholder}
                     style={{
@@ -78,6 +81,7 @@ const Input = forwardRef(
                         borderRadius,
                         fontSize,
                         float,
+                        display,
                     }}
                     autoComplete="off"
                 />

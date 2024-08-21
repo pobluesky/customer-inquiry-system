@@ -85,10 +85,10 @@ public class QuestionService {
 
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), customerId)) {
+        if (!Objects.equals(user.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
@@ -125,11 +125,16 @@ public class QuestionService {
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), customerId))
+        if (!Objects.equals(customer.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if (!Objects.equals(question.getCustomer().getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         return QuestionResponseDTO.from(question);
     }
@@ -140,28 +145,31 @@ public class QuestionService {
         String token,
         Long customerId,
         Long inquiryId,
-        QuestionCreateRequestDTO dto,
-        MultipartFile file
+        MultipartFile file,
+        QuestionCreateRequestDTO dto
     ) {
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         Inquiry inquiry = inquiryRepository
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(inquiry, customer,filePath);
+        Question question = dto.toQuestionEntity(inquiry, user, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
@@ -172,24 +180,27 @@ public class QuestionService {
     public QuestionResponseDTO createNotInquiryQuestion(
         String token,
         Long customerId,
-        QuestionCreateRequestDTO dto,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        QuestionCreateRequestDTO dto
+        ) {
         Long userId = signService.parseToken(token);
 
-        Customer customer = customerRepository.findById(userId)
+        Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(null, customer,filePath);
+        Question question = dto.toQuestionEntity(null, user, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);

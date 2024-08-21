@@ -16,10 +16,10 @@ const FilterButton = ({ btnName, margin, backgroundColor, textColor, onClick }) 
     />
 );
 
-const AnswerTitleInput = ({ answerTitle, answerTitleChange }) => (
+const AnswerTitleInput = ({ title, titleChange }) => (
     <Input
-        value={answerTitle}
-        onChange={answerTitleChange}
+        value={title}
+        onChange={titleChange}
         width={'852px'}
         height={'36px'}
         margin={'0 0 0 20px'}
@@ -28,10 +28,10 @@ const AnswerTitleInput = ({ answerTitle, answerTitleChange }) => (
     />
 );
 
-const AnswerContentInput = ({ answerContents, answerContentsChange }) => (
+const AnswerContentInput = ({ contents, contentChange }) => (
     <Input
-        value={answerContents}
-        onChange={answerContentsChange}
+        value={contents}
+        onChange={contentChange}
         width={'852px'}
         height={'152px'}
         margin={'12px 0 0 20px'}

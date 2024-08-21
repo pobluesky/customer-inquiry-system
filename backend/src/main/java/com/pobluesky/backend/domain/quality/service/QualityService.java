@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.quality.service;
 
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -34,6 +37,8 @@ public class QualityService {
     private final InquiryRepository inquiryRepository;
 
     private final ManagerRepository managerRepository;
+
+    private final FileService fileService;
 
     @Transactional(readOnly = true)
     public List<QualityResponseDTO> getAllQualities(String token) {
@@ -53,6 +58,7 @@ public class QualityService {
     public QualityResponseDTO createQuality(
         String token,
         QualityCreateRequestDTO dto,
+        MultipartFile file,
         Long inquiryId
     ) {
         Long userId = signService.parseToken(token);
@@ -70,7 +76,16 @@ public class QualityService {
             throw new CommonException(ErrorCode.QUALITY_ALREADY_EXISTS);
         }
 
-        Quality quality = dto.toQualityEntity(inquiry);
+        String fileName = null;
+        String filePath = null;
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Quality quality = dto.toQualityEntity(inquiry, fileName, filePath);
         Quality savedQuality = qualityRepository.save(quality);
 
         return QualityResponseDTO.from(savedQuality);

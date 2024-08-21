@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/mocules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
-
-import { signInApiByUsers } from '../../apis/api/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userEmail, userPassword, loginErrorMsg } from '../../index';
 import { getUserEmail, getUserPassword, getLoginErrorMsg } from '../../index';
 import { LoginCompleteAlert, LoginFailedAlert } from '../../utils/actions';
-import { useAuth } from '../../hooks/useAuth';
+import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
     const navigate = useNavigate();
@@ -37,7 +36,22 @@ function Login() {
 
     const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
-    /* [시작] 로그인 실패 후 새로고침 시 경고 메시지 초기화 */
+    // 엔터 키 기능 (로그인 버튼 클릭)
+    const enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            await GetAuth();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', enterKeyDown);
+        return () => {
+            window.removeEventListener('keydown', enterKeyDown);
+        };
+    }, [tryLogin, email, password]);
+
+    // 로그인 실패: 새로고침 시 경고 메시지 초기화
     useEffect(() => {
         if (!didLogin) {
             setGlobalEmail('');
@@ -52,9 +66,8 @@ function Login() {
             canShowAlert(true);
         }
     }, [resetAtom, tryLogin, didLogin]);
-    /* [끝] 로그인 실패 후 새로고침 시 경고 메시지 초기화 */
 
-    // [로그인 성공] 메인 페이지로 이동
+    // 로그인 성공: 메인 페이지로 이동
     const goToMain = (result) => {
         if (result.success) {
             setDidLogin(true); // 로그인 상태 변화
@@ -84,7 +97,7 @@ function Login() {
             console.error('로그인 실패', error);
         }
     };
-    
+
     return (
         <div>
             <div className={SignIn}>
@@ -93,29 +106,30 @@ function Login() {
                     <div>이메일과 비밀번호를 입력해주세요.</div>
                     {/* 이메일 & 비밀번호 입력 창 */}
                     <div>
-                        {LoginInput({
-                            value: email,
-                            onChange: emailChange,
-                            type: 'email',
-                            placeholder: 'poscodx@posco.co.kr',
-                            categoryName: '이메일',
-                        })}
+                        <LoginInput
+                            value={email}
+                            onChange={emailChange}
+                            type={'email'}
+                            placeholder={'poscodx@posco.co.kr'}
+                            categoryName={'이메일'}
+                        />
                     </div>
                     <div>
-                        {LoginInput({
-                            value: password,
-                            onChange: passwordChange,
-                            type: 'password',
-                            placeholder: '********',
-                            categoryName: '비밀번호',
-                        })}
+                        <LoginInput
+                            value={password}
+                            onChange={passwordChange}
+                            type={'password'}
+                            placeholder={'********'}
+                            categoryName={'비밀번호'}
+                        />
                     </div>
                     {/* 로그인 완료 버튼 */}
-                    <div style={{ marginTop: '4vh' }}>
+                    <div>
                         <Button
                             btnName={'로그인'}
                             width={'360px'}
                             height={'44px'}
+                            margin={'4vh 0 0 0'}
                             backgroundColor={'#03507d'}
                             textColor={'#eeeeee'}
                             fontSize={'20px'}

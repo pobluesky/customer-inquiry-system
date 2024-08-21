@@ -12,9 +12,10 @@ public record AnswerResponseDTO(
     Long questionId,
     Optional<Long> inquiryId,
     Long userId,
-    String answerTitle,
-    String answerContents,
-    String answerFiles,
+    String title,
+    String contents,
+    String fileName,
+    String filePath,
     LocalDateTime createdDate
 
 ) {
@@ -24,10 +25,11 @@ public record AnswerResponseDTO(
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
             .userId(answer.getCustomer().getUserId())
-            .answerTitle(answer.getAnswerTitle())
-            .answerContents(answer.getAnswerContents())
+            .title(answer.getTitle())
+            .contents(answer.getContents())
             .createdDate(answer.getCreatedDate())
-            .answerFiles(answer.getAnswerFiles())
+            .fileName(answer.getFileName())
+            .filePath(answer.getFilePath())
             .build();
     }
 }

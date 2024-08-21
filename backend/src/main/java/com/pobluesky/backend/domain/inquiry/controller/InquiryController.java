@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,13 +106,13 @@ public class InquiryController {
     public ResponseEntity<JsonResult> createInquiry(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestPart("inquiry") InquiryCreateRequestDTO dto,
-        @RequestPart(value = "files", required = false) MultipartFile file) {
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("inquiry") InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(
             token,
             userId,
-            dto,
-            file
+            file,
+            dto
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -125,14 +124,14 @@ public class InquiryController {
     public ResponseEntity<JsonResult> updateInquiryById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
-        @RequestPart("inquiry") InquiryUpdateRequestDTO inquiryUpdateRequestDTO,
-        @RequestPart(value = "files", required = false) MultipartFile file
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("inquiry") InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
         InquiryResponseDTO response = inquiryService.updateInquiryById(
             token,
             inquiryId,
-            inquiryUpdateRequestDTO,
-            file
+            file,
+            inquiryUpdateRequestDTO
         );
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -120,14 +120,14 @@ public class QuestionController {
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @PathVariable Long inquiryId,
-        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO,
-        @RequestPart(value = "files", required = false) MultipartFile file) {
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createInquiryQuestion(
             token,
             userId,
             inquiryId,
-            questionCreateRequestDTO,
-            file
+            file,
+            questionCreateRequestDTO
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -139,14 +139,14 @@ public class QuestionController {
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO,
-        @RequestPart(value = "files", required = false) MultipartFile file) {
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO) {
         QuestionResponseDTO response = questionService.createNotInquiryQuestion(
             token,
             userId,
-            questionCreateRequestDTO,
-            file
-        );
+            file,
+            questionCreateRequestDTO
+            );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

@@ -61,7 +61,9 @@ public class Inquiry extends BaseEntity {
 
     private String additionalRequests;
 
-    private String files;
+    private String fileName;
+
+    private String filePath;
 
     private String responseDeadline;
 
@@ -80,7 +82,8 @@ public class Inquiry extends BaseEntity {
         Progress progress,
         String customerRequestDate,
         String additionalRequests,
-        String files,
+        String fileName,
+        String filePath,
         String responseDeadline
     ){
         this.customer = customer;
@@ -94,7 +97,8 @@ public class Inquiry extends BaseEntity {
         this.progress = progress;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
-        this.files = files;
+        this.fileName = fileName;
+        this.filePath = filePath;
         this.responseDeadline = responseDeadline;
         this.isActivated = true;
     }
@@ -109,7 +113,8 @@ public class Inquiry extends BaseEntity {
         Progress progress,
         String customerRequestDate,
         String additionalRequests,
-        String files,
+        String fileName,
+        String filePath,
         String responseDeadline
     ){
         this.country = country;
@@ -121,7 +126,8 @@ public class Inquiry extends BaseEntity {
         this.progress = progress;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
-        this.files = files;
+        this.fileName = fileName;
+        this.filePath = filePath;
         this.responseDeadline = responseDeadline;
     }
 

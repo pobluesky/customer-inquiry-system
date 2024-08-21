@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import dompurify from 'dompurify';
 import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
+import Input from '../atoms/Input';
+import TextEditor from '../atoms/TextEditor';
 import {
     AnswerTitleInput,
     AnswerContentInput,
@@ -17,6 +20,7 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -37,55 +41,51 @@ import {
     postAnswerByQuestionId,
 } from '../../apis/api/answer';
 
-function QuestionModal({ questionId, status, setStatus, onClose }) {
+function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
+    const sanitizer = dompurify.sanitize;
+
+    const { userId } = useAuth();
     const thisRole = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
 
-    const [answerTitle, setAnswerTitle] = useState('');
-    const [answerContents, setAnswerContents] = useState('');
-    const [answerFiles, setAnswerFiles] = useState('기본 파일명');
+    const [title, setTitle] = useState('');
+    const [editorValue, setEditorValue] = useState('');
+    const [file, setFile] = useState('');
 
-    const answerTitleChange = (e) => {
-        setAnswerTitle(e.target.value);
-    };
+    const [questionDetail, setQuestionDetail] = useState([]);
+    const [answerDetail, setAnswerDetail] = useState([]);
 
-    const answerContentsChange = (e) => {
-        setAnswerContents(e.target.value);
+    const fileInputRef = useRef(null);
+
+    const titleChange = (e) => {
+        setTitle(e.target.value);
     };
 
     const completedAnswering = () => {
-        if (validateAnswerTitle(answerTitle)) {
+        if (validateAnswerTitle(title)) {
             canShowTitleAlert(true);
             return;
-        } else if (validateAnswerContents(answerContents)) {
+        } else if (validateAnswerContents(editorValue)) {
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostAnswerByQuestionId(
-                questionId,
-                answerTitle,
-                answerContents,
-                answerFiles,
-            );
-            fetchGetQuestionDetail(questionId);
+            fetchPostAnswerByQuestionId();
+            fetchGetQuestionDetail();
             setStatus('COMPLETED');
             AnswerCompleteAlert();
             setAnswering(false);
         }
     };
 
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
-
     const fetchGetQuestionDetail =
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getQuestionByQuestionId(
+                      userId,
                       questionId,
-                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -110,8 +110,8 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
                   const result = await getAnswerByQuestionId(
+                      userId,
                       questionId,
-                      getCookie('userId'),
                       getCookie('accessToken'),
                   );
                   if (result) {
@@ -132,37 +132,42 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                   }
               };
 
-    const fetchPostAnswerByQuestionId = async (
-        questionId,
-        answerTitle,
-        answerContents,
-        answerFiles,
-    ) => {
-        const answerData = {
-            answerTitle,
-            answerContents,
-            answerFiles,
-        };
+    const fetchPostAnswerByQuestionId = async () => {
+        try {
+            const answerData = {
+                title,
+                contents: editorValue,
+            };
+            const result = await postAnswerByQuestionId(
+                file,
+                answerData,
+                questionId,
+                getCookie('accessToken'),
+            );
 
-        const result = await postAnswerByQuestionId(
-            questionId,
-            getCookie('accessToken'),
-            answerData,
-        );
-
-        if (result) {
-            console.log('응답받은 데이터는 다음과 같습니다.', result);
-            setAnswerDetail(result);
-        } else {
-            console.error('Fetched data is not an array or is invalid.');
-            setAnswerDetail([]);
+            if (result) {
+                console.log('응답받은 데이터는 다음과 같습니다.', result);
+                setAnswerDetail(result);
+            } else {
+                console.error('Fetched data is not an array or is invalid.');
+                setAnswerDetail([]);
+            }
+        } catch (error) {
+            console.error('Error in posting question:', error);
         }
     };
 
     useEffect(() => {
-        fetchGetQuestionDetail(questionId);
-        fetchGetAnswerDetail(questionId);
+        fetchGetQuestionDetail();
+        fetchGetAnswerDetail();
     }, [questionId, status]);
+
+    const attachFile = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+        }
+    };
 
     const filesEllipsis = {
         maxWidth: '96px',
@@ -185,15 +190,8 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
             </div>
             <div className={Question_Modal}>
                 <div>
-                    {thisRole !== 'CUSTOMER' && (
-                        <>
-                            <Text
-                                name={'VoC 문의 번호'}
-                                textColor={'#6e6e6e'}
-                            />
-                            <Text name={'000000'} fontWeight={'600'} />
-                        </>
-                    )}
+                    <Text name={'VoC 문의 번호'} textColor={'#6e6e6e'} />
+                    <Text name={vocNo} fontWeight={'600'} />
                 </div>
                 <div>
                     <Tag
@@ -211,9 +209,19 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                         <div>{questionDetail.title}</div>
                         <img src={folder} />
                         <div>고객사 첨부파일</div>
-                        <div style={filesEllipsis}>{questionDetail.files}</div>
+                        <div style={filesEllipsis}>
+                            <a href={questionDetail.filePath} download>
+                                {questionDetail.fileName}
+                            </a>
+                        </div>
+                        <div style={filesEllipsis}></div>
                     </div>
-                    <div>{questionDetail.contents}</div>
+                    {/* <div>{questionDetail.contents}</div> */}
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizer(`${questionDetail.contents}`),
+                        }}
+                    />
                 </div>
 
                 {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면
@@ -224,30 +232,54 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                   status === 'READY' &&
                   thisRole !== 'CUSTOMER' ? ( // 답변 입력 중
                     <div>
-                        <AnswerTitleInput
-                            answerTitleChange={answerTitleChange}
-                        />
-                        <AnswerContentInput
-                            answerContentsChange={answerContentsChange}
+                        <AnswerTitleInput titleChange={titleChange} />
+                        <TextEditor
+                            placeholder={'답변을 입력하세요.'}
+                            width={'852px'}
+                            inputHeight={'112px'}
+                            inputMaxHeight={'112px'}
+                            margin={'12px 0 0 20px'}
+                            padding={'0px'}
+                            value={editorValue}
+                            onChange={setEditorValue}
                         />
                     </div>
                 ) : status === 'COMPLETED' ? ( // 답변 등록
                     <div className={Completed}>
                         <div>
                             <img src={amark} />
-                            <div>{answerDetail.answerTitle}</div>
+                            <div>{answerDetail.title}</div>
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
                             <div style={filesEllipsis}>
-                                {answerDetail.answerFiles}
+                                <a href={answerDetail.filePath} download>
+                                    {answerDetail.fileName}
+                                </a>
                             </div>
                         </div>
-                        <div>{answerDetail.answerContents}</div>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizer(`${answerDetail.contents || ''}`),
+                            }}
+                        />
+                        {/* <div>{answerDetail.contents}</div> */}
                     </div>
                 ) : (
                     ''
                 )}
                 <div>
+                    <div>
+                        {/* 하단 버튼 좌측 첨부파일란 */}
+                        {thisRole !== 'CUSTOMER' && (
+                            <>
+                                <img src={folder} />
+                                <span>첨부파일</span>
+                                <span style={filesEllipsis}>
+                                    {file ? file.name : ''}
+                                </span>
+                            </>
+                        )}
+                    </div>
                     {/* [닫기] */}
                     <div>
                         <CloseButton onClick={onClose} />
@@ -277,10 +309,29 @@ function QuestionModal({ questionId, status, setStatus, onClose }) {
                                         />
                                     </div>
                                     <div>
-                                        <AnswerButton
-                                            btnName={'파일 업로드'}
-                                            onClick={() => {}}
+                                        <Input
+                                            type="file"
+                                            display={'none'}
+                                            ref={fileInputRef}
+                                            onChange={attachFile}
                                         />
+                                        <div>
+                                            {file ? (
+                                                <AnswerButton
+                                                    btnName={'파일 삭제'}
+                                                    onClick={() =>
+                                                        setFile(null)
+                                                    }
+                                                />
+                                            ) : (
+                                                <AnswerButton
+                                                    btnName={'파일 업로드'}
+                                                    onClick={() =>
+                                                        fileInputRef.current.click()
+                                                    }
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 </>
                             )}

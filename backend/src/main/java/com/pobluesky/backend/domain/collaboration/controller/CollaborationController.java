@@ -13,7 +13,6 @@ import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,14 +78,14 @@ public class CollaborationController {
     public ResponseEntity<JsonResult> createCollaboration(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
-        @RequestPart("collaboration") CollaborationCreateRequestDTO requestDTO,
-        @RequestPart(value = "files", required = false) MultipartFile file
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("collaboration") CollaborationCreateRequestDTO requestDTO
     ) {
         CollaborationResponseDTO response = collaborationService.createCollaboration(
             token,
             questionId,
-            requestDTO,
-            file
+            file,
+            requestDTO
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -119,15 +117,15 @@ public class CollaborationController {
     public ResponseEntity<JsonResult> updateCollaborationStatus(
         @RequestHeader("Authorization") String token,
         @PathVariable Long collaborationId,
-        @RequestPart("collaboration") CollaborationUpdateRequestDTO requestDTO,
-        @RequestPart(value = "files", required = false) MultipartFile file
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("collaboration") CollaborationUpdateRequestDTO requestDTO
     ) {
         CollaborationDetailResponseDTO response = collaborationService.updateCollaborationStatus(
             token,
             collaborationId,
-            requestDTO,
-            file
-        );
+            file,
+            requestDTO
+            );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

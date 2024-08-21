@@ -36,28 +36,33 @@ public class Answer extends BaseEntity {
     private Customer customer; // 고객사 번호
 
     @Column(columnDefinition = "TEXT")
-    private String answerTitle;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String answerContents;
+    private String contents;
 
     @Column(columnDefinition = "TEXT")
-    private String answerFiles;
+    private String fileName;
+
+    @Column(columnDefinition = "TEXT")
+    private String filePath;
 
     @Builder
     private Answer(
         Question question,
         Inquiry inquiry,
         Customer customer,
-        String answerTitle,
-        String answerContents,
-        String answerFiles
+        String title,
+        String contents,
+        String fileName,
+        String filePath
     ) {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
-        this.answerTitle = answerTitle;
-        this.answerContents = answerContents;
-        this.answerFiles = answerFiles;
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 }

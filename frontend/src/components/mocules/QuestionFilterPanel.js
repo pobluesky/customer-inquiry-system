@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
+import Input from '../atoms/Input';
 import MySearchInput from './MySearchInput';
-import MyDateInput from './MyDateInput';
 import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Filter_Panel } from '../../assets/css/Voc.css';
-import { Datepicker } from '../../assets/css/Form.css';
 import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterPanel({
@@ -67,21 +66,31 @@ function QuestionFilterPanel({
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
                                 value={title}
-                                onChange={
-                                    (e) => setTitle(e.target.value)
-                                }
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                             <div>문의 등록일</div>
-                            <MyDateInput
-                                checkDate={startDate}
-                                setCheckDate={setStartDate}
-                                className={Datepicker}
+                            <Input
+                                type={'date'}
+                                width={'144px'}
+                                height={'24px'}
+                                border={'solid 1px #c1c1c1'}
+                                borderRadius={'8px'}
+                                outline={'none'}
+                                padding={'0 8px 0 8px'}
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
                             />
                             <div>~</div>
-                            <MyDateInput
-                                checkDate={endDate}
-                                setCheckDate={setEndDate}
-                                className={Datepicker}
+                            <Input
+                                type={'date'}
+                                width={'144px'}
+                                height={'24px'}
+                                border={'solid 1px #c1c1c1'}
+                                borderRadius={'8px'}
+                                outline={'none'}
+                                padding={'0 8px 0 8px'}
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
                             />
                             <Button
                                 btnName={'조회'}
@@ -111,8 +120,8 @@ function QuestionFilterPanel({
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
                                     value={questionNo}
-                                    onChange={
-                                        (e) => setQuestionNo(e.target.value)
+                                    onChange={(e) =>
+                                        setQuestionNo(e.target.value)
                                     }
                                 />
                                 {/* 3 */}
@@ -127,8 +136,8 @@ function QuestionFilterPanel({
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
                                     value={customerName}
-                                    onChange={
-                                        (e) => setCustomerName(e.target.value)
+                                    onChange={(e) =>
+                                        setCustomerName(e.target.value)
                                     }
                                 />
                             </div>

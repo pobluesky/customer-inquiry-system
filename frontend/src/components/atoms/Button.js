@@ -3,6 +3,7 @@ import React from 'react';
 function Button({
     btnName,
     onClick,
+    onKeyDown,
     width,
     height,
     margin,
@@ -30,6 +31,7 @@ function Button({
     return (
         <button
             onClick={onClick}
+            onKeyDown={onKeyDown}
             style={{
                 width,
                 height,

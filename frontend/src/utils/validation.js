@@ -1,3 +1,6 @@
+/******************************************************************/
+/* 회원가입 ********************************************************/
+/******************************************************************/
 // 이름
 export const validateName = (name) => {
     if (name.trim() === '') {
@@ -58,6 +61,9 @@ export const validateCustomerName = (customerName) => {
     return '';
 };
 
+/******************************************************************/
+/* 답변 ***********************************************************/
+/******************************************************************/
 // 답변 제목 길이
 export const validateAnswerTitle = (answerTitle) => {
     if (answerTitle.length > 21 || answerTitle.length < 1) {
@@ -69,6 +75,25 @@ export const validateAnswerTitle = (answerTitle) => {
 // 답변 내용 길이
 export const validateAnswerContents = (answerContents) => {
     if (answerContents.length < 10) {
+        return true;
+    }
+    return '';
+};
+
+/******************************************************************/
+/* 질문 ***********************************************************/
+/******************************************************************/
+// 질문 제목 길이
+export const validateQuestionTitle = (questionTitle) => {
+    if (questionTitle.length > 21 || questionTitle.length < 1) {
+        return true;
+    }
+    return '';
+};
+
+// 질문 내용 길이
+export const validateQuestionContents = (questionContents) => {
+    if (questionContents.length < 10) {
         return true;
     }
     return '';

@@ -16,26 +16,19 @@ import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -111,9 +104,9 @@ public class CollaborationService {
     public CollaborationResponseDTO createCollaboration(
         String token,
         Long questionId,
-        CollaborationCreateRequestDTO requestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        CollaborationCreateRequestDTO requestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -128,9 +121,12 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
@@ -138,6 +134,7 @@ public class CollaborationService {
             reqManager,
             resManager,
             question,
+            fileName,
             filePath
         );
 
@@ -150,9 +147,9 @@ public class CollaborationService {
     public CollaborationDetailResponseDTO updateCollaborationStatus(
         String token,
         Long collaborationId,
-        CollaborationUpdateRequestDTO requestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        CollaborationUpdateRequestDTO requestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -176,13 +173,16 @@ public class CollaborationService {
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        collaboration.updateFiles(filePath);
+        collaboration.updateFiles(fileName, filePath);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }

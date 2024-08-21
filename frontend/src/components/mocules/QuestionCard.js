@@ -6,7 +6,7 @@ import { getCookie } from '../../apis/utils/cookies';
 function QuestionCard({
     onClick,
     status,
-    vocNo,
+    questionNo,
     customerName,
     questionCreatedDate,
     answerCreatedDate,
@@ -19,7 +19,7 @@ function QuestionCard({
     const [isHovered, setIsHovered] = useState(false);
 
     // 긴 질문 번호는 Ellipsis 처리 (176px)
-    const vocNoEllipsis = {
+    const questionNoEllipsis = {
         maxWidth: '144px',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -65,8 +65,8 @@ function QuestionCard({
                             onMouseLeave={() => setIsHovered(false)}
                         />
                     </div>
-                    <div style={vocNoEllipsis}>
-                        #{vocNo}
+                    <div style={questionNoEllipsis}>
+                        #{questionNo}
                     </div>
                 </div>
                 <div>

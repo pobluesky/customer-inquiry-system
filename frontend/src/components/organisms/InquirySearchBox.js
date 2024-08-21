@@ -9,7 +9,6 @@ import {
 } from '../../assets/css/Inquiry.css';
 import SelectBox from '../atoms/SelectBox';
 import Button from '../atoms/Button';
-import MyDateInput from '../atoms/MyDateInput';
 
 const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
     const options = [
@@ -41,7 +40,7 @@ const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
                     <p className={_Title}>판매계약자</p>
                     <input className={_Input} />
                     <p className={_Title}>접수기간</p>
-                    <MyDateInput
+                    {/* <MyDateInput
                         checkDate={startDate}
                         setCheckDate={setStartDate}
                     />
@@ -49,7 +48,7 @@ const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
                     <MyDateInput
                         checkDate={endDate}
                         setCheckDate={setEndDate}
-                    />
+                    /> */}
                 </div>
             </div>
             <Button

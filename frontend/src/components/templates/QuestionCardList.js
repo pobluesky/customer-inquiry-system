@@ -6,6 +6,7 @@ import {
     Question_Doesnt_Exist,
     Question_Card_List,
 } from '../../assets/css/Voc.css';
+import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
@@ -41,12 +42,15 @@ function QuestionCardList({
     timeFilter,
     statusFilter,
 }) {
+    const { userId } = useAuth();
+
     const [filterArgs, setFilterArgs] = useState('');
-    const [questionSummary, setQuestionSummary] = useState({});
-    const [questionCount, setQuestionCount] = useState({});
-    const [answerCount, setAnswerCount] = useState({});
+    const [questionSummary, setQuestionSummary] = useState('');
+    const [questionCount, setQuestionCount] = useState('');
+    const [answerCount, setAnswerCount] = useState('');
     const [openCard, setOpenCard] = useState(false);
     const [questionId, setQuestionId] = useState(0);
+    const [vocNo, setVocNo] = useState(0);
     const [status, setStatus] = useState('READY');
 
     const closeModal = () => {
@@ -56,8 +60,8 @@ function QuestionCardList({
     useEffect(() => {
         let args = '';
         if (startDate && endDate) {
-            const s = `startDate=${startDate.toISOString().split('T')[0]}`;
-            const e = `endDate=${endDate.toISOString().split('T')[0]}`;
+            const s = `startDate=${new Date(startDate).toISOString().split('T')[0]}`;
+            const e = `endDate=${new Date(endDate).toISOString().split('T')[0]}`;
             args += `${s}&${e}`;
         }
         if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
@@ -207,12 +211,17 @@ function QuestionCardList({
                                 key={inqIdx}
                                 onClick={() => {
                                     setQuestionId(inq.questionId);
+                                    setVocNo(
+                                        userId +
+                                            inq.questionId +
+                                            calDateNo(inq.questionCreatedAt),
+                                    );
                                     setStatus(inq.status);
                                     setOpenCard(true);
                                 }}
                                 status={inq.status}
-                                vocNo={
-                                    getCookie('userId') +
+                                questionNo={
+                                    userId +
                                     inq.questionId +
                                     calDateNo(inq.questionCreatedAt)
                                 }
@@ -240,12 +249,17 @@ function QuestionCardList({
                                 key={siteIdx}
                                 onClick={() => {
                                     setQuestionId(site.questionId);
+                                    setVocNo(
+                                        userId +
+                                            site.questionId +
+                                            calDateNo(site.questionCreatedAt),
+                                    );
                                     setStatus(site.status);
                                     setOpenCard(true);
                                 }}
                                 status={site.status}
-                                vocNo={
-                                    getCookie('userId') +
+                                questionNo={
+                                    userId +
                                     site.questionId +
                                     calDateNo(site.questionCreatedAt)
                                 }
@@ -273,12 +287,17 @@ function QuestionCardList({
                                 key={etcIdx}
                                 onClick={() => {
                                     setQuestionId(etc.questionId);
+                                    setVocNo(
+                                        userId +
+                                            etc.questionId +
+                                            calDateNo(etc.questionCreatedAt),
+                                    );
                                     setStatus(etc.status);
                                     setOpenCard(true);
                                 }}
                                 status={etc.status}
-                                vocNo={
-                                    getCookie('userId') +
+                                questionNo={
+                                    userId +
                                     etc.questionId +
                                     calDateNo(etc.questionCreatedAt)
                                 }
@@ -302,6 +321,7 @@ function QuestionCardList({
             {openCard && (
                 <QuestionModal
                     questionId={questionId}
+                    vocNo={vocNo}
                     status={status}
                     setStatus={setStatus}
                     onClose={closeModal}
