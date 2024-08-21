@@ -12,9 +12,9 @@ public record CollaborationDetailResponseDTO(
     ColStatus colStatus,
     String colContents,
     String colReply,
-//    String files
-    String fileName,
-    String filePath
+    String files
+//    String fileName,
+//    String filePath
 ) {
 
     public static CollaborationDetailResponseDTO from(Collaboration collaboration) {
@@ -31,9 +31,9 @@ public record CollaborationDetailResponseDTO(
             .colStatus(collaboration.getColStatus())
             .colContents(collaboration.getColContents())
             .colReply(collaboration.getColReply())
-//            .files(collaboration.getFiles())
-            .fileName(collaboration.getFileName())
-            .filePath(collaboration.getFilePath())
+            .files(collaboration.getFiles())
+//            .fileName(collaboration.getFileName())
+//            .filePath(collaboration.getFilePath())
             .build();
     }
 }

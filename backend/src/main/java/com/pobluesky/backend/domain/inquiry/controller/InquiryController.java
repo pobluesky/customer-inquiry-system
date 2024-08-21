@@ -92,7 +92,7 @@ public class InquiryController {
         @PathVariable Long userId,
         @PathVariable Long inquiryId
     ) {
-        InquiryResponseDTO response = inquiryService.getInquiryDetail(
+        InquiryResponseDTO response = inquiryService.getInquiryDetailForCustomer(
             token,
             userId,
             inquiryId
@@ -183,6 +183,22 @@ public class InquiryController {
         response.put("inquiryInfo", inquiries.getContent());
         response.put("totalElements", inquiries.getTotalElements());
         response.put("totalPages", inquiries.getTotalPages());
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    // 상세 조회 페이지
+    @GetMapping("/managers/inquiries/{inquiryId}")
+    @Operation(summary = "담당자 Inquiry 상세 조회")
+    public ResponseEntity<JsonResult> getInquiryDetailForManager(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        InquiryResponseDTO response = inquiryService.getInquiryDetailForManager(
+            token,
+            inquiryId
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

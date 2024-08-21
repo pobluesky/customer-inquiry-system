@@ -4,16 +4,23 @@ import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.user.entity.Manager;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public record CollaborationCreateRequestDTO(
     Long colReqId,
     Long colResId,
-    String colContents
+    String colContents,
+//    @Schema(hidden = true) MultipartFile files
+    String files
 ) {
 
     public Collaboration toCollaborationEntity(
         Manager colRequestManager,
         Manager colResponseManager,
-        Question question
+        Question question,
+        String filePath
     ) {
 
         return Collaboration.builder()
@@ -21,6 +28,7 @@ public record CollaborationCreateRequestDTO(
             .colRequestManager(colRequestManager)
             .colResponseManager(colResponseManager)
             .colContents(colContents)
+            .files(filePath)
             .build();
     }
 }

@@ -33,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,12 +76,7 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(
-            page,
-            size,
-            sort
-        );
+        Pageable pageable = PageRequest.of(page, size);
 
         return inquiryRepository.findInquiriesByCustomer(
             customerId,
@@ -92,7 +86,8 @@ public class InquiryService {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            sortBy
         );
     }
 
@@ -117,12 +112,7 @@ public class InquiryService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(
-            page,
-            size,
-            sort
-        );
+        Pageable pageable = PageRequest.of(page, size);
 
         return inquiryRepository.findInquiriesByManager(
             pageable,
@@ -131,7 +121,8 @@ public class InquiryService {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            sortBy
         );
     }
 
@@ -157,14 +148,14 @@ public class InquiryService {
         }
 
         Inquiry inquiry = dto.toInquiryEntity(filePath);
+        inquiry.setCustomer(customer);
+
+        Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
             inquiry,
             dto.lineItemRequestDTOs()
         );
-
-        inquiry.setCustomer(customer);
-        Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
         return InquiryResponseDTO.of(savedInquiry, lineItems);
     }
@@ -236,7 +227,7 @@ public class InquiryService {
     }
 
     @Transactional(readOnly = true)
-    public InquiryResponseDTO getInquiryDetail(
+    public InquiryResponseDTO getInquiryDetailForCustomer(
         String token,
         Long customerId,
         Long inquiryId
@@ -261,19 +252,25 @@ public class InquiryService {
         return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
     }
 
-    private Sort getSortByOrderCondition(String sortBy) {
-        return switch (sortBy) {
-            case "OLDEST" -> Sort.by(
-                Sort.Order.asc("createdDate"),
-                Sort.Order.desc("inquiryId")
-            );
+    @Transactional(readOnly = true)
+    public InquiryResponseDTO getInquiryDetailForManager(
+        String token,
+        Long inquiryId
+    ) {
+        Long userId = signService.parseToken(token);
 
-            case "LATEST" -> Sort.by(
-                Sort.Order.desc("createdDate"),
-                Sort.Order.desc("inquiryId")
-            );
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        };
+        inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        List<LineItemResponseDTO> lineItemsByInquiry =
+            lineItemService.getFullLineItemsByInquiry(inquiryId);
+
+        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
     }
 }
