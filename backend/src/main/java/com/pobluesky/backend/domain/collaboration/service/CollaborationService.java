@@ -54,9 +54,15 @@ public class CollaborationService {
 
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
-        String token, int page, int size, String sortBy,
-        ColStatus colStatus, String colReqManager, Long colReqId,
-        LocalDate startDate, LocalDate endDate
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         Long userId = signService.parseToken(token);
 
@@ -66,12 +72,16 @@ public class CollaborationService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size);
 
         return collaborationRepository.findAllCollaborationsRequest(
-            pageable, colStatus, colReqManager, colReqId,
-            startDate, endDate
+            pageable,
+            colStatus,
+            colReqManager,
+            colReqId,
+            startDate,
+            endDate,
+            sortBy
         );
     }
 
@@ -216,21 +226,5 @@ public class CollaborationService {
         }
 
         return collaboration;
-    }
-
-    private Sort getSortByOrderCondition(String sortBy) {
-        return switch (sortBy) {
-            case "OLDEST" -> Sort.by(
-                Sort.Order.asc("createdDate"),
-                Sort.Order.desc("colId")
-            );
-
-            case "LATEST" -> Sort.by(
-                Sort.Order.desc("createdDate"),
-                Sort.Order.desc("colId")
-            );
-
-            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        };
     }
 }

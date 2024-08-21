@@ -15,6 +15,7 @@ public interface CollaborationRepositoryCustom {
         String colReqManager,
         Long colReqId,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     );
 }
