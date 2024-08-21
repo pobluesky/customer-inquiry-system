@@ -5,8 +5,6 @@ import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 
-import java.time.LocalDate;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,7 +26,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private LocalDate expectedDeadLine;
+    private String expectedDeadLine;
 
     private Integer initialQuantity;
 
@@ -44,8 +42,10 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
             .lineItemId(wireRodLineItem.getLineItemId())
             .inquiryId(wireRodLineItem.getInquiry().getInquiryId())
             .kind(wireRodLineItem.getKind())
+            .inqName(wireRodLineItem.getInqName())
             .orderCategory(wireRodLineItem.getOrderCategory())
             .diameter(wireRodLineItem.getDiameter())
+            .quantity(wireRodLineItem.getQuantity())
             .expectedDeadLine(wireRodLineItem.getExpectedDeadline())
             .initialQuantity(wireRodLineItem.getInitialQuantity())
             .customerProcessing(wireRodLineItem.getCustomerProcessing())
