@@ -23,7 +23,6 @@ import java.util.Objects;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +63,12 @@ public class QuestionService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        return questionRepository.findQuestionsByManager(pageable, status, startDate, endDate, sortBy);
+        return questionRepository.findQuestionsByManager(
+            pageable,
+            status,
+            startDate,
+            endDate,
+            sortBy);
     }
 
     // 질문 전체 조회 (고객사)
@@ -91,7 +95,12 @@ public class QuestionService {
         Pageable pageable = PageRequest.of(page, size);
 
         return questionRepository.findQuestionsByCustomer(
-            customerId, pageable, status, startDate, endDate, sortBy);
+            customerId,
+            pageable,
+            status,
+            startDate,
+            endDate,
+            sortBy);
     }
 
     // 질문 번호별 질문 조회 (담당자)

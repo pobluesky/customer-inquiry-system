@@ -166,6 +166,23 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .fetch();
     }
 
+    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return new OrderSpecifier[]{
+                    question.createdDate.desc().nullsLast(),
+                    question.questionId.desc()
+                };
+            case "OLDEST":
+                return new OrderSpecifier[]{
+                    question.createdDate.asc().nullsFirst(),
+                    question.questionId.asc()
+                };
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
+    }
+
     private BooleanExpression statusEq(QuestionStatus status) {
         return status != null ? question.status.eq(status) : null;
     }
@@ -187,23 +204,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             return dateTemplate.goe(startDate);
         } else {
             return dateTemplate.loe(endDate);
-        }
-    }
-
-    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
-        switch (sortBy) {
-            case "LATEST":
-                return new OrderSpecifier[]{
-                    question.createdDate.desc().nullsLast(),
-                    question.questionId.desc()
-                };
-            case "OLDEST":
-                return new OrderSpecifier[]{
-                    question.createdDate.asc().nullsFirst(),
-                    question.questionId.asc()
-                };
-            default:
-                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
         }
     }
 }

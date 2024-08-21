@@ -9,11 +9,18 @@ import org.springframework.data.domain.Pageable;
 
 public interface QuestionRepositoryCustom {
     QuestionSummaryResponseDTO findQuestionsByCustomer(
-        Long userId, Pageable pageable, QuestionStatus status,
-        LocalDate startDate, LocalDate endDate, String sortBy);
+        Long userId,
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy);
 
     QuestionSummaryResponseDTO findQuestionsByManager(
-        Pageable pageable, QuestionStatus status,
-        LocalDate startDate, LocalDate endDate, String sortBy
+        Pageable pageable,
+        QuestionStatus status,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
     );
 }
