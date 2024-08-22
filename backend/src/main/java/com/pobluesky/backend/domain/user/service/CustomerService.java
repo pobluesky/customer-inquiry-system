@@ -8,8 +8,6 @@ import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
-import java.util.ArrayList;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,10 +36,7 @@ public class CustomerService {
 
         String encodedPassword = passwordEncoder.encode(signUpDto.password());
 
-        List<String> roles = new ArrayList<>();
-        roles.add("USER");
-
-        Customer customer = signUpDto.toCustomerEntity(encodedPassword, roles);
+        Customer customer = signUpDto.toCustomerEntity(encodedPassword, "USER");
 
         return CustomerResponseDTO.from(customerRepository.save(customer));
     }

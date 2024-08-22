@@ -7,7 +7,7 @@ const Input = forwardRef(
             categoryName,
             categoryWidth,
             categoryColor,
-            CategoryFontWeight,
+            categoryFontWeight,
             categoryMargin,
             categoryTextAlign,
 
@@ -17,6 +17,7 @@ const Input = forwardRef(
             placeholder,
             value,
             onChange,
+            onKeyDown,
             type,
             width,
             height,
@@ -27,6 +28,8 @@ const Input = forwardRef(
             border,
             borderRadius,
             fontSize,
+            display,
+            float,
         },
         ref,
     ) => (
@@ -34,11 +37,11 @@ const Input = forwardRef(
             {needCategory ? (
                 <div
                     style={{
-                        width: `${categoryWidth}`,
-                        color: `${categoryColor}`,
-                        fontWeight: `${CategoryFontWeight}`,
-                        margin: `${categoryMargin}`,
-                        textAlign: `${categoryTextAlign}`,
+                        width: categoryWidth,
+                        color: categoryColor,
+                        fontWeight: categoryFontWeight,
+                        margin: categoryMargin,
+                        textAlign: categoryTextAlign,
                     }}
                 >
                     {categoryName}&nbsp;&nbsp;&nbsp;
@@ -64,18 +67,21 @@ const Input = forwardRef(
                     ref={ref}
                     value={value}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
                     type={type}
                     placeholder={placeholder}
                     style={{
-                        width: `${width}`,
-                        height: `${height}`,
-                        margin: `${margin}`,
-                        padding: `${padding}`,
-                        backgroundColor: `${backgroundColor}`,
-                        color: `${textColor}`,
-                        border: `${border}`,
-                        borderRadius: `${borderRadius}`,
-                        fontSize: `${fontSize}`,
+                        width,
+                        height,
+                        margin,
+                        padding,
+                        backgroundColor,
+                        color: textColor,
+                        border,
+                        borderRadius,
+                        fontSize,
+                        float,
+                        display,
                     }}
                     autoComplete="off"
                 />

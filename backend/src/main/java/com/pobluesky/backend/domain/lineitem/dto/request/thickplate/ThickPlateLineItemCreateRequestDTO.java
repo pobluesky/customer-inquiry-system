@@ -16,9 +16,8 @@ public record ThickPlateLineItemCreateRequestDTO(
     String additionalRequests
 ) {
 
-    public ThickPlateLineItem toThickPlateLineItem(
-        Inquiry inquiry
-    ) {
+    public ThickPlateLineItem toThickPlateLineItemEntity(Inquiry inquiry) {
+
         return ThickPlateLineItem.builder()
             .inquiry(inquiry)
             .generalDetails(generalDetails)

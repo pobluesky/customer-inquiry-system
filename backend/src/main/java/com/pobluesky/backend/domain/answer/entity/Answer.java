@@ -4,7 +4,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,23 +36,33 @@ public class Answer extends BaseEntity {
     private Customer customer; // 고객사 번호
 
     @Column(columnDefinition = "TEXT")
-    private String answerTitle; // 답변 제목
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String answerContents; // 답변 내용
+    private String contents;
+
+    @Column(columnDefinition = "TEXT")
+    private String fileName;
+
+    @Column(columnDefinition = "TEXT")
+    private String filePath;
 
     @Builder
     private Answer(
         Question question,
         Inquiry inquiry,
         Customer customer,
-        String answerTitle,
-        String answerContents
+        String title,
+        String contents,
+        String fileName,
+        String filePath
     ) {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
-        this.answerTitle = answerTitle;
-        this.answerContents = answerContents;
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 }

@@ -11,12 +11,15 @@ import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
+
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,16 +29,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class InquiryController {
+
     private final InquiryService inquiryService;
 
     // 고객 Inquiry 조회
@@ -46,21 +51,30 @@ public class InquiryController {
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
-        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
         @RequestParam(required = false) ProductType productType,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
-            token, userId, page, size, sortBy,
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            token,
+            userId,
+            page,
+            size,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         Map<String, Object> response = new HashMap<>();
+
         response.put("inquiryInfo", inquiries.getContent());
         response.put("totalElements", inquiries.getTotalElements());
         response.put("totalPages", inquiries.getTotalPages());
@@ -75,8 +89,9 @@ public class InquiryController {
     public ResponseEntity<JsonResult> getInquiryDetail(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @PathVariable Long inquiryId) {
-        InquiryResponseDTO response = inquiryService.getInquiryDetail(
+        @PathVariable Long inquiryId
+    ) {
+        InquiryResponseDTO response = inquiryService.getInquiryDetailForCustomer(
             token,
             userId,
             inquiryId
@@ -91,10 +106,12 @@ public class InquiryController {
     public ResponseEntity<JsonResult> createInquiry(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestBody InquiryCreateRequestDTO dto) {
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("inquiry") InquiryCreateRequestDTO dto) {
         InquiryResponseDTO response = inquiryService.createInquiry(
             token,
             userId,
+            file,
             dto
         );
 
@@ -107,11 +124,13 @@ public class InquiryController {
     public ResponseEntity<JsonResult> updateInquiryById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId,
-        @RequestBody InquiryUpdateRequestDTO inquiryUpdateRequestDTO
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("inquiry") InquiryUpdateRequestDTO inquiryUpdateRequestDTO
     ) {
         InquiryResponseDTO response = inquiryService.updateInquiryById(
             token,
             inquiryId,
+            file,
             inquiryUpdateRequestDTO
         );
 
@@ -137,24 +156,48 @@ public class InquiryController {
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "4") int size,
-        @RequestParam(defaultValue = "latest") String sortBy,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
         @RequestParam(required = false) ProductType productType,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManager(
-            token, page, size, sortBy,
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            token,
+            page,
+            size,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         Map<String, Object> response = new HashMap<>();
+
         response.put("inquiryInfo", inquiries.getContent());
         response.put("totalElements", inquiries.getTotalElements());
         response.put("totalPages", inquiries.getTotalPages());
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    // 상세 조회 페이지
+    @GetMapping("/managers/inquiries/{inquiryId}")
+    @Operation(summary = "담당자 Inquiry 상세 조회")
+    public ResponseEntity<JsonResult> getInquiryDetailForManager(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        InquiryResponseDTO response = inquiryService.getInquiryDetailForManager(
+            token,
+            inquiryId
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

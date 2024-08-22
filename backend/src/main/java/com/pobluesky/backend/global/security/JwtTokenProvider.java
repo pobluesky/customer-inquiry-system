@@ -42,7 +42,12 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken generateToken(String email, String securityRole, UserRole role) {
+    public JwtToken generateToken(
+        String email,
+        String securityRole,
+        UserRole role,
+        Long userId
+    ) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(email));
         claims.put("role", securityRole);
 
@@ -69,6 +74,7 @@ public class JwtTokenProvider {
             .accessToken(accessToken)
             .refreshToken(refreshToken)
             .userRole(role)
+            .userId(userId)
             .build();
     }
 

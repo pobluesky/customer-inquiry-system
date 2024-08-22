@@ -6,7 +6,6 @@ import com.pobluesky.backend.domain.review.entity.Review;
 public record ReviewCreateRequestDTO(
     SalesInfoDTO salesInfo,
     String reviewText,
-    String attachmentFile,
     String finalReviewText,
     String tsReviewReq
 )
@@ -16,7 +15,8 @@ public record ReviewCreateRequestDTO(
             .inquiry(inquiry)
             .salesInfo(salesInfo.toSalesInfoEntity())
             .reviewText(reviewText)
-            .attachmentFile(attachmentFile)
+            .attachmentFileName(inquiry.getFileName())
+            .attachmentFilePath(inquiry.getFilePath())
             .finalReviewText(finalReviewText)
             .tsReviewReq(tsReviewReq)
             .build();

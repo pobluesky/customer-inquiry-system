@@ -29,13 +29,16 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Customer customer; // 고객사 번호
 
-    private String title; // 제목
+    private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String contents; // 내용
+    private String contents;
 
     @Column(columnDefinition = "TEXT")
-    private String files; // 첨부파일
+    private String fileName;
+
+    @Column(columnDefinition = "TEXT")
+    private String filePath;
 
     @Enumerated(EnumType.STRING)
     private QuestionStatus status;
@@ -53,7 +56,8 @@ public class Question extends BaseEntity {
         Customer customer,
         String title,
         String contents,
-        String files,
+        String fileName,
+        String filePath,
         QuestionStatus status,
         QuestionType type
     ) {
@@ -61,7 +65,8 @@ public class Question extends BaseEntity {
         this.customer = customer;
         this.title = title;
         this.contents = contents;
-        this.files = files;
+        this.fileName = fileName;
+        this.filePath = filePath;
         this.status = status;
         this.type = type;
     }

@@ -5,9 +5,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
-import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Department;
 
+import java.util.List;
+import java.util.Map;
 
 public record InquiryUpdateRequestDTO(
     Country country,
@@ -19,8 +19,7 @@ public record InquiryUpdateRequestDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    String files,
     String responseDeadline,
-    String elapsedDays
+    List<Map<String, Object>> lineItemRequestDTOs
 ) {
 }

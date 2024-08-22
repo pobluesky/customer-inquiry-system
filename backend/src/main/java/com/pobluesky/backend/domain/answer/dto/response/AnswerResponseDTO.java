@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.answer.dto.response;
 
 import com.pobluesky.backend.domain.answer.entity.Answer;
+
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -11,8 +12,10 @@ public record AnswerResponseDTO(
     Long questionId,
     Optional<Long> inquiryId,
     Long userId,
-    String answerTitle,
-    String answerContents,
+    String title,
+    String contents,
+    String fileName,
+    String filePath,
     LocalDateTime createdDate
 
 ) {
@@ -22,9 +25,11 @@ public record AnswerResponseDTO(
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
             .userId(answer.getCustomer().getUserId())
-            .answerTitle(answer.getAnswerTitle())
-            .answerContents(answer.getAnswerContents())
+            .title(answer.getTitle())
+            .contents(answer.getContents())
             .createdDate(answer.getCreatedDate())
+            .fileName(answer.getFileName())
+            .filePath(answer.getFilePath())
             .build();
     }
 }

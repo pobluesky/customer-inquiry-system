@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.global.BaseEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,11 +61,11 @@ public class Inquiry extends BaseEntity {
 
     private String additionalRequests;
 
-    private String files;
+    private String fileName;
+
+    private String filePath;
 
     private String responseDeadline;
-
-    private String elapsedDays;
 
     private Boolean isActivated;
 
@@ -80,11 +82,9 @@ public class Inquiry extends BaseEntity {
         Progress progress,
         String customerRequestDate,
         String additionalRequests,
-        String files,
-        String responseDeadline,
-        String elapsedDays,
-        Boolean isActivated
-
+        String fileName,
+        String filePath,
+        String responseDeadline
     ){
         this.customer = customer;
         this.country = country;
@@ -97,10 +97,10 @@ public class Inquiry extends BaseEntity {
         this.progress = progress;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
-        this.files = files;
+        this.fileName = fileName;
+        this.filePath = filePath;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
-        this.isActivated = isActivated;
+        this.isActivated = true;
     }
 
     public void updateInquiry(
@@ -113,9 +113,9 @@ public class Inquiry extends BaseEntity {
         Progress progress,
         String customerRequestDate,
         String additionalRequests,
-        String files,
-        String responseDeadline,
-        String elapsedDays
+        String fileName,
+        String filePath,
+        String responseDeadline
     ){
         this.country = country;
         this.corporate = corporate;
@@ -126,9 +126,9 @@ public class Inquiry extends BaseEntity {
         this.progress = progress;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
-        this.files = files;
+        this.fileName = fileName;
+        this.filePath = filePath;
         this.responseDeadline = responseDeadline;
-        this.elapsedDays = elapsedDays;
     }
 
     public void deleteInquiry() {

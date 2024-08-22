@@ -4,16 +4,11 @@ import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetCreateReque
 import com.pobluesky.backend.domain.offersheet.dto.request.OfferSheetUpdateRequestDTO;
 import com.pobluesky.backend.domain.offersheet.dto.response.OfferSheetResponseDTO;
 import com.pobluesky.backend.domain.offersheet.service.OfferSheetService;
-import com.pobluesky.backend.domain.user.entity.User;
-import com.pobluesky.backend.global.error.CommonException;
-import com.pobluesky.backend.global.error.ErrorCode;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-import java.util.Optional;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;

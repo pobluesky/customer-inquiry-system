@@ -4,17 +4,33 @@ import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseD
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+
 import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface InquiryRepositoryCustom {
     Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId, Pageable pageable, Progress progress,
-        ProductType productType, String customerName,
-        InquiryType inquiryType, LocalDate startDate, LocalDate endDate);
+        Long userId,
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    );
 
     Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType, LocalDate startDate, LocalDate endDate);
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    );
 }

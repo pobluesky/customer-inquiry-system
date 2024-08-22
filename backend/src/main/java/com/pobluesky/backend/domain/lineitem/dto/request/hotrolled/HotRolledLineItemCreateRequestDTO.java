@@ -17,9 +17,8 @@ public record HotRolledLineItemCreateRequestDTO(
     Integer quantity
 ) {
 
-    public HotRolledLineItem toHotRolledLineItem(
-        Inquiry inquiry
-    ) {
+    public HotRolledLineItem toHotRolledLineItemEntity(Inquiry inquiry) {
+
         return HotRolledLineItem.builder()
             .inquiry(inquiry)
             .kind(kind)

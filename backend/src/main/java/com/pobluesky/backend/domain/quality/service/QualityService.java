@@ -1,31 +1,29 @@
 package com.pobluesky.backend.domain.quality.service;
 
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.quality.dto.request.QualityCreateRequestDTO;
-import com.pobluesky.backend.domain.quality.dto.request.QualityUpdateRequestDTO;
 import com.pobluesky.backend.domain.quality.dto.response.QualityResponseDTO;
 import com.pobluesky.backend.domain.quality.entity.Quality;
 import com.pobluesky.backend.domain.quality.repository.QualityRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
 import com.pobluesky.backend.domain.user.entity.UserRole;
-import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -38,9 +36,9 @@ public class QualityService {
 
     private final InquiryRepository inquiryRepository;
 
-    private final CustomerRepository customerRepository;
-
     private final ManagerRepository managerRepository;
+
+    private final FileService fileService;
 
     @Transactional(readOnly = true)
     public List<QualityResponseDTO> getAllQualities(String token) {
@@ -60,6 +58,7 @@ public class QualityService {
     public QualityResponseDTO createQuality(
         String token,
         QualityCreateRequestDTO dto,
+        MultipartFile file,
         Long inquiryId
     ) {
         Long userId = signService.parseToken(token);
@@ -73,48 +72,38 @@ public class QualityService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Quality quality = dto.toQualityEntity(inquiry);
+        if(qualityRepository.existsByInquiry(inquiry)) {
+            throw new CommonException(ErrorCode.QUALITY_ALREADY_EXISTS);
+        }
+
+        String fileName = null;
+        String filePath = null;
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        Quality quality = dto.toQualityEntity(inquiry, fileName, filePath);
         Quality savedQuality = qualityRepository.save(quality);
 
         return QualityResponseDTO.from(savedQuality);
     }
 
-    @Transactional
-    public QualityResponseDTO updateQualityById(
-        String token,
-        Long qualityId,
-        QualityUpdateRequestDTO qualityUpdateRequestDTO
-    ) {
+    @Transactional(readOnly = true)
+    public QualityResponseDTO getReviewByInquiry(String token, Long inquiryId) {
         Long userId = signService.parseToken(token);
 
-        Manager manager = managerRepository.findById(userId)
+        managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if(manager.getRole() != UserRole.QUALITY)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Quality quality = qualityRepository.findById(qualityId)
+        Quality quality = qualityRepository.findByInquiry(inquiry)
             .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_NOT_FOUND));
-
-        quality.updateQuality(
-            qualityUpdateRequestDTO.qualityReviewInfo(),
-            qualityUpdateRequestDTO.qualityComments()
-        );
 
         return QualityResponseDTO.from(quality);
     }
-
-    @Transactional
-    public void deleteQualityById(String token, Long qualityId) {
-        Long userId = signService.parseToken(token);
-
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(manager.getRole() != UserRole.QUALITY)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
-
-        qualityRepository.deleteById(qualityId);
-    }
-
 }

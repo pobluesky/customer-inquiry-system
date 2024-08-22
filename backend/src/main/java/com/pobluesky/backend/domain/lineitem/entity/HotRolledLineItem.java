@@ -81,30 +81,4 @@ public class HotRolledLineItem extends LineItem{
         this.quantity = quantity;
         this.isActivated = true;
     }
-
-    public void updateHotRolledLineItem(
-        Kind kind,
-        InqName inqName,
-        String orderCategory,
-        String thickness,
-        String width,
-        String hardness,
-        String flatness,
-        String orderEdge,
-        Integer quantity
-    ){
-        this.kind = kind;
-        this.inqName = inqName;
-        this.orderCategory = orderCategory;
-        this.thickness = thickness;
-        this.width = width;
-        this.hardness = hardness;
-        this.flatness = flatness;
-        this.quantity = quantity;
-        this.orderEdge = orderEdge;
-    }
-
-    public Customer getCustomer() {
-        return this.inquiry.getCustomer();
-    }
 }

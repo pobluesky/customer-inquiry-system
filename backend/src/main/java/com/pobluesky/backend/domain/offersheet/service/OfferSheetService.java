@@ -7,9 +7,9 @@ import com.pobluesky.backend.domain.offersheet.entity.OfferSheet;
 import com.pobluesky.backend.domain.offersheet.repository.OfferSheetRepository;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.receipt.entity.Receipt;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
-import com.pobluesky.backend.domain.user.entity.User;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
@@ -17,9 +17,9 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,11 +40,12 @@ public class OfferSheetService {
 
     private final ManagerRepository managerRepository;
 
+
     @Transactional(readOnly = true)
     public OfferSheetResponseDTO getOfferSheetByInquiryId(String token, Long inquiryId) {
         Long userId = signService.parseToken(token);
 
-        OfferSheet offerSheet = offerSheetRepository.findById(inquiryId)
+        OfferSheet offerSheet = offerSheetRepository.findByInquiryInquiryId(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
 
         if (!managerRepository.existsById(userId)) {
@@ -82,18 +83,6 @@ public class OfferSheetService {
 
         // 3. offersheet update
         offerSheet.updateOfferSheet(
-            offerSheetUpdateRequestDTO.product(),
-            offerSheetUpdateRequestDTO.specification(),
-            offerSheetUpdateRequestDTO.surfaceFinish(),
-            offerSheetUpdateRequestDTO.usage(),
-            offerSheetUpdateRequestDTO.thickness(),
-            offerSheetUpdateRequestDTO.diameter(),
-            offerSheetUpdateRequestDTO.width(),
-            offerSheetUpdateRequestDTO.quantity(),
-            offerSheetUpdateRequestDTO.price(),
-            offerSheetUpdateRequestDTO.unitMinWeight(),
-            offerSheetUpdateRequestDTO.unitMaxWeight(),
-            offerSheetUpdateRequestDTO.edge(),
             offerSheetUpdateRequestDTO.priceTerms(),
             offerSheetUpdateRequestDTO.paymentTerms(),
             offerSheetUpdateRequestDTO.shipment(),
@@ -126,9 +115,14 @@ public class OfferSheetService {
 
         OfferSheet offerSheet = offerSheetCreateRequestDTO.toOfferSheetEntity(inquiry);
 
+        List<Receipt> receipts = offerSheetCreateRequestDTO.receipts().stream()
+            .map(receiptCreateRequestDTO -> receiptCreateRequestDTO.toReceiptEntity(offerSheet))
+            .collect(Collectors.toList());
+
+        offerSheet.getReceipts().addAll(receipts);
+
         OfferSheet savedOfferSheet = offerSheetRepository.save(offerSheet);
 
         return OfferSheetResponseDTO.from(savedOfferSheet);
     }
-
 }

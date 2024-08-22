@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import InquiryItem from '../../components/organisms/InquiryItem';
 import dummyInquiryData from './dummyInquiryData';
 import InqPath from "../../components/atoms/InqPath";
@@ -14,11 +14,9 @@ const InqList = () => {
         <InquirySearchBox />
         <SearchResult searchResult={"54"}/>
 
-        {dummyInquiryData.map((inquiryData, index) => (
-                <Link to="/inq-item" className={_Link}>
-                  <InquiryItem key={index} inquiryData={inquiryData} />
-                </Link>
-          ))}
+        <Link to="/inq-item/customer" className={_Link}>
+                  <InquiryItem inquiryData={inquiryData} />
+        </Link>
       </div>
   );
 };

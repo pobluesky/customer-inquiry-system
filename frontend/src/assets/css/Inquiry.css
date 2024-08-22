@@ -24,14 +24,20 @@
   display: grid;
   grid-template-rows: 1fr;
   padding: 10px 80px 30px 80px;
+  color: inherit;
+  cursor: pointer;
 }
 
 ._InquiryBox {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1.5fr;
   justify-content: center;
-  border-radius: 0 20px 20px 20px;
+  border-radius: 20px;
   border: 1px solid #C1C1C1;
+}
+
+._InquiryBox:hover {
+  background-color: #cbefff;
 }
 
 ._Inquiry {
@@ -42,7 +48,8 @@
   display: flex;
   flex-direction: column;
   margin-left: 5vh;
-  margin-top: 0.4vh;
+  margin-top: 0.2vh;
+  font-size: 25px;
 }
 
 ._Size {
@@ -106,6 +113,20 @@
   text-align: center;
 }
 
+._Date {
+  width: 123px;
+  height: 25px;
+  border-radius: 7px;
+  font-size: 12px;
+  border: 1px solid #c1c1c1;
+  margin-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 10px 0 3px;
+}
+
 ._searchResult {
   display: flex;
   margin-left: 50px;
@@ -119,12 +140,12 @@
 ._Link {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 ._Link:hover {
   color: #007AFF;
   transition: color 0.1s ease-in-out;
-  cursor: pointer;
   font-weight: bolder;
 }
 
@@ -133,4 +154,57 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.Paging {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.PagingButton {
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  background-color: #ffffff;
+  color: #49454F;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.PagingButton:hover {
+  background-color: #2f4f79;
+  color: #ffffff;
+  transition: background-color 0.1s ease-in-out;
+  font-weight: bold;
+}
+
+.PagingArrowButton {
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  background-color: #ffffff;
+  color: #49454F;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.PagingArrowButton:disabled {
+  background-color: #ffffff;
+  color: #03507D;
+  cursor: not-allowed;
+  border: none;
+}
+
+.PagingButton:disabled {
+  background-color: #cbefff;
+  color: #03507D;
+  cursor: not-allowed;
+  border: 1px solid #c1c1c1;
 }

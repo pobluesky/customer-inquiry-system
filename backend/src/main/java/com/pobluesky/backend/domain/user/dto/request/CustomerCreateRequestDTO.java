@@ -2,8 +2,6 @@ package com.pobluesky.backend.domain.user.dto.request;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
 
-import java.util.List;
-
 public record CustomerCreateRequestDTO(
     String name,
     String email,
@@ -13,7 +11,7 @@ public record CustomerCreateRequestDTO(
     String customerName
 ) {
 
-    public Customer toCustomerEntity(String encodedPassword, List<String> roles) {
+    public Customer toCustomerEntity(String encodedPassword, String securityRole) {
 
         return Customer.builder()
             .name(name)
@@ -22,7 +20,7 @@ public record CustomerCreateRequestDTO(
             .phone(phone)
             .customerCode(customerCode)
             .customerName(customerName)
-            .roles(roles)
+            .securityRole(securityRole)
             .build();
     }
 }

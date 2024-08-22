@@ -1,7 +1,6 @@
 import axios from 'axios';
 import BASE_URL from '../config/constants';
 import { getCookie, removeCookie, setCookie } from './cookies';
-import { getRoleFromCookie } from './tokenUtils';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,

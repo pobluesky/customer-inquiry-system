@@ -8,15 +8,21 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.time.LocalDate;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -29,10 +35,16 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId, Pageable pageable, Progress progress,
-        ProductType productType, String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
-
+        Long userId,
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                     inquiry.inquiryId,
@@ -46,7 +58,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .from(inquiry)
             .join(inquiry.customer, customer)
             .where(
-                inquiry.isActivated.isTrue(),
+                inquiry.isActivated.eq(true),
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
@@ -54,18 +66,19 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(
-                inquiry.productType.asc(),
-                inquiry.inquiryType.asc(),
-                inquiry.progress.asc()
-            )
+            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
         JPAQuery<Inquiry> countQuery = getCountQueryForCustomer(
-            userId, progress, productType,
-            customerName, inquiryType, startDate, endDate
+            userId,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
@@ -73,9 +86,14 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy) {
 
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -97,27 +115,31 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(
-                inquiry.productType.asc(),
-                inquiry.inquiryType.asc(),
-                inquiry.progress.asc()
-            )
+            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
         JPAQuery<Inquiry> countQuery = getCountQueryForManager(
-            progress, productType, customerName,
-            inquiryType, startDate, endDate
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
     private JPAQuery<Inquiry> getCountQueryForCustomer(
-        Long userId, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate
+        Long userId,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         return queryFactory
             .selectFrom(inquiry)
@@ -147,6 +169,23 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return new OrderSpecifier[]{
+                    inquiry.createdDate.desc().nullsLast(),
+                    inquiry.inquiryId.desc()
+                };
+            case "OLDEST":
+                return new OrderSpecifier[]{
+                    inquiry.createdDate.asc().nullsFirst(),
+                    inquiry.inquiryId.asc()
+                };
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 
     private BooleanExpression progressEq(Progress progress) {

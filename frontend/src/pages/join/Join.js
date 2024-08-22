@@ -76,25 +76,6 @@ function Join() {
     const [tryJoin, setTryJoin] = useState(false);
     const [resetAtom, setResetAtom] = useState(false);
 
-    /* [시작] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
-    useEffect(() => {
-        setJoinErrorMsg('');
-        setResetAtom(true);
-    }, []);
-
-    useEffect(() => {
-        if (resetAtom && currentJoinErrorMsg) {
-            canShowAlert(true);
-        }
-    }, [resetAtom, tryJoin]);
-
-    useEffect(() => {
-        if (resetAtom && currentJoinErrorMsg) {
-            JoinFailedAlert(currentJoinErrorMsg);
-        }
-    }, [tryJoin]);
-    /* [끝] 회원가입 실패 후 새로고침 시 경고 메시지 초기화 */
-
     // 고유 코드를 통해 고객사와 담당자를 구분
     const getRoleAndSetNewForm = () => {
         const wrongName = validateName(name);
@@ -120,14 +101,64 @@ function Join() {
         const codePrefix = userCode.substring(0, 3);
         roleActions[codePrefix]?.();
 
-        // 입력 값 초기화
-        nameRef.current.value = '';
-        userCodeRef.current.value = '';
-
-        setValidationTest(false);
+        // 입력 값 초기화: 역할 선택이 완료되기 전에는 초기화하지 않음
+        if (codePrefix === 'CUS') {
+            nameRef.current.value = '';
+            userCodeRef.current.value = '';
+            setValidationTest(false);
+        }
     };
 
-    // [회원가입 성공] 로그인 페이지로 이동
+    // 엔터 키 기능 (권한 조회 버튼 클릭)
+    const enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            getRoleAndSetNewForm();
+        }
+    };
+
+    // 엔터 키 기능 (권한 부여 버튼 클릭)
+    const _enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (role && isManager) {
+                setFirst(false);
+                setValidationTest(false);
+            } else if (!role && isManager) {
+                canShowAlert(true);
+            }
+        }
+    };
+
+    // 엔터 키 기능 (회원가입 버튼 클릭)
+    const __enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            await GetAuth();
+        }
+    };
+
+    // 회원가입 실패: 새로고침 시 경고 메시지 초기화
+    useEffect(() => {
+        setJoinErrorMsg('');
+        setResetAtom(true);
+    }, []);
+
+    useEffect(() => {
+        if (resetAtom && currentJoinErrorMsg) {
+            canShowAlert(true);
+        }
+    }, [resetAtom, tryJoin]);
+
+    useEffect(() => {
+        if (resetAtom && currentJoinErrorMsg) {
+            JoinFailedAlert(currentJoinErrorMsg);
+        }
+    }, [tryJoin]);
+
+    // 회원가입 성공: 로그인 페이지로 이동
     const goToLogin = (result) => {
         if (result.success) {
             saveGlobalInfo();
@@ -140,7 +171,7 @@ function Join() {
         setTryJoin(!tryJoin);
     };
 
-    // [회원가입 성공] 이름, 이메일, 비밀번호 atom에 저장
+    // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
     const saveGlobalInfo = () => {
         setGlobalName(name);
         setGlobalEmail(email);
@@ -220,12 +251,13 @@ function Join() {
                         <>
                             <div>회원가입</div>
                             {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
-                            <div>
+                            <div onKeyDown={_enterKeyDown}>
                                 {JoinInput({
                                     margin: '0 0 24px 0',
                                     ref: nameRef,
                                     value: name,
                                     onChange: nameChange,
+                                    onKeyDown: enterKeyDown,
                                     type: 'text',
                                     placeholder: '홍길동',
                                     categoryName: '이름',
@@ -237,6 +269,7 @@ function Join() {
                                     ref: userCodeRef,
                                     value: userCode,
                                     onChange: userCodeChange,
+                                    onKeyDown: enterKeyDown,
                                     type: 'text',
                                     placeholder: 'ABC123',
                                     categoryName: '고유 코드',
@@ -265,7 +298,7 @@ function Join() {
                                     </>
                                 )}
                             </div>
-                            <div>
+                            <div onKeyDown={enterKeyDown}>
                                 {/* 권한 조회 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
                                 {!isManager &&
                                     CheckButton({
@@ -304,6 +337,7 @@ function Join() {
                                     margin: '0 0 24px 0',
                                     value: userRole || '',
                                     onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
+                                    onKeyDown: __enterKeyDown,
                                     type: 'text',
                                     placeholder: '',
                                     categoryName: '권한',
@@ -313,6 +347,7 @@ function Join() {
                                     margin: '0 0 24px 0',
                                     value: email || '',
                                     onChange: emailChange,
+                                    onKeyDown: __enterKeyDown,
                                     type: 'email',
                                     placeholder: 'poscodx@posco.co.kr',
                                     categoryName: '이메일',
@@ -324,6 +359,7 @@ function Join() {
                                     margin: '0 0 24px 0',
                                     value: phone || '',
                                     onChange: phoneChange,
+                                    onKeyDown: __enterKeyDown,
                                     type: 'tel',
                                     placeholder: '01012345678',
                                     categoryName: '전화번호',
@@ -336,6 +372,7 @@ function Join() {
                                         margin: '0 0 24px 0',
                                         value: customerName,
                                         onChange: customerNameChange,
+                                        onKeyDown: __enterKeyDown,
                                         type: 'text',
                                         placeholder: '(주)포스코',
                                         categoryName: '고객사명',
@@ -364,6 +401,7 @@ function Join() {
                                     margin: '0 0 24px 0',
                                     value: password || '',
                                     onChange: passwordChange,
+                                    onKeyDown: __enterKeyDown,
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호',
@@ -374,6 +412,7 @@ function Join() {
                                 {JoinInput({
                                     value: passwordCheck || '',
                                     onChange: passwordCheckChange,
+                                    onKeyDown: __enterKeyDown,
                                     type: 'password',
                                     placeholder: '********',
                                     categoryName: '비밀번호 확인',

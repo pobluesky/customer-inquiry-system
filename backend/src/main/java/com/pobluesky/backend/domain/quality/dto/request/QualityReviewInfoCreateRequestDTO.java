@@ -15,7 +15,7 @@ public record QualityReviewInfoCreateRequestDTO(
     String availableLab
 ) {
     // dto -> entity
-    public QualityReviewInfo toQualityReviewInfoEntity() {
+    public QualityReviewInfo toQualityReviewInfoEntity(String fileName, String filePath) {
         return QualityReviewInfo.builder()
             .finalResult(finalResult)
             .finalResultDetails(finalResultDetails)
@@ -27,6 +27,8 @@ public record QualityReviewInfoCreateRequestDTO(
             .orderEdge(orderEdge)
             .customerQReq(customerQReq)
             .availableLab(availableLab)
+            .fileName(fileName)
+            .filePath(filePath)
             .build();
     }
 }

@@ -13,7 +13,9 @@ public record CollaborationCreateRequestDTO(
     public Collaboration toCollaborationEntity(
         Manager colRequestManager,
         Manager colResponseManager,
-        Question question
+        Question question,
+        String fileName,
+        String filePath
     ) {
 
         return Collaboration.builder()
@@ -21,6 +23,8 @@ public record CollaborationCreateRequestDTO(
             .colRequestManager(colRequestManager)
             .colResponseManager(colResponseManager)
             .colContents(colContents)
+            .fileName(fileName)
+            .filePath(filePath)
             .build();
     }
 }

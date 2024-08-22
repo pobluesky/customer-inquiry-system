@@ -4,27 +4,32 @@ import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreat
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResponseDTO;
+import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationSummaryResponseDTO;
 import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
+import com.pobluesky.backend.domain.file.dto.FileInfo;
+import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -38,23 +43,43 @@ public class CollaborationService {
 
     private final ManagerRepository managerRepository;
 
+    private final FileService fileService;
+
     @Transactional(readOnly = true)
-    public List<CollaborationResponseDTO> getAllCollaborations(String token) {
+    public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
         Long userId = signService.parseToken(token);
 
         Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        List<Collaboration> collaborations =
-            collaborationRepository.findAllByColRequestManagerOrColResponseManager(manager);
+        if(manager.getRole() == UserRole.CUSTOMER)
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return collaborations.stream()
-            .map(CollaborationResponseDTO::from)
-            .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size);
+
+        return collaborationRepository.findAllCollaborationsRequest(
+            pageable,
+            colStatus,
+            colReqManager,
+            colReqId,
+            startDate,
+            endDate,
+            sortBy
+        );
     }
 
     @Transactional(readOnly = true)
-    public CollaborationResponseDTO getCollaborationById(
+    public CollaborationDetailResponseDTO getCollaborationById(
         String token,
         Long questionId,
         Long collaborationId
@@ -72,15 +97,16 @@ public class CollaborationService {
                 question
             ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
-        return CollaborationResponseDTO.from(collaboration);
+        return CollaborationDetailResponseDTO.from(collaboration);
     }
 
     @Transactional
     public CollaborationResponseDTO createCollaboration(
         String token,
         Long questionId,
+        MultipartFile file,
         CollaborationCreateRequestDTO requestDTO
-    ) {
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -95,17 +121,21 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
-        if(collaborationRepository
-            .findByRequestManagerAndResponseManager(reqManager, resManager)
-            .isPresent()
-        ) {
-            throw new CommonException(ErrorCode.COLLABORATION_ALREADY_EXISTS);
+        String fileName = null;
+        String filePath = null;
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
         }
 
         Collaboration collaborationEntity = requestDTO.toCollaborationEntity(
             reqManager,
             resManager,
-            question
+            question,
+            fileName,
+            filePath
         );
 
         Collaboration savedCollaboration = collaborationRepository.save(collaborationEntity);
@@ -117,8 +147,9 @@ public class CollaborationService {
     public CollaborationDetailResponseDTO updateCollaborationStatus(
         String token,
         Long collaborationId,
+        MultipartFile file,
         CollaborationUpdateRequestDTO requestDTO
-    ) {
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -141,6 +172,17 @@ public class CollaborationService {
 
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
+
+        String fileName = null;
+        String filePath = null;
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }

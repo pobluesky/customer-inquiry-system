@@ -7,23 +7,24 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
+import java.util.List;
+import java.util.Map;
+
 public record InquiryCreateRequestDTO(
     Country country,
     String corporate,
     String salesPerson,
     InquiryType inquiryType,
     Industry industry,
-    String corporationCode,
     ProductType productType,
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    String files,
     String responseDeadline,
-    String elapsedDays,
-    Boolean isActivated
+    List<Map<String, Object>> lineItemRequestDTOs
 ) {
-    public Inquiry toInquiryEntity() {
+    public Inquiry toInquiryEntity(String fileName, String filePath) {
+
         return Inquiry.builder()
             .country(country)
             .corporate(corporate)
@@ -35,10 +36,9 @@ public record InquiryCreateRequestDTO(
             .progress(progress)
             .customerRequestDate(customerRequestDate)
             .additionalRequests(additionalRequests)
-            .files(files)
+            .fileName(fileName)
+            .filePath(filePath)
             .responseDeadline(responseDeadline)
-            .elapsedDays(elapsedDays)
-            .isActivated(true)
             .build();
     }
 }
