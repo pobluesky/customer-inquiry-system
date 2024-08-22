@@ -1,11 +1,14 @@
 import React from 'react';
-import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Type_Selector } from '../../assets/css/Voc.css';
 
-function QuestionTypeSelector({ selectedType, setSelectedType }) {
-
+function QuestionTypeSelector({
+    selectedType,
+    setSelectedType,
+    setOpenModal,
+    inquiryId,
+}) {
     const optionSelect = (e) => {
         setSelectedType(e.target.value);
     };
@@ -64,16 +67,7 @@ function QuestionTypeSelector({ selectedType, setSelectedType }) {
                     {selectedType === 'INQ' && (
                         <>
                             <div>Inquiry No.</div>
-                            <div>
-                                <Input
-                                    type="text"
-                                    width={'196px'}
-                                    height={'26px'}
-                                    padding={'0 8px 0 8px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'8px'}
-                                />
-                            </div>
+                            {inquiryId && <div>{inquiryId}</div>}
                             <div>
                                 <Button
                                     btnName={'번호 조회'}
@@ -83,6 +77,9 @@ function QuestionTypeSelector({ selectedType, setSelectedType }) {
                                     textColor={'#ffffff'}
                                     border={'none'}
                                     borderRadius={'12px'}
+                                    onClick={() => {
+                                        setOpenModal(true);
+                                    }}
                                 />
                             </div>
                         </>

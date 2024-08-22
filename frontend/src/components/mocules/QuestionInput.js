@@ -10,6 +10,7 @@ import { getUserEmail } from './../../index';
 import {
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
+    InquiryIdisNullAlert,
     QuestionCompleteAlert,
 } from '../../utils/actions';
 import {
@@ -17,10 +18,13 @@ import {
     validateQuestionContents,
 } from '../../utils/validation';
 import { getCustomerInfo, getManagerInfo } from '../../apis/api/auth';
-import { postQuestionByUserId } from '../../apis/api/question';
+import {
+    postQuestionByUserIdAboutInquiry,
+    postQuestionByUserId,
+} from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput({ selectedType }) {
+function QuestionInput({ selectedType, inquiryId }) {
     const { userId } = useAuth();
     const navigate = useNavigate();
 
@@ -34,6 +38,7 @@ function QuestionInput({ selectedType }) {
 
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
+    const [showFailedAlert, canShowFailedAlert] = useState(false);
 
     const titleRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -53,6 +58,7 @@ function QuestionInput({ selectedType }) {
         }
     };
 
+    // 질문 등록
     const fetchPostQuestionByUserId = async () => {
         try {
             const questionData = {
@@ -61,23 +67,54 @@ function QuestionInput({ selectedType }) {
                 type: selectedType,
                 status,
             };
-            const result = await postQuestionByUserId(
-                file,
-                questionData,
-                userId,
-                getCookie('accessToken'),
-            );
 
-            if (result) {
-                console.log('응답받은 데이터는 다음과 같습니다.', result);
+            // 문의 관련 질문인 경우
+            if (selectedType === 'INQ') {
+                const result = await postQuestionByUserIdAboutInquiry(
+                    file,
+                    questionData,
+                    userId,
+                    inquiryId,
+                    getCookie('accessToken'),
+                );
+                console.log(questionData, inquiryId);
+
+                if (result) {
+                    console.log('응답받은 데이터는 다음과 같습니다.', result);
+                    QuestionCompleteAlert();
+                    setTimeout(() => {
+                        navigate('/voc-list');
+                    }, '2000');
+                    resetForm();
+                } else {
+                    console.error(
+                        'Fetched data is not an array or is invalid.',
+                    );
+                    canShowFailedAlert(true);
+                }
+
+            // 문의와 무관한 질문인 경우
             } else {
-                console.error('Fetched data is not an array or is invalid.');
+                const result = await postQuestionByUserId(
+                    file,
+                    questionData,
+                    userId,
+                    getCookie('accessToken'),
+                );
+
+                if (result) {
+                    console.log('응답받은 데이터는 다음과 같습니다.', result);
+                    QuestionCompleteAlert();
+                    setTimeout(() => {
+                        navigate('/voc-list');
+                    }, '2000');
+                    resetForm();
+                } else {
+                    console.error(
+                        'Fetched data is not an array or is invalid.',
+                    );
+                }
             }
-            QuestionCompleteAlert();
-            setTimeout(() => {
-                navigate('/voc-list');
-            }, '2000');
-            resetForm();
         } catch (error) {
             console.error('Error in posting question:', error);
         }
@@ -218,6 +255,13 @@ function QuestionInput({ selectedType }) {
                 showAlert={showContentAlert}
                 onClose={() => {
                     canShowContentAlert(false);
+                }}
+                inert
+            />
+            <InquiryIdisNullAlert
+                showAlert={showFailedAlert}
+                onClose={() => {
+                    canShowFailedAlert(false);
                 }}
                 inert
             />

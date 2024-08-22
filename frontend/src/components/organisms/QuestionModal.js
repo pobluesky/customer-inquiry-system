@@ -178,14 +178,14 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     return (
         <div className={Question_Modal_Container}>
             <div>
-                <Label
+                {/* <Label
                     label={'문의 내용'}
                     width={'96px'}
                     height={'28px'}
                     backgroundColor={'#007aff'}
                     textColor={'#ffffff'}
                     borderRadius={'12px 12px 0 0'}
-                />
+                /> */}
             </div>
             <div className={Question_Modal}>
                 <div>
@@ -205,7 +205,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                 <div>
                     <div>
                         <img src={qmark} />
-                        <div>{questionDetail.title}</div>
+                        <div>{questionDetail.title || ''}</div>
                         <img src={folder} />
                         <div>고객사 첨부파일</div>
                         <div style={filesEllipsis}>
@@ -217,7 +217,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     </div>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: sanitizer(`${questionDetail.contents}`),
+                            __html: sanitizer(`${questionDetail.contents || ''}`),
                         }}
                     />
                 </div>
@@ -246,7 +246,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     <div className={Completed}>
                         <div>
                             <img src={amark} />
-                            <div>{answerDetail.title}</div>
+                            <div>{answerDetail.title || ''}</div>
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
                             <div style={filesEllipsis}>

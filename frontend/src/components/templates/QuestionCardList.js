@@ -60,8 +60,12 @@ function QuestionCardList({
     useEffect(() => {
         let args = '';
         if (startDate && endDate) {
-            const s = `startDate=${new Date(startDate).toISOString().split('T')[0]}`;
-            const e = `endDate=${new Date(endDate).toISOString().split('T')[0]}`;
+            const s = `startDate=${
+                new Date(startDate).toISOString().split('T')[0]
+            }`;
+            const e = `endDate=${
+                new Date(endDate).toISOString().split('T')[0]
+            }`;
             args += `${s}&${e}`;
         }
         if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
@@ -199,6 +203,12 @@ function QuestionCardList({
         const [hours, minutes, seconds] = timePart.split(':');
         return `${hours}${minutes}${seconds}`;
     };
+
+    if (openCard) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
 
     return (
         <>

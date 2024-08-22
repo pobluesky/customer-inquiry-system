@@ -25,7 +25,7 @@ function QuestionOverview({
                 <div>
                     <img src={total} />
                     <div>전체 문의</div>
-                    <div>{question_total}</div>
+                    <div>{question_total || ''}</div>
                 </div>
 
                 <img src={partition} />
@@ -33,7 +33,7 @@ function QuestionOverview({
                 <div>
                     <img src={ready} />
                     <div>답변 대기</div>
-                    <div>{question_ready}</div>
+                    <div>{question_ready || ''}</div>
                 </div>
 
                 <img src={partition} />
@@ -41,7 +41,7 @@ function QuestionOverview({
                 <div>
                     <img src={completed} />
                     <div>답변 완료</div>
-                    <div>{question_completed}</div>
+                    <div>{question_completed || ''}</div>
                 </div>
                 {thisRole !== 'CUSTOMER' && (
                     <>
@@ -50,7 +50,7 @@ function QuestionOverview({
                         <div>
                             <img src={collaboration} />
                             <div>협업</div>
-                            <div>{question_collaboration}</div>
+                            <div>{question_collaboration || ''}</div>
                         </div>
                     </>
                 )}
