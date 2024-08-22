@@ -9,23 +9,28 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const BasicInfoForm = ({ formData }) => {
+const ManagerBasicInfoForm = ({ formData }) => {
+    if(!formData) {
+        return;
+    }
+
     const {
         corporate,
         corporationCode,
         country,
-        customerCode,
         customerRequestDate,
         industry,
         inquiryType,
-        name,
-        email,
-        phone,
         productType,
         salesPerson,
+        customerCode,
+        name,
+        email,
+        phone
     } = formData;
 
-    const [isChecked, setCheck] = React.useState(true);
+
+    const [isChecked, setCheck] = useState(true);
 
     return (
         <div className={Container} style={{ marginTop: '2vh' }}>
@@ -213,4 +218,4 @@ const BasicInfoForm = ({ formData }) => {
     );
 };
 
-export default BasicInfoForm;
+export default ManagerBasicInfoForm;

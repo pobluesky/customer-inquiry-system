@@ -1,7 +1,7 @@
 import axiosInstance from '../utils/axiosInstance';
 
 // 고객사 inquiry list 가져오기 (summary)
-export const getInquiry = async (userId, page) => {
+export const getInquiry = async (userId, page = 0) => {
     try {
         const response = await axiosInstance.get(
             `/customers/inquiries/${userId}?page=${page}`,
@@ -100,11 +100,112 @@ const processInquiries = (data) => {
     });
 };
 
+// Inquiry 데이터 LineItem 포맷 변환 함수
+const processInquiryData = (data) => {
+    const { productType, ...rest } = data;
+
+    let formattedData;
+    switch (productType) {
+        case 'CAR':
+            formattedData = {
+                ...rest,
+                productType,
+                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                    lab: item.lab,
+                    kind: item.kind,
+                    standardOrg: item.standardOrg,
+                    pjtName: item.pjtName,
+                    salesVehicleName: item.salesVehicleName,
+                    partName: item.partName,
+                    ixPlate: item.ixPlate,
+                    thickness: item.thickness,
+                    width: item.width,
+                    quantity: item.quantity,
+                })),
+            };
+            break;
+        case 'COLD_ROLLED':
+            formattedData = {
+                ...rest,
+                productType,
+                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                    kind: item.kind,
+                    inqName: item.inqName,
+                    orderCategory: item.orderCategory,
+                    thickness: item.thickness,
+                    width: item.width,
+                    quantity: item.quantity,
+                    expectedDeadline: item.expectedDeadline,
+                    orderEdge: item.orderEdge,
+                    inDiameter: item.inDiameter,
+                    outDiameter: item.outDiameter,
+                })),
+            };
+            break;
+        case 'HOT_ROLLED':
+            formattedData = {
+                ...rest,
+                productType,
+                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                    kind: item.kind,
+                    inqName: item.inqName,
+                    orderCategory: item.orderCategory,
+                    thickness: item.thickness,
+                    width: item.width,
+                    hardness: item.hardness,
+                    flatness: item.flatness,
+                    orderEdge: item.orderEdge,
+                    quantity: item.quantity,
+                })),
+            };
+            break;
+        case 'THICK_PLATE':
+            formattedData = {
+                ...rest,
+                productType,
+                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                    generalDetails: item.generalDetails,
+                    orderInfo: item.orderInfo,
+                    ladleIngredient: item.ladleIngredient,
+                    productIngredient: item.productIngredient,
+                    seal: item.seal,
+                    grainSizeAnalysis: item.grainSizeAnalysis,
+                    show: item.show,
+                    curve: item.curve,
+                    additionalRequests: item.additionalRequests,
+                })),
+            };
+            break;
+        case 'WIRE_ROD':
+            formattedData = {
+                ...rest,
+                productType,
+                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                    kind: item.kind,
+                    inqName: item.inqName,
+                    orderCategory: item.orderCategory,
+                    diameter: item.diameter,
+                    quantity: item.quantity,
+                    expectedDeadline: item.expectedDeadline,
+                    initialQuantity: item.initialQuantity,
+                    customerProcessing: item.customerProcessing,
+                    finalUse: item.finalUse,
+                })),
+            };
+            break;
+        default:
+            throw new Error('Unknown productType');
+    }
+    console.log('processInquiryData: ', formattedData);
+    return formattedData;
+};
+
 // FormData 객체 생성 함수
 const createFormData = (formData) => {
     const form = new FormData();
 
-    const inquiryData = { ...formData };
+    const inquiryData = processInquiryData(formData);
+    console.log('createFormData: ', inquiryData);
     delete inquiryData.files;
     form.append(
         'inquiry',
@@ -114,6 +215,7 @@ const createFormData = (formData) => {
     if (formData.files) {
         form.append('files', formData.files);
     }
+    console.log('createFormData [form]: ', form);
 
     return form;
 };
@@ -122,6 +224,7 @@ const createFormData = (formData) => {
 export const postInquiry = async (userId, inquiryData) => {
     try {
         const formData = createFormData(inquiryData);
+        console.log('postInquiryFormData: ', formData);
 
         const response = await axiosInstance.post(
             `/customers/inquiries/${userId}`,
@@ -132,8 +235,7 @@ export const postInquiry = async (userId, inquiryData) => {
                 },
             },
         );
-        console.log(inquiryData);
-        console.log(response);
+        console.log('postInquiryResponse: ', response);
         return response.data;
     } catch (error) {
         console.error('Error posting inquiry:', error);
@@ -141,18 +243,35 @@ export const postInquiry = async (userId, inquiryData) => {
     }
 };
 
-// 고객사 LineItem 등록
-export const postLineItems = async (inquiryId, lineItemData) => {
+// 담당자 inquiry list 가져오기 (summary)
+export const getInquiryByManagers = async (page = 0) => {
     try {
-        const response = await axiosInstance.post(
-            `/line-items/${inquiryId}`,
-            lineItemData,
+        const response = await axiosInstance.get(
+            `/managers/inquiries?page=${page}`,
         );
-        console.log(lineItemData);
-        console.log(response);
+        console.log(response.data);
+        const { inquiryInfo, totalPages, totalElements } = response.data.data;
+        return {
+            inquiryInfo: processInquiries(inquiryInfo),
+            totalPages,
+            totalElements,
+        };
+    } catch (error) {
+        console.error('Error fetching Inquiry:', error);
+        throw error;
+    }
+};
+
+// 담당자 inquiry 상세 조회
+export const getInquiryDetailByManagers = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/managers/inquiries/${inquiryId}`,
+        );
+        console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error posting line item:', error);
+        console.error('Error fetching Inquiry:', error);
         throw error;
     }
 };

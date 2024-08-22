@@ -113,6 +113,20 @@
   text-align: center;
 }
 
+._Date {
+  width: 123px;
+  height: 25px;
+  border-radius: 7px;
+  font-size: 12px;
+  border: 1px solid #c1c1c1;
+  margin-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 10px 0 3px;
+}
+
 ._searchResult {
   display: flex;
   margin-left: 50px;

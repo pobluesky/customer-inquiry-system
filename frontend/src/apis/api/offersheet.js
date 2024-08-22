@@ -14,3 +14,14 @@ export const postOffersheet = async (inquiryId, offerSheetData) => {
         throw error;
     }
 };
+
+export const getOfferSheets = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.get(`/offersheet/${inquiryId}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching offer sheet:', error);
+        throw error;
+    }
+}

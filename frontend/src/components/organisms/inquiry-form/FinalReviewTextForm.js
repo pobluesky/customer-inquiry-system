@@ -8,6 +8,10 @@ import {
 } from '../../../assets/css/Form.css';
 
 const FinalReviewTextForm = ({ formData }) => {
+    if(!formData) {
+        return;
+    }
+
     const [isChecked, setCheck] = useState(true);
 
     return (

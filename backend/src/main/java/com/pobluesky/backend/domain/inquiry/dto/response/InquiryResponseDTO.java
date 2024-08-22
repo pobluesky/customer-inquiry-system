@@ -18,6 +18,9 @@ public record InquiryResponseDTO(
     Long customerId,
     String name,
     String customerName,
+    String customerCode,
+    String email,
+    String phone,
     Country country,
     String corporate,
     String  salesPerson,
@@ -45,6 +48,10 @@ public record InquiryResponseDTO(
             .customerId(inquiry.getCustomer().getUserId())
             .name(inquiry.getCustomer().getName())
             .customerName(inquiry.getCustomer().getCustomerName())
+            .customerCode(inquiry.getCustomer().getCustomerCode())
+            .corporationCode(inquiry.getCustomer().getCustomerCode())
+            .email(inquiry.getCustomer().getEmail())
+            .phone(inquiry.getCustomer().getPhone())
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())

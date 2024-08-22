@@ -3,9 +3,6 @@ import { _FileItem, _FileName } from '../../assets/css/Form.css';
 import { useParams } from 'react-router-dom';
 
 const FileItem = ({ files }) => {
-    console.log(files);
-    const { id } = useParams();
-
     return (
         <div className={_FileItem}>
             {files.length === 1 ? (

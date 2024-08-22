@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
     BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
     QualityReviewTextForm, ReviewTextForm, FileFormItem,
-    Offersheet
-} from "../../components/organisms/inquiry-form";
+    Offersheet, SalesInfoForm, FileForm,
+} from '../../components/organisms/inquiry-form';
 import { useAuth } from '../../hooks/useAuth';
-import { getInquiryDetail } from '../../apis/api/inquiry';
+import {
+    getInquiryDetail,
+    getInquiryDetailByManagers,
+} from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getReviews } from '../../apis/api/review';
-import offersheet from '../../components/organisms/inquiry-form/Offersheet';
-import { postOffersheet } from '../../apis/api/offersheet';
+import { getQualities, getReviews, postReviews } from '../../apis/api/review';
+import ManagerInqPath from '../../components/atoms/ManagerInqPath';
+import ManagerBasicInfoForm
+    from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
+import { getOfferSheets } from '../../apis/api/offersheet';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -22,22 +26,15 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
-
-    const [offerSheetData, setOffersheetData] = useState({
-        priceTerms: '',
-        paymentTerms: '',
-        shipment: '',
-        validity: '',
-        destination: '',
-        remark: '',
-        receipts: []
-    });
+    const [qualityData, setQualityData] = useState(null);
+    const [offerSheetData, setOfferSheetData] = useState(null);
 
     const [formData, setFormData] = useState({
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
-        country: inquiriesDataDetail?.country,
+        country: '',
+        customerCode: '',
         customerId: null,
         customerName: '',
         customerRequestDate: '',
@@ -53,58 +50,89 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         salesPerson: '',
         reviewText: '',
         finalReviewText: '',
+        lineItemResponseDTOs: [],
     });
 
     const getInquiryDataDetail = async () => {
-        if (!customerId) {
-            return;
-        }
         try {
-            const response = await getInquiryDetail(customerId, id);
+            const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
-            console.log(response.data);
+            setFormData(prevData => ({
+                ...prevData,
+                customerId: response.data.customerId,
+                lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
+            }));
+            console.log("getInquiryDataDetail: ", response.data);
+            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
             console.error('Error fetching InquiryDetail:', error);
         }
     };
 
+    console.log("getInquiryDataDetail - customerId: ", formData.customerId);
+
     const getUserInfo = async () => {
-        if (!customerId) {
-            return;
-        }
         try {
-            const response = await getUserInfoByCustomers(customerId);
-            setUserInfo(response.data);
-            return response.data;
+            const response = await getUserInfoByCustomers(formData.customerId); // 수정 필요
+            setUserInfo(response.data.data);
+            console.log("getUserInfo: ", response.data.data);
+            return response.data.data;
         } catch (error) {
             console.error('Error fetching User Info:', error);
         }
     }
 
     const getReview = async () => {
-        if (!customerId) {
-            return;
-        }
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
+            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching Reviews:', error);
         }
     }
 
-    console.log('inquiryId: ', inquiriesDataDetail?.inquiryId);
+    const getQuality = async () => {
+        try {
+            const response = await getQualities(id);
+            setQualityData(response.data);
+            console.log("quality: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching Qualities:', error);
+        }
+    }
+
+    const getOfferSheet = async () => {
+        try {
+            const response = await getOfferSheets(id);
+            setOfferSheetData(response.data);
+            console.log("offerSheet: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching OfferSheet:', error);
+        }
+    }
+
+    useEffect(() => {
+        getInquiryDataDetail();
+        getUserInfo();
+        getReview();
+        getQuality();
+        getOfferSheet();
+    }, [id]);
+
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
-            setCustomerId(inquiriesDataDetail.customerId);
             setFormData(prevFormData => ({
                 ...prevFormData,
                 additionalRequests: inquiriesDataDetail.additionalRequests || '',
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
+                customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
@@ -120,42 +148,66 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || [],
+
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
-    const [customerId, setCustomerId] = useState(formData.customerId);
-
-    useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-    }, [customerId, id]);
-
     const handleSubmit = async () => {
         if (formData.inquiryId) {
             try {
-                const response = await postOffersheet(customerId, offerSheetData);
-                console.log('Offer sheet posted successfully:', response);
+                // const offerSheetResponse = await postOffersheet(id);
+                const reviewResponse = await postReviews(id, {
+                    salesInfo: {
+                        contract: formData.contract,
+                        thicknessNotify: formData.thicknessNotify,
+                    },
+                    reviewText: formData.reviewText,
+                    attachmentFile: formData.attachmentFile,
+                    finalReviewText: formData.finalReviewText,
+                    tsReviewReq: formData.tsReviewReq
+                });
+
+                console.log('Review posted successfully:', reviewResponse);
             } catch (error) {
                 console.error('Error posting offer sheet:', error);
             }
         }
     }
 
+    // 폼 데이터 변경 핸들러
+    const handleFormDataChange = (field, value) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [field]: value
+        }));
+    };
+
+    console.log(offerSheetData);
+
     return (
         <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} onSubmit={handleSubmit} />
+            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                lineItemData={formData.lineItemResponseDTOs}
+                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
+            />
 
-            <BasicInfoForm formData={formData} />
-            <InquiryHistoryForm onLineItemsChange={() => {}} />
-            <AdditionalRequestForm formData={formData} />
-            <ReviewTextForm formData={formData} />
-            <FileFormItem fileForm={"첨부파일"} formData={formData} />
-            <Offersheet offerSheet={offerSheetData} setOffersheet={setOffersheetData} />
-            <QualityReviewTextForm />
-            <FinalReviewTextForm formData={formData} />
+            {/* Review Post & Get */}
+            <SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+
+            <QualityReviewTextForm formData={qualityData} />
+            <AdditionalRequestForm formData={inquiriesDataDetail} />
+
+            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
+            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
+            <Offersheet formData={offerSheetData} inquiryData={inquiriesDataDetail} />
         </div>
     )
 }
