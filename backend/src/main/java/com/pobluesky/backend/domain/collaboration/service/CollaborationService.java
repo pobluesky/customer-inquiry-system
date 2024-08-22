@@ -46,6 +46,7 @@ public class CollaborationService {
 
     private final FileService fileService;
 
+    // 협업 조회
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
         String token,
@@ -79,6 +80,7 @@ public class CollaborationService {
         );
     }
 
+    // 협업 조회 without paging
     @Transactional(readOnly = true)
     public List<CollaborationSummaryResponseDTO> getAllCollaborationsWithoutPaging(
         String token,

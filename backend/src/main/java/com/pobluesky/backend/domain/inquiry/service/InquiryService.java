@@ -54,6 +54,7 @@ public class InquiryService {
 
     private final ManagerRepository managerRepository;
 
+    // Inquiry 전체 조회(고객사)
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
         String token,
@@ -91,6 +92,7 @@ public class InquiryService {
         );
     }
 
+    // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
     public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
         String token,
@@ -123,6 +125,7 @@ public class InquiryService {
         );
     }
 
+    // Inquiry 전체 조회(담당자)
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByManager(
         String token,
@@ -158,6 +161,7 @@ public class InquiryService {
         );
     }
 
+    // Inquiry 전체 조회(담당자) without paging
     @Transactional(readOnly = true)
     public List<InquirySummaryResponseDTO> getInquiriesByManagerWithoutPaging(
         String token,

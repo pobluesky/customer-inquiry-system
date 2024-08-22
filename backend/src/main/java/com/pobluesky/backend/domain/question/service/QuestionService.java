@@ -129,6 +129,7 @@ public class QuestionService {
             sortBy);
     }
 
+    // 질문 전체 조회 (고객사) without paging
     @Transactional(readOnly = true)
     public List<QuestionSummaryDTO> getAllQuestionsByCustomerWithoutPaging(
         String token,
