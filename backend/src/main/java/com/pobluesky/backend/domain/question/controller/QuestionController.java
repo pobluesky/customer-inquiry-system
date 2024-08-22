@@ -2,8 +2,10 @@ package com.pobluesky.backend.domain.question.controller;
 
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
+import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
+import com.pobluesky.backend.domain.question.entity.QuestionType;
 import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -29,7 +31,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/managers")
+    @GetMapping("/managers/all")
     @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByManager(
         @RequestHeader("Authorization") String token,
@@ -46,7 +48,31 @@ public class QuestionController {
             size,
             sortBy,
             status,
-            startDate, endDate
+            startDate,
+            endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/managers")
+    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
+    public ResponseEntity<JsonResult> getAllQuestionsByManagerWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) QuestionType type,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        List<QuestionSummaryDTO> response = questionService.getAllQuestionsByManagerWithoutPaging(
+            token,
+            sortBy,
+            status,
+            type,
+            startDate,
+            endDate
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -69,7 +95,7 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/customers/{userId}")
+    @GetMapping("/customers/{userId}/all")
     @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getQuestionsByCustomer(
         @RequestHeader("Authorization") String token,
@@ -88,6 +114,31 @@ public class QuestionController {
             size,
             sortBy,
             status,
+            startDate,
+            endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/customers/{userId}")
+    @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
+    public ResponseEntity<JsonResult> getAllQuestionsByCustomerWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) QuestionType type,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        List<QuestionSummaryDTO> response = questionService.getAllQuestionsByCustomerWithoutPaging(
+            token,
+            userId,
+            sortBy,
+            status,
+            type,
             startDate,
             endDate
         );

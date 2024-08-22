@@ -22,6 +22,7 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -45,6 +46,7 @@ public class CollaborationService {
 
     private final FileService fileService;
 
+    // 협업 조회
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
         String token,
@@ -69,6 +71,35 @@ public class CollaborationService {
 
         return collaborationRepository.findAllCollaborationsRequest(
             pageable,
+            colStatus,
+            colReqManager,
+            colReqId,
+            startDate,
+            endDate,
+            sortBy
+        );
+    }
+
+    // 협업 조회 without paging
+    @Transactional(readOnly = true)
+    public List<CollaborationSummaryResponseDTO> getAllCollaborationsWithoutPaging(
+        String token,
+        String sortBy,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(manager.getRole() == UserRole.CUSTOMER)
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
+
+        return collaborationRepository.findAllCollaborationsRequestWithoutPaging(
             colStatus,
             colReqManager,
             colReqId,
