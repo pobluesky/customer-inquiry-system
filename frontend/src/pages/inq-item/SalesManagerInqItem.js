@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
@@ -16,8 +15,6 @@ import {
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews, postReviews } from '../../apis/api/review';
-import offersheet from '../../components/organisms/inquiry-form/Offersheet';
-import { postOffersheet } from '../../apis/api/offersheet';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
@@ -25,13 +22,14 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
-    const [reviewData, setReviewData] = useState();
+    const [reviewData, setReviewData] = useState(null);
 
     const [formData, setFormData] = useState({
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
         country: '',
+        customerCode: '',
         customerId: null,
         customerName: '',
         customerRequestDate: '',
@@ -45,14 +43,9 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         productType: '',
         progress: '',
         salesPerson: '',
-
-        // review
-        contract: '',
-        thicknessNotify: '',
         reviewText: '',
-        attachmentFile: '',
         finalReviewText: '',
-        tsReviewReq: ''
+        lineItemResponseDTOs: [],
     });
 
     const getInquiryDataDetail = async () => {
@@ -62,7 +55,12 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
-            console.log(response.data);
+            setFormData(prevData => ({
+                ...prevData,
+                lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
+            }));
+            console.log("getInquiryDataDetail: ", response.data);
+            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
             console.error('Error fetching InquiryDetail:', error);
         }
@@ -73,7 +71,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             return;
         }
         try {
-            const response = await getUserInfoByCustomers(customerId);
+            const response = await getUserInfoByCustomers(formData.customerId);
             setUserInfo(response.data);
             return response.data;
         } catch (error) {
@@ -88,23 +86,28 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
+            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching Reviews:', error);
         }
     }
 
-    console.log('inquiryId: ', inquiriesDataDetail?.inquiryId);
+    useEffect(() => {
+        getInquiryDataDetail();
+        getUserInfo();
+        getReview();
+    }, [id]);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
-            setCustomerId(inquiriesDataDetail.customerId);
             setFormData(prevFormData => ({
                 ...prevFormData,
                 additionalRequests: inquiriesDataDetail.additionalRequests || '',
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
+                customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
@@ -120,24 +123,10 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
-                contract: reviewData?.salesInfo?.contract || '',
-                thicknessNotify: reviewData?.salesInfo?.thicknessNotify || '',
-                attachmentFile: reviewData?.attachmentFile || '',
-                tsReviewReq: reviewData?.tsReviewReq || ''
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || []
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
-
-    const [customerId, setCustomerId] = useState(formData.customerId);
-
-    useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-    }, [id]);
-
-    console.log("review: ", reviewData);
-    console.log("inquiry: ", inquiriesDataDetail);
 
     const handleSubmit = async () => {
         if (formData.inquiryId) {
@@ -154,7 +143,6 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                     tsReviewReq: formData.tsReviewReq
                 });
 
-                console.log('Offer sheet posted successfully:', offerSheetResponse);
                 console.log('Review posted successfully:', reviewResponse);
             } catch (error) {
                 console.error('Error posting offer sheet:', error);
@@ -175,7 +163,11 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} onSubmit={handleSubmit} />
             <BasicInfoForm formData={formData} />
-            <InquiryHistoryForm onLineItemsChange={() => {}} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                lineItemData={formData.lineItemResponseDTOs}
+                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
+            />
 
             {/* Review Post & Get */}
             <SalesInfoForm formData={formData} handleFormDataChange={handleFormDataChange} />

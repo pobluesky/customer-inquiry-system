@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { getInquiry, getInquiryByManagers } from '../../apis/api/inquiry';
 import { Link } from 'react-router-dom';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
+import { getCookie } from '../../apis/utils/cookies';
 
 const SalesManagerInqList = () => {
     const { userId } = useAuth();
@@ -16,6 +17,9 @@ const SalesManagerInqList = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const contentRef = useRef(null);
+
+    console.log("아이디: ", userId);
+    console.log("쿠키: ", getCookie('userId'));
 
     const getInquiryData = async (page) => {
         if (!userId) {
@@ -30,6 +34,8 @@ const SalesManagerInqList = () => {
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
+
+            console.log("getInquiryByManagers: ", response);
         } catch (error) {
             console.error('Error fetching Inquiry:', error);
         }
@@ -37,7 +43,7 @@ const SalesManagerInqList = () => {
 
     useEffect(() => {
         getInquiryData(currentPage);
-    }, [userId, currentPage]);
+    }, [currentPage]);
 
     const handlePageChange = (page) => {
         if (page >= 0 && page < totalPages) {

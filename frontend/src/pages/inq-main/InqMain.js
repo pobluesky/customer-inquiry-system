@@ -12,13 +12,20 @@ import {
 } from "../intro/section/Style";
 import { _IntroMain } from "../../assets/css/Inquiry.css";
 import {useNavigate} from "react-router-dom";
+import { useAuth } from '../../hooks/useAuth';
+import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
 const InqMain = () => {
   const navigate = useNavigate();
+  const { userRole } = useAuth();
 
   return (
       <div>
-        <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+        { userRole === 'SALES' || userRole === 'QUALITY' ? (
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+        ) : (
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+        )}
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
           <Text color={'#49454F'} fontSize={'24px'} marginTop={'2vh'}>
