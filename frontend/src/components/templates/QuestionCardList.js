@@ -94,7 +94,6 @@ function QuestionCardList({
             : async () => {
                   const result = await getAllQuestion(
                       '',
-                      getCookie('accessToken'),
                   );
                   if (result) {
                       setQuestionCount(result);
