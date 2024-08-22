@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
         const currentUserId = getCookie('userId');
 
         if (token) {
+            console.log("AuthContext: ", currentUserId);
+            console.log("AuthContext: ", currentUserRole);
             setToken(token);
             setDidLogin(true);
             setRole(currentUserRole);
@@ -46,6 +48,10 @@ export const AuthProvider = ({ children }) => {
         setGlobalPassword('');
         setLoginErrorMsg('');
         setJoinErrorMsg('');
+
+        console.log("로그아웃!");
+        console.log(getCookie('userRole'))
+        console.log(getCookie('userId'))
     };
 
     console.log("현재 로그인 상태: ", didLogin);

@@ -26,7 +26,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
-        country: inquiriesDataDetail?.country,
+        country: '',
+        customerCode: '',
         customerId: null,
         customerName: '',
         customerRequestDate: '',
@@ -42,6 +43,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         salesPerson: '',
         reviewText: '',
         finalReviewText: '',
+        lineItemResponseDTOs: [],
     });
 
     const getInquiryDataDetail = async () => {
@@ -51,7 +53,12 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getInquiryDetail(userId, id);
             setInquiriesDataDetail(response.data);
-            console.log(response.data);
+            setFormData(prevData => ({
+                ...prevData,
+                lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
+            }));
+            console.log("getInquiryDataDetail: ", response.data);
+            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
             console.error('Error fetching InquiryDetail:', error);
         }
@@ -77,13 +84,18 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
+            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching Reviews:', error);
         }
     }
 
-    console.log('inquiryId: ', inquiriesDataDetail?.inquiryId);
+    useEffect(() => {
+        getInquiryDataDetail();
+        getUserInfo();
+        getReview();
+    }, [userId, id]);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -93,6 +105,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
+                customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
@@ -108,15 +121,12 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || []
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
-    useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-    }, [userId, id]);
+    console.log("CustomerInqItem: ", formData)
 
     return (
         <div>
@@ -124,12 +134,15 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
 
             <BasicInfoForm formData={formData} />
-            <InquiryHistoryForm onLineItemsChange={() => {}} />
-            <AdditionalRequestForm formData={formData} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                lineItemData={formData.lineItemResponseDTOs}
+                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
+            />
+            <AdditionalRequestForm formData={formData} readOnly={true} />
             <ReviewTextForm formData={formData} />
-            <FileFormItem fileForm={"첨부파일"} formData={formData} />
+            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet />
-            <QualityReviewTextForm />
             <FinalReviewTextForm formData={formData} />
         </div>
     )

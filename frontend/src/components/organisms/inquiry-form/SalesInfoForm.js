@@ -10,18 +10,15 @@ import {
 import ToggleBar from '../../mocules/ToggleBar';
 import SelectBox from '../../atoms/SelectBox';
 
-const SalesInfoForm = () => {
+const SalesInfoForm = ({ formData, handleFormDataChange }) => {
+    if(!formData) {
+        return;
+    }
+
     // 최종 검토 내용
     const [isChecked, setCheck] = useState(true);
 
     const items = ['수주배경', '두께특이사항'];
-
-    const options = [
-        { label: 'ALL', value: 'all' },
-        { label: 'Option 1', value: 'option1' },
-        { label: 'Option 2', value: 'option2' },
-        { label: 'Option 3', value: 'option3' },
-    ];
 
     return (
         <div className={Container} style={{ marginTop: '-2vh' }}>
@@ -39,11 +36,18 @@ const SalesInfoForm = () => {
                             ))}
                         </div>
                         <div className={SalesInfoRow}>
-                            <SelectBox options={options} defaultValue={'all'} />
+                            <select value={formData.salesInfo.contract} className={LineItemInput}> {/* contract */}
+                                <option value="CUSTOMER_RELATIONSHIP">고객협력</option>
+                                <option value="MARKET_DEMAND">시장수요</option>
+                            </select>
+
+                            {/* thicknessNotify */}
                             <input
                                 type="text"
                                 className={LineItemInput}
-                                readOnly
+                                value={formData.salesInfo.thicknessNotify}
+                                onChange={(e) => handleFormDataChange(
+                                    'thicknessNotify', e.target.value)}
                             />
                         </div>
                     </div>

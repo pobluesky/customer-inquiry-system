@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from "../../components/mocules/RequestBar";
 import {
@@ -7,28 +7,50 @@ import {
     AdditionalRequestForm,
     FileForm,
 } from '../../components/organisms/inquiry-form';
-import { postInquiry, postLineItems } from '../../apis/api/inquiry';
+import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
+import { getUserInfoByCustomers } from '../../apis/api/auth';
 
 function CustomerInqForm() {
     const { userId } = useAuth();
+    const [userInfo, setUserInfo] = useState(null);
 
     const [formData, setFormData] = useState({
-        country: '',
+        additionalRequests: '',
         corporate: '',
-        salesPerson: '',
-        inquiryType: '',
+        corporationCode: '(주)포스코',
+        country: '',
+        customerCode: '',
+        customerId: userId,
+        customerName: '',
+        customerRequestDate: '',
+        files: [],
         industry: '',
-        corporationCode: '',
+        inquiryId: null,
+        inquiryType: '',
+        name: '',
+        email: '',
+        phone: '',
         productType: '',
         progress: 'RECEIPT',
-        customerRequestDate: '',
-        additionalRequests: '',
-        files: [],
-        responseDeadline: '',
-        elapsedDays: '',
-        isActivated: true,
+        salesPerson: '',
+        reviewText: '',
+        finalReviewText: '',
+        lineItemResponseDTOs: [],
     });
+
+    const getUserInfo = async () => {
+        if (!userId) {
+            return;
+        }
+        try {
+            const response = await getUserInfoByCustomers(userId);
+            setUserInfo(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching User Info:', error);
+        }
+    }
 
     // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
@@ -38,46 +60,53 @@ function CustomerInqForm() {
         }));
     };
 
-    const [lineItems, setLineItems] = useState([]);
-
-    // 라인아이템 변경 핸들러
-    const handleLineItemsChange = (newLineItems) => {
-        setLineItems(prevLineItems => {
-            if (JSON.stringify(prevLineItems) !== JSON.stringify(newLineItems)) {
-                return newLineItems;
-            }
-            return prevLineItems;
-        });
-    };
-
     // Inquiry 등록 버튼 클릭 핸들러
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        if (event) {
+            event.preventDefault();
+        }
         try {
-            const response = await postInquiry(userId, formData);
-            console.log('Inquiry submitted successfully:', response);
-
-            const inquiryId = response.data.inquiryId;
-            console.log('Inquiry ID:', inquiryId);
-
-            console.log('Line items');
-            const lineItemsResponse = await postLineItems(inquiryId, lineItems);
-            console.log('Line items submitted successfully:', lineItemsResponse);
+            console.log('Submitting inquiry with data:', formData);
+            const response = await postInquiry(userId, {
+                ...formData,
+                lineItemRequestDTOs: formData.lineItemRequestDTOs,
+            });
+            console.log("formData.lineItemRequestDTOs: ", formData.lineItemRequestDTOs);
+            console.log('Inquiry posted successfully:', response);
         } catch (error) {
             console.error('Error submitting inquiry:', error);
         }
     };
 
-    console.log(formData);
-    console.log(lineItems);
+    useEffect(() => {
+        if (userInfo) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                customerCode: userInfo.data.customerCode || '',
+                customerName: userInfo.data.customerName || '',
+                name: userInfo.data.name || '',
+                email: userInfo.data.email || '',
+                phone: userInfo.data.phone || '',
+            }));
+        }
+    }, [userInfo]);
+
+    useEffect(() => {
+        if (!userId) {
+            return;
+        }
+        getUserInfo();
+    }, [userId]);
 
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit} />
             <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <InquiryHistoryForm userId={userId}
-                                productType={formData.productType}
-                                onLineItemsChange={handleLineItemsChange} />
+            <InquiryHistoryForm
+                productType={formData.productType}
+                onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
+            />
             <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
         </div>

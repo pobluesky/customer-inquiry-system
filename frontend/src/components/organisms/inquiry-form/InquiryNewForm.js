@@ -11,6 +11,11 @@ import {
 
 const InquiryNewForm = ({ formData, handleFormDataChange }) => {
     const {
+        customerCode,
+        customerName,
+        name,
+        email,
+        phone,
         country,
         corporate,
         salesPerson,
@@ -39,7 +44,8 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                 <input
                                     type="text"
                                     className={_Input}
-                                    placeholder="20182134504"
+                                    value={customerCode}
+                                    readOnly={true}
                                 />
                             </div>
                             <div className={inputWrapper}>
@@ -179,7 +185,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                 <input
                                     type="text"
                                     className={_Input}
-                                    placeholder="김세윤"
+                                    value={name}
                                 />
                             </div>
                             <div className={inputWrapper}>
@@ -187,7 +193,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                 <input
                                     type="email"
                                     className={_Input}
-                                    placeholder="zhaofeng@posco.net"
+                                    value={email}
                                 />
                             </div>
                             <div className={inputWrapper}>
@@ -195,7 +201,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                 <input
                                     type="tel"
                                     className={_Input}
-                                    placeholder="86-18901251225"
+                                    value={phone}
                                 />
                             </div>
 
@@ -205,7 +211,6 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                 <input
                                     type="text"
                                     className={_Input}
-                                    placeholder="(주)포스코"
                                     value={corporationCode}
                                     onChange={(e) =>
                                         handleFormDataChange(

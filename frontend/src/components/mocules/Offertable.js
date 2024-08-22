@@ -5,7 +5,7 @@ import { Offer_Table } from '../../assets/css/Form.css';
 
 function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) {
     const columnSample = [
-        'null',
+        '',
         'Product',
         'Specification',
         'Surface',
