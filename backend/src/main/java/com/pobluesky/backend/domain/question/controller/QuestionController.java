@@ -57,7 +57,7 @@ public class QuestionController {
     }
 
     @GetMapping("/managers")
-    @Operation(summary = "Question 전체 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
+    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
     public ResponseEntity<JsonResult> getAllQuestionsByManagerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
@@ -123,7 +123,7 @@ public class QuestionController {
     }
 
     @GetMapping("/customers/{userId}")
-    @Operation(summary = "Question 전체 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
+    @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 페이징 없이 조회한다.")
     public ResponseEntity<JsonResult> getAllQuestionsByCustomerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,

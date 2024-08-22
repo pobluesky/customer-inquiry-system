@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CollaborationController {
     private final CollaborationService collaborationService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "협업 목록 조회", description = "협업 요청을 받은 담당자의 협업 목록을 전부 조회한다.")
     public ResponseEntity<JsonResult> getAllCollaborations(
         @RequestHeader("Authorization") String token,
@@ -74,8 +74,8 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/all")
-    @Operation(summary = "협업 목록 조회2", description = "협업 요청을 받은 담당자의 협업 목록을 페이징 없이 전부 조회한다.")
+    @GetMapping
+    @Operation(summary = "협업 목록 조회(페이징 제외)", description = "협업 요청을 받은 담당자의 협업 목록을 페이징 없이 전부 조회한다.")
     public ResponseEntity<JsonResult> getAllCollaborationsWithoutPaging(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
