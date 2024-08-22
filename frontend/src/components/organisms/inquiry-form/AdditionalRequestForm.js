@@ -8,6 +8,10 @@ import {
 } from '../../../assets/css/Form.css';
 
 const AdditionalRequestForm = ({ formData, handleFormDataChange, readOnly }) => {
+    if(!formData) {
+        return;
+    }
+
     // 추가요청사항
     const [isChecked, setCheck] = useState(true);
     const { additionalRequests } = formData;

@@ -4,12 +4,13 @@ import ToggleBar from "../../mocules/ToggleBar";
 import FileGetItem from '../../mocules/FileGetItem';
 
 const FileFormItem = ({ fileForm, formData }) => {
+    if(!formData) {
+        return;
+    }
+
     const [isChecked, setCheck] = useState(true);
-    const [files, setFiles] = useState(formData.files);
 
     const isUploadSection = fileForm === "첨부파일";
-
-    console.log(formData.files);  // files 배열을 확인하기 위해 로그 추가
 
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>

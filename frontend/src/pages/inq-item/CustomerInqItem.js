@@ -126,6 +126,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
+    console.log("CustomerInqItem: ", formData)
+
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
@@ -139,7 +141,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
             <ReviewTextForm formData={formData} />
-            <FileFormItem fileForm={"첨부파일"} formData={formData} />
+            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet />
             <FinalReviewTextForm formData={formData} />
         </div>

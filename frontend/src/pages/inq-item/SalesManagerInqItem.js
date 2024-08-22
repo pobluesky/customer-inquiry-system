@@ -16,6 +16,8 @@ import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews, postReviews } from '../../apis/api/review';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
+import ManagerBasicInfoForm
+    from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -49,14 +51,12 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     });
 
     const getInquiryDataDetail = async () => {
-        if (!id) {
-            return;
-        }
         try {
             const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
             setFormData(prevData => ({
                 ...prevData,
+                customerId: response.data.customerId,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
             console.log("getInquiryDataDetail: ", response.data);
@@ -66,23 +66,20 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }
     };
 
+    console.log("getInquiryDataDetail - customerId: ", formData.customerId);
+
     const getUserInfo = async () => {
-        if (!id) {
-            return;
-        }
         try {
-            const response = await getUserInfoByCustomers(formData.customerId);
-            setUserInfo(response.data);
-            return response.data;
+            const response = await getUserInfoByCustomers(formData.customerId); // 수정 필요
+            setUserInfo(response.data.data);
+            console.log("getUserInfo: ", response.data.data);
+            return response.data.data;
         } catch (error) {
             console.error('Error fetching User Info:', error);
         }
     }
 
     const getReview = async () => {
-        if (!id) {
-            return;
-        }
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
@@ -98,6 +95,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         getUserInfo();
         getReview();
     }, [id]);
+
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -162,7 +160,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         <div>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} onSubmit={handleSubmit} />
-            <BasicInfoForm formData={formData} />
+            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryForm
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
@@ -170,16 +168,16 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             />
 
             {/* Review Post & Get */}
-            <SalesInfoForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <ReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <FinalReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
+            <SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
 
 
             <QualityReviewTextForm />
-            <AdditionalRequestForm formData={formData} />
+            <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
-            <FileFormItem fileForm={"첨부파일"} formData={formData} />
+            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet />
         </div>
     )

@@ -4,6 +4,10 @@ import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
 import ReviewText from '../../mocules/ReviewText';
 
 const ReviewTextForm = ({ formData }) => {
+    if(!formData) {
+        return;
+    }
+
     const [isChecked, setCheck] = useState(true);
 
     return (
