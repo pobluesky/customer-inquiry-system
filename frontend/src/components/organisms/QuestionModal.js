@@ -7,7 +7,6 @@ import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
 import {
     AnswerTitleInput,
-    AnswerContentInput,
     AnswerContent,
     CloseButton,
     AnswerButton,
@@ -59,26 +58,6 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const [answerDetail, setAnswerDetail] = useState([]);
 
     const fileInputRef = useRef(null);
-
-    const titleChange = (e) => {
-        setTitle(e.target.value);
-    };
-
-    const completedAnswering = () => {
-        if (validateAnswerTitle(title)) {
-            canShowTitleAlert(true);
-            return;
-        } else if (validateAnswerContents(editorValue)) {
-            canShowContentAlert(true);
-            return;
-        } else {
-            fetchPostAnswerByQuestionId();
-            fetchGetQuestionDetail();
-            setStatus('COMPLETED');
-            AnswerCompleteAlert();
-            setAnswering(false);
-        }
-    };
 
     const fetchGetQuestionDetail =
         getCookie('userRole') === 'CUSTOMER'
@@ -148,24 +127,16 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             if (result) {
                 console.log('응답받은 데이터는 다음과 같습니다.', result);
                 setAnswerDetail(result);
+                fetchGetQuestionDetail();
+                setStatus('COMPLETED');
+                AnswerCompleteAlert();
+                setAnswering(false);
             } else {
                 console.error('Fetched data is not an array or is invalid.');
                 setAnswerDetail([]);
             }
         } catch (error) {
             console.error('Error in posting question:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchGetQuestionDetail();
-        fetchGetAnswerDetail();
-    }, [questionId, status]);
-
-    const attachFile = (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setFile(selectedFile);
         }
     };
 
@@ -176,17 +147,45 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
         textOverflow: 'ellipsis',
     };
 
+    const titleChange = (e) => {
+        setTitle(e.target.value);
+    };
+
+    const attachFile = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+        }
+    };
+
+    const completedAnswer = () => {
+        if (validateAnswerTitle(title)) {
+            canShowTitleAlert(true);
+            return;
+        } else if (validateAnswerContents(editorValue)) {
+            canShowContentAlert(true);
+            return;
+        } else {
+            fetchPostAnswerByQuestionId();
+        }
+    };
+
+    useEffect(() => {
+        fetchGetQuestionDetail();
+        fetchGetAnswerDetail();
+    }, [questionId, status]);
+
     return (
         <div className={Question_Modal_Container}>
             <div>
-                <Label
+                {/* <Label
                     label={'문의 내용'}
                     width={'96px'}
                     height={'28px'}
                     backgroundColor={'#007aff'}
                     textColor={'#ffffff'}
                     borderRadius={'12px 12px 0 0'}
-                />
+                /> */}
             </div>
             <div className={Question_Modal}>
                 <div>
@@ -206,7 +205,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                 <div>
                     <div>
                         <img src={qmark} />
-                        <div>{questionDetail.title}</div>
+                        <div>{questionDetail.title || ''}</div>
                         <img src={folder} />
                         <div>고객사 첨부파일</div>
                         <div style={filesEllipsis}>
@@ -216,10 +215,9 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         </div>
                         <div style={filesEllipsis}></div>
                     </div>
-                    {/* <div>{questionDetail.contents}</div> */}
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: sanitizer(`${questionDetail.contents}`),
+                            __html: sanitizer(`${questionDetail.contents || ''}`),
                         }}
                     />
                 </div>
@@ -248,7 +246,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     <div className={Completed}>
                         <div>
                             <img src={amark} />
-                            <div>{answerDetail.title}</div>
+                            <div>{answerDetail.title || ''}</div>
                             <img src={folder} />
                             <div>담당자 첨부파일</div>
                             <div style={filesEllipsis}>
@@ -259,10 +257,11 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                         </div>
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: sanitizer(`${answerDetail.contents || ''}`),
+                                __html: sanitizer(
+                                    `${answerDetail.contents || ''}`,
+                                ),
                             }}
                         />
-                        {/* <div>{answerDetail.contents}</div> */}
                     </div>
                 ) : (
                     ''
@@ -270,7 +269,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                 <div>
                     <div>
                         {/* 하단 버튼 좌측 첨부파일란 */}
-                        {thisRole !== 'CUSTOMER' && (
+                        {thisRole !== 'CUSTOMER' && status === 'READY' && (
                             <>
                                 <img src={folder} />
                                 <span>첨부파일</span>
@@ -304,7 +303,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                                         <AnswerButton
                                             btnName={'답변 등록'}
                                             onClick={() => {
-                                                completedAnswering();
+                                                completedAnswer();
                                             }}
                                         />
                                     </div>

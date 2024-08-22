@@ -2,7 +2,13 @@ import React from 'react';
 import Input from './Input';
 import Button from './Button';
 
-const FilterButton = ({ btnName, margin, backgroundColor, textColor, onClick }) => (
+const FilterButton = ({
+    btnName,
+    margin,
+    backgroundColor,
+    textColor,
+    onClick,
+}) => (
     <Button
         btnName={btnName}
         width={'84px'}
@@ -20,22 +26,10 @@ const AnswerTitleInput = ({ title, titleChange }) => (
     <Input
         value={title}
         onChange={titleChange}
-        width={'852px'}
+        width={'828px'}
         height={'36px'}
         margin={'0 0 0 20px'}
-        padding={'0px'}
-        borderRadius={'12px'}
-    />
-);
-
-const AnswerContentInput = ({ contents, contentChange }) => (
-    <Input
-        value={contents}
-        onChange={contentChange}
-        width={'852px'}
-        height={'152px'}
-        margin={'12px 0 0 20px'}
-        padding={'0px'}
+        padding={'0px 12px 0px 12px'}
         borderRadius={'12px'}
     />
 );
@@ -94,7 +88,6 @@ const AnswerButton = ({ btnName, onClick }) => (
 export {
     FilterButton,
     AnswerTitleInput,
-    AnswerContentInput,
     AnswerContent,
     CloseButton,
     AnswerButton,

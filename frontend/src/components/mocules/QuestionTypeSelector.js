@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import Input from '../atoms/Input';
+import React from 'react';
 import Button from '../atoms/Button';
-import QuestionInquirySearchModal from './QuestoinInquirySearchModal';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Type_Selector } from '../../assets/css/Voc.css';
 
-function QuestionTypeSelector() {
-    const [selectedOption, setSelectedOption] = useState('INQ'); // 질문 유형
-    const [openModal, setOpenModal] = useState(false);
-
+function QuestionTypeSelector({
+    selectedType,
+    setSelectedType,
+    setOpenModal,
+    inquiryId,
+}) {
     const optionSelect = (e) => {
-        setSelectedOption(e.target.value);
+        setSelectedType(e.target.value);
     };
 
     return (
@@ -18,10 +18,9 @@ function QuestionTypeSelector() {
             <div>
                 {/* 아이콘 + VoC 문의하기 */}
                 <div>
-                    <img src={search} />
+                    <img src={search} alt="검색 아이콘" />
                     <div>VoC 문의하기</div>
                 </div>
-
                 {/* 문의 유형 */}
                 <div>
                     <div>문의 유형</div>
@@ -31,7 +30,7 @@ function QuestionTypeSelector() {
                                 type="radio"
                                 name="inquiryType"
                                 value="INQ"
-                                checked={selectedOption === 'INQ'}
+                                checked={selectedType === 'INQ'}
                                 onChange={optionSelect}
                             />
                         </label>
@@ -44,7 +43,7 @@ function QuestionTypeSelector() {
                                 type="radio"
                                 name="inquiryType"
                                 value="SITE"
-                                checked={selectedOption === 'SITE'}
+                                checked={selectedType === 'SITE'}
                                 onChange={optionSelect}
                             />
                         </label>
@@ -57,7 +56,7 @@ function QuestionTypeSelector() {
                                 type="radio"
                                 name="inquiryType"
                                 value="ETC"
-                                checked={selectedOption === 'ETC'}
+                                checked={selectedType === 'ETC'}
                                 onChange={optionSelect}
                             />
                         </label>
@@ -65,23 +64,10 @@ function QuestionTypeSelector() {
                     <div>기타 문의</div>
                 </div>
                 <div>
-                    {selectedOption === 'INQ' && (
+                    {selectedType === 'INQ' && (
                         <>
                             <div>Inquiry No.</div>
-                            <div>
-                                <Input
-                                    // ref={ref}
-                                    // value={value}
-                                    // onChange={onChange}
-                                    // placeholder={placeholder}
-                                    type="text"
-                                    width={'204px'}
-                                    height={'26px'}
-                                    padding={'0 4px 0 4px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'8px'}
-                                />
-                            </div>
+                            {inquiryId && <div>{inquiryId}</div>}
                             <div>
                                 <Button
                                     btnName={'번호 조회'}
@@ -100,7 +86,6 @@ function QuestionTypeSelector() {
                     )}
                 </div>
             </div>
-            {openModal && <QuestionInquirySearchModal />}
         </div>
     );
 }

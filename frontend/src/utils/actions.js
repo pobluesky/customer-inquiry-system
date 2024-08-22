@@ -205,6 +205,24 @@ const WrongQuestionContentAlert = ({ showAlert, onClose }) => {
     );
 };
 
+const InquiryIdisNullAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                Inquiry 번호를 선택하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
 const QuestionCompleteAlert = () => {
     Swal.fire({
         icon: 'success',
@@ -227,5 +245,6 @@ export {
     AnswerCompleteAlert,
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
+    InquiryIdisNullAlert,
     QuestionCompleteAlert,
 };

@@ -12,7 +12,7 @@ export const getAllAnswer = async (token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -35,7 +35,7 @@ export const getAnswerByUserId = async (userId, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -58,7 +58,7 @@ export const getAnswerByQuestionIdForManager = async (questionId, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -84,7 +84,7 @@ export const getAnswerByQuestionId = async (userId, questionId, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {

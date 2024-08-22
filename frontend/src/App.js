@@ -28,6 +28,8 @@ import CustomerInqItem from './pages/inq-item/CustomerInqItem';
 import SalesManagerInqList from './pages/inq-list/SalesManagerInqList';
 import SalesManagerInqItem from './pages/inq-item/SalesManagerInqItem';
 
+import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
+
 function App() {
 
     return (

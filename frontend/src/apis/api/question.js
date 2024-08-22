@@ -12,7 +12,7 @@ export const getAllQuestion = async (filterArgs, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -35,7 +35,7 @@ export const getQuestionByQuestionIdForManager = async (questionId, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -61,7 +61,7 @@ export const getQuestionByUserId = async (userId, filterArgs, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -87,7 +87,7 @@ export const getQuestionByQuestionId = async (userId, questionId, token) => {
         if (data.result === 'success') {
             return data.data;
         } else {
-            console.error('Failed to fetch data:', data.message);
+            // console.error('Failed to fetch data:', data.message);
             return [];
         }
     } catch (error) {
@@ -96,7 +96,50 @@ export const getQuestionByQuestionId = async (userId, questionId, token) => {
     }
 };
 
-// Inquiry 관련 질문 등록 추가
+// Inquiry 관련 질문 등록
+export const postQuestionByUserIdAboutInquiry = async (
+    file,
+    questionData,
+    userId,
+    inquiryId,
+    token,
+) => {
+    try {
+        const formData = new FormData();
+        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
+            type: 'application/json',
+        });
+        formData.append('question', blobQuestionData);
+
+        if (file) {
+            formData.append('files', file);
+        }
+
+        const response = await fetch(`/api/questions/customers/${userId}/${inquiryId}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `${token}`,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw `${response.status} ${response.statusText}`;
+        }
+
+        const json = await response.json();
+
+        if (json.result !== 'success') {
+            throw json.message;
+        }
+
+        return json;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// Inquiry 무관 질문 등록
 export const postQuestionByUserId = async (
     file,
     questionData,
