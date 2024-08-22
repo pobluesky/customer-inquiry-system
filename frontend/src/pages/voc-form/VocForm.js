@@ -1,6 +1,6 @@
 import React from 'react';
 import VocPath from './../../components/atoms/VocPath';
-import QuestionForm from './../../components/organisms/QuestionForm';
+import QuestionForm from './../../components/templates/QuestionForm';
 
 function VocList() {
     return (

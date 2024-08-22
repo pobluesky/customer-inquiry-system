@@ -53,7 +53,6 @@ function App() {
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
                         <Route path="voc-form" element={<VocForm />} />
-                        <Route path="voc-inq" element={<QuestionInquirySearchModal />} />
 
                         <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}

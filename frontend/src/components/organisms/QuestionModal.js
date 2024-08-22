@@ -59,22 +59,6 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
 
     const fileInputRef = useRef(null);
 
-    const titleChange = (e) => {
-        setTitle(e.target.value);
-    };
-
-    const completedAnswering = () => {
-        if (validateAnswerTitle(title)) {
-            canShowTitleAlert(true);
-            return;
-        } else if (validateAnswerContents(editorValue)) {
-            canShowContentAlert(true);
-            return;
-        } else {
-            fetchPostAnswerByQuestionId();
-        }
-    };
-
     const fetchGetQuestionDetail =
         getCookie('userRole') === 'CUSTOMER'
             ? async () => {
@@ -156,10 +140,16 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
         }
     };
 
-    useEffect(() => {
-        fetchGetQuestionDetail();
-        fetchGetAnswerDetail();
-    }, [questionId, status]);
+    const filesEllipsis = {
+        maxWidth: '96px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    };
+
+    const titleChange = (e) => {
+        setTitle(e.target.value);
+    };
 
     const attachFile = (event) => {
         const selectedFile = event.target.files[0];
@@ -168,12 +158,22 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
         }
     };
 
-    const filesEllipsis = {
-        maxWidth: '96px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
+    const completedAnswer = () => {
+        if (validateAnswerTitle(title)) {
+            canShowTitleAlert(true);
+            return;
+        } else if (validateAnswerContents(editorValue)) {
+            canShowContentAlert(true);
+            return;
+        } else {
+            fetchPostAnswerByQuestionId();
+        }
     };
+
+    useEffect(() => {
+        fetchGetQuestionDetail();
+        fetchGetAnswerDetail();
+    }, [questionId, status]);
 
     return (
         <div className={Question_Modal_Container}>
@@ -303,7 +303,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                                         <AnswerButton
                                             btnName={'답변 등록'}
                                             onClick={() => {
-                                                completedAnswering();
+                                                completedAnswer();
                                             }}
                                         />
                                     </div>

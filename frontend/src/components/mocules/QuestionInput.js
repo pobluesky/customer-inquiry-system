@@ -17,10 +17,10 @@ import {
     validateQuestionContents,
 } from '../../utils/validation';
 import { getCustomerInfo, getManagerInfo } from '../../apis/api/auth';
-import { postQuestionByUserId, uploadFile } from '../../apis/api/question';
+import { postQuestionByUserId } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput() {
+function QuestionInput({ selectedType }) {
     const { userId } = useAuth();
     const navigate = useNavigate();
 
@@ -30,8 +30,7 @@ function QuestionInput() {
 
     const [title, setTitle] = useState('');
     const [file, setFile] = useState('');
-    const [type, setType] = useState('SITE');
-    const [status, setStatus] = useState('READY');
+    const status = 'READY';
 
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
@@ -39,7 +38,6 @@ function QuestionInput() {
     const titleRef = useRef(null);
     const fileInputRef = useRef(null);
 
-    // 전역 변수로 수정 필요
     const findUserName = async () => {
         try {
             const customer = await getCustomerInfo();
@@ -55,19 +53,12 @@ function QuestionInput() {
         }
     };
 
-    useEffect(() => {
-        findUserName();
-    }, []);
-
-    // Inquiry 관련 질문 등록 API 추가 필요
-
-    // Inquiry 무관 질문 등록 API
     const fetchPostQuestionByUserId = async () => {
         try {
             const questionData = {
                 title,
                 contents: editorValue,
-                type,
+                type: selectedType,
                 status,
             };
             const result = await postQuestionByUserId(
@@ -79,11 +70,13 @@ function QuestionInput() {
 
             if (result) {
                 console.log('응답받은 데이터는 다음과 같습니다.', result);
-                setAnswerDetail(result);
             } else {
                 console.error('Fetched data is not an array or is invalid.');
-                setAnswerDetail([]);
             }
+            QuestionCompleteAlert();
+            setTimeout(() => {
+                navigate('/voc-list');
+            }, '2000');
             resetForm();
         } catch (error) {
             console.error('Error in posting question:', error);
@@ -115,12 +108,12 @@ function QuestionInput() {
             return;
         } else {
             fetchPostQuestionByUserId();
-            setTimeout(() => {
-                navigate('/voc-list');
-            }, '2000');
-            QuestionCompleteAlert();
         }
     };
+
+    useEffect(() => {
+        findUserName();
+    }, []);
 
     return (
         <>
@@ -170,7 +163,7 @@ function QuestionInput() {
                                 height={'28px'}
                                 fontSize={'12px'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#8b8b8b'}
+                                // textColor={'#8b8b8b'}
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'4px'}
                                 onClick={() => fileInputRef.current.click()}
@@ -183,7 +176,7 @@ function QuestionInput() {
                                 height={'28px'}
                                 fontSize={'12px'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#8b8b8b'}
+                                // textColor={'#8b8b8b'}
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'4px'}
                                 onClick={() => setFile(null)}

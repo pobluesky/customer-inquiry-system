@@ -1,7 +1,7 @@
 import axiosInstance from '../utils/axiosInstance';
 
 // 고객사 inquiry list 가져오기 (summary)
-export const getInquiry = async (userId, page = 0) => {
+export const getInquiry = async (userId, page) => {
     try {
         const response = await axiosInstance.get(
             `/customers/inquiries/${userId}?page=${page}`,
