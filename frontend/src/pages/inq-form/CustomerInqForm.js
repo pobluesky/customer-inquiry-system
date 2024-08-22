@@ -10,7 +10,6 @@ import {
 import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import lineItem from '../../components/mocules/LineItem';
 
 function CustomerInqForm() {
     const { userId } = useAuth();

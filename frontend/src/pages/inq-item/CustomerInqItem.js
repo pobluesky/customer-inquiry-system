@@ -126,10 +126,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
-    console.log("formData.lineItemResponseDTOs: ", formData.lineItemResponseDTOs);
-    console.log("formData.lineItemResponseDTOs[0]: ", formData.lineItemResponseDTOs[0]);
-    console.log("formData.lineItemResponseDTOs[1].ixPlate: ", formData.lineItemResponseDTOs[1]?.ixPlate);
-
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
