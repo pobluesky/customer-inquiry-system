@@ -14,12 +14,7 @@ import { VocList } from './pages/voc-list';
 import { VocForm } from './pages/voc-form';
 import { DashBoard } from './pages/dashboard';
 import { AuthProvider } from './context/auth/AuthContext';
-import Layout from './components/templates/Layout';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import CustomerInqForm from './pages/inq-form/CustomerInqForm';
 import SalesManagerInqForm from './pages/inq-form/SalesManagerInqForm';
 import QualityManagerInqForm from './pages/inq-form/QualityManagerInqForm';
@@ -28,7 +23,12 @@ import CustomerInqItem from './pages/inq-item/CustomerInqItem';
 import SalesManagerInqList from './pages/inq-list/SalesManagerInqList';
 import SalesManagerInqItem from './pages/inq-item/SalesManagerInqItem';
 
-import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
+import Layout from './components/templates/Layout';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 function App() {
     return (
