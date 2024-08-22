@@ -8,6 +8,9 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTemplate;
@@ -39,7 +42,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         String customerName,
         InquiryType inquiryType,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String sortBy
     ) {
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -62,11 +66,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(
-                inquiry.productType.asc(),
-                inquiry.inquiryType.asc(),
-                inquiry.progress.asc()
-            )
+            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -86,9 +86,14 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable, Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate) {
+        Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy) {
 
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -110,11 +115,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
-            .orderBy(
-                inquiry.productType.asc(),
-                inquiry.inquiryType.asc(),
-                inquiry.progress.asc()
-            )
+            .orderBy(getOrderSpecifier(sortBy))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -168,6 +169,23 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return new OrderSpecifier[]{
+                    inquiry.createdDate.desc().nullsLast(),
+                    inquiry.inquiryId.desc()
+                };
+            case "OLDEST":
+                return new OrderSpecifier[]{
+                    inquiry.createdDate.asc().nullsFirst(),
+                    inquiry.inquiryId.asc()
+                };
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 
     private BooleanExpression progressEq(Progress progress) {

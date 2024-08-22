@@ -26,7 +26,7 @@
     margin: 24px 0 48px 0;
 }
 
-/* 로그인 버튼 */
+/* '로그인 버튼' 하단 여백 */
 .SignIn > div > div:nth-child(5) {
     margin: 0 0 36px 0;
 }

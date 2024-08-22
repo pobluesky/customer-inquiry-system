@@ -89,28 +89,4 @@ public class CarLineItem extends LineItem {
         this.quantity = quantity;
         this.isActivated = true;
     }
-
-    public void updateCarLineItem(
-        Lab lab,
-        Kind kind,
-        StandardOrg standardOrg,
-        String pjtName,
-        String salesVehicleName,
-        String partName,
-        IxPlate ixPlate,
-        String thickness,
-        String width,
-        Integer quantity
-    ) {
-        this.lab = lab;
-        this.kind = kind;
-        this.standardOrg = standardOrg;
-        this.pjtName = pjtName;
-        this.salesVehicleName = salesVehicleName;
-        this.partName = partName;
-        this.ixPlate = ixPlate;
-        this.thickness = thickness;
-        this.width = width;
-        this.quantity = quantity;
-    }
 }

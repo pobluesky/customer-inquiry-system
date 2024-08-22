@@ -16,26 +16,19 @@ import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -54,9 +47,15 @@ public class CollaborationService {
 
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
-        String token, int page, int size, String sortBy,
-        ColStatus colStatus, String colReqManager, Long colReqId,
-        LocalDate startDate, LocalDate endDate
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         Long userId = signService.parseToken(token);
 
@@ -66,12 +65,16 @@ public class CollaborationService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size);
 
         return collaborationRepository.findAllCollaborationsRequest(
-            pageable, colStatus, colReqManager, colReqId,
-            startDate, endDate
+            pageable,
+            colStatus,
+            colReqManager,
+            colReqId,
+            startDate,
+            endDate,
+            sortBy
         );
     }
 
@@ -101,9 +104,9 @@ public class CollaborationService {
     public CollaborationResponseDTO createCollaboration(
         String token,
         Long questionId,
-        CollaborationCreateRequestDTO requestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        CollaborationCreateRequestDTO requestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -118,9 +121,12 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND));
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
@@ -128,6 +134,7 @@ public class CollaborationService {
             reqManager,
             resManager,
             question,
+            fileName,
             filePath
         );
 
@@ -140,9 +147,9 @@ public class CollaborationService {
     public CollaborationDetailResponseDTO updateCollaborationStatus(
         String token,
         Long collaborationId,
-        CollaborationUpdateRequestDTO requestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        CollaborationUpdateRequestDTO requestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
@@ -166,13 +173,16 @@ public class CollaborationService {
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        collaboration.updateFiles(filePath);
+        collaboration.updateFiles(fileName, filePath);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }
@@ -216,21 +226,5 @@ public class CollaborationService {
         }
 
         return collaboration;
-    }
-
-    private Sort getSortByOrderCondition(String sortBy) {
-        return switch (sortBy) {
-            case "OLDEST" -> Sort.by(
-                Sort.Order.asc("createdDate"),
-                Sort.Order.desc("colId")
-            );
-
-            case "LATEST" -> Sort.by(
-                Sort.Order.desc("createdDate"),
-                Sort.Order.desc("colId")
-            );
-
-            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        };
     }
 }

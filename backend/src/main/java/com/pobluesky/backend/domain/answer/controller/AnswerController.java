@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -88,10 +89,12 @@ public class AnswerController {
     public ResponseEntity<JsonResult> createAnswer(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId,
-        @RequestBody AnswerCreateRequestDTO answerCreateRequestDTO) {
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("answer") AnswerCreateRequestDTO answerCreateRequestDTO) {
         AnswerResponseDTO response = answerService.createAnswer(
             token,
             questionId,
+            file,
             answerCreateRequestDTO
         );
 

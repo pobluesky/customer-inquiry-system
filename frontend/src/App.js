@@ -9,8 +9,9 @@ import { InqMain } from './pages/inq-main';
 import { InqList } from './pages/inq-list';
 import { InqForm } from './pages/inq-form';
 import { InqItem } from './pages/inq-item';
-import { VocList } from './pages/voc-list';
 import { VocMain } from './pages/voc-main';
+import { VocList } from './pages/voc-list';
+import { VocForm } from './pages/voc-form';
 import { DashBoard } from './pages/dashboard';
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/templates/Layout';
@@ -52,6 +53,7 @@ function App() {
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
+                        <Route path="voc-form" element={<VocForm />} />
 
                         <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}

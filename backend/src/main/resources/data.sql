@@ -18,13 +18,13 @@ VALUES
     ('최민기', 'danny@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER');
 
 -- INQUIRY
-INSERT INTO inquiry (user_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, files, response_deadline, is_activated, created_date, modified_date)
+INSERT INTO inquiry (user_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, created_date, modified_date)
 VALUES
-    (1, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'RECEIPT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', '2023-08-10',  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'JAPAN', 'BR', 'BORAM', 'QUALITY_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf', '2023-08-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', '2023-08-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', null, 'file4.pdf', '2023-08-21',  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'RECEIPT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'JAPAN', 'BR', 'BORAM', 'QUALITY_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'FIRST_REVIEW', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- CAR_LINE_ITEM
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, is_activated, created_date, modified_date)
@@ -65,17 +65,17 @@ VALUES
     (5, 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료');
 
 -- QUALITY
-INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments)
+INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments, file_name, file_path)
 VALUES
-    (1, '수주 가능', '모든 규격 문제 없음', null, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', '빠른 회신 부탁합니다', '포항소', '품질 검토 이상 없음'),
-    (3, '수주 불가능', '직경 규격 초과', 'JS_SI123', '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', '기한 내에 납부 바람', '광양소', '직경을 조정하여 재문의 바람');
+    (1, '수주 가능', '모든 규격 문제 없음', null, '엔진 컨트롤 유닛', '10g/m2', '5g/m2', '±0.1mm', 'Mill Edge', '빠른 회신 부탁합니다', '포항소', '품질 검토 이상 없음', null, null),
+    (3, '수주 불가능', '직경 규격 초과', 'JS_SI123', '와이어로프', '12g/m2', '6g/m2', '±0.15mm', 'Slit Edge', '기한 내에 납부 바람', '광양소', '직경을 조정하여 재문의 바람', null, null);
 
 -- REVIEW
-INSERT INTO reviews (inquiry_id, contract, thickness_notify, review_text, attachment_file, final_review_text, ts_review_req, created_date, modified_date)
+INSERT INTO reviews (inquiry_id, contract, thickness_notify, review_text, attachment_file_name, attachment_file_path, final_review_text, ts_review_req, created_date, modified_date)
 VALUES
-    (1, 'CUSTOMER_RELATIONSHIP', '두께 오차가 없어야함', '귀사의 문의에 대해 품질 검토가 필요하며 9월30일까지 회신드릴 것을 약속합니다', 'attachment1.pdf', '품질 검토 완료 후 최종검토 이상 없습니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'MARKET_DEMAND', '두께 허용오차를 벗어나면 안됨', '검토 후 이상 없음', 'attachment2.pdf', '품질검토하지 않고 문제 없이 최종검토 완료합니다', null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'MARKET_DEMAND', null, '귀사의 문의에 대해 품질 검토가 필요하며 10월30일까지 회신드릴 것을 약속합니다', 'attachment3.pdf', '품질 검토 후 이상이 발견되어 전달드립니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'CUSTOMER_RELATIONSHIP', '두께 오차가 없어야함', '귀사의 문의에 대해 품질 검토가 필요하며 9월30일까지 회신드릴 것을 약속합니다', 'attachment1.pdf','attachment1name.pdf', '품질 검토 완료 후 최종검토 이상 없습니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'MARKET_DEMAND', '두께 허용오차를 벗어나면 안됨', '검토 후 이상 없음', 'attachment2.pdf', 'attachment2name.pdf', '품질검토하지 않고 문제 없이 최종검토 완료합니다', null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'MARKET_DEMAND', null, '귀사의 문의에 대해 품질 검토가 필요하며 10월30일까지 회신드릴 것을 약속합니다', 'attachment3.pdf', 'attachment3name.pdf', '품질 검토 후 이상이 발견되어 전달드립니다', '문의에 대한 기술적 검토를 요청드립니다', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- CUSTOMER_NOTIFICATION
@@ -96,16 +96,16 @@ ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
 ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
 
 -- QUESTION
-INSERT INTO question (created_date, inquiry_id, user_id, title, contents, files, type, status)
+INSERT INTO question (created_date, inquiry_id, user_id, title, contents, file_name, file_path, type, status)
 VALUES
-    ('2024-08-01 10:00:00', null, 1, '문의 소요 기간', '평균 문의 소요 기간에 대해 알고 싶습니다', 'voc_report1.pdf', 'ETC', 'COMPLETED'),
-    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf,customer_email.pdf', 'ETC', 'COMPLETED'),
-    ('2024-08-03 14:30:00', 3, 3, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf,suggestion_doc.docx', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 2, 2, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'INQ', 'READY'),
-    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report4.pdf', 'INQ', 'READY');
+    ('2024-08-01 10:00:00', null, 1, '문의 소요 기간', '평균 문의 소요 기간에 대해 알고 싶습니다', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED'),
+    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'COMPLETED'),
+    ('2024-08-03 14:30:00', 3, 3, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'READY'),
+    ('2024-08-03 14:30:00', 2, 2, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY'),
+    ('2024-08-03 14:30:00', 1, 1, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'READY');
 
 -- ANSWER
-INSERT INTO answer (created_date, inquiry_id, user_id, question_id, answer_title, answer_contents)
+INSERT INTO answer (created_date, inquiry_id, user_id, question_id, title, contents, file_name, file_path)
 VALUES
-    (CURRENT_TIMESTAMP, null, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다'),
-    (CURRENT_TIMESTAMP, null, 2, 2, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다');
+    (CURRENT_TIMESTAMP, null, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A'),
+    (CURRENT_TIMESTAMP, null, 2, 2, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다', 'voc_answer2.pdf', 'https://pbs.twimg.com/media/E4lJvfeVIAAp-U8.jpg');

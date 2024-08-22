@@ -4,6 +4,7 @@ import Input from '../atoms/Input';
 const LoginInput = ({
     value,
     onChange,
+    onKeyDown,
     type,
     placeholder,
     categoryName,
@@ -12,6 +13,7 @@ const LoginInput = ({
     <Input
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         type={type}
         placeholder={placeholder}
         width={'336px'}

@@ -16,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -79,27 +81,6 @@ public class WireRodLineItem extends LineItem{
         this.initialQuantity = initialQuantity;
         this.customerProcessing = customerProcessing;
         this.finalUse = finalUse;
-    }
-
-    public void updateWireRodLineItem(
-        Kind kind,
-        InqName inqName,
-        String orderCategory,
-        String diameter,
-        Integer quantity,
-        String expectedDeadline,
-        Integer initialQuantity,
-        String customerProcessing,
-        String finalUse
-    ){
-        this.kind = kind;
-        this.inqName = inqName;
-        this.orderCategory = orderCategory;
-        this.diameter = diameter;
-        this.quantity = quantity;
-        this.expectedDeadline = expectedDeadline;
-        this.initialQuantity = initialQuantity;
-        this.customerProcessing = customerProcessing;
-        this.finalUse = finalUse;
+        this.isActivated = true;
     }
 }

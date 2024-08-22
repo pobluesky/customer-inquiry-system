@@ -18,6 +18,9 @@ public record InquiryResponseDTO(
     Long customerId,
     String name,
     String customerName,
+    String customerCode,
+    String email,
+    String phone,
     Country country,
     String corporate,
     String  salesPerson,
@@ -28,7 +31,8 @@ public record InquiryResponseDTO(
     Progress progress,
     String customerRequestDate,
     String additionalRequests,
-    String files,
+    String fileName,
+    String filePath,
     String responseDeadline,
     List<LineItemResponseDTO> lineItemResponseDTOs,
     Boolean isActivated
@@ -44,6 +48,10 @@ public record InquiryResponseDTO(
             .customerId(inquiry.getCustomer().getUserId())
             .name(inquiry.getCustomer().getName())
             .customerName(inquiry.getCustomer().getCustomerName())
+            .customerCode(inquiry.getCustomer().getCustomerCode())
+            .corporationCode(inquiry.getCustomer().getCustomerCode())
+            .email(inquiry.getCustomer().getEmail())
+            .phone(inquiry.getCustomer().getPhone())
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())
@@ -54,7 +62,8 @@ public record InquiryResponseDTO(
             .progress(inquiry.getProgress())
             .customerRequestDate(inquiry.getCustomerRequestDate())
             .additionalRequests(inquiry.getAdditionalRequests())
-            .files(inquiry.getFiles())
+            .fileName(inquiry.getFileName())
+            .filePath(inquiry.getFilePath())
             .responseDeadline(inquiry.getResponseDeadline())
             .lineItemResponseDTOs(lineItemResponseDTOs)
             .isActivated(inquiry.getIsActivated())

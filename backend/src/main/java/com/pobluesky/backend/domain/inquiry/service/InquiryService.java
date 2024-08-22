@@ -33,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,12 +76,7 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(
-            page,
-            size,
-            sort
-        );
+        Pageable pageable = PageRequest.of(page, size);
 
         return inquiryRepository.findInquiriesByCustomer(
             customerId,
@@ -92,7 +86,8 @@ public class InquiryService {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            sortBy
         );
     }
 
@@ -117,12 +112,7 @@ public class InquiryService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        Sort sort = getSortByOrderCondition(sortBy);
-        Pageable pageable = PageRequest.of(
-            page,
-            size,
-            sort
-        );
+        Pageable pageable = PageRequest.of(page, size);
 
         return inquiryRepository.findInquiriesByManager(
             pageable,
@@ -131,7 +121,8 @@ public class InquiryService {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            sortBy
         );
     }
 
@@ -139,8 +130,8 @@ public class InquiryService {
     public InquiryResponseDTO createInquiry(
         String token,
         Long customerId,
-        InquiryCreateRequestDTO dto,
-        MultipartFile file
+        MultipartFile file,
+        InquiryCreateRequestDTO dto
     ) {
         Long userId = signService.parseToken(token);
 
@@ -150,13 +141,16 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Inquiry inquiry = dto.toInquiryEntity(filePath);
+        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
         inquiry.setCustomer(customer);
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
@@ -173,9 +167,9 @@ public class InquiryService {
     public InquiryResponseDTO updateInquiryById(
         String token,
         Long inquiryId,
-        InquiryUpdateRequestDTO inquiryUpdateRequestDTO,
-        MultipartFile file
-    ) {
+        MultipartFile file,
+        InquiryUpdateRequestDTO inquiryUpdateRequestDTO
+        ) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -187,9 +181,12 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
+        String fileName = null;
         String filePath = null;
+
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
 
@@ -210,6 +207,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.progress(),
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
+            fileName,
             filePath,
             inquiryUpdateRequestDTO.responseDeadline()
         );
@@ -281,21 +279,5 @@ public class InquiryService {
             lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
-    }
-
-    private Sort getSortByOrderCondition(String sortBy) {
-        return switch (sortBy) {
-            case "OLDEST" -> Sort.by(
-                Sort.Order.asc("createdDate"),
-                Sort.Order.desc("inquiryId")
-            );
-
-            case "LATEST" -> Sort.by(
-                Sort.Order.desc("createdDate"),
-                Sort.Order.desc("inquiryId")
-            );
-
-            default -> throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
-        };
     }
 }
