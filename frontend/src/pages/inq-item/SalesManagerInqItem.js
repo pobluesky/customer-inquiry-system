@@ -14,10 +14,11 @@ import {
 } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getReviews, postReviews } from '../../apis/api/review';
+import { getQualities, getReviews, postReviews } from '../../apis/api/review';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import ManagerBasicInfoForm
     from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
+import { getOfferSheets } from '../../apis/api/offersheet';
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -25,6 +26,8 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
+    const [qualityData, setQualityData] = useState(null);
+    const [offerSheetData, setOfferSheetData] = useState(null);
 
     const [formData, setFormData] = useState({
         additionalRequests: '',
@@ -90,10 +93,34 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }
     }
 
+    const getQuality = async () => {
+        try {
+            const response = await getQualities(id);
+            setQualityData(response.data);
+            console.log("quality: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching Qualities:', error);
+        }
+    }
+
+    const getOfferSheet = async () => {
+        try {
+            const response = await getOfferSheets(id);
+            setOfferSheetData(response.data);
+            console.log("offerSheet: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching OfferSheet:', error);
+        }
+    }
+
     useEffect(() => {
         getInquiryDataDetail();
         getUserInfo();
         getReview();
+        getQuality();
+        getOfferSheet();
     }, [id]);
 
 
@@ -121,7 +148,8 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
-                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || []
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || [],
+
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
@@ -156,6 +184,8 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }));
     };
 
+    console.log(offerSheetData);
+
     return (
         <div>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
@@ -172,13 +202,12 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
             <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
 
-
-            <QualityReviewTextForm />
+            <QualityReviewTextForm formData={qualityData} />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
-            <Offersheet />
+            <Offersheet formData={offerSheetData} inquiryData={inquiriesDataDetail} />
         </div>
     )
 }

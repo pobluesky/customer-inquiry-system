@@ -9,7 +9,10 @@ import OfferTable from '../../mocules/Offertable';
 import Terms from '../../atoms/Terms';
 import { Offer_Sheet, Datepicker } from '../../../assets/css/Form.css';
 
-function Offersheet({ inquiryId, addTask }) {
+function Offersheet({ formData, inquiryData }) {
+    if(!formData || !inquiryData) {
+        return;
+    }
     const [editorValue, setEditorValue] = useState(''); // 텍스트 에디터 변수
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
@@ -129,6 +132,7 @@ function Offersheet({ inquiryId, addTask }) {
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'8px'}
                                 padding={'0 8px 0 8px'}
+                                value={inquiryData.salesPerson}
                             />
                         </div>
                         {/* 오퍼 시트 카테고리 */}
@@ -145,29 +149,64 @@ function Offersheet({ inquiryId, addTask }) {
                         <div>
                             <div>
                                 <Category categoryName={'3. Price Term'} />
-                                <Terms />
+                                {/*<Terms />*/}
+                                <Input
+                                    width={'214px'}
+                                    height={'28px'}
+                                    border={'solid 1px #c1c1c1'}
+                                    borderRadius={'8px'}
+                                    padding={'0 8px 0 8px'}
+                                    value={formData.priceTerms}
+                                />
                             </div>
                             <div>
                                 <Category categoryName={'4. Shipment'} />
-                                <DateInput className={Datepicker} />
+                                {/*<DateInput className={Datepicker} />*/}
+                                <Input
+                                    type="date"
+                                    width={'125px'}
+                                    height={'28px'}
+                                    border={'solid 1px #c1c1c1'}
+                                    borderRadius={'8px'}
+                                    padding={'0 8px 0 8px'}
+                                    value={formData.shipment}
+                                />
                             </div>
                             <div>
                                 <Category categoryName={'5. Payment Term'} />
-                                <Terms />
-                            </div>
-                            <div>
-                                <Category categoryName={'6. Destination'} />
+                                {/*<Terms />*/}
                                 <Input
                                     width={'314px'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
+                                    value={formData.paymentTerms}
+                                />
+                            </div>
+                            <div>
+                                <Category categoryName={'6. Destination'} />
+                                <Input
+                                    width={'214px'}
+                                    height={'28px'}
+                                    border={'solid 1px #c1c1c1'}
+                                    borderRadius={'8px'}
+                                    padding={'0 8px 0 8px'}
+                                    value={formData.destination}
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'7. Validity'} />
-                                <DateInput className={Datepicker} />
+                                {/*<DateInput className={Datepicker} />*/}
+                                <Input
+                                    type="date"
+                                    width={'125px'}
+                                    height={'28px'}
+                                    border={'solid 1px #c1c1c1'}
+                                    borderRadius={'8px'}
+                                    padding={'0 8px 0 8px'}
+                                    value={formData.validity}
+                                />
                             </div>
                             <div>
                                 <Category categoryName={'8. Remark'} />
@@ -177,6 +216,7 @@ function Offersheet({ inquiryId, addTask }) {
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
+                                    value={formData.remark}
                                 />
                             </div>
                         </div>

@@ -15,7 +15,7 @@ export const postOffersheet = async (inquiryId, offerSheetData) => {
     }
 };
 
-export const getOfferSheet = async (inquiryId) => {
+export const getOfferSheets = async (inquiryId) => {
     try {
         const response = await axiosInstance.get(`/offersheet/${inquiryId}`);
         console.log(response.data);

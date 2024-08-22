@@ -6,10 +6,12 @@ import {
     _SearchBox,
     _Title,
     _Input,
+    _Date
 } from '../../assets/css/Inquiry.css';
 import SelectBox from '../atoms/SelectBox';
 import Button from '../atoms/Button';
 import MyDateInput from '../atoms/MyDateInput';
+import Input from '../atoms/Input';
 
 const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
     const options = [
@@ -41,14 +43,9 @@ const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
                     <p className={_Title}>판매계약자</p>
                     <input className={_Input} />
                     <p className={_Title}>접수기간</p>
-                    <MyDateInput
-                        checkDate={startDate}
-                        setCheckDate={setStartDate}
-                    />
-                    <div>~</div>
-                    <MyDateInput
-                        checkDate={endDate}
-                        setCheckDate={setEndDate}
+                    <input
+                        className={_Date}
+                        type="date"
                     />
                 </div>
             </div>
