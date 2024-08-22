@@ -12,6 +12,8 @@ const FileFormItem = ({ fileForm, formData }) => {
 
     const isUploadSection = fileForm === "첨부파일";
 
+    console.log("files: ", formData);
+
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
             <div className={Sheet}>
@@ -22,7 +24,7 @@ const FileFormItem = ({ fileForm, formData }) => {
                             <div>진행단계</div>
                             <div>첨부파일명</div>
                         </div>
-                        <FileGetItem files={formData.files} />
+                        <FileGetItem files={formData.fileName} filePath={formData.filePath} />
                     </div>
                 )}
             </div>

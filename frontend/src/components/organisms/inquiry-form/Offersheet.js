@@ -4,10 +4,8 @@ import Button from '../../atoms/Button';
 import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
-import DateInput from '../../mocules/MyDateInput';
 import OfferTable from '../../mocules/Offertable';
-import Terms from '../../atoms/Terms';
-import { Offer_Sheet, Datepicker } from '../../../assets/css/Form.css';
+import { Offer_Sheet } from '../../../assets/css/Form.css';
 
 function Offersheet({ formData, inquiryData }) {
     if(!formData || !inquiryData) {
