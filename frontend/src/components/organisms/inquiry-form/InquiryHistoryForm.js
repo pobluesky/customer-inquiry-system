@@ -8,6 +8,7 @@ import {
   Opend,
   buttonWrapper,
   LineItemColumn,
+  LineItemGetColumn,
   _none
 } from "../../../assets/css/Form.css";
 import GetLineItem from '../../mocules/GetLineItem';
@@ -214,18 +215,15 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
                   </div>
               ) : (
                   <div>
-                    <div className={LineItemColumn}>
-                    <div>
-                      <input type="checkbox" className={_none} />
+                    <div className={LineItemGetColumn}>
+                        {lineItems.map((item, index) => (
+                            <div key={index}>
+                              {item}
+                            </div>
+                        ))}
                     </div>
-                    {lineItems.map((item, index) => (
-                        <div key={index}>
-                          {item}
-                        </div>
-                    ))}
-                  </div>
                     <GetLineItem lineItems={lineItemData} />
-                  </div>
+                </div>
               )
           ) : (
               ''

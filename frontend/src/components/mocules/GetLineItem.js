@@ -2,9 +2,10 @@ import React from 'react';
 import {
     LineItemRow,
     LineItemInput,
-    LineItemInputRow,
     _checkbox,
-    LineItemGetRow
+    LineItemGetRow,
+    LineItemGetInput,
+    LineItemGetGrid
 } from '../../assets/css/Form.css';
 
 const getAllColumns = (data) => {
@@ -12,7 +13,8 @@ const getAllColumns = (data) => {
     data.forEach(item => {
         Object.keys(item).forEach(key => columnsSet.add(key));
     });
-    return Array.from(columnsSet);
+    // response 에서 inquiryId, isActivated, lineItemId를 제외
+    return Array.from(columnsSet).filter(column => !['inquiryId', 'isActivated', 'lineItemId'].includes(column));
 };
 
 const GetLineItem = ({ lineItems }) => {
@@ -21,23 +23,14 @@ const GetLineItem = ({ lineItems }) => {
     const columns = getAllColumns(lineItems);
 
     return (
-        <div style={{ display: 'flex' }}>
-            <div className={LineItemGetRow}>
-                <div>
-                    <input
-                        type="checkbox"
-                        className={_checkbox}
-                        style={{ display: 'none' }}
-                    />
-                </div>
-                {lineItems.map((item, index) => (
-                    <div key={index}>
+        <div className={LineItemGetGrid}>
+                {lineItems.map((item, rowIndex) => (
+                    <div key={rowIndex} className={LineItemGetRow}>
                         {columns.map((column) => (
-                            <input value={item[column]} className={LineItemInput} />
+                            <input value={item[column]} className={LineItemGetInput} />
                         ))}
                     </div>
                 ))}
-            </div>
         </div>
     );
 };

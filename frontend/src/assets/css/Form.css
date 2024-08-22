@@ -166,7 +166,7 @@ body {
 }
 
 /******************************************************************/
-/* 주석 추가 부탁드립니다. ******************************************/
+/* InquiryNewForm, BasicInfoForm ******************************************/
 /******************************************************************/
 .Wrapper {
     display: grid;
@@ -231,6 +231,9 @@ select {
     margin-bottom: 15px;
 }
 
+/******************************************************************/
+/* InquiryHistoryForm, LineItem ******************************************/
+/******************************************************************/
 .LineItemColumn {
     display: grid;
     text-align: center;
@@ -262,24 +265,19 @@ select {
     align-items: center;
 }
 
-.LineItemGetRow {
+.LineItemGetColumn {
     display: grid;
+    text-align: center;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-}
-
-.LineItemInputRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    /*gap: 10px;*/
-    /*color: #7B7B7B;*/
-    /*background-color: #ffffff;*/
-    /*font-weight: 800;*/
-    /*border: 1px solid #c1c1c1;*/
-    /*border-radius: 9px;*/
-    /*padding: 8px;*/
-    /*margin: 20px;*/
-    /*font-size: 20px;*/
-    /*align-items: center;*/
+    gap: 10px;
+    color: #7B7B7B;
+    background-color: #E3E3E3;
+    font-weight: 800;
+    border: 1px solid #c1c1c1;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 20px;
+    font-size: 20px;
 }
 
 .LineItemInput {
@@ -293,6 +291,36 @@ select {
     box-sizing: border-box;
     border: 1px solid #c1c1c1;
     border-radius: 8px;
+}
+
+.LineItemGetGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.LineItemGetRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9%, 1fr));
+    gap: 10px;
+    width: 100%;
+}
+
+.LineItemGetInput {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    background-color: #f3faff;
+    color: #00304b;
+    height: 25px;
+    box-sizing: border-box;
+    padding: 0.2rem;
+    width: 100%;
 }
 
 ._none {
@@ -312,6 +340,9 @@ select {
     border-radius: 7px;
 }
 
+/******************************************************************/
+/* SalesInfoForm ******************************************/
+/******************************************************************/
 .SalesInfoItem {
     display: grid;
     text-align: center;
@@ -349,6 +380,9 @@ select {
     grid-template-rows: 1fr 3fr;
 }
 
+/******************************************************************/
+/* QualityReviewTextForm ******************************************/
+/******************************************************************/
 .QualityItemColumn {
     display: grid;
     text-align: center;
@@ -402,6 +436,9 @@ select {
     border-radius: 8px;
 }
 
+/******************************************************************/
+/* FileForm, FileFormItem, FileGetItem, FileItem ******************************************/
+/******************************************************************/
 .FileColumn {
     display: grid;
     text-align: center;
@@ -431,6 +468,15 @@ select {
     font-size: 16px;
 }
 
+._FileName {
+    color: #007AFF;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/******************************************************************/
+/* Header, organisms/inquiry-form 폴더의 컴포넌트 ******************************************/
+/******************************************************************/
 .Container {
     display: flex;
     justify-content: center;
@@ -475,10 +521,4 @@ select {
     width: 85vw;
     display: flex;
     justify-content: left;
-}
-
-._FileName {
-    color: #007AFF;
-    font-weight: 800;
-    font-size: 16px;
 }
