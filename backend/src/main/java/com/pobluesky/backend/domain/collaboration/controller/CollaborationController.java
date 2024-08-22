@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
@@ -71,6 +72,31 @@ public class CollaborationController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "협업 목록 조회2", description = "협업 요청을 받은 담당자의 협업 목록을 페이징 없이 전부 조회한다.")
+    public ResponseEntity<JsonResult> getAllCollaborationsWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) ColStatus colStatus,
+        @RequestParam(required = false) String colReqManager,
+        @RequestParam(required = false) Long colReqId,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
+        List<CollaborationSummaryResponseDTO> cols = collaborationService.getAllCollaborationsWithoutPaging(
+            token,
+            sortBy,
+            colStatus,
+            colReqManager,
+            colReqId,
+            startDate,
+            endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(cols));
     }
 
     @Operation(summary = "questionId 별 협업 요청")
