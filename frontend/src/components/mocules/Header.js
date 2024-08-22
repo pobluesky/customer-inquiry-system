@@ -7,8 +7,6 @@ import person from '../../assets/css/icons/person.svg';
 import { Container, User } from '../../assets/css/Header.css';
 import { useAuth } from '../../hooks/useAuth';
 import {
-    getCustomerInfo,
-    getManagerInfo,
     getUserInfoByCustomers, getUserInfoByManagers,
 } from '../../apis/api/auth';
 import NotificationModal from '../mocules/NotificationModal';
