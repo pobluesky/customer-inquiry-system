@@ -14,6 +14,7 @@ import com.pobluesky.backend.global.util.model.JsonResult;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     // 고객 Inquiry 조회
-    @GetMapping("/customers/inquiries/{userId}")
+    @GetMapping("/customers/inquiries/{userId}/all")
     @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiriesByCustomer(
         @RequestHeader("Authorization") String token,
@@ -81,6 +82,35 @@ public class InquiryController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/customers/inquiries/{userId}")
+    @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 페이징 없이 조회한다.")
+    public ResponseEntity<JsonResult> getInquiriesByCustomerWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomerWithoutPaging(
+            token,
+            userId,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(inquiries));
     }
 
     // 상세 조회 페이지
@@ -150,7 +180,7 @@ public class InquiryController {
     }
 
     // 담당자 Inquiry 조회
-    @GetMapping("/managers/inquiries")
+    @GetMapping("/managers/inquiries/all")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiriesByManager(
         @RequestHeader("Authorization") String token,
@@ -185,6 +215,33 @@ public class InquiryController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/managers/inquiries")
+    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 페이징 없이 조회한다.")
+    public ResponseEntity<JsonResult> getInquiriesByManagerWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    ) {
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManagerWithoutPaging(
+            token,
+            sortBy,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(inquiries));
     }
 
     // 상세 조회 페이지

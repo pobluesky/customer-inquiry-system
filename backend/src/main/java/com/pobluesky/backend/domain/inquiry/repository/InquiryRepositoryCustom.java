@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,6 +26,27 @@ public interface InquiryRepositoryCustom {
 
     Page<InquirySummaryResponseDTO> findInquiriesByManager(
         Pageable pageable,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    );
+
+    List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
+        Long userId,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    );
+
+    List<InquirySummaryResponseDTO> findInquiriesByManagerWithoutPaging(
         Progress progress,
         ProductType productType,
         String customerName,
