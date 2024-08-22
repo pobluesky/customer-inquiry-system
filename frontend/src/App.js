@@ -28,6 +28,7 @@ import SalesManagerInqList from './pages/inq-list/SalesManagerInqList';
 import SalesManagerInqItem from './pages/inq-item/SalesManagerInqItem';
 
 function App() {
+
     return (
         <AuthProvider>
             <Router>

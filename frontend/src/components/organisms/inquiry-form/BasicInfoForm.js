@@ -26,6 +26,7 @@ const BasicInfoForm = ({ formData }) => {
     } = formData;
 
     console.log('email: ', formData.email);
+    console.log('formData: ', formData);
 
     const [isChecked, setCheck] = React.useState(true);
 

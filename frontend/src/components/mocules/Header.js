@@ -21,7 +21,7 @@ export const MenuLink = styled(Link)`
 // [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const { didLogin, logout, userId, userRole } = useAuth();
+    const { didLogin, logout, userId, role } = useAuth();
 
     const columns = didLogin
         ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
@@ -48,7 +48,7 @@ function Header({ inq, voc, dashboard }) {
 
     const findUserName = async () => {
         try {
-            if(userRole === 'CUSTOMER') {
+            if(role === 'CUSTOMER') {
                 const customer = await getUserInfoByCustomers(userId);
                 setUsername(customer.data.data.name);
             } else {
@@ -62,12 +62,10 @@ function Header({ inq, voc, dashboard }) {
     };
 
     useEffect(() => {
-        if (didLogin) {
+        if (didLogin && userId) {
             findUserName();
         }
-    }, [didLogin, userId]);
-
-    console.log(username);
+    }, [didLogin, userId, role]);
 
     return (
         <div>

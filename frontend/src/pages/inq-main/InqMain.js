@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from "../../components/atoms/Button";
-import Header from "../../components/mocules/Header";
 import InqPath from "../../components/atoms/InqPath";
 import { intro1, intro2 } from "../../assets/css/icons/intro";
 import {
@@ -17,11 +16,11 @@ import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
 const InqMain = () => {
   const navigate = useNavigate();
-  const { userRole } = useAuth();
+  const { role } = useAuth();
 
   return (
       <div>
-        { userRole === 'SALES' || userRole === 'QUALITY' ? (
+        { role === 'CUSTOMER' ? (
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
         ) : (
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />

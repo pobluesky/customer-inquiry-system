@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import InquiryItem from '../../components/organisms/InquiryItem';
-import InqPath from "../../components/atoms/InqPath";
 import InquirySearchBox from "../../components/organisms/InquirySearchBox";
 import SearchResult from "../../components/mocules/SearchResult";
 import { _Link, Paging, PagingButton, PagingArrowButton } from "../../assets/css/Inquiry.css";
@@ -22,9 +21,7 @@ const SalesManagerInqList = () => {
     console.log("쿠키: ", getCookie('userId'));
 
     const getInquiryData = async (page) => {
-        if (!userId) {
-            return;
-        }
+        console.log("getInquiryData")
         try {
             const response = await getInquiryByManagers(page);
             setInquiries(response.inquiryInfo);

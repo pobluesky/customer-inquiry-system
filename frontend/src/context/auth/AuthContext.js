@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
         const currentUserId = getCookie('userId');
 
         if (token) {
+            console.log("AuthContext: ", currentUserId);
+            console.log("AuthContext: ", currentUserRole);
             setToken(token);
             setDidLogin(true);
             setRole(currentUserRole);
