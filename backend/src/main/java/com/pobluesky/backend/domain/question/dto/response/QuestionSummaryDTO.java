@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.question.dto.response;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 
+import com.pobluesky.backend.domain.question.entity.QuestionType;
 import java.time.LocalDateTime;
 
 import lombok.Builder;
@@ -12,6 +13,7 @@ public record QuestionSummaryDTO(
     Long questionId,
     String title,
     QuestionStatus status,
+    QuestionType type,
     String contents,
     String customerName,
     LocalDateTime questionCreatedAt,
@@ -23,6 +25,7 @@ public record QuestionSummaryDTO(
             .questionId(question.getQuestionId())
             .title(question.getTitle())
             .status(question.getStatus())
+            .type(question.getType())
             .contents(question.getContents())
             .customerName(question.getCustomer().getCustomerName())
             .questionCreatedAt(question.getCreatedDate())

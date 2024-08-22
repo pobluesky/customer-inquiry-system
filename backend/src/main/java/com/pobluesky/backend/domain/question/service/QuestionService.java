@@ -2,11 +2,13 @@ package com.pobluesky.backend.domain.question.service;
 
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
+import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
+import com.pobluesky.backend.domain.question.entity.QuestionType;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
@@ -19,6 +21,7 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.domain.PageRequest;
@@ -71,6 +74,29 @@ public class QuestionService {
             sortBy);
     }
 
+    // 질문 전체 조회 (담당자) without paging
+    @Transactional(readOnly = true)
+    public List<QuestionSummaryDTO> getAllQuestionsByManagerWithoutPaging(
+        String token,
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        LocalDate startDate,
+        LocalDate endDate) {
+
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return questionRepository.findAllQuestionsByManagerWithoutPaging(
+            status,
+            type,
+            startDate,
+            endDate,
+            sortBy);
+    }
+
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
     public QuestionSummaryResponseDTO getQuestionsByCustomer(
@@ -98,6 +124,34 @@ public class QuestionService {
             customerId,
             pageable,
             status,
+            startDate,
+            endDate,
+            sortBy);
+    }
+
+    @Transactional(readOnly = true)
+    public List<QuestionSummaryDTO> getAllQuestionsByCustomerWithoutPaging(
+        String token,
+        Long customerId,
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        LocalDate startDate,
+        LocalDate endDate) {
+
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(user.getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
+
+        return questionRepository.findAllQuestionsByCustomerWithoutPaging(
+            customerId,
+            status,
+            type,
             startDate,
             endDate,
             sortBy);

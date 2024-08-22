@@ -25,8 +25,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Pageable;
+
 
 @RequiredArgsConstructor
 public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
@@ -80,6 +80,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.questionId,
                 question.title,
                 question.status,
+                question.type,
                 question.contents,
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
@@ -145,6 +146,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.questionId,
                 question.title,
                 question.status,
+                question.type,
                 question.contents,
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
@@ -166,6 +168,70 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .fetch();
     }
 
+    @Override
+    public List<QuestionSummaryDTO> findAllQuestionsByCustomerWithoutPaging(
+        Long userId,
+        QuestionStatus status,
+        QuestionType type,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
+        return queryFactory
+            .select(Projections.constructor(QuestionSummaryDTO.class,
+                question.questionId,
+                question.title,
+                question.status,
+                question.type,
+                question.contents,
+                customer.customerName,
+                question.createdDate.as("questionCreatedAt"),
+                answer.createdDate.as("answerCreatedAt")
+            ))
+            .from(question)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
+            .where(
+                question.customer.userId.eq(userId),
+                statusEq(status),
+                typeEq(type),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
+    }
+
+    @Override
+    public List<QuestionSummaryDTO> findAllQuestionsByManagerWithoutPaging(
+        QuestionStatus status,
+        QuestionType type,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
+        return queryFactory
+            .select(Projections.constructor(QuestionSummaryDTO.class,
+                question.questionId,
+                question.title,
+                question.status,
+                question.type,
+                question.contents,
+                customer.customerName,
+                question.createdDate.as("questionCreatedAt"),
+                answer.createdDate.as("answerCreatedAt")
+            ))
+            .from(question)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
+            .where(
+                statusEq(status),
+                typeEq(type),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
+    }
+
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
         switch (sortBy) {
             case "LATEST":
@@ -178,6 +244,11 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                     question.createdDate.asc().nullsFirst(),
                     question.questionId.asc()
                 };
+            case "TYPE":
+                return new OrderSpecifier[]{
+                    question.type.asc(),
+                    question.createdDate.desc()
+                };
             default:
                 throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
         }
@@ -185,6 +256,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private BooleanExpression statusEq(QuestionStatus status) {
         return status != null ? question.status.eq(status) : null;
+    }
+
+    private BooleanExpression typeEq(QuestionType type) {
+        return type != null ? question.type.eq(type) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
