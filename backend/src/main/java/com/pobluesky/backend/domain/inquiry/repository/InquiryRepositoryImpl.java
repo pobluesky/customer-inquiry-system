@@ -85,6 +85,42 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
+    public List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
+        Long userId,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
+       return queryFactory
+            .select(Projections.constructor(InquirySummaryResponseDTO.class,
+                    inquiry.inquiryId,
+                    inquiry.salesPerson,
+                    inquiry.progress,
+                    inquiry.productType,
+                    inquiry.inquiryType,
+                    customer.customerName
+                )
+            )
+            .from(inquiry)
+            .join(inquiry.customer, customer)
+            .where(
+                inquiry.isActivated.eq(true),
+                inquiry.customer.userId.eq(userId),
+                progressEq(progress),
+                productTypeEq(productType),
+                customerNameEq(customerName),
+                inquiryTypeEq(inquiryType),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
+    }
+
+    @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByManager(
         Pageable pageable,
         Progress progress,
@@ -130,6 +166,40 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public List<InquirySummaryResponseDTO> findInquiriesByManagerWithoutPaging(
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
+        return queryFactory
+            .select(Projections.constructor(InquirySummaryResponseDTO.class,
+                    inquiry.inquiryId,
+                    inquiry.salesPerson,
+                    inquiry.progress,
+                    inquiry.productType,
+                    inquiry.inquiryType,
+                    customer.customerName
+                )
+            )
+            .from(inquiry)
+            .join(inquiry.customer, customer)
+            .where(
+                inquiry.isActivated.isTrue(),
+                progressEq(progress),
+                productTypeEq(productType),
+                customerNameEq(customerName),
+                inquiryTypeEq(inquiryType),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
     }
 
     private JPAQuery<Inquiry> getCountQueryForCustomer(

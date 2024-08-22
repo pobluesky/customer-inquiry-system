@@ -5,12 +5,22 @@ import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CollaborationRepositoryCustom {
     Page<CollaborationSummaryResponseDTO> findAllCollaborationsRequest(
         Pageable pageable,
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    );
+
+    List<CollaborationSummaryResponseDTO> findAllCollaborationsRequestWithoutPaging(
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,

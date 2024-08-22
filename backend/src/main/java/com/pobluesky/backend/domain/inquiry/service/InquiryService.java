@@ -54,6 +54,7 @@ public class InquiryService {
 
     private final ManagerRepository managerRepository;
 
+    // Inquiry 전체 조회(고객사)
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
         String token,
@@ -91,6 +92,40 @@ public class InquiryService {
         );
     }
 
+    // Inquiry 전체 조회(고객사) without paging
+    @Transactional(readOnly = true)
+    public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
+        String token,
+        Long customerId,
+        String sortBy,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        return inquiryRepository.findInquiriesByCustomerWithoutPaging(
+            customerId,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate,
+            sortBy
+        );
+    }
+
+    // Inquiry 전체 조회(담당자)
     @Transactional(readOnly = true)
     public Page<InquirySummaryResponseDTO> getInquiriesByManager(
         String token,
@@ -116,6 +151,37 @@ public class InquiryService {
 
         return inquiryRepository.findInquiriesByManager(
             pageable,
+            progress,
+            productType,
+            customerName,
+            inquiryType,
+            startDate,
+            endDate,
+            sortBy
+        );
+    }
+
+    // Inquiry 전체 조회(담당자) without paging
+    @Transactional(readOnly = true)
+    public List<InquirySummaryResponseDTO> getInquiriesByManagerWithoutPaging(
+        String token,
+        String sortBy,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(manager.getRole() == UserRole.CUSTOMER)
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
+
+        return inquiryRepository.findInquiriesByManagerWithoutPaging(
             progress,
             productType,
             customerName,

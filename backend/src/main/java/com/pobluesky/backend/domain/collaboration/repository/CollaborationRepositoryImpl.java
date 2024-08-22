@@ -66,6 +66,35 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
+    @Override
+    public List<CollaborationSummaryResponseDTO> findAllCollaborationsRequestWithoutPaging(
+        ColStatus colStatus,
+        String colReqManager,
+        Long colReqId,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy) {
+
+        return queryFactory
+            .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
+                collaboration.colId,
+                manager.name,
+                collaboration.colStatus,
+                collaboration.colContents,
+                collaboration.createdDate
+            ))
+            .from(collaboration)
+            .join(collaboration.colRequestManager, manager)
+            .where(
+                colStatusEq(colStatus),
+                colReqManagerEq(colReqManager),
+                colReqIdEq(colReqId),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
+    }
+
     private JPAQuery<Collaboration> getCountQuery(ColStatus colStatus, String colReqManagerName, Long colReqId,
         LocalDate startDate, LocalDate endDate) {
         return queryFactory
