@@ -2,7 +2,7 @@ import React from 'react';
 import { _FileItem, _FileName } from "../../assets/css/Form.css";
 import { useParams } from 'react-router-dom';
 
-const FileGetItem = ({ files }) => {
+const FileGetItem = ({ files, filePath }) => {
     console.log(files)
     console.log(typeof files);
     const { id } = useParams();
@@ -31,7 +31,7 @@ const FileGetItem = ({ files }) => {
         <div className={_FileItem}>
             {files !== null ? (
                 <a
-                    href={files}
+                    href={filePath}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={_FileName}
