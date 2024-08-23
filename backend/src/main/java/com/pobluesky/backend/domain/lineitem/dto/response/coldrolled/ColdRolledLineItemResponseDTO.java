@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.lineitem.entity.ColdRolledLineItem;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,7 +29,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private String expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private String orderEdge;
 
@@ -37,6 +38,16 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
     private String outDiameter;
 
     private Boolean isActivated;
+
+    private String sleeveThickness;
+
+    private String yieldingPoint;
+
+    private String tensileStrength;
+
+    private String elongationRatio;
+
+    private String hardness;
 
     public static ColdRolledLineItemResponseDTO from(ColdRolledLineItem coldRolledLineItem) {
 
@@ -54,6 +65,11 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
             .inDiameter(coldRolledLineItem.getInDiameter())
             .outDiameter(coldRolledLineItem.getOutDiameter())
             .isActivated(coldRolledLineItem.getIsActivated())
+            .sleeveThickness(coldRolledLineItem.getSleeveThickness())
+            .yieldingPoint(coldRolledLineItem.getYieldingPoint())
+            .tensileStrength(coldRolledLineItem.getTensileStrength())
+            .elongationRatio(coldRolledLineItem.getElongationRatio())
+            .hardness(coldRolledLineItem.getHardness())
             .build();
     }
 }
