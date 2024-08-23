@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/mocules/RequestBar';
-import Offersheet from '../../components/organisms/inquiry-form/Offersheet';
 import '../../assets/css/Form.css';
 import {
   AdditionalRequestForm,
   BasicInfoForm, FileForm, FinalReviewTextForm, InquiryHistoryForm,
-  InquiryNewForm, QualityReviewTextForm, ReviewTextForm, SalesInfoForm
+  InquiryNewForm, ReviewTextForm, SalesInfoForm
 } from "../../components/organisms/inquiry-form";
 
 function InqItem() {

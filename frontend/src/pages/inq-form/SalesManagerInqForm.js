@@ -10,9 +10,9 @@ import {
     ReviewTextForm,
     FileForm,
     Offersheet,
-    QualityReviewTextForm,
     FinalReviewTextForm
 } from '../../components/organisms/inquiry-form';
+import QualityReviewTextFormItem from '../../components/organisms/inquiry-form/quality-item/QualityReviewTextFormItem'
 import { getInquiry, postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -31,7 +31,7 @@ function SalesManagerInqForm() {
             <FileForm fileForm={"협업첨부파일"} userId={userId} />
             <FileForm fileForm={"첨부파일"} userId={userId} />
             <Offersheet />
-            <QualityReviewTextForm />
+            <QualityReviewTextFormItem />
             <FinalReviewTextForm />
         </div>
     );

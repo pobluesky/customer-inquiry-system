@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ToggleBar from '../../mocules/ToggleBar';
 import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
-import ReviewText from '../../mocules/ReviewText';
+import ReviewText from './ReviewText';
 
 const ReviewTextForm = ({ formData }) => {
     if(!formData) {

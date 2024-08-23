@@ -1,4 +1,5 @@
 import axiosInstance from '../utils/axiosInstance';
+import { createFormData, createFormQualityData } from '../utils/inquiryUtils';
 
 // 1차 검토(review) & 품질 검토(quality)
 
@@ -39,10 +40,21 @@ export const getQualities = async (inquiryId) => {
 };
 
 // 품질 검토 등록
-export const postQualities = async (inquiryId, qualityData) => {
+export const postQuality = async (inquiryId, qualityData) => {
     try {
-        const response = await axiosInstance.post(`/qualities/${inquiryId}`, qualityData);
-        console.log(response.data);
+        const formData = createFormQualityData(qualityData);
+        console.log('postQualityFormData: ', formData);
+
+        const response = await axiosInstance.post(
+            `/qualities/${inquiryId}`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            },
+        );
+        console.log('postQualityResponse: ', response);
         return response.data;
     } catch (error) {
         console.error('Error creating Quality:', error);

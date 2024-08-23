@@ -31,6 +31,11 @@ import SalesManagerInqItem from './pages/inq-item/SalesManagerInqItem';
 import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
 import Table from './pages/inq-list/Table'
 import CustomerInqTableList from './pages/inq-list/CustomerInqTableList';
+import SalesManagerInqTableList
+    from './pages/inq-list/SalesManagerInqTableList';
+import QualityManagerInqItem from './pages/inq-item/QualityManagerInqItem';
+import QualityManagerInqTableList
+    from './pages/inq-list/QualityManagerInqTableList';
 
 function App() {
 
@@ -44,17 +49,19 @@ function App() {
                         <Route path="join" element={<Join />} />
                         <Route path="inq-main" element={<InqMain />} />
 
-                        <Route path="inq-list/customer" element={<CustomerInqList />} />
-                        <Route path="inq-list/manager" element={<SalesManagerInqList />} />
-                        <Route path="inq-list/table" element={<CustomerInqTableList />} />
+                        <Route path="inq-list/customer/card" element={<CustomerInqList />} />
+                        <Route path="inq-list/manager/card" element={<SalesManagerInqList />} />
+                        <Route path="inq-list/customer" element={<CustomerInqTableList />} />
+                        <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
+                        <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
 
                         <Route path="inq-form/customer" element={<CustomerInqForm />} />
                         {/*<Route path="inq-form/sales" element={<SalesManagerInqForm />} />*/}
                         {/*<Route path="inq-form/quality" element={<QualityManagerInqForm />} />*/}
 
                         <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
-                        <Route path="inq-list/manager/:id" element={<SalesManagerInqItem />} />
-                        {/*<Route path="inq-list/quality" element={<QualityManagerInqItem />} />*/}
+                        <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
+                        <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
