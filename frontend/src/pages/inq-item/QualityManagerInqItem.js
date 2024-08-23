@@ -3,32 +3,32 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    FinalReviewTextForm, InquiryHistoryForm,
-    ReviewTextForm, FileFormItem,
-    Offersheet, SalesInfoForm, FileForm,
+    InquiryHistoryForm,
+    FileFormItem,
+    FileForm,
 } from '../../components/organisms/inquiry-form';
-import { useAuth } from '../../hooks/useAuth';
 import {
-    getInquiryDetail,
     getInquiryDetailByManagers,
 } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getQualities, getReviews, postReviews } from '../../apis/api/review';
+import {
+    getQualities,
+    postQuality,
+} from '../../apis/api/review';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import ManagerBasicInfoForm
     from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
-import { getOfferSheets } from '../../apis/api/offersheet';
-import QualityReviewTextForm
-    from '../../components/organisms/inquiry-form/quality-form/QualityReviewTextForm';
 import QualityReviewTextFormItem
     from '../../components/organisms/inquiry-form/quality-item/QualityReviewTextFormItem';
-import QualityFileFormItem
-    from '../../components/organisms/inquiry-form/quality-form/QualityFileFormItem';
+import QualityReviewTextForm
+    from '../../components/organisms/inquiry-form/quality-form/QualityReviewTextForm';
 import QualityFileForm
     from '../../components/organisms/inquiry-form/quality-form/QualityFileForm';
+import QualityFileFormItem
+    from '../../components/organisms/inquiry-form/quality-form/QualityFileFormItem';
 
-function SalesManagerInqItem() { // 고객사 Inquiry 조회
+function QualityManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
@@ -51,14 +51,14 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         industry: '',
         inquiryId: null,
         inquiryType: '',
+        fileName: '',
+        filePath: '',
         name: '',
         email: '',
         phone: '',
         productType: '',
         progress: '',
         salesPerson: '',
-        reviewText: '',
-        finalReviewText: '',
         lineItemResponseDTOs: [],
         finalResult: '',
         finalResultDetails: '',
@@ -92,8 +92,6 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }
     };
 
-    console.log("getInquiryDataDetail - customerId: ", formData.customerId);
-
     const getUserInfo = async () => {
         try {
             const response = await getUserInfoByCustomers(formData.customerId); // 수정 필요
@@ -102,17 +100,6 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             return response.data.data;
         } catch (error) {
             console.error('Error fetching User Info:', error);
-        }
-    }
-
-    const getReview = async () => {
-        try {
-            const response = await getReviews(id);
-            setReviewData(response.data);
-            console.log("review: ", response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching Reviews:', error);
         }
     }
 
@@ -128,25 +115,11 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }
     }
 
-    const getOfferSheet = async () => {
-        try {
-            const response = await getOfferSheets(id);
-            setOfferSheetData(response.data);
-            console.log("offerSheet: ", response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching OfferSheet:', error);
-        }
-    }
-
     useEffect(() => {
         getInquiryDataDetail();
         getUserInfo();
-        getReview();
         getQuality();
-        getOfferSheet();
     }, [id]);
-
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -164,51 +137,60 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
                 inquiryType: inquiriesDataDetail.inquiryType || '',
+                fileName: inquiriesDataDetail.fileName || '',
+                filePath: inquiriesDataDetail.filePath || '',
                 name: inquiriesDataDetail.name || '',
                 email: userInfo.data.email || '',
                 phone: userInfo.data.phone || '',
                 productType: inquiriesDataDetail.productType || '',
                 progress: inquiriesDataDetail.progress || '',
                 salesPerson: inquiriesDataDetail.salesPerson || '',
-                reviewText: reviewData?.reviewText || '',
-                finalReviewText: reviewData?.finalReviewText || '',
                 lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || [],
-                finalResult: qualityData?.qualityReviewInfo.finalResult || '',
-                finalResultDetails: qualityData?.qualityReviewInfo.finalResultDetails || '',
-                standard: qualityData?.qualityReviewInfo.standard || '',
-                orderCategory: qualityData?.qualityReviewInfo.orderCategory || '',
-                coatingMetalQuantity: qualityData?.qualityReviewInfo.coatingMetalQuantity || '',
-                coatingOilQuantity: qualityData?.qualityReviewInfo.coatingOilQuantity || '',
-                thicknessTolerance: qualityData?.qualityReviewInfo.thicknessTolerance || '',
-                orderEdge: qualityData?.qualityReviewInfo.orderEdge || '',
-                customerQReq: qualityData?.qualityReviewInfo.customerQReq || '',
-                availableLab: qualityData?.qualityReviewInfo.availableLab || '',
-                qualityComments: qualityData?.qualityComments || '',
-                qualityFiles: qualityData?.qualityFiles || [],
-                qualityFileName: qualityData?.qualityReviewInfo.fileName || '',
-                qualityFilePath: qualityData?.qualityReviewInfo.filePath || '',
+                finalResult: qualityData.qualityReviewInfo.finalResult || '',
+                finalResultDetails: qualityData.qualityReviewInfo.finalResultDetails || '',
+                standard: qualityData.qualityReviewInfo.standard || '',
+                orderCategory: qualityData.qualityReviewInfo.orderCategory || '',
+                coatingMetalQuantity: qualityData.qualityReviewInfo.coatingMetalQuantity || '',
+                coatingOilQuantity: qualityData.qualityReviewInfo.coatingOilQuantity || '',
+                thicknessTolerance: qualityData.qualityReviewInfo.thicknessTolerance || '',
+                orderEdge: qualityData.qualityReviewInfo.orderEdge || '',
+                customerQReq: qualityData.qualityReviewInfo.customerQReq || '',
+                availableLab: qualityData.qualityReviewInfo.availableLab || '',
+                qualityComments: qualityData.qualityComments || '',
+                qualityFiles: qualityData.qualityFiles || [],
+                qualityFileName: qualityData.qualityReviewInfo.fileName || '',
+                qualityFilePath: qualityData.qualityReviewInfo.filePath || '',
             }));
         }
-    }, [inquiriesDataDetail, userInfo, reviewData, qualityData]);
+    }, [inquiriesDataDetail, userInfo]);
 
-    const handleSubmit = async () => {
-        if (formData.inquiryId) {
+    const handleSubmit = async (event) => {
+        if (event) {
+            event.preventDefault();
+        }
+        if (id) {
             try {
-                // const offerSheetResponse = await postOffersheet(id);
-                const reviewResponse = await postReviews(id, {
-                    salesInfo: {
-                        contract: formData.contract,
-                        thicknessNotify: formData.thicknessNotify,
+                const qualityResponse = await postQuality(id, {
+                    ...formData,
+                    qualityReviewInfo: {
+                        finalResult: formData.finalResult,
+                        finalResultDetails: formData.finalResultDetails,
+                        standard: formData.standard,
+                        orderCategory: formData.orderCategory,
+                        coatingMetalQuantity: formData.coatingMetalQuantity,
+                        coatingOilQuantity: formData.coatingOilQuantity,
+                        thicknessTolerance: formData.thicknessTolerance,
+                        orderEdge: formData.orderEdge,
+                        customerQReq: formData.customerQReq,
+                        availableLab: formData.availableLab,
                     },
-                    reviewText: formData.reviewText,
-                    attachmentFile: formData.attachmentFile,
-                    finalReviewText: formData.finalReviewText,
-                    tsReviewReq: formData.tsReviewReq
+                    qualityComments: formData.qualityComments,
                 });
-
-                console.log('Review posted successfully:', reviewResponse);
+                console.log("Quality: ", formData);
+                console.log("Quality report: ",)
+                console.log('Quality posted successfully:', qualityResponse);
             } catch (error) {
-                console.error('Error posting offer sheet:', error);
+                console.error('Error posting quality:', error);
             }
         }
     }
@@ -221,12 +203,10 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         }));
     };
 
-    console.log(isQualityItem);
-
     return (
         <div>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} role={'sales'} />
-            <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} onSubmit={handleSubmit} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} role={'quality'} />
+            <RequestBar requestBarTitle={"Inquiry 상세조회 및 품질검토"} onSubmit={handleSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryForm
                 productType={formData.productType}
@@ -236,27 +216,25 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             {/* Review Post & Get */}
-            <SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            {/*<SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />*/}
 
             { isQualityItem ? (
                 <QualityReviewTextFormItem formData={qualityData} />
             ) : (
-                ''
+                <QualityReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
             )}
 
             { isQualityItem ? (
                 <QualityFileFormItem fileForm={"품질검토 첨부파일"} formData={qualityData} />
             ) : (
-                ''
+                <QualityFileForm fileForm={"품질검토 파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
             )}
 
-            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
-            <Offersheet formData={offerSheetData} inquiryData={inquiriesDataDetail} />
         </div>
     )
 }
 
-export default SalesManagerInqItem;
+export default QualityManagerInqItem;

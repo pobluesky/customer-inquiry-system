@@ -1,8 +1,8 @@
 import React from 'react';
-import ListLabel from "../mocules/ListLabel";
-import {ReviewWrapper, _TextArea} from "../../assets/css/Form.css";
+import ListLabel from "../../mocules/ListLabel";
+import {ReviewWrapper, _TextArea} from "../../../assets/css/Form.css";
 
-const ReviewText = ({title, width, height, content}) => {
+const ReviewText = ({ title, width, height, content, handleFormDataChange }) => {
   return (
       <div>
         <ReviewWrapper>
@@ -15,7 +15,12 @@ const ReviewText = ({title, width, height, content}) => {
                   className={_TextArea} style={{
                   borderRadius: '0 12px 12px 12px',
                   height: height,
-              }} />
+                  }}
+                  onChange={(e) =>
+                      handleFormDataChange(
+                          'qualityComments',
+                          e.target.value
+                      )}/>
           </div>
         </ReviewWrapper>
       </div>

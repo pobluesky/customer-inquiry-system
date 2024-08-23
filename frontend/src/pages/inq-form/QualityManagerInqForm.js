@@ -8,10 +8,9 @@ import {
     AdditionalRequestForm,
     ReviewTextForm,
     FileForm,
-    QualityReviewTextForm,
-    FinalReviewTextForm
+    FinalReviewTextForm,
 } from '../../components/organisms/inquiry-form';
-import { getInquiry, postInquiry } from '../../apis/api/inquiry';
+
 import { useAuth } from '../../hooks/useAuth';
 
 function QualityManagerInqForm() {
@@ -28,7 +27,7 @@ function QualityManagerInqForm() {
             <ReviewTextForm />
             <FileForm fileForm={"협업첨부파일"} userId={userId} />
             <FileForm fileForm={"첨부파일"} userId={userId} />
-            <QualityReviewTextForm />
+            {/*<QualityReviewTextForm />*/}
             <FinalReviewTextForm />
         </div>
     );

@@ -131,7 +131,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
-            <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
+            <RequestBar requestBarTitle={"Inquiry 상세조회"} />
 
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm
