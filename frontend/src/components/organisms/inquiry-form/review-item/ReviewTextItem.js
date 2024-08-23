@@ -2,7 +2,15 @@ import React from 'react';
 import ListLabel from "../../../mocules/ListLabel";
 import {ReviewWrapper, _TextArea} from "../../../../assets/css/Form.css";
 
-const ReviewTextItem = ({ title, width, height, content, handleFormDataChange }) => {
+const ReviewTextItem = ({ title, width, height, formData }) => { // 1차 검토 조회
+    if(!formData) {
+        return;
+    }
+
+    const {
+        reviewText,
+    } = formData;
+
   return (
       <div>
         <ReviewWrapper>
@@ -11,16 +19,12 @@ const ReviewTextItem = ({ title, width, height, content, handleFormDataChange })
                      backgroundColor="#03507D" content={title}/>
           <div>
               <textarea
-                  value={content}
+                  value={reviewText}
                   className={_TextArea} style={{
-                  borderRadius: '0 12px 12px 12px',
-                  height: height,
+                      borderRadius: '0 12px 12px 12px',
+                      height: height,
                   }}
-                  onChange={(e) =>
-                      handleFormDataChange(
-                          'qualityComments',
-                          e.target.value
-                      )}/>
+                  />
           </div>
         </ReviewWrapper>
       </div>

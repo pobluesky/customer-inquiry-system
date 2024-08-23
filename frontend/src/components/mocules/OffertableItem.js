@@ -3,7 +3,7 @@ import Input from '../atoms/Input';
 import SearchInput from '../mocules/MySearchInput';
 import { Offer_Table } from '../../assets/css/Form.css';
 
-function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) { // OfferTable 작성
+function OfferTableItem({ rows, onRowSelect, onInputChange, selectedRows = [], lineItems }) { // OfferTable 조회
     const columnSample = [
         '',
         'Product',
@@ -318,4 +318,4 @@ function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) { /
     );
 }
 
-export default OfferTable;
+export default OfferTableItem;
