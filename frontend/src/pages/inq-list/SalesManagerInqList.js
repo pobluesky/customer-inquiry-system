@@ -37,7 +37,7 @@ const SalesManagerInqList = () => {
             console.error('Error fetching Inquiry:', error);
         }
     };
-    console.log("data = = = = = = = =",inquiryData)
+    
     useEffect(() => {
         getInquiryData(currentPage);
     }, [currentPage]);
