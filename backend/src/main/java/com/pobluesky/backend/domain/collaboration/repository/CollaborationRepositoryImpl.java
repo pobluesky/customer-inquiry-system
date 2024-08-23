@@ -42,8 +42,8 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
         List<CollaborationSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
-                collaboration.question.questionId,
                 collaboration.colId,
+                collaboration.question.questionId,
                 manager.name,
                 collaboration.colStatus,
                 collaboration.colContents,
@@ -78,8 +78,8 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
         return queryFactory
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
-                collaboration.question.questionId,
                 collaboration.colId,
+                collaboration.question.questionId,
                 manager.name,
                 collaboration.colStatus,
                 collaboration.colContents,
