@@ -5,7 +5,6 @@ import FinalReviewTextForm from './FinalReviewTextForm';
 import InquiryHistoryForm from './InquiryHistoryForm';
 import InquiryNewForm from './InquiryNewForm';
 import Offersheet from './Offersheet';
-import QualityReviewTextForm from './QualityReviewTextForm';
 import ReviewTextForm from './ReviewTextForm';
 import SalesInfoForm from './SalesInfoForm';
 import FileFormItem from './FileFormItem';
@@ -19,7 +18,6 @@ export {
     InquiryHistoryForm,
     InquiryNewForm,
     Offersheet,
-    QualityReviewTextForm,
     ReviewTextForm,
     SalesInfoForm,
 };

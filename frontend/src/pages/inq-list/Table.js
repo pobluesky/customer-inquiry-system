@@ -15,12 +15,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useNavigate } from 'react-router-dom';
 
-function Row({ row }) {
+function Row({ row, role }) {
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/inq-list/customer/${row.inquiryId}`);
+        navigate(`/inq-list/${role}/${row.inquiryId}`);
     };
 
     return (
@@ -93,7 +93,8 @@ export default function CollapsibleTable({
     rowsPerPage,
     totalRows,
     handlePageChange,
-    handleRowsPerPageChange
+    handleRowsPerPageChange,
+    role
 }) {
     return (
         <Paper>
@@ -111,14 +112,14 @@ export default function CollapsibleTable({
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <Row key={row.inquiryId} row={row} />
+                            <Row key={row.inquiryId} row={row} role={role} />
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
                 component="div"
-                count={totalRows} // 전체 데이터의 개수
+                count={totalRows}
                 page={currentPage}
                 onPageChange={handlePageChange}
                 rowsPerPage={rowsPerPage}

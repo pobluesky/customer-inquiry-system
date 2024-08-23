@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { getAllInquiries } from '../../apis/api/inquiry';
+import {
+    getAllInquiries,
+    getAllInquiriesByManagers,
+} from '../../apis/api/inquiry';
 import CollapsibleTable from './Table';
-import InqPath from '../../components/atoms/InqPath';
 import InquirySearchBox from '../../components/organisms/InquirySearchBox';
 import SearchResult from '../../components/mocules/SearchResult';
+import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 
-const CustomerInqTableList = () => {
-    const { userId } = useAuth();
+const SalesManagerInqTableList = () => {
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -15,10 +17,9 @@ const CustomerInqTableList = () => {
     const paginationRef = useRef(null); // 페이지 네이션 참조
 
     const getInquiryData = async () => {
-        if (!userId) return;
 
         try {
-            const response = await getAllInquiries(userId);
+            const response = await getAllInquiriesByManagers();
             console.log('API Response:', response);
             const inquiryData = response?.inquiryInfo || [];
 
@@ -34,7 +35,7 @@ const CustomerInqTableList = () => {
 
     useEffect(() => {
         getInquiryData();
-    }, [userId]);
+    }, []);
 
     // 현재 페이지에 해당하는 데이터 추출
     const paginatedRows = rows.slice(
@@ -56,7 +57,7 @@ const CustomerInqTableList = () => {
 
     return (
         <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'sales'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${rows.length}`} />
             <div style={{ width: "90%", margin: "0 auto" }}>
@@ -68,11 +69,11 @@ const CustomerInqTableList = () => {
                     handlePageChange={handlePageChange}
                     handleRowsPerPageChange={handleRowsPerPageChange}
                     paginationRef={paginationRef}
-                    role="customer"
+                    role="sales"
                 />
             </div>
         </div>
     );
 };
 
-export default CustomerInqTableList;
+export default SalesManagerInqTableList;

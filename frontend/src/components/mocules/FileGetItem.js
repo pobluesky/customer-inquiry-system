@@ -3,11 +3,7 @@ import { _FileItem, _FileName } from "../../assets/css/Form.css";
 import { useParams } from 'react-router-dom';
 
 const FileGetItem = ({ files, filePath }) => {
-    console.log(files)
-    console.log(typeof files);
-    const { id } = useParams();
-    console.log(id)
-    console.log("id type: ", typeof id)
+    const { id } = useParams()
 
     // 파일 이름 변경 추후에 수정..
     // const extractFileNameFromUUID = (url) => {

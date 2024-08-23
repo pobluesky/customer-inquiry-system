@@ -19,12 +19,14 @@ const InqMain = () => {
   const { role } = useAuth();
 
   return (
-      <div>
-        { role === 'CUSTOMER' ? (
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-        ) : (
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-        )}
+        <div>
+          {role === 'CUSTOMER' ? (
+              <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+          ) : role === 'SALES' ? (
+              <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'sales'} />
+          ) : (
+              <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'quality'} />
+          )}
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
           <Text color={'#49454F'} fontSize={'24px'} marginTop={'2vh'}>
