@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
-import Input from '../atoms/Input';
-import MySearchInput from './MySearchInput';
+import SearchInput from '../mocules/SearchInput';
 import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
-import { Question_Filter_Panel } from '../../assets/css/Voc.css';
-import { getCookie } from '../../apis/utils/cookies';
+import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
-function QuestionFilterPanel({
+function CollaborationFilterPanel({
     searchedItems,
     title,
     startDate,
@@ -26,13 +24,6 @@ function QuestionFilterPanel({
     const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST' 또는 'OLDEST'
     const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY' 또는 'COMPLETED'
 
-    const thisRole = getCookie('userRole');
-    const height = thisRole === 'CUSTOMER' ? '228px' : '288px';
-    const gridTemplateRows =
-        thisRole === 'CUSTOMER'
-            ? '52px 52px 36px 32px' // isCustomer
-            : '52px 52px 52px 36px 32px'; // isManager
-
     const clickTimeFilter = (filter) => {
         setSelectedTimeFilter(filter);
         setTimeFilter(filter);
@@ -45,19 +36,19 @@ function QuestionFilterPanel({
 
     return (
         <>
-            <div className={Question_Filter_Panel} style={{ height }}>
-                <div style={{ gridTemplateRows }}>
-                    {/* 아이콘 + 문의 조회 */}
+            <div className={Collaboration_Filter_Pannel}>
+                <div>
+                    {/* 아이콘 + VoC 협업 조회 */}
                     <div>
                         <img src={search} />
-                        <div>문의 조회</div>
+                        <div>VoC 협업 조회</div>
                     </div>
 
                     {/* 문의 제목 + 문의 등록일 + 조회 버튼 */}
                     <div>
                         <div>
-                            <div>문의 제목</div>
-                            <MySearchInput
+                            <div>협업 번호</div>
+                            <SearchInput
                                 width={'144px'}
                                 height={'24px'}
                                 border={'solid 1px #c1c1c1'}
@@ -65,32 +56,20 @@ function QuestionFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                // value={title}
+                                // onChange={(e) => setTitle(e.target.value)}
                             />
-                            <div>문의 등록일</div>
-                            <Input
-                                type={'date'}
+                            <div>협업 담당자</div>
+                            <SearchInput
                                 width={'144px'}
                                 height={'24px'}
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'8px'}
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                            />
-                            <div>~</div>
-                            <Input
-                                type={'date'}
-                                width={'144px'}
-                                height={'24px'}
-                                border={'solid 1px #c1c1c1'}
-                                borderRadius={'8px'}
-                                outline={'none'}
-                                padding={'0 8px 0 8px'}
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
+                                btnHeight={'24px'}
+                                // value={title}
+                                // onChange={(e) => setTitle(e.target.value)}
                             />
                             <Button
                                 btnName={'조회'}
@@ -106,49 +85,12 @@ function QuestionFilterPanel({
                         </div>
                     </div>
 
-                    {/* [담당자 전용] 문의 번호 + 고객사명 */}
-                    {thisRole !== 'CUSTOMER' && (
-                        <div>
-                            <div>
-                                <div>문의 번호</div>
-                                <MySearchInput
-                                    width={'144px'}
-                                    height={'24px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'8px'}
-                                    outline={'none'}
-                                    padding={'0 8px 0 8px'}
-                                    btnHeight={'24px'}
-                                    value={questionNo}
-                                    onChange={(e) =>
-                                        setQuestionNo(e.target.value)
-                                    }
-                                />
-                                {/* 3 */}
-                                <div>고객사명</div>
-                                {/* 4 */}
-                                <MySearchInput
-                                    width={'144px'}
-                                    height={'24px'}
-                                    border={'solid 1px #c1c1c1'}
-                                    borderRadius={'8px'}
-                                    outline={'none'}
-                                    padding={'0 8px 0 8px'}
-                                    btnHeight={'24px'}
-                                    value={customerName}
-                                    onChange={(e) =>
-                                        setCustomerName(e.target.value)
-                                    }
-                                />
-                            </div>
-                        </div>
-                    )}
-
                     {/* 정렬 버튼 */}
                     <div>
                         <div>정렬 조건</div>
                         <FilterButton
                             btnName={'최신순'}
+                            width={'84px'}
                             onClick={() => clickTimeFilter('LATEST')}
                             backgroundColor={
                                 selectedTimeFilter === 'LATEST'
@@ -163,6 +105,7 @@ function QuestionFilterPanel({
                         />
                         <FilterButton
                             btnName={'과거순'}
+                            width={'84px'}
                             margin={'0 12px 0 0'}
                             onClick={() => clickTimeFilter('OLDEST')}
                             backgroundColor={
@@ -177,31 +120,65 @@ function QuestionFilterPanel({
                             }
                         />
                         <FilterButton
-                            btnName={'답변 대기'}
+                            btnName={'협업 요청 완료'}
+                            width={'120px'}
                             margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('READY')}
+                            // onClick={() => clickTimeFilter('OLDEST')}
                             backgroundColor={
-                                selectedStatusFilter === 'READY'
+                                selectedTimeFilter === 'OLDEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedStatusFilter === 'READY'
+                                selectedTimeFilter === 'OLDEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
                         />
                         <FilterButton
-                            btnName={'답변 완료'}
+                            btnName={'협업 진행 중'}
+                            width={'120px'}
                             margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('COMPLETED')}
+                            // onClick={() => clickTimeFilter('OLDEST')}
                             backgroundColor={
-                                selectedStatusFilter === 'COMPLETED'
+                                selectedTimeFilter === 'OLDEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedStatusFilter === 'COMPLETED'
+                                selectedTimeFilter === 'OLDEST'
+                                    ? '#ffffff'
+                                    : '#000000'
+                            }
+                        />
+                        <FilterButton
+                            btnName={'협업 거절'}
+                            width={'120px'}
+                            margin={'0 12px 0 0'}
+                            // onClick={() => clickTimeFilter('OLDEST')}
+                            backgroundColor={
+                                selectedTimeFilter === 'OLDEST'
+                                    ? '#03507d'
+                                    : '#ffffff'
+                            }
+                            textColor={
+                                selectedTimeFilter === 'OLDEST'
+                                    ? '#ffffff'
+                                    : '#000000'
+                            }
+                        />
+                        <FilterButton
+                            btnName={'협업 완료'}
+                            width={'120px'}
+                            margin={'0 12px 0 0'}
+                            // onClick={() => clickTimeFilter('OLDEST')}
+                            backgroundColor={
+                                selectedTimeFilter === 'OLDEST'
+                                    ? '#03507d'
+                                    : '#ffffff'
+                            }
+                            textColor={
+                                selectedTimeFilter === 'OLDEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -219,4 +196,4 @@ function QuestionFilterPanel({
     );
 }
 
-export default QuestionFilterPanel;
+export default CollaborationFilterPanel;

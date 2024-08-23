@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Text from '../../components/atoms/Text';
-import QuestionOverview from '../mocules/QuestionOverview';
-import QuestionFilterPanel from '../mocules/QuestionFilterPanel';
-import QuestionCardList from '../../components/templates/QuestionCardList';
+import QuestionOverview from '../organisms/QuestionOverview';
+import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
+import QuestionCardList from '../organisms/QuestionCardList';
 // import Notification from '../../components/mocules/NotificationModal';
 
 function QuestionDashboard() {

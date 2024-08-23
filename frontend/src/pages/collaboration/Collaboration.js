@@ -1,11 +1,17 @@
 import React from 'react';
-import CollabTable from '../../components/mocules/CollabTable';
+import CollaborationPath from './../../components/atoms/CollaborationPath';
+import CollaborationForm from '../../components/templates/CollaborationForm';
 
-export default function Collaboration() {
+function Collaboration() {
     return (
-        <div>
-            <div>협업 페이지 시작!</div>
-            <CollabTable />
-        </div>
+        <>
+            <CollaborationPath
+                largeCategory={'협업 목록'}
+                mediumCategory={'협업 목록 조회'}
+            />
+            <CollaborationForm />
+        </>
     );
 }
+
+export default Collaboration;

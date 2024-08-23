@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tag from '../atoms/Tag';
 import QuestionCard from '../mocules/QuestionCard';
-import QuestionModal from '../organisms/QuestionModal';
+import QuestionModal from './QuestionModal';
 import {
     Question_Doesnt_Exist,
     Question_Card_List,
@@ -92,9 +92,7 @@ function QuestionCardList({
                   }
               }
             : async () => {
-                  const result = await getAllQuestion(
-                      '',
-                  );
+                  const result = await getAllQuestion('');
                   if (result) {
                       setQuestionCount(result);
                   } else {

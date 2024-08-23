@@ -4,6 +4,7 @@ import Button from './Button';
 
 const FilterButton = ({
     btnName,
+    width,
     margin,
     backgroundColor,
     textColor,
@@ -11,7 +12,8 @@ const FilterButton = ({
 }) => (
     <Button
         btnName={btnName}
-        width={'84px'}
+        // width={'84px'}
+        width={width}
         height={'28px'}
         margin={margin}
         backgroundColor={backgroundColor}
