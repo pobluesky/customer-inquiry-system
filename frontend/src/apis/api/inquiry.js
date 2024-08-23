@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 export const getInquiry = async (userId, page = 0) => {
     try {
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}?page=${page}`,
+            `/customers/inquiries/${userId}/all?page=${page}`,
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
@@ -247,7 +247,7 @@ export const postInquiry = async (userId, inquiryData) => {
 export const getInquiryByManagers = async (page = 0) => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries?page=${page}`,
+            `/managers/inquiries/all?page=${page}`,
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
