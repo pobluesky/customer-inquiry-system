@@ -63,7 +63,7 @@
   display: grid;
   grid-template-columns: 10fr 1fr;
   height: 280px;
-  border-radius: 15px;
+  border-radius: 10px;
   border: 1px solid #C1C1C1;
   padding: 5px;
   margin: 60px;
