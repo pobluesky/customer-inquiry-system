@@ -4,8 +4,8 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
-    QualityReviewTextForm, ReviewTextForm, FileFormItem,
+    BasicInfoForm, InquiryHistoryForm,
+    FileFormItem,
     Offersheet
 } from "../../components/organisms/inquiry-form";
 import { useAuth } from '../../hooks/useAuth';
@@ -13,6 +13,8 @@ import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews } from '../../apis/api/review';
+import FinalReviewTextForm
+    from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
 
 function CustomerInqItem() { // 고객사 Inquiry 조회
     const { userId } = useAuth();
@@ -140,7 +142,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
-            <ReviewTextForm formData={formData} />
+            {/*<ReviewTextForm formData={formData} />*/}
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet />
             <FinalReviewTextForm formData={formData} />
