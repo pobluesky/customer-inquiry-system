@@ -10,8 +10,13 @@ public record ThickPlateLineItemUpdateRequestDTO(
     String seal,
     Boolean grainSizeAnalysis,
     String show,
+    String extraShow,
+    String agingShow,
     String curve,
-    String additionalRequests
+    String additionalRequests,
+    String hardness,
+    Boolean dropWeightTest,
+    Boolean ultrasonicTransducer
 ) {
 
 }
