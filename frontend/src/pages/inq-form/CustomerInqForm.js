@@ -105,6 +105,7 @@ function CustomerInqForm() {
             <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
                 productType={formData.productType}
+                lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
             />
             <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
