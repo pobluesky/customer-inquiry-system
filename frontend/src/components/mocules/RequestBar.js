@@ -13,7 +13,7 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
     const buttons = buttonConfig[requestBarTitle];
 
     const handleButtonClick = (btnName) => {
-        if (btnName === '검토의뢰' || btnName === '품질검토요청' || btnName === '품질검토완료') {
+        if (btnName === '검토의뢰' || btnName === '품질검토요청' || btnName === '품질검토완료' || btnName === '1차검토완료') {
             onSubmit();
         } else if (btnName === '품질검토요청' || btnName === '1차검토완료') {
             onReviewSubmit();
