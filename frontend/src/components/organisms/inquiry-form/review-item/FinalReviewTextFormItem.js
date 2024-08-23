@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import ToggleBar from '../../mocules/ToggleBar';
-import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
-import ReviewText from './ReviewText';
+import ToggleBar from '../../../mocules/ToggleBar';
+import {
+    Container,
+    Sheet,
+    Opend,
+    _TextArea,
+} from '../../../../assets/css/Form.css';
 
-const ReviewTextForm = ({ formData }) => {
+const FinalReviewTextFormItem = ({ formData }) => {
     if(!formData) {
         return;
     }
@@ -14,17 +18,17 @@ const ReviewTextForm = ({ formData }) => {
         <div className={Container} style={{ marginTop: '-2vh' }}>
             <div className={Sheet}>
                 <ToggleBar
-                    title={'검토내용'}
+                    title={'최종검토내용'}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />
                 {isChecked ? (
                     <div className={Opend}>
-                        <ReviewText
-                            title={'1차검토'}
-                            width="80px"
-                            height="80px"
-                            content={formData.reviewText}
+                        <textarea
+                            className={_TextArea}
+                            placeholder="내용을 입력해 주세요"
+                            wrap="hard"
+                            value={formData.finalReviewText}
                         />
                     </div>
                 ) : (
@@ -35,4 +39,4 @@ const ReviewTextForm = ({ formData }) => {
     );
 };
 
-export default ReviewTextForm;
+export default FinalReviewTextFormItem;

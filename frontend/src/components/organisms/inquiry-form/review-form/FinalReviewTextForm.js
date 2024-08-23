@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import ToggleBar from '../../mocules/ToggleBar';
+import ToggleBar from '../../../mocules/ToggleBar';
 import {
     Container,
     Sheet,
     Opend,
     _TextArea,
-} from '../../../assets/css/Form.css';
+} from '../../../../assets/css/Form.css';
 
 const FinalReviewTextForm = ({ formData }) => {
     if(!formData) {

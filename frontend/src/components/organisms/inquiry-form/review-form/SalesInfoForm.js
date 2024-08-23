@@ -6,9 +6,8 @@ import {
     SalesInfoItem,
     LineItemInput,
     SalesInfoRow,
-} from '../../../assets/css/Form.css';
-import ToggleBar from '../../mocules/ToggleBar';
-import SelectBox from '../../atoms/SelectBox';
+} from '../../../../assets/css/Form.css';
+import ToggleBar from '../../../mocules/ToggleBar';
 
 const SalesInfoForm = ({ formData, handleFormDataChange }) => {
     if(!formData) {
