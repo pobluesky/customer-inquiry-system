@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,6 +63,16 @@ public class CarLineItem extends LineItem {
 
     private Integer quantity;
 
+    private LocalDate expectedDeliveryDate;
+
+    private String transportationDestination;
+
+    private String edge;
+
+    private String tolerance;
+
+    private String annualCost;
+
     @Builder
     public CarLineItem(
         Inquiry inquiry,
@@ -74,7 +85,12 @@ public class CarLineItem extends LineItem {
         IxPlate ixPlate,
         String thickness,
         String width,
-        Integer quantity
+        Integer quantity,
+        LocalDate expectedDeliveryDate,
+        String transportationDestination,
+        String edge,
+        String tolerance,
+        String annualCost
     ) {
         this.inquiry=inquiry;
         this.lab = lab;
@@ -88,5 +104,10 @@ public class CarLineItem extends LineItem {
         this.width = width;
         this.quantity = quantity;
         this.isActivated = true;
+        this.expectedDeliveryDate = expectedDeliveryDate;
+        this.transportationDestination = transportationDestination;
+        this.edge = edge;
+        this.tolerance = tolerance;
+        this.annualCost = annualCost;
     }
 }
