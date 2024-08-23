@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
 
-function RequestBar({ requestBarTitle, onSubmit }) {
+function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }) {
 
     const buttonConfig = {
         'Inquiry 등록': ['초기화', '임시저장', '삭제', '검토의뢰'],
@@ -13,11 +13,17 @@ function RequestBar({ requestBarTitle, onSubmit }) {
     const buttons = buttonConfig[requestBarTitle];
 
     const handleButtonClick = (btnName) => {
-        if (btnName === '검토의뢰' || btnName === '품질검토요청' || btnName === '품질검토완료' || btnName === '1차검토완료') {
+        if (btnName === '검토의뢰' || btnName === '품질검토요청' || btnName === '품질검토완료'
+            || btnName === '1차검토완료') {
             onSubmit();
+        } else if (btnName === '품질검토요청') {
+            onReviewSubmit();
+        } else if (btnName === '최종검토완료') {
+            onFinalSubmit();
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }
+
     };
 
     return (

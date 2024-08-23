@@ -1,7 +1,7 @@
 import axiosInstance from '../utils/axiosInstance';
-import { createFormData, createFormQualityData } from '../utils/inquiryUtils';
+import { createFormQualityData } from '../utils/inquiryUtils';
 
-// 1차 검토(review) & 품질 검토(quality)
+// 1차 검토(review) & 품질 검토(quality) & offerSheet
 
 // 1차 검토 조회
 export const getReviews = async (inquiryId) => {
@@ -16,7 +16,7 @@ export const getReviews = async (inquiryId) => {
 };
 
 // 1차 검토 등록
-export const postReviews = async (inquiryId, reviewData) => {
+export const postReview = async (inquiryId, reviewData) => {
     try {
         const response = await axiosInstance.post(`/reviews/${inquiryId}`, reviewData);
         console.log(response.data);
@@ -61,3 +61,28 @@ export const postQuality = async (inquiryId, qualityData) => {
         throw error;
     }
 };
+
+export const postOfferSheet = async (inquiryId, offerSheetData) => {
+    try {
+        const response = await axiosInstance.post(
+            `/offersheet/${inquiryId}`,
+            offerSheetData,
+        );
+        console.log('postOfferSheetResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.error('Error posting offer sheet:', error);
+        throw error;
+    }
+};
+
+export const getOfferSheets = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.get(`/offersheet/${inquiryId}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching offer sheet:', error);
+        throw error;
+    }
+}
