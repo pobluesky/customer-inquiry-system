@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -11,21 +10,34 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useNavigate } from 'react-router-dom';
 
-function Row(props) {
-    const { row } = props;
+function Row({ row }) {
     const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/inq-list/customer/${row.inquiryId}`);
+    };
 
     return (
         <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableRow
+                sx={{ '& > *': { borderBottom: 'unset' } }}
+                onClick={handleClick}
+                style={{ cursor: 'pointer' }} // 클릭 가능하게 하기
+            >
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => setOpen(!open)}
+                        onClick={(event) => {
+                            event.stopPropagation(); // 이벤트 버블링 방지
+                            setOpen(!open);
+                        }}
                     >
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
@@ -48,25 +60,23 @@ function Row(props) {
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Date</TableCell>
+                                        <TableCell>제품유형</TableCell>
                                         <TableCell>Customer</TableCell>
                                         <TableCell align="right">Amount</TableCell>
                                         <TableCell align="right">Total price ($)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
+                                        <TableRow>
                                             <TableCell component="th" scope="row">
-                                                {historyRow.date}
+                                                {row.productType}
                                             </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
+                                            <TableCell>{row.salesPerson}</TableCell>
+                                            <TableCell align="right">{row.salesPerson}</TableCell>
                                             <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
+                                                {Math.round(row.amount * row.price * 100) / 100}
                                             </TableCell>
                                         </TableRow>
-                                    ))}
                                 </TableBody>
                             </Table>
                         </Box>
@@ -77,64 +87,45 @@ function Row(props) {
     );
 }
 
-// Row.propTypes = {
-//     row: PropTypes.shape({
-//         name: PropTypes.string.isRequired,
-//         calories: PropTypes.number.isRequired,
-//         fat: PropTypes.number.isRequired,
-//         carbs: PropTypes.number.isRequired,
-//         protein: PropTypes.number.isRequired,
-//         price: PropTypes.number.isRequired,
-//         history: PropTypes.arrayOf(
-//             PropTypes.shape({
-//                 date: PropTypes.string.isRequired,
-//                 customerId: PropTypes.string.isRequired,
-//                 amount: PropTypes.number.isRequired,
-//             }),
-//         ).isRequired,
-//     }).isRequired,
-// };
-
-export default function CollapsibleTable({ rows }) { // rows를 props로 받음
+export default function CollapsibleTable({
+    rows,
+    currentPage,
+    rowsPerPage,
+    totalRows,
+    handlePageChange,
+    handleRowsPerPageChange
+}) {
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>판매계약자</TableCell>
-                        <TableCell align="right">문의유형</TableCell>
-                        <TableCell align="right">제품</TableCell>
-                        <TableCell align="right">고객사</TableCell>
-                        <TableCell align="right">진행현황</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.salesPerson} row={row} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Paper>
+            <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow sx={{ backgroundColor: '#03507d' }}>
+                            <TableCell sx={{ color: '#ffffff' }} />
+                            <TableCell sx={{ color: '#ffffff' }} >판매계약자</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }} >문의유형</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }} >제품</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }} >고객사</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }} >진행현황</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <Row key={row.inquiryId} row={row} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                component="div"
+                count={totalRows} // 전체 데이터의 개수
+                page={currentPage}
+                onPageChange={handlePageChange}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                labelRowsPerPage="Rows per page:"
+                rowsPerPageOptions={[5, 10, 25]}
+            />
+        </Paper>
     );
 }
-
-// CollapsibleTable.propTypes = {
-//     rows: PropTypes.arrayOf(
-//         PropTypes.shape({
-//             name: PropTypes.string.isRequired,
-//             calories: PropTypes.number.isRequired,
-//             fat: PropTypes.number.isRequired,
-//             carbs: PropTypes.number.isRequired,
-//             protein: PropTypes.number.isRequired,
-//             price: PropTypes.number.isRequired,
-//             history: PropTypes.arrayOf(
-//                 PropTypes.shape({
-//                     date: PropTypes.string.isRequired,
-//                     customerId: PropTypes.string.isRequired,
-//                     amount: PropTypes.number.isRequired,
-//                 }),
-//             ).isRequired,
-//         }),
-//     ).isRequired,
-// };
