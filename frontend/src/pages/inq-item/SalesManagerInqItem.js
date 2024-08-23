@@ -3,13 +3,11 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    FinalReviewTextForm, InquiryHistoryForm,
-    ReviewTextForm, FileFormItem,
-    Offersheet, SalesInfoForm, FileForm,
+    InquiryHistoryForm,
+    FileFormItem,
+    Offersheet,
 } from '../../components/organisms/inquiry-form';
-import { useAuth } from '../../hooks/useAuth';
 import {
-    getInquiryDetail,
     getInquiryDetailByManagers,
 } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
@@ -19,14 +17,23 @@ import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import ManagerBasicInfoForm
     from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
 import { getOfferSheets } from '../../apis/api/offersheet';
-import QualityReviewTextForm
-    from '../../components/organisms/inquiry-form/quality-form/QualityReviewTextForm';
 import QualityReviewTextFormItem
     from '../../components/organisms/inquiry-form/quality-item/QualityReviewTextFormItem';
 import QualityFileFormItem
-    from '../../components/organisms/inquiry-form/quality-form/QualityFileFormItem';
-import QualityFileForm
-    from '../../components/organisms/inquiry-form/quality-form/QualityFileForm';
+    from '../../components/organisms/inquiry-form/quality-item/QualityFileFormItem';
+import SalesInfoForm
+    from '../../components/organisms/inquiry-form/review-form/SalesInfoForm';
+import ReviewTextForm
+    from '../../components/organisms/inquiry-form/review-form/ReviewTextForm';
+import SalesInfoFormItem
+    from '../../components/organisms/inquiry-form/review-item/SalesInfoFormItem';
+import FinalReviewTextFormItem
+    from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
+import FinalReviewTextForm
+    from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
+import ReviewTextFormItem
+    from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
+
 
 function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
@@ -36,6 +43,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
     const [reviewData, setReviewData] = useState(null);
     const [qualityData, setQualityData] = useState(null);
     const [offerSheetData, setOfferSheetData] = useState(null);
+    const [isReviewItem, setIsReviewItem] = useState(false);
     const [isQualityItem, setIsQualityItem] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -236,9 +244,19 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             {/* Review Post & Get */}
-            <SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+            { isReviewItem ? (
+                <>
+                    <SalesInfoFormItem formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                    <ReviewTextFormItem formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                    <FinalReviewTextFormItem formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                </>
+            ) : (
+                    <>
+                        <SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                        <ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                        <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
+                    </>
+                )}
 
             { isQualityItem ? (
                 <QualityReviewTextFormItem formData={qualityData} />
@@ -252,7 +270,6 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 ''
             )}
 
-            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet formData={offerSheetData} inquiryData={inquiriesDataDetail} />
         </div>

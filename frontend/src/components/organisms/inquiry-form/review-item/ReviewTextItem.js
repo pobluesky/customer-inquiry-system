@@ -1,8 +1,8 @@
 import React from 'react';
-import ListLabel from "../../mocules/ListLabel";
-import {ReviewWrapper, _TextArea} from "../../../assets/css/Form.css";
+import ListLabel from "../../../mocules/ListLabel";
+import {ReviewWrapper, _TextArea} from "../../../../assets/css/Form.css";
 
-const ReviewText = ({ title, width, height, content, handleFormDataChange }) => {
+const ReviewTextItem = ({ title, width, height, content, handleFormDataChange }) => {
   return (
       <div>
         <ReviewWrapper>
@@ -27,4 +27,4 @@ const ReviewText = ({ title, width, height, content, handleFormDataChange }) => 
   );
 };
 
-export default ReviewText;
+export default ReviewTextItem;

@@ -5,7 +5,6 @@ import {
     AdditionalRequestForm,
     InquiryHistoryForm,
     FileFormItem,
-    FileForm,
 } from '../../components/organisms/inquiry-form';
 import {
     getInquiryDetailByManagers,
@@ -26,7 +25,7 @@ import QualityReviewTextForm
 import QualityFileForm
     from '../../components/organisms/inquiry-form/quality-form/QualityFileForm';
 import QualityFileFormItem
-    from '../../components/organisms/inquiry-form/quality-form/QualityFileFormItem';
+    from '../../components/organisms/inquiry-form/quality-item/QualityFileFormItem';
 
 function QualityManagerInqItem() { // 고객사 Inquiry 조회
     const { id } = useParams();
