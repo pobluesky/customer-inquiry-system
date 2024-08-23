@@ -28,9 +28,12 @@ import CustomerInqItem from './pages/inq-item/CustomerInqItem';
 import SalesManagerInqList from './pages/inq-list/SalesManagerInqList';
 import SalesManagerInqItem from './pages/inq-item/SalesManagerInqItem';
 
-import { Collaboration } from './pages/collaboration';
+import QuestionInquirySearchModal from './components/mocules/QuestoinInquirySearchModal';
+import Table from './pages/inq-list/Table'
+import CustomerInqTableList from './pages/inq-list/CustomerInqTableList';
 
 function App() {
+
     return (
         <AuthProvider>
             <Router>
@@ -41,30 +44,16 @@ function App() {
                         <Route path="join" element={<Join />} />
                         <Route path="inq-main" element={<InqMain />} />
 
-                        <Route
-                            path="inq-list/customer"
-                            element={<CustomerInqList />}
-                        />
-                        <Route
-                            path="inq-list/manager"
-                            element={<SalesManagerInqList />}
-                        />
+                        <Route path="inq-list/customer" element={<CustomerInqList />} />
+                        <Route path="inq-list/manager" element={<SalesManagerInqList />} />
+                        <Route path="inq-list/table" element={<CustomerInqTableList />} />
 
-                        <Route
-                            path="inq-form/customer"
-                            element={<CustomerInqForm />}
-                        />
+                        <Route path="inq-form/customer" element={<CustomerInqForm />} />
                         {/*<Route path="inq-form/sales" element={<SalesManagerInqForm />} />*/}
                         {/*<Route path="inq-form/quality" element={<QualityManagerInqForm />} />*/}
 
-                        <Route
-                            path="inq-list/customer/:id"
-                            element={<CustomerInqItem />}
-                        />
-                        <Route
-                            path="inq-list/manager/:id"
-                            element={<SalesManagerInqItem />}
-                        />
+                        <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
+                        <Route path="inq-list/manager/:id" element={<SalesManagerInqItem />} />
                         {/*<Route path="inq-list/quality" element={<QualityManagerInqItem />} />*/}
 
                         <Route path="voc-main" element={<VocMain />} />
@@ -72,11 +61,6 @@ function App() {
                         <Route path="voc-form" element={<VocForm />} />
 
                         <Route path="dashboard" element={<DashBoard />} />
-
-                        <Route
-                            path="collaboration"
-                            element={<Collaboration />}
-                        />
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>
