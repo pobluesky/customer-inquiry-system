@@ -1,47 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { getInquiry } from '../../apis/api/inquiry';
+import { getAllInquiries } from '../../apis/api/inquiry';
 import CollapsibleTable from './Table';
 import InqPath from '../../components/atoms/InqPath';
 import InquirySearchBox from '../../components/organisms/InquirySearchBox';
-import SearchResult from '../../components/mocules/SearchResult'; // CollapsibleTable 임포트 추가
+import SearchResult from '../../components/mocules/SearchResult';
 
-const CustomerInqList = () => {
+const CustomerInqTableList = () => {
     const { userId } = useAuth();
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalElements, setTotalElements] = useState(0);
-    const contentRef = useRef(null);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const contentRef = useRef(null); // 스크롤할 참조
+    const paginationRef = useRef(null); // 페이지 네이션 참조
 
-    const getInquiryData = async (page) => {
-        if (!userId) {
-            return;
-        }
+    const getInquiryData = async () => {
+        if (!userId) return;
+
         try {
-            const response = await getInquiry(userId, page);
-            const inquiryData = response.inquiryInfo;
+            const response = await getAllInquiries(userId);
+            console.log('API Response:', response);
+            const inquiryData = response?.inquiryInfo || [];
 
-            // 데이터를 rows 형식으로 변환
-            const formattedRows = inquiryData.map(item => ({
-                salesPerson: item.salesPerson,
-                inquiryType: item.inquiryType,
-                productType: item.productType,
-                customerName: item.customerName,
-                progress: item.progress,
-                price: 0,
-                history: [
-                    {
-                        date: '2020-01-05',
-                        customerId: item.customerName,
-                        amount: 1,
-                    }
-                ]
-            }));
-
-            setRows(formattedRows);
-            setTotalPages(response.totalPages);
-            setTotalElements(response.totalElements);
+            setRows(inquiryData);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -52,26 +33,45 @@ const CustomerInqList = () => {
     };
 
     useEffect(() => {
-        getInquiryData(currentPage);
-    }, [userId, currentPage]);
+        getInquiryData();
+    }, [userId]);
 
-    const handlePageChange = (page) => {
-        if (page >= 0 && page < totalPages) {
-            setCurrentPage(page);
+    // 현재 페이지에 해당하는 데이터 추출
+    const paginatedRows = rows.slice(
+        currentPage * rowsPerPage,
+        currentPage * rowsPerPage + rowsPerPage
+    );
+
+    const handlePageChange = (event, newPage) => {
+        setCurrentPage(newPage);
+        if (paginationRef.current) {
+            paginationRef.current.scrollIntoView({ behavior: 'smooth' });
         }
+    };
+
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setCurrentPage(0); // rowsPerPage가 변경되면 첫 페이지로 이동
     };
 
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <InquirySearchBox />
-            <SearchResult searchResult={`${totalElements}`} />
+            <SearchResult searchResult={`${rows.length}`} />
             <div style={{ width: "90%", margin: "0 auto" }}>
-            <CollapsibleTable rows={rows} /> {/* 테이블 컴포넌트에 rows 전달 */}
-            {/* 나머지 코드 */}
+                <CollapsibleTable
+                    rows={paginatedRows}
+                    currentPage={currentPage}
+                    rowsPerPage={rowsPerPage}
+                    totalRows={rows.length}
+                    handlePageChange={handlePageChange}
+                    handleRowsPerPageChange={handleRowsPerPageChange}
+                    paginationRef={paginationRef} // 페이지네이션 참조 전달
+                />
             </div>
         </div>
     );
 };
 
-export default CustomerInqList;
+export default CustomerInqTableList;

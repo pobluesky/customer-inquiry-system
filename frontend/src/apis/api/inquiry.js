@@ -19,6 +19,29 @@ export const getInquiry = async (userId, page = 0) => {
     }
 };
 
+// 고객사 inquiry list 가져오기 (all)
+export const getAllInquiries = async (userId) => {
+    try {
+        const response = await axiosInstance.get(`/customers/inquiries/${userId}`);
+        console.log(response.data);
+
+        const inquiryInfo = response?.data?.data;
+
+        if (!inquiryInfo) {
+            console.error('inquiryInfo is undefined or null');
+            return { inquiryInfo: [] };
+        }
+        return {
+            inquiryInfo: processInquiries(inquiryInfo)
+        };
+
+    } catch (error) {
+        console.error('Error fetching Inquiry:', error);
+        throw error;
+    }
+};
+
+
 // 고객사 inquiry 상세 조회 가져오기
 export const getInquiryDetail = async (userId, inquiryId) => {
     try {
@@ -255,6 +278,23 @@ export const getInquiryByManagers = async (page = 0) => {
             inquiryInfo: processInquiries(inquiryInfo),
             totalPages,
             totalElements,
+        };
+    } catch (error) {
+        console.error('Error fetching Inquiry:', error);
+        throw error;
+    }
+};
+
+// 담당자 inquiry list 가져오기 (all)
+export const getAllInquiriesByManagers = async () => {
+    try {
+        const response = await axiosInstance.get(
+            `/managers/inquiries`,
+        );
+        console.log(response.data);
+        const { inquiryInfo } = response.data.data;
+        return {
+            inquiryInfo: processInquiries(inquiryInfo)
         };
     } catch (error) {
         console.error('Error fetching Inquiry:', error);
