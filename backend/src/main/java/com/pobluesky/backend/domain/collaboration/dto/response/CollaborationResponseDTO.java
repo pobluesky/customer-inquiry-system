@@ -8,6 +8,7 @@ import lombok.Builder;
 @Builder
 public record CollaborationResponseDTO(
     Long colId,
+    Long questionId,
     ManagerResponseDTO colManagerFromResponseDto,
     ManagerResponseDTO colManagerToResponseDto,
     ColStatus colStatus,
@@ -25,6 +26,7 @@ public record CollaborationResponseDTO(
 
         return CollaborationResponseDTO.builder()
             .colId(collaboration.getColId())
+            .questionId(collaboration.getQuestion().getQuestionId())
             .colManagerFromResponseDto(managerFromResponseDTO)
             .colManagerToResponseDto(managerToResponseDTO)
             .colStatus(collaboration.getColStatus())
