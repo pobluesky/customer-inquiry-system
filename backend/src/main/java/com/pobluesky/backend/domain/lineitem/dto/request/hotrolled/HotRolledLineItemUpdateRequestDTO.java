@@ -12,6 +12,11 @@ public record HotRolledLineItemUpdateRequestDTO(
     String hardness,
     String flatness,
     String orderEdge,
-    Integer quantity
+    Integer quantity,
+    String yieldingPoint,
+    String tensileStrength,
+    String elongationRatio,
+    String camber,
+    String annualCost
 ) {
 }

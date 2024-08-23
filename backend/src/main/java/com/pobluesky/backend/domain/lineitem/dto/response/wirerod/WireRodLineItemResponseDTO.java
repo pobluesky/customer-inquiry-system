@@ -36,6 +36,10 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
+    private String transportationDestination;
+
+    private String annualCost;
+
     public static WireRodLineItemResponseDTO from(WireRodLineItem wireRodLineItem) {
 
         return WireRodLineItemResponseDTO.builder()
@@ -51,6 +55,8 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
             .customerProcessing(wireRodLineItem.getCustomerProcessing())
             .finalUse(wireRodLineItem.getFinalUse())
             .isActivated(wireRodLineItem.getIsActivated())
+            .transportationDestination(wireRodLineItem.getTransportationDestination())
+            .annualCost(wireRodLineItem.getAnnualCost())
             .build();
     }
 }

@@ -36,6 +36,16 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
+    private String yieldingPoint;
+
+    private String tensileStrength;
+
+    private String elongationRatio;
+
+    private String camber;
+
+    private String annualCost;
+
     public static HotRolledLineItemResponseDTO from(HotRolledLineItem hotRolledLineItem) {
 
         return HotRolledLineItemResponseDTO.builder()
@@ -51,6 +61,11 @@ public class HotRolledLineItemResponseDTO extends LineItemResponseDTO {
             .orderEdge(hotRolledLineItem.getOrderEdge())
             .quantity(hotRolledLineItem.getQuantity())
             .isActivated(hotRolledLineItem.getIsActivated())
+            .yieldingPoint(hotRolledLineItem.getYieldingPoint())
+            .tensileStrength(hotRolledLineItem.getTensileStrength())
+            .elongationRatio(hotRolledLineItem.getElongationRatio())
+            .camber(hotRolledLineItem.getCamber())
+            .annualCost(hotRolledLineItem.getAnnualCost())
             .build();
     }
 }

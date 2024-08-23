@@ -12,6 +12,8 @@ public record WireRodLineItemUpdateRequestDTO(
     String expectedDeadLine,
     Integer initialQuantity,
     String customerProcessing,
-    String finalUse
+    String finalUse,
+    String transportationDestination,
+    String annualCost
 ) {
 }

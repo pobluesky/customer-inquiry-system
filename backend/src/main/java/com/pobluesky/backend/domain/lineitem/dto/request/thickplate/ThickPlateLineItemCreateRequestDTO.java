@@ -12,8 +12,13 @@ public record ThickPlateLineItemCreateRequestDTO(
     String seal,
     Boolean grainSizeAnalysis,
     String show,
+    String extraShow,
+    String agingShow,
     String curve,
-    String additionalRequests
+    String additionalRequests,
+    String hardness,
+    Boolean dropWeightTest,
+    Boolean ultrasonicTransducer
 ) {
 
     public ThickPlateLineItem toThickPlateLineItemEntity(Inquiry inquiry) {
@@ -27,8 +32,13 @@ public record ThickPlateLineItemCreateRequestDTO(
             .seal(seal)
             .grainSizeAnalysis(grainSizeAnalysis)
             .show(show)
+            .extraShow(extraShow)
+            .agingShow(agingShow)
             .curve(curve)
             .additionalRequests(additionalRequests)
+            .hardness(hardness)
+            .dropWeightTest(dropWeightTest)
+            .ultrasonicTransducer(ultrasonicTransducer)
             .build();
 
     }

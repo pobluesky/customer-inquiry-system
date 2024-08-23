@@ -27,11 +27,21 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
 
     private String show;
 
+    private String extraShow;
+
+    private String agingShow;
+
     private String curve;
 
     private String additionalRequests;
 
     private Boolean isActivated;
+
+    private String hardness;
+
+    private Boolean dropWeightTest;
+
+    private Boolean ultrasonicTransducer;
 
     public  static ThickPlateLineItemResponseDTO from(ThickPlateLineItem thickPlateLineItem){
 
@@ -45,9 +55,14 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
             .seal(thickPlateLineItem.getSeal())
             .grainSizeAnalysis(thickPlateLineItem.getGrainSizeAnalysis())
             .show(thickPlateLineItem.getShow())
+            .extraShow(thickPlateLineItem.getExtraShow())
+            .agingShow(thickPlateLineItem.getAgingShow())
             .curve(thickPlateLineItem.getCurve())
             .additionalRequests(thickPlateLineItem.getAdditionalRequests())
             .isActivated(thickPlateLineItem.getIsActivated())
+            .hardness(thickPlateLineItem.getHardness())
+            .dropWeightTest(thickPlateLineItem.getDropWeightTest())
+            .ultrasonicTransducer(thickPlateLineItem.getUltrasonicTransducer())
             .build();
     }
 }

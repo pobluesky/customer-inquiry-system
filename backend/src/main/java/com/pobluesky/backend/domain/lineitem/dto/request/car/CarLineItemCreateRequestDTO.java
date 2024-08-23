@@ -6,6 +6,8 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
+import java.time.LocalDate;
+import org.springframework.data.relational.core.sql.In;
 
 public record CarLineItemCreateRequestDTO(
     Lab lab,
@@ -17,7 +19,12 @@ public record CarLineItemCreateRequestDTO(
     IxPlate ixPlate,
     String thickness,
     String width,
-    int quantity
+    Integer quantity,
+    LocalDate expectedDeliveryDate,
+    String transportationDestination,
+    String edge,
+    String tolerance,
+    String annualCost
 ) {
     public CarLineItem toCarLineItemEntity(Inquiry inquiry) {
 
@@ -33,6 +40,11 @@ public record CarLineItemCreateRequestDTO(
             .thickness(thickness)
             .width(width)
             .quantity(quantity)
+            .expectedDeliveryDate(expectedDeliveryDate)
+            .transportationDestination(transportationDestination)
+            .edge(edge)
+            .tolerance(tolerance)
+            .annualCost(annualCost)
             .build();
     }
 }
