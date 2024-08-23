@@ -12,6 +12,10 @@ const FinalReviewTextFormItem = ({ formData }) => {
         return;
     }
 
+    const {
+        finalReviewText
+    } = formData;
+
     const [isChecked, setCheck] = useState(true);
 
     return (
@@ -28,7 +32,7 @@ const FinalReviewTextFormItem = ({ formData }) => {
                             className={_TextArea}
                             placeholder="내용을 입력해 주세요"
                             wrap="hard"
-                            value={formData.finalReviewText}
+                            value={finalReviewText}
                         />
                     </div>
                 ) : (

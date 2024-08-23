@@ -3,7 +3,7 @@ import ToggleBar from '../../../mocules/ToggleBar';
 import { Container, Sheet, Opend } from '../../../../assets/css/Form.css';
 import ReviewTextItem from './ReviewTextItem';
 
-const ReviewTextFormItem = ({ formData }) => {
+const ReviewTextFormItem = ({ formData }) => { // 1차 검토 조회
     if(!formData) {
         return;
     }
@@ -24,7 +24,7 @@ const ReviewTextFormItem = ({ formData }) => {
                             title={'1차검토'}
                             width="80px"
                             height="80px"
-                            content={formData.reviewText}
+                            formData={formData}
                         />
                     </div>
                 ) : (

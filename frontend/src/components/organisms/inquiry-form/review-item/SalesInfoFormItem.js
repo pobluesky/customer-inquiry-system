@@ -9,7 +9,7 @@ import {
 } from '../../../../assets/css/Form.css';
 import ToggleBar from '../../../mocules/ToggleBar';
 
-const SalesInfoForm = ({ formData, handleFormDataChange }) => {
+const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
     if(!formData) {
         return;
     }
@@ -45,8 +45,6 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
                                 type="text"
                                 className={LineItemInput}
                                 value={formData.salesInfo.thicknessNotify}
-                                onChange={(e) => handleFormDataChange(
-                                    'thicknessNotify', e.target.value)}
                             />
                         </div>
                     </div>

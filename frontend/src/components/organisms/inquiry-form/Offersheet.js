@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ToggleBar from '../../mocules/ToggleBar';
 import Button from '../../atoms/Button';
 import TextEditor from '../../atoms/TextEditor';
@@ -6,11 +6,20 @@ import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
 import OfferTable from '../../mocules/Offertable';
 import { Offer_Sheet } from '../../../assets/css/Form.css';
+import prevRows from 'lodash';
 
-function Offersheet({ formData, inquiryData }) {
+function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) {
     if(!formData || !inquiryData) {
         return;
     }
+
+    const [lineItems, setLineItems] = useState([]);
+    const [lineItemsExistence, setLineItemsExistence] = useState(true);
+
+    useEffect(() => {
+        setLineItemsExistence(typeof lineItemData[0] !== 'undefined');
+    }, [lineItemData]);
+
     const [editorValue, setEditorValue] = useState(''); // 텍스트 에디터 변수
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
@@ -29,15 +38,23 @@ function Offersheet({ formData, inquiryData }) {
         const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
         setRows(remainingRows);
         setSelectedRows([]);
+        onLineItemsChange(remainingRows.map(row => ({
+            id: row.id,
+            ...Object.fromEntries(lineItems.map((label, index) => [label, row.items[index]]))
+        })));
     };
 
     const copyRows = () => {
         const copiedRows = selectedRows.map(id => {
             const rowToCopy = rows.find(row => row.id === id);
-            return { ...rowToCopy, id: Date.now() + Math.random() }; // Create new ID
+            return { ...rowToCopy, id: Date.now() + Math.random() }; // 새 아이디 생성
         });
         setRows([...rows, ...copiedRows]);
         setSelectedRows([]);
+        onLineItemsChange([...rows, ...copiedRows].map(row => ({
+            id: row.id,
+            ...Object.fromEntries(lineItems.map((label, index) => [label, row.items[index]]))
+        })));
     };
 
     const handleRowSelect = (id) => {
@@ -56,7 +73,21 @@ function Offersheet({ formData, inquiryData }) {
                     : row
             )
         );
+
+        const updatedRows = rows.map(row =>
+            row.id === rowId
+                ? { ...row, items: { ...row.items, [field]: value } }
+                : row
+        );
+
+        onLineItemsChange(
+            updatedRows.map(row => ({
+                id: row.id,
+                ...row.items
+            }))
+        );
     };
+
 
     return (
         <div className={Offer_Sheet} style={{ marginTop: '-2vh' }}>
@@ -141,6 +172,7 @@ function Offersheet({ formData, inquiryData }) {
                                 onRowSelect={handleRowSelect}
                                 onInputChange={handleInputChange}
                                 selectedRows={selectedRows}
+                                lineItems={lineItemData}
                             />
                         </div>
                         {/* 그 외 카테고리 */}
