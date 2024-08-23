@@ -15,7 +15,12 @@ public record ColdRolledLineItemCreateRequestDTO(
     String expectedDeadline,
     String orderEdge,
     String inDiameter,
-    String outDiameter
+    String outDiameter,
+    String sleeveThickness,
+    String yieldingPoint,
+    String tensileStrength,
+    String elongationRatio,
+    String hardness
 ) {
     public ColdRolledLineItem toColdRolledLineItemEntity(Inquiry inquiry)
     {
@@ -32,6 +37,11 @@ public record ColdRolledLineItemCreateRequestDTO(
             .orderEdge(orderEdge)
             .inDiameter(inDiameter)
             .outDiameter(outDiameter)
+            .sleeveThickness(sleeveThickness)
+            .yieldingPoint(yieldingPoint)
+            .tensileStrength(tensileStrength)
+            .elongationRatio(elongationRatio)
+            .hardness(hardness)
             .build();
     }
 }

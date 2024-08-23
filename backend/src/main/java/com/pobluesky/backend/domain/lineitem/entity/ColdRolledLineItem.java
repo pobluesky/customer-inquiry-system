@@ -58,6 +58,16 @@ public class ColdRolledLineItem extends LineItem{
 
     private String outDiameter;
 
+    private String sleeveThickness;
+
+    private String yieldingPoint;
+
+    private String tensileStrength;
+
+    private String elongationRatio;
+
+    private String hardness;
+
     @Builder
     public ColdRolledLineItem(
         Inquiry inquiry,
@@ -70,7 +80,12 @@ public class ColdRolledLineItem extends LineItem{
         String expectedDeadline,
         String orderEdge,
         String inDiameter,
-        String outDiameter
+        String outDiameter,
+        String sleeveThickness,
+        String yieldingPoint,
+        String tensileStrength,
+        String elongationRatio,
+        String hardness
     ){
         this.inquiry = inquiry;
         this.kind = kind;
@@ -84,5 +99,10 @@ public class ColdRolledLineItem extends LineItem{
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
         this.isActivated = true;
+        this.sleeveThickness = sleeveThickness;
+        this.yieldingPoint = yieldingPoint;
+        this.tensileStrength = tensileStrength;
+        this.elongationRatio = elongationRatio;
+        this.hardness = hardness;
     }
 }
