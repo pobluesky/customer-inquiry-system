@@ -56,6 +56,16 @@ public class HotRolledLineItem extends LineItem{
 
     private Integer quantity;
 
+    private String yieldingPoint;
+
+    private String tensileStrength;
+
+    private String elongationRatio;
+
+    private String camber;
+
+    private String annualCost;
+
     @Builder
     public HotRolledLineItem(
         Inquiry inquiry,
@@ -67,7 +77,12 @@ public class HotRolledLineItem extends LineItem{
         String hardness,
         String flatness,
         String orderEdge,
-        Integer quantity
+        Integer quantity,
+        String yieldingPoint,
+        String tensileStrength,
+        String elongationRatio,
+        String camber,
+        String annualCost
     ){
         this.inquiry = inquiry;
         this.kind = kind;
@@ -80,5 +95,10 @@ public class HotRolledLineItem extends LineItem{
         this.orderEdge = orderEdge;
         this.quantity = quantity;
         this.isActivated = true;
+        this.yieldingPoint = yieldingPoint;
+        this.tensileStrength = tensileStrength;
+        this.elongationRatio = elongationRatio;
+        this.camber = camber;
+        this.annualCost = annualCost;
     }
 }

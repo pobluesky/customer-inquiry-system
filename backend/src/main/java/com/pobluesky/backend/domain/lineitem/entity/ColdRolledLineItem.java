@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.lineitem.entity;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
-import com.pobluesky.backend.domain.user.entity.Customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +51,7 @@ public class ColdRolledLineItem extends LineItem{
 
     private Integer quantity;
 
-    private String expectedDeadline;
+    private LocalDate expectedDeadline;
 
     private String orderEdge;
 
@@ -77,7 +78,7 @@ public class ColdRolledLineItem extends LineItem{
         String thickness,
         String width,
         Integer quantity,
-        String expectedDeadline,
+        LocalDate expectedDeadline,
         String orderEdge,
         String inDiameter,
         String outDiameter,
