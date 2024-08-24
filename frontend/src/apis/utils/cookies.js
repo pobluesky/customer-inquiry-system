@@ -1,4 +1,4 @@
-import {Cookies} from "react-cookie";
+import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
 
@@ -16,9 +16,4 @@ export const removeCookie = (name, options = {}) => {
   const mergedOptions = { ...defaultOptions, ...options };
 
   return cookies.remove(name, mergedOptions);
-};
-
-// 쿠키에서 역할을 추출하는 함수
-export const getRoleFromCookie = () => {
-  return getCookie('userRole');
 };
