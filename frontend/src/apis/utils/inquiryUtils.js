@@ -167,7 +167,6 @@ export const processInquiryData = (data) => {
                     lab: item.lab,
                     kind: item.kind,
                     standardOrg: item.standardOrg,
-                    pjtName: item.pjtName,
                     salesVehicleName: item.salesVehicleName,
                     partName: item.partName,
                     ixPlate: item.ixPlate,
@@ -193,10 +192,14 @@ export const processInquiryData = (data) => {
                     thickness: item.thickness,
                     width: item.width,
                     quantity: item.quantity,
-                    expectedDeadline: item.expectedDeadline,
                     orderEdge: item.orderEdge,
                     inDiameter: item.inDiameter,
                     outDiameter: item.outDiameter,
+                    expectedDeliveryDate: item.expectedDeliveryDate,
+                    sleeveThickness: item.sleeveThickness,
+                    tensileStrength: item.tensileStrength,
+                    elongationRatio: item.elongationRatio,
+                    hardness: item.hardness,
                 })),
             };
             break;
@@ -214,6 +217,11 @@ export const processInquiryData = (data) => {
                     flatness: item.flatness,
                     orderEdge: item.orderEdge,
                     quantity: item.quantity,
+                    yieldingPoint: item.yieldingPoint,
+                    tensileStrength: item.tensileStrength,
+                    elongationRatio: item.elongationRatio,
+                    camber: item.camber,
+                    annualCost: item.annualCost,
                 })),
             };
             break;
@@ -229,8 +237,13 @@ export const processInquiryData = (data) => {
                     seal: item.seal,
                     grainSizeAnalysis: item.grainSizeAnalysis,
                     show: item.show,
+                    extraShow: item.extraShow,
+                    agingShow: item.agingShow,
                     curve: item.curve,
                     additionalRequests: item.additionalRequests,
+                    hardness: item.hardness,
+                    dropWeightTest: item.dropWeightTest,
+                    ultrasonicTransducer: item.ultrasonicTransducer,
                 })),
             };
             break;
@@ -248,6 +261,11 @@ export const processInquiryData = (data) => {
                     initialQuantity: item.initialQuantity,
                     customerProcessing: item.customerProcessing,
                     finalUse: item.finalUse,
+                    transportationDestination: item.transportationDestination,
+                    annualCost: item.annualCost,
+                    legalRegulatoryReview: item.legalRegulatoryReview,
+                    legalRegulatoryReviewDetail: item.legalRegulatoryReviewDetail,
+                    finalCustomer: item.finalCustomer,
                 })),
             };
             break;
