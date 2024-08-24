@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllInquiries } from '../../apis/api/inquiry';
-import CollapsibleTable from './Table';
 import InqPath from '../../components/atoms/InqPath';
-import InquirySearchBox from '../../components/organisms/InquirySearchBox';
 import SearchResult from '../../components/mocules/SearchResult';
+import InquirySearchBox
+    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 
 const CustomerInqTableList = () => {
     const { userId } = useAuth();

@@ -1,18 +1,12 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useNavigate } from 'react-router-dom';
 
 function Row({ row, role }) {
@@ -30,18 +24,6 @@ function Row({ row, role }) {
                 onClick={handleClick}
                 style={{ cursor: 'pointer' }}
             >
-                {/*<TableCell>*/}
-                {/*    <IconButton*/}
-                {/*        aria-label="expand row"*/}
-                {/*        size="small"*/}
-                {/*        onClick={(event) => {*/}
-                {/*            event.stopPropagation(); // 이벤트 버블링 방지*/}
-                {/*            setOpen(!open);*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
-                {/*    </IconButton>*/}
-                {/*</TableCell>*/}
                 <TableCell component="th" scope="row" sx={{ paddingLeft: '80px' }}>
                     {row.inquiryId}</TableCell>
                 <TableCell align="left">{row.salesPerson}</TableCell>

@@ -34,7 +34,7 @@ import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 
 
-function SalesManagerInqItem() { // 고객사 Inquiry 조회
+function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);

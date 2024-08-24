@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
     getAllInquiriesByManagers,
 } from '../../apis/api/inquiry';
-import CollapsibleTable from './Table';
-import InquirySearchBox from '../../components/organisms/InquirySearchBox';
 import SearchResult from '../../components/mocules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
+import InquirySearchBox
+    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 
 const SalesManagerInqTableList = () => {
     const [rows, setRows] = useState([]);

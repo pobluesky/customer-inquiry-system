@@ -16,7 +16,7 @@ import { getReviews } from '../../apis/api/review';
 import FinalReviewTextForm
     from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
 
-function CustomerInqItem() { // 고객사 Inquiry 조회
+function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId } = useAuth();
     const { id } = useParams();
 

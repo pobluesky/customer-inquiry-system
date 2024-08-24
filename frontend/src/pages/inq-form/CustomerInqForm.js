@@ -11,7 +11,7 @@ import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 
-function CustomerInqForm() {
+function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId } = useAuth();
     const [userInfo, setUserInfo] = useState(null);
 
@@ -52,7 +52,6 @@ function CustomerInqForm() {
         }
     }
 
-    // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -60,7 +59,6 @@ function CustomerInqForm() {
         }));
     };
 
-    // Inquiry 등록 버튼 클릭 핸들러
     const handleSubmit = async (event) => {
         if (event) {
             event.preventDefault();

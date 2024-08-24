@@ -27,14 +27,12 @@ import QualityFileForm
 import QualityFileFormItem
     from '../../components/organisms/inquiry-form/quality-item/QualityFileFormItem';
 
-function QualityManagerInqItem() { // 고객사 Inquiry 조회
+function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
-    const [reviewData, setReviewData] = useState(null);
     const [qualityData, setQualityData] = useState(null);
-    const [offerSheetData, setOfferSheetData] = useState(null);
     const [isQualityItem, setIsQualityItem] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -188,7 +186,6 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
         }
     }
 
-    // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -207,11 +204,6 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
-
-            {/* Review Post & Get */}
-            {/*<SalesInfoForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            ReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />
-            <FinalReviewTextForm formData={reviewData} handleFormDataChange={handleFormDataChange} />*/}
 
             { isQualityItem ? (
                 <QualityReviewTextFormItem formData={qualityData} />
