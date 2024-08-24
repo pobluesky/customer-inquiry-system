@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import {
-    getAllInquiries,
     getAllInquiriesByManagers,
 } from '../../apis/api/inquiry';
 import CollapsibleTable from './Table';

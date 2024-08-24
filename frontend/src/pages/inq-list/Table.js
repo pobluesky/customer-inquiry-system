@@ -49,6 +49,21 @@ function Row({ row, role }) {
                 <TableCell align="right">{row.productType}</TableCell>
                 <TableCell align="right">{row.customerName}</TableCell>
                 <TableCell align="right">{row.progress}</TableCell>
+                {/* 추가할 컬럼들 */}
+                <TableCell align="right">{row.additionalData1}</TableCell>
+                <TableCell align="right">{row.additionalData2}</TableCell>
+                <TableCell align="right">{row.additionalData3}</TableCell>
+                <TableCell align="right">{row.additionalData4}</TableCell>
+                {/* 필요한 만큼 더 추가 */}
+                <TableCell align="right">{row.additionalData5}</TableCell>
+                <TableCell align="right">{row.additionalData6}</TableCell>
+                <TableCell align="right">{row.additionalData7}</TableCell>
+                <TableCell align="right">{row.additionalData8}</TableCell>
+                {/* 필요한 만큼 더 추가 */}
+                <TableCell align="right">{row.additionalData9}</TableCell>
+                <TableCell align="right">{row.additionalData10}</TableCell>
+                <TableCell align="right">{row.additionalData11}</TableCell>
+                <TableCell align="right">{row.additionalData12}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -67,16 +82,16 @@ function Row({ row, role }) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                {row.productType}
-                                            </TableCell>
-                                            <TableCell>{row.salesPerson}</TableCell>
-                                            <TableCell align="right">{row.salesPerson}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(row.amount * row.price * 100) / 100}
-                                            </TableCell>
-                                        </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            {row.productType}
+                                        </TableCell>
+                                        <TableCell>{row.salesPerson}</TableCell>
+                                        <TableCell align="right">{row.salesPerson}</TableCell>
+                                        <TableCell align="right">
+                                            {Math.round(row.amount * row.price * 100) / 100}
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
@@ -98,16 +113,38 @@ export default function CollapsibleTable({
 }) {
     return (
         <Paper>
-            <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
+            <TableContainer
+                component={Paper}
+                sx={{
+                    borderRadius: '10px',
+                    overflowX: 'auto', // 가로 스크롤 활성화
+                    whiteSpace: 'nowrap' // 테이블 셀이 줄바꿈되지 않고 한 줄로 유지됨
+                }}
+            >
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
                             <TableCell sx={{ color: '#ffffff' }} />
-                            <TableCell sx={{ color: '#ffffff' }} >판매계약자</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }} >문의유형</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }} >제품</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }} >고객사</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }} >진행현황</TableCell>
+                            <TableCell sx={{ color: '#ffffff' }}>판매계약자</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>문의유형</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>제품</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>고객사</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>진행현황</TableCell>
+                            {/* 추가할 컬럼 헤더들 */}
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
+                            {/* 필요한 만큼 더 추가 */}
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
+                            {/* 필요한 만큼 더 추가 */}
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

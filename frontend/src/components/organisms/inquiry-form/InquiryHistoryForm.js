@@ -28,6 +28,8 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
     setLineItemsExistence(typeof lineItemData[0] !== 'undefined');
   }, [lineItemData]);
 
+  console.log(productType)
+
   const columnFieldMappings = {
     "CAR": {
       "가능소": "lab",
@@ -62,7 +64,7 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
       "경도": "hardness",
       "평탄도": "flatness",
       "주문edge": "orderEdge",
-      "수량": "quantity"
+      "수량": "quantity",
     },
     "THICK_PLATE": {
       "일반사항": "generalDetails",
