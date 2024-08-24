@@ -47,7 +47,26 @@ VALUES
     (6, 'GWANGYANG', 'TRUCK', 'ASTM',  'Mitsubishi Fuso', '서스펜션', 'FLOOR_PANEL', '3.5mm', '1750mm', 250, '2023-10-10', '광주', 'Slit Edge', '±0.2mm', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (11, 'POHANG', 'SEDAN', 'ANSI',  'Toyota Corolla', '서브프레임', 'TRUNK_LID', '2.2mm', '1600mm', 90, '2023-11-01', '전주', 'Slit Edge', '±0.1mm', '$9,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (11, 'GWANGYANG', 'SUV', 'ASTM',  'Honda CR-V', '라디에이터', 'DOOR_PANEL', '3.8mm', '1850mm', 170, '2023-11-10', '청주', 'Slit Edge', '±0.3mm', '$22,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (11, 'POHANG', 'TRUCK', 'ASTM',  'MAN TGS', '변속기', 'FLOOR_PANEL', '4.2mm', '2100mm', 200, '2023-11-15', '춘천', 'Slit Edge', '±0.2mm', '$30,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (11, 'POHANG', 'TRUCK', 'ASTM',  'MAN TGS', '변속기', 'FLOOR_PANEL', '4.2mm', '2100mm', 200, '2023-11-15', '춘천', 'Slit Edge', '±0.2mm', '$30,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'SEDAN', 'ASTM',  'BMW 3 Series', '에어백 모듈', 'DOOR_PANEL', '2.3mm', '1600mm', 110, '2023-12-01', '서울', 'Mill Edge', '±0.1mm', '$11,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'POHANG', 'SUV', 'ANSI',  'Jeep Grand Cherokee', '엔진 마운트', 'DASH_PANEL', '4.5mm', '2050mm', 190, '2023-12-05', '부산', 'Slit Edge', '±0.3mm', '$27,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'TRUCK', 'ASTM',  'Volvo FH', '연료 인젝터', 'FLOOR_PANEL', '5mm', '2250mm', 250, '2023-12-10', '인천', 'Mill Edge', '±0.25mm', '$35,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'POHANG', 'SEDAN', 'ANSI',  'Audi A4', '카탈리틱 컨버터', 'TRUNK_LID', '2.8mm', '1700mm', 130, '2024-01-01', '대전', 'Slit Edge', '±0.15mm', '$14,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'GWANGYANG', 'SUV', 'ASTM',  'Mazda CX-5', '점화 코일', 'DOOR_PANEL', '3.7mm', '1900mm', 160, '2024-01-05', '울산', 'Mill Edge', '±0.2mm', '$23,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'POHANG', 'TRUCK', 'ANSI',  'Scania R-Series', '터보차저', 'DASH_PANEL', '4.8mm', '2150mm', 210, '2024-01-10', '광주', 'Slit Edge', '±0.3mm', '$28,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'GWANGYANG', 'SEDAN', 'ASTM',  'Lexus IS', '산소 센서', 'FLOOR_PANEL', '3mm', '1650mm', 140, '2024-02-01', '전주', 'Mill Edge', '±0.1mm', '$13,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'POHANG', 'SUV', 'ANSI',  'Chevrolet Tahoe', '스티어링 휠', 'TRUNK_LID', '2.9mm', '1750mm', 180, '2024-02-05', '청주', 'Slit Edge', '±0.25mm', '$19,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'GWANGYANG', 'TRUCK', 'ASTM',  'DAF XF', '배터리 모듈', 'DOOR_PANEL', '4mm', '2000mm', 230, '2024-02-10', '춘천', 'Mill Edge', '±0.2mm', '$26,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'POHANG', 'SEDAN', 'ANSI',  'Tesla Model 3', '디퍼렌셜', 'DASH_PANEL', '3.5mm', '1850mm', 150, '2024-03-01', '서울', 'Slit Edge', '±0.1mm', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'SUV', 'ASTM',  'Subaru Outback', '서스펜션', 'FLOOR_PANEL', '2.6mm', '1600mm', 170, '2024-03-05', '부산', 'Mill Edge', '±0.15mm', '$21,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'POHANG', 'TRUCK', 'ANSI',  'Iveco Stralis', '디젤 엔진', 'TRUNK_LID', '5.2mm', '2200mm', 240, '2024-03-10', '인천', 'Slit Edge', '±0.3mm', '$31,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'SEDAN', 'ASTM',  'Nissan Altima', '브레이크 디스크', 'DOOR_PANEL', '2.7mm', '1700mm', 125, '2024-04-01', '대전', 'Mill Edge', '±0.1mm', '$15,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'POHANG', 'SUV', 'ANSI',  'Ford Explorer', '퓨즈 박스', 'DASH_PANEL', '3.4mm', '1950mm', 195, '2024-04-05', '울산', 'Slit Edge', '±0.2mm', '$24,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'GWANGYANG', 'TRUCK', 'ASTM',  'Kenworth T680', '밸브 스프링', 'FLOOR_PANEL', '4.6mm', '2100mm', 220, '2024-04-10', '광주', 'Mill Edge', '±0.25mm', '$29,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'POHANG', 'SEDAN', 'ANSI',  'Volkswagen Passat', '인젝터 펌프', 'TRUNK_LID', '3.1mm', '1800mm', 140, '2024-05-01', '전주', 'Slit Edge', '±0.1mm', '$16,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'GWANGYANG', 'SUV', 'ASTM',  'Hyundai Tucson', '차량 안정성 제어 장치', 'DOOR_PANEL', '4.3mm', '2000mm', 180, '2024-05-05', '청주', 'Mill Edge', '±0.3mm', '$22,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'POHANG', 'TRUCK', 'ANSI',  'Mercedes Actros', '리어 서스펜션', 'DASH_PANEL', '5mm', '2250mm', 230, '2024-05-10', '춘천', 'Slit Edge', '±0.2mm', '$32,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'GWANGYANG', 'SEDAN', 'ASTM',  'Honda Accord', '전자 제어 유닛', 'FLOOR_PANEL', '2.4mm', '1750mm', 120, '2024-06-01', '서울', 'Mill Edge', '±0.15mm', '$14,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 
