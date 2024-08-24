@@ -52,17 +52,6 @@ export const AuthProvider = ({ children }) => {
         console.log("로그아웃!");
         console.log(getCookie('userRole'))
         console.log(getCookie('userId'))
-
-        if(userId) {
-            removeCookie('accessToken');
-            removeCookie('userRole');
-            removeCookie('userId');
-
-            setDidLogin(false);
-            setRole(null);
-            setToken(null);
-            setUserId(null);
-        }
     };
 
     console.log("현재 로그인 상태: ", didLogin);
