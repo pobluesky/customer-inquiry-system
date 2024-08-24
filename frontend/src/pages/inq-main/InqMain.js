@@ -19,12 +19,14 @@ const InqMain = () => {
   const { role } = useAuth();
 
   return (
-      <div>
-        { role === 'CUSTOMER' ? (
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-        ) : (
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-        )}
+        <div>
+          {role === 'CUSTOMER' ? (
+              <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+          ) : role === 'SALES' ? (
+              <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'sales'} />
+          ) : (
+              <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'quality'} />
+          )}
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
           <Text color={'#49454F'} fontSize={'24px'} marginTop={'2vh'}>
@@ -56,7 +58,7 @@ const InqMain = () => {
           </IntroBox>
         </Wrapper>
           <Button
-              onClick={() => navigate('/inq-form')}
+              onClick={() => navigate('/inq-form/customer')}
               btnName={'Inquiry 의뢰하기 ►'}
               width={'250px'}
               height={'60px'}

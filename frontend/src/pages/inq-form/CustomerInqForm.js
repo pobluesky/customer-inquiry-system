@@ -11,7 +11,7 @@ import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 
-function CustomerInqForm() {
+function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId } = useAuth();
     const [userInfo, setUserInfo] = useState(null);
 
@@ -48,11 +48,10 @@ function CustomerInqForm() {
             setUserInfo(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
-    // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -60,21 +59,18 @@ function CustomerInqForm() {
         }));
     };
 
-    // Inquiry 등록 버튼 클릭 핸들러
     const handleSubmit = async (event) => {
         if (event) {
             event.preventDefault();
         }
         try {
-            console.log('Submitting inquiry with data:', formData);
             const response = await postInquiry(userId, {
                 ...formData,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
-            console.log("formData.lineItemRequestDTOs: ", formData.lineItemRequestDTOs);
             console.log('Inquiry posted successfully:', response);
         } catch (error) {
-            console.error('Error submitting inquiry:', error);
+            console.log('Error submitting inquiry:', error);
         }
     };
 
@@ -105,6 +101,7 @@ function CustomerInqForm() {
             <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
                 productType={formData.productType}
+                lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
             />
             <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />

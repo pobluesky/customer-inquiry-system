@@ -7,9 +7,9 @@ import {
     _Title,
     _Input,
     _Date
-} from '../../assets/css/Inquiry.css';
-import SelectBox from '../atoms/SelectBox';
-import Button from '../atoms/Button';
+} from '../../../assets/css/Inquiry.css';
+import SelectBox from '../../atoms/SelectBox';
+import Button from '../../atoms/Button';
 
 const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
     const options = [

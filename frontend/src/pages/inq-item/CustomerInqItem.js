@@ -4,8 +4,8 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    BasicInfoForm, FinalReviewTextForm, InquiryHistoryForm,
-    QualityReviewTextForm, ReviewTextForm, FileFormItem,
+    BasicInfoForm, InquiryHistoryForm,
+    FileFormItem,
     Offersheet
 } from "../../components/organisms/inquiry-form";
 import { useAuth } from '../../hooks/useAuth';
@@ -13,8 +13,10 @@ import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getReviews } from '../../apis/api/review';
+import FinalReviewTextForm
+    from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
 
-function CustomerInqItem() { // 고객사 Inquiry 조회
+function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId } = useAuth();
     const { id } = useParams();
 
@@ -23,6 +25,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
     const [reviewData, setReviewData] = useState(null);
 
     const [formData, setFormData] = useState({
+        // inquiry
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
@@ -41,6 +44,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         productType: '',
         progress: '',
         salesPerson: '',
+
+        // review
         reviewText: '',
         finalReviewText: '',
         lineItemResponseDTOs: [],
@@ -57,10 +62,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 ...prevData,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
-            console.log("getInquiryDataDetail: ", response.data);
-            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
-            console.error('Error fetching InquiryDetail:', error);
+            console.log('Error fetching InquiryDetail:', error);
         }
     };
 
@@ -73,7 +76,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             setUserInfo(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
@@ -84,10 +87,9 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
-            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching Reviews:', error);
+            console.log('Error fetching Reviews:', error);
         }
     }
 
@@ -126,21 +128,19 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
 
-    console.log("CustomerInqItem: ", formData)
-
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
-            <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} role={"salesManager"} />
+            <RequestBar requestBarTitle={"Inquiry 상세조회"} />
 
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm
-                productType={formData.productType}
+                productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
-            <ReviewTextForm formData={formData} />
+            {/*<ReviewTextForm formData={formData} />*/}
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
             <Offersheet />
             <FinalReviewTextForm formData={formData} />

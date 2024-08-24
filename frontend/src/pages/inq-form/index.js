@@ -1,3 +1,4 @@
-import InqForm from "./InqForm";
+// 고객사 Inquiry 등록 페이지
+import CustomerInqForm from './CustomerInqForm';
 
-export { InqForm };
+export { CustomerInqForm };

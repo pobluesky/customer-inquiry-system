@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ToggleBar from '../../mocules/ToggleBar';
 import {
     Container,
@@ -25,7 +25,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
         productType,
         customerRequestDate,
     } = formData;
-    const [isChecked, setCheck] = React.useState(true);
+    const [isChecked, setCheck] = useState(true);
 
     return (
         <div className={Container}>
@@ -175,7 +175,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     </option>
                                     <option value="VESSEL">Vessel</option>
                                     <option value="BEAM">Beam</option>
-                                    <option value="OTHER">기타</option>
+                                    <option value="OTHER">Others</option>
                                 </select>
                             </div>
 

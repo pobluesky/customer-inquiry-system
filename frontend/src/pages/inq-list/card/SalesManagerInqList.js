@@ -3,22 +3,16 @@ import InquiryItem from '../../components/organisms/InquiryItem';
 import InquirySearchBox from "../../components/organisms/InquirySearchBox";
 import SearchResult from "../../components/mocules/SearchResult";
 import { _Link, Paging, PagingButton, PagingArrowButton } from "../../assets/css/Inquiry.css";
-import { useAuth } from '../../hooks/useAuth';
-import { getInquiry, getInquiryByManagers } from '../../apis/api/inquiry';
+import { getInquiryByManagers } from '../../apis/api/inquiry';
 import { Link } from 'react-router-dom';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
-import { getCookie } from '../../apis/utils/cookies';
 
 const SalesManagerInqList = () => {
-    const { userId } = useAuth();
     const [inquiryData, setInquiries] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const contentRef = useRef(null);
-
-    console.log("아이디: ", userId);
-    console.log("쿠키: ", getCookie('userId'));
 
     const getInquiryData = async (page) => {
         console.log("getInquiryData")
@@ -31,10 +25,8 @@ const SalesManagerInqList = () => {
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
-
-            console.log("getInquiryByManagers: ", response);
         } catch (error) {
-            console.error('Error fetching Inquiry:', error);
+            console.log('Error fetching Inquiry:', error);
         }
     };
     
@@ -50,7 +42,7 @@ const SalesManagerInqList = () => {
 
     return (
         <div>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${totalElements}`} />
 
