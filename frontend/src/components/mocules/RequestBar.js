@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import {
+    FinalReviewCompleteAlert,
+    InquiryCompleteAlert,
+    QualityCompleteAlert,
+    ReviewCompleteAlert,
+} from '../../utils/actions';
 
 function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }) {
     const navigate = useNavigate();
@@ -17,18 +23,31 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
     const buttons = buttonConfig[requestBarTitle];
 
     const handleButtonClick = (btnName) => {
-        if (btnName === '검토의뢰' || btnName === '품질검토완료') {
+        if (btnName === '검토의뢰') {
             onSubmit();
-        } else if (btnName === '품질검토요청' || btnName === '1차검토완료') {
+            InquiryCompleteAlert();
+        } else if (btnName === '품질검토완료') {
+            onSubmit();
+            QualityCompleteAlert();
+        } else if (btnName === '품질검토요청') {
             onReviewSubmit();
+            ReviewCompleteAlert(false);
+        } else if (btnName === '1차검토완료') {
+            onReviewSubmit();
+            ReviewCompleteAlert(true);
         } else if (btnName === '최종검토완료') {
             onFinalSubmit();
-        } else if (btnName === '닫기') {
-            navigate(`/inq-list/${role}`);
+            FinalReviewCompleteAlert();
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }
+        setTimeout(() => {
+            navigate(`/inq-list/${role}`);
+        }, '2000');
 
+        if (btnName === '닫기') {
+            navigate(`/inq-list/${role}`);
+        }
     };
 
     return (
