@@ -20,9 +20,11 @@ const ReviewText = ({ title, width, height, formData, handleFormDataChange }) =>
           <div>
               <textarea
                   value={reviewText}
-                  className={_TextArea} style={{
-                  borderRadius: '0 12px 12px 12px',
-                  height: height,
+                  placeholder={'내용을 입력해 주세요'}
+                  className={_TextArea}
+                  style={{
+                      borderRadius: '0 12px 12px 12px',
+                      height: height,
                   }}
                   onChange={(e) =>
                       handleFormDataChange(
