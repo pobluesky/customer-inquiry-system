@@ -59,6 +59,12 @@ public class WireRodLineItem extends LineItem{
 
     private String annualCost;
 
+    private String legalRegulatoryReview;
+
+    private String legalRegulatoryReviewDetail;
+
+    private String finalCustomer;
+
     @Builder
     public WireRodLineItem(
         Inquiry inquiry,
@@ -72,7 +78,10 @@ public class WireRodLineItem extends LineItem{
         String customerProcessing,
         String finalUse,
         String transportationDestination,
-        String annualCost
+        String annualCost,
+        String legalRegulatoryReview,
+        String legalRegulatoryReviewDetail,
+        String finalCustomer
     ){
         this.inquiry = inquiry;
         this.kind = kind;
@@ -87,5 +96,8 @@ public class WireRodLineItem extends LineItem{
         this.isActivated = true;
         this.transportationDestination = transportationDestination;
         this.annualCost = annualCost;
+        this.legalRegulatoryReview = legalRegulatoryReview;
+        this.legalRegulatoryReviewDetail = legalRegulatoryReviewDetail;
+        this.finalCustomer = finalCustomer;
     }
 }
