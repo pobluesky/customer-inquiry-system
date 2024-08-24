@@ -14,6 +14,9 @@ public record WireRodLineItemUpdateRequestDTO(
     String customerProcessing,
     String finalUse,
     String transportationDestination,
-    String annualCost
+    String annualCost,
+    String legalRegulatoryReview,
+    String legalRegulatoryReviewDetail,
+    String finalCustomer
 ) {
 }

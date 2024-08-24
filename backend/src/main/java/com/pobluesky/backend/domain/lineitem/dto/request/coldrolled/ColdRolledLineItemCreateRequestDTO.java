@@ -13,12 +13,11 @@ public record ColdRolledLineItemCreateRequestDTO(
     String thickness,
     String width,
     Integer quantity,
-    LocalDate expectedDeadline,
     String orderEdge,
     String inDiameter,
     String outDiameter,
     String sleeveThickness,
-    String yieldingPoint,
+    String expectedDeadline,
     String tensileStrength,
     String elongationRatio,
     String hardness
@@ -34,12 +33,11 @@ public record ColdRolledLineItemCreateRequestDTO(
             .thickness(thickness)
             .width(width)
             .quantity(quantity)
-            .expectedDeadline(expectedDeadline)
             .orderEdge(orderEdge)
             .inDiameter(inDiameter)
             .outDiameter(outDiameter)
+            .expectedDeadline(expectedDeadline)
             .sleeveThickness(sleeveThickness)
-            .yieldingPoint(yieldingPoint)
             .tensileStrength(tensileStrength)
             .elongationRatio(elongationRatio)
             .hardness(hardness)

@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.lineitem.dto.request.thickplate;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.ThickPlateLineItem;
 
-
 public record ThickPlateLineItemCreateRequestDTO(
     String generalDetails,
     String orderInfo,
@@ -42,5 +41,4 @@ public record ThickPlateLineItemCreateRequestDTO(
             .build();
 
     }
-
 }
