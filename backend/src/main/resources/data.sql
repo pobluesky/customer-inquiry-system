@@ -37,32 +37,32 @@ VALUES
     (5, 'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- INSERT INTO car_line_items
-INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, pjt_name, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, edge, tolerance, annual_cost, is_activated, created_date, modified_date)
+INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, edge, tolerance, annual_cost, is_activated, created_date, modified_date)
 VALUES
-    (1, 'GWANGYANG', 'SEDAN', 'ASTM', 'Project SEDAN', 'Hyundai Sonata', '엔진 컨트롤 유닛', 'DASH_PANEL', '2mm', '1500mm', 100, '2023-09-01', '서울', 'Mill Edge', '±0.1mm', '$10,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (1, 'GWANGYANG', 'SUV', 'ANSI', 'Project SUV', 'Kia Sorento', '트랜스퍼 케이스', 'FLOOR_PANEL', '3mm', '1800mm', 200, '2023-09-05', '부산', 'Mill Edge', '±0.2mm', '$20,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (1, 'POHANG', 'TRUCK', 'ANSI', 'Project TRUCK', 'Ford F-150', '리어 액슬', 'TRUNK_LID', '2.5mm', '1650mm', 150, '2023-09-10', '인천', 'Mill Edge', '±0.15mm', '$15,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (6, 'GWANGYANG', 'SEDAN', 'ASTM', 'Project Luxury', 'Mercedes C-Class', '브레이크 패드', 'DOOR_PANEL', '1.8mm', '1550mm', 120, '2023-10-01', '대전', 'Mill Edge', '±0.05mm', '$12,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (6, 'POHANG', 'SUV', 'ANSI', 'Project Adventure', 'Land Rover Discovery', '연료 탱크', 'DASH_PANEL', '4mm', '2000mm', 180, '2023-10-05', '울산', 'Mill Edge', '±0.25mm', '$25,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (6, 'GWANGYANG', 'TRUCK', 'ASTM', 'Project Hauler', 'Mitsubishi Fuso', '서스펜션', 'FLOOR_PANEL', '3.5mm', '1750mm', 250, '2023-10-10', '광주', 'Slit Edge', '±0.2mm', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (11, 'POHANG', 'SEDAN', 'ANSI', 'Project Compact', 'Toyota Corolla', '서브프레임', 'TRUNK_LID', '2.2mm', '1600mm', 90, '2023-11-01', '전주', 'Slit Edge', '±0.1mm', '$9,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (11, 'GWANGYANG', 'SUV', 'ASTM', 'Project Family', 'Honda CR-V', '라디에이터', 'DOOR_PANEL', '3.8mm', '1850mm', 170, '2023-11-10', '청주', 'Slit Edge', '±0.3mm', '$22,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (11, 'POHANG', 'TRUCK', 'ASTM', 'Project Heavy', 'MAN TGS', '변속기', 'FLOOR_PANEL', '4.2mm', '2100mm', 200, '2023-11-15', '춘천', 'Slit Edge', '±0.2mm', '$30,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, 'GWANGYANG', 'SEDAN', 'ASTM',  'Hyundai Sonata', '엔진 컨트롤 유닛', 'DASH_PANEL', '2mm', '1500mm', 100, '2023-09-01', '서울', 'Mill Edge', '±0.1mm', '$10,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'GWANGYANG', 'SUV', 'ANSI',  'Kia Sorento', '트랜스퍼 케이스', 'FLOOR_PANEL', '3mm', '1800mm', 200, '2023-09-05', '부산', 'Mill Edge', '±0.2mm', '$20,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 'POHANG', 'TRUCK', 'ANSI',  'Ford F-150', '리어 액슬', 'TRUNK_LID', '2.5mm', '1650mm', 150, '2023-09-10', '인천', 'Mill Edge', '±0.15mm', '$15,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'GWANGYANG', 'SEDAN', 'ASTM',  'Mercedes C-Class', '브레이크 패드', 'DOOR_PANEL', '1.8mm', '1550mm', 120, '2023-10-01', '대전', 'Mill Edge', '±0.05mm', '$12,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'POHANG', 'SUV', 'ANSI',  'Land Rover Discovery', '연료 탱크', 'DASH_PANEL', '4mm', '2000mm', 180, '2023-10-05', '울산', 'Mill Edge', '±0.25mm', '$25,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'GWANGYANG', 'TRUCK', 'ASTM',  'Mitsubishi Fuso', '서스펜션', 'FLOOR_PANEL', '3.5mm', '1750mm', 250, '2023-10-10', '광주', 'Slit Edge', '±0.2mm', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'POHANG', 'SEDAN', 'ANSI',  'Toyota Corolla', '서브프레임', 'TRUNK_LID', '2.2mm', '1600mm', 90, '2023-11-01', '전주', 'Slit Edge', '±0.1mm', '$9,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'GWANGYANG', 'SUV', 'ASTM',  'Honda CR-V', '라디에이터', 'DOOR_PANEL', '3.8mm', '1850mm', 170, '2023-11-10', '청주', 'Slit Edge', '±0.3mm', '$22,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (11, 'POHANG', 'TRUCK', 'ASTM',  'MAN TGS', '변속기', 'FLOOR_PANEL', '4.2mm', '2100mm', 200, '2023-11-15', '춘천', 'Slit Edge', '±0.2mm', '$30,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 
 -- INSERT INTO coldrolled_line_items
-INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, sleeve_thickness, yielding_point, tensile_strength, elongation_ratio, hardness, is_activated, created_date, modified_date)
+INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, sleeve_thickness, tensile_strength, elongation_ratio, hardness, is_activated, created_date, modified_date)
 VALUES
-    (4, 'CR', 'JS_SI123', '파이프 소재', '1.5mm', '1200mm', 500, '2024-09-15', 'Mill Edge', '500mm', '600mm', '2mm', '240MPa', '380MPa', '15%', '180HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'CRC', 'JS_SI456', '자동차 부품', '2.0mm', '1300mm', 600, '2024-10-01', 'Slit Edge', '520mm', '620mm', '2.5mm', '260MPa', '400MPa', '18%', '190HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'CRCA', 'JS_SI789', '가전제품 외장재', '1.2mm', '1100mm', 700, '2024-10-15', 'Mill Edge', '480mm', '580mm', '1.8mm', '230MPa', '370MPa', '20%', '170HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (9, 'CR', 'JS_SI123', '건축용 내장재', '2.5mm', '1400mm', 400, '2024-11-01', 'Slit Edge', '540mm', '640mm', '3mm', '250MPa', '390MPa', '16%', '185HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (9, 'CRC', 'JS_SI456', '가구 부품', '1.8mm', '1250mm', 550, '2024-11-20', 'Mill Edge', '510mm', '610mm', '2.2mm', '255MPa', '410MPa', '17%', '175HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (9, 'CRCA', 'JS_SI789', '기계 커버', '2.2mm', '1350mm', 600, '2024-12-01', 'Slit Edge', '500mm', '600mm', '2mm', '245MPa', '385MPa', '19%', '165HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (14, 'CR', 'JS_SI123', '전기 제품 케이스', '1.6mm', '1500mm', 450, '2024-12-10', 'Mill Edge', '530mm', '630mm', '2.3mm', '235MPa', '395MPa', '21%', '180HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (14, 'CRC', 'JS_SI456', '파이프 라인', '1.4mm', '1450mm', 480, '2024-12-20', 'Slit Edge', '550mm', '650mm', '2.1mm', '265MPa', '420MPa', '22%', '195HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (14, 'CRCA', 'JS_SI789', '차량용 패널', '2.1mm', '1550mm', 530, '2025-01-05', 'Mill Edge', '560mm', '660mm', '2.4mm', '255MPa', '405MPa', '23%', '185HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (4, 'CR', 'JS_SI123', '파이프 소재', '1.5mm', '1200mm', 500, '2024-09-15', 'Mill Edge', '500mm', '600mm', '2mm', '240MPa',  '15%', '180HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'CRC', 'JS_SI456', '자동차 부품', '2.0mm', '1300mm', 600, '2024-10-01', 'Slit Edge', '520mm', '620mm', '2.5mm', '260MPa',  '18%', '190HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'CRCA', 'JS_SI789', '가전제품 외장재', '1.2mm', '1100mm', 700, '2024-10-15', 'Mill Edge', '480mm', '580mm', '1.8mm', '230MPa',  '20%', '170HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (9, 'CR', 'JS_SI123', '건축용 내장재', '2.5mm', '1400mm', 400, '2024-11-01', 'Slit Edge', '540mm', '640mm', '3mm', '250MPa',  '16%', '185HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (9, 'CRC', 'JS_SI456', '가구 부품', '1.8mm', '1250mm', 550, '2024-11-20', 'Mill Edge', '510mm', '610mm', '2.2mm', '255MPa',  '17%', '175HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (9, 'CRCA', 'JS_SI789', '기계 커버', '2.2mm', '1350mm', 600, '2024-12-01', 'Slit Edge', '500mm', '600mm', '2mm', '245MPa',  '19%', '165HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (14, 'CR', 'JS_SI123', '전기 제품 케이스', '1.6mm', '1500mm', 450, '2024-12-10', 'Mill Edge', '530mm', '630mm', '2.3mm', '235MPa',  '21%', '180HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (14, 'CRC', 'JS_SI456', '파이프 라인', '1.4mm', '1450mm', 480, '2024-12-20', 'Slit Edge', '550mm', '650mm', '2.1mm', '265MPa',  '22%', '195HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (14, 'CRCA', 'JS_SI789', '차량용 패널', '2.1mm', '1550mm', 530, '2025-01-05', 'Mill Edge', '560mm', '660mm', '2.4mm', '255MPa',  '23%', '185HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- INSERT INTO hotrolled_line_items
@@ -79,17 +79,17 @@ VALUES
     (12, 'HRPO', 'JS_SI789', '선박용', '3.5mm', '1900mm', '340MPa', '11', 'Mill Edge', 400, '335MPa', '470MPa', '24%', '0.5mm', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- INSERT INTO wirerod_line_items
-INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, transportation_destination, annual_cost, is_activated, created_date, modified_date)
+INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, transportation_destination, annual_cost, legal_regulatory_review, legal_regulatory_review_detail, final_customer, is_activated, created_date, modified_date)
 VALUES
-    (3, 'SWRH', 'JS_SI123', '와이어로프', '8.0mm', 500, '2024-09-15', 100, '냉간 인발', '엘레베이터 와이어로프', '부산', '$15,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'SWRM', 'JS_SI456', '볼트', '10.0mm', 700, '2024-09-01', 200, '표면 처리', '볼트', '서울', '$18,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'SWRS', 'JS_SI789', '스프링', '9.5mm', 600, '2024-10-01', 150, '열간 성형', '자동차 스프링', '인천', '$20,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (8, 'SWRH', 'JS_SI123', '케이블', '6.0mm', 800, '2024-11-01', 200, '표면 처리', '전기 케이블', '대구', '$13,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (8, 'SWRM', 'JS_SI456', '리벳', '7.5mm', 1000, '2024-08-15', 300, '냉간 단조', '건축용 리벳', '광주', '$16,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (8, 'SWRS', 'JS_SI789', '자동차부품', '11.0mm', 900, '2024-12-01', 250, '냉간 인발', '자동차 서스펜션', '울산', '$22,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (13, 'SWRH', 'JS_SI123', '전선', '5.5mm', 750, '2024-07-20', 180, '열간 연신', '고압 전선', '대전', '$14,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (13, 'SWRM', 'JS_SI456', '나사', '8.5mm', 850, '2024-08-25', 220, '표면 처리', '가구 나사', '청주', '$17,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (13, 'SWRS', 'JS_SI789', '기계부품', '12.0mm', 650, '2024-09-10', 240, '냉간 인발', '기계 장치 부품', '수원', '$19,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (3, 'SWRH', 'JS_SI123', '와이어로프', '8.0mm', 500, '2024-09-15', 100, '냉간 인발', '엘레베이터 와이어로프', '부산', '$15,000', 'approved', 'All checks passed', '(주)현대건설', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'SWRM', 'JS_SI456', '볼트', '10.0mm', 700, '2024-09-01', 200, '표면 처리', '볼트', '서울', '$18,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'SWRS', 'JS_SI789', '스프링', '9.5mm', 600, '2024-10-01', 150, '열간 성형', '자동차 스프링', '인천', '$20,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (8, 'SWRH', 'JS_SI123', '케이블', '6.0mm', 800, '2024-11-01', 200, '표면 처리', '전기 케이블', '대구', '$13,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (8, 'SWRM', 'JS_SI456', '리벳', '7.5mm', 1000, '2024-08-15', 300, '냉간 단조', '건축용 리벳', '광주', '$16,500', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (8, 'SWRS', 'JS_SI789', '자동차부품', '11.0mm', 900, '2024-12-01', 250, '냉간 인발', '자동차 서스펜션', '울산', '$22,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (13, 'SWRH', 'JS_SI123', '전선', '5.5mm', 750, '2024-07-20', 180, '열간 연신', '고압 전선', '대전', '$14,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (13, 'SWRM', 'JS_SI456', '나사', '8.5mm', 850, '2024-08-25', 220, '표면 처리', '가구 나사', '청주', '$17,000', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (13, 'SWRS', 'JS_SI789', '기계부품', '12.0mm', 650, '2024-09-10', 240, '냉간 인발', '기계 장치 부품', '수원', '$19,500', 'approved', 'All checks passed', '(주)현대건설',true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- INSERT INTO thickplate_line_items
