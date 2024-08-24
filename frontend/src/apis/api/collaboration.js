@@ -1,9 +1,11 @@
 import axiosInstance from '../utils/axiosInstance';
 
 // 협업 목록 요약 조회
-export const getAllCollaboration = async () => {
+export const getAllCollaboration = async (filterArgs) => {
     try {
-        const response = await axiosInstance.get('/collaborations');
+        const response = await axiosInstance.get(
+            `/collaborations?${filterArgs}`,
+        );
 
         const json = response.data;
 
@@ -13,7 +15,7 @@ export const getAllCollaboration = async () => {
 
         return json;
     } catch (error) {
-        console.error('협업 목록 요약 조회 API ERROR: ', error.message || error);
+        console.error('협업 요약 조회 API ERROR: ', error.message || error);
         throw error;
     }
 };
@@ -33,16 +35,13 @@ export const getCollaborationDetail = async (questionId, colId) => {
 
         return json;
     } catch (error) {
-        console.error('협업 목록 상세 조회 API ERROR: ', error.message || error);
+        console.error('협업 상세 조회 API ERROR: ', error.message || error);
         throw error;
     }
 };
 
 // 협업 요청 (판매 담당자)
-export const postCollaborationBySales = async (
-    colData,
-    questionId,
-) => {
+export const postCollaborationBySales = async (colData, questionId) => {
     try {
         const formData = new FormData();
         const blobCollaborationData = new Blob([JSON.stringify(colData)], {

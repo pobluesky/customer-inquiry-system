@@ -7,8 +7,29 @@ import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
 export default function ColFilterPanel({
     searchedItems,
+    colNo,
+    setColNo,
+    colManager,
+    setColManager,
+    // setStartDate,
+    // setEndDate,
+    setTimeFilter,
+    setStatusFilter,
     searchByFilter,
 }) {
+    const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST', 'OLDEST'
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY', 'INPROGRESS', 'COMPLETE', 'REFUSE'
+
+    const clickTimeFilter = (filter) => {
+        setSelectedTimeFilter(filter);
+        setTimeFilter(filter);
+    };
+
+    const clickStatusFilter = (filter) => {
+        setSelectedStatusFilter(filter);
+        setStatusFilter(filter);
+    };
+
     return (
         <>
             <div className={Collaboration_Filter_Pannel}>
@@ -31,8 +52,8 @@ export default function ColFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                // value={title}
-                                // onChange={(e) => setTitle(e.target.value)}
+                                value={colNo}
+                                onChange={(e) => setColNo(e.target.value)}
                             />
                             <div>협업 담당자</div>
                             <SearchInput
@@ -43,8 +64,8 @@ export default function ColFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                // value={title}
-                                // onChange={(e) => setTitle(e.target.value)}
+                                value={colManager}
+                                onChange={(e) => setColManager(e.target.value)}
                             />
                             <Button
                                 btnName={'조회'}
@@ -98,14 +119,14 @@ export default function ColFilterPanel({
                             btnName={'협업 요청 완료'}
                             width={'120px'}
                             margin={'0 12px 0 0'}
-                            // onClick={() => clickTimeFilter('OLDEST')}
+                            onClick={() => clickStatusFilter('READY')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'READY'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'READY'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -114,14 +135,14 @@ export default function ColFilterPanel({
                             btnName={'협업 진행 중'}
                             width={'120px'}
                             margin={'0 12px 0 0'}
-                            // onClick={() => clickTimeFilter('OLDEST')}
+                            onClick={() => clickStatusFilter('INPROGRESS')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'INPROGRESS'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'INPROGRESS'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -130,14 +151,14 @@ export default function ColFilterPanel({
                             btnName={'협업 거절'}
                             width={'120px'}
                             margin={'0 12px 0 0'}
-                            // onClick={() => clickTimeFilter('OLDEST')}
+                            onClick={() => clickStatusFilter('REFUSE')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'REFUSE'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'REFUSE'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -146,14 +167,14 @@ export default function ColFilterPanel({
                             btnName={'협업 완료'}
                             width={'120px'}
                             margin={'0 12px 0 0'}
-                            // onClick={() => clickTimeFilter('OLDEST')}
+                            onClick={() => clickStatusFilter('COMPLETE')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'COMPLETE'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                selectedStatusFilter === 'COMPLETE'
                                     ? '#ffffff'
                                     : '#000000'
                             }

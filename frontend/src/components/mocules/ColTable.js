@@ -123,6 +123,14 @@ function createData(
 }
 
 export default function ColTable({
+    setSearchedItems, // 검색 결과 추가
+    colNo,
+    colManager,
+    // startDate,
+    // endDate,
+    timeFilter,
+    statusFilter,
+
     setQuestionId,
     setColId,
     setStatus,
@@ -135,9 +143,12 @@ export default function ColTable({
     const role = getCookie('userRole');
     const { userId } = useAuth();
 
+    const [filterArgs, setFilterArgs] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [collabs, setCollabs] = useState([]);
+
+    const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
 
     // 해당 협업 관련 담당자 여부 확인
     const isAuthorized = (authorizedId) => {
@@ -146,10 +157,11 @@ export default function ColTable({
         }
     };
 
-    const fetchGetCol = async () => {
+    const fetchGetCol = async (filterArgs) => {
         try {
-            const response = await getAllCollaboration();
+            const response = await getAllCollaboration(filterArgs);
             setCollabs(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('협업 요약 조회 실패: ', error);
         }
@@ -172,8 +184,35 @@ export default function ColTable({
     };
 
     useEffect(() => {
-        fetchGetCol();
-    }, [userId, status]);
+        let args = '';
+        // if (startDate && endDate) {
+        //     const s = `startDate=${
+        //         new Date(startDate).toISOString().split('T')[0]
+        //     }`;
+        //     const e = `endDate=${
+        //         new Date(endDate).toISOString().split('T')[0]
+        //     }`;
+        //     args += `${s}&${e}`;
+        // }
+        if (colNo) {
+            args += `${args ? '&' : ''}colReqId=${colNo}`;
+        }
+        if (colManager) {
+            args += `${args ? '&' : ''}colReqManager=${colManager}`;
+        }
+        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
+            args += `${args ? '&' : ''}sortBy=${timeFilter}`;
+        }
+        if (validStatuses.includes(statusFilter)) {
+            args += `${args ? '&' : ''}colStatus=${statusFilter}`;
+        }
+        setFilterArgs(args);
+        console.log(args);
+    }, [colNo, colManager, timeFilter, statusFilter]); // startDate, endDate 추가 필요
+
+    useEffect(() => {
+        fetchGetCol(filterArgs);
+    }, [userId, filterArgs]); // startDate, endDate 추가 필요
 
     const columns = [
         {
