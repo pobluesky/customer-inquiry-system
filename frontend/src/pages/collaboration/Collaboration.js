@@ -1,15 +1,15 @@
 import React from 'react';
-import CollaborationPath from './../../components/atoms/CollaborationPath';
-import CollaborationForm from '../../components/templates/CollaborationForm';
+import ColPath from '../../components/atoms/ColPath';
+import ColForm from '../../components/templates/ColForm';
 
 function Collaboration() {
     return (
         <>
-            <CollaborationPath
+            <ColPath
                 largeCategory={'협업 목록'}
                 mediumCategory={'협업 목록 조회'}
             />
-            <CollaborationForm />
+            <ColForm />
         </>
     );
 }

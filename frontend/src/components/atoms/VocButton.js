@@ -66,7 +66,7 @@ const CloseButton = ({ onClick }) => (
         margin={'0 0 24px 0'}
         backgroundColor={'#2f4f79'}
         textColor={'#ffffff'}
-        border={`none`}
+        border={'none'}
         borderRadius={'10px'}
         float={'right'}
     />
@@ -81,7 +81,22 @@ const AnswerButton = ({ btnName, onClick }) => (
         margin={'0 24px 24px 0'}
         backgroundColor={'#2f4f79'}
         textColor={'#ffffff'}
-        border={`none`}
+        border={'none'}
+        borderRadius={'10px'}
+        float={'right'}
+    />
+);
+
+const ColReqResButton = ({ btnName, onClick, margin }) => (
+    <Button
+        btnName={btnName}
+        onClick={onClick}
+        width={'96px'}
+        height={'32px'}
+        margin={margin}
+        backgroundColor={'#2f4f79'}
+        textColor={'#ffffff'}
+        border={'none'}
         borderRadius={'10px'}
         float={'right'}
     />
@@ -93,4 +108,5 @@ export {
     AnswerContent,
     CloseButton,
     AnswerButton,
+    ColReqResButton,
 };

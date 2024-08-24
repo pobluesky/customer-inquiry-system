@@ -80,12 +80,14 @@ export const postCollaborationBySales = async (
 
 // 협업 수락/거절 (품질 담당자)
 export const putDecisionByQuality = async (
+    file,
     colId,
     colData,
     // colReqId,
     // colResId,
     // colReply,
     // isAccepted,
+    token,
 ) => {
     try {
         const formData = new FormData();
@@ -98,12 +100,13 @@ export const putDecisionByQuality = async (
             formData.append('files', file);
         }
 
-        const response = await axiosInstance.put(
-            `/collaborations/${colId}/decision`,
-            {
-                body: formData,
+        const response = await fetch(`/api/collaborations/${colId}/decision`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `${token}`,
             },
-        );
+            body: formData,
+        });
 
         if (!response.ok) {
             throw `${response.status} ${response.statusText}`;
@@ -121,8 +124,8 @@ export const putDecisionByQuality = async (
     }
 };
 
-// 협업 완료 (판매 담당자)
-export const putCompleteBySales = async () => {
+// 협업 완료 (판매 담당자) ??
+export const putCompleteByQuality = async () => {
     try {
         const response = await axiosInstance.put(
             `/collaborations/${colId}/decision/complete`,

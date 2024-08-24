@@ -5,7 +5,7 @@ import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
-function CollaborationFilterPanel({
+export default function ColFilterPanel({
     searchedItems,
     title,
     startDate,
@@ -195,5 +195,3 @@ function CollaborationFilterPanel({
         </>
     );
 }
-
-export default CollaborationFilterPanel;

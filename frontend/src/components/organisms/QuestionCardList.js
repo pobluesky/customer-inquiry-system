@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tag from '../atoms/Tag';
 import QuestionCard from '../mocules/QuestionCard';
-import QuestionModal from './QuestionModal';
+import QuestionModal from '../mocules/QuestionModal';
 import {
     Question_Doesnt_Exist,
     Question_Card_List,

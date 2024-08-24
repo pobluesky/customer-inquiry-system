@@ -3,7 +3,11 @@ import arrow from '../../assets/css/icons/arrow.svg';
 import { Link } from 'react-router-dom';
 import { _Link } from '../../assets/css/Inquiry.css';
 
-function CollaborationPath({ largeCategory, mediumCategory, smallCategory }) {
+export default function ColPath({
+    largeCategory,
+    mediumCategory,
+    smallCategory,
+}) {
     return (
         <div
             style={{
@@ -29,5 +33,3 @@ function CollaborationPath({ largeCategory, mediumCategory, smallCategory }) {
         </div>
     );
 }
-
-export default CollaborationPath;

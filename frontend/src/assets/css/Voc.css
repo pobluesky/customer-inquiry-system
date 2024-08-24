@@ -562,7 +562,6 @@
     background-color: #ffffff;
 }
 
-
 /* div {
     border: 1px solid blue;
 } */
@@ -643,7 +642,7 @@
     border: solid 1px #c1c1c1;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .Collaboration_Filter_Pannel > div:first-child {
@@ -703,4 +702,160 @@
 /* 
 div, button {
     border: 1px solid blue;
+} */
+
+/******************************************************************/
+/* 협업 목록 조회 테이블 ********************************************/
+/******************************************************************/
+.Select {
+    cursor: pointer;
+}
+
+.Select:hover {
+    background-color: #cbefff;
+}
+
+.Col_Req_Modal_Container {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+/* 협업 상세 내역 Modal 그룹 모달 위치 고정 */
+.Col_Req_Modal {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.Col_Req_Modal {
+    display: grid;
+    width: 70vw;
+    /* height: 85vh; */
+    margin: 0 auto 0 auto;
+    border: solid 1px #ffffff;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px 5px;
+}
+
+/* 담당자 이름, 사번, 부서 정보 */
+.Col_Req_Modal > div:first-child {
+    margin: 3vh 3vw 0 3vw;
+    display: flex;
+    font-size: 16px;
+    color: #212121;
+}
+
+/* 협업 요청 사유 제목 */
+.Col_Req_Modal > div:nth-child(2) {
+    margin: 0 3vw 0 3vw;
+    font-size: 24px;
+    height: fit-content;
+    font-weight: 600;
+    color: #212121;
+}
+
+/* 협업 요청 사유 내용 */
+.Col_Req_Modal > div:nth-child(3) {
+    height: 120px;
+    color: #212121;
+    margin: 0 3vw 0 3vw;
+    padding: 1vh 1vw 1vh 1vw;
+    border: 1px solid #8b8b8b;
+    border-radius: 12px;
+    overflow-y: auto;
+}
+
+/* .Col_Req_Modal > div:nth-child(3)::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+}
+
+.Col_Req_Modal > div:nth-child(3)::-webkit-scrollbar-thumb {
+    background-color: #8b8b8b;
+    border-radius: 12px;
+} */
+
+/* 고객사 첨부파일 + 첨부파일 */
+.Col_Req_Modal > div:nth-child(4) {
+    display: flex;
+    margin: 0 0 0 auto;
+}
+
+/* 고객사 첨부파일 이름 길이 출력 제한 */
+.Col_Req_Modal > div:nth-child(4) > div:nth-child(2) {
+    margin: 0 3vw 0 0;
+    max-width: 96px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 협업 요청 피드백 || 협업 거절 사유 */
+.Col_Req_Modal > div:nth-child(5) {
+    margin: 0 3vw 0 3vw;
+    font-size: 24px;
+    height: fit-content;
+    font-weight: 600;
+    color: #212121;
+}
+
+/* 버튼 그룹 */
+.Col_Req_Modal > div:nth-child(7) {
+    margin: 0 3vw 0 3vw;
+    float: right;
+}
+
+.Col_Req_Modal > div:nth-child(7) > div:first-child,
+.Col_Req_Modal > div:nth-child(7) > div:nth-child(2) {
+    margin: 0 1vw 0 0;
+    float: left;
+}
+
+/* 품질 담당자 첨부파일 이름 길이 출력 제한 */
+.Col_Req_Modal > div:nth-child(7) > div:nth-child(2) {
+    max-width: 96px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Col_Req_Modal a {
+    text-decoration: none;
+    color: rgb(0, 0, 164);
+}
+/* 
+div {
+    border: 1px solid blue;
+}
+
+.Col_Req_Modal > div:first-child {
+    background-color: #cbefff;
+}
+
+.Col_Req_Modal > div:nth-child(2) {
+    background-color: #33c2ff;
+}
+
+.Col_Req_Modal > div:nth-child(3) {
+    background-color: #98ff8e;
+}
+
+.Col_Req_Modal > div:nth-child(4) {
+    background-color: #838a8d;
+}
+
+.Col_Req_Modal > div:nth-child(5) {
+    background-color: #6bffc9;
+}
+
+.Col_Req_Modal > div:nth-child(7) {
+    background-color: #ffce65;
 } */

@@ -17,14 +17,13 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
+import { Select } from '../../assets/css/Voc.css';
 import {
     getAllCollaboration,
     getCollaborationDetail,
-    postCollaborationBySales,
     putDecisionByQuality,
-    putCompleteBySales,
+    putCompleteByQuality,
 } from '../../apis/api/collaboration';
-import CollaborationModal from './CollabRequestModal';
 import { useAuth } from '../../hooks/useAuth';
 
 function TablePaginationActions(props) {
@@ -122,14 +121,19 @@ function createData(
     };
 }
 
-export default function CollabTable() {
+export default function ColTable({
+    setOpenModal,
+    setColDetail,
+    setStatus,
+    status,
+    setQuestionId,
+    setColId,
+}) {
     const { userId } = useAuth();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [openModal, setOpenModal] = useState(false);
     const [collabs, setCollabs] = useState([]);
-    const [colDetail, setColDetail] = useState([]);
 
     const fetchGetCol = async () => {
         try {
@@ -140,14 +144,11 @@ export default function CollabTable() {
         }
     };
 
-    const fetGetColDetail = async (questionId, colId) => {
+    const fetchGetColDetail = async (questionId, colId) => {
         try {
             const response = await getCollaborationDetail(questionId, colId);
             setColDetail(response.data);
-            console.log(
-                '[추후 삭제]상세 데이터 ===============> ',
-                response.data,
-            );
+            setOpenModal(true);
         } catch (error) {
             console.error('상세 조회 실패:', error);
         }
@@ -162,57 +163,43 @@ export default function CollabTable() {
             id: 'colId',
             label: 'No',
             align: 'center',
-            width: 180,
-            minWidth: 180,
-            // minWidth: 170
+            width: 120,
+            minWidth: 120,
         },
         {
             id: 'questionId',
             label: '질문 번호',
             align: 'center',
-            width: 180,
-            minWidth: 180,
-            // minWidth: 100
+            width: 120,
+            minWidth: 120,
         },
         {
             id: 'colReqManager',
             label: '담당자',
             align: 'center',
-            width: 180,
-            minWidth: 180,
-            // minWidth: 170,
-            // align: 'right',
-            // format: (value) => value.toLocaleString('en-US'),
+            width: 120,
+            minWidth: 120,
         },
         {
             id: 'colStatus',
             label: '진행 상황',
             align: 'center',
-            width: 180,
-            minWidth: 180,
-            // minWidth: 170,
-            // align: 'right',
-            // format: (value) => value.toLocaleString('en-US'),
+            width: 120,
+            minWidth: 120,
         },
         {
             id: 'colContents',
             label: '내용',
             align: 'center',
-            width: 420,
-            minWidth: 420,
-            // minWidth: 170,
-            // align: 'right',
-            // format: (value) => value.toFixed(2),
+            width: 240,
+            minWidth: 240,
         },
         {
             id: 'createdDate',
             label: '등록 일자',
             align: 'center',
-            width: 180,
-            minWidth: 180,
-            // minWidth: 170,
-            // align: 'right',
-            // format: (value) => value.toFixed(2),
+            width: 120,
+            minWidth: 120,
         },
     ];
 
@@ -226,8 +213,6 @@ export default function CollabTable() {
             collab.createdDate,
         ),
     );
-
-    console.log(collabs);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -258,6 +243,7 @@ export default function CollabTable() {
                                 key={column.id}
                                 align={column.align}
                                 sx={{
+                                    width: column.width,
                                     minWidth: column.minWidth,
                                     backgroundColor: '#03507d',
                                     color: '#ffffff',
@@ -279,39 +265,77 @@ export default function CollabTable() {
                     ).map((row) => (
                         <TableRow
                             key={row.colId}
+                            className={Select}
                             // sx={{
                             //     '&:last-child td, &:last-child th': {
                             //         border: 0,
                             //     },
                             // }}
                             onClick={() => {
-                                fetGetColDetail(row.questionId, row.colId);
-                                setOpenModal(true);
+                                setStatus(row.colStatus);
+                                setQuestionId(row.questionId);
+                                setColId(row.colId);
+                                fetchGetColDetail(row.questionId, row.colId);
                             }}
                         >
-                            {/* <TableCell component="th" scope="row"> */}
                             <TableCell
                                 sx={{
                                     textAlign: 'center',
-                                    width: 180,
-                                    backgroundColor: 'green',
+                                    width: 120,
+                                    minWidth: 120,
                                 }}
                             >
                                 {row.colId}
                             </TableCell>
-                            <TableCell sx={{ textAlign: 'center', width: 180 }}>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
                                 {row.questionId}
                             </TableCell>
-                            <TableCell sx={{ textAlign: 'center', width: 180 }}>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
                                 {row.colReqManager}
                             </TableCell>
-                            <TableCell sx={{ textAlign: 'center', width: 180 }}>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                    backgroundColor:
+                                        row.colStatus === 'READY'
+                                            ? '#4facf7'
+                                            : row.colStatus === 'INPROGRESS'
+                                            ? '#91cbfa'
+                                            : '',
+                                }}
+                            >
                                 {row.colStatus}
                             </TableCell>
-                            <TableCell sx={{ textAlign: 'center', width: 420 }}>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 240,
+                                    minWidth: 240,
+                                }}
+                            >
                                 {row.colContents}
                             </TableCell>
-                            <TableCell sx={{ textAlign: 'center', width: 180 }}>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
                                 {row.createdDate.substr(0, 10)}
                             </TableCell>
                         </TableRow>
@@ -350,12 +374,6 @@ export default function CollabTable() {
                     </TableRow>
                 </TableFooter>
             </Table>
-            {openModal && (
-                <CollaborationModal
-                    openModal={openModal}
-                    setOpenModal={setOpenModal}
-                />
-            )}
         </TableContainer>
     );
 }
