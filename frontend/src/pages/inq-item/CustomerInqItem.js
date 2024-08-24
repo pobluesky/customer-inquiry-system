@@ -137,7 +137,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
 
             <BasicInfoForm formData={formData} />
             <InquiryHistoryForm
-                productType={formData.productType}
+                productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />

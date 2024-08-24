@@ -186,7 +186,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
-                customerCode: userInfo.data.customerCode || '',
+                customerCode: userInfo?.data?.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
@@ -195,8 +195,8 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 inquiryId: inquiriesDataDetail.inquiryId || null,
                 inquiryType: inquiriesDataDetail.inquiryType || '',
                 name: inquiriesDataDetail.name || '',
-                email: userInfo.data.email || '',
-                phone: userInfo.data.phone || '',
+                email: userInfo?.data?.email || '',
+                phone: userInfo?.data?.phone || '',
                 productType: inquiriesDataDetail.productType || '',
                 progress: inquiriesDataDetail.progress || '',
                 salesPerson: inquiriesDataDetail.salesPerson || '',
@@ -283,7 +283,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} onReviewSubmit={handleReviewSubmit} onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryForm
-                productType={formData.productType}
+                productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
