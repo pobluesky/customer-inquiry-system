@@ -119,7 +119,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         try {
             const response = await getUserInfoByCustomers(id); // 수정 필요
             setUserInfo(response.data.data);
-            console.log("getUserInfo: ", response.data.data);
             return response.data.data;
         } catch (error) {
             console.log('Error fetching User Info:', error);
@@ -131,7 +130,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getReviews(id);
             setReviewData(response.data);
             setIsReviewItem(true);
-            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
             console.log('Error fetching Reviews:', error);
@@ -143,7 +141,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getQualities(id);
             setQualityData(response.data);
             setIsQualityItem(true);
-            console.log("quality: ", response.data);
             return response.data;
         } catch (error) {
             console.log('Error fetching Qualities:', error);
@@ -159,7 +156,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 ...prevData,
                 receipts: response.data.receipts || []
             }));
-            console.log("offerSheet: ", response.data);
             return response.data;
         } catch (error) {
             console.log('Error fetching OfferSheet:', error);

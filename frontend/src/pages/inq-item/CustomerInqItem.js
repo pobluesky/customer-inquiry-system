@@ -25,6 +25,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const [reviewData, setReviewData] = useState(null);
 
     const [formData, setFormData] = useState({
+        // inquiry
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
@@ -43,6 +44,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         productType: '',
         progress: '',
         salesPerson: '',
+
+        // review
         reviewText: '',
         finalReviewText: '',
         lineItemResponseDTOs: [],

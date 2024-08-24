@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-    LineItemRow,
-    LineItemInput,
-    _checkbox,
     LineItemGetRow,
     LineItemGetInput,
     LineItemGetGrid

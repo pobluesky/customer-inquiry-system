@@ -21,7 +21,6 @@ const CustomerInqTableList = () => {
         try {
             const response = await getAllInquiries(userId);
             const inquiryData = response?.inquiryInfo || [];
-
             setRows(inquiryData);
 
             if (contentRef.current) {

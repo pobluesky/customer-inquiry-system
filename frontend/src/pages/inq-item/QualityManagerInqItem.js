@@ -36,6 +36,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const [isQualityItem, setIsQualityItem] = useState(false);
 
     const [formData, setFormData] = useState({
+        // inquiry
         additionalRequests: '',
         corporate: '',
         corporationCode: '',
@@ -57,6 +58,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         progress: '',
         salesPerson: '',
         lineItemResponseDTOs: [],
+
+        // quality
         finalResult: '',
         finalResultDetails: '',
         standard: '',

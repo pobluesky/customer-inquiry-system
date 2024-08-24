@@ -20,7 +20,6 @@ const QualityManagerInqTableList = () => {
         try {
             const response = await getAllInquiriesByManagers();
             const inquiryData = response?.inquiryInfo || [];
-
             setRows(inquiryData);
 
             if (contentRef.current) {
