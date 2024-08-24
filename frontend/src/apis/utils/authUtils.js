@@ -34,7 +34,7 @@ const signInApi = async (endpoint, credentials, setLoginErrorMsg) => {
         }
     } catch (error) {
         setLoginErrorMsg(error.response.data.message);
-        console.error('Login failed', error);
+        console.log('Login failed', error);
         return { success: false, message: error.toString() };
     }
 };
@@ -56,7 +56,7 @@ const signUpApi = async (endpoint, userInfo, setJoinErrorMsg) => {
         }
     } catch (error) {
         setJoinErrorMsg(error.response.data.message);
-        console.error('Sign-up error:', error);
+        console.log('Sign-up error:', error);
         return { success: false, message: error.toString() };
     }
 };
@@ -74,7 +74,7 @@ const getUserInfoApi = async (endpoint) => {
             return { success: false, message: 'Get user info failed' };
         }
     } catch (error) {
-        console.error('Get user info error:', error);
+        console.log('Get user info error:', error);
         return { success: false, message: error.toString() };
     }
 }

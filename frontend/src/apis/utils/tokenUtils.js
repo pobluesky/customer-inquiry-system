@@ -6,7 +6,7 @@ export const getEmailFromToken = (token) => {
     const decodedToken = jwtDecode(token);
     return decodedToken.sub || null;
   } catch (error) {
-    console.error('Invalid token', error);
+    console.log('Invalid token', error);
     return null;
   }
 };

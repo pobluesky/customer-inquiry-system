@@ -143,7 +143,7 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
     const fieldMapping = columnFieldMappings[productType];
 
     if (!fieldMapping) {
-      console.error(`No field mapping found for product type: ${productType}`);
+      console.log(`No field mapping found for product type: ${productType}`);
       return;
     }
 
@@ -156,7 +156,7 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
               const field = fieldMapping[label];
 
               if (!field) {
-                console.error(`No field found for label: ${label}`);
+                console.log(`No field found for label: ${label}`);
                 return [label, item];
               }
 

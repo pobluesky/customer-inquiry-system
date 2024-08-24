@@ -113,7 +113,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             console.log("getInquiryDataDetail: ", response.data);
             console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
-            console.error('Error fetching InquiryDetail:', error);
+            console.log('Error fetching InquiryDetail:', error);
         }
     };
 
@@ -124,7 +124,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             console.log("getUserInfo: ", response.data.data);
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
@@ -136,7 +136,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             console.log("review: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching Reviews:', error);
+            console.log('Error fetching Reviews:', error);
         }
     }
 
@@ -148,7 +148,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             console.log("quality: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching Qualities:', error);
+            console.log('Error fetching Qualities:', error);
         }
     }
 
@@ -164,7 +164,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             console.log("offerSheet: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching OfferSheet:', error);
+            console.log('Error fetching OfferSheet:', error);
         }
     }
 
@@ -246,7 +246,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
                 console.log('Review posted successfully:', reviewResponse);
             } catch (error) {
-                console.error('Error posting review:', error);
+                console.log('Error posting review:', error);
             }
         }
     }
@@ -264,7 +264,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
                 console.log('offerSheet posted successfully:', offerSheetResponse);
             } catch (error) {
-                console.error('Error posting offer sheet:', error);
+                console.log('Error posting offer sheet:', error);
             }
         }
     }

@@ -55,7 +55,7 @@ function Header({ inq, voc, dashboard }) {
             }
             return username;
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 

@@ -18,7 +18,7 @@ export const getInquiry = async (userId, page = 0) => {
             totalElements,
         };
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -32,7 +32,7 @@ export const getAllInquiries = async (userId) => {
         const inquiryInfo = response?.data?.data;
 
         if (!inquiryInfo) {
-            console.error('inquiryInfo is undefined or null');
+            console.log('inquiryInfo is undefined or null');
             return { inquiryInfo: [] };
         }
         return {
@@ -40,7 +40,7 @@ export const getAllInquiries = async (userId) => {
         };
 
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -55,7 +55,7 @@ export const getInquiryDetail = async (userId, inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -78,7 +78,7 @@ export const postInquiry = async (userId, inquiryData) => {
         console.log('postInquiryResponse: ', response);
         return response.data;
     } catch (error) {
-        console.error('Error posting inquiry:', error);
+        console.log('Error posting inquiry:', error);
         throw error;
     }
 };
@@ -97,7 +97,7 @@ export const getInquiryByManagers = async (page = 0) => {
             totalElements,
         };
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -113,7 +113,7 @@ export const getAllInquiriesByManagers = async () => {
         const inquiryInfo = response?.data?.data;
 
         if (!inquiryInfo) {
-            console.error('inquiryInfo is undefined or null');
+            console.log('inquiryInfo is undefined or null');
             return { inquiryInfo: [] };
         }
         return {
@@ -121,7 +121,7 @@ export const getAllInquiriesByManagers = async () => {
         };
 
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -135,7 +135,7 @@ export const getInquiryDetailByManagers = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Inquiry:', error);
+        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };

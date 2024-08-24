@@ -10,7 +10,7 @@ export const getReviews = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Reviews:', error);
+        console.log('Error fetching Reviews:', error);
         throw error;
     }
 };
@@ -22,7 +22,7 @@ export const postReview = async (inquiryId, reviewData) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error creating Review:', error);
+        console.log('Error creating Review:', error);
         throw error;
     }
 };
@@ -34,7 +34,7 @@ export const getQualities = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Qualities:', error);
+        console.log('Error fetching Qualities:', error);
         throw error;
     }
 };
@@ -57,7 +57,7 @@ export const postQuality = async (inquiryId, qualityData) => {
         console.log('postQualityResponse: ', response);
         return response.data;
     } catch (error) {
-        console.error('Error creating Quality:', error);
+        console.log('Error creating Quality:', error);
         throw error;
     }
 };
@@ -71,7 +71,7 @@ export const postOfferSheet = async (inquiryId, offerSheetData) => {
         console.log('postOfferSheetResponse: ', response);
         return response.data;
     } catch (error) {
-        console.error('Error posting offer sheet:', error);
+        console.log('Error posting offer sheet:', error);
         throw error;
     }
 };
@@ -82,7 +82,7 @@ export const getOfferSheets = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching offer sheet:', error);
+        console.log('Error fetching offer sheet:', error);
         throw error;
     }
 }
