@@ -29,7 +29,7 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private LocalDate expectedDeadline;
+    private String expectedDeadline;
 
     private String orderEdge;
 
@@ -40,8 +40,6 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
     private Boolean isActivated;
 
     private String sleeveThickness;
-
-    private String yieldingPoint;
 
     private String tensileStrength;
 
@@ -60,16 +58,15 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
             .thickness(coldRolledLineItem.getThickness())
             .width(coldRolledLineItem.getWidth())
             .quantity(coldRolledLineItem.getQuantity())
-            .expectedDeadline(coldRolledLineItem.getExpectedDeadline())
             .orderEdge(coldRolledLineItem.getOrderEdge())
             .inDiameter(coldRolledLineItem.getInDiameter())
             .outDiameter(coldRolledLineItem.getOutDiameter())
             .isActivated(coldRolledLineItem.getIsActivated())
             .sleeveThickness(coldRolledLineItem.getSleeveThickness())
-            .yieldingPoint(coldRolledLineItem.getYieldingPoint())
             .tensileStrength(coldRolledLineItem.getTensileStrength())
             .elongationRatio(coldRolledLineItem.getElongationRatio())
             .hardness(coldRolledLineItem.getHardness())
+            .expectedDeadline(coldRolledLineItem.getExpectedDeadline())
             .build();
     }
 }

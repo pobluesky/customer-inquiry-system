@@ -4,13 +4,13 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
+
 import java.time.LocalDate;
 
 public record CarLineItemUpdateRequestDTO(
     Lab lab,
     Kind kind,
     StandardOrg standardOrg,
-    String pjtName,
     String salesVehicleName,
     String partName,
     IxPlate ixPlate,

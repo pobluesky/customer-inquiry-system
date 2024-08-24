@@ -48,8 +48,6 @@ public class CarLineItem extends LineItem {
     @Enumerated(EnumType.STRING)
     private StandardOrg standardOrg;
 
-    private String pjtName;
-
     private String salesVehicleName;
 
     private String partName;
@@ -79,7 +77,6 @@ public class CarLineItem extends LineItem {
         Lab lab,
         Kind kind,
         StandardOrg standardOrg,
-        String pjtName,
         String salesVehicleName,
         String partName,
         IxPlate ixPlate,
@@ -96,7 +93,6 @@ public class CarLineItem extends LineItem {
         this.lab = lab;
         this.kind = kind;
         this.standardOrg = standardOrg;
-        this.pjtName = pjtName;
         this.salesVehicleName = salesVehicleName;
         this.partName = partName;
         this.ixPlate = ixPlate;

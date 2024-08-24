@@ -6,14 +6,13 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.IxPlate;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
+
 import java.time.LocalDate;
-import org.springframework.data.relational.core.sql.In;
 
 public record CarLineItemCreateRequestDTO(
     Lab lab,
     Kind kind,
     StandardOrg standardOrg,
-    String pjtName,
     String salesVehicleName,
     String partName,
     IxPlate ixPlate,
@@ -33,7 +32,6 @@ public record CarLineItemCreateRequestDTO(
             .lab(lab)
             .kind(kind)
             .standardOrg(standardOrg)
-            .pjtName(pjtName)
             .salesVehicleName(salesVehicleName)
             .partName(partName)
             .ixPlate(ixPlate)

@@ -51,7 +51,7 @@ public class ColdRolledLineItem extends LineItem{
 
     private Integer quantity;
 
-    private LocalDate expectedDeadline;
+    private String expectedDeadline;
 
     private String orderEdge;
 
@@ -60,8 +60,6 @@ public class ColdRolledLineItem extends LineItem{
     private String outDiameter;
 
     private String sleeveThickness;
-
-    private String yieldingPoint;
 
     private String tensileStrength;
 
@@ -78,12 +76,11 @@ public class ColdRolledLineItem extends LineItem{
         String thickness,
         String width,
         Integer quantity,
-        LocalDate expectedDeadline,
+        String expectedDeadline,
         String orderEdge,
         String inDiameter,
         String outDiameter,
         String sleeveThickness,
-        String yieldingPoint,
         String tensileStrength,
         String elongationRatio,
         String hardness
@@ -101,7 +98,6 @@ public class ColdRolledLineItem extends LineItem{
         this.outDiameter = outDiameter;
         this.isActivated = true;
         this.sleeveThickness = sleeveThickness;
-        this.yieldingPoint = yieldingPoint;
         this.tensileStrength = tensileStrength;
         this.elongationRatio = elongationRatio;
         this.hardness = hardness;

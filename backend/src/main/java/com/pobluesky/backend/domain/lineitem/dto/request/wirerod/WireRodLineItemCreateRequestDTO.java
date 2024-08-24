@@ -16,7 +16,10 @@ public record WireRodLineItemCreateRequestDTO(
     String customerProcessing,
     String finalUse,
     String transportationDestination,
-    String annualCost
+    String annualCost,
+    String legalRegulatoryReview,
+    String legalRegulatoryReviewDetail,
+    String finalCustomer
 ) {
 
     public WireRodLineItem toWireRodLineItemEntity(Inquiry inquiry) {
@@ -34,6 +37,9 @@ public record WireRodLineItemCreateRequestDTO(
             .finalUse(finalUse)
             .transportationDestination(transportationDestination)
             .annualCost(annualCost)
+            .legalRegulatoryReview(legalRegulatoryReview)
+            .legalRegulatoryReviewDetail(legalRegulatoryReviewDetail)
+            .finalCustomer(finalCustomer)
             .build();
 
     }
