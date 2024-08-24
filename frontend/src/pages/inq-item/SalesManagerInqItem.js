@@ -40,7 +40,6 @@ import FinalReviewTextForm
 import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 
-
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
 
@@ -52,6 +51,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [isReviewItem, setIsReviewItem] = useState(false);
     const [isQualityItem, setIsQualityItem] = useState(false);
     const [isOfferSheetItem, setIsOfferSheetItem] = useState(false);
+    const [isFinalReview, setIsFinalReview] = useState(false);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -242,10 +242,16 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                         thicknessNotify: formData.thicknessNotify,
                     },
                     reviewText: formData.reviewText,
-                    finalReviewText: formData.finalReviewText,
                 });
-
                 console.log('Review posted successfully:', reviewResponse);
+
+                if(formData.finalReviewText !== "") {
+                    const offerSheetResponse = await postOfferSheet(id, {
+                        ...formData,
+                        receipts: formData.receipts,
+                    });
+                    console.log('offerSheet posted successfully:', offerSheetResponse);
+                }
             } catch (error) {
                 console.log('Error posting review:', error);
             }
@@ -261,11 +267,12 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 const reviewResponse = await putReview(id, {
                     finalReviewText: formData.finalReviewText,
                 })
+                setIsFinalReview(true);
                 const offerSheetResponse = await postOfferSheet(id, {
                     ...formData,
                     receipts: formData.receipts,
                 });
-                console.log('Review updated successfully:', reviewResponse);
+                console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
@@ -293,20 +300,23 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            {/* Review Post & Get */}
             { isReviewItem ? (
                 <>
                     <SalesInfoFormItem formData={reviewData} />
                     <ReviewTextFormItem formData={reviewData} />
-                    <FinalReviewTextFormItem formData={reviewData} />
                 </>
             ) : (
                     <>
                         <SalesInfoForm formData={formData} handleFormDataChange={handleFormDataChange} />
                         <ReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
-                        <FinalReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
                     </>
-                )}
+            )}
+
+            { isFinalReview ? (
+                <FinalReviewTextFormItem formData={reviewData} />
+            ) : (
+                <FinalReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
+            )}
 
             { isQualityItem ? (
                 <>
