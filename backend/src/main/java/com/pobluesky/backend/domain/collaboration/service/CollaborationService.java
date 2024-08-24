@@ -180,8 +180,14 @@ public class CollaborationService {
         Long collaborationId,
         MultipartFile file,
         CollaborationUpdateRequestDTO requestDTO
-        ) {
+    ) {
         Long userId = signService.parseToken(token);
+
+        Collaboration collaboration = validateCollaboration(collaborationId);
+
+        if (collaboration.getColStatus() == ColStatus.INPROGRESS) {
+            throw new CommonException(ErrorCode.COLLABORATION_STATUS_INPROGRESS);
+        }
 
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -192,14 +198,13 @@ public class CollaborationService {
         Manager resManager = managerRepository.findById(requestDTO.colResId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        Collaboration foundCollaboration =
-            collaborationRepository.findByRequestManagerAndResponseManager(reqManager, resManager)
-            .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+        if (!collaboration.getColRequestManager().equals(reqManager) ||
+            !collaboration.getColResponseManager().equals(resManager)) {
+            throw new CommonException(ErrorCode.COLLABORATION_INFO_MISMATCH);
+        }
 
-        if(!userId.equals(foundCollaboration.getColResponseManager().getUserId()))
+        if(!userId.equals(collaboration.getColResponseManager().getUserId()))
             throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
-
-        Collaboration collaboration = validateCollaboration(collaborationId);
 
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());

@@ -2,7 +2,7 @@ package com.pobluesky.backend.domain.lineitem.dto.response.wirerod;
 
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.entity.WireRodLineItem;
-import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
+import com.pobluesky.backend.domain.lineitem.entity.type.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 
 import lombok.Builder;
