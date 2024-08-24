@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
 import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -24,8 +25,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
     private Kind kind;
 
     private StandardOrg standardOrg;
-
-    private String pjtName;
 
     private String salesVehicleName;
 
@@ -59,7 +58,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
             .standardOrg(carLineItem.getStandardOrg())
-            .pjtName(carLineItem.getPjtName())
             .salesVehicleName(carLineItem.getSalesVehicleName())
             .partName(carLineItem.getPartName())
             .ixPlate(carLineItem.getIxPlate())

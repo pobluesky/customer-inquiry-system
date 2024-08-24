@@ -41,8 +41,6 @@ public class ColdRolledLineItemResponseDTO extends LineItemResponseDTO {
 
     private String sleeveThickness;
 
-    private String yieldingPoint;
-
     private String tensileStrength;
 
     private String elongationRatio;
