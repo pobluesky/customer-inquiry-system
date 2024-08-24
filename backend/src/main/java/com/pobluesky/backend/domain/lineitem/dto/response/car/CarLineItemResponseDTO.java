@@ -40,7 +40,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
-    private LocalDate expectedDeliveryDate;
+    private String expectedDeliveryDate;
 
     private String transportationDestination;
 

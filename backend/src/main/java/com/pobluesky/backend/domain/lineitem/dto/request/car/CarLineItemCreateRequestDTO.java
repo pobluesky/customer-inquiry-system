@@ -19,7 +19,7 @@ public record CarLineItemCreateRequestDTO(
     String thickness,
     String width,
     Integer quantity,
-    LocalDate expectedDeliveryDate,
+    String expectedDeliveryDate,
     String transportationDestination,
     String edge,
     String tolerance,

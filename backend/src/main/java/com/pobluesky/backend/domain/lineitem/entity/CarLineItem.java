@@ -61,7 +61,7 @@ public class CarLineItem extends LineItem {
 
     private Integer quantity;
 
-    private LocalDate expectedDeliveryDate;
+    private String expectedDeliveryDate;
 
     private String transportationDestination;
 
@@ -83,7 +83,7 @@ public class CarLineItem extends LineItem {
         String thickness,
         String width,
         Integer quantity,
-        LocalDate expectedDeliveryDate,
+        String expectedDeliveryDate,
         String transportationDestination,
         String edge,
         String tolerance,
