@@ -5,15 +5,16 @@ export const getAllCollaboration = async () => {
     try {
         const response = await axiosInstance.get('/collaborations');
 
-        if (response.data.result === 'success') {
-            return response.data;
-        } else {
-            console.error('요약 조회 데이터 패치 실패 원인:', data.message);
-            return [];
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+
+        return json;
     } catch (error) {
-        console.error('요약 조회 API 에러 원인:', error.response.data.message);
-        return [];
+        console.error('협업 목록 요약 조회 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
@@ -24,15 +25,16 @@ export const getCollaborationDetail = async (questionId, colId) => {
             `/collaborations/${questionId}/${colId}`,
         );
 
-        if (response.data.result === 'success') {
-            return response.data;
-        } else {
-            console.error('상세 조회 데이터 패치 실패 원인:', data.message);
-            return [];
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+
+        return json;
     } catch (error) {
-        console.error('상세 조회 API 에러 원인:', error.response.data.message);
-        return [];
+        console.error('협업 목록 상세 조회 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
@@ -40,9 +42,6 @@ export const getCollaborationDetail = async (questionId, colId) => {
 export const postCollaborationBySales = async (
     colData,
     questionId,
-    // colReqId,
-    // colResId,
-    // colContents,
 ) => {
     try {
         const formData = new FormData();
@@ -62,87 +61,72 @@ export const postCollaborationBySales = async (
             },
         );
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('협업 요청 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
 // 협업 수락/거절 (품질 담당자)
-export const putDecisionByQuality = async (
-    file,
-    colId,
-    colData,
-    // colReqId,
-    // colResId,
-    // colReply,
-    // isAccepted,
-    token,
-) => {
+export const putDecisionByQuality = async (file, colId, colData) => {
     try {
         const formData = new FormData();
-        const blobCollaborationData = new Blob([JSON.stringify(colData)], {
-            type: 'application/json',
-        });
-        formData.append('collaboration', blobCollaborationData);
+        formData.append(
+            'collaboration',
+            new Blob([JSON.stringify(colData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await fetch(`/api/collaborations/${colId}/decision`, {
-            method: 'PUT',
+        const response = await axiosInstance({
+            method: 'put',
+            url: `/collaborations/${colId}/decision`,
+            data: formData,
             headers: {
-                Authorization: `${token}`,
+                'Content-Type': 'multipart/form-data',
             },
-            body: formData,
         });
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('협업 수락/거절 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
-// 협업 완료 (판매 담당자) ??
-export const putCompleteByQuality = async () => {
+// 협업 완료 (품질 담당자)
+export const putCompleteByQuality = async (colId) => {
     try {
         const response = await axiosInstance.put(
             `/collaborations/${colId}/decision/complete`,
         );
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('협업 완료 API ERROR: ', error.message || error);
+        throw error;
     }
 };

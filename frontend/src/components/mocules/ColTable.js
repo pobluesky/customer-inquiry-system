@@ -25,6 +25,7 @@ import {
     putCompleteByQuality,
 } from '../../apis/api/collaboration';
 import { useAuth } from '../../hooks/useAuth';
+import { getCookie } from '../../apis/utils/cookies';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -122,25 +123,35 @@ function createData(
 }
 
 export default function ColTable({
-    setOpenModal,
-    setColDetail,
-    setStatus,
-    status,
     setQuestionId,
     setColId,
+    setStatus,
+    status,
+    setAuth,
+    setColDetail,
+    setHeight,
+    setOpenModal,
 }) {
+    const role = getCookie('userRole');
     const { userId } = useAuth();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [collabs, setCollabs] = useState([]);
 
+    // 해당 협업 관련 담당자 여부 확인
+    const isAuthorized = (authorizedId) => {
+        if (role === 'QUALITY' && authorizedId !== userId) {
+            setAuth(false);
+        }
+    }
+
     const fetchGetCol = async () => {
         try {
             const response = await getAllCollaboration();
             setCollabs(response.data);
         } catch (error) {
-            console.error('요약 조회 실패:', error);
+            console.error('협업 요약 조회 실패: ', error);
         }
     };
 
@@ -148,15 +159,21 @@ export default function ColTable({
         try {
             const response = await getCollaborationDetail(questionId, colId);
             setColDetail(response.data);
+            isAuthorized(response.data.colManagerToResponseDto.userId);
+            if (response.data && response.data.colStatus === 'READY') {
+                setHeight('55vh');
+            } else if (response.data && response.data.colStatus !== 'READY') {
+                setHeight('85vh');
+            }
             setOpenModal(true);
         } catch (error) {
-            console.error('상세 조회 실패:', error);
+            console.error('협업 상세 조회 실패: ', error);
         }
     };
 
     useEffect(() => {
         fetchGetCol();
-    }, [userId]);
+    }, [userId, status]);
 
     const columns = [
         {

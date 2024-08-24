@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import parse from 'html-react-parser';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
@@ -13,18 +14,22 @@ import {
     putCompleteByQuality,
 } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
+import { useAuth } from '../../hooks/useAuth';
+
+const sanitizer = dompurify.sanitize;
 
 export default function ColRequestModal({
-    openModal,
-    setOpenModal,
-    colDetail,
-    status,
-    setStatus,
-    questionId,
     colId,
+    setStatus,
+    status,
+    setHeight,
+    height,
+    auth,
+    colDetail,
+    setOpenModal,
 }) {
-    console.log('바로 잘 오나?', colDetail);
-    const ROLE = getCookie('userRole');
+    const role = getCookie('userRole');
+    const { userId } = useAuth();
 
     const [colStatus, setColStatus] = useState('');
     const [editorValue, setEditorValue] = useState('');
@@ -33,25 +38,24 @@ export default function ColRequestModal({
     const [fileName, setFileName] = useState('');
     const [filePath, setFilePath] = useState('');
 
-    const [tryAccept, isAccepting] = useState(false);
-    const [tryReject, isRejecting] = useState(false);
-    const [isAccepted, setAccepted] = useState(false);
+    const [tryAccept, isAccepting] = useState(false); // 협업 수락 버튼 클릭 후 수락 내용 작성 중
+    const [tryReject, isRejecting] = useState(false); // 협업 거절 버튼 클릭 후 거절 내용 작성 중
 
-    const [canEdit, setEdit] = useState(false);
     const fileInputRef = useRef(null);
 
-    const sanitizer = dompurify.sanitize;
+    const sanitizedcolReply = sanitizer(colDetail.colReply);
+    const parsedColReply = parse(sanitizedcolReply);
+    console.log(parsedColReply);
 
-    const [height, setHeight] = useState('');
+    const sanitizedsetColReply = sanitizer(colReply);
+    const parsedSetColReply = parse(sanitizedsetColReply);
 
     // 협업 진행 상황별로 모달창 높이 조절
     useEffect(() => {
-        if (status === 'READY' && !tryAccept && !tryReject) {
-            setHeight('55vh');
-        } else if (status !== 'READY' || tryAccept || tryReject) {
+        if (tryAccept || tryReject) {
             setHeight('85vh');
         }
-    }, [status, tryAccept, tryReject]);
+    }, [tryAccept, tryReject]);
 
     const attachFile = (event) => {
         const selectedFile = event.target.files[0];
@@ -60,8 +64,8 @@ export default function ColRequestModal({
         }
     };
 
-    const fetchPutCol = async () => {
-        console.log(isAccepted);
+    // 협업 수락, 협업 거절
+    const fetchPutCol = async (isAccepted) => {
         try {
             const colData = {
                 colReqId: colDetail.colManagerFromResponseDto.userId,
@@ -69,57 +73,36 @@ export default function ColRequestModal({
                 colReply: editorValue,
                 isAccepted: isAccepted,
             };
-            const response = await putDecisionByQuality(
-                file,
-                colId,
-                colData,
-                getCookie('accessToken'),
-            );
-            console.log('협업', isAccepted, '**********', response.data);
+            const response = await putDecisionByQuality(file, colId, colData);
             // 협업 수락 또는 거절 후 갱신되는 데이터
             setStatus(response.data.colStatus);
             setColStatus(response.data.colStatus);
             setColReply(response.data.colReply);
             setFileName(response.data.fileName);
             setFilePath(response.data.filePath);
-            setAccepted(false);
-            setRejected(false);
+            isRejecting(true);
         } catch (error) {
-            console.error('요청 수락/거절 실패:', error);
+            console.error('협업 수락/거절 실패:', error);
         }
     };
 
+    // 협업 완료 (수락한 경우에만 가능, 품질 담당자만 가능)
     const fetchPutColDone = async () => {
         try {
             const response = await putCompleteByQuality(colId);
-            console.log('협업 완료 **********', response.data);
-            // 협업 완료 후 갱신되는 데이터
             setStatus(response.data.colStatus);
             setColStatus(response.data.colStatus);
-            console.log('=======================', colStatus);
+            isAccepting(false);
+            isRejecting(false);
         } catch (error) {
             console.error('협업 완료 실패:', error);
         }
     };
 
-    const ColReplyContents = ({ value }) => (
-        <Input
-            width={'62vw'}
-            height={'231px'}
-            value={value}
-            margin={'0 3vw 0 3vw'}
-            padding={'1vh 1vw 1vh 1vw'}
-            textColor={'#212121'}
-            border={'1px solid #8b8b8b'}
-            borderRadius={'12px'}
-            overflowY={'auto'}
-        />
-    );
-
-    console.log(status);
     return (
         <div className={Col_Req_Modal_Container}>
             <div className={Col_Req_Modal} style={{ height }}>
+                {/* 고객사 정보, 협업 요청 사유, 고객사 첨부파일 */}
                 <div>
                     <div>담당자</div>
                     <div>{colDetail.colManagerFromResponseDto.name}</div>
@@ -136,8 +119,8 @@ export default function ColRequestModal({
                         </a>
                     </div>
                 </div>
-                {tryAccept ? (
-                    // 협업 수락 선택 시
+                {/* 협업 수락에 대한 피드백 작성란 */}
+                {status === 'READY' && tryAccept && (
                     <>
                         <div>협업 요청 피드백</div>
                         <div>
@@ -149,46 +132,10 @@ export default function ColRequestModal({
                                 onChange={setEditorValue}
                             />
                         </div>
-                        <div>담당자 첨부파일</div>
-                        <div>{file ? file.name : ''}</div>
-                        <ColReqResButton
-                            btnName={'닫기'}
-                            onClick={() => {
-                                setOpenModal(false);
-                            }}
-                            margin={'0 0 1vh 0'}
-                        />
-                        <ColReqResButton
-                            btnName={'피드백 등록'}
-                            onClick={() => {
-                                fetchPutCol();
-                            }}
-                            margin={'0 1vw 1vh 0'}
-                        />
-                        <Input
-                            type="file"
-                            display={'none'}
-                            ref={fileInputRef}
-                            onChange={attachFile}
-                        />
-                        {file ? (
-                            <ColReqResButton
-                                btnName={'파일 삭제'}
-                                onClick={() => setFile(null)}
-                                margin={'0 1vw 1vh 0'}
-                            />
-                        ) : (
-                            <ColReqResButton
-                                btnName={'파일 업로드'}
-                                onClick={() => {
-                                    fileInputRef.current.click();
-                                }}
-                                margin={'0 1vw 1vh 0'}
-                            />
-                        )}
                     </>
-                ) : // 협업 거절 선택 시
-                tryReject ? (
+                )}
+                {/* 협업 거절에 대한 사유 작성란 */}
+                {status === 'READY' && tryReject && (
                     <>
                         <div>협업 거절 사유</div>
                         <div>
@@ -200,56 +147,150 @@ export default function ColRequestModal({
                                 onChange={setEditorValue}
                             />
                         </div>
-                        <div>담당자 첨부파일</div>
-                        <div>{file ? file.name : ''}</div>
-                        <ColReqResButton
-                            btnName={'사유 등록'}
-                            onClick={() => {
-                                fetchPutCol();
-                            }}
-                            margin={'0 1vw 1vh 0'}
-                        />
-                        <Input
-                            type="file"
-                            display={'none'}
-                            ref={fileInputRef}
-                            onChange={attachFile}
-                        />
-                        {file ? (
-                            <ColReqResButton
-                                btnName={'파일 삭제'}
-                                onClick={() => setFile(null)}
-                                margin={'0 1vw 1vh 0'}
+                    </>
+                )}
+                {/* 피드백 작성 완료 */}
+                {status !== 'READY' && (
+                    <>
+                        <div>협업 요청 결과</div>
+                        <div>
+                            <div
+                                style={{
+                                    width: '62vw',
+                                    height: '20vh',
+                                    margin: '0 3vw 0 3vw',
+                                    padding: '1vh 1vw 1vh 1vw',
+                                    color: '#212121',
+                                    border: '1px solid #8b8b8b',
+                                    borderRadius: '12px',
+                                    overflowY: 'auto',
+                                }}
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizer(
+                                        `${colDetail.colReply || colReply}`,
+                                    ),
+                                }}
                             />
-                        ) : (
+                        </div>
+                    </>
+                )}
+                {/* 버튼 그룹 */}
+                <div>
+                    {tryAccept !== tryReject && role === 'QUALITY' && (
+                        <>
+                            <div>담당자 첨부파일</div>
+                            <div>{file?.name || ''}</div>
+                        </>
+                    )}
+                    <ColReqResButton
+                        btnName={'닫기'}
+                        onClick={() => {
+                            setOpenModal(false);
+                        }}
+                        margin={'0 0 1vh 0'}
+                    />
+                    {/* 협업 거절 + 협업 수락 */}
+                    {auth &&
+                        !tryAccept &&
+                        !tryReject &&
+                        role === 'QUALITY' &&
+                        status === 'READY' && (
+                            <>
+                                <ColReqResButton
+                                    btnName={'협업 거절'}
+                                    onClick={() => {
+                                        isRejecting(true);
+                                    }}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                                <ColReqResButton
+                                    btnName={'협업 수락'}
+                                    onClick={() => {
+                                        isAccepting(true);
+                                    }}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                            </>
+                        )}
+                    {/* 협업 수락 피드백 작성 중 */}
+                    {status === 'READY' && tryAccept && role === 'QUALITY' && (
+                        <>
                             <ColReqResButton
-                                btnName={'파일 업로드'}
+                                btnName={'피드백 등록'}
                                 onClick={() => {
-                                    fileInputRef.current.click();
+                                    fetchPutCol(true);
                                 }}
                                 margin={'0 1vw 1vh 0'}
                             />
-                        )}
-                    </>
-                ) :
-                // 피드백 등록 완료 (수정 불가)
-                colStatus === 'REFUSE' || colStatus === 'COMPLETE' ? (
-                    <>
-                        <div>협업 요청 결과</div>
-                        <div>{colReply || '아직 답변이 안 왔네...'}</div>
-                        <div>담당자 첨부파일</div>
-                        <div>{file ? file.name : ''}</div>
-                        <ColReqResButton
-                            btnName={'닫기'}
-                            onClick={() => {
-                                setOpenModal(false);
-                            }}
-                            margin={'0 0 1vh 0'}
-                        />
-                    </>
-                ) : (
-                    ''
-                )}
+                            <Input
+                                type="file"
+                                display={'none'}
+                                ref={fileInputRef}
+                                onChange={attachFile}
+                            />
+                            {file ? (
+                                <ColReqResButton
+                                    btnName={'파일 삭제'}
+                                    onClick={() => setFile(null)}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                            ) : (
+                                <ColReqResButton
+                                    btnName={'파일 업로드'}
+                                    onClick={() => {
+                                        fileInputRef.current.click();
+                                    }}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                            )}
+                        </>
+                    )}
+                    {/* 협업 거절 사유 작성 중 */}
+                    {status === 'READY' && tryReject && role === 'QUALITY' && (
+                        <>
+                            <ColReqResButton
+                                btnName={'사유 등록'}
+                                onClick={() => {
+                                    fetchPutCol(false);
+                                }}
+                                margin={'0 1vw 1vh 0'}
+                            />
+                            <Input
+                                type="file"
+                                display={'none'}
+                                ref={fileInputRef}
+                                onChange={attachFile}
+                            />
+                            {file ? (
+                                <ColReqResButton
+                                    btnName={'파일 삭제'}
+                                    onClick={() => setFile(null)}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                            ) : (
+                                <ColReqResButton
+                                    btnName={'파일 업로드'}
+                                    onClick={() => {
+                                        fileInputRef.current.click();
+                                    }}
+                                    margin={'0 1vw 1vh 0'}
+                                />
+                            )}
+                        </>
+                    )}
+                    {/* 협업 수락 피드백 등록 후 */}
+                    {status === 'INPROGRESS' && (
+                        <>
+                            <ColReqResButton
+                                btnName={'협업 완료'}
+                                onClick={() => {
+                                    fetchPutColDone();
+                                }}
+                                margin={'0 1vw 1vh 0'}
+                            />
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
