@@ -57,6 +57,11 @@ export const AuthProvider = ({ children }) => {
             removeCookie('accessToken');
             removeCookie('userRole');
             removeCookie('userId');
+
+            setDidLogin(false);
+            setRole(null);
+            setToken(null);
+            setUserId(null);
         }
     };
 

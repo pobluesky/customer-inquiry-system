@@ -41,7 +41,12 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
       "내외판": "ixPlate",
       "두께": "thickness",
       "폭": "width",
-      "수량": "quantity"
+      "수량": "quantity",
+      "날짜": "expectedDeliveryDate",
+      "수송지": "transportationDestination",
+      "가장자리": "edge",
+      "운용": "tolerance",
+      "연간비용": "annualCost"
     },
     "COLD_ROLLED": {
       "품종": "kind",
@@ -143,22 +148,35 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
 
     const fieldMapping = columnFieldMappings[productType];
 
-    onLineItemsChange(updatedRows.map(row => {
-      const mappedRow = {};
-      row.items.forEach((item, idx) => {
-        const label = lineItems[idx];
-        const field = fieldMapping[label];
-        mappedRow[field] = item;
-      });
-      return {
+    if (!fieldMapping) {
+      console.error(`No field mapping found for product type: ${productType}`);
+      return;
+    }
+
+    const mappedRows = updatedRows.map(row => {
+      const mappedRow = {
         id: row.id,
-        ...mappedRow
+        ...Object.fromEntries(
+            row.items.map((item, idx) => {
+              const label = lineItems[idx];
+              const field = fieldMapping[label];
+
+              if (!field) {
+                console.error(`No field found for label: ${label}`);
+                return [label, item];
+              }
+
+              return [field, item];
+            })
+        )
       };
-    }));
+      return mappedRow;
+    });
+
+    onLineItemsChange(mappedRows);
 
     setRows(updatedRows);
   };
-
 
   useEffect(() => {
     const columnCount = lineItems.length;

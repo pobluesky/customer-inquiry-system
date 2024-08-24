@@ -175,7 +175,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     </option>
                                     <option value="VESSEL">Vessel</option>
                                     <option value="BEAM">Beam</option>
-                                    <option value="OTHER">기타</option>
+                                    <option value="OTHER">Others</option>
                                 </select>
                             </div>
 

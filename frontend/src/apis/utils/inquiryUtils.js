@@ -54,6 +54,90 @@ export const processInquiries = (data) => {
                 productTypeText = '-';
         }
 
+        let countryText;
+        switch (inquiry.country) {
+            case 'KOREA':
+                countryText = '한국';
+                break;
+            case 'USA':
+                countryText = '미국';
+                break;
+            case 'JAPAN':
+                countryText = '일본';
+                break;
+            case 'CANADA':
+                countryText = '캐나다';
+                break;
+            case 'CHINA':
+                countryText = '중국';
+                break;
+            case 'GERMANY':
+                countryText = '독일';
+                break;
+            case 'FRANCE':
+                countryText = '프랑스';
+                break;
+            default:
+                countryText = '-';
+        }
+
+        let industryText;
+        switch (inquiry.industry) {
+            case 'AUTOMOBILE':
+                industryText = 'Automobile';
+                break;
+            case 'OTHERS':
+                industryText = 'Others';
+                break;
+            case 'CONSTRUCTION':
+                industryText = 'Construction';
+                break;
+            case 'DISTRIBUTION':
+                industryText = 'Distribution';
+                break;
+            case 'ELECTRIC':
+                industryText = 'Electric';
+                break;
+            case 'FURNITURE':
+                industryText = 'Furniture';
+                break;
+            case 'PLATING':
+                industryText = 'Plating';
+                break;
+            case 'HIGH_CARBON':
+                industryText = 'High-Carbon';
+                break;
+            case 'KITCHEN':
+                industryText = 'Kitchen';
+                break;
+            case 'LOW_CARBON':
+                industryText = 'Low-Carbon';
+                break;
+            case 'MACHINERY':
+                industryText = 'Machinery';
+                break;
+            case 'PIPE':
+                industryText = 'Pipe';
+                break;
+            case 'REROLLING':
+                industryText = 'Rerolling';
+                break;
+            case 'SHIPBUILDING':
+                industryText = 'Shipbuilding';
+                break;
+            case 'TRANSPORTATION':
+                industryText = 'Transportation';
+                break;
+            case 'VESSEL':
+                industryText = 'Vessel';
+                break;
+            case 'BEAM':
+                industryText = 'Beam';
+                break;
+            default:
+                industryText = '-';
+        }
+
         return {
             customerName: inquiry.customerName,
             inquiryId: inquiry.inquiryId,
@@ -61,6 +145,10 @@ export const processInquiries = (data) => {
             productType: productTypeText,
             progress: progressText,
             salesPerson: inquiry.salesPerson,
+            country: countryText,
+            corporate: inquiry.corporate,
+            corporationCode: inquiry.corporationCode,
+            industry: industryText,
         };
     });
 };
@@ -86,6 +174,11 @@ export const processInquiryData = (data) => {
                     thickness: item.thickness,
                     width: item.width,
                     quantity: item.quantity,
+                    expectedDeliveryDate: item.expectedDeliveryDate,
+                    transportationDestination: item.transportationDestination,
+                    edge: item.edge,
+                    tolerance: item.tolerance,
+                    annualCost: item.annualCost,
                 })),
             };
             break;
