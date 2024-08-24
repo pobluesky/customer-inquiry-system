@@ -272,7 +272,6 @@ export const processInquiryData = (data) => {
         default:
             throw new Error('Unknown productType');
     }
-    console.log('processInquiryData: ', formattedData);
     return formattedData;
 };
 
