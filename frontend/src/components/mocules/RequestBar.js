@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }) {
+    const navigate = useNavigate();
+    const { role } = useAuth();
 
     const buttonConfig = {
         'Inquiry 등록': ['초기화', '임시저장', '삭제', '검토의뢰'],
@@ -19,6 +23,8 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
             onReviewSubmit();
         } else if (btnName === '최종검토완료') {
             onFinalSubmit();
+        } else if (btnName === '닫기') {
+            navigate(`/inq-list/${role}`);
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }
