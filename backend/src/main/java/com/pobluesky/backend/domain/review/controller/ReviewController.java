@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.review.controller;
 
 import com.pobluesky.backend.domain.review.dto.request.ReviewCreateRequestDTO;
+import com.pobluesky.backend.domain.review.dto.request.ReviewUpdateRequestDTO;
 import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
 import com.pobluesky.backend.domain.review.service.ReviewService;
 import com.pobluesky.backend.global.util.ResponseFactory;
@@ -41,6 +42,23 @@ public class ReviewController {
         @RequestBody ReviewCreateRequestDTO request
         ) {
         ReviewResponseDTO response = reviewService.createReview(
+            token,
+            inquiryId,
+            request
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "검토 수정", description = "판매 담당자는 해당 Inquiry에 대해 최종검토완료 버튼으로 review 종료")
+    @PutMapping
+    public ResponseEntity<JsonResult> updateReview(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId,
+        @RequestBody ReviewUpdateRequestDTO request
+    ) {
+        ReviewResponseDTO response = reviewService.updateReview(
             token,
             inquiryId,
             request
