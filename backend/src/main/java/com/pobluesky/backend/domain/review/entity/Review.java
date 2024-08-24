@@ -70,4 +70,10 @@ public class Review extends BaseEntity {
         this.finalReviewText = finalReviewText;
         this.tsReviewReq = tsReviewReq;
     }
+
+    public void updateReview(
+        String finalReviewText
+    ){
+        this.finalReviewText = finalReviewText;
+    }
 }
