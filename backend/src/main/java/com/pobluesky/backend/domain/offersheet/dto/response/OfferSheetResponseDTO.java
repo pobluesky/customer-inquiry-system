@@ -20,6 +20,7 @@ public record OfferSheetResponseDTO(
     LocalDate validity,
     String destination,
     String remark,
+    String message,
     List<ReceiptResponse> receipts
 ) {
     public static OfferSheetResponseDTO from(OfferSheet offerSheet) {
@@ -33,6 +34,7 @@ public record OfferSheetResponseDTO(
             .validity(offerSheet.getValidity())
             .destination(offerSheet.getDestination())
             .remark(offerSheet.getRemark())
+            .message(offerSheet.getMessage())
             .receipts(offerSheet.getReceipts()
                 .stream()
                 .map(ReceiptResponse::from)
