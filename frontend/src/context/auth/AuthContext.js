@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         console.log(getCookie('userRole'))
         console.log(getCookie('userId'))
 
-        if(getCookie('userId') || getCookie('userRole')) {
+        if(userId) {
             removeCookie('accessToken');
             removeCookie('userRole');
             removeCookie('userId');

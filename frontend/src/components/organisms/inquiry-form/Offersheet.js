@@ -4,28 +4,24 @@ import Button from '../../atoms/Button';
 import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
-import OfferTable from '../../mocules/Offertable';
+import OfferTable from './Offertable';
 import { Offer_Sheet } from '../../../assets/css/Form.css';
+import OfferTableItem from '../../organisms/inquiry-form/OffertableItem';
 
-function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) {
+function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, handleFormDataChange, isOfferSheetItem }) {
     if(!formData || !inquiryData) {
         return;
     }
 
     const [lineItems, setLineItems] = useState([]);
-    const [lineItemsExistence, setLineItemsExistence] = useState(true);
 
-    useEffect(() => {
-        setLineItemsExistence(typeof lineItemData[0] !== 'undefined');
-    }, [lineItemData]);
-
-    const [editorValue, setEditorValue] = useState(''); // 텍스트 에디터 변수
     const [isChecked, setCheck] = useState(true); // 토글 버튼 클릭 여부
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
     const [rows, setRows] = useState([
         { id: Date.now(), items: Array(8).fill('') },
     ]);
+
     const [selectedRows, setSelectedRows] = useState([]);
 
     const addRow = () => {
@@ -37,10 +33,6 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
         const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
         setRows(remainingRows);
         setSelectedRows([]);
-        onLineItemsChange(remainingRows.map(row => ({
-            id: row.id,
-            ...Object.fromEntries(lineItems.map((label, index) => [label, row.items[index]]))
-        })));
     };
 
     const copyRows = () => {
@@ -102,45 +94,51 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                 {isChecked && (
                     <div>
                         <div>
-                            <Button
-                                onClick={addRow}
-                                btnName={'행 추가'}
-                                // margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                width={'96px'} // 추가
-                                backgroundColor={'#03507d'}
-                                textColor={'#ffffff'}
-                                border={'none'}
-                                borderRadius={'18px'}
-                                fontSize={'17px'}
-                                fontWeight={'500'}
-                                padding={'10px'}
-                            />
-                            <Button
-                                onClick={deleteRows}
-                                btnName={'행 삭제'}
-                                // margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                width={'96px'} // 추가
-                                backgroundColor={'#03507d'}
-                                textColor={'#ffffff'}
-                                border={'none'}
-                                borderRadius={'18px'}
-                                fontSize={'17px'}
-                                fontWeight={'500'}
-                                padding={'10px'}
-                            />
-                            <Button
-                                onClick={copyRows}
-                                btnName={'행 복사'}
-                                // margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                width={'96px'} // 추가
-                                backgroundColor={'#03507d'}
-                                textColor={'#ffffff'}
-                                border={'none'}
-                                borderRadius={'18px'}
-                                fontSize={'17px'}
-                                fontWeight={'500'}
-                                padding={'10px'}
-                            />
+                            { isOfferSheetItem === true ? (
+                                ''
+                            ) : (
+                                <>
+                                    <Button
+                                        onClick={addRow}
+                                        btnName={'행 추가'}
+                                        // margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                        width={'96px'} // 추가
+                                        backgroundColor={'#03507d'}
+                                        textColor={'#ffffff'}
+                                        border={'none'}
+                                        borderRadius={'18px'}
+                                        fontSize={'17px'}
+                                        fontWeight={'500'}
+                                        padding={'10px'}
+                                    />
+                                    <Button
+                                        onClick={deleteRows}
+                                        btnName={'행 삭제'}
+                                        // margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                        width={'96px'} // 추가
+                                        backgroundColor={'#03507d'}
+                                        textColor={'#ffffff'}
+                                        border={'none'}
+                                        borderRadius={'18px'}
+                                        fontSize={'17px'}
+                                        fontWeight={'500'}
+                                        padding={'10px'}
+                                    />
+                                    <Button
+                                        onClick={copyRows}
+                                        btnName={'행 복사'}
+                                        // margin={'-0.5vw 0.7vw 0 0.3vw'}
+                                        width={'96px'} // 추가
+                                        backgroundColor={'#03507d'}
+                                        textColor={'#ffffff'}
+                                        border={'none'}
+                                        borderRadius={'18px'}
+                                        fontSize={'17px'}
+                                        fontWeight={'500'}
+                                        padding={'10px'}
+                                    />
+                                </>
+                            )}
                         </div>
                         {/* 텍스트 에디터 */}
                         <TextEditor
@@ -148,8 +146,10 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                             margin={'0 auto 0 auto'} // 원하는 대로
                             inputHeight={'120px'} // 입력창 높이 (원하는 대로)
                             inputMaxHeight={'120px'} // 입력창 높이와 동일하게
-                            value={editorValue} // 입력값
-                            onChange={setEditorValue} // 입력값 상태 변화
+                            value={formData.message} // 입력값
+                            onChange={(content) =>
+                                handleFormDataChange(
+                                    'message', content)} // 입력값 상태 변화
                         />
                         {/* 고객사 카테고리 */}
                         <div>
@@ -166,13 +166,21 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                         {/* 오퍼 시트 카테고리 */}
                         <div>
                             <Category categoryName={'2. Offer-Sheet'} />
-                            <OfferTable
-                                rows={rows}
-                                onRowSelect={handleRowSelect}
-                                onInputChange={handleInputChange}
-                                selectedRows={selectedRows}
-                                lineItems={lineItemData}
-                            />
+                            { isOfferSheetItem === true ? (
+                                <OfferTableItem
+                                    rows={rows}
+                                    onRowSelect={handleRowSelect}
+                                    selectedRows={selectedRows}
+                                    lineItems={lineItemData}
+                                />
+                            ) : (
+                                <OfferTable
+                                    rows={rows}
+                                    onRowSelect={handleRowSelect}
+                                    onInputChange={handleInputChange}
+                                    selectedRows={selectedRows}
+                                />
+                            ) }
                         </div>
                         {/* 그 외 카테고리 */}
                         <div>
@@ -186,11 +194,13 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.priceTerms}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'priceTerms', e.target.value)}
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'4. Shipment'} />
-                                {/*<DateInput className={Datepicker} />*/}
                                 <Input
                                     type="date"
                                     width={'125px'}
@@ -199,6 +209,9 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.shipment}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'shipment', e.target.value)}
                                 />
                             </div>
                             <div>
@@ -211,6 +224,9 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.paymentTerms}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'paymentTerms', e.target.value)}
                                 />
                             </div>
                             <div>
@@ -222,11 +238,13 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.destination}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'destination', e.target.value)}
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'7. Validity'} />
-                                {/*<DateInput className={Datepicker} />*/}
                                 <Input
                                     type="date"
                                     width={'125px'}
@@ -235,6 +253,9 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.validity}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'validity', e.target.value)}
                                 />
                             </div>
                             <div>
@@ -246,6 +267,9 @@ function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) 
                                     borderRadius={'8px'}
                                     padding={'0 8px 0 8px'}
                                     value={formData.remark}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                            'remark', e.target.value)}
                                 />
                             </div>
                         </div>

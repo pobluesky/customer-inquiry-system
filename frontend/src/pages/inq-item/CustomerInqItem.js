@@ -59,10 +59,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
                 ...prevData,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
-            console.log("getInquiryDataDetail: ", response.data);
-            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
-            console.error('Error fetching InquiryDetail:', error);
+            console.log('Error fetching InquiryDetail:', error);
         }
     };
 
@@ -75,7 +73,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             setUserInfo(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
@@ -86,10 +84,9 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
-            console.log("review: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching Reviews:', error);
+            console.log('Error fetching Reviews:', error);
         }
     }
 
@@ -127,8 +124,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회
             }));
         }
     }, [inquiriesDataDetail, userInfo, reviewData]);
-
-    console.log("CustomerInqItem: ", formData)
 
     return (
         <div>

@@ -66,13 +66,13 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         productType: '',
         progress: '',
         salesPerson: '',
+        lineItemResponseDTOs: [],
 
         // review
         contract: '',
         thicknessNotify: '',
         reviewText: '',
         finalReviewText: '',
-        lineItemResponseDTOs: [],
 
         // quality
         finalResult: '',
@@ -91,14 +91,13 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
         qualityFilePath: '',
 
         // offerSheet
+        message: '',
         priceTerms: '',
         paymentTerms: '',
         shipment: '',
         validity: '',
         destination: '',
         remark: '',
-
-        // offerSheet receipts
         receipts: []
     });
 
@@ -219,6 +218,7 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
                 qualityFiles: qualityData?.qualityFiles || [],
                 qualityFileName: qualityData?.qualityReviewInfo.fileName || '',
                 qualityFilePath: qualityData?.qualityReviewInfo.filePath || '',
+                message: offerSheetData?.message || '',
                 priceTerms: offerSheetData?.priceTerms || '',
                 paymentTerms: offerSheetData?.paymentTerms || '',
                 shipment: offerSheetData?.shipment || '',
@@ -316,12 +316,14 @@ function SalesManagerInqItem() { // 고객사 Inquiry 조회
             { isOfferSheetItem ? (
                 <Offersheet formData={offerSheetData}
                             inquiryData={inquiriesDataDetail}
-                            lineItemData={formData.receipts}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
                 />
             ) : (
                 <Offersheet formData={formData}
                             inquiryData={inquiriesDataDetail}
                             lineItemData={formData.receipts}
+                            handleFormDataChange={handleFormDataChange}
                             onLineItemsChange={(newLineItems) => setFormData(
                                 prev => ({
                                     ...prev,

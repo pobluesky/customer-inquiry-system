@@ -19,7 +19,6 @@ const CustomerInqTableList = () => {
 
         try {
             const response = await getAllInquiries(userId);
-            console.log('API Response:', response);
             const inquiryData = response?.inquiryInfo || [];
 
             setRows(inquiryData);
@@ -28,7 +27,7 @@ const CustomerInqTableList = () => {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
-            console.error('Error fetching Inquiry:', error);
+            console.log('Error fetching Inquiry:', error);
         }
     };
 

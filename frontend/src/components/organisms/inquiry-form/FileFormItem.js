@@ -12,8 +12,6 @@ const FileFormItem = ({ fileForm, formData }) => {
 
     const isUploadSection = fileForm === "첨부파일";
 
-    console.log("files: ", formData);
-
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
             <div className={Sheet}>

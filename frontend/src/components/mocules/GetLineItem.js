@@ -19,7 +19,6 @@ const getAllColumns = (data) => {
 
 const GetLineItem = ({ lineItems }) => {
 
-    console.log("lineItems: ", lineItems);
     const columns = getAllColumns(lineItems);
 
     return (

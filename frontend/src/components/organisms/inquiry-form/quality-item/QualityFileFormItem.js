@@ -12,8 +12,6 @@ const QualityFileFormItem = ({ fileForm, formData }) => {
 
     const isUploadSection = fileForm === "품질검토 첨부파일";
 
-    console.log("qualityFiles: ", formData);
-
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
             <div className={Sheet}>

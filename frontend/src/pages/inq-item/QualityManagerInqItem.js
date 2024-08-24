@@ -84,10 +84,8 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
                 customerId: response.data.customerId,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
-            console.log("getInquiryDataDetail: ", response.data);
-            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
-            console.error('Error fetching InquiryDetail:', error);
+            console.log('Error fetching InquiryDetail:', error);
         }
     };
 
@@ -95,10 +93,9 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
         try {
             const response = await getUserInfoByCustomers(formData.customerId); // 수정 필요
             setUserInfo(response.data.data);
-            console.log("getUserInfo: ", response.data.data);
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
@@ -107,10 +104,9 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
             const response = await getQualities(id);
             setQualityData(response.data);
             setIsQualityItem(true);
-            console.log("quality: ", response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching Qualities:', error);
+            console.log('Error fetching Qualities:', error);
         }
     }
 
@@ -185,11 +181,9 @@ function QualityManagerInqItem() { // 고객사 Inquiry 조회
                     },
                     qualityComments: formData.qualityComments,
                 });
-                console.log("Quality: ", formData);
-                console.log("Quality report: ",)
                 console.log('Quality posted successfully:', qualityResponse);
             } catch (error) {
-                console.error('Error posting quality:', error);
+                console.log('Error posting quality:', error);
             }
         }
     }

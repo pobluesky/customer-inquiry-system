@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import {
-    getAllInquiries,
     getAllInquiriesByManagers,
 } from '../../apis/api/inquiry';
 import CollapsibleTable from './Table';
@@ -20,7 +18,6 @@ const QualityManagerInqTableList = () => {
 
         try {
             const response = await getAllInquiriesByManagers();
-            console.log('API Response:', response);
             const inquiryData = response?.inquiryInfo || [];
 
             setRows(inquiryData);
@@ -29,7 +26,7 @@ const QualityManagerInqTableList = () => {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
-            console.error('Error fetching Inquiry:', error);
+            console.log('Error fetching Inquiry:', error);
         }
     };
 
@@ -52,7 +49,7 @@ const QualityManagerInqTableList = () => {
 
     const handleRowsPerPageChange = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setCurrentPage(0); // rowsPerPage가 변경되면 첫 페이지로 이동
+        setCurrentPage(0);
     };
 
     return (

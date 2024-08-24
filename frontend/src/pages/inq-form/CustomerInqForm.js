@@ -48,7 +48,7 @@ function CustomerInqForm() {
             setUserInfo(response.data);
             return response.data;
         } catch (error) {
-            console.error('Error fetching User Info:', error);
+            console.log('Error fetching User Info:', error);
         }
     }
 
@@ -66,15 +66,13 @@ function CustomerInqForm() {
             event.preventDefault();
         }
         try {
-            console.log('Submitting inquiry with data:', formData);
             const response = await postInquiry(userId, {
                 ...formData,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
-            console.log("formData.lineItemRequestDTOs: ", formData.lineItemRequestDTOs);
             console.log('Inquiry posted successfully:', response);
         } catch (error) {
-            console.error('Error submitting inquiry:', error);
+            console.log('Error submitting inquiry:', error);
         }
     };
 

@@ -18,24 +18,18 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
   const [rows, setRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-
-  console.log("lineItemData Type: ", typeof lineItemData);
-  console.log("lineItemData: ", typeof lineItemData[0] === 'undefined');
-
   const [lineItemsExistence, setLineItemsExistence] = useState(true);
 
   useEffect(() => {
     setLineItemsExistence(typeof lineItemData[0] !== 'undefined');
   }, [lineItemData]);
 
-  console.log(productType)
 
   const columnFieldMappings = {
     "CAR": {
       "가능소": "lab",
       "품종": "kind",
       "규격기관": "standardOrg",
-      "PJT명": "pjtName",
       "판매차종명": "salesVehicleName",
       "부품명": "partName",
       "내외판": "ixPlate",
@@ -185,8 +179,6 @@ const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) =>
       items: row.items.slice(0, columnCount).concat(Array(columnCount - row.items.length).fill(''))
     })));
   }, [productType]);
-
-  console.log("isChecked: ", isChecked);
 
   return (
       <div className={Container} style={{ marginTop: "-2vh" }}>

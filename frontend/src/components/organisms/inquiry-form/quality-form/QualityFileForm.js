@@ -29,7 +29,6 @@ const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
     };
 
     const isUploadSection = fileForm === '품질검토 파일첨부' || fileForm === '첨부파일';
-    console.log("formData fileform:", formData);
 
     return (
         <div className={Container} style={{ marginTop: '-2vh' }}>
