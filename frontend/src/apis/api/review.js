@@ -26,6 +26,18 @@ export const postReview = async (inquiryId, reviewData) => {
     }
 };
 
+// 최종 검토 수정(등록)
+export const putReview = async (inquiryId, reviewData) => {
+    try {
+        const response = await axiosInstance.put(`/reviews/${inquiryId}`, reviewData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log('Error updating Review:', error);
+        throw error;
+    }
+};
+
 // 품질 검토 조회
 export const getQualities = async (inquiryId) => {
     try {

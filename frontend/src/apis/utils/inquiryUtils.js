@@ -281,7 +281,6 @@ export const createFormInquiryData = (formData) => {
     const form = new FormData();
 
     const inquiryData = processInquiryData(formData);
-    console.log('createFormData: ', inquiryData);
     delete inquiryData.files;
     form.append(
         'inquiry',
@@ -291,7 +290,6 @@ export const createFormInquiryData = (formData) => {
     if (formData.files) {
         form.append('files', formData.files);
     }
-    console.log('createFormData [form]: ', form);
 
     return form;
 };
@@ -299,7 +297,6 @@ export const createFormInquiryData = (formData) => {
 // FormData 객체 생성 함수 - quality
 export const createFormQualityData = (formData) => {
     const form = new FormData();
-    console.log('createFormQualityData: ', form);
 
     form.append(
         'quality',
@@ -309,7 +306,6 @@ export const createFormQualityData = (formData) => {
     if (formData.qualityFiles) {
         form.append('files', formData.qualityFiles);
     }
-    console.log('createFormQualityData [form]: ', form);
 
     return form;
 };

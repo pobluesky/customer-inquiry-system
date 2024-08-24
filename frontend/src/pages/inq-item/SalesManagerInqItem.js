@@ -12,7 +12,14 @@ import {
 } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getQualities, getReviews, getOfferSheets, postReview, postOfferSheet } from '../../apis/api/review';
+import {
+    getQualities,
+    getReviews,
+    getOfferSheets,
+    postReview,
+    postOfferSheet,
+    putReview,
+} from '../../apis/api/review';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import ManagerBasicInfoForm
     from '../../components/organisms/inquiry-form/ManagerBasicInfoForm';
@@ -251,14 +258,17 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
+                const reviewResponse = await putReview(id, {
+                    finalReviewText: formData.finalReviewText,
+                })
                 const offerSheetResponse = await postOfferSheet(id, {
                     ...formData,
                     receipts: formData.receipts,
                 });
-
+                console.log('Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
             } catch (error) {
-                console.log('Error posting offer sheet:', error);
+                console.log('Error updating review OR posting offerSheet:', error);
             }
         }
     }
