@@ -14,6 +14,7 @@ public record OfferSheetCreateRequestDTO(
     LocalDate validity,
     String destination,
     String remark,
+    String message,
     List<ReceiptCreateRequestDTO> receipts
 ) {
     public OfferSheet toOfferSheetEntity(Inquiry inquiry) {
@@ -26,6 +27,7 @@ public record OfferSheetCreateRequestDTO(
             .validity(validity)
             .destination(destination)
             .remark(remark)
+            .message(message)
             .build();
     }
 }

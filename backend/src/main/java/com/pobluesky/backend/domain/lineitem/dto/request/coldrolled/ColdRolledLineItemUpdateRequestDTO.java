@@ -10,9 +10,13 @@ public record ColdRolledLineItemUpdateRequestDTO(
     String thickness,
     String width,
     Integer quantity,
-    String expectedDeadline,
     String orderEdge,
     String inDiameter,
-    String outDiameter
+    String outDiameter,
+    String sleeveThickness,
+    String yieldingPoint,
+    String tensileStrength,
+    String elongationRatio,
+    String hardness
 ) {
 }

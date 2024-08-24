@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.lineitem.entity;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
-import com.pobluesky.backend.domain.user.entity.Customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,6 +55,16 @@ public class WireRodLineItem extends LineItem{
 
     private String finalUse;
 
+    private String transportationDestination;
+
+    private String annualCost;
+
+    private String legalRegulatoryReview;
+
+    private String legalRegulatoryReviewDetail;
+
+    private String finalCustomer;
+
     @Builder
     public WireRodLineItem(
         Inquiry inquiry,
@@ -67,7 +76,12 @@ public class WireRodLineItem extends LineItem{
         String expectedDeadline,
         Integer initialQuantity,
         String customerProcessing,
-        String finalUse
+        String finalUse,
+        String transportationDestination,
+        String annualCost,
+        String legalRegulatoryReview,
+        String legalRegulatoryReviewDetail,
+        String finalCustomer
     ){
         this.inquiry = inquiry;
         this.kind = kind;
@@ -80,5 +94,10 @@ public class WireRodLineItem extends LineItem{
         this.customerProcessing = customerProcessing;
         this.finalUse = finalUse;
         this.isActivated = true;
+        this.transportationDestination = transportationDestination;
+        this.annualCost = annualCost;
+        this.legalRegulatoryReview = legalRegulatoryReview;
+        this.legalRegulatoryReviewDetail = legalRegulatoryReviewDetail;
+        this.finalCustomer = finalCustomer;
     }
 }

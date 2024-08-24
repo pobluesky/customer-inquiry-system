@@ -56,6 +56,8 @@ public class OfferSheet {
 
     private String remark;
 
+    private String message;
+
     @Builder
     public OfferSheet(
         Inquiry inquiry,
@@ -64,7 +66,8 @@ public class OfferSheet {
         LocalDate shipment,
         LocalDate validity,
         String destination,
-        String remark
+        String remark,
+        String message
     ) {
         this.inquiry = inquiry;
         this.priceTerms = priceTerms;
@@ -73,6 +76,7 @@ public class OfferSheet {
         this.validity = validity;
         this.destination = destination;
         this.remark = remark;
+        this.message = message;
     }
 
     public void updateOfferSheet(

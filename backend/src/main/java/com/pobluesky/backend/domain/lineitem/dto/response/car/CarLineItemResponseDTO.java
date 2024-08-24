@@ -7,6 +7,8 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -24,8 +26,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private StandardOrg standardOrg;
 
-    private String pjtName;
-
     private String salesVehicleName;
 
     private String partName;
@@ -40,6 +40,16 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private Boolean isActivated;
 
+    private String expectedDeliveryDate;
+
+    private String transportationDestination;
+
+    private String edge;
+
+    private String tolerance;
+
+    private String annualCost;
+
     public static CarLineItemResponseDTO from(CarLineItem carLineItem) {
 
         return CarLineItemResponseDTO.builder()
@@ -48,7 +58,6 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .lab(carLineItem.getLab())
             .kind(carLineItem.getKind())
             .standardOrg(carLineItem.getStandardOrg())
-            .pjtName(carLineItem.getPjtName())
             .salesVehicleName(carLineItem.getSalesVehicleName())
             .partName(carLineItem.getPartName())
             .ixPlate(carLineItem.getIxPlate())
@@ -56,6 +65,11 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .width(carLineItem.getWidth())
             .quantity(carLineItem.getQuantity())
             .isActivated(carLineItem.getIsActivated())
+            .expectedDeliveryDate(carLineItem.getExpectedDeliveryDate())
+            .transportationDestination(carLineItem.getTransportationDestination())
+            .edge(carLineItem.getEdge())
+            .tolerance(carLineItem.getTolerance())
+            .annualCost(carLineItem.getAnnualCost())
             .build();
     }
 }

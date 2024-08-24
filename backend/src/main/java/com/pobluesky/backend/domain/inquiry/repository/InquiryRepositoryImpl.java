@@ -52,7 +52,11 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                     inquiry.progress,
                     inquiry.productType,
                     inquiry.inquiryType,
-                    customer.customerName
+                    customer.customerName,
+                    inquiry.country,
+                    inquiry.corporate,
+                    inquiry.corporationCode,
+                    inquiry.industry
                 )
             )
             .from(inquiry)
@@ -97,12 +101,16 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     ) {
        return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
-                    inquiry.inquiryId,
-                    inquiry.salesPerson,
-                    inquiry.progress,
-                    inquiry.productType,
-                    inquiry.inquiryType,
-                    customer.customerName
+                inquiry.inquiryId,
+                inquiry.salesPerson,
+                inquiry.progress,
+                inquiry.productType,
+                inquiry.inquiryType,
+                customer.customerName,
+                inquiry.country,
+                inquiry.corporate,
+                inquiry.corporationCode,
+                inquiry.industry
                 )
             )
             .from(inquiry)
@@ -133,12 +141,16 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
-                    inquiry.inquiryId,
-                    inquiry.salesPerson,
-                    inquiry.progress,
-                    inquiry.productType,
-                    inquiry.inquiryType,
-                    customer.customerName
+                inquiry.inquiryId,
+                inquiry.salesPerson,
+                inquiry.progress,
+                inquiry.productType,
+                inquiry.inquiryType,
+                customer.customerName,
+                inquiry.country,
+                inquiry.corporate,
+                inquiry.corporationCode,
+                inquiry.industry
                 )
             )
             .from(inquiry)
@@ -180,12 +192,16 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     ) {
         return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
-                    inquiry.inquiryId,
-                    inquiry.salesPerson,
-                    inquiry.progress,
-                    inquiry.productType,
-                    inquiry.inquiryType,
-                    customer.customerName
+                inquiry.inquiryId,
+                inquiry.salesPerson,
+                inquiry.progress,
+                inquiry.productType,
+                inquiry.inquiryType,
+                customer.customerName,
+                inquiry.country,
+                inquiry.corporate,
+                inquiry.corporationCode,
+                inquiry.industry
                 )
             )
             .from(inquiry)

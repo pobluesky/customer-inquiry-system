@@ -45,9 +45,19 @@ public class ThickPlateLineItem extends LineItem{
 
     private String show;
 
+    private String extraShow;
+
+    private String agingShow;
+
     private String curve;
 
     private String additionalRequests;
+
+    private String hardness;
+
+    private Boolean dropWeightTest;
+
+    private Boolean ultrasonicTransducer;
 
     @Builder
     public ThickPlateLineItem(
@@ -59,8 +69,13 @@ public class ThickPlateLineItem extends LineItem{
         String seal,
         Boolean grainSizeAnalysis,
         String show,
+        String extraShow,
+        String agingShow,
         String curve,
-        String additionalRequests
+        String additionalRequests,
+        String hardness,
+        Boolean dropWeightTest,
+        Boolean ultrasonicTransducer
     ){
         this.inquiry = inquiry;
         this.generalDetails = generalDetails;
@@ -70,8 +85,13 @@ public class ThickPlateLineItem extends LineItem{
         this.seal = seal;
         this.grainSizeAnalysis = grainSizeAnalysis;
         this.show = show;
+        this.extraShow = extraShow;
+        this.agingShow = agingShow;
         this.curve = curve;
         this.additionalRequests = additionalRequests;
         this.isActivated = true;
+        this.hardness = hardness;
+        this.dropWeightTest = dropWeightTest;
+        this.ultrasonicTransducer = ultrasonicTransducer;
     }
 }

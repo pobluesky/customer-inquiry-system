@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.lineitem.entity;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
-import com.pobluesky.backend.domain.user.entity.Customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,6 +59,14 @@ public class ColdRolledLineItem extends LineItem{
 
     private String outDiameter;
 
+    private String sleeveThickness;
+
+    private String tensileStrength;
+
+    private String elongationRatio;
+
+    private String hardness;
+
     @Builder
     public ColdRolledLineItem(
         Inquiry inquiry,
@@ -70,7 +79,11 @@ public class ColdRolledLineItem extends LineItem{
         String expectedDeadline,
         String orderEdge,
         String inDiameter,
-        String outDiameter
+        String outDiameter,
+        String sleeveThickness,
+        String tensileStrength,
+        String elongationRatio,
+        String hardness
     ){
         this.inquiry = inquiry;
         this.kind = kind;
@@ -84,5 +97,9 @@ public class ColdRolledLineItem extends LineItem{
         this.inDiameter = inDiameter;
         this.outDiameter = outDiameter;
         this.isActivated = true;
+        this.sleeveThickness = sleeveThickness;
+        this.tensileStrength = tensileStrength;
+        this.elongationRatio = elongationRatio;
+        this.hardness = hardness;
     }
 }

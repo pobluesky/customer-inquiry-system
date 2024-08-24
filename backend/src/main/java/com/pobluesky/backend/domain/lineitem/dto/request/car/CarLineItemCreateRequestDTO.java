@@ -7,17 +7,23 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
+import java.time.LocalDate;
+
 public record CarLineItemCreateRequestDTO(
     Lab lab,
     Kind kind,
     StandardOrg standardOrg,
-    String pjtName,
     String salesVehicleName,
     String partName,
     IxPlate ixPlate,
     String thickness,
     String width,
-    int quantity
+    Integer quantity,
+    String expectedDeliveryDate,
+    String transportationDestination,
+    String edge,
+    String tolerance,
+    String annualCost
 ) {
     public CarLineItem toCarLineItemEntity(Inquiry inquiry) {
 
@@ -26,13 +32,17 @@ public record CarLineItemCreateRequestDTO(
             .lab(lab)
             .kind(kind)
             .standardOrg(standardOrg)
-            .pjtName(pjtName)
             .salesVehicleName(salesVehicleName)
             .partName(partName)
             .ixPlate(ixPlate)
             .thickness(thickness)
             .width(width)
             .quantity(quantity)
+            .expectedDeliveryDate(expectedDeliveryDate)
+            .transportationDestination(transportationDestination)
+            .edge(edge)
+            .tolerance(tolerance)
+            .annualCost(annualCost)
             .build();
     }
 }

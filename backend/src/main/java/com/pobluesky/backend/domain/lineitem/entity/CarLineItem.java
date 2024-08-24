@@ -5,7 +5,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.user.entity.Customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,8 +48,6 @@ public class CarLineItem extends LineItem {
     @Enumerated(EnumType.STRING)
     private StandardOrg standardOrg;
 
-    private String pjtName;
-
     private String salesVehicleName;
 
     private String partName;
@@ -62,25 +61,38 @@ public class CarLineItem extends LineItem {
 
     private Integer quantity;
 
+    private String expectedDeliveryDate;
+
+    private String transportationDestination;
+
+    private String edge;
+
+    private String tolerance;
+
+    private String annualCost;
+
     @Builder
     public CarLineItem(
         Inquiry inquiry,
         Lab lab,
         Kind kind,
         StandardOrg standardOrg,
-        String pjtName,
         String salesVehicleName,
         String partName,
         IxPlate ixPlate,
         String thickness,
         String width,
-        Integer quantity
+        Integer quantity,
+        String expectedDeliveryDate,
+        String transportationDestination,
+        String edge,
+        String tolerance,
+        String annualCost
     ) {
         this.inquiry=inquiry;
         this.lab = lab;
         this.kind = kind;
         this.standardOrg = standardOrg;
-        this.pjtName = pjtName;
         this.salesVehicleName = salesVehicleName;
         this.partName = partName;
         this.ixPlate = ixPlate;
@@ -88,5 +100,10 @@ public class CarLineItem extends LineItem {
         this.width = width;
         this.quantity = quantity;
         this.isActivated = true;
+        this.expectedDeliveryDate = expectedDeliveryDate;
+        this.transportationDestination = transportationDestination;
+        this.edge = edge;
+        this.tolerance = tolerance;
+        this.annualCost = annualCost;
     }
 }
