@@ -6,7 +6,6 @@ import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
 import OfferTable from '../../mocules/Offertable';
 import { Offer_Sheet } from '../../../assets/css/Form.css';
-import prevRows from 'lodash';
 
 function Offersheet({ formData, inquiryData, lineItemData, onLineItemsChange }) {
     if(!formData || !inquiryData) {

@@ -1,6 +1,5 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
-    createFormData,
     createFormInquiryData,
     processInquiries,
 } from '../utils/inquiryUtils';

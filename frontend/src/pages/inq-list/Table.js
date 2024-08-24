@@ -26,9 +26,9 @@ function Row({ row, role }) {
     return (
         <React.Fragment>
             <TableRow
-                sx={{ '& > *': { borderBottom: 'unset' } }}
+                sx={{ '& > *': { borderBottom: 'unset' }}}
                 onClick={handleClick}
-                style={{ cursor: 'pointer' }} // 클릭 가능하게 하기
+                style={{ cursor: 'pointer' }}
             >
                 <TableCell>
                     <IconButton
@@ -49,28 +49,17 @@ function Row({ row, role }) {
                 <TableCell align="right">{row.productType}</TableCell>
                 <TableCell align="right">{row.customerName}</TableCell>
                 <TableCell align="right">{row.progress}</TableCell>
-                {/* 추가할 컬럼들 */}
-                <TableCell align="right">{row.additionalData1}</TableCell>
-                <TableCell align="right">{row.additionalData2}</TableCell>
-                <TableCell align="right">{row.additionalData3}</TableCell>
-                <TableCell align="right">{row.additionalData4}</TableCell>
-                {/* 필요한 만큼 더 추가 */}
-                <TableCell align="right">{row.additionalData5}</TableCell>
-                <TableCell align="right">{row.additionalData6}</TableCell>
-                <TableCell align="right">{row.additionalData7}</TableCell>
-                <TableCell align="right">{row.additionalData8}</TableCell>
-                {/* 필요한 만큼 더 추가 */}
-                <TableCell align="right">{row.additionalData9}</TableCell>
-                <TableCell align="right">{row.additionalData10}</TableCell>
-                <TableCell align="right">{row.additionalData11}</TableCell>
-                <TableCell align="right">{row.additionalData12}</TableCell>
+                <TableCell align="right">{row.country}</TableCell>
+                <TableCell align="right">{row.corporate}</TableCell>
+                <TableCell align="right">{row.corporationCode}</TableCell>
+                <TableCell align="right">{row.industry}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
                             <Typography variant="h6" gutterBottom component="div">
-                                라인아이템
+                                문의상세
                             </Typography>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
@@ -117,8 +106,11 @@ export default function CollapsibleTable({
                 component={Paper}
                 sx={{
                     borderRadius: '10px',
-                    overflowX: 'auto', // 가로 스크롤 활성화
-                    whiteSpace: 'nowrap' // 테이블 셀이 줄바꿈되지 않고 한 줄로 유지됨
+                    overflowX: 'auto',
+                    whiteSpace: 'nowrap',
+                    '& .MuiTableCell-root': {
+                        paddingRight: '120px'
+                    }
                 }}
             >
                 <Table aria-label="collapsible table">
@@ -130,21 +122,10 @@ export default function CollapsibleTable({
                             <TableCell align="right" sx={{ color: '#ffffff' }}>제품</TableCell>
                             <TableCell align="right" sx={{ color: '#ffffff' }}>고객사</TableCell>
                             <TableCell align="right" sx={{ color: '#ffffff' }}>진행현황</TableCell>
-                            {/* 추가할 컬럼 헤더들 */}
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
-                            {/* 필요한 만큼 더 추가 */}
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
-                            {/* 필요한 만큼 더 추가 */}
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터1</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터2</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터3</TableCell>
-                            <TableCell align="right" sx={{ color: '#ffffff' }}>추가데이터4</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>국가</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>판매상사</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>법인코드</TableCell>
+                            <TableCell align="right" sx={{ color: '#ffffff' }}>산업분류</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
