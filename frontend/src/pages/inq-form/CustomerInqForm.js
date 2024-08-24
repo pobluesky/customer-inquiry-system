@@ -10,9 +10,15 @@ import {
 import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
+import { useForm } from 'react-hook-form';
+import { InquiryCompleteAlert } from '../../utils/actions';
+import { useNavigate } from 'react-router-dom';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId } = useAuth();
+    const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
     const [userInfo, setUserInfo] = useState(null);
 
     const [formData, setFormData] = useState({
@@ -59,7 +65,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleInquirySubmit = async (event) => {
         if (event) {
             event.preventDefault();
         }
@@ -69,6 +75,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
             console.log('Inquiry posted successfully:', response);
+            InquiryCompleteAlert();
+            setTimeout(() => {
+                navigate(`/inq-list/${role}`);
+            }, '2000');
         } catch (error) {
             console.log('Error submitting inquiry:', error);
         }
@@ -97,9 +107,15 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     return (
         <div>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit} />
-            <InquiryNewForm formData={formData} handleFormDataChange={handleFormDataChange} />
+            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit(handleInquirySubmit)} />
+            <InquiryNewForm
+                register={register}
+                errors={errors}
+                formData={formData}
+                handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
+                register={register}
+                errors={errors}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}

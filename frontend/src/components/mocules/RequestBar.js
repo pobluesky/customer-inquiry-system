@@ -25,7 +25,6 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
     const handleButtonClick = (btnName) => {
         if (btnName === '검토의뢰') {
             onSubmit();
-            InquiryCompleteAlert();
         } else if (btnName === '품질검토완료') {
             onSubmit();
             QualityCompleteAlert();
@@ -41,9 +40,6 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }
-        setTimeout(() => {
-            navigate(`/inq-list/${role}`);
-        }, '2000');
 
         if (btnName === '닫기') {
             navigate(`/inq-list/${role}`);
