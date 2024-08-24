@@ -1,7 +1,7 @@
 package com.pobluesky.backend.domain.lineitem.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.InqName;
+import com.pobluesky.backend.domain.lineitem.entity.type.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.wirerod.Kind;
 
 import jakarta.persistence.Entity;

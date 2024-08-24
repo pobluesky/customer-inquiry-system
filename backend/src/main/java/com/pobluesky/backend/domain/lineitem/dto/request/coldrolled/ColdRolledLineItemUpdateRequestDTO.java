@@ -1,6 +1,6 @@
 package com.pobluesky.backend.domain.lineitem.dto.request.coldrolled;
 
-import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.InqName;
+import com.pobluesky.backend.domain.lineitem.entity.type.InqName;
 import com.pobluesky.backend.domain.lineitem.entity.type.coldrolled.Kind;
 
 public record ColdRolledLineItemUpdateRequestDTO(
