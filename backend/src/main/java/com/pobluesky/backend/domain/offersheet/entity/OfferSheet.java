@@ -85,8 +85,7 @@ public class OfferSheet {
         LocalDate shipment,
         LocalDate validity,
         String destination,
-        String remark,
-        String message
+        String remark
     ) {
         this.priceTerms = priceTerms;
         this.paymentTerms = paymentTerms;
@@ -94,6 +93,5 @@ public class OfferSheet {
         this.validity = validity;
         this.destination = destination;
         this.remark = remark;
-        this.message = message;
     }
 }
