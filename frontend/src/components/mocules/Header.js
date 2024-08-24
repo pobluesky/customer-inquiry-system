@@ -21,6 +21,8 @@ function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout, userId, role } = useAuth();
 
+    const url = `/inq-list/${role}`;
+
     const columns = didLogin
         ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
         : '45px 340px 170px 144px 150px 150px';
@@ -80,7 +82,7 @@ function Header({ inq, voc, dashboard }) {
                         <>
                             <div>
                                 <MenuLink
-                                    to="/inq-main"
+                                    to={url}
                                     style={{
                                         color:
                                             inq && !voc && !dashboard
@@ -105,17 +107,17 @@ function Header({ inq, voc, dashboard }) {
                                 </MenuLink>
                             </div>
                             <div>
-                                <MenuLink
-                                    to="/dashboard"
-                                    style={{
-                                        color:
-                                            !inq && !voc && dashboard
-                                                ? '#03507d'
-                                                : '#c1c1c1',
-                                    }}
-                                >
-                                    DashBoard
-                                </MenuLink>
+                                {/*<MenuLink*/}
+                                {/*    to="/dashboard"*/}
+                                {/*    style={{*/}
+                                {/*        color:*/}
+                                {/*            !inq && !voc && dashboard*/}
+                                {/*                ? '#03507d'*/}
+                                {/*                : '#c1c1c1',*/}
+                                {/*    }}*/}
+                                {/*>*/}
+                                {/*    DashBoard*/}
+                                {/*</MenuLink>*/}
                             </div>
                             <div className={User}>
                                 <div>
@@ -162,13 +164,13 @@ function Header({ inq, voc, dashboard }) {
                     ) : (
                         <>
                             <div>
-                                <MenuLink to="/inq-main">Inquiry</MenuLink>
+                                <MenuLink to={url}>Inquiry</MenuLink>
                             </div>
                             <div>
                                 <MenuLink to="/voc-main">VoC</MenuLink>
                             </div>
                             <div>
-                                <MenuLink to="/dashboard">DashBoard</MenuLink>
+                                {/*<MenuLink to="/dashboard">DashBoard</MenuLink>*/}
                             </div>
                             {/* 로그인 & 회원가입 버튼 */}
                             {!didLogin && !isLoginPage && (

@@ -55,7 +55,7 @@ const QualityManagerInqTableList = () => {
 
     return (
         <div>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'quality'} />
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'quality'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${rows.length}`} />
             <div style={{ width: "90%", margin: "0 auto" }}>

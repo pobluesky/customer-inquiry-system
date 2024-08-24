@@ -23,9 +23,9 @@ const InqMain = () => {
           {role === 'CUSTOMER' ? (
               <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
           ) : role === 'SALES' ? (
-              <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'sales'} />
+              <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'sales'} />
           ) : (
-              <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} role={'quality'} />
+              <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'quality'} />
           )}
         <div className={_IntroMain}>
           <Title marginTop={"7vh"}>고객사와 함께하는 BLUESKY</Title>
@@ -58,7 +58,7 @@ const InqMain = () => {
           </IntroBox>
         </Wrapper>
           <Button
-              onClick={() => navigate('/inq-form')}
+              onClick={() => navigate('/inq-form/customer')}
               btnName={'Inquiry 의뢰하기 ►'}
               width={'250px'}
               height={'60px'}

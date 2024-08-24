@@ -18,7 +18,6 @@ export const getInquiry = async (userId, page = 0) => {
             totalElements,
         };
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -40,7 +39,6 @@ export const getAllInquiries = async (userId) => {
         };
 
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -55,7 +53,6 @@ export const getInquiryDetail = async (userId, inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -97,7 +94,6 @@ export const getInquiryByManagers = async (page = 0) => {
             totalElements,
         };
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -121,7 +117,6 @@ export const getAllInquiriesByManagers = async () => {
         };
 
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };
@@ -135,7 +130,6 @@ export const getInquiryDetailByManagers = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log('Error fetching Inquiry:', error);
         throw error;
     }
 };

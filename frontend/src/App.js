@@ -51,7 +51,7 @@ function App() {
                         <Route path="voc-list" element={<VocList />} />
                         <Route path="voc-form" element={<VocForm />} />
 
-                        <Route path="dashboard" element={<DashBoard />} />
+                        {/*<Route path="dashboard" element={<DashBoard />} />*/}
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>

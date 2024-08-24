@@ -110,8 +110,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 customerId: response.data.customerId,
                 lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
             }));
-            console.log("getInquiryDataDetail: ", response.data);
-            console.log("getInquiryDataDetail - lineItemResponseDTOs: ", response.data.lineItemResponseDTOs);
         } catch (error) {
             console.log('Error fetching InquiryDetail:', error);
         }
@@ -279,7 +277,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     return (
         <div>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} role={'sales'} />
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id} role={'sales'} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} onReviewSubmit={handleReviewSubmit} onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryForm

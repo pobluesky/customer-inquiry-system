@@ -42,7 +42,7 @@ const SalesManagerInqList = () => {
 
     return (
         <div>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${totalElements}`} />
 

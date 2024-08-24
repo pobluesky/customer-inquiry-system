@@ -10,7 +10,6 @@ export const getReviews = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log('Error fetching Reviews:', error);
         throw error;
     }
 };
@@ -34,7 +33,6 @@ export const getQualities = async (inquiryId) => {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log('Error fetching Qualities:', error);
         throw error;
     }
 };
@@ -43,8 +41,6 @@ export const getQualities = async (inquiryId) => {
 export const postQuality = async (inquiryId, qualityData) => {
     try {
         const formData = createFormQualityData(qualityData);
-        console.log('postQualityFormData: ', formData);
-
         const response = await axiosInstance.post(
             `/qualities/${inquiryId}`,
             formData,
@@ -62,6 +58,18 @@ export const postQuality = async (inquiryId, qualityData) => {
     }
 };
 
+// 오퍼시트 조회
+export const getOfferSheets = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.get(`/offersheet/${inquiryId}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 오퍼시트 등록
 export const postOfferSheet = async (inquiryId, offerSheetData) => {
     try {
         const response = await axiosInstance.post(
@@ -75,14 +83,3 @@ export const postOfferSheet = async (inquiryId, offerSheetData) => {
         throw error;
     }
 };
-
-export const getOfferSheets = async (inquiryId) => {
-    try {
-        const response = await axiosInstance.get(`/offersheet/${inquiryId}`);
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        console.log('Error fetching offer sheet:', error);
-        throw error;
-    }
-}

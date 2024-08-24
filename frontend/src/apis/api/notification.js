@@ -18,7 +18,6 @@ const fetchNotifications = async (url) => {
     const response = await axiosInstance.get(url);
     return processNotifications(response.data.data);
   } catch (error) {
-    console.log(`[Fetch Notifications Error]: ${error}`);
     throw error;
   }
 };
