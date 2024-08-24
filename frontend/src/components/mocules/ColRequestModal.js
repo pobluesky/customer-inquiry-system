@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import parse from 'html-react-parser';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
@@ -9,7 +8,6 @@ import {
     Col_Req_Modal,
 } from '../../assets/css/Voc.css';
 import {
-    getCollaborationDetail,
     putDecisionByQuality,
     putCompleteByQuality,
 } from '../../apis/api/collaboration';
@@ -42,13 +40,6 @@ export default function ColRequestModal({
     const [tryReject, isRejecting] = useState(false); // 협업 거절 버튼 클릭 후 거절 내용 작성 중
 
     const fileInputRef = useRef(null);
-
-    const sanitizedcolReply = sanitizer(colDetail.colReply);
-    const parsedColReply = parse(sanitizedcolReply);
-    console.log(parsedColReply);
-
-    const sanitizedsetColReply = sanitizer(colReply);
-    const parsedSetColReply = parse(sanitizedsetColReply);
 
     // 협업 진행 상황별로 모달창 높이 조절
     useEffect(() => {
@@ -97,6 +88,13 @@ export default function ColRequestModal({
         } catch (error) {
             console.error('협업 완료 실패:', error);
         }
+    };
+
+    const filesEllipsis = {
+        maxWidth: '144px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     };
 
     return (
@@ -157,7 +155,7 @@ export default function ColRequestModal({
                             <div
                                 style={{
                                     width: '62vw',
-                                    height: '20vh',
+                                    height: '24vh',
                                     margin: '0 3vw 0 3vw',
                                     padding: '1vh 1vw 1vh 1vw',
                                     color: '#212121',
@@ -176,12 +174,32 @@ export default function ColRequestModal({
                 )}
                 {/* 버튼 그룹 */}
                 <div>
-                    {tryAccept !== tryReject && role === 'QUALITY' && (
-                        <>
-                            <div>담당자 첨부파일</div>
-                            <div>{file?.name || ''}</div>
-                        </>
-                    )}
+                    {(status !== 'READY' || tryAccept !== tryReject) &&
+                        role === 'QUALITY' && (
+                            <>
+                                <div>담당자 첨부파일</div>
+                                <div style={filesEllipsis}>
+                                    {colDetail.filePath || filePath ? (
+                                        <a
+                                            href={
+                                                colDetail.filePath || filePath
+                                            }
+                                            download
+                                        >
+                                            {file?.name ||
+                                                colDetail.fileName ||
+                                                fileName ||
+                                                ''}
+                                        </a>
+                                    ) : (
+                                        file?.name ||
+                                        colDetail.fileName ||
+                                        fileName ||
+                                        ''
+                                    )}
+                                </div>
+                            </>
+                        )}
                     <ColReqResButton
                         btnName={'닫기'}
                         onClick={() => {

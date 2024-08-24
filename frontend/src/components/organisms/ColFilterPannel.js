@@ -7,33 +7,8 @@ import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
 export default function ColFilterPanel({
     searchedItems,
-    title,
-    startDate,
-    endDate,
-    customerName,
-    questionNo,
-    setTitle,
-    setEndDate,
-    setStartDate,
-    setCustomerName,
-    setQuestionNo,
-    setTimeFilter,
-    setStatusFilter,
     searchByFilter,
 }) {
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST' 또는 'OLDEST'
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY' 또는 'COMPLETED'
-
-    const clickTimeFilter = (filter) => {
-        setSelectedTimeFilter(filter);
-        setTimeFilter(filter);
-    };
-
-    const clickStatusFilter = (filter) => {
-        setSelectedStatusFilter(filter);
-        setStatusFilter(filter);
-    };
-
     return (
         <>
             <div className={Collaboration_Filter_Pannel}>

@@ -24,6 +24,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import ColForm from './components/templates/ColForm';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-list" element={<VocList />} />
                         <Route path="voc-form" element={<VocForm />} />
+                        <Route path="voc-collaboration" element={<ColForm />} />
 
                         {/*<Route path="dashboard" element={<DashBoard />} />*/}
                         {/* Route path="*" element={<Error404 />} /> */}

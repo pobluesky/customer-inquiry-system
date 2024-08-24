@@ -791,8 +791,8 @@ div, button {
 
 /* 고객사 첨부파일 이름 길이 출력 제한 */
 .Col_Req_Modal > div:nth-child(4) > div:nth-child(2) {
-    margin: 0 3vw 0 0;
-    max-width: 96px;
+    margin: 0 3vw 0 1vw;
+    max-width: 144px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -829,6 +829,7 @@ div, button {
 
 .Col_Req_Modal a {
     text-decoration: none;
+    font-weight: 600;
     color: rgb(0, 0, 164);
 }
 /* 

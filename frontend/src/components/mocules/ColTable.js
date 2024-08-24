@@ -136,7 +136,7 @@ export default function ColTable({
     const { userId } = useAuth();
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
     const [collabs, setCollabs] = useState([]);
 
     // 해당 협업 관련 담당자 여부 확인
@@ -144,7 +144,7 @@ export default function ColTable({
         if (role === 'QUALITY' && authorizedId !== userId) {
             setAuth(false);
         }
-    }
+    };
 
     const fetchGetCol = async () => {
         try {
@@ -327,15 +327,28 @@ export default function ColTable({
                                     textAlign: 'center',
                                     width: 120,
                                     minWidth: 120,
-                                    backgroundColor:
-                                        row.colStatus === 'READY'
-                                            ? '#4facf7'
-                                            : row.colStatus === 'INPROGRESS'
-                                            ? '#91cbfa'
-                                            : '',
+                                    fontWeight: 600,
+                                    // color:
+                                    //     row.colStatus === 'READY'
+                                    //         ? '#ffffff'
+                                    //         : '#000000',
+                                    // backgroundColor:
+                                    //     row.colStatus === 'READY'
+                                    //         ? '#3c6cf2'
+                                    //         : row.colStatus === 'INPROGRESS'
+                                    //         ? '#a1c2ff'
+                                    //         : row.colStatus === 'REFUSE'
+                                    //         ? '#ffdb7b'
+                                    //         : '',
                                 }}
                             >
-                                {row.colStatus}
+                                {row.colStatus === 'READY'
+                                    ? '협업 대기'
+                                    : row.colStatus === 'INPROGRESS'
+                                    ? '협업 진행 중'
+                                    : row.colStatus === 'COMPLETE'
+                                    ? '협업 완료'
+                                    : '협업 거절'}
                             </TableCell>
                             <TableCell
                                 sx={{
@@ -369,7 +382,8 @@ export default function ColTable({
                             rowsPerPageOptions={[
                                 5,
                                 10,
-                                25,
+                                15,
+                                20,
                                 { label: 'All', value: -1 },
                             ]}
                             colSpan={6}

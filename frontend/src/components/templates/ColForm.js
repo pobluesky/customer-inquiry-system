@@ -11,6 +11,7 @@ export default function ColForm() {
     const [height, setHeight] = useState('');
     const [auth, setAuth] = useState(true);
     const [colDetail, setColDetail] = useState([]);
+    const [selectedTimeFilter, setSelectedTimeFilter] = useState('LATEST'); // Added state
 
     return (
         <>
