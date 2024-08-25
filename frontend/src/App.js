@@ -15,7 +15,7 @@ import { VocMain } from './pages/voc-main';
 import { VocList } from './pages/voc-list';
 import { VocForm } from './pages/voc-form';
 
-import { DashBoard } from './pages/dashboard';
+// import { DashBoard } from './pages/dashboard';
 
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/templates/Layout';

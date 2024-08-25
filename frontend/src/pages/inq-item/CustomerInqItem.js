@@ -12,9 +12,19 @@ import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getReviews } from '../../apis/api/review';
+import { getOfferSheets, getReviews } from '../../apis/api/review';
 import FinalReviewTextForm
     from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
+import ReviewTextForm
+    from '../../components/organisms/inquiry-form/review-form/ReviewTextForm';
+import SalesInfoFormItem
+    from '../../components/organisms/inquiry-form/review-item/SalesInfoFormItem';
+import ReviewTextFormItem
+    from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
+import FinalReviewTextFormItem
+    from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
+import SalesInfoForm
+    from '../../components/organisms/inquiry-form/review-form/SalesInfoForm';
 
 function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId } = useAuth();
@@ -23,6 +33,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
+    const [offerSheetData, setOfferSheetData] = useState(null);
+
+    const [isReviewItem, setIsReviewItem] = useState(false);
+    const [isOfferSheetItem, setIsOfferSheetItem] = useState(false);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -49,6 +63,16 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         reviewText: '',
         finalReviewText: '',
         lineItemResponseDTOs: [],
+
+        // offerSheet
+        message: '',
+        priceTerms: '',
+        paymentTerms: '',
+        shipment: '',
+        validity: '',
+        destination: '',
+        remark: '',
+        receipts: []
     });
 
     const getInquiryDataDetail = async () => {
@@ -87,9 +111,25 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         try {
             const response = await getReviews(id);
             setReviewData(response.data);
+            setIsReviewItem(true);
             return response.data;
         } catch (error) {
             console.log('Error fetching Reviews:', error);
+        }
+    }
+
+    const getOfferSheet = async () => {
+        try {
+            const response = await getOfferSheets(id);
+            setOfferSheetData(response.data);
+            setIsOfferSheetItem(true);
+            setFormData(prevData => ({
+                ...prevData,
+                receipts: response.data.receipts || []
+            }));
+            return response.data;
+        } catch (error) {
+            console.log('Error fetching OfferSheet:', error);
         }
     }
 
@@ -97,6 +137,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         getInquiryDataDetail();
         getUserInfo();
         getReview();
+        getOfferSheet();
     }, [userId, id]);
 
     useEffect(() => {
@@ -123,10 +164,17 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
-                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || []
+                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || [],
+                message: offerSheetData?.message || '',
+                priceTerms: offerSheetData?.priceTerms || '',
+                paymentTerms: offerSheetData?.paymentTerms || '',
+                shipment: offerSheetData?.shipment || '',
+                validity: offerSheetData?.validity || '',
+                destination: offerSheetData?.destination || '',
+                receipts: offerSheetData?.receipts || []
             }));
         }
-    }, [inquiriesDataDetail, userInfo, reviewData]);
+    }, [inquiriesDataDetail, userInfo]);
 
     return (
         <div>
@@ -140,10 +188,27 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
-            {/*<ReviewTextForm formData={formData} />*/}
+
+            { isReviewItem ? (
+                <>
+                    <ReviewTextFormItem formData={reviewData} />
+                    <FinalReviewTextFormItem formData={reviewData} />
+                </>
+                ) : (
+                ''
+            )}
+
+            { isOfferSheetItem ? (
+                <Offersheet formData={offerSheetData}
+                            inquiryData={inquiriesDataDetail}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
+                />
+            ) : (
+                ''
+            )}
+
             <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
-            <Offersheet />
-            <FinalReviewTextForm formData={formData} />
         </div>
     )
 }
