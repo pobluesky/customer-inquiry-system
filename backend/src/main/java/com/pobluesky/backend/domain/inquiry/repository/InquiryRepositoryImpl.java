@@ -283,7 +283,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     private BooleanExpression customerNameContains(String customerName) {
-        return StringUtils.hasText(customerName) ? customer.customerName.eq(customerName) : null;
+        return StringUtils.hasText(customerName) ? customer.customerName.contains(customerName) : null;
     }
 
     private BooleanExpression inquiryTypeEq(InquiryType inquiryType) {
