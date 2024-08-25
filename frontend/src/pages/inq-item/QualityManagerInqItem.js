@@ -3,8 +3,8 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    InquiryHistoryForm,
     FileFormItem,
+    InquiryHistoryFormItem,
 } from '../../components/organisms/inquiry-form';
 import {
     getInquiryDetailByManagers,
@@ -201,10 +201,9 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id} role={'quality'} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 품질검토"} onSubmit={handleSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
-            <InquiryHistoryForm
-                productType={formData.productType}
+            <InquiryHistoryFormItem
+                productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
-                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 

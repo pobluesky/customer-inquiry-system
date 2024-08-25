@@ -9,7 +9,12 @@ import { Join } from './pages/join';
 import { InqMain } from './pages/inq-main';
 import { CustomerInqForm } from './pages/inq-form';
 import { CustomerInqTableList, SalesManagerInqTableList, QualityManagerInqTableList } from './pages/inq-list';
-import { CustomerInqItem, SalesManagerInqItem, QualityManagerInqItem } from './pages/inq-item';
+import {
+    CustomerInqItem,
+    SalesManagerInqItem,
+    QualityManagerInqItem,
+    LineItemTableItem,
+} from './pages/inq-item';
 
 import { VocMain } from './pages/voc-main';
 import { VocList } from './pages/voc-list';
@@ -42,6 +47,8 @@ function App() {
                         <Route path="inq-list/customer" element={<CustomerInqTableList />} />
                         <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
                         <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
+
+                        <Route path="inq-list/line-items/:id" element={<LineItemTableItem />} />
 
                         <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
                         <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />

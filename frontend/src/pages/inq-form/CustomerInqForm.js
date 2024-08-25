@@ -114,8 +114,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 formData={formData}
                 handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
-                register={register}
-                errors={errors}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}

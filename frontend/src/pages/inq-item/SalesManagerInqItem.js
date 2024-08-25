@@ -3,7 +3,7 @@ import RequestBar from './../../components/mocules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    InquiryHistoryForm,
+    InquiryHistoryFormItem,
     FileFormItem,
     Offersheet,
 } from '../../components/organisms/inquiry-form';
@@ -293,10 +293,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id} role={'sales'} />
             <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} onReviewSubmit={handleReviewSubmit} onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
-            <InquiryHistoryForm
+            <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
-                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 

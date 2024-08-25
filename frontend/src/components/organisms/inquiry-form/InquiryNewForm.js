@@ -8,7 +8,6 @@ import {
     _Input,
     inputWrapper,
 } from '../../../assets/css/Form.css';
-import styled from 'styled-components';
 
 const InquiryNewForm = ({ formData, handleFormDataChange, register, errors }) => {
     const {
