@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { getAllInquiries } from '../../apis/api/inquiry';
+import { getCustomerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import InqPath from '../../components/atoms/InqPath';
 import SearchResult from '../../components/mocules/SearchResult';
-import InquirySearchBox
-    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
@@ -13,16 +12,17 @@ const CustomerInqTableList = () => {
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
+    const [searchParams, setSearchParams] = useState({});
     const contentRef = useRef(null);
     const paginationRef = useRef(null);
 
-    const getInquiryData = async () => {
+    const getInquiryDataByParameter = async (queryParams = {}) => {
         if (!userId) return;
 
         try {
-            const response = await getAllInquiries(userId);
-            const inquiryData = response?.inquiryInfo || [];
-            setRows(inquiryData);
+            const response = await getCustomerInquiriesByParameter(userId, queryParams);
+            setRows(response);
+            setCurrentPage(0);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -33,8 +33,10 @@ const CustomerInqTableList = () => {
     };
 
     useEffect(() => {
-        getInquiryData();
-    }, [userId]);
+        if (userId) {
+            getInquiryDataByParameter(searchParams);
+        }
+    }, [userId, searchParams]);
 
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
@@ -53,10 +55,14 @@ const CustomerInqTableList = () => {
         setCurrentPage(0);
     };
 
+    const handleSearch = (newSearchParams) => {
+        setSearchParams(newSearchParams);
+    };
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <InquirySearchBox />
+            <InquirySearchBox onSearch={handleSearch} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
                 rows={paginatedRows}

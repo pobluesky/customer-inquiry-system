@@ -40,11 +40,11 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors }) =>
                         <div className={Wrapper}>
                             {/* 1행 */}
                             <div className={inputWrapper}>
-                                <label>고객사구분</label> {/* customerCode */}
+                                <label>고객사명</label> {/* customerName */}
                                 <input
                                     type="text"
                                     className={_Input}
-                                    value={customerCode}
+                                    value={customerName}
                                     readOnly={true}
                                 />
                             </div>

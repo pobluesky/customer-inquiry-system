@@ -1,27 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-    getAllInquiriesByManagers,
-} from '../../apis/api/inquiry';
 import SearchResult from '../../components/mocules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox
     from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import { getManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
 
 const SalesManagerInqTableList = () => {
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
+    const [searchParams, setSearchParams] = useState({});
     const contentRef = useRef(null);
     const paginationRef = useRef(null);
 
-    const getInquiryData = async () => {
+    const getInquiryDataByParameter = async (queryParams = {}) => {
 
         try {
-            const response = await getAllInquiriesByManagers();
-            const inquiryData = response?.inquiryInfo || [];
-            setRows(inquiryData);
+            const response = await getManagerInquiriesByParameter(queryParams);
+            setRows(response);
+            setCurrentPage(0);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -32,8 +31,9 @@ const SalesManagerInqTableList = () => {
     };
 
     useEffect(() => {
-        getInquiryData();
-    }, []);
+        getInquiryDataByParameter(searchParams);
+    }, [searchParams]);
+
 
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
@@ -52,10 +52,14 @@ const SalesManagerInqTableList = () => {
         setCurrentPage(0);
     };
 
+    const handleSearch = (newSearchParams) => {
+        setSearchParams(newSearchParams);
+    };
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'sales'} />
-            <InquirySearchBox />
+            <InquirySearchBox onSearch={handleSearch} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
                 rows={paginatedRows}

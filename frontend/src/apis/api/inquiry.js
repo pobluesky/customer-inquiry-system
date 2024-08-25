@@ -43,7 +43,6 @@ export const getAllInquiries = async (userId) => {
     }
 };
 
-
 // 고객사 inquiry 상세 조회 가져오기
 export const getInquiryDetail = async (userId, inquiryId) => {
     try {

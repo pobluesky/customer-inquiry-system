@@ -53,7 +53,7 @@ export default function CollapsibleTable({
     role
 }) {
     return (
-        <Paper>
+        <Paper onClick={() => console.log("rows table: ", rows)}>
             <TableContainer
                 component={Paper}
                 sx={{
