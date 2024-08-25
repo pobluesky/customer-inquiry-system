@@ -43,6 +43,7 @@ public interface QuestionRepositoryCustom {
         QuestionType type,
         String title,
         Long questionId,
+        String customerName,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy

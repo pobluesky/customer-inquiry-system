@@ -83,6 +83,7 @@ public class QuestionService {
         QuestionType type,
         String title,
         Long questionId,
+        String customerName,
         LocalDate startDate,
         LocalDate endDate) {
 
@@ -96,6 +97,7 @@ public class QuestionService {
             type,
             title,
             questionId,
+            customerName,
             startDate,
             endDate,
             sortBy);

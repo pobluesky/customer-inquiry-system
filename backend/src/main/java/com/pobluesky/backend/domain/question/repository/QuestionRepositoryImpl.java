@@ -214,6 +214,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         QuestionType type,
         String title,
         Long questionId,
+        String customerName,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -237,6 +238,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 typeEq(type),
                 titleContains(title),
                 questionIdEq(questionId),
+                customerNameContains(customerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -279,6 +281,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private BooleanExpression questionIdEq(Long questionId) {
         return questionId != null ? question.questionId.eq(questionId) : null;
+    }
+
+    private BooleanExpression customerNameContains(String customerName) {
+        return StringUtils.hasText(customerName) ? customer.customerName.eq(customerName) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
