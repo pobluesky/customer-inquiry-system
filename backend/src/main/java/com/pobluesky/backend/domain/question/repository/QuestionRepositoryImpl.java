@@ -1,8 +1,10 @@
 package com.pobluesky.backend.domain.question.repository;
 
 import static com.pobluesky.backend.domain.answer.entity.QAnswer.answer;
+import static com.pobluesky.backend.domain.collaboration.entity.QCollaboration.collaboration;
 import static com.pobluesky.backend.domain.question.entity.QQuestion.question;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
+import static com.pobluesky.backend.domain.user.entity.QManager.manager;
 
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 
 @RequiredArgsConstructor
@@ -173,6 +176,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Long userId,
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -195,6 +200,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.customer.userId.eq(userId),
                 statusEq(status),
                 typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -205,6 +212,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     public List<QuestionSummaryDTO> findAllQuestionsByManagerWithoutPaging(
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
+        String customerName,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -226,6 +236,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .where(
                 statusEq(status),
                 typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                customerNameContains(customerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -260,6 +273,18 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private BooleanExpression typeEq(QuestionType type) {
         return type != null ? question.type.eq(type) : null;
+    }
+
+    private BooleanExpression titleContains(String title) {
+        return StringUtils.hasText(title) ? question.title.contains(title) : null;
+    }
+
+    private BooleanExpression questionIdEq(Long questionId) {
+        return questionId != null ? question.questionId.eq(questionId) : null;
+    }
+
+    private BooleanExpression customerNameContains(String customerName) {
+        return StringUtils.hasText(customerName) ? customer.customerName.contains(customerName) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
