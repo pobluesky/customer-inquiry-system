@@ -31,6 +31,8 @@ public interface QuestionRepositoryCustom {
         Long userId,
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -39,6 +41,9 @@ public interface QuestionRepositoryCustom {
     List<QuestionSummaryDTO> findAllQuestionsByManagerWithoutPaging(
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
+        String customerName,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
