@@ -96,7 +96,6 @@ export const postQuestionByUserIdAboutInquiry = async (
     questionData,
     userId,
     inquiryId,
-    token,
 ) => {
     try {
         const formData = new FormData();
@@ -109,40 +108,28 @@ export const postQuestionByUserIdAboutInquiry = async (
             formData.append('files', file);
         }
 
-        const response = await fetch(
-            `/api/questions/customers/${userId}/${inquiryId}`,
+        const response = await axiosInstance.post(
+            `/questions/customers/${userId}/${inquiryId}`,
             {
-                method: 'POST',
-                headers: {
-                    Authorization: `${token}`,
-                },
                 body: formData,
             },
         );
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('INQ 질문 등록 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
 // Inquiry 무관 질문 등록
-export const postQuestionByUserId = async (
-    file,
-    questionData,
-    userId,
-    token,
-) => {
+export const postQuestionByUserId = async (file, questionData, userId) => {
     try {
         const formData = new FormData();
         const blobQuestionData = new Blob([JSON.stringify(questionData)], {
@@ -154,26 +141,22 @@ export const postQuestionByUserId = async (
             formData.append('files', file);
         }
 
-        const response = await fetch(`/api/questions/customers/${userId}`, {
-            method: 'POST',
-            headers: {
-                Authorization: `${token}`,
+        const response = await axiosInstance.post(
+            `/questions/customers/${userId}`,
+            {
+                body: formData,
             },
-            body: formData,
-        });
+        );
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('기타 질문 등록 API ERROR: ', error.message || error);
+        throw error;
     }
 };

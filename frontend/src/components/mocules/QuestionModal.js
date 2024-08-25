@@ -30,18 +30,17 @@ import {
     validateAnswerTitle,
     validateAnswerContents,
 } from '../../utils/validation';
-import {
-    getQuestionByQuestionId,
-    getQuestionByQuestionIdForManager,
-} from '../../apis/api/question';
-import {
-    getAnswerByQuestionId,
-    getAnswerByQuestionIdForManager,
-    postAnswerByQuestionId,
-} from '../../apis/api/answer';
+import { postAnswerByQuestionId } from '../../apis/api/answer';
 
-function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, onClose }) {
-    console.log('모달창을 열었을 때', questionDetail);
+function QuestionModal({
+    questionDetail,
+    setAnswerDetail,
+    answerDetail,
+    questionId,
+    setStatus,
+    status,
+    setOpenModal,
+}) {
     const sanitizer = dompurify.sanitize;
 
     const { userId } = useAuth();
@@ -55,62 +54,25 @@ function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, o
     const [editorValue, setEditorValue] = useState('');
     const [file, setFile] = useState('');
 
-    const [answerDetail, setAnswerDetail] = useState([]);
-
     const fileInputRef = useRef(null);
 
-    const fetchGetAnswerDetail =
-        getCookie('userRole') === 'CUSTOMER'
-            ? async () => {
-                  const result = await getAnswerByQuestionId(
-                      userId,
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setAnswerDetail(result);
-                  } else {
-                      setAnswerDetail([]);
-                  }
-              }
-            : async () => {
-                  const result = await getAnswerByQuestionIdForManager(
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setAnswerDetail(result);
-                  } else {
-                      setAnswerDetail([]);
-                  }
-              };
-
-    const fetchPostAnswerByQuestionId = async () => {
+    const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
             const answerData = {
-                title,
+                title: title,
                 contents: editorValue,
             };
-            const result = await postAnswerByQuestionId(
+            const response = await postAnswerByQuestionId(
                 file,
                 answerData,
                 questionId,
-                getCookie('accessToken'),
             );
-
-            if (result) {
-                console.log('응답받은 데이터는 다음과 같습니다.', result);
-                setAnswerDetail(result);
-                fetchGetQuestionDetail();
-                setStatus('COMPLETED');
-                AnswerCompleteAlert();
-                setAnswering(false);
-            } else {
-                console.error('Fetched data is not an array or is invalid.');
-                setAnswerDetail([]);
-            }
+            setAnswerDetail(response.data); // 답변 등록으로 갱신된 답변 데이터 저장
+            setStatus('COMPLETED'); // 질문 처리 상태 갱신
+            AnswerCompleteAlert(); // 답변 완료 알림
+            setAnswering(false); // 답변 입력창 제거
         } catch (error) {
-            console.error('Error in posting question:', error);
+            console.log('답변 등록 실패: ', error);
         }
     };
 
@@ -140,31 +102,17 @@ function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, o
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostAnswerByQuestionId();
+            fetchPostAnswerByQuestionId(questionId);
         }
     };
 
-    useEffect(() => {
-        fetchGetQuestionDetail();
-        fetchGetAnswerDetail();
-    }, [questionId, status]);
-
     return (
         <div className={Question_Modal_Container}>
-            <div>
-                {/* <Label
-                    label={'문의 내용'}
-                    width={'96px'}
-                    height={'28px'}
-                    backgroundColor={'#007aff'}
-                    textColor={'#ffffff'}
-                    borderRadius={'12px 12px 0 0'}
-                /> */}
-            </div>
+            <div></div>
             <div className={Question_Modal}>
                 <div>
                     <Text name={'VoC 문의 번호'} textColor={'#6e6e6e'} />
-                    <Text name={vocNo} fontWeight={'600'} />
+                    <Text name={'vocNo 계산해야 함'} fontWeight={'600'} />
                 </div>
                 <div>
                     <Tag
@@ -191,12 +139,14 @@ function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, o
                     </div>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: sanitizer(`${questionDetail.contents || ''}`),
+                            __html: sanitizer(
+                                `${questionDetail.contents || ''}`,
+                            ),
                         }}
                     />
                 </div>
 
-                {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면
+                {!isAnswering && status === 'READY' ? ( // 답변 대기 질문인 경우
                     <div>
                         <AnswerContent />
                     </div>
@@ -255,7 +205,11 @@ function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, o
                     </div>
                     {/* [닫기] */}
                     <div>
-                        <CloseButton onClick={onClose} />
+                        <CloseButton
+                            onClick={() => {
+                                setOpenModal(false);
+                            }}
+                        />
                     </div>
                     {status === 'READY' && thisRole !== 'CUSTOMER' && (
                         <>

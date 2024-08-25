@@ -42,6 +42,11 @@
 /******************************************************************/
 /* 질문 조회 시 사용하는 조건 그룹 **********************************/
 /******************************************************************/
+
+div {
+    border: 1px solid blue;
+}
+
 .Question_Filter_Panel {
     width: 1320px;
     margin: 36px auto 0 auto;
@@ -88,11 +93,22 @@
 /* 정렬 조건 + 정렬 버튼 */
 .Question_Filter_Panel > div > div:nth-last-child(3) {
     display: grid;
-    grid-template-columns: 120px 96px 96px 96px 96px;
+    grid-template-columns: 120px 96px 96px 96px 96px 96px;
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
     color: #212121;
+}
+
+.Question_Filter_Panel select {
+    width: 84px;
+    height: 28px;
+    background: none;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    -webkit-appearance:none; /* 크롬 화살표 없애기 */
+    -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
+    appearance:none /* 화살표 없애기 */
 }
 
 /* 검색 결과 */

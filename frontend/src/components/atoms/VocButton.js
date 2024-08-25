@@ -12,7 +12,6 @@ const FilterButton = ({
 }) => (
     <Button
         btnName={btnName}
-        // width={'84px'}
         width={width}
         height={'28px'}
         margin={margin}

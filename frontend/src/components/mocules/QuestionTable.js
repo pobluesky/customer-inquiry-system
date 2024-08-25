@@ -16,7 +16,6 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import QuestionModal from '../mocules/QuestionModal';
 import { Select } from '../../assets/css/Voc.css';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -28,7 +27,10 @@ import {
     getQuestionByQuestionId,
     getQuestionByQuestionIdForManager,
 } from '../../apis/api/question';
-import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
+import {
+    getAnswerByQuestionId,
+    getAnswerByQuestionIdForManager,
+} from '../../apis/api/answer';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -113,8 +115,8 @@ function createData(
     customerName,
     title,
     status,
-    questionCreatedDate,
-    answerCreatedDate,
+    questionCreatedAt,
+    answerCreatedAt,
 ) {
     return {
         questionId,
@@ -122,20 +124,21 @@ function createData(
         customerName,
         title,
         status,
-        questionCreatedDate,
-        answerCreatedDate,
+        questionCreatedAt,
+        answerCreatedAt,
     };
 }
 
 export default function QuestionTable({
     // 검색 기능
-    questionNo,
-    customerName,
     title,
     startDate,
     endDate,
+    questionNo,
+    customerName,
     timeFilter,
     statusFilter,
+    typeFilter,
 
     // 질문 게시판 현황
     // setSearchedItems,
@@ -143,6 +146,8 @@ export default function QuestionTable({
     // setReadyItems,
     // setCompletedItems,
 
+    setQuestionDetail,
+    setAnswerDetail,
     setQuestionId,
     setStatus,
     status,
@@ -159,34 +164,51 @@ export default function QuestionTable({
     const [questionSummary, setQuestionSummary] = useState([]);
     const [questionCount, setQuestionCount] = useState('');
     const [answerCount, setAnswerCount] = useState('');
-    const [vocNo, setVocNo] = useState(0);
-
-    const [questionDetail, setQuestionDetail] = useState([]);
 
     useEffect(() => {
         let args = '';
+        if (title) {
+            args += `${args ? '&' : ''}title=${title}`;
+        }
         if (startDate && endDate) {
             const s = `startDate=${
                 new Date(startDate).toISOString().split('T')[0]
             }`;
             const e = `endDate=${
                 new Date(endDate).toISOString().split('T')[0]
-            }`;
-            args += `${s}&${e}`;
+            }`; 
+            args += `${args ? '&' : ''}${s}&${e}`;
         }
-        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
+        if (questionNo) {
+            args += `${args ? '&' : ''}questionId=${questionNo}`;
+        }
+        if (customerName) {
+            args += `${args ? '&' : ''}customerName=${customerName}`;
+        }
+        if (timeFilter) {
             args += `${args ? '&' : ''}sortBy=${timeFilter}`;
         }
-        if (statusFilter == 'COMPLETED' || statusFilter == 'READY') {
+        if (statusFilter) {
             args += `${args ? '&' : ''}status=${statusFilter}`;
         }
-        // 문의 번호
-        // 문의 제목
-        // 고객사
-        // 문의 유형 필터 추가
+        if (typeFilter) {
+            args += `${args ? '&' : ''}type=${typeFilter}`;
+        }
+        console.log(args);
         setFilterArgs(args);
-    }, [questionNo, title, startDate, endDate, timeFilter, statusFilter]);
+    }, [
+        questionNo,
+        title,
+        startDate,
+        endDate,
+        questionNo,
+        customerName,
+        timeFilter,
+        statusFilter,
+        typeFilter,
+    ]);
 
+    // 질문 요약 조회
     const fetchGetQuestions =
         role === 'CUSTOMER'
             ? async () => {
@@ -197,7 +219,7 @@ export default function QuestionTable({
                       );
                       setQuestionSummary(response.data);
                   } catch (error) {
-                      console.error('고객사 질문 요약 조회 실패: ', error);
+                      console.log('고객사 질문 요약 조회 실패: ', error);
                   }
               }
             : async () => {
@@ -205,62 +227,80 @@ export default function QuestionTable({
                       const response = await getAllQuestion(filterArgs);
                       setQuestionSummary(response.data);
                   } catch (error) {
-                      console.error('담당자 질문 요약 조회 실패: ', error);
+                      console.log('담당자 질문 요약 조회 실패: ', error);
                   }
               };
 
-    // axios로 수정 필요
-    // const fetchGetAnswers =
-    //     role === 'CUSTOMER'
-    //         ? async () => {
-    //               const response = await getAnswerByUserId(
-    //                   getCookie('userId'),
-    //                   getCookie('accessToken'),
-    //               );
-    //               if (response) {
-    //                   setAnswerCount(response);
-    //               } else {
-    //                   setAnswerCount([]);
-    //               }
-    //           }
-    //         : async () => {
-    //               const result = await getAllAnswer(getCookie('accessToken'));
-    //               if (result) {
-    //                   setAnswerCount(result);
-    //               } else {
-    //                   setAnswerCount([]);
-    //               }
-    //           };
-
+    // 질문 상세 조회 (모달로 전달)
     const fetchGetQuestionDetail =
-        getCookie('userRole') === 'CUSTOMER'
-            ? async () => {
+        role === 'CUSTOMER'
+            ? async (questionId, status) => {
                   try {
                       const response = await getQuestionByQuestionId(
                           userId,
                           questionId,
                       );
-                      setQuestionDetail(response.data);
-                      setOpenModal(true);
+                      setQuestionDetail(response.data); // 질문 상세 내용 저장
+                      if (status === 'COMPLETED') {
+                          // 답변 완료 질문인 경우
+                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
+                      } else {
+                          // 답변 대기 질문인 경우
+                          setAnswerDetail([]); // 답변 Empty Array 전달
+                          setOpenModal(true); // 모달 열기
+                      }
                   } catch (error) {
-                      console.error('고객사 질문 상세 조회 실패: ', error);
+                      console.log('고객사 질문 상세 조회 실패: ', error);
                   }
               }
-            : async () => {
+            : async (questionId, status) => {
                   try {
                       const response = await getQuestionByQuestionIdForManager(
                           questionId,
                       );
-                      setQuestionDetail(response.data);
-                      setOpenModal(true);
+                      setQuestionDetail(response.data); // 질문 상세 내용 저장
+                      if (status === 'COMPLETED') {
+                          // 답변 완료 질문인 경우
+                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
+                      } else {
+                          // 답변 대기 질문인 경우
+                          setAnswerDetail([]); // 답변 Empty Array 전달
+                          setOpenModal(true); // 모달 열기
+                      }
                   } catch (error) {
-                      console.error('담당자 질문 상세 조회 실패: ', error);
+                      console.log('담당자 질문 상세 조회 실패: ', error);
+                  }
+              };
+
+    // 답변 상세 조회 (모달로 전달)
+    const fetchGetAnswerDetail =
+        role === 'CUSTOMER'
+            ? async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionId(
+                          userId,
+                          questionId,
+                      );
+                      setAnswerDetail(response.data); // 답변 상세 내용 저장
+                      setOpenModal(true); // 모달 열기
+                  } catch (error) {
+                      console.log('고객사 답변 상세 조회 실패: ', error);
+                  }
+              }
+            : async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionIdForManager(
+                          questionId,
+                      );
+                      setAnswerDetail(response.data); // 답변 상세 내용 저장
+                      setOpenModal(true); // 모달 열기
+                  } catch (error) {
+                      console.log('담당자 답변 상세 조회 실패: ', error);
                   }
               };
 
     useEffect(() => {
         fetchGetQuestions();
-        // fetchGetAnswers();
     }, [userId, filterArgs, openModal]);
 
     // // 검색 결과, 전체 질문, 답변 대기 질문, 답변 완료 질문 현황
@@ -324,14 +364,14 @@ export default function QuestionTable({
             minWidth: 120,
         },
         {
-            id: 'questionCreatedDate',
+            id: 'questionCreatedAt',
             label: '질문 작성 날짜',
             align: 'center',
             width: 120,
             minWidth: 120,
         },
         {
-            id: 'answerCreatedDate',
+            id: 'answerCreatedAt',
             label: '답변 작성 날짜',
             align: 'center',
             width: 120,
@@ -370,7 +410,7 @@ export default function QuestionTable({
         >
             <Table
                 size="small"
-                stickyHeader="true"
+                // stickyHeader="true"
                 aria-label="custom pagination table"
             >
                 <TableHead>
@@ -401,8 +441,9 @@ export default function QuestionTable({
                         : rows
                     ).map((row) => (
                         <TableRow
-                            key={row.status}
+                            key={row.questionId}
                             className={Select}
+                            // 마지막 줄 border 제거
                             // sx={{
                             //     '&:last-child td, &:last-child th': {
                             //         border: 0,
@@ -411,7 +452,10 @@ export default function QuestionTable({
                             onClick={() => {
                                 setStatus(row.status);
                                 setQuestionId(row.questionId);
-                                fetchGetQuestionDetail(row.questionId);
+                                fetchGetQuestionDetail(
+                                    row.questionId,
+                                    row.status,
+                                );
                             }}
                         >
                             <TableCell
@@ -451,27 +495,8 @@ export default function QuestionTable({
                                     width: 120,
                                     minWidth: 120,
                                     fontWeight: 600,
-                                    // color:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#ffffff'
-                                    //         : '#000000',
-                                    // backgroundColor:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#3c6cf2'
-                                    //         : row.colStatus === 'INPROGRESS'
-                                    //         ? '#a1c2ff'
-                                    //         : row.colStatus === 'REFUSE'
-                                    //         ? '#ffdb7b'
-                                    //         : '',
                                 }}
                             >
-                                {/* {row.colStatus === 'READY'
-                                ? '협업 대기'
-                                : row.colStatus === 'INPROGRESS'
-                                ? '협업 진행 중'
-                                : row.colStatus === 'COMPLETE'
-                                ? '협업 완료'
-                                : '협업 거절'} */}
                                 {row.title}
                             </TableCell>
                             <TableCell
@@ -492,7 +517,7 @@ export default function QuestionTable({
                                     minWidth: 120,
                                 }}
                             >
-                                {row.questionCreatedDate.substring(0, 10)}
+                                {row.questionCreatedAt.substring(0, 10)}
                             </TableCell>{' '}
                             <TableCell
                                 sx={{
@@ -501,7 +526,8 @@ export default function QuestionTable({
                                     minWidth: 120,
                                 }}
                             >
-                                {row.answerCreatedDate.substring(0, 10)}
+                                {row.answerCreatedAt &&
+                                    row.answerCreatedAt.substring(0, 10)}
                             </TableCell>
                         </TableRow>
                     ))}

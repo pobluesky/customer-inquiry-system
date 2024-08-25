@@ -73,7 +73,7 @@ export default function ColRequestModal({
             setFilePath(response.data.filePath);
             isRejecting(true);
         } catch (error) {
-            console.error('협업 수락/거절 실패:', error);
+            console.error('협업 수락/거절 실패: ', error);
         }
     };
 
@@ -86,7 +86,7 @@ export default function ColRequestModal({
             isAccepting(false);
             isRejecting(false);
         } catch (error) {
-            console.error('협업 완료 실패:', error);
+            console.error('협업 완료 실패: ', error);
         }
     };
 

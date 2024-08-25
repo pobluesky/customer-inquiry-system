@@ -12,21 +12,23 @@ function QuestionDashboard() {
     const [totalItems, setTotalItems] = useState('');
     const [readyItems, setReadyItems] = useState('');
     const [completedItems, setCompletedItems] = useState('');
-    
+
     // 검색 기능
-    const [questionNo, setQuestionNo] = useState('');
-    const [customerName, setCustomerName] = useState('');
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [questionNo, setQuestionNo] = useState('');
+    const [customerName, setCustomerName] = useState('');
     const [timeFilter, setTimeFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [typeFilter, setTypeFilter] = useState('');
 
     // 테이블과 모달창 간 상호 API 전달
     const [questionDetail, setQuestionDetail] = useState([]);
+    const [answerDetail, setAnswerDetail] = useState([]);
     const [questionId, setQuestionId] = useState('');
     const [status, setStatus] = useState('READY');
-    const [openModal, setOpenModal] = useState('false)');
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <>
@@ -39,20 +41,24 @@ function QuestionDashboard() {
             <QuestionFilterPanel
                 searchedItems={searchedItems}
                 totalItems={totalItems}
+
+                questionNo={questionNo}
+                customerName={customerName}
                 title={title}
                 startDate={startDate}
                 endDate={endDate}
-                customerName={customerName}
-                questionNo={questionNo}
                 timeFilter={timeFilter}
                 statusFilter={statusFilter}
+                typeFilter={typeFilter}
+
+                setQuestionNo={setQuestionNo}
+                setCustomerName={setCustomerName}
                 setTitle={setTitle}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
-                setCustomerName={setCustomerName}
-                setQuestionNo={setQuestionNo}
                 setTimeFilter={setTimeFilter}
                 setStatusFilter={setStatusFilter}
+                setTypeFilter={setTypeFilter}
                 // searchByFilter={searchByFilter}
             />
             <Text
@@ -64,20 +70,22 @@ function QuestionDashboard() {
                 textColor={'#49454f'}
             />
             <QuestionTable
-                questionNo={questionNo}
-                customerName={customerName}
                 title={title}
                 startDate={startDate}
                 endDate={endDate}
+                questionNo={questionNo}
+                customerName={customerName}
                 timeFilter={timeFilter}
                 statusFilter={statusFilter}
+                typeFilter={typeFilter}
 
                 setQuestionDetail={setQuestionDetail}
+                setAnswerDetail={setAnswerDetail}
                 setQuestionId={setQuestionId}
                 setStatus={setStatus}
                 status={status}
-                setOpenModal={setOpenModal}   
-                openModal={openModal}         
+                setOpenModal={setOpenModal}
+                openModal={openModal}
 
                 // setSearchedItems={setSearchedItems}
                 // setTotalItems={setTotalItems}
@@ -85,41 +93,17 @@ function QuestionDashboard() {
                 // setCompletedItems={setCompletedItems}
             />
 
-
-
-
-
             {openModal && (
                 <QuestionModal
-                    questionId={questionId}
                     questionDetail={questionDetail}
+                    setAnswerDetail={setAnswerDetail}
+                    answerDetail={answerDetail}
+                    questionId={questionId}
+                    setStatus={setStatus}
+                    status={status}
                     setOpenModal={setOpenModal}
-                    openModal={openModal}
-                    // questionId={questionId}
-                    // colId={colId}
-                    // setStatus={setStatus}
-                    // status={status}
-                    // setHeight={setHeight}
-                    // height={height}
-                    // auth={auth}
-                    // colDetail={colDetail}
-                    // setOpenModal={setOpenModal}
-                    // openModal={openModal}
                 />
             )}
-            {/* <QuestionCardList
-                setSearchedItems={setSearchedItems}
-                setTotalItems={setTotalItems}
-                setReadyItems={setReadyItems}
-                setCompletedItems={setCompletedItems}
-                title={searchTitle}
-                startDate={searchStartDate}
-                endDate={searchEndDate}
-                customerName={searchCustomerName}
-                questionNo={searchQuestionNo}
-                timeFilter={searchTimeFilter}
-                statusFilter={searchStatusFilter}
-            /> */}
             {/* <Notification /> */}
         </>
     );

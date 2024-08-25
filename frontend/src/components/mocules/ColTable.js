@@ -290,7 +290,7 @@ export default function ColTable({
         >
             <Table
                 size="small"
-                stickyHeader="true"
+                // stickyHeader="true"
                 aria-label="custom pagination table"
             >
                 <TableHead>
