@@ -11,7 +11,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
         <Paper
             style={{
                 overflowX: 'scroll',
-                width: '90%',
+                width: '95vw',
                 margin: '0 auto',
                 borderRadius: '20px',
                 marginBottom: '90px',

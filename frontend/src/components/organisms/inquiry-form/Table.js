@@ -38,37 +38,6 @@ function Row({ row, role }) {
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
             </TableRow>
             <TableRow>
-                {/*<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>*/}
-                {/*    <Collapse in={open} timeout="auto" unmountOnExit>*/}
-                {/*        <Box sx={{ margin: 1 }}>*/}
-                {/*            <Typography variant="h6" gutterBottom component="div">*/}
-                {/*                문의상세*/}
-                {/*            </Typography>*/}
-                {/*            <Table size="small" aria-label="purchases">*/}
-                {/*                <TableHead>*/}
-                {/*                    <TableRow>*/}
-                {/*                        <TableCell>제품유형</TableCell>*/}
-                {/*                        <TableCell>Customer</TableCell>*/}
-                {/*                        <TableCell align="right">Amount</TableCell>*/}
-                {/*                        <TableCell align="right">Total price ($)</TableCell>*/}
-                {/*                    </TableRow>*/}
-                {/*                </TableHead>*/}
-                {/*                <TableBody>*/}
-                {/*                    <TableRow>*/}
-                {/*                        <TableCell component="th" scope="row">*/}
-                {/*                            {row.productType}*/}
-                {/*                        </TableCell>*/}
-                {/*                        <TableCell>{row.salesPerson}</TableCell>*/}
-                {/*                        <TableCell align="right">{row.salesPerson}</TableCell>*/}
-                {/*                        <TableCell align="right">*/}
-                {/*                            {Math.round(row.amount * row.price * 100) / 100}*/}
-                {/*                        </TableCell>*/}
-                {/*                    </TableRow>*/}
-                {/*                </TableBody>*/}
-                {/*            </Table>*/}
-                {/*        </Box>*/}
-                {/*    </Collapse>*/}
-                {/*</TableCell>*/}
             </TableRow>
         </React.Fragment>
     );
@@ -91,9 +60,9 @@ export default function CollapsibleTable({
                     borderRadius: '10px',
                     overflowX: 'auto',
                     whiteSpace: 'nowrap',
-                    '& .MuiTableCell-root': {
-                        paddingRight: '120px'
-                    }
+                    // '& .MuiTableCell-root': {
+                    //     paddingRight: '120px'
+                    // }
                 }}
             >
                 <Table aria-label="collapsible table">
@@ -126,7 +95,7 @@ export default function CollapsibleTable({
                 rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 labelRowsPerPage="Rows per page:"
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[10, 15, 25]}
             />
         </Paper>
     );

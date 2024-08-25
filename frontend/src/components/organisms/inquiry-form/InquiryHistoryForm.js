@@ -42,7 +42,7 @@ const InquiryHistoryForm = ({ productType, lineItemData, onLineItemsChange }) =>
       <Paper
           style={{
             overflowX: 'scroll',
-            width: '90%',
+            width: '95vw',
             margin: '0 auto',
             borderRadius: '20px',
             marginBottom: '100px',

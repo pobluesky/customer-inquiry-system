@@ -18,6 +18,7 @@ import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 import FinalReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId } = useAuth();
@@ -170,8 +171,9 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     }, [inquiriesDataDetail, userInfo]);
 
     return (
-        <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
+        <div className={InqTableContainer}>
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
+                     smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회"} />
 
             <BasicInfoForm formData={formData} />
@@ -181,16 +183,16 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
 
-            { isReviewItem ? (
+            {isReviewItem ? (
                 <>
                     <ReviewTextFormItem formData={reviewData} />
                     <FinalReviewTextFormItem formData={reviewData} />
                 </>
-                ) : (
+            ) : (
                 ''
             )}
 
-            { isOfferSheetItem ? (
+            {isOfferSheetItem ? (
                 <Offersheet formData={offerSheetData}
                             inquiryData={inquiriesDataDetail}
                             lineItemData={offerSheetData.receipts}

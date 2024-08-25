@@ -26,6 +26,7 @@ import QualityFileForm
     from '../../components/organisms/inquiry-form/quality-form/QualityFileForm';
 import QualityFileFormItem
     from '../../components/organisms/inquiry-form/quality-item/QualityFileFormItem';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -197,9 +198,11 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     };
 
     return (
-        <div>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id} role={'quality'} />
-            <RequestBar requestBarTitle={"Inquiry 상세조회 및 품질검토"} onSubmit={handleSubmit} />
+        <div className={InqTableContainer}>
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
+                            role={'quality'} />
+            <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토'}
+                        onSubmit={handleSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
@@ -207,19 +210,22 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            { isQualityItem ? (
+            {isQualityItem ? (
                 <QualityReviewTextFormItem formData={qualityData} />
             ) : (
-                <QualityReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
+                <QualityReviewTextForm formData={formData}
+                                       handleFormDataChange={handleFormDataChange} />
             )}
 
-            { isQualityItem ? (
-                <QualityFileFormItem fileForm={"품질검토 첨부파일"} formData={qualityData} />
+            {isQualityItem ? (
+                <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                     formData={qualityData} />
             ) : (
-                <QualityFileForm fileForm={"품질검토 파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
+                <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
+                                 handleFormDataChange={handleFormDataChange} />
             )}
 
-            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
+            <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
         </div>
     )
 }

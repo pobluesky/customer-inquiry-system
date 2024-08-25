@@ -11,7 +11,7 @@ import {
 import SelectBox from '../../atoms/SelectBox';
 import Button from '../../atoms/Button';
 
-const InquirySearchBox = ({ startDate, endDate, setStartDate, setEndDate }) => {
+const InquirySearchBox = () => {
     const options = [
         { label: 'ALL', value: 'all' },
         { label: 'Option 1', value: 'option1' },

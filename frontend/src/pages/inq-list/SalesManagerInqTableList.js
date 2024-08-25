@@ -7,13 +7,14 @@ import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox
     from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 const SalesManagerInqTableList = () => {
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const contentRef = useRef(null); // 스크롤할 참조
-    const paginationRef = useRef(null); // 페이지 네이션 참조
+    const [rowsPerPage, setRowsPerPage] = useState(15);
+    const contentRef = useRef(null);
+    const paginationRef = useRef(null);
 
     const getInquiryData = async () => {
 
@@ -34,7 +35,6 @@ const SalesManagerInqTableList = () => {
         getInquiryData();
     }, []);
 
-    // 현재 페이지에 해당하는 데이터 추출
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
         currentPage * rowsPerPage + rowsPerPage
@@ -48,27 +48,25 @@ const SalesManagerInqTableList = () => {
     };
 
     const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        setRowsPerPage(parseInt(event.target.value, 15));
         setCurrentPage(0);
     };
 
     return (
-        <div>
+        <div className={InqTableContainer}>
             <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'sales'} />
             <InquirySearchBox />
             <SearchResult searchResult={`${rows.length}`} />
-            <div style={{ width: "90%", margin: "0 auto" }}>
-                <CollapsibleTable
-                    rows={paginatedRows}
-                    currentPage={currentPage}
-                    rowsPerPage={rowsPerPage}
-                    totalRows={rows.length}
-                    handlePageChange={handlePageChange}
-                    handleRowsPerPageChange={handleRowsPerPageChange}
-                    paginationRef={paginationRef}
-                    role="sales"
-                />
-            </div>
+            <CollapsibleTable
+                rows={paginatedRows}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
+                totalRows={rows.length}
+                handlePageChange={handlePageChange}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                paginationRef={paginationRef}
+                role="sales"
+            />
         </div>
     );
 };

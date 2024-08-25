@@ -39,6 +39,7 @@ import FinalReviewTextForm
     from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
 import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -289,9 +290,12 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     };
 
     return (
-        <div>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id} role={'sales'} />
-            <RequestBar requestBarTitle={"Inquiry 상세조회 및 영업검토"} onReviewSubmit={handleReviewSubmit} onFinalSubmit={handleFinalSubmit} />
+        <div className={InqTableContainer}>
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
+                            role={'sales'} />
+            <RequestBar requestBarTitle={'Inquiry 상세조회 및 영업검토'}
+                        onReviewSubmit={handleReviewSubmit}
+                        onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
@@ -299,34 +303,38 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             />
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            { isReviewItem ? (
+            {isReviewItem ? (
                 <>
                     <SalesInfoFormItem formData={reviewData} />
                     <ReviewTextFormItem formData={reviewData} />
                 </>
             ) : (
-                    <>
-                        <SalesInfoForm formData={formData} handleFormDataChange={handleFormDataChange} />
-                        <ReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
-                    </>
+                <>
+                    <SalesInfoForm formData={formData}
+                                   handleFormDataChange={handleFormDataChange} />
+                    <ReviewTextForm formData={formData}
+                                    handleFormDataChange={handleFormDataChange} />
+                </>
             )}
 
-            { isFinalReview ? (
+            {isFinalReview ? (
                 <FinalReviewTextFormItem formData={reviewData} />
             ) : (
-                <FinalReviewTextForm formData={formData} handleFormDataChange={handleFormDataChange} />
+                <FinalReviewTextForm formData={formData}
+                                     handleFormDataChange={handleFormDataChange} />
             )}
 
-            { isQualityItem ? (
+            {isQualityItem ? (
                 <>
                     <QualityReviewTextFormItem formData={qualityData} />
-                    <QualityFileFormItem fileForm={"품질검토 첨부파일"} formData={qualityData} />
+                    <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                         formData={qualityData} />
                 </>
-                ) : (
+            ) : (
                 ''
             )}
 
-            { isOfferSheetItem ? (
+            {isOfferSheetItem ? (
                 <Offersheet formData={offerSheetData}
                             inquiryData={inquiriesDataDetail}
                             lineItemData={offerSheetData.receipts}
@@ -345,7 +353,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 />
             )}
 
-            <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
+            <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
         </div>
     )
 }
