@@ -15,7 +15,7 @@ import { InquiryCompleteAlert } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
-    const { userId } = useAuth();
+    const { userId, role } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -66,7 +66,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     };
 
     const handleInquirySubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         try {
