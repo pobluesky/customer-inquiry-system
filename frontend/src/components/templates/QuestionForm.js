@@ -26,7 +26,9 @@ function QuestionForm() {
             {openModal && (
                 <QuestionInquirySearchModal
                     setInquiryId={setInquiryId}
+                    inquiryId={inquiryId}
                     setOpenModal={setOpenModal}
+                    openModal={openModal}
                 />
             )}
         </div>

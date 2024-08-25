@@ -16,16 +16,21 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-
 import { Select } from '../../assets/css/Voc.css';
-import {
-    getAllCollaboration,
-    getCollaborationDetail,
-    putDecisionByQuality,
-    putCompleteByQuality,
-} from '../../apis/api/collaboration';
+
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
+
+import {
+    getAllQuestion,
+    getQuestionByUserId,
+    getQuestionByQuestionId,
+    getQuestionByQuestionIdForManager,
+} from '../../apis/api/question';
+import {
+    getAnswerByQuestionId,
+    getAnswerByQuestionIdForManager,
+} from '../../apis/api/answer';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -105,123 +110,212 @@ TablePaginationActions.propTypes = {
 };
 
 function createData(
-    colId,
     questionId,
-    colReqManager,
-    colStatus,
-    colContents,
-    createdDate,
+    type,
+    customerName,
+    title,
+    status,
+    questionCreatedAt,
+    answerCreatedAt,
 ) {
     return {
-        colId,
         questionId,
-        colReqManager,
-        colStatus,
-        colContents,
-        createdDate,
+        type,
+        customerName,
+        title,
+        status,
+        questionCreatedAt,
+        answerCreatedAt,
     };
 }
 
-export default function ColTable({
-    setSearchedItems, // 검색 결과 추가
-    colNo,
-    colManager,
-    // startDate,
-    // endDate,
+export default function QuestionTable({
+    // 검색 기능
+    title,
+    startDate,
+    endDate,
+    questionNo,
+    customerName,
     timeFilter,
     statusFilter,
+    typeFilter,
 
+    setSearchCount,
+
+    setQuestionDetail,
+    setAnswerDetail,
     setQuestionId,
-    setColId,
     setStatus,
     status,
-    setAuth,
-    setColDetail,
-    setHeight,
     setOpenModal,
+    openModal,
 }) {
-    const role = getCookie('userRole');
     const { userId } = useAuth();
+    const role = getCookie('userRole');
 
-    const [filterArgs, setFilterArgs] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
-    const [collabs, setCollabs] = useState([]);
 
-    const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
-
-    // 해당 협업 관련 담당자 여부 확인
-    const isAuthorized = (authorizedId) => {
-        if (role === 'QUALITY' && authorizedId !== userId) {
-            setAuth(false);
-        }
-    };
-
-    const fetchGetCol = async (filterArgs) => {
-        try {
-            const response = await getAllCollaboration(filterArgs);
-            setCollabs(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error('협업 요약 조회 실패: ', error);
-        }
-    };
-
-    const fetchGetColDetail = async (questionId, colId) => {
-        try {
-            const response = await getCollaborationDetail(questionId, colId);
-            setColDetail(response.data);
-            isAuthorized(response.data.colManagerToResponseDto.userId);
-            if (response.data && response.data.colStatus === 'READY') {
-                setHeight('55vh');
-            } else if (response.data && response.data.colStatus !== 'READY') {
-                setHeight('85vh');
-            }
-            setOpenModal(true);
-        } catch (error) {
-            console.error('협업 상세 조회 실패: ', error);
-        }
-    };
+    const [filterArgs, setFilterArgs] = useState('');
+    const [questionSummary, setQuestionSummary] = useState([]);
 
     useEffect(() => {
         let args = '';
-        // if (startDate && endDate) {
-        //     const s = `startDate=${
-        //         new Date(startDate).toISOString().split('T')[0]
-        //     }`;
-        //     const e = `endDate=${
-        //         new Date(endDate).toISOString().split('T')[0]
-        //     }`;
-        //     args += `${s}&${e}`;
-        // }
-        if (colNo) {
-            args += `${args ? '&' : ''}colReqId=${colNo}`;
+        if (title) {
+            args += `${args ? '&' : ''}title=${title}`;
         }
-        if (colManager) {
-            args += `${args ? '&' : ''}colReqManager=${colManager}`;
+        if (startDate && endDate) {
+            const s = `startDate=${
+                new Date(startDate).toISOString().split('T')[0]
+            }`;
+            const e = `endDate=${
+                new Date(endDate).toISOString().split('T')[0]
+            }`;
+            args += `${args ? '&' : ''}${s}&${e}`;
         }
-        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
+        if (questionNo) {
+            args += `${args ? '&' : ''}questionId=${questionNo}`;
+        }
+        if (customerName) {
+            args += `${args ? '&' : ''}customerName=${customerName}`;
+        }
+        if (timeFilter) {
             args += `${args ? '&' : ''}sortBy=${timeFilter}`;
         }
-        if (validStatuses.includes(statusFilter)) {
-            args += `${args ? '&' : ''}colStatus=${statusFilter}`;
+        if (statusFilter) {
+            args += `${args ? '&' : ''}status=${statusFilter}`;
+        }
+        if (typeFilter) {
+            args += `${args ? '&' : ''}type=${typeFilter}`;
         }
         setFilterArgs(args);
-        console.log(args);
-    }, [colNo, colManager, timeFilter, statusFilter]); // startDate, endDate 추가 필요
+    }, [
+        questionNo,
+        title,
+        startDate,
+        endDate,
+        questionNo,
+        customerName,
+        timeFilter,
+        statusFilter,
+        typeFilter,
+    ]);
+
+    // 질문 요약 조회
+    const fetchGetQuestions =
+        role === 'CUSTOMER'
+            ? async () => {
+                  try {
+                      const response = await getQuestionByUserId(
+                          getCookie('userId'),
+                          filterArgs,
+                      );
+                      setQuestionSummary(response.data);
+                      setSearchCount(response.data.length);
+                  } catch (error) {
+                      console.log('고객사 질문 요약 조회 실패: ', error);
+                  }
+              }
+            : async () => {
+                  try {
+                      const response = await getAllQuestion(filterArgs);
+                      setQuestionSummary(response.data);
+                      setSearchCount(response.data.length);
+                  } catch (error) {
+                      console.log('담당자 질문 요약 조회 실패: ', error);
+                  }
+              };
+
+    // 질문 상세 조회 (모달로 전달)
+    const fetchGetQuestionDetail =
+        role === 'CUSTOMER'
+            ? async (questionId, status) => {
+                  try {
+                      const response = await getQuestionByQuestionId(
+                          userId,
+                          questionId,
+                      );
+                      setQuestionDetail(response.data); // 질문 상세 내용 저장
+                      if (status === 'COMPLETED') {
+                          // 답변 완료 질문인 경우
+                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
+                      } else {
+                          // 답변 대기 질문인 경우
+                          setAnswerDetail([]); // 답변 Empty Array 전달
+                          setOpenModal(true); // 모달 열기
+                      }
+                  } catch (error) {
+                      console.log('고객사 질문 상세 조회 실패: ', error);
+                  }
+              }
+            : async (questionId, status) => {
+                  try {
+                      const response = await getQuestionByQuestionIdForManager(
+                          questionId,
+                      );
+                      setQuestionDetail(response.data); // 질문 상세 내용 저장
+                      if (status === 'COMPLETED') {
+                          // 답변 완료 질문인 경우
+                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
+                      } else {
+                          // 답변 대기 질문인 경우
+                          setAnswerDetail([]); // 답변 Empty Array 전달
+                          setOpenModal(true); // 모달 열기
+                      }
+                  } catch (error) {
+                      console.log('담당자 질문 상세 조회 실패: ', error);
+                  }
+              };
+
+    // 답변 상세 조회 (모달로 전달)
+    const fetchGetAnswerDetail =
+        role === 'CUSTOMER'
+            ? async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionId(
+                          userId,
+                          questionId,
+                      );
+                      setAnswerDetail(response.data); // 답변 상세 내용 저장
+                      setOpenModal(true); // 모달 열기
+                  } catch (error) {
+                      console.log('고객사 답변 상세 조회 실패: ', error);
+                  }
+              }
+            : async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionIdForManager(
+                          questionId,
+                      );
+                      setAnswerDetail(response.data); // 답변 상세 내용 저장
+                      setOpenModal(true); // 모달 열기
+                  } catch (error) {
+                      console.log('담당자 답변 상세 조회 실패: ', error);
+                  }
+              };
 
     useEffect(() => {
-        fetchGetCol(filterArgs);
-    }, [userId, filterArgs]); // startDate, endDate 추가 필요
+        fetchGetQuestions();
+    }, [userId, filterArgs, openModal]);
+
+    // // 검색 결과, 전체 질문, 답변 대기 질문, 답변 완료 질문 현황
+    // useEffect(() => {
+    //     const filteredQuestions = questionSummary.totalQuestionCount; // 필터링 질문 카운트
+    //     const totalQuestions = questionCount.totalQuestionCount; // 전체 질문 카운트
+    //     const totalAnswers = answerCount.length; // 전체 답변 카운트
+    //     setSearchedItems(filteredQuestions);
+    //     setTotalItems(totalQuestions);
+    //     setReadyItems(totalQuestions - totalAnswers);
+    //     setCompletedItems(totalAnswers);
+    // }, [questionSummary, questionCount, answerCount]);
+
+    // if (openCard) {
+    //     document.body.style.overflow = 'hidden';
+    // } else {
+    //     document.body.style.overflow = 'auto';
+    // }
 
     const columns = [
-        {
-            id: 'colId',
-            label: 'No',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
         {
             id: 'questionId',
             label: '질문 번호',
@@ -230,44 +324,58 @@ export default function ColTable({
             minWidth: 120,
         },
         {
-            id: 'colReqManager',
-            label: '담당자',
+            id: 'type',
+            label: '질문 유형',
             align: 'center',
             width: 120,
             minWidth: 120,
         },
         {
-            id: 'colStatus',
-            label: '진행 상황',
+            id: 'customerName',
+            label: '고객사명',
             align: 'center',
             width: 120,
             minWidth: 120,
         },
         {
-            id: 'colContents',
-            label: '내용',
+            id: 'title',
+            label: '질문 제목',
             align: 'center',
-            width: 240,
-            minWidth: 240,
+            width: 120,
+            minWidth: 120,
         },
         {
-            id: 'createdDate',
-            label: '등록 일자',
+            id: 'status',
+            label: '질문 현황',
+            align: 'center',
+            width: 120,
+            minWidth: 120,
+        },
+        {
+            id: 'questionCreatedAt',
+            label: '질문 작성 날짜',
+            align: 'center',
+            width: 120,
+            minWidth: 120,
+        },
+        {
+            id: 'answerCreatedAt',
+            label: '답변 작성 날짜',
             align: 'center',
             width: 120,
             minWidth: 120,
         },
     ];
 
-    console.log(collabs);
-    const rows = collabs.map((collab) =>
+    const rows = questionSummary.map((question) =>
         createData(
-            collab.colId,
-            collab.questionId,
-            collab.colReqManager,
-            collab.colStatus,
-            collab.colContents,
-            collab.createdDate,
+            question.questionId,
+            question.type,
+            question.customerName,
+            question.title,
+            question.status,
+            question.questionCreatedAt,
+            question.answerCreatedAt,
         ),
     );
 
@@ -286,7 +394,7 @@ export default function ColTable({
     return (
         <TableContainer
             component={Paper}
-            sx={{ width: 1320, margin: '24px auto 0 auto' }}
+            sx={{ width: 1320, margin: '24px auto 10vh auto' }}
         >
             <Table
                 size="small"
@@ -321,29 +429,23 @@ export default function ColTable({
                         : rows
                     ).map((row) => (
                         <TableRow
-                            key={row.colId}
+                            key={row.questionId}
                             className={Select}
+                            // 마지막 줄 border 제거
                             // sx={{
                             //     '&:last-child td, &:last-child th': {
                             //         border: 0,
                             //     },
                             // }}
                             onClick={() => {
-                                setStatus(row.colStatus);
+                                setStatus(row.status);
                                 setQuestionId(row.questionId);
-                                setColId(row.colId);
-                                fetchGetColDetail(row.questionId, row.colId);
+                                fetchGetQuestionDetail(
+                                    row.questionId,
+                                    row.status,
+                                );
                             }}
                         >
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                }}
-                            >
-                                {row.colId}
-                            </TableCell>
                             <TableCell
                                 sx={{
                                     textAlign: 'center',
@@ -360,7 +462,20 @@ export default function ColTable({
                                     minWidth: 120,
                                 }}
                             >
-                                {row.colReqManager}
+                                {row.type === 'INQ'
+                                    ? 'Inquiry'
+                                    : row.type === 'SITE'
+                                    ? '사이트 문의'
+                                    : '기타 문의'}
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
+                                {row.customerName}
                             </TableCell>
                             <TableCell
                                 sx={{
@@ -368,36 +483,9 @@ export default function ColTable({
                                     width: 120,
                                     minWidth: 120,
                                     fontWeight: 600,
-                                    // color:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#ffffff'
-                                    //         : '#000000',
-                                    // backgroundColor:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#3c6cf2'
-                                    //         : row.colStatus === 'INPROGRESS'
-                                    //         ? '#a1c2ff'
-                                    //         : row.colStatus === 'REFUSE'
-                                    //         ? '#ffdb7b'
-                                    //         : '',
                                 }}
                             >
-                                {row.colStatus === 'READY'
-                                    ? '협업 대기'
-                                    : row.colStatus === 'INPROGRESS'
-                                    ? '협업 진행 중'
-                                    : row.colStatus === 'COMPLETE'
-                                    ? '협업 완료'
-                                    : '협업 거절'}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 240,
-                                    minWidth: 240,
-                                }}
-                            >
-                                {row.colContents}
+                                {row.title}
                             </TableCell>
                             <TableCell
                                 sx={{
@@ -406,13 +494,34 @@ export default function ColTable({
                                     minWidth: 120,
                                 }}
                             >
-                                {row.createdDate.substr(0, 10)}
+                                {row.status === 'READY'
+                                    ? '답변 대기'
+                                    : '답변 완료'}
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
+                                {row.questionCreatedAt.substring(0, 10)}
+                            </TableCell>{' '}
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center',
+                                    width: 120,
+                                    minWidth: 120,
+                                }}
+                            >
+                                {row.answerCreatedAt &&
+                                    row.answerCreatedAt.substring(0, 10)}
                             </TableCell>
                         </TableRow>
                     ))}
                     {emptyRows > 0 && (
                         <TableRow sx={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
+                            <TableCell colSpan={7} />
                         </TableRow>
                     )}
                 </TableBody>
@@ -426,7 +535,7 @@ export default function ColTable({
                                 20,
                                 { label: 'All', value: -1 },
                             ]}
-                            colSpan={6}
+                            colSpan={7}
                             count={rows.length}
                             rowsPerPage={rowsPerPage}
                             page={page}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import SearchInput from '../mocules/SearchInput';
 import { FilterButton } from '../atoms/VocButton';
@@ -6,33 +7,56 @@ import search from '../../assets/css/icons/voc/search.svg';
 import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
 export default function ColFilterPanel({
-    searchedItems,
     colNo,
-    setColNo,
     colManager,
+    startDate,
+    endDate,
+    
+    searchCount,
+    setColNo,
     setColManager,
-    // setStartDate,
-    // setEndDate,
+    setStartDate,
+    setEndDate,
     setTimeFilter,
-    setStatusFilter,
-    searchByFilter,
+    setProgressFilter,
 }) {
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST', 'OLDEST'
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY', 'INPROGRESS', 'COMPLETE', 'REFUSE'
+    const [tempStartDate, setTempStartDate] = useState(startDate);
+    const [tempEndDate, setTempEndDate] = useState(endDate);
+    const [tempColNo, setTempColNo] = useState(colNo);
+    const [tempColManager, setTempColManager] = useState(colManager);
+    const [tempTimeFilter, setTempTimeFilter] = useState(null);
+    const [tempProgressFilter, setTempProgressFilter] = useState(null);
 
-    const clickTimeFilter = (filter) => {
-        setSelectedTimeFilter(filter);
-        setTimeFilter(filter);
+    const enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            startSearch();
+        }
     };
 
-    const clickStatusFilter = (filter) => {
-        setSelectedStatusFilter(filter);
-        setStatusFilter(filter);
+    const clickTimeFilter = (filter) => {
+        setTempTimeFilter(filter);
+    };
+
+    const selectProgressFilter = (filter) => {
+        setTempProgressFilter(filter);
+    };
+
+    const startSearch = () => {
+        setColNo(tempColNo);
+        setColManager(tempColManager);
+        setStartDate(tempStartDate);
+        setEndDate(tempEndDate);
+        setTimeFilter(tempTimeFilter);
+        setProgressFilter(tempProgressFilter);
     };
 
     return (
         <>
-            <div className={Collaboration_Filter_Pannel}>
+            <div
+                className={Collaboration_Filter_Pannel}
+                onKeyDown={enterKeyDown}
+            >
                 <div>
                     {/* 아이콘 + VoC 협업 조회 */}
                     <div>
@@ -52,8 +76,8 @@ export default function ColFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                value={colNo}
-                                onChange={(e) => setColNo(e.target.value)}
+                                value={tempColNo}
+                                onChange={(e) => setTempColNo(e.target.value)}
                             />
                             <div>협업 담당자</div>
                             <SearchInput
@@ -64,8 +88,8 @@ export default function ColFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                value={colManager}
-                                onChange={(e) => setColManager(e.target.value)}
+                                value={tempColManager}
+                                onChange={(e) => setTempColManager(e.target.value)}
                             />
                             <Button
                                 btnName={'조회'}
@@ -76,7 +100,35 @@ export default function ColFilterPanel({
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'20px'}
-                                onClick={searchByFilter}
+                                onClick={startSearch}
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <div>문의 등록일</div>
+                            <Input
+                                type={'date'}
+                                width={'144px'}
+                                height={'24px'}
+                                border={'solid 1px #c1c1c1'}
+                                borderRadius={'8px'}
+                                outline={'none'}
+                                padding={'0 8px 0 8px'}
+                                value={tempStartDate}
+                                onChange={(e) => setTempStartDate(e.target.value)}
+                            />
+                            <div>~</div>
+                            <Input
+                                type={'date'}
+                                width={'144px'}
+                                height={'24px'}
+                                border={'solid 1px #c1c1c1'}
+                                borderRadius={'8px'}
+                                outline={'none'}
+                                padding={'0 8px 0 8px'}
+                                value={tempEndDate}
+                                onChange={(e) => setTempEndDate(e.target.value)}
                             />
                         </div>
                     </div>
@@ -89,12 +141,12 @@ export default function ColFilterPanel({
                             width={'84px'}
                             onClick={() => clickTimeFilter('LATEST')}
                             backgroundColor={
-                                selectedTimeFilter === 'LATEST'
+                                tempTimeFilter === 'LATEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'LATEST'
+                                tempTimeFilter === 'LATEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -105,85 +157,36 @@ export default function ColFilterPanel({
                             margin={'0 12px 0 0'}
                             onClick={() => clickTimeFilter('OLDEST')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                tempTimeFilter === 'OLDEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                tempTimeFilter === 'OLDEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
                         />
-                        <FilterButton
-                            btnName={'협업 요청 완료'}
-                            width={'120px'}
-                            margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('READY')}
-                            backgroundColor={
-                                selectedStatusFilter === 'READY'
-                                    ? '#03507d'
-                                    : '#ffffff'
+                        <select
+                            name="progress"
+                            id="progress"
+                            onChange={(e) =>
+                                selectProgressFilter(e.target.value)
                             }
-                            textColor={
-                                selectedStatusFilter === 'READY'
-                                    ? '#ffffff'
-                                    : '#000000'
-                            }
-                        />
-                        <FilterButton
-                            btnName={'협업 진행 중'}
-                            width={'120px'}
-                            margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('INPROGRESS')}
-                            backgroundColor={
-                                selectedStatusFilter === 'INPROGRESS'
-                                    ? '#03507d'
-                                    : '#ffffff'
-                            }
-                            textColor={
-                                selectedStatusFilter === 'INPROGRESS'
-                                    ? '#ffffff'
-                                    : '#000000'
-                            }
-                        />
-                        <FilterButton
-                            btnName={'협업 거절'}
-                            width={'120px'}
-                            margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('REFUSE')}
-                            backgroundColor={
-                                selectedStatusFilter === 'REFUSE'
-                                    ? '#03507d'
-                                    : '#ffffff'
-                            }
-                            textColor={
-                                selectedStatusFilter === 'REFUSE'
-                                    ? '#ffffff'
-                                    : '#000000'
-                            }
-                        />
-                        <FilterButton
-                            btnName={'협업 완료'}
-                            width={'120px'}
-                            margin={'0 12px 0 0'}
-                            onClick={() => clickStatusFilter('COMPLETE')}
-                            backgroundColor={
-                                selectedStatusFilter === 'COMPLETE'
-                                    ? '#03507d'
-                                    : '#ffffff'
-                            }
-                            textColor={
-                                selectedStatusFilter === 'COMPLETE'
-                                    ? '#ffffff'
-                                    : '#000000'
-                            }
-                        />
+                        >
+                            <option value="" disabled selected>
+                                진행 현황
+                            </option>
+                            <option value="READY">협업 대기</option>
+                            <option value="INPROGRESS">협업 진행 중</option>
+                            <option value="REFUSE">협업 거절</option>
+                            <option value="COMPLETE">협업 완료</option>
+                        </select>
                     </div>
 
                     {/* 검색 결과 개수 */}
                     <div>
-                        검색 결과: 총 <div>{searchedItems}</div>건
+                        검색 결과: 총 <div>{searchCount}</div>건
                     </div>
                     <div></div>
                 </div>

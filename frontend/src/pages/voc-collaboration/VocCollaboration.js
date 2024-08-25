@@ -1,17 +1,15 @@
 import React from 'react';
 import ColPath from '../../components/atoms/ColPath';
-import ColForm from '../../components/templates/ColForm';
+import ColDashboard from '../../components/templates/ColDashboard';
 
-function Collaboration() {
+export default function VocCollaboration() {
     return (
         <>
             <ColPath
                 largeCategory={'협업 목록'}
                 mediumCategory={'협업 목록 조회'}
             />
-            <ColForm />
+            <ColDashboard />
         </>
     );
 }
-
-export default Collaboration;

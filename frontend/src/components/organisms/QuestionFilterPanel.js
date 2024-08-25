@@ -8,8 +8,6 @@ import { Question_Filter_Panel } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterPanel({
-    searchedItems,
-
     title,
     startDate,
     endDate,
@@ -22,22 +20,19 @@ function QuestionFilterPanel({
     setQuestionNo,
     setCustomerName,
 
+    searchCount,
     setTimeFilter,
     setStatusFilter,
     setTypeFilter,
 }) {
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST' 또는 'OLDEST'
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY' 또는 'COMPLETED'
-    const [, setSelectedTypeFilter] = useState(null); // 'INQ' 또는 'SITE' 또는 'ETC'
-
     const [tempTitle, setTempTitle] = useState(title);
     const [tempStartDate, setTempStartDate] = useState(startDate);
     const [tempEndDate, setTempEndDate] = useState(endDate);
     const [tempQuestionNo, setTempQuestionNo] = useState(questionNo);
     const [tempCustomerName, setTempCustomerName] = useState(customerName);
-    const [tempTimeFilter, setTempTimeFilter] = useState(null); // 임시 필터 상태
-    const [tempStatusFilter, setTempStatusFilter] = useState(null); // 임시 필터 상태
-    const [tempTypeFilter, setTempTypeFilter] = useState(null); // 임시 필터 상태
+    const [tempTimeFilter, setTempTimeFilter] = useState(null);
+    const [tempStatusFilter, setTempStatusFilter] = useState(null);
+    const [tempTypeFilter, setTempTypeFilter] = useState(null);
 
     const role = getCookie('userRole');
     const height = role === 'CUSTOMER' ? '228px' : '288px';
@@ -54,15 +49,15 @@ function QuestionFilterPanel({
     };
 
     const clickTimeFilter = (filter) => {
-        setTempTimeFilter(filter); // 임시 상태 업데이트
+        setTempTimeFilter(filter);
     };
 
     const clickStatusFilter = (filter) => {
-        setTempStatusFilter(filter); // 임시 상태 업데이트
+        setTempStatusFilter(filter);
     };
 
     const selectTypeFilter = (filter) => {
-        setTempTypeFilter(filter); // 임시 상태 업데이트
+        setTempTypeFilter(filter);
     };
 
     const startSearch = () => {
@@ -71,9 +66,9 @@ function QuestionFilterPanel({
         setEndDate(tempEndDate);
         setQuestionNo(tempQuestionNo);
         setCustomerName(tempCustomerName);
-        setTimeFilter(tempTimeFilter); // 임시 필터 상태로 업데이트
-        setStatusFilter(tempStatusFilter); // 임시 필터 상태로 업데이트
-        setTypeFilter(tempTypeFilter); // 임시 필터 상태로 업데이트
+        setTimeFilter(tempTimeFilter);
+        setStatusFilter(tempStatusFilter);
+        setTypeFilter(tempTypeFilter);
     };
 
     return (
@@ -262,7 +257,7 @@ function QuestionFilterPanel({
 
                     {/* 검색 결과 개수 */}
                     <div>
-                        검색 결과: 총 <div>{searchedItems}</div>건
+                        검색 결과: 총 <div>{searchCount}</div>건
                     </div>
                     <div></div>
                 </div>

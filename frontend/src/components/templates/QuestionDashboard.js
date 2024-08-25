@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Text from '../../components/atoms/Text';
 import QuestionOverview from '../organisms/QuestionOverview';
 import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
-import QuestionTable from '../mocules/QuestionTable';
+import QuestionTable from '../organisms/QuestionTable';
 import QuestionModal from '../mocules/QuestionModal';
 // import Notification from '../../components/mocules/NotificationModal';
+import { useAuth } from '../../hooks/useAuth';
+import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
+import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
+import { getAllCollaboration } from '../../apis/api/collaboration';
+import { getCookie } from '../../apis/utils/cookies';
 
-function QuestionDashboard() {
+export default function QuestionDashboard() {
     const [searchedItems, setSearchedItems] = useState('');
-    const [totalItems, setTotalItems] = useState('');
-    const [readyItems, setReadyItems] = useState('');
-    const [completedItems, setCompletedItems] = useState('');
 
     // 검색 기능
     const [title, setTitle] = useState('');
@@ -29,36 +31,90 @@ function QuestionDashboard() {
     const [status, setStatus] = useState('READY');
     const [openModal, setOpenModal] = useState(false);
 
+    // 질문 답변 현황
+    const { userId } = useAuth();
+    const role = getCookie('userRole');
+    const [questionCount, setQuestionCount] = useState(0);
+    const [answerCount, setAnswerCount] = useState(0);
+    const [colCount, setColCount] = useState(0);
+    const [searchCount, setSearchCount] = useState(0);
+
+    const fetchGetQuestionCount =
+        role === 'CUSTOMER'
+            ? async () => {
+                  try {
+                      const response = await getQuestionByUserId(userId, '');
+                      setQuestionCount(response.data.length);
+                  } catch (error) {
+                      console.log('고객사 질문 개수 조회 실패: ', error);
+                  }
+              }
+            : async () => {
+                  try {
+                      const response = await getAllQuestion('');
+                      setQuestionCount(response.data.length);
+                  } catch (error) {
+                      console.log('담당자 질문 개수 조회 실패: ', error);
+                  }
+              };
+
+    const fetchGetAnswerCount =
+        role === 'CUSTOMER'
+            ? async () => {
+                  try {
+                      const response = await getAnswerByUserId(userId, '');
+                      setAnswerCount(response.data.length);
+                  } catch (error) {
+                      console.log('고객사 답변 개수 조회 실패: ', error);
+                  }
+              }
+            : async () => {
+                  try {
+                      const response = await getAllAnswer();
+                      setAnswerCount(response.data.length);
+                  } catch (error) {
+                      console.log('담당자 답변 개수 조회 실패: ', error);
+                  }
+              };
+
+    const fetchGetColCount = async () => {
+        try {
+            const response = await getAllCollaboration('');
+            setColCount(response.data.length);
+        } catch (error) {
+            console.log('협업 목록 개수 조회 실패: ', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchGetQuestionCount();
+        fetchGetAnswerCount();
+        fetchGetColCount();
+    }, [userId]);
+
     return (
         <>
             <QuestionOverview
-                question_total={totalItems}
-                question_ready={readyItems}
-                question_completed={completedItems}
-                question_collaboration={'99'}
+                questionCount={questionCount}
+                answerCount={answerCount}
+                colCount={colCount}
             />
             <QuestionFilterPanel
-                searchedItems={searchedItems}
-                totalItems={totalItems}
-
-                questionNo={questionNo}
-                customerName={customerName}
+                searchCount={searchCount}
                 title={title}
                 startDate={startDate}
                 endDate={endDate}
-                timeFilter={timeFilter}
-                statusFilter={statusFilter}
-                typeFilter={typeFilter}
-
-                setQuestionNo={setQuestionNo}
-                setCustomerName={setCustomerName}
+                questionNo={questionNo}
+                customerName={customerName}
                 setTitle={setTitle}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
+                setQuestionNo={setQuestionNo}
+                setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
                 setStatusFilter={setStatusFilter}
+                questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}
-                // searchByFilter={searchByFilter}
             />
             <Text
                 name={'문의 목록'}
@@ -77,7 +133,7 @@ function QuestionDashboard() {
                 timeFilter={timeFilter}
                 statusFilter={statusFilter}
                 typeFilter={typeFilter}
-
+                setSearchCount={setSearchCount}
                 setQuestionDetail={setQuestionDetail}
                 setAnswerDetail={setAnswerDetail}
                 setQuestionId={setQuestionId}
@@ -85,11 +141,6 @@ function QuestionDashboard() {
                 status={status}
                 setOpenModal={setOpenModal}
                 openModal={openModal}
-
-                // setSearchedItems={setSearchedItems}
-                // setTotalItems={setTotalItems}
-                // setReadyItems={setReadyItems}
-                // setCompletedItems={setCompletedItems}
             />
 
             {openModal && (
@@ -107,5 +158,3 @@ function QuestionDashboard() {
         </>
     );
 }
-
-export default QuestionDashboard;

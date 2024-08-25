@@ -19,15 +19,15 @@ export default function ColPath({
                 marginTop: '4vh',
             }}
         >
-            <Link to="/collaboration" className={_Link}>
+            <Link to="/voc-collaboration" className={_Link}>
                 <span>{largeCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/collaboration" className={_Link}>
+            <Link to="/voc-collaboration" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/collaboration" className={_Link}>
+            <Link to="/voc-collaboration" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>
         </div>

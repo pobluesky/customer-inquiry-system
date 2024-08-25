@@ -47,6 +47,8 @@
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .Question_Filter_Panel > div:first-child {
@@ -101,9 +103,9 @@
     background: none;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
-    -webkit-appearance:none; /* 크롬 화살표 없애기 */
-    -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
-    appearance:none /* 화살표 없애기 */
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
 }
 
 /* 검색 결과 */
@@ -134,6 +136,8 @@
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .Question_Type_Selector > div:first-child {
@@ -206,6 +210,8 @@
     margin: 36px auto 72px auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .Question_Input > div:first-child {
@@ -486,10 +492,6 @@
     background-color: #ffffff;
 }
 
-/* div {
-    border: 1px solid blue;
-} */
-
 /* Inquiry 번호 검색창 그룹 */
 .Question_Inquiry_Modal > div:nth-child(1) {
     display: grid;
@@ -513,7 +515,7 @@
 /* Inquiry 목록 그룹 */
 .Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar {
     display: block;
-    width: 8px;
+    height: 8px;
 }
 
 .Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar-thumb {
@@ -561,7 +563,7 @@
 /******************************************************************/
 .Collaboration_Filter_Pannel {
     width: 1320px;
-    height: 228px;
+    height: 288px;
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
@@ -571,7 +573,7 @@
 
 .Collaboration_Filter_Pannel > div:first-child {
     display: grid;
-    grid-template-rows: 52px 52px 36px 32px;
+    grid-template-rows: 52px 52px 52px 36px 32px;
     margin: 36px 0 0 36px;
 }
 
@@ -596,14 +598,36 @@
     color: #212121;
 }
 
-/* 정렬 조건 + 정렬 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(3) {
+/* 협업 등록일 */
+.Collaboration_Filter_Pannel > div > div:nth-child(3) > :nth-child(1) {
     display: grid;
-    grid-template-columns: 120px 96px 96px 132px 132px 132px 132px;
+    grid-template-columns: 120px 180px 28px 180px;
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
     color: #212121;
+}
+
+/* 정렬 조건 + 정렬 버튼 */
+.Collaboration_Filter_Pannel > div > div:nth-last-child(3) {
+    display: grid;
+    grid-template-columns: 120px 96px 96px 96px;
+    align-items: center;
+    font-size: 16px;
+    /* color: #8b8b8b; */
+    color: #212121;
+}
+
+/* 정렬 조건 + 정렬 버튼 */
+.Collaboration_Filter_Pannel > div > div:nth-last-child(3) select {
+    width: 96px;
+    height: 28px;
+    background: none;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
 }
 
 /* 검색 결과 */
@@ -622,6 +646,7 @@
     margin: 0 0 0 12px;
     font-size: 24px;
     font-weight: 600;
+    color: red;
 }
 /* 
 div, button {
