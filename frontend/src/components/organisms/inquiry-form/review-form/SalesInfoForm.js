@@ -6,14 +6,18 @@ import {
     SalesInfoItem,
     LineItemInput,
     SalesInfoRow,
-} from '../../../assets/css/Form.css';
-import ToggleBar from '../../mocules/ToggleBar';
-import SelectBox from '../../atoms/SelectBox';
+} from '../../../../assets/css/Form.css';
+import ToggleBar from '../../../mocules/ToggleBar';
 
 const SalesInfoForm = ({ formData, handleFormDataChange }) => {
     if(!formData) {
         return;
     }
+
+    const {
+        contract,
+        thicknessNotify,
+    } = formData;
 
     // 최종 검토 내용
     const [isChecked, setCheck] = useState(true);
@@ -36,7 +40,13 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
                             ))}
                         </div>
                         <div className={SalesInfoRow}>
-                            <select value={formData.salesInfo.contract} className={LineItemInput}> {/* contract */}
+                            <select value={contract}
+                                    className={LineItemInput}
+                                    onChange={(e) =>
+                                        handleFormDataChange(
+                                        'contract', e.target.value)}
+                            > {/* contract */}
+                                <option value="">선택</option>
                                 <option value="CUSTOMER_RELATIONSHIP">고객협력</option>
                                 <option value="MARKET_DEMAND">시장수요</option>
                             </select>
@@ -45,7 +55,7 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
                             <input
                                 type="text"
                                 className={LineItemInput}
-                                value={formData.salesInfo.thicknessNotify}
+                                value={thicknessNotify}
                                 onChange={(e) => handleFormDataChange(
                                     'thicknessNotify', e.target.value)}
                             />

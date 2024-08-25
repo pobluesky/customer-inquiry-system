@@ -6,11 +6,9 @@ import com.pobluesky.backend.domain.review.dto.response.ReviewResponseDTO;
 import com.pobluesky.backend.domain.review.service.ReviewService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
-
 import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

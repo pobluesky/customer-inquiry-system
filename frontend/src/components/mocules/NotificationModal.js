@@ -43,7 +43,7 @@ const NotificationModal = ({ onClose }) => {
                 notificationData.filter((notification) => !notification.isRead),
             );
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 
@@ -61,7 +61,7 @@ const NotificationModal = ({ onClose }) => {
             }
             setReadNotificationList(readNotificationData);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 
@@ -87,7 +87,7 @@ const NotificationModal = ({ onClose }) => {
                 fetchReadNotifications();
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 

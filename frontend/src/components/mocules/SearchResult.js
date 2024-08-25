@@ -14,6 +14,7 @@ const SearchResult = ({ searchResult }) => {
                 <span className={_searchCount}>{searchResult}</span>
                 &nbsp;건
             </p>
+            {/*
             <Button
                 btnName={'엑셀 다운로드'}
                 textColor={'#ffffff'}
@@ -24,7 +25,7 @@ const SearchResult = ({ searchResult }) => {
                 backgroundColor={'#03507D'}
                 border={'none'}
                 margin={'25px 0 0 20px'}
-            />
+            />*/}
         </div>
     );
 };

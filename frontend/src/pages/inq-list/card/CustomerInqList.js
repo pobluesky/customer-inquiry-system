@@ -30,7 +30,7 @@ const CustomerInqList = () => {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
-            console.error('Error fetching Inquiry:', error);
+            console.log('Error fetching Inquiry:', error);
         }
     };
 

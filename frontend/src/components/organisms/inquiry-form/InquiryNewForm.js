@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ToggleBar from '../../mocules/ToggleBar';
 import {
     Container,
@@ -8,8 +8,9 @@ import {
     _Input,
     inputWrapper,
 } from '../../../assets/css/Form.css';
+import styled from 'styled-components';
 
-const InquiryNewForm = ({ formData, handleFormDataChange }) => {
+const InquiryNewForm = ({ formData, handleFormDataChange, register, errors }) => {
     const {
         customerCode,
         customerName,
@@ -25,7 +26,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
         productType,
         customerRequestDate,
     } = formData;
-    const [isChecked, setCheck] = React.useState(true);
+    const [isChecked, setCheck] = useState(true);
 
     return (
         <div className={Container}>
@@ -48,9 +49,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     readOnly={true}
                                 />
                             </div>
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.country ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>국가</label>
                                 <select
+                                    {...register('country', { required: '국가를 선택해 주세요.' })}
                                     className={_Input}
                                     value={country}
                                     onChange={(e) =>
@@ -72,12 +77,15 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     <option value="FRANCE">프랑스</option>
                                 </select>
                             </div>
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.corporate ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>판매상사</label>
                                 <input
+                                    {...register('corporate', { required: '판매상사를 입력해 주세요.' })}
                                     type="text"
                                     className={_Input}
-                                    placeholder="POA"
                                     value={corporate}
                                     onChange={(e) =>
                                         handleFormDataChange(
@@ -89,12 +97,15 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                             </div>
 
                             {/* 2행 */}
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.salesPerson ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>판매계약자</label>
                                 <input
+                                    {...register('salesPerson', { required: '판매계약자를 입력해 주세요.' })}
                                     type="text"
                                     className={_Input}
-                                    placeholder="POSCO Asia Co., Ltd."
                                     value={salesPerson}
                                     onChange={(e) =>
                                         handleFormDataChange(
@@ -104,9 +115,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     }
                                 />
                             </div>
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.inquiryType ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>Inquiry 유형</label>
                                 <select
+                                    {...register('inquiryType', { required: '문의유형을 선택해 주세요.' })}
                                     className={_Input}
                                     value={inquiryType}
                                     onChange={(e) =>
@@ -128,9 +143,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     <option value="QUOTE_INQUIRY">견적</option>
                                 </select>
                             </div>
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.industry ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>산업분류</label>
                                 <select
+                                    {...register('industry', { required: '산업분류를 선택해 주세요.' })}
                                     className={_Input}
                                     value={industry}
                                     onChange={(e) =>
@@ -175,7 +194,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     </option>
                                     <option value="VESSEL">Vessel</option>
                                     <option value="BEAM">Beam</option>
-                                    <option value="OTHER">기타</option>
+                                    <option value="OTHER">Others</option>
                                 </select>
                             </div>
 
@@ -206,9 +225,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                             </div>
 
                             {/* 4행 */}
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.corporationCode ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>법인코드</label>
                                 <input
+                                    {...register('corporationCode', { required: '법인코드를 입력해 주세요.' })}
                                     type="text"
                                     className={_Input}
                                     value={corporationCode}
@@ -220,9 +243,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     }
                                 />
                             </div>
-                            <div className={inputWrapper}>
-                                <label>제품</label>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.productType ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
+                                <label>제품유형</label>
                                 <select
+                                    {...register('productType', { required: '제품유형을 선택해 주세요.' })}
                                     className={_Input}
                                     value={productType}
                                     onChange={(e) =>
@@ -242,9 +269,13 @@ const InquiryNewForm = ({ formData, handleFormDataChange }) => {
                                     <option value="WIRE_ROD">선재</option>
                                 </select>
                             </div>
-                            <div className={inputWrapper}>
+                            <div className={inputWrapper}
+                                 style={{
+                                     border: errors.customerRequestDate ? '1px solid #F02323' : '1px solid #c1c1c1',
+                                 }}>
                                 <label>고객요청일자</label>
                                 <input
+                                    {...register('customerRequestDate', { required: '고객요청일자를 선택해 주세요.' })}
                                     type="date"
                                     className={_Input}
                                     value={customerRequestDate}

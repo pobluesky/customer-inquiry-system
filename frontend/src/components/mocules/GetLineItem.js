@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-    LineItemRow,
-    LineItemInput,
-    _checkbox,
     LineItemGetRow,
     LineItemGetInput,
     LineItemGetGrid
@@ -19,7 +16,6 @@ const getAllColumns = (data) => {
 
 const GetLineItem = ({ lineItems }) => {
 
-    console.log("lineItems: ", lineItems);
     const columns = getAllColumns(lineItems);
 
     return (

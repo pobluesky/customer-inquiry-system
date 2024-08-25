@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import ToggleBar from '../../mocules/ToggleBar';
+import ToggleBar from '../../../mocules/ToggleBar';
 import {
     Container,
     Sheet,
     Opend,
     _TextArea,
-} from '../../../assets/css/Form.css';
+} from '../../../../assets/css/Form.css';
 
-const FinalReviewTextForm = ({ formData }) => {
+const FinalReviewTextForm = ({ formData, handleFormDataChange }) => {
     if(!formData) {
         return;
     }
+
+    const {
+        finalReviewText
+    } = formData;
 
     const [isChecked, setCheck] = useState(true);
 
@@ -28,7 +32,12 @@ const FinalReviewTextForm = ({ formData }) => {
                             className={_TextArea}
                             placeholder="내용을 입력해 주세요"
                             wrap="hard"
-                            value={formData.finalReviewText}
+                            value={finalReviewText}
+                            onChange={(e) =>
+                                handleFormDataChange(
+                                    'finalReviewText',
+                                    e.target.value
+                                )}
                         />
                     </div>
                 ) : (

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import ToggleBar from '../../mocules/ToggleBar';
-import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
-import ReviewText from '../../mocules/ReviewText';
+import ToggleBar from '../../../mocules/ToggleBar';
+import { Container, Sheet, Opend } from '../../../../assets/css/Form.css';
+import ReviewText from './ReviewText';
 
-const ReviewTextForm = ({ formData }) => {
+const ReviewTextForm = ({ formData, handleFormDataChange }) => {
     if(!formData) {
         return;
     }
@@ -24,7 +24,8 @@ const ReviewTextForm = ({ formData }) => {
                             title={'1차검토'}
                             width="80px"
                             height="80px"
-                            content={formData.reviewText}
+                            formData={formData}
+                            handleFormDataChange={handleFormDataChange}
                         />
                     </div>
                 ) : (

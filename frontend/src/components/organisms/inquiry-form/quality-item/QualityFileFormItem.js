@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../assets/css/Form.css";
-import ToggleBar from "../../mocules/ToggleBar";
-import FileGetItem from '../../mocules/FileGetItem';
+import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../../assets/css/Form.css";
+import ToggleBar from "../../../mocules/ToggleBar";
+import FileGetItem from '../../../mocules/FileGetItem';
 
-const FileFormItem = ({ fileForm, formData }) => {
+const QualityFileFormItem = ({ fileForm, formData }) => {
     if(!formData) {
         return;
     }
 
     const [isChecked, setCheck] = useState(true);
 
-    const isUploadSection = fileForm === "첨부파일";
+    const isUploadSection = fileForm === "품질검토 첨부파일";
 
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
@@ -22,7 +22,7 @@ const FileFormItem = ({ fileForm, formData }) => {
                             <div>진행단계</div>
                             <div>첨부파일명</div>
                         </div>
-                        <FileGetItem files={formData.fileName} filePath={formData.filePath} />
+                        <FileGetItem files={formData.qualityReviewInfo.fileName} filePath={formData.qualityReviewInfo.filePath} />
                     </div>
                 )}
             </div>
@@ -30,4 +30,4 @@ const FileFormItem = ({ fileForm, formData }) => {
     );
 };
 
-export default FileFormItem;
+export default QualityFileFormItem;

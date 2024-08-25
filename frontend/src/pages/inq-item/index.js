@@ -1,3 +1,6 @@
-import InqItem from './InqItem';
+// 고객사/판매담당자/품질담당자 Inquiry 상세 조회 페이지
+import CustomerInqItem from './CustomerInqItem';
+import SalesManagerInqItem from './SalesManagerInqItem';
+import QualityManagerInqItem from './QualityManagerInqItem';
 
-export { InqItem };
+export { CustomerInqItem, SalesManagerInqItem, QualityManagerInqItem };
