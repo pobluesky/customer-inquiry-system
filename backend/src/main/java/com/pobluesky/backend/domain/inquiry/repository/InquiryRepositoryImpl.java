@@ -66,7 +66,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -120,7 +120,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -159,7 +159,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -210,7 +210,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -234,7 +234,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
@@ -251,7 +251,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
@@ -282,7 +282,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         return productType != null ? inquiry.productType.eq(productType) : null;
     }
 
-    private BooleanExpression customerNameEq(String customerName) {
+    private BooleanExpression customerNameContains(String customerName) {
         return StringUtils.hasText(customerName) ? customer.customerName.eq(customerName) : null;
     }
 
