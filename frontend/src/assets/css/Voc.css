@@ -42,11 +42,6 @@
 /******************************************************************/
 /* 질문 조회 시 사용하는 조건 그룹 **********************************/
 /******************************************************************/
-
-div {
-    border: 1px solid blue;
-}
-
 .Question_Filter_Panel {
     width: 1320px;
     margin: 36px auto 0 auto;
@@ -284,96 +279,6 @@ div {
 }
 
 /******************************************************************/
-/* 질문 카드 컴포넌트 **********************************************/
-/******************************************************************/
-.Question_Card {
-    width: 360px;
-    height: 300px;
-    margin: 0 0 24px 0;
-    border: solid 1px #ffffff;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-    cursor: default;
-}
-
-.Question_Card > div {
-    display: grid;
-    grid-template-rows: 52px 84px 80px 32px;
-    margin: 24px 24px 0 24px;
-}
-
-/* 답변 대기/완료 버튼, 문의 번호 그룹 */
-.Question_Card > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 176px 128px;
-    align-items: center;
-    /* color: #808080; */
-    color: #212121;
-}
-
-/* 고객사명, 문의 등록일, 답변 등록일 그룹 */
-.Question_Card > div > div:nth-child(2) {
-    display: grid;
-    grid-template-columns: 176px 132px;
-    font-size: 12px;
-}
-
-/* 고객사명 */
-.Question_Card > div > div:nth-child(2) > div:nth-child(1) {
-    font-size: 20px;
-    font-weight: 600;
-    grid-row: 1 / span 2;
-}
-
-/* 제목 */
-.Question_Card > div > div:nth-child(3) {
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* 협업 요청 + 답변 달기 그룹 */
-.Question_Card > div > div:nth-child(4) {
-    display: grid;
-    grid-template-columns: 236px 72px;
-}
-
-/* 답변 달기 */
-.Question_Card > div > div:nth-child(4) > div:nth-child(2) {
-    font-size: 16px;
-    font-weight: 600;
-    color: #03507d;
-    cursor: pointer;
-}
-
-/******************************************************************/
-/* 질문 카드 리스트 나열 *******************************************/
-/******************************************************************/
-.Question_Doesnt_Exist {
-    width: 360px;
-    height: 300px;
-    margin: 0 0 24px 0;
-    background-color: #c1c1c1;
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 12px;
-    text-align: center;
-    align-content: center;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.Question_Card_List {
-    width: 1320px;
-    margin: 0 auto 24px auto;
-    display: grid;
-    column-gap: 120px;
-    grid-template-columns: 360px 360px 360px;
-}
-
-/******************************************************************/
 /* 질문 및 답변 모달 컴포넌트 ***************************************/
 /******************************************************************/
 .Question_Modal_Container {
@@ -409,9 +314,12 @@ div {
 
 /* VoC 문의 번호 + 문의 번호 */
 .Question_Modal > div:first-child {
-    display: grid;
-    grid-template-columns: 120px 144px;
+    display: flex;
     margin: 24px 0 0 24px;
+}
+
+.Question_Modal > div:first-child > div:nth-child(n) {
+    margin: 0 24px 0 0;
 }
 
 /* Inquiry 주문 문의 태그 */

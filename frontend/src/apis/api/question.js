@@ -99,21 +99,25 @@ export const postQuestionByUserIdAboutInquiry = async (
 ) => {
     try {
         const formData = new FormData();
-        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
-            type: 'application/json',
-        });
-        formData.append('question', blobQuestionData);
+        formData.append(
+            'question',
+            new Blob([JSON.stringify(questionData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await axiosInstance.post(
-            `/questions/customers/${userId}/${inquiryId}`,
-            {
-                body: formData,
+        const response = await axiosInstance({
+            method: 'post',
+            url: `/questions/customers/${userId}/${inquiryId}`,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
             },
-        );
+        });
 
         const json = response.data;
 
@@ -132,21 +136,25 @@ export const postQuestionByUserIdAboutInquiry = async (
 export const postQuestionByUserId = async (file, questionData, userId) => {
     try {
         const formData = new FormData();
-        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
-            type: 'application/json',
-        });
-        formData.append('question', blobQuestionData);
+        formData.append(
+            'question',
+            new Blob([JSON.stringify(questionData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await axiosInstance.post(
-            `/questions/customers/${userId}`,
-            {
-                body: formData,
+        const response = await axiosInstance({
+            method: 'post',
+            url: `/questions/customers/${userId}`,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
             },
-        );
+        });
 
         const json = response.data;
 

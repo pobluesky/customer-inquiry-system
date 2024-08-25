@@ -4,7 +4,6 @@ import QuestionOverview from '../organisms/QuestionOverview';
 import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
 import QuestionTable from '../mocules/QuestionTable';
 import QuestionModal from '../mocules/QuestionModal';
-import QuestionCardList from '../mocules/QuestionCardList';
 // import Notification from '../../components/mocules/NotificationModal';
 
 function QuestionDashboard() {
@@ -23,7 +22,7 @@ function QuestionDashboard() {
     const [statusFilter, setStatusFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
 
-    // 테이블과 모달창 간 상호 API 전달
+    // 테이블과 모달 간 상호 API 전달
     const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
     const [questionId, setQuestionId] = useState('');

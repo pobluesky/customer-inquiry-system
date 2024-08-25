@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import QuestionInput from '../organisms/QuestionInput';
 import QuestionTypeSelector from '../organisms/QuestionTypeSelector';
-import QuestionInquirySearchModal from '../organisms/QuestoinInquirySearchModal';
+import QuestionInquirySearchModal from '../mocules/QuestoinInquirySearchModal';
 
 function QuestionForm() {
     const [openModal, setOpenModal] = useState(false); // 모달창 상태 관리

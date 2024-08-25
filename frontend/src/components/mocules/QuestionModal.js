@@ -19,7 +19,6 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
-import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -31,6 +30,7 @@ import {
     validateAnswerContents,
 } from '../../utils/validation';
 import { postAnswerByQuestionId } from '../../apis/api/answer';
+import { useNavigate } from 'react-router-dom';
 
 function QuestionModal({
     questionDetail,
@@ -41,10 +41,11 @@ function QuestionModal({
     status,
     setOpenModal,
 }) {
+    console.log(questionDetail.inquiryId);
     const sanitizer = dompurify.sanitize;
 
-    const { userId } = useAuth();
-    const thisRole = getCookie('userRole');
+    const role = getCookie('userRole');
+    const inqRole = role.toLowerCase();
 
     const [isAnswering, setAnswering] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
@@ -55,6 +56,8 @@ function QuestionModal({
     const [file, setFile] = useState('');
 
     const fileInputRef = useRef(null);
+
+    const navigate = useNavigate();
 
     const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
@@ -106,13 +109,37 @@ function QuestionModal({
         }
     };
 
+    // Voc번호를 생성하는 인코딩 함수: questionId + hour + minute + second
+    const calDateNo = (datetime) => {
+        const [, timePart] = datetime.split('T');
+        const [hours, minutes, seconds] = timePart.split(':');
+        return `${questionId}${hours}${minutes}${seconds}`;
+    };
+
     return (
         <div className={Question_Modal_Container}>
             <div></div>
             <div className={Question_Modal}>
                 <div>
+                    {questionDetail.inquiryId && (
+                        <Text
+                            name={'📂 Inquiry 상세 내역'}
+                            fontWeight={'600'}
+                            onClick={() => {
+                                window.open(
+                                    `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
+                                    '_blank',
+                                );
+                            }}
+                            cursor={'pointer'}
+                            textColor={'#0000ff'}
+                        />
+                    )}
                     <Text name={'VoC 문의 번호'} textColor={'#6e6e6e'} />
-                    <Text name={'vocNo 계산해야 함'} fontWeight={'600'} />
+                    <Text
+                        name={calDateNo(questionDetail.createdDate)}
+                        fontWeight={'600'}
+                    />
                 </div>
                 <div>
                     <Tag
@@ -150,9 +177,7 @@ function QuestionModal({
                     <div>
                         <AnswerContent />
                     </div>
-                ) : isAnswering &&
-                  status === 'READY' &&
-                  thisRole !== 'CUSTOMER' ? ( // 답변 입력 중
+                ) : isAnswering && status === 'READY' && role !== 'CUSTOMER' ? ( // 답변 입력 중
                     <div>
                         <AnswerTitleInput titleChange={titleChange} />
                         <TextEditor
@@ -193,7 +218,7 @@ function QuestionModal({
                 <div>
                     <div>
                         {/* 하단 버튼 좌측 첨부파일란 */}
-                        {thisRole !== 'CUSTOMER' && status === 'READY' && (
+                        {role !== 'CUSTOMER' && status === 'READY' && (
                             <>
                                 <img src={folder} />
                                 <span>첨부파일</span>
@@ -211,7 +236,7 @@ function QuestionModal({
                             }}
                         />
                     </div>
-                    {status === 'READY' && thisRole !== 'CUSTOMER' && (
+                    {status === 'READY' && role !== 'CUSTOMER' && (
                         <>
                             {/* [답변하기] */}
                             {!isAnswering && (
