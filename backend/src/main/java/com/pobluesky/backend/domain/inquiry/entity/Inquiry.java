@@ -134,4 +134,8 @@ public class Inquiry extends BaseEntity {
     public void deleteInquiry() {
         this.isActivated = false;
     }
+
+    public void updateProgress(Progress newProgress) {
+        this.progress = newProgress;
+    }
 }
