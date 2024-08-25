@@ -3,7 +3,9 @@ package com.pobluesky.backend.domain.inquiry.service;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.request.InquiryProgressUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -345,5 +347,47 @@ public class InquiryService {
             lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         return InquiryResponseDTO.of(inquiry, lineItemsByInquiry);
+    }
+
+    @Transactional
+    public InquiryProgressResponseDTO updateInquiryProgress(
+        String token,
+        Long inquiryId,
+        InquiryProgressUpdateRequestDTO requestDTO
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(manager.getRole() == UserRole.CUSTOMER)
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Progress currentProgress = inquiry.getProgress();
+        Progress newProgress = requestDTO.progress();
+
+        if (!isValidProgressUpdate(currentProgress, newProgress)) {
+            throw new CommonException(ErrorCode.INVALID_PROGRESS_UPDATE);
+        }
+
+        inquiry.updateProgress(newProgress);
+
+        return InquiryProgressResponseDTO.from(inquiry);
+    }
+
+    private boolean isValidProgressUpdate(Progress currentProgress, Progress newProgress) {
+        switch (currentProgress) {
+            case RECEIPT:
+                return newProgress == Progress.FIRST_REVIEW;
+            case FIRST_REVIEW:
+                return newProgress == Progress.QUALITY_REVIEW || newProgress == Progress.FINAL_REVIEW;
+            case QUALITY_REVIEW:
+                return newProgress == Progress.FINAL_REVIEW;
+            default:
+                return false;
+        }
     }
 }
