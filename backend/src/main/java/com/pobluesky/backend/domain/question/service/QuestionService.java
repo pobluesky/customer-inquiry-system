@@ -81,6 +81,8 @@ public class QuestionService {
         String sortBy,
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
         LocalDate startDate,
         LocalDate endDate) {
 
@@ -92,6 +94,8 @@ public class QuestionService {
         return questionRepository.findAllQuestionsByManagerWithoutPaging(
             status,
             type,
+            title,
+            questionId,
             startDate,
             endDate,
             sortBy);
@@ -137,6 +141,8 @@ public class QuestionService {
         String sortBy,
         QuestionStatus status,
         QuestionType type,
+        String title,
+        Long questionId,
         LocalDate startDate,
         LocalDate endDate) {
 
@@ -153,6 +159,8 @@ public class QuestionService {
             customerId,
             status,
             type,
+            title,
+            questionId,
             startDate,
             endDate,
             sortBy);

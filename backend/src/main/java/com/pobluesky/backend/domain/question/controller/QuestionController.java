@@ -63,6 +63,8 @@ public class QuestionController {
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) QuestionType type,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) Long questionId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -71,6 +73,8 @@ public class QuestionController {
             sortBy,
             status,
             type,
+            title,
+            questionId,
             startDate,
             endDate
         );
@@ -130,6 +134,8 @@ public class QuestionController {
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) QuestionType type,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) Long questionId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -139,6 +145,8 @@ public class QuestionController {
             sortBy,
             status,
             type,
+            title,
+            questionId,
             startDate,
             endDate
         );
