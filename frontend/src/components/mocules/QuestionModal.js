@@ -40,7 +40,8 @@ import {
     postAnswerByQuestionId,
 } from '../../apis/api/answer';
 
-function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
+function QuestionModal({ questionDetail, questionId, vocNo, status, setStatus, onClose }) {
+    console.log('모달창을 열었을 때', questionDetail);
     const sanitizer = dompurify.sanitize;
 
     const { userId } = useAuth();
@@ -54,36 +55,9 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const [editorValue, setEditorValue] = useState('');
     const [file, setFile] = useState('');
 
-    const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
 
     const fileInputRef = useRef(null);
-
-    const fetchGetQuestionDetail =
-        getCookie('userRole') === 'CUSTOMER'
-            ? async () => {
-                  const result = await getQuestionByQuestionId(
-                      userId,
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setQuestionDetail(result);
-                  } else {
-                      setQuestionDetail([]);
-                  }
-              }
-            : async () => {
-                  const result = await getQuestionByQuestionIdForManager(
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setQuestionDetail(result);
-                  } else {
-                      setQuestionDetail([]);
-                  }
-              };
 
     const fetchGetAnswerDetail =
         getCookie('userRole') === 'CUSTOMER'

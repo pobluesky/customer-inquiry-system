@@ -149,6 +149,7 @@ function QuestionFilterPanel({
                         <div>정렬 조건</div>
                         <FilterButton
                             btnName={'최신순'}
+                            margin={'0 12px 0 0'}
                             onClick={() => clickTimeFilter('LATEST')}
                             backgroundColor={
                                 selectedTimeFilter === 'LATEST'

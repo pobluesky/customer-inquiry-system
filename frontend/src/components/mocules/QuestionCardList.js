@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tag from '../atoms/Tag';
-import QuestionCard from '../mocules/QuestionCard';
-import QuestionModal from '../mocules/QuestionModal';
+import QuestionCard from './QuestionCard';
+import QuestionModal from './QuestionModal';
 import {
     Question_Doesnt_Exist,
     Question_Card_List,
@@ -44,8 +44,10 @@ function QuestionCardList({
 }) {
     const { userId } = useAuth();
 
+    console.log(userId);
+
     const [filterArgs, setFilterArgs] = useState('');
-    const [questionSummary, setQuestionSummary] = useState('');
+    const [questionSummary, setQuestionSummary] = useState([]);
     const [questionCount, setQuestionCount] = useState('');
     const [answerCount, setAnswerCount] = useState('');
     const [openCard, setOpenCard] = useState(false);
@@ -82,8 +84,7 @@ function QuestionCardList({
             ? async () => {
                   const result = await getQuestionByUserId(
                       getCookie('userId'),
-                      '',
-                      getCookie('accessToken'),
+                      filterArgs,
                   );
                   if (result) {
                       setQuestionCount(result);
@@ -106,7 +107,6 @@ function QuestionCardList({
                   const result = await getQuestionByUserId(
                       getCookie('userId'),
                       filterArgs,
-                      getCookie('accessToken'),
                   );
                   if (result) {
                       setQuestionSummary(result);
@@ -117,7 +117,6 @@ function QuestionCardList({
             : async () => {
                   const result = await getAllQuestion(
                       filterArgs,
-                      getCookie('accessToken'),
                   );
                   if (result) {
                       setQuestionSummary(result);
@@ -131,7 +130,6 @@ function QuestionCardList({
             ? async () => {
                   const result = await getAnswerByUserId(
                       getCookie('userId'),
-                      getCookie('accessToken'),
                   );
                   if (result) {
                       setAnswerCount(result);
