@@ -94,9 +94,6 @@ const BasicInfoForm = ({ formData }) => {
                                     <option value="COMMON_INQUIRY">
                                         품질 + 견적
                                     </option>
-                                    <option value="QUALITY_INQUIRY">
-                                        품질
-                                    </option>
                                     <option value="QUOTE_INQUIRY">견적</option>
                                 </select>
                             </div>

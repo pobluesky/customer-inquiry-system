@@ -21,9 +21,6 @@ export const processInquiries = (data) => {
 
         let inquiryTypeText;
         switch (inquiry.inquiryType) {
-            case 'QUALITY_INQUIRY':
-                inquiryTypeText = '품질 문의';
-                break;
             case 'QUOTE_INQUIRY':
                 inquiryTypeText = '견적 문의';
                 break;

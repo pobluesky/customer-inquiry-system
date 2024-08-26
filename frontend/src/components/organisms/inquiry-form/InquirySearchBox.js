@@ -79,7 +79,6 @@ const InquirySearchBox = ({ onSearch }) => {
 
     const inquiryTypeOptions = [
         { label: 'ALL', value: '' },
-        { label: '품질 문의', value: 'QUALITY_INQUIRY' },
         { label: '견적 문의', value: 'QUOTE_INQUIRY' },
         { label: '품질+견적 문의', value: 'COMMON_INQUIRY' },
     ];
