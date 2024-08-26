@@ -8,6 +8,7 @@ import lombok.Builder;
 @Builder
 public record CollaborationSummaryResponseDTO(
     Long colId,
+    Long questionId,
     String colReqManager,
     ColStatus colStatus,
     String colContents,
@@ -17,6 +18,7 @@ public record CollaborationSummaryResponseDTO(
     public static CollaborationSummaryResponseDTO from(Collaboration collaboration) {
         return CollaborationSummaryResponseDTO.builder()
             .colId(collaboration.getColId())
+            .questionId(collaboration.getQuestion().getQuestionId())
             .colReqManager(collaboration.getColRequestManager().getName())
             .colStatus(collaboration.getColStatus())
             .colContents(collaboration.getColContents())

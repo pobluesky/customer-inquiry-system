@@ -1,14 +1,13 @@
 import React from 'react';
 import {
     _Text,
-    _searchResult,
     _searchCount,
 } from '../../assets/css/Inquiry.css';
 import Button from '../atoms/Button';
 
 const SearchResult = ({ searchResult }) => {
     return (
-        <div className={_searchResult}>
+        <div>
             <p className={_Text}>
                 검색 결과 : 총&nbsp;
                 <span className={_searchCount}>{searchResult}</span>

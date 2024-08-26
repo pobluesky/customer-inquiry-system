@@ -1,51 +1,83 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
-import MySearchInput from './MySearchInput';
+import SearchInput from '../molecules/SearchInput';
 import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Filter_Panel } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterPanel({
-    searchedItems,
     title,
     startDate,
     endDate,
-    customerName,
     questionNo,
+    customerName,
+
     setTitle,
-    setEndDate,
     setStartDate,
-    setCustomerName,
+    setEndDate,
     setQuestionNo,
+    setCustomerName,
+
+    searchCount,
     setTimeFilter,
     setStatusFilter,
-    searchByFilter,
+    setTypeFilter,
 }) {
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(null); // 'LATEST' 또는 'OLDEST'
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState(null); // 'READY' 또는 'COMPLETED'
+    const [tempTitle, setTempTitle] = useState(title);
+    const [tempStartDate, setTempStartDate] = useState(startDate);
+    const [tempEndDate, setTempEndDate] = useState(endDate);
+    const [tempQuestionNo, setTempQuestionNo] = useState(questionNo);
+    const [tempCustomerName, setTempCustomerName] = useState(customerName);
+    const [tempTimeFilter, setTempTimeFilter] = useState(null);
+    const [tempStatusFilter, setTempStatusFilter] = useState(null);
+    const [tempTypeFilter, setTempTypeFilter] = useState(null);
 
-    const thisRole = getCookie('userRole');
-    const height = thisRole === 'CUSTOMER' ? '228px' : '288px';
+    const role = getCookie('userRole');
+    const height = role === 'CUSTOMER' ? '228px' : '288px';
     const gridTemplateRows =
-        thisRole === 'CUSTOMER'
+        role === 'CUSTOMER'
             ? '52px 52px 36px 32px' // isCustomer
             : '52px 52px 52px 36px 32px'; // isManager
 
+    const enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            startSearch();
+        }
+    };
+
     const clickTimeFilter = (filter) => {
-        setSelectedTimeFilter(filter);
-        setTimeFilter(filter);
+        setTempTimeFilter(filter);
     };
 
     const clickStatusFilter = (filter) => {
-        setSelectedStatusFilter(filter);
-        setStatusFilter(filter);
+        setTempStatusFilter(filter);
+    };
+
+    const selectTypeFilter = (filter) => {
+        setTempTypeFilter(filter);
+    };
+
+    const startSearch = () => {
+        setTitle(tempTitle);
+        setStartDate(tempStartDate);
+        setEndDate(tempEndDate);
+        setQuestionNo(tempQuestionNo);
+        setCustomerName(tempCustomerName);
+        setTimeFilter(tempTimeFilter);
+        setStatusFilter(tempStatusFilter);
+        setTypeFilter(tempTypeFilter);
     };
 
     return (
         <>
-            <div className={Question_Filter_Panel} style={{ height }}>
+            <div
+                className={Question_Filter_Panel}
+                style={{ height }}
+                onKeyDown={enterKeyDown}
+            >
                 <div style={{ gridTemplateRows }}>
                     {/* 아이콘 + 문의 조회 */}
                     <div>
@@ -57,7 +89,7 @@ function QuestionFilterPanel({
                     <div>
                         <div>
                             <div>문의 제목</div>
-                            <MySearchInput
+                            <SearchInput
                                 width={'144px'}
                                 height={'24px'}
                                 border={'solid 1px #c1c1c1'}
@@ -65,8 +97,8 @@ function QuestionFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                value={tempTitle}
+                                onChange={(e) => setTempTitle(e.target.value)}
                             />
                             <div>문의 등록일</div>
                             <Input
@@ -77,8 +109,10 @@ function QuestionFilterPanel({
                                 borderRadius={'8px'}
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
+                                value={tempStartDate}
+                                onChange={(e) =>
+                                    setTempStartDate(e.target.value)
+                                }
                             />
                             <div>~</div>
                             <Input
@@ -89,8 +123,8 @@ function QuestionFilterPanel({
                                 borderRadius={'8px'}
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
+                                value={tempEndDate}
+                                onChange={(e) => setTempEndDate(e.target.value)}
                             />
                             <Button
                                 btnName={'조회'}
@@ -101,17 +135,17 @@ function QuestionFilterPanel({
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'20px'}
-                                onClick={searchByFilter}
+                                onClick={startSearch}
                             />
                         </div>
                     </div>
 
                     {/* [담당자 전용] 문의 번호 + 고객사명 */}
-                    {thisRole !== 'CUSTOMER' && (
+                    {role !== 'CUSTOMER' && (
                         <div>
                             <div>
                                 <div>문의 번호</div>
-                                <MySearchInput
+                                <SearchInput
                                     width={'144px'}
                                     height={'24px'}
                                     border={'solid 1px #c1c1c1'}
@@ -119,15 +153,15 @@ function QuestionFilterPanel({
                                     outline={'none'}
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
-                                    value={questionNo}
+                                    value={tempQuestionNo}
                                     onChange={(e) =>
-                                        setQuestionNo(e.target.value)
+                                        setTempQuestionNo(e.target.value)
                                     }
                                 />
                                 {/* 3 */}
                                 <div>고객사명</div>
                                 {/* 4 */}
-                                <MySearchInput
+                                <SearchInput
                                     width={'144px'}
                                     height={'24px'}
                                     border={'solid 1px #c1c1c1'}
@@ -135,9 +169,9 @@ function QuestionFilterPanel({
                                     outline={'none'}
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
-                                    value={customerName}
+                                    value={tempCustomerName}
                                     onChange={(e) =>
-                                        setCustomerName(e.target.value)
+                                        setTempCustomerName(e.target.value)
                                     }
                                 />
                             </div>
@@ -149,14 +183,15 @@ function QuestionFilterPanel({
                         <div>정렬 조건</div>
                         <FilterButton
                             btnName={'최신순'}
+                            margin={'0 12px 0 0'}
                             onClick={() => clickTimeFilter('LATEST')}
                             backgroundColor={
-                                selectedTimeFilter === 'LATEST'
+                                tempTimeFilter === 'LATEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'LATEST'
+                                tempTimeFilter === 'LATEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -166,12 +201,12 @@ function QuestionFilterPanel({
                             margin={'0 12px 0 0'}
                             onClick={() => clickTimeFilter('OLDEST')}
                             backgroundColor={
-                                selectedTimeFilter === 'OLDEST'
+                                tempTimeFilter === 'OLDEST'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedTimeFilter === 'OLDEST'
+                                tempTimeFilter === 'OLDEST'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -181,12 +216,12 @@ function QuestionFilterPanel({
                             margin={'0 12px 0 0'}
                             onClick={() => clickStatusFilter('READY')}
                             backgroundColor={
-                                selectedStatusFilter === 'READY'
+                                tempStatusFilter === 'READY'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedStatusFilter === 'READY'
+                                tempStatusFilter === 'READY'
                                     ? '#ffffff'
                                     : '#000000'
                             }
@@ -196,21 +231,33 @@ function QuestionFilterPanel({
                             margin={'0 12px 0 0'}
                             onClick={() => clickStatusFilter('COMPLETED')}
                             backgroundColor={
-                                selectedStatusFilter === 'COMPLETED'
+                                tempStatusFilter === 'COMPLETED'
                                     ? '#03507d'
                                     : '#ffffff'
                             }
                             textColor={
-                                selectedStatusFilter === 'COMPLETED'
+                                tempStatusFilter === 'COMPLETED'
                                     ? '#ffffff'
                                     : '#000000'
                             }
                         />
+                        <select
+                            name="type"
+                            id="type"
+                            onChange={(e) => selectTypeFilter(e.target.value)}
+                        >
+                            <option value="" disabled selected>
+                                문의 유형
+                            </option>
+                            <option value="INQ">Inquiry</option>
+                            <option value="SITE">사이트</option>
+                            <option value="ETC">기타</option>
+                        </select>
                     </div>
 
                     {/* 검색 결과 개수 */}
                     <div>
-                        검색 결과: 총 <div>{searchedItems}</div>건
+                        검색 결과: 총 <div>{searchCount}</div>건
                     </div>
                     <div></div>
                 </div>

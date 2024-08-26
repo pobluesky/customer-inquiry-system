@@ -1,7 +1,22 @@
+import { DonutLarge } from '@mui/icons-material';
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 
+const data = [
+    { productType: '자동차', progress: [] },
+    { productType: '자동차', progress: '1차 검토' },
+    { productType: '자동차', progress: '접수' },
+];
+
+const dataSample = [
+    { productType: '자동차', progress: [100, 200, 300, 400] },
+    { productType: '열연', progress: [400, 300, 200, 100] },
+];
+
+const progress = [100, 200, 300, 400];
+
 class HorizontalBarChart extends Component {
+
     constructor(data) {
         console.log(data);
         super(data);
@@ -9,7 +24,7 @@ class HorizontalBarChart extends Component {
         this.state = {
             options: {
                 title: {
-                    text: `${productType}`,
+                    text: '열연',
                     align: 'center',
                     style: {
                         fontSize: '20px',
@@ -21,6 +36,7 @@ class HorizontalBarChart extends Component {
                     toolbar: {
                         show: false,
                     },
+                    type: 'donut',
                 },
                 legend: {
                     show: false,
@@ -37,7 +53,7 @@ class HorizontalBarChart extends Component {
                 },
                 plotOptions: {
                     bar: {
-                        horizontal: true,
+                        // horizontal: true,
                         borderRadius: 10,
                         borderRadiusApplication: 'end', // Whether to apply border-radius "around" both ends or only to single "end"
                         borderRadiusWhenStacked: 'last', // Whether to apply border-radius to all bars or only to the data-set that is drawn last (all / last)

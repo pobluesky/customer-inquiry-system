@@ -7,7 +7,7 @@ import {
     LineItemInput,
     SalesInfoRow,
 } from '../../../../assets/css/Form.css';
-import ToggleBar from '../../../mocules/ToggleBar';
+import ToggleBar from '../../../molecules/ToggleBar';
 
 const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
     if(!formData) {

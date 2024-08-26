@@ -1,5 +1,5 @@
 import React from 'react';
-import ListLabel from "../../../mocules/ListLabel";
+import ListLabel from "../../../molecules/ListLabel";
 import {ReviewWrapper, _TextArea} from "../../../../assets/css/Form.css";
 
 const QualityText = ({ formData, title, width, height, handleFormDataChange }) => { // 품질검토정보 작성

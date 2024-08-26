@@ -13,30 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface InquiryRepositoryCustom {
-    Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId,
-        Pageable pageable,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy,
-        String salesManagerName,
-        String qualityManagerName
-    );
-
-    Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy
-    );
 
     List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
         Long userId,

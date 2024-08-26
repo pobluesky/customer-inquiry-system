@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import InquiryItem from '../../components/organisms/InquiryItem';
 import InquirySearchBox from "../../components/organisms/InquirySearchBox";
-import SearchResult from "../../components/mocules/SearchResult";
+import SearchResult from "../../components/molecules/SearchResult";
 import { _Link, Paging, PagingButton, PagingArrowButton } from "../../assets/css/Inquiry.css";
 import { getInquiryByManagers } from '../../apis/api/inquiry';
 import { Link } from 'react-router-dom';

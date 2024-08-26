@@ -6,9 +6,9 @@ import {
     buttonWrapper,
     FileColumn,
 } from '../../../assets/css/Form.css';
-import ToggleBar from '../../mocules/ToggleBar';
+import ToggleBar from '../../molecules/ToggleBar';
 import Button from '../../atoms/Button';
-import FileItem from '../../mocules/FileItem';
+import FileItem from '../../molecules/FileItem';
 
 const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
     const [isChecked, setCheck] = useState(true);

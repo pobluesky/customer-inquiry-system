@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from '../mocules/Header';
+import Header from '../molecules/Header';
 
 const Layout = ({ children }) => {
     const location = useLocation();

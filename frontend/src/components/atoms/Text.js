@@ -16,6 +16,7 @@ function Text({
     float,
     alignSelf,
     justifySelf,
+    cursor,
 }) {
     return (
         <div
@@ -31,7 +32,8 @@ function Text({
                 border,
                 borderRadius,
                 float,
-                cursor: 'default',
+                cursor: cursor || 'default',
+                alignSelf,
                 alignSelf,
                 justifySelf,
                 padding,

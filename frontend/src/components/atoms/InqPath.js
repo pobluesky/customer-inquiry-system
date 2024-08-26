@@ -11,8 +11,6 @@ function InqPath({ largeCategory, mediumCategory, smallCategory }) {
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
-                marginLeft: '2vw',
-                marginTop: '4vh',
             }}
         >
             <Link to="/inq-main" className={_Link}>

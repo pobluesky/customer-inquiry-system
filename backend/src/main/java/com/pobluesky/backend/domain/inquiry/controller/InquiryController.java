@@ -47,52 +47,8 @@ public class InquiryController {
 
     private final InquiryService inquiryService;
 
-    // 고객 Inquiry 조회
-    @GetMapping("/customers/inquiries/{userId}/all")
-    @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByCustomer(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long userId,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "4") int size,
-        @RequestParam(defaultValue = "LATEST") String sortBy,
-        @RequestParam(required = false) Progress progress,
-        @RequestParam(required = false) ProductType productType,
-        @RequestParam(required = false) String customerName,
-        @RequestParam(required = false) InquiryType inquiryType,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-        @RequestParam(required = false) String salesManagerName,
-        @RequestParam(required = false) String qualityManagerName
-    ) {
-        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
-            token,
-            userId,
-            page,
-            size,
-            sortBy,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate,
-            salesManagerName,
-            qualityManagerName
-        );
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("inquiryInfo", inquiries.getContent());
-        response.put("totalElements", inquiries.getTotalElements());
-        response.put("totalPages", inquiries.getTotalPages());
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @GetMapping("/customers/inquiries/{userId}")
-    @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 페이징 없이 조회한다.")
+    @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiriesByCustomerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -195,45 +151,8 @@ public class InquiryController {
     }
 
     // 담당자 Inquiry 조회
-    @GetMapping("/managers/inquiries/all")
-    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByManager(
-        @RequestHeader("Authorization") String token,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "4") int size,
-        @RequestParam(defaultValue = "LATEST") String sortBy,
-        @RequestParam(required = false) Progress progress,
-        @RequestParam(required = false) ProductType productType,
-        @RequestParam(required = false) String customerName,
-        @RequestParam(required = false) InquiryType inquiryType,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
-    ) {
-        Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManager(
-            token,
-            page,
-            size,
-            sortBy,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate
-        );
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("inquiryInfo", inquiries.getContent());
-        response.put("totalElements", inquiries.getTotalElements());
-        response.put("totalPages", inquiries.getTotalPages());
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @GetMapping("/managers/inquiries")
-    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 페이징 없이 조회한다.")
+    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getInquiriesByManagerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
