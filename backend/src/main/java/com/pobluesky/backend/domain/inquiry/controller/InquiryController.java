@@ -6,6 +6,7 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
@@ -97,6 +98,8 @@ public class InquiryController {
         @RequestParam(required = false) ProductType productType,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) String salesPerson,
+        @RequestParam(required = false) Industry industry,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
@@ -108,6 +111,8 @@ public class InquiryController {
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
             startDate,
             endDate
         );
@@ -229,6 +234,8 @@ public class InquiryController {
         @RequestParam(required = false) ProductType productType,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
+        @RequestParam(required = false) String salesPerson,
+        @RequestParam(required = false) Industry industry,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
@@ -239,6 +246,8 @@ public class InquiryController {
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
             startDate,
             endDate
         );

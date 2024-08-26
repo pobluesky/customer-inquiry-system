@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -25,6 +26,7 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import com.sun.xml.bind.v2.runtime.output.IndentingUTF8XmlOutput;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -104,6 +106,8 @@ public class InquiryService {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -121,6 +125,8 @@ public class InquiryService {
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
             startDate,
             endDate,
             sortBy
@@ -172,6 +178,8 @@ public class InquiryService {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -188,6 +196,8 @@ public class InquiryService {
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
             startDate,
             endDate,
             sortBy
