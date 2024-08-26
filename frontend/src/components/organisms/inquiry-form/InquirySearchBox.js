@@ -24,8 +24,8 @@ const InquirySearchBox = ({ onSearch }) => {
         industry: '',
         startDate: '',
         endDate: '',
-        progress: '',
         sortBy: 'LATEST',
+        progress: '',
     });
 
     const handleInputChange = (e) => {
@@ -99,17 +99,32 @@ const InquirySearchBox = ({ onSearch }) => {
                     </div>
                     <div style={{ display: 'flex' }}>
                         <p className={_Title}>판매계약자</p>
-                        <input className={_Input} />
+                        <input
+                            className={_Input}
+                            name="salesPerson"
+                            value={searchParams.salesPerson}
+                            onChange={handleInputChange}
+                        />
                     </div>
 
                     {/* 2행 */}
                     <div style={{ display: 'flex' }}>
                         <p className={_Title}>판매담당자</p>
-                        <input className={_Input} />
+                        <input
+                            className={_Input}
+                            name="salesManager"
+                            value={searchParams.salesManager}
+                            onChange={handleInputChange}
+                        />
                     </div>
                     <div style={{ display: 'flex' }}>
                         <p className={_Title}>품질담당자</p>
-                        <input className={_Input} />
+                        <input
+                            className={_Input}
+                            name="qualityManager"
+                            value={searchParams.qualityManager}
+                            onChange={handleInputChange}
+                        />
                     </div>
                     <div style={{ display: 'flex' }}>
                         <p className={_Title}>산업분류&nbsp;</p>
@@ -117,7 +132,7 @@ const InquirySearchBox = ({ onSearch }) => {
                             options={IndustryOptions}
                             defaultValue={searchParams.industry}
                             onChange={(value) => handleSelectChange(
-                                'productType',
+                                'industry',
                                 value)}
                         />
                     </div>
