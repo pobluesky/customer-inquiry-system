@@ -8,15 +8,12 @@ import { Join } from './pages/join';
 
 import { InqMain } from './pages/inq-main';
 import { CustomerInqForm } from './pages/inq-form';
-import {
-    CustomerInqTableList,
-    SalesManagerInqTableList,
-    QualityManagerInqTableList,
-} from './pages/inq-list';
+import { CustomerInqTableList, SalesManagerInqTableList, QualityManagerInqTableList } from './pages/inq-list';
 import {
     CustomerInqItem,
     SalesManagerInqItem,
     QualityManagerInqItem,
+    LineItemTableItem,
 } from './pages/inq-item';
 
 import { VocMain } from './pages/voc-main';
@@ -62,18 +59,11 @@ function App() {
                             element={<QualityManagerInqTableList />}
                         />
 
-                        <Route
-                            path="inq-list/customer/:id"
-                            element={<CustomerInqItem />}
-                        />
-                        <Route
-                            path="inq-list/sales/:id"
-                            element={<SalesManagerInqItem />}
-                        />
-                        <Route
-                            path="inq-list/quality/:id"
-                            element={<QualityManagerInqItem />}
-                        />
+                        <Route path="inq-list/line-items/:id" element={<LineItemTableItem />} />
+
+                        <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
+                        <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
+                        <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-form/question" element={<VocQuestionForm />} />

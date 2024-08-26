@@ -11,8 +11,6 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
-                marginLeft: '2vw',
-                marginTop: '4vh',
             }}
         >
             <Link to="/voc-main" className={_Link}>

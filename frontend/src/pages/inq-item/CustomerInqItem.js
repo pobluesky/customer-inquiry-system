@@ -4,27 +4,21 @@ import RequestBar from './../../components/molecules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
-    BasicInfoForm, InquiryHistoryForm,
+    BasicInfoForm,
     FileFormItem,
-    Offersheet
-} from "../../components/organisms/inquiry-form";
+    Offersheet,
+    InquiryHistoryFormItem,
+} from '../../components/organisms/inquiry-form';
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getOfferSheets, getReviews } from '../../apis/api/review';
-import FinalReviewTextForm
-    from '../../components/organisms/inquiry-form/review-form/FinalReviewTextForm';
-import ReviewTextForm
-    from '../../components/organisms/inquiry-form/review-form/ReviewTextForm';
-import SalesInfoFormItem
-    from '../../components/organisms/inquiry-form/review-item/SalesInfoFormItem';
 import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 import FinalReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
-import SalesInfoForm
-    from '../../components/organisms/inquiry-form/review-form/SalesInfoForm';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId } = useAuth();
@@ -58,11 +52,11 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         productType: '',
         progress: '',
         salesPerson: '',
+        lineItemResponseDTOs: [],
 
         // review
         reviewText: '',
         finalReviewText: '',
-        lineItemResponseDTOs: [],
 
         // offerSheet
         message: '',
@@ -177,28 +171,28 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     }, [inquiriesDataDetail, userInfo]);
 
     return (
-        <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id} />
+        <div className={InqTableContainer}>
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
+                     smallCategory={id} />
             <RequestBar requestBarTitle={"Inquiry 상세조회"} />
 
             <BasicInfoForm formData={formData} />
-            <InquiryHistoryForm
+            <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
-                onLineItemsChange={(newLineItems) => setFormData(prev => ({ ...prev, lineItemResponseDTOs: newLineItems }))}
             />
             <AdditionalRequestForm formData={formData} readOnly={true} />
 
-            { isReviewItem ? (
+            {isReviewItem ? (
                 <>
                     <ReviewTextFormItem formData={reviewData} />
                     <FinalReviewTextFormItem formData={reviewData} />
                 </>
-                ) : (
+            ) : (
                 ''
             )}
 
-            { isOfferSheetItem ? (
+            {isOfferSheetItem ? (
                 <Offersheet formData={offerSheetData}
                             inquiryData={inquiriesDataDetail}
                             lineItemData={offerSheetData.receipts}

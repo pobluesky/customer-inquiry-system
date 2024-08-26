@@ -14,6 +14,7 @@ export const processInquiries = (data) => {
                 break;
             case 'FINAL_REVIEW':
                 progressText = '최종검토중';
+                break;
             default:
                 progressText = '-';
         }

@@ -24,50 +24,20 @@ function Row({ row, role }) {
                 onClick={handleClick}
                 style={{ cursor: 'pointer' }}
             >
-                <TableCell component="th" scope="row" sx={{ paddingLeft: '80px' }}>
-                    {row.inquiryId}</TableCell>
-                <TableCell align="left">{row.salesPerson}</TableCell>
-                <TableCell align="left">{row.inquiryType}</TableCell>
-                <TableCell align="left">{row.productType}</TableCell>
-                <TableCell align="left">{row.customerName}</TableCell>
-                <TableCell align="left">{row.progress}</TableCell>
-                <TableCell align="left">{row.country}</TableCell>
-                <TableCell align="left">{row.corporate}</TableCell>
-                <TableCell align="left">{row.corporationCode}</TableCell>
-                <TableCell align="left">{row.industry}</TableCell>
+                <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>
+                    {row.inquiryId}
+                </TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.inquiryType}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.country}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
             </TableRow>
             <TableRow>
-                {/*<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>*/}
-                {/*    <Collapse in={open} timeout="auto" unmountOnExit>*/}
-                {/*        <Box sx={{ margin: 1 }}>*/}
-                {/*            <Typography variant="h6" gutterBottom component="div">*/}
-                {/*                문의상세*/}
-                {/*            </Typography>*/}
-                {/*            <Table size="small" aria-label="purchases">*/}
-                {/*                <TableHead>*/}
-                {/*                    <TableRow>*/}
-                {/*                        <TableCell>제품유형</TableCell>*/}
-                {/*                        <TableCell>Customer</TableCell>*/}
-                {/*                        <TableCell align="right">Amount</TableCell>*/}
-                {/*                        <TableCell align="right">Total price ($)</TableCell>*/}
-                {/*                    </TableRow>*/}
-                {/*                </TableHead>*/}
-                {/*                <TableBody>*/}
-                {/*                    <TableRow>*/}
-                {/*                        <TableCell component="th" scope="row">*/}
-                {/*                            {row.productType}*/}
-                {/*                        </TableCell>*/}
-                {/*                        <TableCell>{row.salesPerson}</TableCell>*/}
-                {/*                        <TableCell align="right">{row.salesPerson}</TableCell>*/}
-                {/*                        <TableCell align="right">*/}
-                {/*                            {Math.round(row.amount * row.price * 100) / 100}*/}
-                {/*                        </TableCell>*/}
-                {/*                    </TableRow>*/}
-                {/*                </TableBody>*/}
-                {/*            </Table>*/}
-                {/*        </Box>*/}
-                {/*    </Collapse>*/}
-                {/*</TableCell>*/}
             </TableRow>
         </React.Fragment>
     );
@@ -83,31 +53,31 @@ export default function CollapsibleTable({
     role
 }) {
     return (
-        <Paper>
+        <Paper onClick={() => console.log("rows table: ", rows)}>
             <TableContainer
                 component={Paper}
                 sx={{
                     borderRadius: '10px',
                     overflowX: 'auto',
                     whiteSpace: 'nowrap',
-                    '& .MuiTableCell-root': {
-                        paddingRight: '120px'
-                    }
+                    // '& .MuiTableCell-root': {
+                    //     paddingRight: '120px'
+                    // }
                 }}
             >
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell sx={{ color: '#ffffff', paddingLeft: '80px' }}>문의번호</TableCell>
-                            <TableCell sx={{ color: '#ffffff' }}>판매계약자</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>제품</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>고객사</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>진행현황</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>국가</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>판매상사</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>법인코드</TableCell>
-                            <TableCell align="left" sx={{ color: '#ffffff' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '80px' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>판매계약자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>제품</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>고객사</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>진행현황</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>국가</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>판매상사</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>법인코드</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>산업분류</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -125,7 +95,7 @@ export default function CollapsibleTable({
                 rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 labelRowsPerPage="Rows per page:"
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[10, 15, 25]}
             />
         </Paper>
     );
