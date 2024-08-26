@@ -24,6 +24,7 @@ public record InquirySummaryResponseDTO(
 ) {
 
     public static InquirySummaryResponseDTO from(Inquiry inquiry) {
+
         return InquirySummaryResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())
             .salesPerson(inquiry.getSalesPerson())

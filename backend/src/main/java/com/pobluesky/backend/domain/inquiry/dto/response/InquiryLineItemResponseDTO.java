@@ -10,7 +10,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class InquiryLineItemResponseDTO {
+
     private InquirySummaryResponseDTO inquiryInfo;
+
     private LineItemResponseDTO lineItemInfo;
 
     public static InquiryLineItemResponseDTO of(

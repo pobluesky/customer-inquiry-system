@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.inquiry.entity.Country;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
-import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ public record InquiryUpdateRequestDTO(
     InquiryType inquiryType,
     Industry industry,
     ProductType productType,
-    Progress progress,
     String customerRequestDate,
     String additionalRequests,
     String responseDeadline,
