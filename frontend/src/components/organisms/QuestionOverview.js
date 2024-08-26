@@ -20,23 +20,19 @@ function QuestionOverview({ questionCount, answerCount, colCount }) {
                 <div>
                     <img src={total} />
                     <div>전체 문의</div>
-                    <div>{questionCount || 0}</div>
+                    <div>{questionCount || ''}</div>
                 </div>
-
                 <img src={partition} />
-
                 <div>
                     <img src={ready} />
                     <div>답변 대기</div>
                     <div>
                         {questionCount - answerCount < 0
-                            ? 0
+                            ? ''
                             : questionCount - answerCount}
                     </div>
                 </div>
-
                 <img src={partition} />
-
                 <div>
                     <img src={completed} />
                     <div>답변 완료</div>

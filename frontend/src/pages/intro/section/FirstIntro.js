@@ -4,10 +4,14 @@ import Button from '../../../components/atoms/Button';
 import { Container, SubTitle, Title, Wrapper, Icon } from './Style';
 import { ScrollStyle } from './ScrollStyle';
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../../../apis/utils/cookies';
 // import useScrollAnimation from "../../../hooks/UseScrollAnimation";
 
 const FirstIntro = () => {
     const navigate = useNavigate();
+
+    const role = getCookie('userRole')?.toLowerCase();
+
     // useScrollAnimation();
 
     return (
@@ -27,7 +31,7 @@ const FirstIntro = () => {
                 </Wrapper>
 
                 <Button
-                    onClick={() => navigate('/inq-list')}
+                    onClick={() => navigate(`/inq-list/${role}`)}
                     btnName={'Inquiry 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}
@@ -41,7 +45,7 @@ const FirstIntro = () => {
                 />
 
                 <Button
-                    onClick={() => navigate('/voc')}
+                    onClick={() => navigate('/voc-list/question')}
                     btnName={'VoC 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}

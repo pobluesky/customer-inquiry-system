@@ -84,7 +84,6 @@ function QuestionFilterPanel({
                         <img src={search} />
                         <div>문의 조회</div>
                     </div>
-
                     {/* 문의 제목 + 문의 등록일 + 조회 버튼 */}
                     <div>
                         <div>
@@ -97,6 +96,7 @@ function QuestionFilterPanel({
                                 outline={'none'}
                                 padding={'0 8px 0 8px'}
                                 btnHeight={'24px'}
+                                cursor={'default'}
                                 value={tempTitle}
                                 onChange={(e) => setTempTitle(e.target.value)}
                             />
@@ -139,7 +139,6 @@ function QuestionFilterPanel({
                             />
                         </div>
                     </div>
-
                     {/* [담당자 전용] 문의 번호 + 고객사명 */}
                     {role !== 'CUSTOMER' && (
                         <div>
@@ -153,6 +152,7 @@ function QuestionFilterPanel({
                                     outline={'none'}
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
+                                    cursor={'default'}
                                     value={tempQuestionNo}
                                     onChange={(e) =>
                                         setTempQuestionNo(e.target.value)
@@ -169,6 +169,7 @@ function QuestionFilterPanel({
                                     outline={'none'}
                                     padding={'0 8px 0 8px'}
                                     btnHeight={'24px'}
+                                    cursor={'default'}
                                     value={tempCustomerName}
                                     onChange={(e) =>
                                         setTempCustomerName(e.target.value)
@@ -177,7 +178,6 @@ function QuestionFilterPanel({
                             </div>
                         </div>
                     )}
-
                     {/* 정렬 버튼 */}
                     <div>
                         <div>정렬 조건</div>
@@ -254,10 +254,9 @@ function QuestionFilterPanel({
                             <option value="ETC">기타</option>
                         </select>
                     </div>
-
                     {/* 검색 결과 개수 */}
                     <div>
-                        검색 결과: 총 <div>{searchCount}</div>건
+                        검색 결과: 총 <div>{searchCount || ''}</div>건
                     </div>
                     <div></div>
                 </div>

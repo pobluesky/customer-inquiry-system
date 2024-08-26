@@ -12,8 +12,6 @@ import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function QuestionDashboard() {
-    const [searchedItems, setSearchedItems] = useState('');
-
     // 검색 기능
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
