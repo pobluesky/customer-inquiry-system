@@ -6,7 +6,7 @@ import { InquiryCompleteAlert } from '../../utils/actions';
 import { useForm } from 'react-hook-form';
 import InquiryNewForm from '../../components/organisms/inquiry-form/InquiryNewForm';
 import InquiryHistoryForm from '../../components/organisms/inquiry-form/InquiryHistoryForm';
-import RequestBar from '../../components/mocules/RequestBar';
+import RequestBar from '../../components/molecules/RequestBar';
 
 const LineItemTableForm = () => {
     const { userId } = useAuth();
