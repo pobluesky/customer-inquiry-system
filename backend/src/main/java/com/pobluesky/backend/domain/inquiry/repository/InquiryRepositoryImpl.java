@@ -9,6 +9,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.user.entity.QManager;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import com.querydsl.core.types.OrderSpecifier;
@@ -34,6 +35,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    QManager salesManager = new QManager("salesManager");
+    QManager qualityManager = new QManager("qualityManager");
+
     @Override
     public List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
         Long userId,
@@ -45,8 +49,11 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     ) {
+
        return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                 inquiry.inquiryId,
@@ -58,11 +65,15 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.country,
                 inquiry.corporate,
                 inquiry.corporationCode,
-                inquiry.industry
+                inquiry.industry,
+                salesManager.name.as("salesManagerName"),
+                qualityManager.name.as("qualityManagerName")
                 )
             )
             .from(inquiry)
             .join(inquiry.customer, customer)
+           .leftJoin(inquiry.salesManager, salesManager)
+           .leftJoin(inquiry.qualityManager, qualityManager)
             .where(
                 inquiry.isActivated.eq(true),
                 inquiry.customer.userId.eq(userId),
@@ -72,6 +83,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 salesPersonContains(salesPerson),
                 industryEq(industry),
+                salesManagerNameEq(salesManagerName),
+                qualityManagerNameEq(qualityManagerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -88,7 +101,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -101,11 +116,15 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.country,
                 inquiry.corporate,
                 inquiry.corporationCode,
-                inquiry.industry
+                inquiry.industry,
+                salesManager.name.as("salesManagerName"),
+                qualityManager.name.as("qualityManagerName")
                 )
             )
             .from(inquiry)
             .join(inquiry.customer, customer)
+            .leftJoin(inquiry.salesManager, salesManager)
+            .leftJoin(inquiry.qualityManager, qualityManager)
             .where(
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
@@ -114,6 +133,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 salesPersonContains(salesPerson),
                 industryEq(industry),
+                salesManagerNameEq(salesManagerName),
+                qualityManagerNameEq(qualityManagerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -155,6 +176,14 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     private BooleanExpression salesPersonContains(String salesPerson) {
         return StringUtils.hasText(salesPerson) ? inquiry.salesPerson.contains(salesPerson) : null;
+    }
+
+    private BooleanExpression salesManagerNameEq(String name) {
+        return name != null ? salesManager.name.eq(name) : null;
+    }
+
+    private BooleanExpression qualityManagerNameEq(String name) {
+        return name != null ? qualityManager.name.eq(name) : null;
     }
 
     private BooleanExpression industryEq(Industry industry) {

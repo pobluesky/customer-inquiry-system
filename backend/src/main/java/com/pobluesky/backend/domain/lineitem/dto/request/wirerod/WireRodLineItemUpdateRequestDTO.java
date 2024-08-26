@@ -9,7 +9,7 @@ public record WireRodLineItemUpdateRequestDTO(
     String orderCategory,
     String diameter,
     Integer quantity,
-    String expectedDeadLine,
+    String expectedDeadline,
     Integer initialQuantity,
     String customerProcessing,
     String finalUse,
