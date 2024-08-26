@@ -1,20 +1,35 @@
 package com.pobluesky.backend.domain.question.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.pobluesky.backend.domain.question.entity.Question;
+import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 
-import java.util.List;
+import com.pobluesky.backend.domain.question.entity.QuestionType;
+import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class QuestionSummaryResponseDTO {
-    private List<QuestionSummaryDTO> inqQuestions;
+import lombok.Builder;
 
-    private List<QuestionSummaryDTO> siteQuestions;
+@Builder
+public record QuestionSummaryResponseDTO(
+    Long questionId,
+    String title,
+    QuestionStatus status,
+    QuestionType type,
+    String contents,
+    String customerName,
+    LocalDateTime questionCreatedAt,
+    LocalDateTime answerCreatedAt
+) {
 
-    private List<QuestionSummaryDTO> etcQuestions;
-
-    private Long totalQuestionCount;
+    public static QuestionSummaryResponseDTO from(Question question) {
+        return QuestionSummaryResponseDTO.builder()
+            .questionId(question.getQuestionId())
+            .title(question.getTitle())
+            .status(question.getStatus())
+            .type(question.getType())
+            .contents(question.getContents())
+            .customerName(question.getCustomer().getCustomerName())
+            .questionCreatedAt(question.getCreatedDate())
+            .answerCreatedAt(question.getAnswer() != null ? question.getAnswer().getCreatedDate() : null)
+            .build();
+    }
 }
