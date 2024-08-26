@@ -59,8 +59,7 @@ function App() {
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-form/question" element={<VocQuestionForm />} />
-                        <Route path="voc-form/collaboration"
-                            element={<VocColForm />} />
+                        <Route path="voc-form/collaboration" element={<VocColForm />} />
                         <Route path="voc-list/question" element={<VocQuestionList />} />
                         <Route path="voc-list/collaboration" element={<VocColList />} />
 
