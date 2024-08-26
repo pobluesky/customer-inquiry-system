@@ -22,6 +22,8 @@ import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
 import { InquiryUpdateAlert } from '../../utils/actions';
 import { useForm } from 'react-hook-form';
+import FileUpdateForm
+    from '../../components/organisms/inquiry-form/FileUpdateForm';
 
 function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
@@ -261,7 +263,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                     />
                     <AdditionalRequestForm formData={formData}
                                            handleFormDataChange={handleFormDataChange} />
-                    <FileForm fileForm={"파일첨부"} formData={formData}
+                    <FileUpdateForm fileForm={"파일수정"} formData={formData} fileData={inquiriesDataDetail}
                               handleFormDataChange={handleFormDataChange} />
                 </>
             ) : (
@@ -275,7 +277,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                     <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
                 </>
             )}
-
 
             {isReviewItem ? (
                 <>
