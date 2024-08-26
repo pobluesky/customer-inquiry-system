@@ -80,6 +80,17 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                                                 },
                                                             }}
                                                         />
+                                                    ) : field.type === 'date' ? (
+                                                        <TextField
+                                                            value={item[key] || ''}
+                                                            type={field.type}
+                                                            style={{ width: '100%', backgroundColor: '#ffffff' }}
+                                                            InputProps={{
+                                                                inputProps: {
+                                                                    min: field.type === 'date'? new Date() : undefined,
+                                                                },
+                                                            }}
+                                                        />
                                                     ) : (
                                                         <TextField
                                                             value={item[key] || ''}

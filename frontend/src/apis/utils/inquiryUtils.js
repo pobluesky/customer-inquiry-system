@@ -154,9 +154,10 @@ export const processInquiries = (data) => {
     });
 };
 
-// Inquiry 데이터 LineItem 포맷 변환 함수
+// Inquiry 데이터 LineItem 포맷 변환 함수 (post, put)
 export const processInquiryData = (data) => {
     const { productType, lineItemRequestDTOs = [], ...rest } = data;
+    console.log("processInquiryData: ", data);
 
     let formattedData;
     switch (productType) {
@@ -196,7 +197,7 @@ export const processInquiryData = (data) => {
                     orderEdge: item.orderEdge,
                     inDiameter: item.inDiameter,
                     outDiameter: item.outDiameter,
-                    expectedDeliveryDate: item.expectedDeliveryDate,
+                    expectedDeadline: item.expectedDeadline,
                     sleeveThickness: item.sleeveThickness,
                     tensileStrength: item.tensileStrength,
                     elongationRatio: item.elongationRatio,
@@ -281,6 +282,7 @@ export const createFormInquiryData = (formData) => {
     const form = new FormData();
 
     const inquiryData = processInquiryData(formData);
+    console.log("createFormInquiryData1: ", inquiryData);
     delete inquiryData.files;
     form.append(
         'inquiry',
@@ -290,7 +292,7 @@ export const createFormInquiryData = (formData) => {
     if (formData.files) {
         form.append('files', formData.files);
     }
-
+    console.log("createFormInquiryData2: ", form);
     return form;
 };
 

@@ -12,18 +12,14 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
 
     return (
         <div className={_FileItem}>
-            {pastFile !== null ? (
-                <a
-                    href={filePath}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={_FileName}
-                 >
-                    {isFileUpdate ? currentFile : pastFile}
-                </a>
-        ) : (
-                <div>파일 없음</div>
-            )}
+            <a
+                href={filePath}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={_FileName}
+             >
+                {isFileUpdate ? currentFile : pastFile}
+            </a>
         </div>
     );
 };

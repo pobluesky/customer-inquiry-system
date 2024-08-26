@@ -30,7 +30,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const { id } = useParams();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
@@ -161,17 +160,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         }
         try {
             const inquiryUpdateResponse = await putInquiry(id, {
-                additionalRequests: formData.additionalRequests,
-                corporate: formData.corporate,
-                country: formData.country,
-                customerRequestDate: formData.customerRequestDate,
-                files: formData.files,
-                industry: formData.industry,
-                inquiryId: formData.inquiryId,
-                inquiryType: formData.inquiryType,
-                productType: formData.productType,
-                progress: formData.progress,
-                salesPerson: formData.salesPerson,
+                ...formData,
                 lineItemResponseDTOs: formData.lineItemResponseDTOs,
             });
             const notificationResponse = await postNotificationByCustomers(userId, {
@@ -238,8 +227,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         console.log('formData:', formData);
     }, [inquiriesDataDetail, formData]);
 
-    console.log("progress: ", isUpdate);
-
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
@@ -248,7 +235,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                         onUpdate={handleSubmit(handleUpdate)} />
 
             {isUpdate ? (
-                <>
+                <>{/* 신규작성 및 수정 때 */}
                     <InquiryNewForm
                         register={register}
                         errors={errors}
@@ -267,7 +254,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                               handleFormDataChange={handleFormDataChange} />
                 </>
             ) : (
-                <>
+                <>{/* 단순 조회할 때 */}
                     <BasicInfoForm formData={formData} />
                     <InquiryHistoryFormItem
                         productType={inquiriesDataDetail?.productType}
