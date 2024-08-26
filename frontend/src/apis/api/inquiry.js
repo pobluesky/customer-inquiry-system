@@ -79,6 +79,29 @@ export const postInquiry = async (userId, inquiryData) => {
     }
 };
 
+// 고객사 inquiry 수정
+export const putInquiry = async (inquiryId, inquiryData) => {
+    try {
+        const formData = createFormInquiryData(inquiryData);
+        console.log('putInquiryFormData: ', formData);
+
+        const response = await axiosInstance.put(
+            `/customers/inquiries/${inquiryId}`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            },
+        );
+        console.log('putInquiryResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error putting inquiry:', error);
+        throw error;
+    }
+};
+
 // 담당자 inquiry list 가져오기 (summary)
 export const getInquiryByManagers = async (page = 0) => {
     try {

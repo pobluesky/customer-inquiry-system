@@ -244,6 +244,16 @@ const InquiryCompleteAlert = () => {
     });
 }
 
+// inquiry 수정 완료
+const InquiryUpdateAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Inquiry 문의 내용이 수정되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+    });
+}
+
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
     Swal.fire({
@@ -298,6 +308,7 @@ export {
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
     InquiryCompleteAlert,
+    InquiryUpdateAlert,
     QualityReviewCompleteAlert,
     FirstReviewCompleteAlert,
     QualityCompleteAlert,

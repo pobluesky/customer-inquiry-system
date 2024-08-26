@@ -122,7 +122,7 @@ const BasicInfoForm = ({ formData }) => {
                                     <option value="LOW_CARBON">
                                         Low-Carbon
                                     </option>
-                                    <option value="MARCHINERY">
+                                    <option value="MACHINERY">
                                         Machinery
                                     </option>
                                     <option value="PIPE">Pipe</option>
