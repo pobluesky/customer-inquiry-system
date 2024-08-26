@@ -193,13 +193,14 @@ const InquirySearchBox = ({ onSearch }) => {
                 btnName={'조회'}
                 textColor={'#ffffff'}
                 borderRadius={'17px'}
-                width={'100px'}
+                width={'80px'}
                 height={'35px'}
                 fontWeight={'800'}
                 fontSize={'15px'}
                 backgroundColor={'#03507D'}
                 border={'none'}
                 alignSelf={'center'}
+                margin={'0 auto'}
                 onClick={handleSearch}
             />
         </div>
