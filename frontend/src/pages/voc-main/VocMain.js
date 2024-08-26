@@ -50,7 +50,7 @@ const VocMain = () => {
             </IntroBox>
           </Wrapper>
           <Button
-              onClick={() => navigate('/voc-list')}
+              onClick={() => navigate('/voc-list/question')}
               btnName={'Voc 문의하기 ►'}
               width={'250px'}
               height={'60px'}

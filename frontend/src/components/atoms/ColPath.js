@@ -3,7 +3,11 @@ import arrow from '../../assets/css/icons/arrow.svg';
 import { Link } from 'react-router-dom';
 import { _Link } from '../../assets/css/Inquiry.css';
 
-function VocPath({ largeCategory, mediumCategory, smallCategory }) {
+export default function ColPath({
+    largeCategory,
+    mediumCategory,
+    smallCategory,
+}) {
     return (
         <div
             style={{
@@ -11,21 +15,21 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
+                marginLeft: '2vw',
+                marginTop: '4vh',
             }}
         >
-            <Link to="/voc-main" className={_Link}>
+            <Link to="/voc-list/collaboration" className={_Link}>
                 <span>{largeCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/voc-list/question" className={_Link}>
+            <Link to="/voc-list/collaboration" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/voc-list/question" className={_Link}>
+            <Link to="/voc-list/collaboration" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>
         </div>
     );
 }
-
-export default VocPath;

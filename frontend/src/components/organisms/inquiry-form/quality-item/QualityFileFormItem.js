@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../../assets/css/Form.css";
-import ToggleBar from "../../../mocules/ToggleBar";
-import FileGetItem from '../../../mocules/FileGetItem';
+import ToggleBar from "../../../molecules/ToggleBar";
+import FileGetItem from '../../../molecules/FileGetItem';
 
 const QualityFileFormItem = ({ fileForm, formData }) => {
     if(!formData) {

@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import JoinInput from '../../components/mocules/JoinInput';
+import JoinInput from '../../components/molecules/JoinInput';
 import {
     CheckButton,
     RoleSelectButton,
-} from '../../components/mocules/JoinButton';
+} from '../../components/molecules/JoinButton';
 import { SignUp } from '../../assets/css/Auth.css';
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import InqPath from '../../components/atoms/InqPath';
-import RequestBar from "../../components/mocules/RequestBar";
+import RequestBar from "../../components/molecules/RequestBar";
 import {
     InquiryNewForm,
     InquiryHistoryForm,

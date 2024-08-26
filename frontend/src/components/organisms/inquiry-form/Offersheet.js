@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ToggleBar from '../../mocules/ToggleBar';
+import ToggleBar from '../../molecules/ToggleBar';
 import Button from '../../atoms/Button';
 import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';

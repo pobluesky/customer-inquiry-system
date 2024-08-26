@@ -20,7 +20,10 @@ const CustomerInqTableList = () => {
         if (!userId) return;
 
         try {
-            const response = await getCustomerInquiriesByParameter(userId, queryParams);
+            const response = await getCustomerInquiriesByParameter(
+                userId,
+                queryParams,
+            );
             setRows(response);
             setCurrentPage(0);
 
@@ -40,7 +43,7 @@ const CustomerInqTableList = () => {
 
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
-        currentPage * rowsPerPage + rowsPerPage
+        currentPage * rowsPerPage + rowsPerPage,
     );
 
     const handlePageChange = (event, newPage) => {
@@ -61,7 +64,10 @@ const CustomerInqTableList = () => {
 
     return (
         <div className={InqTableContainer}>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <InqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+            />
             <InquirySearchBox onSearch={handleSearch} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable

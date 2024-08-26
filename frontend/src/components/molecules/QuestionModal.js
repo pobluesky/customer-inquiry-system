@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import dompurify from 'dompurify';
-import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
 import Input from '../atoms/Input';
@@ -19,7 +18,6 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
-import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -30,21 +28,22 @@ import {
     validateAnswerTitle,
     validateAnswerContents,
 } from '../../utils/validation';
-import {
-    getQuestionByQuestionId,
-    getQuestionByQuestionIdForManager,
-} from '../../apis/api/question';
-import {
-    getAnswerByQuestionId,
-    getAnswerByQuestionIdForManager,
-    postAnswerByQuestionId,
-} from '../../apis/api/answer';
+import { postAnswerByQuestionId } from '../../apis/api/answer';
+import { useNavigate } from 'react-router-dom';
 
-function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
+function QuestionModal({
+    questionDetail,
+    setAnswerDetail,
+    answerDetail,
+    questionId,
+    setStatus,
+    status,
+    setOpenModal,
+}) {
     const sanitizer = dompurify.sanitize;
 
-    const { userId } = useAuth();
-    const thisRole = getCookie('userRole');
+    const role = getCookie('userRole');
+    const inqRole = role.toLowerCase();
 
     const [isAnswering, setAnswering] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
@@ -54,89 +53,27 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
     const [editorValue, setEditorValue] = useState('');
     const [file, setFile] = useState('');
 
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
-
     const fileInputRef = useRef(null);
 
-    const fetchGetQuestionDetail =
-        getCookie('userRole') === 'CUSTOMER'
-            ? async () => {
-                  const result = await getQuestionByQuestionId(
-                      userId,
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setQuestionDetail(result);
-                  } else {
-                      setQuestionDetail([]);
-                  }
-              }
-            : async () => {
-                  const result = await getQuestionByQuestionIdForManager(
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setQuestionDetail(result);
-                  } else {
-                      setQuestionDetail([]);
-                  }
-              };
+    const navigate = useNavigate();
 
-    const fetchGetAnswerDetail =
-        getCookie('userRole') === 'CUSTOMER'
-            ? async () => {
-                  const result = await getAnswerByQuestionId(
-                      userId,
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setAnswerDetail(result);
-                  } else {
-                      setAnswerDetail([]);
-                  }
-              }
-            : async () => {
-                  const result = await getAnswerByQuestionIdForManager(
-                      questionId,
-                      getCookie('accessToken'),
-                  );
-                  if (result) {
-                      setAnswerDetail(result);
-                  } else {
-                      setAnswerDetail([]);
-                  }
-              };
-
-    const fetchPostAnswerByQuestionId = async () => {
+    const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
             const answerData = {
-                title,
+                title: title,
                 contents: editorValue,
             };
-            const result = await postAnswerByQuestionId(
+            const response = await postAnswerByQuestionId(
                 file,
                 answerData,
                 questionId,
-                getCookie('accessToken'),
             );
-
-            if (result) {
-                console.log('응답받은 데이터는 다음과 같습니다.', result);
-                setAnswerDetail(result);
-                fetchGetQuestionDetail();
-                setStatus('COMPLETED');
-                AnswerCompleteAlert();
-                setAnswering(false);
-            } else {
-                console.error('Fetched data is not an array or is invalid.');
-                setAnswerDetail([]);
-            }
+            setAnswerDetail(response.data); // 답변 등록으로 갱신된 답변 데이터 저장
+            setStatus('COMPLETED'); // 질문 처리 상태 갱신
+            AnswerCompleteAlert(); // 답변 완료 알림
+            setAnswering(false); // 답변 입력창 제거
         } catch (error) {
-            console.error('Error in posting question:', error);
+            console.log('답변 등록 실패: ', error);
         }
     };
 
@@ -166,31 +103,41 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostAnswerByQuestionId();
+            fetchPostAnswerByQuestionId(questionId);
         }
     };
 
-    useEffect(() => {
-        fetchGetQuestionDetail();
-        fetchGetAnswerDetail();
-    }, [questionId, status]);
+    // Voc번호를 생성하는 인코딩 함수: questionId + hour + minute + second
+    const calDateNo = (datetime) => {
+        const [, timePart] = datetime.split('T');
+        const [hours, minutes, seconds] = timePart.split(':');
+        return `${questionId}${hours}${minutes}${seconds}`;
+    };
 
     return (
         <div className={Question_Modal_Container}>
-            <div>
-                {/* <Label
-                    label={'문의 내용'}
-                    width={'96px'}
-                    height={'28px'}
-                    backgroundColor={'#007aff'}
-                    textColor={'#ffffff'}
-                    borderRadius={'12px 12px 0 0'}
-                /> */}
-            </div>
+            <div></div>
             <div className={Question_Modal}>
                 <div>
+                    {questionDetail.inquiryId && (
+                        <Text
+                            name={'📂 Inquiry 상세 내역'}
+                            fontWeight={'600'}
+                            onClick={() => {
+                                window.open(
+                                    `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
+                                    '_blank',
+                                );
+                            }}
+                            cursor={'pointer'}
+                            textColor={'#0000ff'}
+                        />
+                    )}
                     <Text name={'VoC 문의 번호'} textColor={'#6e6e6e'} />
-                    <Text name={vocNo} fontWeight={'600'} />
+                    <Text
+                        name={calDateNo(questionDetail.createdDate)}
+                        fontWeight={'600'}
+                    />
                 </div>
                 <div>
                     <Tag
@@ -217,18 +164,18 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     </div>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: sanitizer(`${questionDetail.contents || ''}`),
+                            __html: sanitizer(
+                                `${questionDetail.contents || ''}`,
+                            ),
                         }}
                     />
                 </div>
 
-                {!isAnswering && status === 'READY' ? ( // 아직 답변이 없다면
+                {!isAnswering && status === 'READY' ? ( // 답변 대기 질문인 경우
                     <div>
                         <AnswerContent />
                     </div>
-                ) : isAnswering &&
-                  status === 'READY' &&
-                  thisRole !== 'CUSTOMER' ? ( // 답변 입력 중
+                ) : isAnswering && status === 'READY' && role !== 'CUSTOMER' ? ( // 답변 입력 중
                     <div>
                         <AnswerTitleInput titleChange={titleChange} />
                         <TextEditor
@@ -269,7 +216,7 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                 <div>
                     <div>
                         {/* 하단 버튼 좌측 첨부파일란 */}
-                        {thisRole !== 'CUSTOMER' && status === 'READY' && (
+                        {role !== 'CUSTOMER' && status === 'READY' && (
                             <>
                                 <img src={folder} />
                                 <span>첨부파일</span>
@@ -281,9 +228,13 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                     </div>
                     {/* [닫기] */}
                     <div>
-                        <CloseButton onClick={onClose} />
+                        <CloseButton
+                            onClick={() => {
+                                setOpenModal(false);
+                            }}
+                        />
                     </div>
-                    {status === 'READY' && thisRole !== 'CUSTOMER' && (
+                    {status === 'READY' && role !== 'CUSTOMER' && (
                         <>
                             {/* [답변하기] */}
                             {!isAnswering && (
@@ -292,6 +243,20 @@ function QuestionModal({ questionId, vocNo, status, setStatus, onClose }) {
                                         btnName={'답변하기'}
                                         onClick={() => {
                                             setAnswering(true);
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            {/* 협업 요청] */}
+                            {!isAnswering && role === 'SALES' && (
+                                <div>
+                                    <AnswerButton
+                                        btnName={'협업 요청'}
+                                        onClick={() => {
+                                            window.open(
+                                                `/voc-form/collaboration?questionId=${questionId}`,
+                                                '_blank',
+                                            );
                                         }}
                                     />
                                 </div>

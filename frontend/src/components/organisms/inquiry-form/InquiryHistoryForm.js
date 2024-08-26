@@ -1,8 +1,25 @@
+<<<<<<< HEAD
+import React, { useState, useEffect } from 'react';
+import ToggleBar from "../../molecules/ToggleBar";
+import Button from "../../atoms/Button";
+import LineItem from "../../molecules/LineItem";
+import {
+  Container,
+  Sheet,
+  Opend,
+  buttonWrapper,
+  LineItemColumn,
+  LineItemGetColumn,
+  _none
+} from "../../../assets/css/Form.css";
+import GetLineItem from '../../molecules/GetLineItem';
+=======
 import React, { useState } from 'react';
 import { Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Button } from '@mui/material';
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
 import ToggleBar from '../../mocules/ToggleBar';
 import { productTypes } from '../../../utils/lineItems';
+>>>>>>> 4d98de84489150bb4f66f2b518b7f8c303c61692
 
 const InquiryHistoryForm = ({ productType, lineItemData, onLineItemsChange }) => { // 라인아이템 등록
   const [localData, setLocalData] = useState(lineItemData);
