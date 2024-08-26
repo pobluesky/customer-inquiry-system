@@ -57,44 +57,6 @@ public class InquiryService {
 
     private final ManagerRepository managerRepository;
 
-    // Inquiry 전체 조회(고객사)
-    @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
-        String token,
-        Long customerId,
-        int page,
-        int size,
-        String sortBy,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        Long userId = signService.parseToken(token);
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return inquiryRepository.findInquiriesByCustomer(
-            customerId,
-            pageable,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate,
-            sortBy
-        );
-    }
-
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
     public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
@@ -126,42 +88,6 @@ public class InquiryService {
             inquiryType,
             salesPerson,
             industry,
-            startDate,
-            endDate,
-            sortBy
-        );
-    }
-
-    // Inquiry 전체 조회(담당자)
-    @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiriesByManager(
-        String token,
-        int page,
-        int size,
-        String sortBy,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        Long userId = signService.parseToken(token);
-
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(manager.getRole() == UserRole.CUSTOMER)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return inquiryRepository.findInquiriesByManager(
-            pageable,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
             startDate,
             endDate,
             sortBy

@@ -35,61 +35,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
-        Long userId,
-        Pageable pageable,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy
-    ) {
-        List<InquirySummaryResponseDTO> content = queryFactory
-            .select(Projections.constructor(InquirySummaryResponseDTO.class,
-                    inquiry.inquiryId,
-                    inquiry.salesPerson,
-                    inquiry.progress,
-                    inquiry.productType,
-                    inquiry.inquiryType,
-                    customer.customerName,
-                    inquiry.country,
-                    inquiry.corporate,
-                    inquiry.corporationCode,
-                    inquiry.industry
-                )
-            )
-            .from(inquiry)
-            .join(inquiry.customer, customer)
-            .where(
-                inquiry.isActivated.eq(true),
-                inquiry.customer.userId.eq(userId),
-                progressEq(progress),
-                productTypeEq(productType),
-                customerNameContains(customerName),
-                inquiryTypeEq(inquiryType),
-                createdDateBetween(startDate, endDate)
-            )
-            .orderBy(getOrderSpecifier(sortBy))
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch();
-
-        JPAQuery<Inquiry> countQuery = getCountQueryForCustomer(
-            userId,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate
-        );
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
-    }
-
-    @Override
     public List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
         Long userId,
         Progress progress,
@@ -134,58 +79,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
-    public Page<InquirySummaryResponseDTO> findInquiriesByManager(
-        Pageable pageable,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy) {
-
-        List<InquirySummaryResponseDTO> content = queryFactory
-            .select(Projections.constructor(InquirySummaryResponseDTO.class,
-                inquiry.inquiryId,
-                inquiry.salesPerson,
-                inquiry.progress,
-                inquiry.productType,
-                inquiry.inquiryType,
-                customer.customerName,
-                inquiry.country,
-                inquiry.corporate,
-                inquiry.corporationCode,
-                inquiry.industry
-                )
-            )
-            .from(inquiry)
-            .join(inquiry.customer, customer)
-            .where(
-                inquiry.isActivated.isTrue(),
-                progressEq(progress),
-                productTypeEq(productType),
-                customerNameContains(customerName),
-                inquiryTypeEq(inquiryType),
-                createdDateBetween(startDate, endDate)
-            )
-            .orderBy(getOrderSpecifier(sortBy))
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch();
-
-        JPAQuery<Inquiry> countQuery = getCountQueryForManager(
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate
-        );
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
-    }
-
-    @Override
     public List<InquirySummaryResponseDTO> findInquiriesByManagerWithoutPaging(
         Progress progress,
         ProductType productType,
@@ -225,45 +118,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             )
             .orderBy(getOrderSpecifier(sortBy))
             .fetch();
-    }
-
-    private JPAQuery<Inquiry> getCountQueryForCustomer(
-        Long userId,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        return queryFactory
-            .selectFrom(inquiry)
-            .where(
-                inquiry.isActivated.isTrue(),
-                inquiry.customer.userId.eq(userId),
-                progressEq(progress),
-                productTypeEq(productType),
-                customerNameContains(customerName),
-                inquiryTypeEq(inquiryType),
-                createdDateBetween(startDate, endDate)
-            );
-    }
-
-    private JPAQuery<Inquiry> getCountQueryForManager(
-        Progress progress, ProductType productType,
-        String customerName, InquiryType inquiryType,
-        LocalDate startDate, LocalDate endDate
-    ) {
-        return queryFactory
-            .selectFrom(inquiry)
-            .where(
-                inquiry.isActivated.isTrue(),
-                progressEq(progress),
-                productTypeEq(productType),
-                customerNameContains(customerName),
-                inquiryTypeEq(inquiryType),
-                createdDateBetween(startDate, endDate)
-            );
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
