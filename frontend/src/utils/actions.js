@@ -111,7 +111,7 @@ const JoinCompleteAlert = () => {
         titleText: '회원가입이 완료되었습니다.',
         text: '잠시 후 로그인 페이지로 이동합니다.',
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1000,
         timerProgressBar: true,
         allowOutsideClick: false,
     });

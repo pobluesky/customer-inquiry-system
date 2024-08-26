@@ -82,33 +82,15 @@ function Join() {
     const [tryJoin, setTryJoin] = useState(false);
     const [resetAtom, setResetAtom] = useState(false);
 
-    // 고유 코드를 통해 고객사와 담당자를 구분
-    const getRoleAndSetNewForm = () => {
-        const wrongName = validateName(name);
-        const wrongCode = validateUserCode(userCode);
-
-        if (wrongName || wrongCode) {
-            return;
-        }
-
-        const codePrefix = userCode.substring(0, 3);
-
-        // 담당자일 경우
-        if (codePrefix === 'EMP') {
-            setEmpNo(userCode);
-            setManager(true);
-            setCustomer(false);
-            return;
-        }
-
-        // 고객사일 경우
-        setCustomerCode(userCode);
-        setUserRole('고객사');
-        setAuth();
-    };
-
     const selectRoleFilter = (filter) => {
         setRoleFilter(filter);
+    };
+
+    const openNextStep = () => {
+        nameRef.current.value = '';
+        userCodeRef.current.value = '';
+        setValidationTest(false);
+        setFirst(false);
     };
 
     const setAuth = () => {
@@ -121,13 +103,7 @@ function Join() {
                 canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
                 return;
             } else {
-                setValidationTest(false);
-                setFirst(false);
-
-                // 입력값 초기화
-                nameRef.current.value = '';
-                userCodeRef.current.value = '';
-                setValidationTest(false);
+                openNextStep();
                 return;
             }
         }
@@ -143,16 +119,14 @@ function Join() {
                 canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
             } else if (!userCode) {
                 canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
-            } else if (userCode.substring(0, 3) === 'EMP') { // Bad User: 작성 중 담당자 코드로 변경한 경우
+            } else if (userCode.substring(0, 3) === 'EMP') {
                 setEmpNo(userCode);
                 setManager(true);
                 setCustomer(false);
             } else {
-                setValidationTest(false);
-                setFirst(false);
-                nameRef.current.value = ''; // 입력값 초기화
-                userCodeRef.current.value = ''; // 입력값 초기화
-                setValidationTest(false); // 입력값 초기화
+                setCustomerCode(userCode);
+                setUserRole('고객사');
+                openNextStep();
             }
         }
     };
@@ -162,8 +136,7 @@ function Join() {
         if (e.key === 'Enter') {
             e.preventDefault();
             setValidationTest(true);
-            getRoleAndSetNewForm();
-            console.log('111');
+            setAuth();
         }
     };
 
@@ -172,7 +145,6 @@ function Join() {
         if (e.key === 'Enter') {
             e.preventDefault();
             setAuth();
-            console.log('222');
         }
     };
 
@@ -210,7 +182,7 @@ function Join() {
             JoinCompleteAlert();
             setTimeout(() => {
                 navigate('/login');
-            }, '2000');
+            }, '1000');
             return;
         }
         setTryJoin(!tryJoin);
@@ -226,7 +198,7 @@ function Join() {
     // 고객사 회원가입 API
     const GetCustomerAuth = async () => {
         try {
-            const result = await signUpApiByCustomers(
+            const response = await signUpApiByCustomers(
                 name,
                 email,
                 password,
@@ -235,7 +207,7 @@ function Join() {
                 customerName,
                 setJoinErrorMsg,
             );
-            console.log('고객사 회원가입 결과', result.success);
+            console.log('고객사 회원가입 결과', response.success);
             goToLogin(result);
         } catch (error) {}
     };
@@ -243,7 +215,7 @@ function Join() {
     // 담당자 회원가입 API
     const GetManagerAuth = async () => {
         try {
-            const result = await signUpApiByManagers(
+            const response = await signUpApiByManagers(
                 name,
                 email,
                 password,
@@ -253,7 +225,7 @@ function Join() {
                 department,
                 setJoinErrorMsg,
             );
-            console.log('담당자 회원가입 결과', result.success);
+            console.log('담당자 회원가입 결과', response.success);
             goToLogin(result);
         } catch (error) {}
     };
@@ -368,7 +340,7 @@ function Join() {
                                         btnName: '권한 조회',
                                         onClick: () => {
                                             setValidationTest(true);
-                                            getRoleAndSetNewForm();
+                                            setAuth();
                                         },
                                     })}
                                 {/* 권한 부여 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
