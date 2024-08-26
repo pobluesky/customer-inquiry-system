@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import SearchResult from '../../components/mocules/SearchResult';
+import SearchResult from '../../components/molecules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox
     from '../../components/organisms/inquiry-form/InquirySearchBox';

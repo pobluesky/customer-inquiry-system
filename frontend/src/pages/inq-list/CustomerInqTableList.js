@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { getCustomerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import InqPath from '../../components/atoms/InqPath';
-import SearchResult from '../../components/mocules/SearchResult';
+import SearchResult from '../../components/molecules/SearchResult';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
