@@ -48,7 +48,9 @@ public interface InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     );
 
     List<InquirySummaryResponseDTO> findInquiriesByManagerWithoutPaging(
@@ -60,6 +62,8 @@ public interface InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     );
 }

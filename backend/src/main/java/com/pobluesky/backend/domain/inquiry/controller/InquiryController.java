@@ -104,7 +104,9 @@ public class InquiryController {
         @RequestParam(required = false) String salesPerson,
         @RequestParam(required = false) Industry industry,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+        @RequestParam(required = false) String salesManagerName,
+        @RequestParam(required = false) String qualityManagerName
     ) {
         List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomerWithoutPaging(
             token,
@@ -117,7 +119,9 @@ public class InquiryController {
             salesPerson,
             industry,
             startDate,
-            endDate
+            endDate,
+            salesManagerName,
+            qualityManagerName
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -240,7 +244,9 @@ public class InquiryController {
         @RequestParam(required = false) String salesPerson,
         @RequestParam(required = false) Industry industry,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+        @RequestParam(required = false) String salesManagerName,
+        @RequestParam(required = false) String qualityManagerName
     ) {
         List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManagerWithoutPaging(
             token,
@@ -252,7 +258,9 @@ public class InquiryController {
             salesPerson,
             industry,
             startDate,
-            endDate
+            endDate,
+            salesManagerName,
+            qualityManagerName
         );
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -35,7 +35,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-
+    QManager salesManager = new QManager("salesManager");
+    QManager qualityManager = new QManager("qualityManager");
 
     @Override
     public Page<InquirySummaryResponseDTO> findInquiriesByCustomer(
@@ -51,9 +52,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         String salesManagerName,
         String qualityManagerName
     ) {
-        QManager salesManager = new QManager("salesManager");
-        QManager qualityManager = new QManager("qualityManager");
-
         List<InquirySummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                     inquiry.inquiryId,
@@ -97,7 +95,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            salesManagerName,
+            qualityManagerName
         );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
@@ -114,8 +114,11 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     ) {
+
        return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
                 inquiry.inquiryId,
@@ -127,11 +130,15 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.country,
                 inquiry.corporate,
                 inquiry.corporationCode,
-                inquiry.industry
+                inquiry.industry,
+                salesManager.name.as("salesManagerName"),
+                qualityManager.name.as("qualityManagerName")
                 )
             )
             .from(inquiry)
             .join(inquiry.customer, customer)
+           .leftJoin(inquiry.salesManager, salesManager)
+           .leftJoin(inquiry.qualityManager, qualityManager)
             .where(
                 inquiry.isActivated.eq(true),
                 inquiry.customer.userId.eq(userId),
@@ -141,6 +148,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 salesPersonContains(salesPerson),
                 industryEq(industry),
+                salesManagerNameEq(salesManagerName),
+                qualityManagerNameEq(qualityManagerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -209,7 +218,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         Industry industry,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         return queryFactory
             .select(Projections.constructor(InquirySummaryResponseDTO.class,
@@ -227,6 +238,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             )
             .from(inquiry)
             .join(inquiry.customer, customer)
+            .leftJoin(inquiry.salesManager, salesManager)
+            .leftJoin(inquiry.qualityManager, qualityManager)
             .where(
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
@@ -235,6 +248,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiryTypeEq(inquiryType),
                 salesPersonContains(salesPerson),
                 industryEq(industry),
+                salesManagerNameEq(salesManagerName),
+                qualityManagerNameEq(qualityManagerName),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -248,7 +263,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         String customerName,
         InquiryType inquiryType,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         return queryFactory
             .selectFrom(inquiry)
@@ -259,7 +276,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 productTypeEq(productType),
                 customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
-                createdDateBetween(startDate, endDate)
+                createdDateBetween(startDate, endDate),
+                salesManagerNameEq(salesManagerName),
+                qualityManagerNameEq(qualityManagerName)
             );
     }
 

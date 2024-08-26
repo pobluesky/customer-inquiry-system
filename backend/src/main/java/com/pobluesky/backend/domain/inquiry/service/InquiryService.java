@@ -112,7 +112,9 @@ public class InquiryService {
         String salesPerson,
         Industry industry,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         Long userId = signService.parseToken(token);
 
@@ -132,7 +134,9 @@ public class InquiryService {
             industry,
             startDate,
             endDate,
-            sortBy
+            sortBy,
+            salesManagerName,
+            qualityManagerName
         );
     }
 
@@ -184,7 +188,9 @@ public class InquiryService {
         String salesPerson,
         Industry industry,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         Long userId = signService.parseToken(token);
 
@@ -203,7 +209,9 @@ public class InquiryService {
             industry,
             startDate,
             endDate,
-            sortBy
+            sortBy,
+            salesManagerName,
+            qualityManagerName
         );
     }
 
