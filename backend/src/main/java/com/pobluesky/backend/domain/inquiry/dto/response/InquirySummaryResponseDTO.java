@@ -6,6 +6,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.user.dto.response.ManagerSummaryResponseDTO;
 
 import lombok.Builder;
 
@@ -20,7 +21,9 @@ public record InquirySummaryResponseDTO(
     Country country, //국가 e.g. USA
     String corporate, //판매 상사 e.g. POA
     String corporationCode, //법인 코드
-    Industry industry //산업 분류 e.g. AUTOMOBILE
+    Industry industry, //산업 분류 e.g. AUTOMOBILE
+    String salesManagerName,
+    String qualityManagerName
 ) {
 
     public static InquirySummaryResponseDTO from(Inquiry inquiry) {
@@ -36,6 +39,8 @@ public record InquirySummaryResponseDTO(
             .corporate(inquiry.getCorporate())
             .corporationCode(inquiry.getCorporationCode())
             .industry(inquiry.getIndustry())
+            .salesManagerName(inquiry.getSalesManager() != null ? inquiry.getSalesManager().getName() : null)
+            .qualityManagerName(inquiry.getQualityManager() != null ? inquiry.getQualityManager().getName() : null)
             .build();
     }
 }
