@@ -244,11 +244,21 @@ const InquiryCompleteAlert = () => {
     });
 }
 
-// 영업검토정보 및 1차 검토 작성 후, 품질검토요청(최종X) OR 1차 검토 완료(최종O)
-const ReviewCompleteAlert = ({ IsFinal }) => {
+// 품질검토요청
+const QualityReviewCompleteAlert = () => {
     Swal.fire({
         icon: 'success',
-        title: IsFinal === true ? ('1차 검토 내용 및 오퍼시트가 전송되었습니다.') : ('품질 검토가 요청되었습니다.'),
+        title: '품질 검토가 요청되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+    });
+}
+
+// 영업검토정보, 1차 검토, 최종 검토, OfferSheet 작성 완료
+const FirstReviewCompleteAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '1차 검토 내용 및 오퍼시트가 전송되었습니다.',
         showConfirmButton: false,
         timer: 2000,
     });
@@ -288,7 +298,8 @@ export {
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
     InquiryCompleteAlert,
-    ReviewCompleteAlert,
+    QualityReviewCompleteAlert,
+    FirstReviewCompleteAlert,
     QualityCompleteAlert,
     FinalReviewCompleteAlert,
 };

@@ -12,6 +12,16 @@ const processNotifications = (data) => {
   }));
 };
 
+// 공통 알림 전송 함수
+const postNotification = async (url, notificationContents) => {
+  try {
+    const response = await axiosInstance.post(url, notificationContents);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 공통 알림 조회 함수
 const fetchNotifications = async (url) => {
   try {
@@ -32,6 +42,16 @@ const updateNotificationIsRead = async (url, notificationId) => {
     console.log(`[Update Notification Read Error]: ${error}`);
     throw error;
   }
+};
+
+// 고객사 ID 별 알림 전송
+export const postNotificationByCustomers = async (userId, notificationContents) => {
+  return postNotification(`/notifications/customers/${userId}`, notificationContents);
+};
+
+// 담당자 ID 별 알림 전송
+export const postNotificationByManagers = async (userId, notificationContents) => {
+  return postNotification(`/notifications/managers/${userId}`, notificationContents);
 };
 
 // 고객사 ID 별 알림 조회

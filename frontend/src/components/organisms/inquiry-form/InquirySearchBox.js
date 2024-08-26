@@ -154,7 +154,7 @@ const InquirySearchBox = ({ onSearch }) => {
                     <div style={{ display: 'flex', margin: '5px 5px 10px 0' }}>
                         {progressOptions.map((option) => (
                             <ToggleButton
-                                width={'100px'}
+                                width={'115px'}
                                 key={option.value}
                                 btnName={option.label}
                                 isActive={searchParams.progress

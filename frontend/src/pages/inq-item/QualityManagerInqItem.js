@@ -27,9 +27,15 @@ import QualityFileForm
 import QualityFileFormItem
     from '../../components/organisms/inquiry-form/quality-item/QualityFileFormItem';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import {
+    postNotificationByCustomers,
+    postNotificationByManagers,
+} from '../../apis/api/notification';
+import { useAuth } from '../../hooks/useAuth';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
+    const { userId } = useAuth();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -44,6 +50,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         country: '',
         customerCode: '',
         customerId: null,
+        managerId: null,
         customerName: '',
         customerRequestDate: '',
         files: [],
@@ -93,7 +100,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getUserInfo = async () => {
         try {
-            const response = await getUserInfoByCustomers(formData.customerId); // 수정 필요
+            const response = await getUserInfoByCustomers(formData.customerId);
             setUserInfo(response.data.data);
             return response.data.data;
         } catch (error) {
@@ -128,6 +135,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 country: inquiriesDataDetail.country || '',
                 customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
+                managerId: inquiriesDataDetail.managerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
                 files: inquiriesDataDetail.files || [],
@@ -183,7 +191,18 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     },
                     qualityComments: formData.qualityComments,
                 });
+                const customerNotificationResponse = await postNotificationByCustomers(formData.customerId, {
+                    notificationContents:
+                        `${inquiriesDataDetail.name}님의 Inquiry 문의 품질검토가 완료되었습니다.`,
+                })
+                // const managerNotificationResponse = await postNotificationByManagers(formData.managerId, {
+                //     notificationContents:
+                //         `Inquiry ${id}번 문의의 품질검토가 완료되었습니다. 최종검토내용과 OfferSheet를 작성해 주세요.`,
+                // })
                 console.log('Quality posted successfully:', qualityResponse);
+                console.log('CustomerNotification posted successfully:', customerNotificationResponse);
+                // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
+
             } catch (error) {
                 console.log('Error posting quality:', error);
             }
@@ -202,7 +221,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'quality'} />
             <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토'}
-                        onSubmit={handleSubmit} />
+                        onQualityCompleteSubmit={handleSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}

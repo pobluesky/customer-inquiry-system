@@ -40,9 +40,12 @@ import FinalReviewTextForm
 import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import { postNotificationByCustomers } from '../../apis/api/notification';
+import { useAuth } from '../../hooks/useAuth';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
+    const { userId, userName } = useAuth();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -244,17 +247,36 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     },
                     reviewText: formData.reviewText,
                 });
+                const notificationResponse = await postNotificationByCustomers(formData.customerId, {
+                    notificationContents:
+                        `${inquiriesDataDetail.name}님의 문의 1차검토가 완료되었습니다.`,
+                })
                 console.log('Review posted successfully:', reviewResponse);
-
-                if(formData.finalReviewText !== "") {
-                    const offerSheetResponse = await postOfferSheet(id, {
-                        ...formData,
-                        receipts: formData.receipts,
-                    });
-                    console.log('offerSheet posted successfully:', offerSheetResponse);
-                }
+                console.log('Notification posted successfully:', notificationResponse);
             } catch (error) {
                 console.log('Error posting review:', error);
+            }
+        }
+    }
+
+    const handleQualitySubmit = async (event) => {
+        if (event) {
+            event.preventDefault();
+        }
+        if (id) {
+            try {
+                const customerNotificationResponse = await postNotificationByCustomers(formData.customerId, {
+                    notificationContents:
+                        `${inquiriesDataDetail.name}님의 문의는 현재 품질검토진행 중입니다.`,
+                })
+                // const managerNotificationResponse = await postNotificationByManagers(formData.managerId, {
+                //     notificationContents:
+                //         `Inquiry ${id}번 문의의 품질검토요청이 접수되었으니, 확인 바랍니다.`,
+                // })
+                console.log('Notification posted successfully:', customerNotificationResponse);
+                // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
+            } catch (error) {
+                console.log('Error posting notification:', error);
             }
         }
     }
@@ -273,15 +295,19 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     ...formData,
                     receipts: formData.receipts,
                 });
+                const notificationResponse = await postNotificationByCustomers(formData.customerId, {
+                    notificationContents:
+                        `${inquiriesDataDetail.name}님의 문의 최종 검토가 완료되었습니다. 최종검토내용과 OfferSheet를 확인해 주세요.`,
+                })
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
+                console.log('Notification posted successfully:', notificationResponse);
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
             }
         }
     }
 
-    // 폼 데이터 변경 핸들러
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -295,6 +321,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                             role={'sales'} />
             <RequestBar requestBarTitle={'Inquiry 상세조회 및 영업검토'}
                         onReviewSubmit={handleReviewSubmit}
+                        onQualitySubmit={handleQualitySubmit}
                         onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
