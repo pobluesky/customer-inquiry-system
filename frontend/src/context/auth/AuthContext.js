@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     console.log("현재 로그인 상태: ", didLogin);
     console.log("현재 유저의 role: ", role);
     console.log("현재 유저의 userId: ", userId);
-    console.log("현재 유저의 name: ", userName);
+    // console.log("현재 유저의 name: ", userName);
 
     return (
         <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId, userName, setUserName }}>
