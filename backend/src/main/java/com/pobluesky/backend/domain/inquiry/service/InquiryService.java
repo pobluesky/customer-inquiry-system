@@ -3,7 +3,6 @@ package com.pobluesky.backend.domain.inquiry.service;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.request.InquiryProgressUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
@@ -247,7 +246,7 @@ public class InquiryService {
         Long inquiryId,
         MultipartFile file,
         InquiryUpdateRequestDTO inquiryUpdateRequestDTO
-        ) {
+    ) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -255,6 +254,9 @@ public class InquiryService {
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if(inquiry.getProgress() != Progress.SUBMIT)
+            throw new CommonException(ErrorCode.INQUIRY_UNABLE_TO_MODIFY);
 
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -270,11 +272,6 @@ public class InquiryService {
 
         lineItemService.deleteLineItemsByInquiry(inquiry);
 
-        List<LineItemResponseDTO> lineItemResponseDTOS = lineItemService.createLineItems(
-            inquiry,
-            inquiryUpdateRequestDTO.lineItemRequestDTOs()
-        );
-
         inquiry.updateInquiry(
             inquiryUpdateRequestDTO.country(),
             inquiryUpdateRequestDTO.corporate(),
@@ -282,12 +279,16 @@ public class InquiryService {
             inquiryUpdateRequestDTO.inquiryType(),
             inquiryUpdateRequestDTO.industry(),
             inquiryUpdateRequestDTO.productType(),
-            inquiryUpdateRequestDTO.progress(),
             inquiryUpdateRequestDTO.customerRequestDate(),
             inquiryUpdateRequestDTO.additionalRequests(),
             fileName,
             filePath,
             inquiryUpdateRequestDTO.responseDeadline()
+        );
+
+        List<LineItemResponseDTO> lineItemResponseDTOS = lineItemService.createLineItems(
+            inquiry,
+            inquiryUpdateRequestDTO.lineItemRequestDTOs()
         );
 
         return InquiryResponseDTO.of(inquiry, lineItemResponseDTOS);
@@ -362,8 +363,7 @@ public class InquiryService {
     @Transactional
     public InquiryProgressResponseDTO updateInquiryProgress(
         String token,
-        Long inquiryId,
-        InquiryProgressUpdateRequestDTO requestDTO
+        Long inquiryId
     ) {
         Long userId = signService.parseToken(token);
 
@@ -376,14 +376,7 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Progress currentProgress = inquiry.getProgress();
-        Progress newProgress = requestDTO.progress();
-
-        if (!isValidProgressUpdate(currentProgress, newProgress)) {
-            throw new CommonException(ErrorCode.INVALID_PROGRESS_UPDATE);
-        }
-
-        inquiry.updateProgress(newProgress);
+        inquiry.updateProgress();
 
         return InquiryProgressResponseDTO.from(inquiry);
     }
