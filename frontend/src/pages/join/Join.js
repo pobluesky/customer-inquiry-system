@@ -16,19 +16,13 @@ import {
     validatePassword,
     validateMatch,
 } from '../../utils/validation';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
+import { userName, userEmail, userPassword } from '../../index';
 import {
-    userName,
-    userEmail,
-    userPassword,
-    joinErrorMsg,
-    getJoinErrorMsg,
-} from '../../index';
-import {
-    InvalidCustomerNameAlert,
-    InvalidCustomerCodeAlert,
     JoinCompleteAlert,
     JoinFailedAlert,
+    InvalidCustomerNameAlert,
+    InvalidCustomerCodeAlert,
     ManagerRoleIsNullAlert,
 } from '../../utils/actions';
 
@@ -54,6 +48,9 @@ function Join() {
     const [showNameAlert, canShowNameAlert] = useState(false); // 이름 입력 경고
     const [showCodeAlert, canShowCodeAlert] = useState(false); // 코드 입력 경고
     const [showRoleAlert, canShowRoleAlert] = useState(false); // 역할 선택 경고
+    const [showFailedAlert, canShowFailedAlert] = useState(false); // 회원가입 실패 알림
+    const [showCompleteAlert, canShowCompleteAlert] = useState(false); // 회원가입 성공 알림
+    const [errorMsg, setErrorMsg] = useState('');
 
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -76,11 +73,6 @@ function Join() {
     const phoneChange = (e) => setPhone(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
     const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
-
-    const [, setJoinErrorMsg] = useRecoilState(joinErrorMsg);
-    const currentJoinErrorMsg = useRecoilValue(getJoinErrorMsg);
-    const [tryJoin, setTryJoin] = useState(false);
-    const [resetAtom, setResetAtom] = useState(false);
 
     const selectRoleFilter = (filter) => {
         setRoleFilter(filter);
@@ -143,6 +135,7 @@ function Join() {
     // 엔터 키 기능 (권한 부여 버튼 클릭)
     const _enterKeyDown = (e) => {
         if (e.key === 'Enter') {
+            console.log(e.key);
             e.preventDefault();
             setAuth();
         }
@@ -155,37 +148,6 @@ function Join() {
             setValidationTest(true);
             await GetAuth();
         }
-    };
-
-    // 회원가입 실패: 새로고침 시 경고 메시지 초기화
-    useEffect(() => {
-        setJoinErrorMsg('');
-        setResetAtom(true);
-    }, []);
-
-    useEffect(() => {
-        if (resetAtom && currentJoinErrorMsg && isManager) {
-            canShowRoleAlert(true);
-        }
-    }, [resetAtom, tryJoin]);
-
-    useEffect(() => {
-        if (resetAtom && currentJoinErrorMsg) {
-            JoinFailedAlert(currentJoinErrorMsg);
-        }
-    }, [tryJoin]);
-
-    // 회원가입 성공: 로그인 페이지로 이동
-    const goToLogin = (result) => {
-        if (result.success) {
-            saveGlobalInfo();
-            JoinCompleteAlert();
-            setTimeout(() => {
-                navigate('/login');
-            }, '1000');
-            return;
-        }
-        setTryJoin(!tryJoin);
     };
 
     // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
@@ -205,11 +167,18 @@ function Join() {
                 phone,
                 customerCode,
                 customerName,
-                setJoinErrorMsg,
             );
-            console.log('고객사 회원가입 결과', response.success);
-            goToLogin(result);
-        } catch (error) {}
+            console.log('고객사 회원가입 성공: ', response.data);
+            saveGlobalInfo();
+            canShowCompleteAlert(true);
+            setTimeout(() => {
+                navigate('/login');
+            }, '2000');
+        } catch (error) {
+            setErrorMsg(error.response.data.message);
+            canShowFailedAlert(true);
+            console.log('고객사 회원가입 실패: ', error.response.data.message);
+        }
     };
 
     // 담당자 회원가입 API
@@ -223,11 +192,18 @@ function Join() {
                 empNo,
                 role,
                 department,
-                setJoinErrorMsg,
             );
-            console.log('담당자 회원가입 결과', response.success);
-            goToLogin(result);
-        } catch (error) {}
+            console.log('담당자 회원가입 성공: ', response.data);
+            saveGlobalInfo();
+            canShowCompleteAlert(true);
+            setTimeout(() => {
+                navigate('/login');
+            }, '2000');
+        } catch (error) {
+            setErrorMsg(error.response.data.message);
+            canShowFailedAlert(true);
+            console.log('담당자 회원가입 실패: ', error.response.data.message);
+        }
     };
 
     // 회원가입 API 요청
@@ -352,33 +328,24 @@ function Join() {
                                         },
                                     })}
                             </div>
-                            <div>
-                                <InvalidCustomerNameAlert
-                                    showAlert={showNameAlert}
-                                    onClose={() => {
-                                        canShowNameAlert(false);
-                                    }}
-                                    inert
-                                />
-                            </div>
-                            <div>
-                                <InvalidCustomerCodeAlert
-                                    showAlert={showCodeAlert}
-                                    onClose={() => {
-                                        canShowCodeAlert(false);
-                                    }}
-                                    inert
-                                />
-                            </div>
-                            <div>
-                                <ManagerRoleIsNullAlert
-                                    showAlert={showRoleAlert}
-                                    onClose={() => {
-                                        canShowRoleAlert(false);
-                                    }}
-                                    inert
-                                />
-                            </div>
+                            <InvalidCustomerNameAlert
+                                showAlert={showNameAlert}
+                                onClose={() => {
+                                    canShowNameAlert(false);
+                                }}
+                            />
+                            <InvalidCustomerCodeAlert
+                                showAlert={showCodeAlert}
+                                onClose={() => {
+                                    canShowCodeAlert(false);
+                                }}
+                            />
+                            <ManagerRoleIsNullAlert
+                                showAlert={showRoleAlert}
+                                onClose={() => {
+                                    canShowRoleAlert(false);
+                                }}
+                            />
                         </>
                     ) : (
                         <>
@@ -484,6 +451,19 @@ function Join() {
                                     },
                                 })}
                             </div>
+                            <JoinCompleteAlert
+                                showAlert={showCompleteAlert}
+                                onClose={() => {
+                                    canShowCompleteAlert(false);
+                                }}
+                            />
+                            <JoinFailedAlert
+                                showAlert={showFailedAlert}
+                                onClose={() => {
+                                    canShowFailedAlert(false);
+                                }}
+                                message={errorMsg}
+                            />
                         </>
                     )}
                 </div>

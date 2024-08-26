@@ -1,3 +1,8 @@
+import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Swal from 'sweetalert2';
+
 export const actions = {
     초기화: () => {
         if (window.confirm('모든 내용을 초기화 하시겠습니까?')) {
@@ -45,11 +50,6 @@ export const actions = {
         alert('닫기 버튼이 클릭되었습니다.');
     },
 };
-
-import React from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import Swal from 'sweetalert2';
 
 const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
     return (
@@ -105,39 +105,58 @@ const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
     );
 };
 
-const JoinCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        titleText: '회원가입이 완료되었습니다.',
-        text: '잠시 후 로그인 페이지로 이동합니다.',
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-    });
+const JoinCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                '회원가입이 완료되었습니다.'
+            </Alert>
+        </Snackbar>
+    );
 };
 
-const JoinFailedAlert = (message) => {
-    Swal.fire({
-        icon: 'error',
-        titleText: '회원가입 실패',
-        text: `${message}`,
-        showConfirmButton: false,
-        timer: 2000,
-        allowOutsideClick: false,
-    });
+const JoinFailedAlert = ({ showAlert, onClose, message }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
 };
 
-const LoginCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        titleText: '로그인이 완료되었습니다.',
-        text: '잠시 후 메인 화면으로 이동합니다.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-    });
+const LoginCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                '로그인이 완료되었습니다.'
+            </Alert>
+        </Snackbar>
+    );
 };
 
 const LoginFailedAlert = ({ showAlert, onClose, message }) => {
