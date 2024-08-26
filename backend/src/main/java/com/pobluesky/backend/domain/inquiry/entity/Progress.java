@@ -10,9 +10,11 @@ public enum Progress {
 
     SUBMIT(1, "Submit"),
     RECEIPT(2, "Receipt"),
-    FIRST_REVIEW(3, "First Review"),
-    QUALITY_REVIEW(4, "Quality Review"),
-    FINAL_REVIEW(5, "Final Review");
+    FIRST_REVIEW_COMPLETED(3, "First Review completed"),
+    QUALITY_REVIEW_REQUEST(4, "Quality Review request"),
+    QUALITY_REVIEW_RESPONSE(4, "Quality Review response"),
+    QUALITY_REVIEW_COMPLETED(4, "Quality Review completed"),
+    FINAL_REVIEW_COMPLETED(5, "Final Review completed");
 
     private final Integer code;
     private final String value;
