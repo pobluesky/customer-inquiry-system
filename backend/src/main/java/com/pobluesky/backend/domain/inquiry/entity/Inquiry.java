@@ -79,7 +79,6 @@ public class Inquiry extends BaseEntity {
         Industry industry,
         String corporationCode,
         ProductType productType,
-        Progress progress,
         String customerRequestDate,
         String additionalRequests,
         String fileName,
@@ -94,7 +93,7 @@ public class Inquiry extends BaseEntity {
         this.industry = industry;
         this.corporationCode = corporationCode;
         this.productType = productType;
-        this.progress = progress;
+        this.progress = Progress.SUBMIT;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
         this.fileName = fileName;
@@ -110,7 +109,6 @@ public class Inquiry extends BaseEntity {
         InquiryType inquiryType,
         Industry industry,
         ProductType productType,
-        Progress progress,
         String customerRequestDate,
         String additionalRequests,
         String fileName,
@@ -123,7 +121,6 @@ public class Inquiry extends BaseEntity {
         this.inquiryType = inquiryType;
         this.industry = industry;
         this.productType = productType;
-        this.progress = progress;
         this.customerRequestDate = customerRequestDate;
         this.additionalRequests = additionalRequests;
         this.fileName = fileName;
@@ -133,5 +130,12 @@ public class Inquiry extends BaseEntity {
 
     public void deleteInquiry() {
         this.isActivated = false;
+    }
+
+    public void updateProgress() {
+        Integer code = this.progress.getCode();
+
+        if(this.progress != Progress.FINAL_REVIEW)
+            this.progress = Progress.fromCode(code + 1);
     }
 }

@@ -8,10 +8,11 @@ import lombok.Getter;
 @Getter
 public enum Progress {
 
-    RECEIPT(1, "Receipt"),
-    FIRST_REVIEW(2, "First Review"),
-    QUALITY_REVIEW(3, "Quality Review"),
-    FINAL_REVIEW(4, "Final Review");
+    SUBMIT(1, "Submit"),
+    RECEIPT(2, "Receipt"),
+    FIRST_REVIEW(3, "First Review"),
+    QUALITY_REVIEW(4, "Quality Review"),
+    FINAL_REVIEW(5, "Final Review");
 
     private final Integer code;
     private final String value;

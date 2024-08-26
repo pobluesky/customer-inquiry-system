@@ -1,5 +1,5 @@
 import React from 'react';
-import ListLabel from "../../../mocules/ListLabel";
+import ListLabel from "../../../molecules/ListLabel";
 import {ReviewWrapper, _TextArea} from "../../../../assets/css/Form.css";
 
 const ReviewTextItem = ({ title, width, height, formData }) => { // 1차 검토 조회

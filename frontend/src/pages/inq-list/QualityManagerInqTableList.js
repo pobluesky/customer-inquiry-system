@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import SearchResult from '../../components/mocules/SearchResult';
+import SearchResult from '../../components/molecules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
-import InquirySearchBox
-    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { getManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
@@ -16,7 +15,6 @@ const QualityManagerInqTableList = () => {
     const paginationRef = useRef(null);
 
     const getInquiryDataByParameter = async (queryParams = {}) => {
-
         try {
             const response = await getManagerInquiriesByParameter(queryParams);
             setRows(response);
@@ -36,7 +34,7 @@ const QualityManagerInqTableList = () => {
 
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
-        currentPage * rowsPerPage + rowsPerPage
+        currentPage * rowsPerPage + rowsPerPage,
     );
 
     const handlePageChange = (event, newPage) => {
@@ -60,16 +58,16 @@ const QualityManagerInqTableList = () => {
             <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'quality'} />
             <InquirySearchBox onSearch={handleSearch} />
             <SearchResult searchResult={`${rows.length}`} />
-                <CollapsibleTable
-                    rows={paginatedRows}
-                    currentPage={currentPage}
-                    rowsPerPage={rowsPerPage}
-                    totalRows={rows.length}
-                    handlePageChange={handlePageChange}
-                    handleRowsPerPageChange={handleRowsPerPageChange}
-                    paginationRef={paginationRef}
-                    role="quality"
-                />
+            <CollapsibleTable
+                rows={paginatedRows}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
+                totalRows={rows.length}
+                handlePageChange={handlePageChange}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                paginationRef={paginationRef}
+                role="quality"
+            />
         </div>
     );
 };

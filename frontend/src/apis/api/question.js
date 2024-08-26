@@ -1,98 +1,92 @@
-// 담당자용 질문 전체 조회
-export const getAllQuestion = async (filterArgs, token) => {
-    try {
-        const response = await fetch(`/api/questions/managers?${filterArgs}`, {
-            headers: {
-                Authorization: `${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json();
+import axiosInstance from '../utils/axiosInstance';
 
-        if (data.result === 'success') {
-            return data.data;
-        } else {
-            // console.error('Failed to fetch data:', data.message);
-            return [];
+// 담당자용 질문 전체 조회
+export const getAllQuestion = async (filterArgs) => {
+    try {
+        const response = await axiosInstance.get(
+            `/questions/managers?${filterArgs}`,
+        );
+
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+
+        return json;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+        console.error(
+            '담당자용 질문 요약 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
     }
 };
 
 // 담당자용 질문 상세 조회
-export const getQuestionByQuestionIdForManager = async (questionId, token) => {
+export const getQuestionByQuestionIdForManager = async (questionId) => {
     try {
-        const response = await fetch(`/api/questions/managers/${questionId}`, {
-            headers: {
-                Authorization: `${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json();
+        const response = await axiosInstance.get(
+            `/questions/managers/${questionId}`,
+        );
 
-        if (data.result === 'success') {
-            return data.data;
-        } else {
-            // console.error('Failed to fetch data:', data.message);
-            return [];
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+
+        return json;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+        console.error(
+            '담당자용 질문 상세 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
     }
 };
 
 // 고객별 질문 전체 조회
-export const getQuestionByUserId = async (userId, filterArgs, token) => {
+export const getQuestionByUserId = async (userId, filterArgs) => {
     try {
-        const response = await fetch(
-            `/api/questions/customers/${userId}?${filterArgs}`,
-            {
-                headers: {
-                    Authorization: `${token}`,
-                    'Content-Type': 'application/json',
-                },
-            },
+        const response = await axiosInstance.get(
+            `/questions/customers/${userId}?${filterArgs}`,
         );
-        const data = await response.json();
 
-        if (data.result === 'success') {
-            return data.data;
-        } else {
-            // console.error('Failed to fetch data:', data.message);
-            return [];
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+        return json;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+        console.error(
+            '고객사용 질문 요약 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
     }
 };
 
 // 고객사용 질문 상세 조회
-export const getQuestionByQuestionId = async (userId, questionId, token) => {
+export const getQuestionByQuestionId = async (userId, questionId) => {
     try {
-        const response = await fetch(
-            `/api/questions/customers/${userId}/${questionId}`,
-            {
-                headers: {
-                    Authorization: `${token}`,
-                    'Content-Type': 'application/json',
-                },
-            },
+        const response = await axiosInstance.get(
+            `/questions/customers/${userId}/${questionId}`,
         );
-        const data = await response.json();
 
-        if (data.result === 'success') {
-            return data.data;
-        } else {
-            // console.error('Failed to fetch data:', data.message);
-            return [];
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
         }
+        return json;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+        console.error(
+            '고객사용 질문 상세 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
     }
 };
 
@@ -102,81 +96,75 @@ export const postQuestionByUserIdAboutInquiry = async (
     questionData,
     userId,
     inquiryId,
-    token,
 ) => {
     try {
         const formData = new FormData();
-        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
-            type: 'application/json',
-        });
-        formData.append('question', blobQuestionData);
+        formData.append(
+            'question',
+            new Blob([JSON.stringify(questionData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await fetch(`/api/questions/customers/${userId}/${inquiryId}`, {
-            method: 'POST',
+        const response = await axiosInstance({
+            method: 'post',
+            url: `/questions/customers/${userId}/${inquiryId}`,
+            data: formData,
             headers: {
-                Authorization: `${token}`,
+                'Content-Type': 'multipart/form-data',
             },
-            body: formData,
         });
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('INQ 질문 등록 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
 // Inquiry 무관 질문 등록
-export const postQuestionByUserId = async (
-    file,
-    questionData,
-    userId,
-    token,
-) => {
+export const postQuestionByUserId = async (file, questionData, userId) => {
     try {
         const formData = new FormData();
-        const blobQuestionData = new Blob([JSON.stringify(questionData)], {
-            type: 'application/json',
-        });
-        formData.append('question', blobQuestionData);
+        formData.append(
+            'question',
+            new Blob([JSON.stringify(questionData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await fetch(`/api/questions/customers/${userId}`, {
-            method: 'POST',
+        const response = await axiosInstance({
+            method: 'post',
+            url: `/questions/customers/${userId}`,
+            data: formData,
             headers: {
-                Authorization: `${token}`,
+                'Content-Type': 'multipart/form-data',
             },
-            body: formData,
         });
 
-        if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
-        }
-
-        const json = await response.json();
+        const json = response.data;
 
         if (json.result !== 'success') {
-            throw json.message;
+            throw new Error(json.message);
         }
 
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('기타 질문 등록 API ERROR: ', error.message || error);
+        throw error;
     }
 };

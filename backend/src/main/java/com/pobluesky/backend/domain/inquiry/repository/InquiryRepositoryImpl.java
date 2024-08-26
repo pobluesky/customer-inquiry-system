@@ -4,6 +4,7 @@ import static com.pobluesky.backend.domain.inquiry.entity.QInquiry.inquiry;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
 
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
@@ -66,7 +67,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -95,6 +96,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -120,8 +123,10 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
+                salesPersonContains(salesPerson),
+                industryEq(industry),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -159,7 +164,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             )
@@ -186,6 +191,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -210,8 +217,10 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
+                salesPersonContains(salesPerson),
+                industryEq(industry),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -234,7 +243,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.customer.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
@@ -251,7 +260,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.isActivated.isTrue(),
                 progressEq(progress),
                 productTypeEq(productType),
-                customerNameEq(customerName),
+                customerNameContains(customerName),
                 inquiryTypeEq(inquiryType),
                 createdDateBetween(startDate, endDate)
             );
@@ -282,12 +291,20 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         return productType != null ? inquiry.productType.eq(productType) : null;
     }
 
-    private BooleanExpression customerNameEq(String customerName) {
-        return StringUtils.hasText(customerName) ? customer.customerName.eq(customerName) : null;
+    private BooleanExpression customerNameContains(String customerName) {
+        return StringUtils.hasText(customerName) ? customer.customerName.contains(customerName) : null;
     }
 
     private BooleanExpression inquiryTypeEq(InquiryType inquiryType) {
         return inquiryType != null ? inquiry.inquiryType.eq(inquiryType) : null;
+    }
+
+    private BooleanExpression salesPersonContains(String salesPerson) {
+        return StringUtils.hasText(salesPerson) ? inquiry.salesPerson.contains(salesPerson) : null;
+    }
+
+    private BooleanExpression industryEq(Industry industry) {
+        return industry != null ? inquiry.industry.eq(industry) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {

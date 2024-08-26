@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from '../atoms/Input';
-import SearchInput from '../mocules/MySearchInput';
+import SearchInput from './SearchInput';
 import { Offer_Table } from '../../assets/css/Form.css';
 
 function OfferTableItem({ rows, onRowSelect, onInputChange, selectedRows = [], lineItems }) { // OfferTable 조회

@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.repository;
 
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
@@ -41,6 +42,8 @@ public interface InquiryRepositoryCustom {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
@@ -51,6 +54,8 @@ public interface InquiryRepositoryCustom {
         ProductType productType,
         String customerName,
         InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy

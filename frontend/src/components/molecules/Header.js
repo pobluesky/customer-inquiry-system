@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import {
     getUserInfoByCustomers, getUserInfoByManagers,
 } from '../../apis/api/auth';
-import NotificationModal from '../mocules/NotificationModal';
+import NotificationModal from '../molecules/NotificationModal';
 
 export const MenuLink = styled(Link)`
     color: #03507d;
