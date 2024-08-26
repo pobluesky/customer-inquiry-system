@@ -8,7 +8,11 @@ import { Join } from './pages/join';
 
 import { InqMain } from './pages/inq-main';
 import { CustomerInqForm } from './pages/inq-form';
-import { CustomerInqTableList, SalesManagerInqTableList, QualityManagerInqTableList } from './pages/inq-list';
+import {
+    CustomerInqTableList,
+    SalesManagerInqTableList,
+    QualityManagerInqTableList,
+} from './pages/inq-list';
 import {
     CustomerInqItem,
     SalesManagerInqItem,
@@ -41,23 +45,11 @@ function App() {
                         <Route path="join" element={<Join />} />
                         <Route path="inq-main" element={<InqMain />} />
 
-                        <Route
-                            path="inq-form/customer"
-                            element={<CustomerInqForm />}
-                        />
+                        <Route path="inq-form/customer" element={<CustomerInqForm />} />
 
-                        <Route
-                            path="inq-list/customer"
-                            element={<CustomerInqTableList />}
-                        />
-                        <Route
-                            path="inq-list/sales"
-                            element={<SalesManagerInqTableList />}
-                        />
-                        <Route
-                            path="inq-list/quality"
-                            element={<QualityManagerInqTableList />}
-                        />
+                        <Route path="inq-list/customer" element={<CustomerInqTableList />} />
+                        <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
+                        <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
 
                         <Route path="inq-list/line-items/:id" element={<LineItemTableItem />} />
 
@@ -67,7 +59,8 @@ function App() {
 
                         <Route path="voc-main" element={<VocMain />} />
                         <Route path="voc-form/question" element={<VocQuestionForm />} />
-                        <Route path="voc-form/collaboration" element={<VocColForm /> } />
+                        <Route path="voc-form/collaboration"
+                            element={<VocColForm />} />
                         <Route path="voc-list/question" element={<VocQuestionList />} />
                         <Route path="voc-list/collaboration" element={<VocColList />} />
 

@@ -3,4 +3,8 @@ import CustomerInqTableList from './CustomerInqTableList';
 import SalesManagerInqTableList from './SalesManagerInqTableList';
 import QualityManagerInqTableList from './QualityManagerInqTableList';
 
-export { CustomerInqTableList, SalesManagerInqTableList, QualityManagerInqTableList };
+export {
+    CustomerInqTableList,
+    SalesManagerInqTableList,
+    QualityManagerInqTableList,
+};
