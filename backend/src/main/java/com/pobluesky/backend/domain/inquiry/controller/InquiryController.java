@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.inquiry.controller;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -60,7 +61,9 @@ public class InquiryController {
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) InquiryType inquiryType,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+        @RequestParam(required = false) String salesManagerName,
+        @RequestParam(required = false) String qualityManagerName
     ) {
         Page<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
             token,
@@ -73,7 +76,9 @@ public class InquiryController {
             customerName,
             inquiryType,
             startDate,
-            endDate
+            endDate,
+            salesManagerName,
+            qualityManagerName
         );
 
         Map<String, Object> response = new HashMap<>();
@@ -270,13 +275,30 @@ public class InquiryController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @PutMapping("/managers/inquiries/{inquiryId}/progress")
+    @PutMapping("/managers/inquiries/{inquiryId}/progress/{progress}")
     @Operation(summary = "담당자 Inquiry 상태 업데이트")
     public ResponseEntity<InquiryProgressResponseDTO> updateInquiryProgress(
         @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId,
+        @PathVariable String progress
+    ) {
+        InquiryProgressResponseDTO response = inquiryService.updateInquiryProgress(
+            token,
+            inquiryId,
+            progress
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/managers/inquiries/{inquiryId}/allocate")
+    @Operation(summary = "담당자 Inquiry 할당")
+    public ResponseEntity<InquiryAllocateResponseDTO> allocateManager(
+        @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId
     ) {
-        InquiryProgressResponseDTO response = inquiryService.updateInquiryProgress(token, inquiryId);
+        InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
+
         return ResponseEntity.ok(response);
     }
 }
