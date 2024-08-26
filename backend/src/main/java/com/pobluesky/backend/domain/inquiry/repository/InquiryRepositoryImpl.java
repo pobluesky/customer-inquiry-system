@@ -233,7 +233,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.country,
                 inquiry.corporate,
                 inquiry.corporationCode,
-                inquiry.industry
+                inquiry.industry,
+                salesManager.name.as("salesManagerName"),
+                qualityManager.name.as("qualityManagerName")
                 )
             )
             .from(inquiry)
@@ -337,11 +339,11 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     private BooleanExpression salesManagerNameEq(String name) {
-        return name != null ? inquiry.salesManager.name.eq(name) : null;
+        return name != null ? salesManager.name.eq(name) : null;
     }
 
     private BooleanExpression qualityManagerNameEq(String name) {
-        return name != null ? inquiry.qualityManager.name.eq(name) : null;
+        return name != null ? qualityManager.name.eq(name) : null;
     }
 
     private BooleanExpression industryEq(Industry industry) {
