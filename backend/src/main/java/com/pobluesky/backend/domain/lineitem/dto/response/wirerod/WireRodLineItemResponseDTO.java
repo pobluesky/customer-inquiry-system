@@ -26,7 +26,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
 
     private Integer quantity;
 
-    private String expectedDeadLine;
+    private String expectedDeadline;
 
     private Integer initialQuantity;
 
@@ -56,7 +56,7 @@ public class WireRodLineItemResponseDTO extends LineItemResponseDTO {
             .orderCategory(wireRodLineItem.getOrderCategory())
             .diameter(wireRodLineItem.getDiameter())
             .quantity(wireRodLineItem.getQuantity())
-            .expectedDeadLine(wireRodLineItem.getExpectedDeadline())
+            .expectedDeadline(wireRodLineItem.getExpectedDeadline())
             .initialQuantity(wireRodLineItem.getInitialQuantity())
             .customerProcessing(wireRodLineItem.getCustomerProcessing())
             .finalUse(wireRodLineItem.getFinalUse())
