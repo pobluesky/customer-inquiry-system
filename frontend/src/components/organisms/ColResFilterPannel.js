@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import SearchInput from '../mocules/SearchInput';
+import SearchInput from '../molecules/SearchInput';
 import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Collaboration_Filter_Pannel } from '../../assets/css/Voc.css';
 
-export default function ColFilterPanel({
+export default function ColResFilterPanel({
     colNo,
     colManager,
     startDate,

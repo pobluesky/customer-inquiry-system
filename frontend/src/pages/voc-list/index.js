@@ -1,3 +1,4 @@
-import VocList from './VocList';
+import VocQuestionList from './VocQuestionList';
+import VocColList from './VocColList';
 
-export { VocList };
+export { VocColList, VocQuestionList };

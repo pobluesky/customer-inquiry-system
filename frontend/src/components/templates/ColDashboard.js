@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ColFilterPanel from '../organisms/ColFilterPannel';
+import ColResFilterPanel from '../organisms/ColResFilterPannel';
 import ColTable from '../organisms/ColTable';
-import ColRequestModal from '../mocules/ColRequestModal';
+import ColResModal from '../molecules/ColResModal';
 
 export default function ColDashboard() {
     const [status, setStatus] = useState('READY');
@@ -11,8 +11,6 @@ export default function ColDashboard() {
     const [height, setHeight] = useState('');
     const [auth, setAuth] = useState(true);
     const [colDetail, setColDetail] = useState([]);
-
-    const [searchedItems, setSearchedItems] = useState('');
 
     const [colNo, setColNo] = useState('');
     const [colManager, setColManager] = useState('');
@@ -25,7 +23,7 @@ export default function ColDashboard() {
 
     return (
         <>
-            <ColFilterPanel
+            <ColResFilterPanel
                 searchCount={searchCount}
                 colNo={colNo}
                 colManager={colManager}
@@ -56,7 +54,7 @@ export default function ColDashboard() {
                 setOpenModal={setOpenModal}
             />
             {openModal && (
-                <ColRequestModal
+                <ColResModal
                     questionId={questionId}
                     colId={colId}
                     setStatus={setStatus}

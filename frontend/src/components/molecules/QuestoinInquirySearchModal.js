@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import close from '../../assets/css/icons/close.svg';
@@ -24,7 +23,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {
     Question_Inquiry_Modal_Container,
     Question_Inquiry_Modal,
-    Data_Doesnt_Exist,
     Select,
 } from '../../assets/css/Voc.css';
 

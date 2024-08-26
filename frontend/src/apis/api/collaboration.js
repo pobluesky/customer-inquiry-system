@@ -41,24 +41,28 @@ export const getCollaborationDetail = async (questionId, colId) => {
 };
 
 // 협업 요청 (판매 담당자)
-export const postCollaborationBySales = async (colData, questionId) => {
+export const postCollaborationBySales = async (file, colData, questionId) => {
     try {
         const formData = new FormData();
-        const blobCollaborationData = new Blob([JSON.stringify(colData)], {
-            type: 'application/json',
-        });
-        formData.append('collaboration', blobCollaborationData);
+        formData.append(
+            'collaboration',
+            new Blob([JSON.stringify(colData)], {
+                type: 'application/json',
+            }),
+        );
 
         if (file) {
             formData.append('files', file);
         }
 
-        const response = await axiosInstance.post(
-            `/collaborations/${questionId}`,
-            {
-                body: formData,
+        const response = await axiosInstance({
+            method: 'post',
+            url: `/collaborations/${questionId}`,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
             },
-        );
+        });
 
         const json = response.data;
 

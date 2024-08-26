@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import InqPath from '../../components/atoms/InqPath';
-import RequestBar from './../../components/mocules/RequestBar';
+import RequestBar from './../../components/molecules/RequestBar';
 import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,

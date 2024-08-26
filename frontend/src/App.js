@@ -20,11 +20,10 @@ import {
 } from './pages/inq-item';
 
 import { VocMain } from './pages/voc-main';
-import { VocList } from './pages/voc-list';
-import { VocForm } from './pages/voc-form';
-import { VocCollaboration } from './pages/voc-collaboration';
+import { VocQuestionList, VocColList } from './pages/voc-list';
+import { VocQuestionForm, VocColForm } from './pages/voc-form';
 
-// import { DashBoard } from './pages/dashboard';
+import { DashBoard } from './pages/dashboard';
 
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/templates/Layout';
@@ -77,14 +76,12 @@ function App() {
                         />
 
                         <Route path="voc-main" element={<VocMain />} />
-                        <Route path="voc-list" element={<VocList />} />
-                        <Route path="voc-form" element={<VocForm />} />
-                        <Route
-                            path="voc-collaboration"
-                            element={<VocCollaboration />}
-                        />
+                        <Route path="voc-form/question" element={<VocQuestionForm />} />
+                        <Route path="voc-form/collaboration" element={<VocColForm /> } />
+                        <Route path="voc-list/question" element={<VocQuestionList />} />
+                        <Route path="voc-list/collaboration" element={<VocColList />} />
 
-                        {/*<Route path="dashboard" element={<DashBoard />} />*/}
+                        <Route path="dashboard" element={<DashBoard />} />
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>

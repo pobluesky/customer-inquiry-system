@@ -7,7 +7,7 @@ import {
     LineItemInput,
     SalesInfoRow,
 } from '../../../../assets/css/Form.css';
-import ToggleBar from '../../../mocules/ToggleBar';
+import ToggleBar from '../../../molecules/ToggleBar';
 
 const SalesInfoForm = ({ formData, handleFormDataChange }) => {
     if(!formData) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ToggleBar from "../../mocules/ToggleBar";
+import ToggleBar from "../../molecules/ToggleBar";
 import Button from "../../atoms/Button";
-import LineItem from "../../mocules/LineItem";
+import LineItem from "../../molecules/LineItem";
 import {
   Container,
   Sheet,
@@ -11,7 +11,7 @@ import {
   LineItemGetColumn,
   _none
 } from "../../../assets/css/Form.css";
-import GetLineItem from '../../mocules/GetLineItem';
+import GetLineItem from '../../molecules/GetLineItem';
 
 const InquiryHistoryForm = ({ productType, onLineItemsChange, lineItemData }) => {
   const [isChecked, setChecked] = useState(true);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
-import SearchInput from '../mocules/SearchInput';
+import SearchInput from '../molecules/SearchInput';
 import { FilterButton } from '../atoms/VocButton';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Filter_Panel } from '../../assets/css/Voc.css';

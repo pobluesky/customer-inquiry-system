@@ -4,8 +4,8 @@ import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
 import { ColReqResButton } from '../atoms/VocButton';
 import {
-    Col_Req_Modal_Container,
-    Col_Req_Modal,
+    Col_Res_Modal_Container,
+    Col_Res_Modal,
 } from '../../assets/css/Voc.css';
 import {
     putDecisionByQuality,
@@ -16,7 +16,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 const sanitizer = dompurify.sanitize;
 
-export default function ColRequestModal({
+export default function ColResModal({
     colId,
     setStatus,
     status,
@@ -98,8 +98,8 @@ export default function ColRequestModal({
     };
 
     return (
-        <div className={Col_Req_Modal_Container}>
-            <div className={Col_Req_Modal} style={{ height }}>
+        <div className={Col_Res_Modal_Container}>
+            <div className={Col_Res_Modal} style={{ height }}>
                 {/* 고객사 정보, 협업 요청 사유, 고객사 첨부파일 */}
                 <div>
                     <div>담당자</div>
@@ -108,7 +108,12 @@ export default function ColRequestModal({
                     <div>{colDetail.colManagerFromResponseDto.department}</div>
                 </div>
                 <div>협업 요청 사유</div>
-                <div>{colDetail.colContents}</div>
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizer(`${colDetail.colContents || colContents}`),
+                    }}
+                >
+                </div>
                 <div>
                     <div>고객사 첨부파일</div>
                     <div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import InquiryItem from '../../components/organisms/InquiryItem';
 import InqPath from "../../components/atoms/InqPath";
 import InquirySearchBox from "../../components/organisms/InquirySearchBox";
-import SearchResult from "../../components/mocules/SearchResult";
+import SearchResult from "../../components/molecules/SearchResult";
 import { _Link, Paging, PagingButton, PagingArrowButton } from "../../assets/css/Inquiry.css";
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiry } from '../../apis/api/inquiry';

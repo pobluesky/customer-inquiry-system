@@ -7,11 +7,7 @@ import collaboration from '../../assets/css/icons/voc/question_collaboration.svg
 import { Question_Overview } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 
-function QuestionOverview({
-    questionCount,
-    answerCount,
-    colCount,
-}) {
+function QuestionOverview({ questionCount, answerCount, colCount }) {
     const thisRole = getCookie('userRole');
     const gridTemplateColumns =
         thisRole === 'CUSTOMER'
@@ -32,7 +28,11 @@ function QuestionOverview({
                 <div>
                     <img src={ready} />
                     <div>답변 대기</div>
-                    <div>{questionCount-answerCount || 0}</div>
+                    <div>
+                        {questionCount - answerCount < 0
+                            ? 0
+                            : questionCount - answerCount}
+                    </div>
                 </div>
 
                 <img src={partition} />

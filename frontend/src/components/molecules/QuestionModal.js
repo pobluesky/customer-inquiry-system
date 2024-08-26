@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import dompurify from 'dompurify';
-import Label from '../atoms/Label';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
 import Input from '../atoms/Input';
@@ -41,7 +40,6 @@ function QuestionModal({
     status,
     setOpenModal,
 }) {
-    console.log(questionDetail.inquiryId);
     const sanitizer = dompurify.sanitize;
 
     const role = getCookie('userRole');
@@ -245,6 +243,20 @@ function QuestionModal({
                                         btnName={'답변하기'}
                                         onClick={() => {
                                             setAnswering(true);
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            {/* 협업 요청] */}
+                            {!isAnswering && role === 'SALES' && (
+                                <div>
+                                    <AnswerButton
+                                        btnName={'협업 요청'}
+                                        onClick={() => {
+                                            window.open(
+                                                `/voc-form/collaboration?questionId=${questionId}`,
+                                                '_blank',
+                                            );
                                         }}
                                     />
                                 </div>

@@ -19,11 +19,11 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
                 <span>{largeCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/voc-list" className={_Link}>
+            <Link to="/voc-list/question" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to="/voc-item" className={_Link}>
+            <Link to="/voc-list/question" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>
         </div>

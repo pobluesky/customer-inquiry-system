@@ -395,7 +395,7 @@ export default function ColTable({
                                     minWidth: 240,
                                 }}
                             >
-                                {row.colContents}
+                                {row.colContents.replace(/<\/?[^>]+(>|$)/g, "")}
                             </TableCell>
                             <TableCell
                                 sx={{

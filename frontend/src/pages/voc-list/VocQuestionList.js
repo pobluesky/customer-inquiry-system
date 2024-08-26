@@ -1,8 +1,8 @@
 import React from 'react';
-import VocPath from './../../components/atoms/VocPath';
+import VocPath from '../../components/atoms/VocPath';
 import QuestionDashboard from '../../components/templates/QuestionDashboard';
 
-function VocList() {
+export default function VocQuestionList() {
     return (
         <>
             <VocPath largeCategory={'VoC'} mediumCategory={'문의 목록'} />
@@ -10,5 +10,3 @@ function VocList() {
         </>
     );
 }
-
-export default VocList;

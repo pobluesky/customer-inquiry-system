@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ToggleBar from '../../../mocules/ToggleBar';
+import ToggleBar from '../../../molecules/ToggleBar';
 import { Container, Sheet, Opend } from '../../../../assets/css/Form.css';
 import ReviewText from './ReviewText';
 
