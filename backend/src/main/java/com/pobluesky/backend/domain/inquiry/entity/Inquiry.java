@@ -134,6 +134,8 @@ public class Inquiry extends BaseEntity {
 
     public void updateProgress() {
         Integer code = this.progress.getCode();
-        this.progress = Progress.fromCode(code + 1);
+
+        if(this.progress != Progress.FINAL_REVIEW)
+            this.progress = Progress.fromCode(code + 1);
     }
 }
