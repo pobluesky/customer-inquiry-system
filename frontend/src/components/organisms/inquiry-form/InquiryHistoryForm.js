@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
 import ToggleBar from '../../molecules/ToggleBar';
-import { productTypes } from '../../../utils/lineItems';
+import { productTypes } from '../../../utils/inquiry';
 
 const InquiryHistoryForm = ({
     productType,

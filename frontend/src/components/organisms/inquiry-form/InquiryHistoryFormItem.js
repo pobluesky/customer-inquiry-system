@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@mui/material';
 import ToggleBar from '../../molecules/ToggleBar';
-import { productTypes } from '../../../utils/lineItems';
+import { productTypes } from '../../../utils/inquiry';
 
 const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아이템 조회
     const fields = productTypes[productType] || {};

@@ -76,8 +76,8 @@
 
 ._SearchBox {
   display: grid;
-  grid-template-columns: 0.4fr 1.5fr 1fr 1.5fr 1fr 2.5fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
-  grid-template-rows: repeat(4, 50px); /* 3행의 높이를 100px로 설정 */
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-rows: repeat(2, 50px); /* 3행의 높이를 50px로 설정 */
 }
 
 ._Text {

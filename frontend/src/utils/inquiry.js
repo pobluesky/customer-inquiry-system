@@ -80,3 +80,51 @@ export const productTypes = {
         "finalCustomer": { label: "최종고객사", type: "string" }
     }
 };
+
+export const progressOptions = [
+    { label: '문의접수', value: 'RECEIPT' },
+    { label: '1차검토완료', value: 'FIRST_REVIEW' },
+    { label: '품질검토요청', value: 'QUALITY_REVIEW' },
+    { label: '최종검토완료', value: 'FINAL_REVIEW' },
+];
+
+export const sortOptions = [
+    { label: '최신순', value: 'LATEST' },
+    { label: '과거순', value: 'OLDEST' },
+];
+
+export const productTypeOptions = [
+    { label: 'ALL', value: '' },
+    { label: '자동차', value: 'CAR' },
+    { label: '열연', value: 'HOT_ROLLED' },
+    { label: '냉연', value: 'COLD_ROLLED' },
+    { label: '후판', value: 'THICK_PLATE' },
+    { label: '선재', value: 'WIRE_ROD' },
+];
+
+export const inquiryTypeOptions = [
+    { label: 'ALL', value: '' },
+    { label: '견적 문의', value: 'QUOTE_INQUIRY' },
+    { label: '품질+견적 문의', value: 'COMMON_INQUIRY' },
+];
+
+export const IndustryOptions = [
+    { label: 'ALL', value: '' },
+    { label: 'Automobile', value: 'AUTOMOBILE' },
+    { label: 'Others', value: 'OTHERS' },
+    { label: 'Construction', value: 'CONSTRUCTION' },
+    { label: 'Distribution', value: 'DISTRIBUTION' },
+    { label: 'Electric', value: 'ELECTRIC' },
+    { label: 'Furniture', value: 'FURNITURE' },
+    { label: 'Plating', value: 'PLATING' },
+    { label: 'High-Carbon', value: 'HIGH_CARBON' },
+    { label: 'Kitchen', value: 'KITCHEN' },
+    { label: 'Low-Carbon', value: 'LOW_CARBON' },
+    { label: 'Machinery', value: 'MACHINERY' },
+    { label: 'Pipe', value: 'PIPE' },
+    { label: 'Rerolling', value: 'REROLLING' },
+    { label: 'Shipbuilding', value: 'SHIPBUILDING' },
+    { label: 'Transportation', value: 'TRANSPORTATION' },
+    { label: 'Vessel', value: 'VESSEL' },
+    { label: 'Beam', value: 'BEAM' },
+];
