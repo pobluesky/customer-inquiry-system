@@ -59,7 +59,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         productType: '',
         progress: '',
         salesPerson: '',
-        lineItemResponseDTOs: [],
+        lineItemResponseDTOs: inquiriesDataDetail?.lineItemResponseDTOs || [],
 
         // review
         reviewText: '',
@@ -226,6 +226,8 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         console.log('inquiriesDataDetail:', inquiriesDataDetail);
         console.log('formData:', formData);
     }, [inquiriesDataDetail, formData]);
+
+    console.log(inquiriesDataDetail?.files);
 
     return (
         <div className={InqTableContainer}>
