@@ -2,7 +2,6 @@ package com.pobluesky.backend.domain.question.service;
 
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
-import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -24,8 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,35 +45,9 @@ public class QuestionService {
 
     private final FileService fileService;
 
-    // 질문 전체 조회 (담당자)
-    @Transactional(readOnly = true)
-    public QuestionSummaryResponseDTO getQuestionsByManager(
-        String token,
-        int page,
-        int size,
-        String sortBy,
-        QuestionStatus status,
-        LocalDate startDate,
-        LocalDate endDate) {
-
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return questionRepository.findQuestionsByManager(
-            pageable,
-            status,
-            startDate,
-            endDate,
-            sortBy);
-    }
-
     // 질문 전체 조회 (담당자) without paging
     @Transactional(readOnly = true)
-    public List<QuestionSummaryDTO> getAllQuestionsByManagerWithoutPaging(
+    public List<QuestionSummaryResponseDTO> getAllQuestionsByManagerWithoutPaging(
         String token,
         String sortBy,
         QuestionStatus status,
@@ -103,41 +74,9 @@ public class QuestionService {
             sortBy);
     }
 
-    // 질문 전체 조회 (고객사)
-    @Transactional(readOnly = true)
-    public QuestionSummaryResponseDTO getQuestionsByCustomer(
-        String token,
-        Long customerId,
-        int page,
-        int size,
-        String sortBy,
-        QuestionStatus status,
-        LocalDate startDate,
-        LocalDate endDate) {
-
-        Long userId = signService.parseToken(token);
-
-        Customer user = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!Objects.equals(user.getUserId(), customerId)) {
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return questionRepository.findQuestionsByCustomer(
-            customerId,
-            pageable,
-            status,
-            startDate,
-            endDate,
-            sortBy);
-    }
-
     // 질문 전체 조회 (고객사) without paging
     @Transactional(readOnly = true)
-    public List<QuestionSummaryDTO> getAllQuestionsByCustomerWithoutPaging(
+    public List<QuestionSummaryResponseDTO> getAllQuestionsByCustomerWithoutPaging(
         String token,
         Long customerId,
         String sortBy,

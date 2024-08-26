@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.global.BaseEntity;
 
 import jakarta.persistence.Entity;
@@ -35,6 +36,14 @@ public class Inquiry extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sales_manager_id")
+    private Manager salesManager;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quality_manager_id")
+    private Manager qualityManager;
 
     @Enumerated(EnumType.STRING)
     private Country country;
@@ -85,6 +94,8 @@ public class Inquiry extends BaseEntity {
         String filePath,
         String responseDeadline
     ){
+        this.salesManager = null;
+        this.qualityManager = null;
         this.customer = customer;
         this.country = country;
         this.corporate = corporate;
@@ -132,10 +143,15 @@ public class Inquiry extends BaseEntity {
         this.isActivated = false;
     }
 
-    public void updateProgress() {
-        Integer code = this.progress.getCode();
+    public void updateProgress(Progress newProgress) {
+        this.progress = newProgress;
+    }
 
-        if(this.progress != Progress.FINAL_REVIEW)
-            this.progress = Progress.fromCode(code + 1);
+    public void allocateSalesManager(Manager manager) {
+        this.salesManager = manager;
+    }
+
+    public void allocateQualityManager(Manager manager) {
+        this.qualityManager = manager;
     }
 }
