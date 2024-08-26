@@ -3,12 +3,11 @@ import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import {
-    FinalReviewCompleteAlert,
-    QualityCompleteAlert,
-    ReviewCompleteAlert,
+    FinalReviewCompleteAlert, FirstReviewCompleteAlert,
+    QualityCompleteAlert, QualityReviewCompleteAlert,
 } from '../../utils/actions';
 
-function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }) {
+function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit, onQualitySubmit, onQualityCompleteSubmit }) {
     const navigate = useNavigate();
     const { role } = useAuth();
 
@@ -24,16 +23,16 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
     const handleButtonClick = (btnName) => {
         if (btnName === '검토의뢰') {
             onSubmit();
-        } else if (btnName === '품질검토완료') {
-            onSubmit();
-            QualityCompleteAlert();
-        } else if (btnName === '품질검토요청') {
-            onReviewSubmit();
-            ReviewCompleteAlert(false);
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
-            ReviewCompleteAlert(true);
-        } else if (btnName === '최종검토완료') {
+            FirstReviewCompleteAlert();
+        } else if (btnName === '품질검토요청') {
+            onQualitySubmit();
+            QualityReviewCompleteAlert();
+        } else if (btnName === '품질검토완료') {
+            onQualityCompleteSubmit();
+            QualityCompleteAlert();
+        }  else if (btnName === '최종검토완료') {
             onFinalSubmit();
             FinalReviewCompleteAlert();
         } else {

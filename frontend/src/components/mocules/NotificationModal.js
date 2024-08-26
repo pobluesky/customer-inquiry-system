@@ -159,10 +159,11 @@ const NotificationModal = ({ onClose }) => {
                                     </div>
                                     <NotificationText>
                                         {notification.date}
+                                        <br />
                                         <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
-                                        <img
+                                    <img
                                             src={readCircle}
                                             alt="notification"
                                         />
