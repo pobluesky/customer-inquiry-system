@@ -76,8 +76,9 @@
 
 ._SearchBox {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-columns: 1fr 1fr 1fr 2fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
   grid-template-rows: repeat(2, 50px); /* 3행의 높이를 50px로 설정 */
+  margin-right: 20px;
 }
 
 ._Text {
@@ -89,7 +90,7 @@
 
 ._Title {
   color: #49454F;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -99,7 +100,7 @@
 }
 
 ._Input {
-  width: 123px;
+  width: 120px;
   height: 25px;
   border-radius: 7px;
   font-size: 16px;
@@ -114,16 +115,15 @@
 }
 
 ._Date {
-  width: 110px;
+  width: 120px;
   height: 25px;
   border-radius: 7px;
-  font-size: 12px;
+  font-size: 10px;
   border: 1px solid #c1c1c1;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 10px 0 3px;
 }
 
 ._searchCount {

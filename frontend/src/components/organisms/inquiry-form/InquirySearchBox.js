@@ -137,29 +137,28 @@ const InquirySearchBox = ({ onSearch }) => {
                         />
                     </div>
                     <div style={{ display: 'flex' }}>
-                        <p className={_Title}>접수기간&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                        <div style={{ display: 'flex', marginLeft: '25px' }}>
-                            <input
-                                className={_Date}
-                                type="date"
-                                name="startDate"
-                                value={searchParams.startDate}
-                                onChange={handleInputChange}
-                            />
-                            <div style={{ padding: '4px 10px 0 10px' }}>~</div>
-                            <input
-                                className={_Date}
-                                type="date"
-                                name="endDate"
-                                value={searchParams.endDate}
-                                onChange={handleInputChange}
-                            />
-                        </div>
+                        <p className={_Title}>접수기간&nbsp;</p>
+                        <input
+                            className={_Date}
+                            type="date"
+                            name="startDate"
+                            value={searchParams.startDate}
+                            onChange={handleInputChange}
+                            style={{ margin: '0 0 0 35px' }}
+                        />
+                        <div style={{ padding: '4px 10px 0 10px' }}>~</div>
+                        <input
+                            className={_Date}
+                            type="date"
+                            name="endDate"
+                            value={searchParams.endDate}
+                            onChange={handleInputChange}
+                        />
                     </div>
                 </div>
 
                 {/* 3행 */}
-                    <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', paddingBottom: '10px' }}>
                         <div style={{ margin: '5px 20px 10px 0' }}>
                             {sortOptions.map((option) => (
                                 <ToggleButton
@@ -193,14 +192,14 @@ const InquirySearchBox = ({ onSearch }) => {
                 btnName={'조회'}
                 textColor={'#ffffff'}
                 borderRadius={'17px'}
-                width={'80px'}
+                width={'100px'}
                 height={'35px'}
                 fontWeight={'800'}
                 fontSize={'15px'}
                 backgroundColor={'#03507D'}
                 border={'none'}
                 alignSelf={'center'}
-                margin={'0 auto'}
+                margin={'10px 30px 0 0'}
                 onClick={handleSearch}
             />
         </div>
