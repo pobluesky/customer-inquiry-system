@@ -1,10 +1,5 @@
 package com.pobluesky.backend.domain.inquiry.entity;
 
-import com.pobluesky.backend.global.error.CommonException;
-import com.pobluesky.backend.global.error.ErrorCode;
-
-import java.util.Objects;
-
 import lombok.Getter;
 
 @Getter
