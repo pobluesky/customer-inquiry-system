@@ -92,6 +92,8 @@ function Join() {
         }
 
         const codePrefix = userCode.substring(0, 3);
+
+        // 담당자일 경우
         if (codePrefix === 'EMP') {
             setEmpNo(userCode);
             setManager(true);
@@ -99,9 +101,9 @@ function Join() {
             return;
         }
 
+        // 고객사일 경우
         setCustomerCode(userCode);
         setUserRole('고객사');
-
         setAuth();
     };
 
@@ -110,6 +112,7 @@ function Join() {
     };
 
     const setAuth = () => {
+        // 담당자
         if (role) {
             if (!name) {
                 canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
@@ -128,8 +131,29 @@ function Join() {
                 return;
             }
         }
+
         if (isManager) {
             canShowRoleAlert(true);
+            return;
+        }
+
+        // 고객사
+        if (!role && !isManager) {
+            if (!name) {
+                canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
+            } else if (!userCode) {
+                canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
+            } else if (userCode.substring(0, 3) === 'EMP') { // Bad User: 작성 중 담당자 코드로 변경한 경우
+                setEmpNo(userCode);
+                setManager(true);
+                setCustomer(false);
+            } else {
+                setValidationTest(false);
+                setFirst(false);
+                nameRef.current.value = ''; // 입력값 초기화
+                userCodeRef.current.value = ''; // 입력값 초기화
+                setValidationTest(false); // 입력값 초기화
+            }
         }
     };
 
@@ -148,7 +172,7 @@ function Join() {
         if (e.key === 'Enter') {
             e.preventDefault();
             setAuth();
-            console.log('2');
+            console.log('222');
         }
     };
 
