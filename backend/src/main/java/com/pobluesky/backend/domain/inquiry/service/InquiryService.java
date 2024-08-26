@@ -446,7 +446,7 @@ public class InquiryService {
             inquiry.updateProgress(Progress.RECEIPT);
         } else {
             inquiry.allocateQualityManager(manager);
-            inquiry.updateProgress(Progress.QUALITY_REVIEW_REQUEST);
+            inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
         }
 
         return InquiryAllocateResponseDTO.from(inquiry);
