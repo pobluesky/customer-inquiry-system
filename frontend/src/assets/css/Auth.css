@@ -77,8 +77,6 @@
 /* 부서명 선택 */
 .SignUp select {
     appearance: none;
-    background: url('../css/icons/arrow-select-box.svg') no-repeat right 24px
-        center;
     width: 360px;
     height: 48px;
     margin: 0 0 24px 0;
@@ -86,4 +84,7 @@
     border: solid 1px #c1c1c1;
     border-radius: 12px;
     font-size: 16px;
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
 }

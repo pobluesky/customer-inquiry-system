@@ -25,6 +25,8 @@ import {
     getJoinErrorMsg,
 } from '../../index';
 import {
+    InvalidCustomerNameAlert,
+    InvalidCustomerCodeAlert,
     JoinCompleteAlert,
     JoinFailedAlert,
     ManagerRoleIsNullAlert,
@@ -47,7 +49,11 @@ function Join() {
 
     const [userRole, setUserRole] = useState(''); // 화면에 출력할 권한명
     const [role, setRole] = useState(''); // 서버로 전송할 권한명
-    const [showAlert, canShowAlert] = useState(false); // 역할 미선택 시 경고
+    const [roleFilter, setRoleFilter] = useState(null);
+
+    const [showNameAlert, canShowNameAlert] = useState(false); // 이름 입력 경고
+    const [showCodeAlert, canShowCodeAlert] = useState(false); // 코드 입력 경고
+    const [showRoleAlert, canShowRoleAlert] = useState(false); // 역할 선택 경고
 
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -85,27 +91,45 @@ function Join() {
             return;
         }
 
-        const roleActions = {
-            EMP: () => {
-                setEmpNo(userCode);
-                setManager(true);
-                setCustomer(false);
-            },
-            CUS: () => {
-                setCustomerCode(userCode);
-                setUserRole('고객사');
-                setFirst(false);
-            },
-        };
-
         const codePrefix = userCode.substring(0, 3);
-        roleActions[codePrefix]?.();
+        if (codePrefix === 'EMP') {
+            setEmpNo(userCode);
+            setManager(true);
+            setCustomer(false);
+            return;
+        }
 
-        // 입력 값 초기화: 역할 선택이 완료되기 전에는 초기화하지 않음
-        if (codePrefix === 'CUS') {
-            nameRef.current.value = '';
-            userCodeRef.current.value = '';
-            setValidationTest(false);
+        setCustomerCode(userCode);
+        setUserRole('고객사');
+
+        setAuth();
+    };
+
+    const selectRoleFilter = (filter) => {
+        setRoleFilter(filter);
+    };
+
+    const setAuth = () => {
+        if (role) {
+            if (!name) {
+                canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
+                return;
+            } else if (userCode.substring(0, 3) !== 'EMP') {
+                canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
+                return;
+            } else {
+                setValidationTest(false);
+                setFirst(false);
+
+                // 입력값 초기화
+                nameRef.current.value = '';
+                userCodeRef.current.value = '';
+                setValidationTest(false);
+                return;
+            }
+        }
+        if (isManager) {
+            canShowRoleAlert(true);
         }
     };
 
@@ -115,6 +139,7 @@ function Join() {
             e.preventDefault();
             setValidationTest(true);
             getRoleAndSetNewForm();
+            console.log('111');
         }
     };
 
@@ -122,12 +147,8 @@ function Join() {
     const _enterKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            if (role && isManager) {
-                setFirst(false);
-                setValidationTest(false);
-            } else if (!role && isManager) {
-                canShowAlert(true);
-            }
+            setAuth();
+            console.log('2');
         }
     };
 
@@ -147,8 +168,8 @@ function Join() {
     }, []);
 
     useEffect(() => {
-        if (resetAtom && currentJoinErrorMsg) {
-            canShowAlert(true);
+        if (resetAtom && currentJoinErrorMsg && isManager) {
+            canShowRoleAlert(true);
         }
     }, [resetAtom, tryJoin]);
 
@@ -281,19 +302,37 @@ function Join() {
                                     <>
                                         {RoleSelectButton({
                                             onClick: () => {
+                                                selectRoleFilter('QUALITY');
                                                 setUserRole('품질 담당자');
                                                 setRole('QUALITY');
                                             },
                                             btnName: '품질 담당자',
                                             margin: '48px 0 0 0',
+                                            backgroundColor:
+                                                roleFilter === 'QUALITY'
+                                                    ? '#03507d'
+                                                    : '#ffffff',
+                                            textColor:
+                                                roleFilter === 'QUALITY'
+                                                    ? '#ffffff'
+                                                    : '#000000',
                                         })}
                                         {RoleSelectButton({
                                             onClick: () => {
+                                                selectRoleFilter('SALES');
                                                 setUserRole('판매 담당자');
                                                 setRole('SALES');
                                             },
                                             btnName: '판매 담당자',
                                             margin: '48px 0 0 64px',
+                                            backgroundColor:
+                                                roleFilter === 'SALES'
+                                                    ? '#03507d'
+                                                    : '#ffffff',
+                                            textColor:
+                                                roleFilter === 'SALES'
+                                                    ? '#ffffff'
+                                                    : '#000000',
                                         })}
                                     </>
                                 )}
@@ -313,20 +352,37 @@ function Join() {
                                     CheckButton({
                                         btnName: '권한 부여',
                                         onClick: () => {
-                                            if (role) {
-                                                setFirst(false);
-                                            } else {
-                                                canShowAlert(true);
-                                            }
+                                            setAuth();
                                         },
                                     })}
                             </div>
-                            <ManagerRoleIsNullAlert
-                                showAlert={showAlert}
-                                onClose={() => {
-                                    canShowAlert(false);
-                                }}
-                            />
+                            <div>
+                                <InvalidCustomerNameAlert
+                                    showAlert={showNameAlert}
+                                    onClose={() => {
+                                        canShowNameAlert(false);
+                                    }}
+                                    inert
+                                />
+                            </div>
+                            <div>
+                                <InvalidCustomerCodeAlert
+                                    showAlert={showCodeAlert}
+                                    onClose={() => {
+                                        canShowCodeAlert(false);
+                                    }}
+                                    inert
+                                />
+                            </div>
+                            <div>
+                                <ManagerRoleIsNullAlert
+                                    showAlert={showRoleAlert}
+                                    onClose={() => {
+                                        canShowRoleAlert(false);
+                                    }}
+                                    inert
+                                />
+                            </div>
                         </>
                     ) : (
                         <>

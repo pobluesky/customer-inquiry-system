@@ -51,6 +51,42 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Swal from 'sweetalert2';
 
+const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                이름을 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                유효하지 않은 고객 코드입니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
 const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -242,7 +278,7 @@ const InquiryCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
@@ -252,7 +288,7 @@ const QualityReviewCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 // 영업검토정보, 1차 검토, 최종 검토, OfferSheet 작성 완료
 const FirstReviewCompleteAlert = () => {
@@ -262,7 +298,7 @@ const FirstReviewCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 // 품질검토정보 작성 완료
 const QualityCompleteAlert = () => {
@@ -272,7 +308,7 @@ const QualityCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 // 최종 검토 & 오퍼시트 작성 완료
 const FinalReviewCompleteAlert = () => {
@@ -282,9 +318,11 @@ const FinalReviewCompleteAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 export {
+    InvalidCustomerNameAlert,
+    InvalidCustomerCodeAlert,
     ManagerRoleIsNullAlert,
     JoinCompleteAlert,
     JoinFailedAlert,

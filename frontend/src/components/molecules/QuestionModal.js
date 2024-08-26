@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import dompurify from 'dompurify';
 import Text from '../atoms/Text';
 import Tag from '../atoms/Tag';
@@ -52,6 +52,7 @@ function QuestionModal({
     const [title, setTitle] = useState('');
     const [editorValue, setEditorValue] = useState('');
     const [file, setFile] = useState('');
+    const [type, setType] = useState('');
 
     const fileInputRef = useRef(null);
 
@@ -74,6 +75,16 @@ function QuestionModal({
             setAnswering(false); // 답변 입력창 제거
         } catch (error) {
             console.log('답변 등록 실패: ', error);
+        }
+    };
+
+    const questionType = () => {
+        if (questionDetail.type === 'INQ') {
+            setType('Inquiry 주문 문의');
+        } else if (questionDetail.type === 'SITE') {
+            setType('사이트 문의');
+        } else if (questionDetail.type === 'ETC') {
+            setType('기타 문의');
         }
     };
 
@@ -114,6 +125,10 @@ function QuestionModal({
         return `${questionId}${hours}${minutes}${seconds}`;
     };
 
+    useEffect(() => {
+        questionType();
+    }, [questionDetail])
+
     return (
         <div className={Question_Modal_Container}>
             <div></div>
@@ -141,7 +156,7 @@ function QuestionModal({
                 </div>
                 <div>
                     <Tag
-                        category={'Inquiry 주문 문의'}
+                        category={type}
                         width={'156px'}
                         height={'32px'}
                         backgroundColor={'#2f4f79'}

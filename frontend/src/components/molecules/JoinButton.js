@@ -17,7 +17,7 @@ const CheckButton = ({ btnName, onClick, onKeyDown, margin }) => (
     />
 );
 
-const RoleSelectButton = ({ btnName, onClick, onKeyDown, margin }) => (
+const RoleSelectButton = ({ btnName, backgroundColor, textColor, onClick, onKeyDown, margin }) => (
     <Button
         btnName={btnName}
         onClick={onClick}
@@ -25,8 +25,8 @@ const RoleSelectButton = ({ btnName, onClick, onKeyDown, margin }) => (
         margin={margin}
         width={'144px'}
         height={'44px'}
-        backgroundColor={'#ffffff'}
-        textColor={'#000000'}
+        backgroundColor={backgroundColor}
+        textColor={textColor}
         border={'solid 1px #c1c1c1'}
         borderRadius={'12px'}
         fontSize={'20px'}
