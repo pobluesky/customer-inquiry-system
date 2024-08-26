@@ -39,8 +39,12 @@ public record InquirySummaryResponseDTO(
             .corporate(inquiry.getCorporate())
             .corporationCode(inquiry.getCorporationCode())
             .industry(inquiry.getIndustry())
-            .salesManagerName(inquiry.getSalesManager() != null ? inquiry.getSalesManager().getName() : null)
-            .qualityManagerName(inquiry.getQualityManager() != null ? inquiry.getQualityManager().getName() : null)
+            .salesManagerName(
+                inquiry.getSalesManager() != null ? inquiry.getSalesManager().getName() : null
+            )
+            .qualityManagerName(
+                inquiry.getQualityManager() != null ? inquiry.getQualityManager().getName() : null
+            )
             .build();
     }
 }

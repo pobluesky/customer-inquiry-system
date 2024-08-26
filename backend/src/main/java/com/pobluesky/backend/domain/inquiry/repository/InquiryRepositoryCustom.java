@@ -22,7 +22,9 @@ public interface InquiryRepositoryCustom {
         InquiryType inquiryType,
         LocalDate startDate,
         LocalDate endDate,
-        String sortBy
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
     );
 
     Page<InquirySummaryResponseDTO> findInquiriesByManager(
