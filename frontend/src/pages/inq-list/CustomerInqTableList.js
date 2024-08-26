@@ -1,27 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { getAllInquiries } from '../../apis/api/inquiry';
+import { getCustomerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import InqPath from '../../components/atoms/InqPath';
-import SearchResult from '../../components/mocules/SearchResult';
-import InquirySearchBox
-    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import SearchResult from '../../components/molecules/SearchResult';
+import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 const CustomerInqTableList = () => {
     const { userId } = useAuth();
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const contentRef = useRef(null); // 스크롤할 참조
-    const paginationRef = useRef(null); // 페이지 네이션 참조
+    const [rowsPerPage, setRowsPerPage] = useState(15);
+    const [searchParams, setSearchParams] = useState({});
+    const contentRef = useRef(null);
+    const paginationRef = useRef(null);
 
-    const getInquiryData = async () => {
+    const getInquiryDataByParameter = async (queryParams = {}) => {
         if (!userId) return;
 
         try {
-            const response = await getAllInquiries(userId);
-            const inquiryData = response?.inquiryInfo || [];
-            setRows(inquiryData);
+            const response = await getCustomerInquiriesByParameter(
+                userId,
+                queryParams,
+            );
+            setRows(response);
+            setCurrentPage(0);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -32,13 +36,14 @@ const CustomerInqTableList = () => {
     };
 
     useEffect(() => {
-        getInquiryData();
-    }, [userId]);
+        if (userId) {
+            getInquiryDataByParameter(searchParams);
+        }
+    }, [userId, searchParams]);
 
-    // 현재 페이지에 해당하는 데이터 추출
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
-        currentPage * rowsPerPage + rowsPerPage
+        currentPage * rowsPerPage + rowsPerPage,
     );
 
     const handlePageChange = (event, newPage) => {
@@ -49,27 +54,32 @@ const CustomerInqTableList = () => {
     };
 
     const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setCurrentPage(0); // rowsPerPage가 변경되면 첫 페이지로 이동
+        setRowsPerPage(parseInt(event.target.value, 15));
+        setCurrentPage(0);
+    };
+
+    const handleSearch = (newSearchParams) => {
+        setSearchParams(newSearchParams);
     };
 
     return (
-        <div>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <InquirySearchBox />
+        <div className={InqTableContainer}>
+            <InqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+            />
+            <InquirySearchBox onSearch={handleSearch} />
             <SearchResult searchResult={`${rows.length}`} />
-            <div style={{ width: "90%", margin: "0 auto" }}>
-                <CollapsibleTable
-                    rows={paginatedRows}
-                    currentPage={currentPage}
-                    rowsPerPage={rowsPerPage}
-                    totalRows={rows.length}
-                    handlePageChange={handlePageChange}
-                    handleRowsPerPageChange={handleRowsPerPageChange}
-                    paginationRef={paginationRef}
-                    role="customer"
-                />
-            </div>
+            <CollapsibleTable
+                rows={paginatedRows}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
+                totalRows={rows.length}
+                handlePageChange={handlePageChange}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                paginationRef={paginationRef}
+                role="customer"
+            />
         </div>
     );
 };

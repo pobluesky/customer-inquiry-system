@@ -7,12 +7,7 @@ import collaboration from '../../assets/css/icons/voc/question_collaboration.svg
 import { Question_Overview } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 
-function QuestionOverview({
-    question_total,
-    question_ready,
-    question_completed,
-    question_collaboration,
-}) {
+function QuestionOverview({ questionCount, answerCount, colCount }) {
     const thisRole = getCookie('userRole');
     const gridTemplateColumns =
         thisRole === 'CUSTOMER'
@@ -25,7 +20,7 @@ function QuestionOverview({
                 <div>
                     <img src={total} />
                     <div>전체 문의</div>
-                    <div>{question_total || ''}</div>
+                    <div>{questionCount || 0}</div>
                 </div>
 
                 <img src={partition} />
@@ -33,7 +28,11 @@ function QuestionOverview({
                 <div>
                     <img src={ready} />
                     <div>답변 대기</div>
-                    <div>{question_ready || ''}</div>
+                    <div>
+                        {questionCount - answerCount < 0
+                            ? 0
+                            : questionCount - answerCount}
+                    </div>
                 </div>
 
                 <img src={partition} />
@@ -41,7 +40,7 @@ function QuestionOverview({
                 <div>
                     <img src={completed} />
                     <div>답변 완료</div>
-                    <div>{question_completed || ''}</div>
+                    <div>{answerCount || ''}</div>
                 </div>
                 {thisRole !== 'CUSTOMER' && (
                     <>
@@ -50,7 +49,7 @@ function QuestionOverview({
                         <div>
                             <img src={collaboration} />
                             <div>협업</div>
-                            <div>{question_collaboration || ''}</div>
+                            <div>{colCount || 0}</div>
                         </div>
                     </>
                 )}

@@ -75,44 +75,34 @@ function QuestionInput({ selectedType, inquiryId }) {
                     questionData,
                     userId,
                     inquiryId,
-                    getCookie('accessToken'),
                 );
-                console.log(questionData, inquiryId);
-
                 if (result) {
-                    console.log('응답받은 데이터는 다음과 같습니다.', result);
                     QuestionCompleteAlert();
                     setTimeout(() => {
                         navigate('/voc-list');
                     }, '2000');
                     resetForm();
                 } else {
-                    console.error(
-                        'Fetched data is not an array or is invalid.',
-                    );
+                    console.log('INQ 질문 등록 실패: ', error);
                     canShowFailedAlert(true);
                 }
 
-            // 문의와 무관한 질문인 경우
+                // 문의와 무관한 질문인 경우
             } else {
                 const result = await postQuestionByUserId(
                     file,
                     questionData,
                     userId,
-                    getCookie('accessToken'),
                 );
-
                 if (result) {
-                    console.log('응답받은 데이터는 다음과 같습니다.', result);
                     QuestionCompleteAlert();
                     setTimeout(() => {
                         navigate('/voc-list');
                     }, '2000');
                     resetForm();
                 } else {
-                    console.error(
-                        'Fetched data is not an array or is invalid.',
-                    );
+                    console.log('SITE/ETC 질문 등록 실패: ', error);
+                    canShowFailedAlert(true);
                 }
             }
         } catch (error) {

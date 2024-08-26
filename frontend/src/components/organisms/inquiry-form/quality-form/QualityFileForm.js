@@ -6,10 +6,10 @@ import {
     buttonWrapper,
     FileColumn,
 } from '../../../../assets/css/Form.css';
-import ToggleBar from '../../../mocules/ToggleBar';
+import ToggleBar from '../../../molecules/ToggleBar';
 import Button from '../../../atoms/Button';
-import FileItem from '../../../mocules/FileItem';
-import QualityFileItem from '../../../mocules/QualityFileItem';
+import FileItem from '../../../molecules/FileItem';
+import QualityFileItem from '../../../molecules/QualityFileItem';
 
 const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
     const [isChecked, setCheck] = useState(true);

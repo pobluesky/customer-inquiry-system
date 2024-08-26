@@ -7,16 +7,16 @@ import person from '../../assets/css/icons/person.svg';
 import { Container, User } from '../../assets/css/Header.css';
 import { useAuth } from '../../hooks/useAuth';
 import {
-    getUserInfoByCustomers, getUserInfoByManagers,
+    getUserInfoByCustomers,
+    getUserInfoByManagers,
 } from '../../apis/api/auth';
-import NotificationModal from '../mocules/NotificationModal';
+import NotificationModal from '../molecules/NotificationModal';
 
 export const MenuLink = styled(Link)`
     color: #03507d;
     text-decoration: none;
 `;
 
-// [To do list] 로그인 권한 여부 확인 기능 추가
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout, userId, role } = useAuth();
@@ -48,7 +48,7 @@ function Header({ inq, voc, dashboard }) {
 
     const findUserName = async () => {
         try {
-            if(role === 'CUSTOMER') {
+            if (role === 'CUSTOMER') {
                 const customer = await getUserInfoByCustomers(userId);
                 setUsername(customer.data.data.name);
             } else {

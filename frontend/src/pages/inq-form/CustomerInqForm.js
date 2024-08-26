@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import InqPath from '../../components/atoms/InqPath';
-import RequestBar from "../../components/mocules/RequestBar";
+import RequestBar from "../../components/molecules/RequestBar";
 import {
     InquiryNewForm,
     InquiryHistoryForm,
@@ -13,15 +13,18 @@ import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { useForm } from 'react-hook-form';
 import { InquiryCompleteAlert } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import { postNotificationByCustomers } from '../../apis/api/notification';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
-    const { userId } = useAuth();
+    const { userId, role, userName } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [userInfo, setUserInfo] = useState(null);
 
     const [formData, setFormData] = useState({
+        // inquiry
         additionalRequests: '',
         corporate: '',
         corporationCode: '(주)포스코',
@@ -66,15 +69,20 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     };
 
     const handleInquirySubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         try {
-            const response = await postInquiry(userId, {
+            const inquiryResponse = await postInquiry(userId, {
                 ...formData,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
-            console.log('Inquiry posted successfully:', response);
+            const notificationResponse = await postNotificationByCustomers(userId, {
+                notificationContents: `${formData.name}님의 Inquiry가 접수되었습니다.`,
+            })
+            console.log('Inquiry posted successfully:', inquiryResponse);
+            console.log('Notification posted successfully:', notificationResponse);
+
             InquiryCompleteAlert();
             setTimeout(() => {
                 navigate(`/inq-list/${role}`);
@@ -105,23 +113,25 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     }, [userId]);
 
     return (
-        <div>
+        <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit(handleInquirySubmit)} />
+            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
+                        onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
                 register={register}
                 errors={errors}
                 formData={formData}
                 handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
-                register={register}
-                errors={errors}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
-                onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
+                onLineItemsChange={(lineItems) => handleFormDataChange(
+                    'lineItemRequestDTOs', lineItems)}
             />
-            <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
+            <AdditionalRequestForm formData={formData}
+                                   handleFormDataChange={handleFormDataChange} />
+            <FileForm fileForm={"파일첨부"} formData={formData}
+                      handleFormDataChange={handleFormDataChange} />
         </div>
     );
 }

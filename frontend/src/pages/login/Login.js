@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
-import LoginInput from '../../components/mocules/LoginInput';
+import LoginInput from '../../components/molecules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';

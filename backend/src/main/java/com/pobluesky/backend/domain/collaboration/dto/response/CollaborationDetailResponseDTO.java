@@ -7,13 +7,16 @@ import lombok.Builder;
 @Builder
 public record CollaborationDetailResponseDTO(
     Long colId,
+    Long questionId,
     ManagerResponseDTO colManagerFromResponseDto,
     ManagerResponseDTO colManagerToResponseDto,
     ColStatus colStatus,
     String colContents,
     String colReply,
     String fileName,
-    String filePath
+    String filePath,
+    String vocFileName,
+    String vocFilePath
 ) {
 
     public static CollaborationDetailResponseDTO from(Collaboration collaboration) {
@@ -25,6 +28,7 @@ public record CollaborationDetailResponseDTO(
 
         return CollaborationDetailResponseDTO.builder()
             .colId(collaboration.getColId())
+            .questionId(collaboration.getQuestion().getQuestionId())
             .colManagerFromResponseDto(managerFromResponseDTO)
             .colManagerToResponseDto(managerToResponseDTO)
             .colStatus(collaboration.getColStatus())
@@ -32,6 +36,8 @@ public record CollaborationDetailResponseDTO(
             .colReply(collaboration.getColReply())
             .fileName(collaboration.getFileName())
             .filePath(collaboration.getFilePath())
+            .vocFileName(collaboration.getQuestion().getFileName())
+            .vocFilePath(collaboration.getQuestion().getFilePath())
             .build();
     }
 }

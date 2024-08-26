@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Sheet, Opend, QualityItemColumn } from '../../../../assets/css/Form.css';
-import ToggleBar from '../../../mocules/ToggleBar';
+import ToggleBar from '../../../molecules/ToggleBar';
 import QualityText from '../quality-form/QualityText';
 import QualityForm from '../quality-form/QualityForm';
 

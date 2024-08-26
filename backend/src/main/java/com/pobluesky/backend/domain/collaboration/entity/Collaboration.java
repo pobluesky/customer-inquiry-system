@@ -67,8 +67,8 @@ public class Collaboration extends BaseEntity {
         Manager colRequestManager,
         Manager colResponseManager,
         String colContents,
-        String fileName,
-        String filePath
+        String fileName, // 협업 첨부 파일
+        String filePath // 협업 첨부 파일
     ) {
         this.question = question;
         this.colRequestManager = colRequestManager;

@@ -9,6 +9,7 @@ export default function QuillEditor({
     height,
     margin,
     padding,
+    border,
     placeholder,
     inputWidth,
     inputHeight,
@@ -51,6 +52,7 @@ export default function QuillEditor({
                 height,
                 margin,
                 padding,
+                border,
                 backgroundColor: '#ffffff',
             }}
         >
