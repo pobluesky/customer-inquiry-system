@@ -11,9 +11,8 @@ export const validateName = (name) => {
 
 // 고유 코드
 export const validateUserCode = (userCode) => {
-    const codeRegex = /^(CUS|EMP)/;
-    if (!codeRegex.test(userCode)) {
-        return '존재하지 않는 고객 코드입니다.';
+    if (!userCode) {
+        return '고유 코드를 입력하세요.';
     }
     return '';
 };
