@@ -7,6 +7,8 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
     return (
         <div
             style={{
+                width: '95%',
+                margin: '50px 0 0 50px',
                 color: '#616161',
                 fontSize: '20px',
                 display: 'flex',

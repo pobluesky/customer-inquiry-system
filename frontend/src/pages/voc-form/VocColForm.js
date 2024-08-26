@@ -2,7 +2,7 @@ import React from 'react';
 import ColPath from '../../components/atoms/ColPath';
 import ColForm from '../../components/templates/ColForm';
 
-export default function VocColForm() {
+function VocColForm() {
     return (
         <>
             <ColPath
@@ -13,3 +13,5 @@ export default function VocColForm() {
         </>
     );
 }
+
+export default VocColForm;

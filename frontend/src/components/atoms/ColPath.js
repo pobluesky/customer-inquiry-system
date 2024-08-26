@@ -11,12 +11,12 @@ export default function ColPath({
     return (
         <div
             style={{
+                width: '95%',
+                margin: '50px 0 0 50px',
                 color: '#616161',
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
-                marginLeft: '2vw',
-                marginTop: '4vh',
             }}
         >
             <Link to="/voc-list/collaboration" className={_Link}>

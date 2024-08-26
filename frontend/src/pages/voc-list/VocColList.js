@@ -2,7 +2,7 @@ import React from 'react';
 import ColPath from '../../components/atoms/ColPath';
 import ColDashboard from '../../components/templates/ColDashboard';
 
-export default function VocCollist() {
+function VocCollist() {
     return (
         <>
             <ColPath
@@ -13,3 +13,5 @@ export default function VocCollist() {
         </>
     );
 }
+
+export default VocCollist;

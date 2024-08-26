@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SearchResult from '../../components/molecules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
-import InquirySearchBox
-    from '../../components/organisms/inquiry-form/InquirySearchBox';
+import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { getManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
@@ -16,7 +15,6 @@ const SalesManagerInqTableList = () => {
     const paginationRef = useRef(null);
 
     const getInquiryDataByParameter = async (queryParams = {}) => {
-
         try {
             const response = await getManagerInquiriesByParameter(queryParams);
             setRows(response);
@@ -34,10 +32,9 @@ const SalesManagerInqTableList = () => {
         getInquiryDataByParameter(searchParams);
     }, [searchParams]);
 
-
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
-        currentPage * rowsPerPage + rowsPerPage
+        currentPage * rowsPerPage + rowsPerPage,
     );
 
     const handlePageChange = (event, newPage) => {
