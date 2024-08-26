@@ -31,6 +31,7 @@ public enum ErrorCode {
     INVALID_ORDER_CONDITION(HttpStatus.INTERNAL_SERVER_ERROR, "I0002", "올바르지 않은 정렬 조건입니다."),
     PROGRESS_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0003", "존재하지 않는 진행단계입니다."),
     INVALID_PROGRESS_UPDATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0004", "올바르지 않은 Progress 업데이트 요청입니다."),
+    INQUIRY_UNABLE_TO_MODIFY(HttpStatus.INTERNAL_SERVER_ERROR, "I0005", "이미 접수되어 수정 불가능한 문의입니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
