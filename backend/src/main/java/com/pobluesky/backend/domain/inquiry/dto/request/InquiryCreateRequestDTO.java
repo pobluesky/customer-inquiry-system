@@ -17,7 +17,6 @@ public record InquiryCreateRequestDTO(
     InquiryType inquiryType,
     Industry industry,
     ProductType productType,
-    Progress progress,
     String customerRequestDate,
     String additionalRequests,
     String responseDeadline,
@@ -33,7 +32,6 @@ public record InquiryCreateRequestDTO(
             .industry(industry)
             .corporationCode("(주) 포스코")
             .productType(productType)
-            .progress(progress)
             .customerRequestDate(customerRequestDate)
             .additionalRequests(additionalRequests)
             .fileName(fileName)
