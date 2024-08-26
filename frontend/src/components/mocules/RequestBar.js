@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import {
     FinalReviewCompleteAlert,
-    InquiryCompleteAlert,
     QualityCompleteAlert,
     ReviewCompleteAlert,
 } from '../../utils/actions';
@@ -50,14 +49,13 @@ function RequestBar({ requestBarTitle, onSubmit, onReviewSubmit, onFinalSubmit }
         <div
             style={{
                 display: 'flex',
-                justifyContent: 'center',
-                marginTop: '2vh',
+                marginTop: '3vh',
+                marginBottom: '3vh',
             }}
         >
             <div
                 style={{
-                    width: '90vw',
-                    margin: '1vw',
+                    width: '100vw',
                     padding: '1vw 0',
                     display: 'flex',
                     justifyContent: 'space-between',

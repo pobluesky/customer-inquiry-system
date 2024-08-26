@@ -14,8 +14,6 @@ function ManagerInqPath({ mediumCategory, smallCategory, role }) {
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
-                marginLeft: '2vw',
-                marginTop: '4vh',
             }}
         >
             <Link to={mediumUrl} className={_Link}>

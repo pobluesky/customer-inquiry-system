@@ -13,9 +13,10 @@ import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { useForm } from 'react-hook-form';
 import { InquiryCompleteAlert } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
-    const { userId } = useAuth();
+    const { userId, role } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -66,7 +67,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     };
 
     const handleInquirySubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         try {
@@ -105,23 +106,25 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     }, [userId]);
 
     return (
-        <div>
+        <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit(handleInquirySubmit)} />
+            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
+                        onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
                 register={register}
                 errors={errors}
                 formData={formData}
                 handleFormDataChange={handleFormDataChange} />
             <InquiryHistoryForm
-                register={register}
-                errors={errors}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
-                onLineItemsChange={(lineItems) => handleFormDataChange('lineItemRequestDTOs', lineItems)}
+                onLineItemsChange={(lineItems) => handleFormDataChange(
+                    'lineItemRequestDTOs', lineItems)}
             />
-            <AdditionalRequestForm formData={formData} handleFormDataChange={handleFormDataChange} />
-            <FileForm fileForm={"파일첨부"} formData={formData} handleFormDataChange={handleFormDataChange} />
+            <AdditionalRequestForm formData={formData}
+                                   handleFormDataChange={handleFormDataChange} />
+            <FileForm fileForm={"파일첨부"} formData={formData}
+                      handleFormDataChange={handleFormDataChange} />
         </div>
     );
 }

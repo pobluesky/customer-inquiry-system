@@ -62,11 +62,11 @@
 ._InquirySearch {
   display: grid;
   grid-template-columns: 10fr 1fr;
-  height: 280px;
+  height: 240px;
   border-radius: 10px;
   border: 1px solid #C1C1C1;
   padding: 5px;
-  margin: 60px;
+  margin-top: 40px;
 }
 
 ._InquirySearchBox {
@@ -76,8 +76,8 @@
 
 ._SearchBox {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr 1.5fr 1fr 2.5fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
-  grid-template-rows: repeat(3, 50px); /* 3행의 높이를 100px로 설정 */
+  grid-template-columns: 0.4fr 1.5fr 1fr 1.5fr 1fr 2.5fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-rows: repeat(4, 50px); /* 3행의 높이를 100px로 설정 */
 }
 
 ._Text {
@@ -119,17 +119,11 @@
   border-radius: 7px;
   font-size: 12px;
   border: 1px solid #c1c1c1;
-  margin-left: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 0 10px 0 3px;
-}
-
-._searchResult {
-  display: flex;
-  margin-left: 50px;
 }
 
 ._searchCount {
@@ -207,4 +201,10 @@
   color: #03507D;
   cursor: not-allowed;
   border: 1px solid #c1c1c1;
+}
+
+.InqTableContainer {
+  width: 95%;
+  margin: 10px 0 50px 0;
+  padding: 50px;
 }

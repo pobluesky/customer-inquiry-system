@@ -48,7 +48,7 @@ body {
 
 /* 오퍼시트 전체 */
 .Offer_Sheet > div:first-child {
-    width: 90vw;
+    width: 95vw;
     height: max-content;
     margin: 0 auto 24px auto;
     border: solid #c1c1c1 1px;
@@ -486,7 +486,7 @@ select {
 }
 
 .Sheet {
-    width: 90vw;
+    width: 100vw;
     border: solid #c1c1c1 1px;
     border-radius: 20px;
     margin: 0 0 6vh 0;
