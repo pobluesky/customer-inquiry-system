@@ -83,7 +83,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         try {
             const response = await getInquiryDetail(userId, id);
             setInquiriesDataDetail(response.data);
-            console.log("getInquiryDataDetail : ", response.data)
             setFormData(prevData => ({
                 ...prevData,
                 ...response.data,
@@ -166,7 +165,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             files: formData.files || [],
             lineItemResponseDTOs: formData.lineItemResponseDTOs || []
         };
-        console.log("updatedFormData: ", updatedFormData);
         try {
             const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(userId, {
@@ -227,13 +225,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             }));
         }
     }, [inquiriesDataDetail, userInfo]);
-
-    useEffect(() => {
-        console.log('inquiriesDataDetail:', inquiriesDataDetail);
-        console.log('formData:', formData);
-    }, [inquiriesDataDetail, formData]);
-
-    console.log(inquiriesDataDetail?.files);
 
     return (
         <div className={InqTableContainer}>

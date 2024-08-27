@@ -60,7 +60,6 @@ export const getInquiryDetail = async (userId, inquiryId) => {
 export const postInquiry = async (userId, inquiryData) => {
     try {
         const formData = createFormInquiryData(inquiryData);
-        console.log('postInquiryFormData: ', formData);
 
         const response = await axiosInstance.post(
             `/customers/inquiries/${userId}`,
@@ -83,7 +82,6 @@ export const postInquiry = async (userId, inquiryData) => {
 export const putInquiry = async (inquiryId, inquiryData) => {
     try {
         const formData = createFormInquiryData(inquiryData);
-        console.log('putInquiryFormData: ', formData);
 
         const response = await axiosInstance.put(
             `/customers/inquiries/${inquiryId}`,
