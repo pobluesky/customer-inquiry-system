@@ -13,7 +13,7 @@ import Button from '../../atoms/Button';
 import ToggleButton from '../../atoms/ToggleButton';
 import { productTypeOptions, IndustryOptions, inquiryTypeOptions, sortOptions, progressOptions } from '../../../utils/inquiry';
 
-const InquirySearchBox = ({ onSearch }) => {
+const InquirySearchBox = ({ onSearch, title }) => {
     const [searchParams, setSearchParams] = useState({
         productType: '',
         inquiryType: '',
@@ -64,7 +64,7 @@ const InquirySearchBox = ({ onSearch }) => {
     return (
         <div className={_InquirySearch}>
             <div className={_InquirySearchBox}>
-                <p className={_Text}>Inquiry 조회 List</p>
+                <p className={_Text}>{title}</p>
                 <div className={_SearchBox}>
 
                     {/* 1행 */}

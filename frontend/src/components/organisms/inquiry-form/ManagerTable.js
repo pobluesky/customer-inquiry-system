@@ -8,16 +8,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { putManagerAllocate } from '../../../apis/api/inquiry';
+import { Button } from '@mui/material';
 
-function Row({ row, role }) {
+function Row({ row, role, onCheckboxChange, salesAllocate, qualityAllocate, ref }) {
     const [open, setOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [salesAllocate, setSalesAllocate] = useState(false);
-    const [qualityAllocate, setQualityAllocate] = useState(false);
     const navigate = useNavigate();
-
-    console.log("isChecked: ", isChecked);
 
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
@@ -25,15 +23,25 @@ function Row({ row, role }) {
 
     const handleCheckboxChange = (e) => {
         setIsChecked(e.target.checked);
-        if (e.target.checked) {
-            setSalesAllocate(true);
-            setQualityAllocate(true);
-        } else {
-            setSalesAllocate(false);
-            setQualityAllocate(false);
+        onCheckboxChange(e.target.checked, row.inquiryId);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            if (salesAllocate) {
+                await putManagerAllocate(row.inquiryId);
+                console.log('Manager Allocation Success:', row.inquiryId);
+            } else {
+                return;
+            }
+        } catch (error) {
+            console.log('Error putting Manager Allocation:', error);
         }
     };
 
+    useImperativeHandle(ref, () => ({
+        handleSubmit,
+    }))
 
     return (
         <React.Fragment>
@@ -42,8 +50,11 @@ function Row({ row, role }) {
                 style={{ cursor: 'pointer' }}
                 onClick={handleClick}
             >
-                <TableCell className="custom-table-cell" align="left"
-                           sx={{ paddingLeft: '60px' }}>
+                <TableCell
+                            component="th"
+                            scope="row"
+                           className="custom-table-cell"
+                           sx={{ paddingLeft: '90px' }}>
                     <input
                         type="checkbox"
                         checked={isChecked}
@@ -51,10 +62,8 @@ function Row({ row, role }) {
                         onChange={handleCheckboxChange}
                     />
                 </TableCell>
-                <TableCell component="th" scope="row"
-                           className="custom-table-cell">{row.inquiryId}</TableCell>
-                <TableCell className="custom-table-cell"
-                           align="left">{row.salesPerson}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
@@ -72,6 +81,8 @@ function Row({ row, role }) {
     );
 }
 
+const ForwardedRow = forwardRef(Row);
+
 export default function CollapsibleTable({
     rows,
     currentPage,
@@ -81,23 +92,60 @@ export default function CollapsibleTable({
     handleRowsPerPageChange,
     role
 }) {
+    const rowRef = useRef();
+
+    const [salesAllocate, setSalesAllocate] = useState(false);
+    const [qualityAllocate, setQualityAllocate] = useState(false);
+    console.log("salesAllocate: ", salesAllocate);
+    console.log("qualityAllocate: ", qualityAllocate);
+
+    const handleCheckboxChange = async (isChecked) => {
+        if (isChecked === true) {
+                if (role === 'SALES') {
+                    setSalesAllocate(true);
+                } else {
+                    setQualityAllocate(true);
+                }
+            } else {
+                setSalesAllocate(false);
+                setQualityAllocate(false);
+                return;
+            }
+    };
+
     return (
-        <Paper onClick={() => console.log("rows table: ", rows)}>
+        <Paper>
             <TableContainer
                 component={Paper}
                 sx={{
                     borderRadius: '10px',
                     overflowX: 'auto',
                     whiteSpace: 'nowrap',
-                    // '& .MuiTableCell-root': {
-                    //     paddingRight: '120px'
-                    // }
                 }}
             >
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '60px' }}>✔️</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '60px'}}>
+                                <Button
+                                    onClick={() => {
+                                        rowRef.current.handleSubmit();
+                                    }}
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{
+                                        backgroundColor: '#ffffff',
+                                        color: '#03507d',
+                                        width: '85px',
+                                        borderRadius: '10px',
+                                        fontWeight: '700',
+                                        '&:hover': {
+                                            backgroundColor: '#03507d',
+                                            color: '#ffffff',
+                                        },
+                                    }}>담당자 배정
+                                </Button>
+                            </TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>문의번호</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
@@ -114,7 +162,8 @@ export default function CollapsibleTable({
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <Row key={row.inquiryId} row={row} role={role} />
+                            <Row key={row.inquiryId} row={row} role={role}
+                                 onCheckboxChange={handleCheckboxChange} salesAllocate={salesAllocate} qualityAllocate={qualityAllocate}/>
                         ))}
                     </TableBody>
                 </Table>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SearchResult from '../../components/molecules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
-import CollapsibleTable from '../../components/organisms/inquiry-form/ManagerTable';
+import CollapsibleTable from '../../components/organisms/inquiry-form/CollapsibleTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { getSalesManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import { useAuth } from '../../hooks/useAuth';
@@ -34,6 +34,10 @@ const SalesManagerInqTableList = () => {
         getInquiryDataByParameter(searchParams);
     }, [searchParams]);
 
+    const updateData = async () => {
+        await getInquiryDataByParameter(searchParams);
+    };
+
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
         currentPage * rowsPerPage + rowsPerPage,
@@ -57,8 +61,8 @@ const SalesManagerInqTableList = () => {
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} role={'sales'} />
-            <InquirySearchBox onSearch={handleSearch} />
+            <ManagerInqPath mediumCategory={'Inquiry 조회'} role={role} />
+            <InquirySearchBox onSearch={handleSearch} title={'Inquiry 조회 리스트'} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
                 rows={paginatedRows}
@@ -69,6 +73,7 @@ const SalesManagerInqTableList = () => {
                 handleRowsPerPageChange={handleRowsPerPageChange}
                 paginationRef={paginationRef}
                 role={role}
+                updateData={updateData}
             />
         </div>
     );

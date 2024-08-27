@@ -154,6 +154,7 @@ export const getInquiryDetailByManagers = async (inquiryId) => {
     }
 };
 
+// 담당자 할당
 export const putManagerAllocate = async (inquiryId) => {
     try {
         const response = await axiosInstance.put(
@@ -163,6 +164,20 @@ export const putManagerAllocate = async (inquiryId) => {
         return response.data;
     } catch (error) {
         console.log('Error putting manager allocate:', error);
+        throw error;
+    }
+}
+
+// Progress Update
+export const putProgressUpdate = async (inquiryId, progress) => {
+    try {
+        const response = await axiosInstance.put(
+            `/managers/inquiries/${inquiryId}/progress/${progress}`,
+        );
+        console.log('putProgressUpdateResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error putting progress update:', error);
         throw error;
     }
 }

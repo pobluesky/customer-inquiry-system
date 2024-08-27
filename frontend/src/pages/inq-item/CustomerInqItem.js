@@ -144,6 +144,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             } else {
                 setIsUpdate(false);
             }
+            console.log("getProgress: ", response.data.progress)
         } catch (error) {
             console.log('Error fetching Progress:', error);
         }
@@ -230,8 +231,14 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
                      smallCategory={id} />
-            <RequestBar requestBarTitle={'Inquiry 조회'} role={'customer'}
-                        onUpdate={handleSubmit(handleUpdate)} />
+            {isUpdate ? (
+                <RequestBar requestBarTitle={'Inquiry 조회'} role={'customer'}
+                            onUpdate={handleSubmit(handleUpdate)} />
+            ) : (
+                <RequestBar requestBarTitle={'Inquiry 상세조회'} role={'customer'}
+                            onUpdate={handleSubmit(handleUpdate)} />
+            )}
+
 
             {isUpdate ? (
                 <>{/* 신규작성 및 수정 때 */}
