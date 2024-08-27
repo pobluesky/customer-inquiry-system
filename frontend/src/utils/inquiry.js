@@ -82,10 +82,13 @@ export const productTypes = {
 };
 
 export const progressOptions = [
+    { label: '문의제출', value: 'SUBMIT' },
     { label: '문의접수', value: 'RECEIPT' },
-    { label: '1차검토완료', value: 'FIRST_REVIEW' },
-    { label: '품질검토요청', value: 'QUALITY_REVIEW' },
-    { label: '최종검토완료', value: 'FINAL_REVIEW' },
+    { label: '1차검토완료', value: 'FIRST_REVIEW_COMPLETED' },
+    { label: '품질검토요청', value: 'QUALITY_REVIEW_REQUEST' },
+    { label: '품질검토접수', value: 'QUALITY_REVIEW_RESPONSE' },
+    { label: '품질검토완료', value: 'QUALITY_REVIEW_COMPLETED' },
+    { label: '최종검토완료', value: 'FINAL_REVIEW_COMPLETED' },
 ];
 
 export const sortOptions = [

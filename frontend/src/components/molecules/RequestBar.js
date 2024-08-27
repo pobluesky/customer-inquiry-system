@@ -1,18 +1,32 @@
 import React from 'react';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     FinalReviewCompleteAlert, FirstReviewCompleteAlert,
     QualityCompleteAlert, QualityReviewCompleteAlert,
 } from '../../utils/actions';
+import {
+    getInquiryByManagers,
+    getInquiryDetail, getInquiryDetailByManagers,
+    putProgress,
+} from '../../apis/api/inquiry';
 
-function RequestBar({ requestBarTitle, onUpdate, onSubmit, onReviewSubmit, onFinalSubmit, onQualitySubmit, onQualityCompleteSubmit }) {
+function RequestBar({
+    requestBarTitle,
+    onUpdate,
+    onSubmit,
+    onReviewSubmit,
+    onFinalSubmit,
+    onQualitySubmit,
+    onQualityCompleteSubmit,
+}) {
     const navigate = useNavigate();
     const { role } = useAuth();
+    const { id } = useParams();
 
     const buttonConfig = {
-        'Inquiry 등록': ['초기화', '임시저장', '삭제', '검토의뢰'],
+        'Inquiry 등록': ['초기화', '검토의뢰'],
         'Inquiry 상세조회 및 영업검토': ['품질검토요청', '1차검토완료', '최종검토완료', '닫기'],
         'Inquiry 상세조회 및 품질검토': ['품질검토완료', '닫기'],
         'Inquiry 조회': ['수정', '닫기'],
@@ -21,6 +35,15 @@ function RequestBar({ requestBarTitle, onUpdate, onSubmit, onReviewSubmit, onFin
 
     const buttons = buttonConfig[requestBarTitle];
 
+    const updateProgress = async (nextProgress) => {
+        try {
+            const response = await putProgress(id, nextProgress);
+            console.log('Progress updated successfully:', response);
+        } catch (error) {
+            console.log('Error updating progress:', error);
+        }
+    }
+
     const handleButtonClick = (btnName) => {
         if (btnName === '수정') {
             onUpdate();
@@ -28,15 +51,19 @@ function RequestBar({ requestBarTitle, onUpdate, onSubmit, onReviewSubmit, onFin
             onSubmit();
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
+            updateProgress("FIRST_REVIEW_COMPLETED");
             FirstReviewCompleteAlert();
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();
+            updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
+            updateProgress("QUALITY_REVIEW_COMPLETED");
             QualityCompleteAlert();
         }  else if (btnName === '최종검토완료') {
             onFinalSubmit();
+            updateProgress("FINAL_REVIEW_COMPLETED");
             FinalReviewCompleteAlert();
         } else {
             console.log(`Action for ${btnName} is not implemented`);

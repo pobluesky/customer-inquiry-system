@@ -8,9 +8,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function Row({ row, role }) {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleClick = () => {

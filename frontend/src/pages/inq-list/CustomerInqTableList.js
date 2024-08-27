@@ -4,11 +4,11 @@ import { getCustomerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import InqPath from '../../components/atoms/InqPath';
 import SearchResult from '../../components/molecules/SearchResult';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
-import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
+import CollapsibleTable from '../../components/organisms/inquiry-form/CustomerTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 const CustomerInqTableList = () => {
-    const { userId } = useAuth();
+    const { userId, role } = useAuth();
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -68,7 +68,7 @@ const CustomerInqTableList = () => {
                 largeCategory={'Inquiry'}
                 mediumCategory={'Inquiry 조회'}
             />
-            <InquirySearchBox onSearch={handleSearch} />
+            <InquirySearchBox onSearch={handleSearch} title={'Inquiry 조회 리스트'} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
                 rows={paginatedRows}
@@ -78,7 +78,7 @@ const CustomerInqTableList = () => {
                 handlePageChange={handlePageChange}
                 handleRowsPerPageChange={handleRowsPerPageChange}
                 paginationRef={paginationRef}
-                role="customer"
+                role={role}
             />
         </div>
     );
