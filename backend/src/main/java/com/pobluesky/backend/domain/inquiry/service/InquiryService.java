@@ -398,9 +398,9 @@ public class InquiryService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         if (manager.getRole() == UserRole.SALES) {
-            if (inquiry.getProgress() == Progress.RECEIPT) {
+            if (inquiry.getProgress() == Progress.SUBMIT) {
                 inquiry.allocateSalesManager(manager);
-                inquiry.updateProgress(Progress.RECEIPT);
+                inquiry.updateProgress(Progress.SUBMIT);
             } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         } else {
             if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
