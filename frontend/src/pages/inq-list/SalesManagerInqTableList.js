@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SearchResult from '../../components/molecules/SearchResult';
 import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
-import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
+import CollapsibleTable from '../../components/organisms/inquiry-form/ManagerTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { getManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
 
@@ -19,6 +19,7 @@ const SalesManagerInqTableList = () => {
             const response = await getManagerInquiriesByParameter(queryParams);
             setRows(response);
             setCurrentPage(0);
+            console.log("getInquiryDataByParameter: ", response);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });

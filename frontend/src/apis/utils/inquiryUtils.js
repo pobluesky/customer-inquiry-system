@@ -147,6 +147,8 @@ export const processInquiries = (data) => {
 
         return {
             customerName: inquiry.customerName,
+            salesManagerName: inquiry.salesManagerName,
+            qualityManagerName: inquiry.qualityManagerName,
             inquiryId: inquiry.inquiryId,
             inquiryType: inquiryTypeText,
             productType: productTypeText,

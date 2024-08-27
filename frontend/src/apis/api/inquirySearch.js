@@ -28,7 +28,7 @@ export const getManagerInquiriesByParameter = async (queryParams) => {
         const response = await axiosInstance.get(
             `/managers/inquiries?${query}`
         );
-        console.log("getManagerInquiriesByParameter: ", response);
+        console.log("getManagerInquiriesByParameter: ", response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;
