@@ -400,7 +400,7 @@ public class InquiryService {
         if (manager.getRole() == UserRole.SALES) {
             if (inquiry.getProgress() == Progress.SUBMIT) {
                 inquiry.allocateSalesManager(manager);
-                inquiry.updateProgress(Progress.SUBMIT);
+                inquiry.updateProgress(Progress.RECEIPT);
             } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         } else {
             if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
