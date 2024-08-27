@@ -38,6 +38,12 @@
     align-items: center;
 }
 
+/* 로그인 아이콘 */
+.Container > div > div:nth-child(6) img {
+    width: 36px;
+    margin: 0 0.5vw 0 0;
+}
+
 /* 알림 버튼 */
 .Container > div > div:nth-child(7) Button:hover {
     background-color: #03507d !important;
