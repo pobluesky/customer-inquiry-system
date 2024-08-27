@@ -9,13 +9,16 @@ import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userEmail, userPassword } from '../../index';
-import { getUserEmail, getUserPassword } from '../../index';
+import { getUserName, getUserEmail, getUserPassword } from '../../index';
 import { LoginFailedAlert } from '../../utils/actions';
 // import { LoginCompleteAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
     const navigate = useNavigate();
+    
+    // 로그인을 통해 유입된 사용자 정보: 로그인 단계에서 저장
+    const currentUserName = useRecoilValue(getUserName);
 
     // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
     const currentUserEmail = useRecoilValue(getUserEmail);
@@ -47,7 +50,7 @@ function Login() {
     };
 
     useEffect(() => {
-        if (getCookie('userRole')) {
+        if (currentUserName) {
             navigate('/');
         }
     }, []);
