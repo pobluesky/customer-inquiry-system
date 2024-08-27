@@ -7,11 +7,11 @@ import {
     AdditionalRequestForm,
     FileForm,
 } from '../../components/organisms/inquiry-form';
-import { postInquiry } from '../../apis/api/inquiry';
+import { putInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { useForm } from 'react-hook-form';
-import { InquiryCompleteAlert } from '../../utils/actions';
+import { InquiryUpdateAlert } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
@@ -68,29 +68,29 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         }));
     };
 
-    const handleInquirySubmit = async (event) => {
+    const handleUpdate = async (event) => {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
         try {
-            const inquiryResponse = await postInquiry(userId, {
+            const inquiryUpdateResponse = await putInquiry(userId, id, {
                 ...formData,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
             const notificationResponse = await postNotificationByCustomers(userId, {
-                notificationContents: `${formData.name}님의 Inquiry가 접수되었습니다.`,
+                notificationContents: `${formData.name}님의 Inquiry가 수정되었습니다.`,
             })
-            console.log('Inquiry posted successfully:', inquiryResponse);
+            console.log('Inquiry posted successfully:', inquiryUpdateResponse);
             console.log('Notification posted successfully:', notificationResponse);
 
-            InquiryCompleteAlert();
+            InquiryUpdateAlert();
             setTimeout(() => {
                 navigate(`/inq-list/${role}`);
             }, '2000');
         } catch (error) {
-            console.log('Error submitting inquiry:', error);
+            console.log('Error updating Inquiry:', error);
         }
-    };
+    }
 
     useEffect(() => {
         if (userInfo) {
@@ -115,8 +115,8 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
-                        onSubmit={handleSubmit(handleInquirySubmit)} />
+            <RequestBar requestBarTitle={"Inquiry 조회"} role={"customer"}
+                        onSubmit={handleSubmit(handleUpdate)} />
             <InquiryNewForm
                 register={register}
                 errors={errors}

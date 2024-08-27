@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Select,
     MenuItem,
@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
 import ToggleBar from '../../molecules/ToggleBar';
-import { productTypes } from '../../../utils/lineItems';
+import { productTypes } from '../../../utils/inquiry';
 
 const InquiryHistoryForm = ({
     productType,
@@ -29,12 +29,31 @@ const InquiryHistoryForm = ({
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
+    // const handleFieldChange = (index, field, value) => {
+    //     const updatedData = [...localData];
+    //     updatedData[index] = { ...updatedData[index], [field]: value };
+    //     setLocalData(updatedData);
+    //     onLineItemsChange(updatedData);
+    // };
+
     const handleFieldChange = (index, field, value) => {
-        const updatedData = [...localData];
-        updatedData[index] = { ...updatedData[index], [field]: value };
-        setLocalData(updatedData);
-        onLineItemsChange(updatedData);
+        setLocalData(prevData => {
+            const updatedData = [...prevData];
+            updatedData[index] = {
+                ...updatedData[index],
+                [field]: value || updatedData[index][field], // 값이 없을 경우 이전 값을 유지
+            };
+            return updatedData;
+        });
+        onLineItemsChange(localData); // 상태 업데이트
     };
+
+
+    useEffect(() => {
+        if (lineItemData && lineItemData.length > 0) {
+            setLocalData(lineItemData);
+        }
+    }, [lineItemData]);
 
     const addRow = () => {
         const newRow = Object.keys(fields).reduce(
