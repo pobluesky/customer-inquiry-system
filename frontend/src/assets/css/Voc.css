@@ -648,10 +648,6 @@
     font-weight: 600;
     color: red;
 }
-/* 
-div, button {
-    border: 1px solid blue;
-} */
 
 /******************************************************************/
 /* 협업 목록 조회 테이블 ********************************************/
@@ -700,6 +696,14 @@ div, button {
     display: flex;
     font-size: 16px;
     color: #212121;
+}
+
+.Col_Res_Modal > div:first-child > div:nth-child(n) {
+    margin: 0 1vw 0 0;
+}
+
+.Col_Res_Modal > div:first-child > div:nth-child(n+2) {
+    font-weight: 600;
 }
 
 /* 협업 요청 사유 제목 */
@@ -815,11 +819,20 @@ div, button {
 /* 담당자 조회 */
 .Col_Find_Manager_Filter_Panel > div > div:nth-child(2) > :nth-child(1) {
     display: grid;
-    grid-template-columns: 120px 196px 180px;
+    grid-template-columns: 96px 132px 1fr;
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
     color: #212121;
+}
+
+/* 담당자 이름, 부서, 권한 */
+.Col_Find_Manager_Filter_Panel
+    > div
+    > div:nth-child(2)
+    > :nth-child(1)
+    > div:nth-child(3) {
+    font-weight: 600;
 }
 
 /******************************************************************/

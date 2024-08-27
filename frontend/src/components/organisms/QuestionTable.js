@@ -298,23 +298,6 @@ export default function QuestionTable({
         fetchGetQuestions();
     }, [userId, filterArgs, openModal]);
 
-    // // 검색 결과, 전체 질문, 답변 대기 질문, 답변 완료 질문 현황
-    // useEffect(() => {
-    //     const filteredQuestions = questionSummary.totalQuestionCount; // 필터링 질문 카운트
-    //     const totalQuestions = questionCount.totalQuestionCount; // 전체 질문 카운트
-    //     const totalAnswers = answerCount.length; // 전체 답변 카운트
-    //     setSearchedItems(filteredQuestions);
-    //     setTotalItems(totalQuestions);
-    //     setReadyItems(totalQuestions - totalAnswers);
-    //     setCompletedItems(totalAnswers);
-    // }, [questionSummary, questionCount, answerCount]);
-
-    // if (openCard) {
-    //     document.body.style.overflow = 'hidden';
-    // } else {
-    //     document.body.style.overflow = 'auto';
-    // }
-
     const columns = [
         {
             id: 'questionId',

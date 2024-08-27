@@ -106,15 +106,7 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(
-    userId,
-    empNo,
-    department,
-    role,
-    name,
-    email,
-    phone,
-) {
+function createData(userId, empNo, department, role, name, email, phone) {
     return {
         userId,
         empNo,
@@ -132,6 +124,8 @@ export default function ColFindManagerModal({
     openModal,
     setOpenModal,
     setColResId,
+    setColResManagerName,
+    setColResManagerDept,
 }) {
     const { userId } = useAuth();
 
@@ -154,29 +148,15 @@ export default function ColFindManagerModal({
     const fetchGetAllManager = async () => {
         try {
             const response = await getAllManager();
-            setManagerInfo(response.data)
+            setManagerInfo(response.data);
         } catch (error) {
-            console.log('담당자 전체 조회 실패: ', error)
+            console.log('담당자 전체 조회 실패: ', error);
         }
-    }
-
-    // 담당자 상세 조회
-    // const fetchGetManagerDetail = async (userId) => {
-    //     try {
-    //         const response = await getManagerByUserId(userId);
-    //         setManagerInfo([response.data])
-    //     } catch (error) {
-    //         console.log('담당자 상세 조회 실패: ', error)
-    //     }
-    // }
+    };
 
     useEffect(() => {
         fetchGetAllManager();
     }, [userId, openModal]);
-
-    // useEffect(() => {
-    //     fetchGetManagerDetail(searchId);
-    // }, [searchId]);
 
     const columns = [
         {
@@ -227,7 +207,7 @@ export default function ColFindManagerModal({
             align: 'center',
             width: 120,
             minWidth: 120,
-        }
+        },
     ];
 
     const rows = managerInfo.map((manager) =>
@@ -350,6 +330,8 @@ export default function ColFindManagerModal({
                                     className={Select}
                                     onClick={() => {
                                         setColResId(row.userId);
+                                        setColResManagerName(row.name);
+                                        setColResManagerDept(row.department);
                                         setOpenModal(false);
                                     }}
                                 >

@@ -1,18 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Input from '../atoms/Input';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from '../atoms/Button';
 import TextEditor from '../atoms/TextEditor';
 import { postCollaborationBySales } from '../../apis/api/collaboration';
+import { getCookie } from '../../apis/utils/cookies';
 import { useAuth } from '../../hooks/useAuth';
 import { Col_Req_Input } from '../../assets/css/Voc.css';
 
 export default function ColReqInput({ colResId }) {
-    const { userId } = useAuth();
     const navigate = useNavigate();
 
     const [colManager, setColManager] = useState('');
     const [editorValue, setEditorValue] = useState('');
+    const [openBackDrop, setOpenBackDrop] = useState(false);
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -24,7 +26,7 @@ export default function ColReqInput({ colResId }) {
     const fetchPostColReq = async () => {
         try {
             const colData = {
-                colReqId: userId,
+                colReqId: getCookie('userId'),
                 colResId,
                 colContents: editorValue,
             };
@@ -34,7 +36,9 @@ export default function ColReqInput({ colResId }) {
                 questionId,
             );
             console.log(response.data);
+            setOpenBackDrop(true);
             setTimeout(() => {
+                setOpenBackDrop(false);
                 navigate('/voc-list/question');
             }, '2000');
             resetForm();
@@ -48,7 +52,7 @@ export default function ColReqInput({ colResId }) {
     };
 
     return (
-        <>
+        <div>
             <div className={Col_Req_Input}>
                 <div>
                     <div>
@@ -99,6 +103,16 @@ export default function ColReqInput({ colResId }) {
                 }}
                 inert
             /> */}
-        </>
+            <Backdrop
+                sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={openBackDrop}
+                // onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        </div>
     );
 }
