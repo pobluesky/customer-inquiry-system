@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getCookie, removeCookie } from '../../apis/utils/cookies';
 import { useRecoilState } from 'recoil';
-import { userEmail, userPassword } from '../../index';
+import { userName, userEmail, userPassword } from '../../index';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 
 export const AuthContext = createContext();
@@ -11,18 +11,19 @@ export const AuthProvider = ({ children }) => {
     const [role, setRole] = useState(null);
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [userName, setUserName] = useState(null);
+    const [name, setName] = useState(null);
 
+    const [, setGlobalName] = useRecoilState(userName);
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
 
     const getUserInfo = async () => {
         try {
             const response = await getUserInfoByCustomers(getCookie('userId'));
-            setUserName(response.data.data.name);
+            setName(response.data.data.name);
             return response.data.data.name;
         } catch (error) {
-            console.log('Error fetching UserName:', error);
+            console.log('Error fetching Name:', error);
         }
     }
     useEffect(() => {
@@ -53,14 +54,15 @@ export const AuthProvider = ({ children }) => {
         removeCookie('userRole');
         removeCookie('userId');
 
-        setDidLogin(false);
         setRole(null);
         setToken(null);
         setUserId(null);
-        setUserName(null);
-
+        setName(null);
+        setGlobalName('');
         setGlobalEmail('');
         setGlobalPassword('');
+
+        setDidLogin(false);
 
         console.log("로그아웃!");
         console.log(getCookie('userRole'))
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     console.log("현재 유저의 userId: ", userId);
 
     return (
-        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId, userName, setUserName }}>
+        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId }}>
             {children}
         </AuthContext.Provider>
     );

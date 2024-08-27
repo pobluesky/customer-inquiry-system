@@ -18,6 +18,8 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
+import { getUserName } from '../../index';
+import { useRecoilValue } from 'recoil';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -41,6 +43,7 @@ function QuestionModal({
     setOpenModal,
 }) {
     const sanitizer = dompurify.sanitize;
+    const navigate = useNavigate();
 
     const role = getCookie('userRole');
     const inqRole = role.toLowerCase();
@@ -56,7 +59,6 @@ function QuestionModal({
 
     const fileInputRef = useRef(null);
 
-    const navigate = useNavigate();
 
     const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
@@ -139,10 +141,11 @@ function QuestionModal({
                             name={'📂 Inquiry 상세 내역'}
                             fontWeight={'600'}
                             onClick={() => {
-                                window.open(
-                                    `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
-                                    '_blank',
-                                );
+                                navigate(`/inq-list/${inqRole}/${questionDetail.inquiryId}`)
+                                // window.open(
+                                //     `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
+                                //     '_blank',
+                                // );
                             }}
                             cursor={'pointer'}
                             textColor={'#0000ff'}
