@@ -32,6 +32,7 @@ const signInApi = async (endpoint, credentials) => {
         }
     } catch (error) {
         console.error('로그인 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
@@ -48,6 +49,7 @@ const signUpApi = async (endpoint, userInfo) => {
         return json;
     } catch (error) {
         console.error('회원가입 API ERROR: ', error.message || error);
+        throw error;
     }
 };
 
