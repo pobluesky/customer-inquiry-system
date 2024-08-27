@@ -123,7 +123,7 @@ function Header({ inq, voc, dashboard }) {
                                 <div>
                                     <img src={profile} alt="user" />
                                 </div>
-                                <div>{username}님</div>
+                                <div>{username && `${username}님`}</div>
                             </div>
                             <div
                                 style={{

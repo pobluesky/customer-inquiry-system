@@ -8,7 +8,8 @@ import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userEmail, userPassword } from '../../index';
 import { getUserEmail, getUserPassword } from '../../index';
-import { LoginCompleteAlert, LoginFailedAlert } from '../../utils/actions';
+import { LoginFailedAlert } from '../../utils/actions';
+// import { LoginCompleteAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
@@ -29,7 +30,7 @@ function Login() {
     const passwordChange = (e) => setPassword(e.target.value);
 
     const [showFailedAlert, canShowFailedAlert] = useState(false);
-    const [showCompleteAlert, canShowCompleteAlert] = useState(false);
+    // const [showCompleteAlert, canShowCompleteAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
     const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
@@ -72,10 +73,11 @@ function Login() {
             setUserId(getCookie('userId')); // 전역 userId 저장
             setRole(getCookie('userRole')); // 전역 역할 저장
             setGlobalEmail(email); // 이메일 저장
-            canShowCompleteAlert(true);
-            setTimeout(() => {
-                navigate('/');
-            }, '2000');
+            navigate('/');
+            // canShowCompleteAlert(true);
+            // setTimeout(() => {
+            //     navigate('/');
+            // }, '2000');
         } catch (error) {
             setErrorMsg(error.response.data.message);
             canShowFailedAlert(true);
@@ -134,12 +136,12 @@ function Login() {
                             }}
                             message={errorMsg}
                         />
-                        <LoginCompleteAlert
+                        {/* <LoginCompleteAlert
                             showAlert={showCompleteAlert}
                             onClose={() => {
                                 canShowCompleteAlert(false);
                             }}
-                        />
+                        /> */}
                         <a href="/join">회원이 아니신가요?</a>
                     </div>
                 </div>
