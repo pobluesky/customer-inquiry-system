@@ -19,8 +19,8 @@ const InquirySearchBox = ({ onSearch }) => {
         inquiryType: '',
         customerName: '',
         salesPerson: '',
-        salesManager: '',
-        qualityManager: '',
+        salesManageName: '',
+        qualityManagerName: '',
         industry: '',
         startDate: '',
         endDate: '',
@@ -112,8 +112,8 @@ const InquirySearchBox = ({ onSearch }) => {
                         <p className={_Title}>판매담당자</p>
                         <input
                             className={_Input}
-                            name="salesManager"
-                            value={searchParams.salesManager}
+                            name="salesManageName"
+                            value={searchParams.salesManageName}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -121,8 +121,8 @@ const InquirySearchBox = ({ onSearch }) => {
                         <p className={_Title}>품질담당자</p>
                         <input
                             className={_Input}
-                            name="qualityManager"
-                            value={searchParams.qualityManager}
+                            name="qualityManagerName"
+                            value={searchParams.qualityManagerName}
                             onChange={handleInputChange}
                         />
                     </div>
