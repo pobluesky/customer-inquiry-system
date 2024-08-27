@@ -59,7 +59,6 @@ function QuestionModal({
 
     const fileInputRef = useRef(null);
 
-
     const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
             const answerData = {
@@ -129,7 +128,7 @@ function QuestionModal({
 
     useEffect(() => {
         questionType();
-    }, [questionDetail])
+    }, [questionDetail]);
 
     return (
         <div className={Question_Modal_Container}>
@@ -141,11 +140,10 @@ function QuestionModal({
                             name={'📂 Inquiry 상세 내역'}
                             fontWeight={'600'}
                             onClick={() => {
-                                navigate(`/inq-list/${inqRole}/${questionDetail.inquiryId}`)
-                                // window.open(
-                                //     `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
-                                //     '_blank',
-                                // );
+                                window.open(
+                                    `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
+                                    '_blank',
+                                );
                             }}
                             cursor={'pointer'}
                             textColor={'#0000ff'}
