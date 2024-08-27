@@ -18,23 +18,23 @@ VALUES
     ('최민기', 'danny@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER');
 
 -- INQUIRY
-INSERT INTO inquiry (user_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, created_date, modified_date)
+INSERT INTO inquiry (user_id, sales_manager_id, quality_manager_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, created_date, modified_date)
 VALUES
-    (1, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (1, 'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2023-08-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2023-08-22', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2023-08-25', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-07', '수출용', 'file8.pdf', 'file8Name', '2023-08-30', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_REQUEST', '2023-08-08', '배타적 계약', 'file9.pdf', 'file9Name', '2023-09-01', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FINAL_REVIEW_COMPLETED', '2023-08-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2023-09-05', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (1, 'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2023-08-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2023-09-10', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (2, 'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-11', '견적 요청', 'file12.pdf', 'file12Name', '2023-09-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (3, 'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2023-09-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (1, null, null, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, null,null,'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 1,2,'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 5,4,'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 3,null,'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 5,4,'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2023-08-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2023-08-22', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 3,null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2023-08-25', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 1,null,'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2023-08-07', '수출용', 'file8.pdf', 'file8Name', '2023-08-30', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 5,null,'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'FINAL_REVIEW_COMPLETED', '2023-08-08', '배타적 계약', 'file9.pdf', 'file9Name', '2023-09-01', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 3,null,'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FIRST_REVIEW_COMPLETED', '2023-08-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2023-09-05', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (1, 1,4,'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2023-08-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2023-09-10', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 1,null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-11', '견적 요청', 'file12.pdf', 'file12Name', '2023-09-15', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 5,null,'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2023-09-20', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 3,4,'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 3,null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- INSERT INTO car_line_items
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, edge, tolerance, annual_cost, is_activated, created_date, modified_date)
