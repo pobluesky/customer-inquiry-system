@@ -141,6 +141,10 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getReviews(id);
             setReviewData(response.data);
             setIsReviewItem(true);
+            console.log("getReview: ", response.data);
+            if (response.data.finalReviewText !== "") {
+                setIsFinalReview(true);
+            }
             return response.data;
         } catch (error) {
             console.log('Error fetching Reviews:', error);
@@ -290,7 +294,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 const reviewResponse = await putReview(id, {
                     finalReviewText: formData.finalReviewText,
                 })
-                setIsFinalReview(true);
                 const offerSheetResponse = await postOfferSheet(id, {
                     ...formData,
                     receipts: formData.receipts,
@@ -317,7 +320,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'sales'} />
             <RequestBar
                         requestBarTitle={'Inquiry 상세조회 및 영업검토'}

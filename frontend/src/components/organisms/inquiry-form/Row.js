@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     putManagerAllocate,
 } from '../../../apis/api/inquiry';
+import { _Table } from '../../../assets/css/Inquiry.css';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
@@ -42,11 +43,11 @@ function Row({ row, role }, ref) {
 
     useEffect(() => {
         if (role === 'SALES') {
-            setIsDisabled(row.salesManagerName !== '미배정');
-            setIsChecked(row.salesManagerName !== '미배정');
+            setIsDisabled(row.salesManagerName !== '-');
+            setIsChecked(row.salesManagerName !== '-');
         } else if (role === 'QUALITY') {
-            setIsDisabled(row.qualityManagerName !== '미배정');
-            setIsChecked(row.qualityManagerName!== '미배정');
+            setIsDisabled(row.qualityManagerName !== '-');
+            setIsChecked(row.qualityManagerName!== '-');
         } else {
             setIsDisabled(false);
         }
@@ -55,7 +56,8 @@ function Row({ row, role }, ref) {
     return (
         <React.Fragment>
             <TableRow
-                sx={{ '& > *': { borderBottom: 'unset' }}}
+                className={_Table}
+                sx={{ '& > *': { borderBottom: 'unset' }, }}
                 style={{ cursor: 'pointer' }}
                 onClick={handleClick}
             >

@@ -208,3 +208,11 @@
   margin: 10px 0 50px 0;
   padding: 50px;
 }
+
+._Table {
+  cursor: pointer;
+}
+
+._Table:hover {
+  background-color: #cbefff;
+}
