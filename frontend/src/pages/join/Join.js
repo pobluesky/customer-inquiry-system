@@ -142,7 +142,6 @@ function Join() {
     // 엔터 키 기능 (권한 부여 버튼 클릭)
     const _enterKeyDown = (e) => {
         if (e.key === 'Enter') {
-            console.log(e.key);
             e.preventDefault();
             setAuth();
         }
