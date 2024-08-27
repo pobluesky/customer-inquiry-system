@@ -20,7 +20,6 @@ function RequestBar({
     onFinalSubmit,
     onQualitySubmit,
     onQualityCompleteSubmit,
-    onProgressUpdate,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
