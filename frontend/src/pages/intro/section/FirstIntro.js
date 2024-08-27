@@ -45,36 +45,40 @@ const FirstIntro = () => {
                         $margin={'-6vh'}
                     />
                 </Wrapper>
-
-                <Button
-                    onClick={() => {
-                        checkInqLogin();
-                    }}
-                    btnName={'Inquiry 시작하기 ►'}
-                    width={'250px'}
-                    height={'60px'}
-                    $margin={'-10vh 3vh 12vh 0'}
-                    fontWeight={'bolder'}
-                    fontSize={'26px'}
-                    border={'solid #c1c1c1 1px'}
-                    borderRadius={'20px'}
-                    textColor={'#3A70C2'}
-                />
-
-                <Button
-                    onClick={() => {
-                        checkVocLogin();
-                    }}
-                    btnName={'VoC 시작하기 ►'}
-                    width={'250px'}
-                    height={'60px'}
-                    $margin={'-10vh 0 12vh 0'}
-                    fontWeight={'bolder'}
-                    fontSize={'26px'}
-                    border={'solid #c1c1c1 1px'}
-                    borderRadius={'20px'}
-                    textColor={'#00B0FF'}
-                />
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ margin: '0 2vw 0 0' }}>
+                        <Button
+                            onClick={() => {
+                                checkInqLogin();
+                            }}
+                            btnName={'Inquiry 시작하기'}
+                            width={'280px'}
+                            height={'60px'}
+                            $margin={'-10vh 3vh 12vh 0'}
+                            fontWeight={'bolder'}
+                            fontSize={'26px'}
+                            border={'1px solid #c1c1c1'}
+                            borderRadius={'20px'}
+                            textColor={'#3A70C2'}
+                        />
+                    </div>
+                    <div style={{ margin: '0 0 0 2vw' }}>
+                        <Button
+                            onClick={() => {
+                                checkVocLogin();
+                            }}
+                            btnName={'VoC 시작하기'}
+                            width={'280px'}
+                            height={'60px'}
+                            $margin={'-10vh 0 12vh 0'}
+                            fontWeight={'bolder'}
+                            fontSize={'26px'}
+                            border={'1px solid #c1c1c1'}
+                            borderRadius={'20px'}
+                            textColor={'#00B0FF'}
+                        />
+                    </div>
+                </div>
             </Container>
         </div>
     );

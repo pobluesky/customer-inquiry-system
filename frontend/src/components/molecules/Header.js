@@ -199,7 +199,7 @@ function Header({ inq, voc, dashboard }) {
                                     ref={notificationButtonRef}
                                     onClick={toggleModal}
                                     btnName={'알림'}
-                                    width={'40px'}
+                                    width={'44px'}
                                     height={'40px'}
                                     backgroundColor={'#ffffff'}
                                     textColor={'#03507d'}

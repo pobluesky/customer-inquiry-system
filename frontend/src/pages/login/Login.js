@@ -50,7 +50,7 @@ function Login() {
     };
 
     useEffect(() => {
-        if (currentUserName) {
+        if (currentUserName && currentUserEmail && getCookie('userRole')) {
             navigate('/');
         }
     }, []);
