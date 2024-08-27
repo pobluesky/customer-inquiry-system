@@ -6,8 +6,8 @@ import { SignIn } from '../../assets/css/Auth.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userEmail, userPassword, loginErrorMsg } from '../../index';
-import { getUserEmail, getUserPassword, getLoginErrorMsg } from '../../index';
+import { userEmail, userPassword } from '../../index';
+import { getUserEmail, getUserPassword } from '../../index';
 import { LoginCompleteAlert, LoginFailedAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
@@ -28,11 +28,9 @@ function Login() {
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
-    const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
-    const currentLoginErrorMsg = useRecoilValue(getLoginErrorMsg);
-    const [tryLogin, setTryLogin] = useState(false);
-    const [showAlert, canShowAlert] = useState(false);
-    const [resetAtom, setResetAtom] = useState(false);
+    const [showFailedAlert, canShowFailedAlert] = useState(false);
+    const [showCompleteAlert, canShowCompleteAlert] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
 
     const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
@@ -45,56 +43,43 @@ function Login() {
     };
 
     useEffect(() => {
+        if (getCookie('userId')) {
+            navigate('/');
+        }
+    }, []);
+
+    useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
         return () => {
             window.removeEventListener('keydown', enterKeyDown);
         };
-    }, [tryLogin, email, password]);
+    }, [email, password]);
 
     // 로그인 실패: 새로고침 시 경고 메시지 초기화
     useEffect(() => {
         if (!didLogin) {
             setGlobalEmail('');
             setGlobalPassword('');
-            setLoginErrorMsg('');
         }
-        setResetAtom(true);
     }, [didLogin]);
-
-    useEffect(() => {
-        if (resetAtom && !didLogin && currentLoginErrorMsg) {
-            canShowAlert(true);
-        }
-    }, [resetAtom, tryLogin, didLogin]);
-
-    // 로그인 성공: 메인 페이지로 이동
-    const goToMain = (result) => {
-        if (result.success) {
-            setDidLogin(true); // 로그인 상태 변화
-            setUserId(getCookie('userId')); // 전역 userId 저장
-            setRole(getCookie('userRole')); // 전역 역할 저장
-            setGlobalEmail(email); // 이메일 저장
-            LoginCompleteAlert();
-            setTimeout(() => {
-                navigate('/');
-            }, '2000');
-            return;
-        }
-        setTryLogin(!tryLogin);
-    };
 
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const result = await signInApiByUsers(
-                email,
-                password,
-                setLoginErrorMsg,
-            );
-            console.log('로그인 결과', result.success);
-            goToMain(result);
+            const response = await signInApiByUsers(email, password);
+            console.log('로그인 성공: ', response);
+            setDidLogin(true); // 로그인 상태 변화
+            setUserId(getCookie('userId')); // 전역 userId 저장
+            setRole(getCookie('userRole')); // 전역 역할 저장
+            setGlobalEmail(email); // 이메일 저장
+            canShowCompleteAlert(true);
+            setTimeout(() => {
+                navigate('/');
+            }, '2000');
         } catch (error) {
-            console.error('로그인 실패', error);
+            setErrorMsg(error.response.data.message);
+            canShowFailedAlert(true);
+            console.error('로그인 실패: ', error.response.data.message);
         }
     };
 
@@ -143,11 +128,17 @@ function Login() {
                     {/* 회원가입 링크 */}
                     <div>
                         <LoginFailedAlert
-                            showAlert={showAlert}
+                            showAlert={showFailedAlert}
                             onClose={() => {
-                                canShowAlert(false);
+                                canShowFailedAlert(false);
                             }}
-                            message={currentLoginErrorMsg}
+                            message={errorMsg}
+                        />
+                        <LoginCompleteAlert
+                            showAlert={showCompleteAlert}
+                            onClose={() => {
+                                canShowCompleteAlert(false);
+                            }}
                         />
                         <a href="/join">회원이 아니신가요?</a>
                     </div>

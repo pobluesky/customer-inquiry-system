@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getCookie, removeCookie } from '../../apis/utils/cookies';
 import { useRecoilState } from 'recoil';
-import { userEmail, userPassword, joinErrorMsg, loginErrorMsg } from '../../index';
+import { userEmail, userPassword } from '../../index';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 
 export const AuthContext = createContext();
@@ -15,8 +15,6 @@ export const AuthProvider = ({ children }) => {
 
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
-    const [, setJoinErrorMsg] = useRecoilState(joinErrorMsg);
-    const [, setLoginErrorMsg] = useRecoilState(loginErrorMsg);
 
     const getUserInfo = async () => {
         try {
@@ -63,8 +61,6 @@ export const AuthProvider = ({ children }) => {
 
         setGlobalEmail('');
         setGlobalPassword('');
-        setLoginErrorMsg('');
-        setJoinErrorMsg('');
 
         console.log("로그아웃!");
         console.log(getCookie('userRole'))
@@ -74,7 +70,6 @@ export const AuthProvider = ({ children }) => {
     console.log("현재 로그인 상태: ", didLogin);
     console.log("현재 유저의 role: ", role);
     console.log("현재 유저의 userId: ", userId);
-    // console.log("현재 유저의 name: ", userName);
 
     return (
         <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId, userName, setUserName }}>

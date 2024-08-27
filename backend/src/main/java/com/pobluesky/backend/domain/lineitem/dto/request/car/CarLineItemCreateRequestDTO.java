@@ -7,8 +7,6 @@ import com.pobluesky.backend.domain.lineitem.entity.type.car.Lab;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.Kind;
 import com.pobluesky.backend.domain.lineitem.entity.type.car.StandardOrg;
 
-import java.time.LocalDate;
-
 public record CarLineItemCreateRequestDTO(
     Lab lab,
     Kind kind,

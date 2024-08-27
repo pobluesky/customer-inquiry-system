@@ -8,6 +8,8 @@ import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 
+import com.pobluesky.backend.domain.user.dto.response.ManagerSummaryResponseDTO;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import java.util.List;
 
 import lombok.Builder;
@@ -24,6 +26,8 @@ public record InquiryResponseDTO(
     Country country,
     String corporate,
     String  salesPerson,
+    ManagerSummaryResponseDTO salesManagerSummaryDto,
+    ManagerSummaryResponseDTO qualityManagerSummaryDto,
     InquiryType inquiryType,
     Industry industry,
     String corporationCode,
@@ -55,6 +59,16 @@ public record InquiryResponseDTO(
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())
+            .salesManagerSummaryDto(
+                ManagerSummaryResponseDTO.from(
+                    inquiry.getSalesManager() != null ? inquiry.getSalesManager() : null
+                )
+            )
+            .qualityManagerSummaryDto(
+                ManagerSummaryResponseDTO.from(
+                    inquiry.getQualityManager() != null ? inquiry.getQualityManager() : null
+                )
+            )
             .inquiryType(inquiry.getInquiryType())
             .industry(inquiry.getIndustry())
             .corporationCode(inquiry.getCorporationCode())

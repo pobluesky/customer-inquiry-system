@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -52,44 +53,6 @@ public class InquiryService {
 
     private final ManagerRepository managerRepository;
 
-    // Inquiry 전체 조회(고객사)
-    @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiriesByCustomer(
-        String token,
-        Long customerId,
-        int page,
-        int size,
-        String sortBy,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        Long userId = signService.parseToken(token);
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return inquiryRepository.findInquiriesByCustomer(
-            customerId,
-            pageable,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate,
-            sortBy
-        );
-    }
-
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
     public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
@@ -103,7 +66,9 @@ public class InquiryService {
         String salesPerson,
         Industry industry,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         Long userId = signService.parseToken(token);
 
@@ -123,43 +88,9 @@ public class InquiryService {
             industry,
             startDate,
             endDate,
-            sortBy
-        );
-    }
-
-    // Inquiry 전체 조회(담당자)
-    @Transactional(readOnly = true)
-    public Page<InquirySummaryResponseDTO> getInquiriesByManager(
-        String token,
-        int page,
-        int size,
-        String sortBy,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        Long userId = signService.parseToken(token);
-
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if(manager.getRole() == UserRole.CUSTOMER)
-            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return inquiryRepository.findInquiriesByManager(
-            pageable,
-            progress,
-            productType,
-            customerName,
-            inquiryType,
-            startDate,
-            endDate,
-            sortBy
+            sortBy,
+            salesManagerName,
+            qualityManagerName
         );
     }
 
@@ -175,7 +106,9 @@ public class InquiryService {
         String salesPerson,
         Industry industry,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
     ) {
         Long userId = signService.parseToken(token);
 
@@ -194,7 +127,9 @@ public class InquiryService {
             industry,
             startDate,
             endDate,
-            sortBy
+            sortBy,
+            salesManagerName,
+            qualityManagerName
         );
     }
 
@@ -358,7 +293,8 @@ public class InquiryService {
     @Transactional
     public InquiryProgressResponseDTO updateInquiryProgress(
         String token,
-        Long inquiryId
+        Long inquiryId,
+        String progress
     ) {
         Long userId = signService.parseToken(token);
 
@@ -371,21 +307,66 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        inquiry.updateProgress();
+        Progress newProgress = Progress.valueOf(progress);
+
+        if(!isValidProgressUpdate(
+            inquiry.getProgress(),
+            inquiry.getInquiryType(),
+            newProgress
+        )) throw new CommonException(ErrorCode.INVALID_PROGRESS_UPDATE);
+
+        inquiry.updateProgress(newProgress);
 
         return InquiryProgressResponseDTO.from(inquiry);
     }
 
-    private boolean isValidProgressUpdate(Progress currentProgress, Progress newProgress) {
+    private boolean isValidProgressUpdate(
+        Progress currentProgress,
+        InquiryType inquiryType,
+        Progress newProgress
+    ) {
         switch (currentProgress) {
+            case SUBMIT:
+                return newProgress == Progress.RECEIPT;
             case RECEIPT:
-                return newProgress == Progress.FIRST_REVIEW;
-            case FIRST_REVIEW:
-                return newProgress == Progress.QUALITY_REVIEW || newProgress == Progress.FINAL_REVIEW;
-            case QUALITY_REVIEW:
-                return newProgress == Progress.FINAL_REVIEW;
+                return newProgress == Progress.FIRST_REVIEW_COMPLETED;
+            case FIRST_REVIEW_COMPLETED:
+                if(inquiryType == InquiryType.QUOTE_INQUIRY)
+                    return newProgress == Progress.FINAL_REVIEW_COMPLETED;
+                else if(inquiryType == InquiryType.COMMON_INQUIRY)
+                    return newProgress == Progress.QUALITY_REVIEW_REQUEST;
+            case QUALITY_REVIEW_REQUEST:
+                if(inquiryType == InquiryType.COMMON_INQUIRY)
+                    return newProgress == Progress.QUALITY_REVIEW_RESPONSE;
+            case QUALITY_REVIEW_RESPONSE:
+                if(inquiryType == InquiryType.COMMON_INQUIRY)
+                    return newProgress == Progress.QUALITY_REVIEW_COMPLETED;
+            case QUALITY_REVIEW_COMPLETED:
+                if(inquiryType == InquiryType.COMMON_INQUIRY)
+                    return newProgress == Progress.FINAL_REVIEW_COMPLETED;
             default:
                 return false;
         }
+    }
+
+    @Transactional
+    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if(manager.getRole() == UserRole.SALES) {
+            inquiry.allocateSalesManager(manager);
+            inquiry.updateProgress(Progress.RECEIPT);
+        } else {
+            inquiry.allocateQualityManager(manager);
+            inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
+        }
+
+        return InquiryAllocateResponseDTO.from(inquiry);
     }
 }

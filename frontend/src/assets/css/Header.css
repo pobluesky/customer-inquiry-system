@@ -28,25 +28,20 @@
     color: #03507d;
 }
 
-/* 로그인 아이콘 */
+/* 로그인 아이콘 + 사용자 이름 */
 .Container > div > div:nth-child(6) {
-    display: grid;
-}
-
-/* 로그인 아이콘 */
-.Container > div > div:nth-child(6) > img {
-    width: 30px;
-}
-
-.Container > div > div:nth-child(6) {
-    width: 120px;
-}
-
-/* 사용자 이름 */
-.Container > div > div:nth-child(7) {
+    display: flex;
+    width: fit-content;
     font-size: 1.2em;
     font-weight: bold;
     color: #03507d;
+    align-items: center;
+}
+
+/* 로그인 아이콘 */
+.Container > div > div:nth-child(6) img {
+    width: 36px;
+    margin: 0 0.5vw 0 0;
 }
 
 /* 알림 버튼 */
@@ -58,6 +53,7 @@
 
 /* 로그아웃 버튼 */
 .Container > div > div:nth-child(8) Button:hover {
+    background-color: pink !important;
     background-color: #03507d !important;
     color: #ffffff !important;
     border: none !important;
