@@ -32,6 +32,7 @@ function Header({ inq, voc, dashboard }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openNav, setOpenNav] = useState(false);
+    const navRef = useRef(null);
     const notificationButtonRef = useRef(null);
 
     const toggleModal = () => {
@@ -73,6 +74,25 @@ function Header({ inq, voc, dashboard }) {
             navigate('/login');
         }
     }, []);
+
+    // 바깥 영역 클릭 시 nav 닫기
+    useEffect(() => {
+        const clickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setOpenNav(false);
+            }
+        };
+
+        document.addEventListener('mouseup', clickOutside);
+        return () => {
+            document.removeEventListener('mouseup', clickOutside);
+        };
+    }, []);
+
+    // 페이지가 변경될 때 nav 닫기
+    useEffect(() => {
+        setOpenNav(false);
+    }, [location]);
 
     return (
         <div>
@@ -252,7 +272,7 @@ function Header({ inq, voc, dashboard }) {
                 </div>
             </div>
             {didLogin && openNav && (
-                <div className={Container_Nav}>
+                <div className={Container_Nav} ref={navRef}>
                     <div>
                         <div></div>
                         <div></div>
