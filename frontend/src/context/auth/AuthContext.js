@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             setName(response.data.data.name);
             return response.data.data.name;
         } catch (error) {
-            console.log('Error fetching Name:', error);
+            // console.log('Error fetching Name:', error);
         }
     }
     useEffect(() => {
