@@ -33,8 +33,14 @@ function Join() {
     const [isCustomer, setCustomer] = useState(true);
     const [isManager, setManager] = useState(false);
 
+    // 각 인풋 필드에 대한 ref 생성
     const nameRef = useRef(null);
     const userCodeRef = useRef(null);
+    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
+    const customerNameRef = useRef(null);
+    const passwordRef = useRef(null);
+    const passwordCheckRef = useRef(null);
 
     const [name, setName] = useState('');
     const [userCode, setUserCode] = useState('');
@@ -149,6 +155,49 @@ function Join() {
             await GetAuth();
         }
     };
+
+    // 특정 입력 필드에 포커스가 가면 스크롤
+    useEffect(() => {
+        if (checkValidationTest && nameRef.current) {
+            nameRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && userCodeRef.current) {
+            userCodeRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && emailRef.current) {
+            emailRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && phoneRef.current) {
+            phoneRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && customerNameRef.current) {
+            customerNameRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && passwordRef.current) {
+            passwordRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && passwordCheckRef.current) {
+            passwordCheckRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
 
     // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
     const saveGlobalInfo = () => {
@@ -361,6 +410,7 @@ function Join() {
                                     placeholder: '',
                                     categoryName: '권한',
                                     needCategory: true,
+                                    ref: emailRef,
                                 })}
                                 {JoinInput({
                                     margin: '0 0 24px 0',
@@ -373,6 +423,7 @@ function Join() {
                                     warningMsg:
                                         checkValidationTest &&
                                         validateEmail(email),
+                                    ref: phoneRef,
                                 })}
                                 {JoinInput({
                                     margin: '0 0 24px 0',
@@ -385,6 +436,7 @@ function Join() {
                                     warningMsg:
                                         checkValidationTest &&
                                         validatePhone(phone),
+                                    ref: customerNameRef,
                                 })}
                                 {isCustomer ? (
                                     JoinInput({
@@ -398,6 +450,7 @@ function Join() {
                                         warningMsg:
                                             checkValidationTest &&
                                             validateCustomerName(customerName),
+                                        ref: passwordRef,
                                     })
                                 ) : (
                                     <>
@@ -427,6 +480,7 @@ function Join() {
                                     warningMsg:
                                         checkValidationTest &&
                                         validatePassword(password),
+                                    ref: passwordCheckRef,
                                 })}
                                 {JoinInput({
                                     value: passwordCheck || '',

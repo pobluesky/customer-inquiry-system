@@ -51,6 +51,7 @@ export const actions = {
     },
 };
 
+// 회원가입 이름 미입력
 const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -62,13 +63,18 @@ const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 이름을 입력하세요.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 고유 코드 미입력
 const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -80,13 +86,18 @@ const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
-                유효하지 않은 고객 코드입니다.
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                유효하지 않은 코드입니다.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 역할 미선택
 const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -98,13 +109,18 @@ const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 권한을 선택하세요.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 성공
 const JoinCompleteAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -116,13 +132,18 @@ const JoinCompleteAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="success" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="success"
+                sx={{ width: '336px' }}
+            >
                 회원가입이 완료되었습니다.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 실패
 const JoinFailedAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -141,6 +162,7 @@ const JoinFailedAlert = ({ showAlert, onClose, message }) => {
     );
 };
 
+// 로그인 성공
 const LoginCompleteAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -152,13 +174,18 @@ const LoginCompleteAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="success" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="success"
+                sx={{ width: '336px' }}
+            >
                 로그인이 완료되었습니다.
             </Alert>
         </Snackbar>
     );
 };
 
+// 로그인 실패
 const LoginFailedAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -188,7 +215,11 @@ const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 제목은 1자 이상 20자 이하로 입력하세요.
             </Alert>
         </Snackbar>
@@ -206,7 +237,11 @@ const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 답변을 10자 이상 입력하세요.
             </Alert>
         </Snackbar>
