@@ -397,12 +397,16 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if(manager.getRole() == UserRole.SALES) {
-            inquiry.allocateSalesManager(manager);
-            inquiry.updateProgress(Progress.RECEIPT);
+        if (manager.getRole() == UserRole.SALES) {
+            if (inquiry.getProgress() == Progress.SUBMIT) {
+                inquiry.allocateSalesManager(manager);
+                inquiry.updateProgress(Progress.RECEIPT);
+            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         } else {
-            inquiry.allocateQualityManager(manager);
-            inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
+            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
+                inquiry.allocateQualityManager(manager);
+                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
+            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         }
 
         return InquiryAllocateResponseDTO.from(inquiry);
