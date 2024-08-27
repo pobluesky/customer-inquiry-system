@@ -14,6 +14,22 @@ const FirstIntro = () => {
 
     // useScrollAnimation();
 
+    const checkInqLogin = () => {
+        if (role) {
+            navigate(`/inq-list/${role}`);
+        } else {
+            navigate('/login');
+        }
+    };
+
+    const checkVocLogin = () => {
+        if (role) {
+            navigate('/voc-list/question');
+        } else {
+            navigate('/login');
+        }
+    };
+
     return (
         <div className={ScrollStyle}>
             <Container style={{ margin: '10vh' }}>
@@ -31,7 +47,9 @@ const FirstIntro = () => {
                 </Wrapper>
 
                 <Button
-                    onClick={() => navigate(`/inq-list/${role}`)}
+                    onClick={() => {
+                        checkInqLogin();
+                    }}
                     btnName={'Inquiry 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}
@@ -45,7 +63,9 @@ const FirstIntro = () => {
                 />
 
                 <Button
-                    onClick={() => navigate('/voc-list/question')}
+                    onClick={() => {
+                        checkVocLogin();
+                    }}
                     btnName={'VoC 시작하기 ►'}
                     width={'250px'}
                     height={'60px'}

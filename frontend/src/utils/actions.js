@@ -159,23 +159,23 @@ const JoinFailedAlert = ({ showAlert, onClose, message }) => {
 };
 
 // 로그인 성공
-const LoginCompleteAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="success" sx={{ width: '336px' }}>
-                로그인이 완료되었습니다.
-            </Alert>
-        </Snackbar>
-    );
-};
+// const LoginCompleteAlert = ({ showAlert, onClose }) => {
+//     return (
+//         <Snackbar
+//             autoHideDuration={2000}
+//             anchorOrigin={{
+//                 vertical: 'bottom',
+//                 horizontal: 'center',
+//             }}
+//             open={showAlert}
+//             onClose={onClose}
+//         >
+//             <Alert severity="success" sx={{ width: '336px' }}>
+//                 로그인이 완료되었습니다.
+//             </Alert>
+//         </Snackbar>
+//     );
+// };
 
 // 로그인 실패
 const LoginFailedAlert = ({ showAlert, onClose, message }) => {
@@ -382,7 +382,7 @@ export {
     ManagerRoleIsNullAlert,
     JoinCompleteAlert,
     JoinFailedAlert,
-    LoginCompleteAlert,
+    // LoginCompleteAlert,
     LoginFailedAlert,
     WrongAnswerTitleAlert,
     WrongAnswerContentAlert,

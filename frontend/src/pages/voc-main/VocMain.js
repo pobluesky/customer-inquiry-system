@@ -11,9 +11,19 @@ import {
 } from '../intro/section/Style';
 import { _IntroMain } from '../../assets/css/Inquiry.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const VocMain = () => {
     const navigate = useNavigate();
+    const { role } = useAuth();
+
+    const checkLogin = () => {
+        if (role) {
+            navigate('/voc-list/question');
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <div>
@@ -78,7 +88,9 @@ const VocMain = () => {
                     </IntroBox>
                 </Wrapper>
                 <Button
-                    onClick={() => navigate('/voc-list/question')}
+                    onClick={() => {
+                        checkLogin();
+                    }}
                     btnName={'Voc 문의하기 ►'}
                     width={'250px'}
                     height={'60px'}
