@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { _Table } from '../../../assets/css/Inquiry.css';
 
 function Row({ row, role }) {
     const [open, setOpen] = useState(false);
@@ -24,6 +25,7 @@ function Row({ row, role }) {
                 sx={{ '& > *': { borderBottom: 'unset' }}}
                 onClick={handleClick}
                 style={{ cursor: 'pointer' }}
+                className={_Table}
             >
                 <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>
                     {row.inquiryId}

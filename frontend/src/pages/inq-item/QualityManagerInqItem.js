@@ -218,7 +218,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'quality'} />
             <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토'}
                         onQualityCompleteSubmit={handleSubmit} />

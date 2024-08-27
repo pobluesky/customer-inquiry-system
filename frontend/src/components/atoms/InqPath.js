@@ -13,9 +13,7 @@ function InqPath({ largeCategory, mediumCategory, smallCategory }) {
                 alignItems: 'center',
             }}
         >
-            <Link to="/inq-main" className={_Link}>
-                <span>{largeCategory}</span>
-            </Link>
+            <span>{largeCategory}</span>
             <img src={arrow} alt="arrow" />
             <Link to="/inq-list/customer" className={_Link}>
                 <span>{mediumCategory}</span>

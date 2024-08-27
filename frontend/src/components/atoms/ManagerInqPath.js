@@ -3,7 +3,7 @@ import arrow from '../../assets/css/icons/arrow.svg';
 import { Link } from 'react-router-dom';
 import { _Link } from '../../assets/css/Inquiry.css';
 
-function ManagerInqPath({ mediumCategory, smallCategory, role }) {
+function ManagerInqPath({ largeCategory, mediumCategory, smallCategory, role }) {
     const mediumUrl = `/inq-list/${role}`;
     const smallUrl = `/inq-list/${role}/:id`;
 
@@ -16,6 +16,8 @@ function ManagerInqPath({ mediumCategory, smallCategory, role }) {
                 alignItems: 'center',
             }}
         >
+            <span>{largeCategory}</span>
+            <img src={arrow} alt="arrow" />
             <Link to={mediumUrl} className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>

@@ -243,6 +243,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             {isUpdate ? (
                 <>{/* 신규작성 및 수정 때 */}
                     <InquiryNewForm
+                        title={'기본정보'}
                         register={register}
                         errors={errors}
                         formData={formData}
