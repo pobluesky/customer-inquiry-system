@@ -132,11 +132,7 @@ const JoinCompleteAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert
-                variant="outlined"
-                severity="success"
-                sx={{ width: '336px' }}
-            >
+            <Alert severity="success" sx={{ width: '336px' }}>
                 회원가입이 완료되었습니다.
             </Alert>
         </Snackbar>
@@ -174,11 +170,7 @@ const LoginCompleteAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert
-                variant="outlined"
-                severity="success"
-                sx={{ width: '336px' }}
-            >
+            <Alert severity="success" sx={{ width: '336px' }}>
                 로그인이 완료되었습니다.
             </Alert>
         </Snackbar>
