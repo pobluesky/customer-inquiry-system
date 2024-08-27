@@ -315,16 +315,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }));
     };
 
-    const updateProgress = async () => {
-        try {
-            const response = await putProgress(id, formData.progress);
-            console.log('Progress updated successfully:', response);
-        } catch (error) {
-            console.log('Error updating progress:', error);
-        }
-    }
-    console.log("formData.progress: ", formData.progress);
-
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
@@ -333,8 +323,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                         requestBarTitle={'Inquiry 상세조회 및 영업검토'}
                         onReviewSubmit={handleReviewSubmit}
                         onQualitySubmit={handleQualitySubmit}
-                        onFinalSubmit={handleFinalSubmit}
-                        onProgressUpdate={updateProgress} />
+                        onFinalSubmit={handleFinalSubmit} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
