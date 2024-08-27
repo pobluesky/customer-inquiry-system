@@ -83,7 +83,7 @@ export const SmallAIBox = styled.div`
     background-color: #ffffff;
     width: 300px;
     height: 177px;
-    margin: 12vh 0 0 5vh;
+    margin: 6vh 0 0 5vh;
 `;
 
 export const CustomerWrapper = styled.div`
