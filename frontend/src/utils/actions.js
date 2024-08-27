@@ -350,7 +350,7 @@ const QualityReviewCompleteAlert = () => {
 const FirstReviewCompleteAlert = () => {
     Swal.fire({
         icon: 'success',
-        title: '1차 검토 내용 및 오퍼시트가 전송되었습니다.',
+        title: '1차 검토가 완료되었습니다.',
         showConfirmButton: false,
         timer: 2000,
     });

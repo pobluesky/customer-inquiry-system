@@ -68,7 +68,7 @@ const CustomerInqTableList = () => {
                 largeCategory={'Inquiry'}
                 mediumCategory={'Inquiry 조회'}
             />
-            <InquirySearchBox onSearch={handleSearch} title={'Inquiry 조회 리스트'} />
+            <InquirySearchBox onSearch={handleSearch} title={'Inquiry 조회'} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
                 rows={paginatedRows}

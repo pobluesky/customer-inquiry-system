@@ -148,7 +148,7 @@ export const processInquiries = (data) => {
         let salesManagerNameText;
         switch (inquiry.salesManagerName) {
             case null:
-                salesManagerNameText = '미배정';
+                salesManagerNameText = '-';
                 break;
             default:
                 salesManagerNameText = inquiry.salesManagerName;
@@ -157,7 +157,7 @@ export const processInquiries = (data) => {
         let qualityManagerNameText;
         switch (inquiry.qualityManagerName) {
             case null:
-                qualityManagerNameText = '미배정';
+                qualityManagerNameText = '-';
                 break;
             default:
                 qualityManagerNameText = inquiry.qualityManagerName;

@@ -9,7 +9,7 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors }) => {
+const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title }) => {
     const {
         customerCode,
         customerName,
@@ -31,7 +31,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors }) =>
         <div className={Container}>
             <div className={Sheet}>
                 <ToggleBar
-                    title={'Inquiry 신규 등록'}
+                    title={title}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />

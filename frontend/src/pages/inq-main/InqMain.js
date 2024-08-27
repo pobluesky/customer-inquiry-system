@@ -38,11 +38,13 @@ const InqMain = () => {
                 />
             ) : role === 'SALES' ? (
                 <ManagerInqPath
+                    largeCategory={'Inquiry'}
                     mediumCategory={'Inquiry 조회'}
                     role={'sales'}
                 />
             ) : (
                 <ManagerInqPath
+                    largeCategory={'Inquiry'}
                     mediumCategory={'Inquiry 조회'}
                     role={'quality'}
                 />

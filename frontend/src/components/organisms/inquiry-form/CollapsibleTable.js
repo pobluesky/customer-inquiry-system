@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TablePagination } from '@mui/material';
-import ForwardedRow from './Row'; // Row 컴포넌트 import
+import ForwardedRow from './Row';
 
 export default function CollapsibleTable({
     rows,

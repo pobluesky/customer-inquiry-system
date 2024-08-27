@@ -61,7 +61,7 @@ const QualityManagerInqTableList = () => {
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath mediumCategory={'Inquiry 조회'} role={role} />
+            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'품질설계연계조회'} role={role} />
             <InquirySearchBox onSearch={handleSearch} title={'품질설계연계조회'} />
             <SearchResult searchResult={`${rows.length}`} />
             <CollapsibleTable
