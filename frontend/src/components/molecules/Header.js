@@ -21,7 +21,7 @@ function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout, userId, role } = useAuth();
 
-    const url = `/inq-list/${role}`;
+    const url = `/inq-list/${role?.toLowerCase()}`;
 
     const columns = didLogin
         ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'

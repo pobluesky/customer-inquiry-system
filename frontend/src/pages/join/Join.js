@@ -6,6 +6,7 @@ import {
     RoleSelectButton,
 } from '../../components/molecules/JoinButton';
 import { SignUp } from '../../assets/css/Auth.css';
+import { getCookie } from '../../apis/utils/cookies';
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {
     validateName,
@@ -155,6 +156,12 @@ function Join() {
             await GetAuth();
         }
     };
+
+    useEffect(() => {
+        if (getCookie('userId')) {
+            navigate('/');
+        }
+    }, []);
 
     // 특정 입력 필드에 포커스가 가면 스크롤
     useEffect(() => {

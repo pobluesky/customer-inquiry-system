@@ -43,6 +43,12 @@ function Login() {
     };
 
     useEffect(() => {
+        if (getCookie('userId')) {
+            navigate('/');
+        }
+    }, []);
+
+    useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
         return () => {
             window.removeEventListener('keydown', enterKeyDown);
