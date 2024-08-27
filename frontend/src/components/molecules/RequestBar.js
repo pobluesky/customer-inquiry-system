@@ -7,7 +7,16 @@ import {
     QualityCompleteAlert, QualityReviewCompleteAlert,
 } from '../../utils/actions';
 
-function RequestBar({ requestBarTitle, onUpdate, onSubmit, onReviewSubmit, onFinalSubmit, onQualitySubmit, onQualityCompleteSubmit }) {
+function RequestBar({
+    requestBarTitle,
+    onUpdate,
+    onSubmit,
+    onReviewSubmit,
+    onFinalSubmit,
+    onQualitySubmit,
+    onQualityCompleteSubmit,
+    onProgressUpdate,
+}) {
     const navigate = useNavigate();
     const { role } = useAuth();
 
@@ -28,6 +37,7 @@ function RequestBar({ requestBarTitle, onUpdate, onSubmit, onReviewSubmit, onFin
             onSubmit();
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
+            onProgressUpdate();
             FirstReviewCompleteAlert();
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();

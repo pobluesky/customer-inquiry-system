@@ -169,7 +169,7 @@ export const putManagerAllocate = async (inquiryId) => {
 }
 
 // Progress Update
-export const putProgressUpdate = async (inquiryId, progress) => {
+export const putProgress = async (inquiryId, progress) => {
     try {
         const response = await axiosInstance.put(
             `/managers/inquiries/${inquiryId}/progress/${progress}`,

@@ -8,7 +8,7 @@ import {
     Offersheet,
 } from '../../components/organisms/inquiry-form';
 import {
-    getInquiryDetailByManagers,
+    getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
 import { useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
@@ -315,14 +315,25 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }));
     };
 
+    const updateProgress = async (currentProgress) => {
+        try {
+            const response = await putProgress(id, currentProgress);
+            console.log('Progress updated successfully:', response);
+        } catch (error) {
+            console.log('Error updating progress:', error);
+        }
+    }
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'sales'} />
-            <RequestBar requestBarTitle={'Inquiry 상세조회 및 영업검토'}
+            <RequestBar
+                        requestBarTitle={'Inquiry 상세조회 및 영업검토'}
                         onReviewSubmit={handleReviewSubmit}
                         onQualitySubmit={handleQualitySubmit}
-                        onFinalSubmit={handleFinalSubmit} />
+                        onFinalSubmit={handleFinalSubmit}
+                        onProgressUpdate={updateProgress(inquiriesDataDetail.progress)} />
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
