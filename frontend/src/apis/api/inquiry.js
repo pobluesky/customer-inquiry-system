@@ -60,7 +60,6 @@ export const getInquiryDetail = async (userId, inquiryId) => {
 export const postInquiry = async (userId, inquiryData) => {
     try {
         const formData = createFormInquiryData(inquiryData);
-        console.log('postInquiryFormData: ', formData);
 
         const response = await axiosInstance.post(
             `/customers/inquiries/${userId}`,
@@ -75,6 +74,28 @@ export const postInquiry = async (userId, inquiryData) => {
         return response.data;
     } catch (error) {
         console.log('Error posting inquiry:', error);
+        throw error;
+    }
+};
+
+// 고객사 inquiry 수정
+export const putInquiry = async (inquiryId, inquiryData) => {
+    try {
+        const formData = createFormInquiryData(inquiryData);
+
+        const response = await axiosInstance.put(
+            `/customers/inquiries/${inquiryId}`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            },
+        );
+        console.log('putInquiryResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error putting inquiry:', error);
         throw error;
     }
 };

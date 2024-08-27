@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@mui/material';
 import ToggleBar from '../../molecules/ToggleBar';
-import { productTypes } from '../../../utils/lineItems';
+import { productTypes } from '../../../utils/inquiry';
 
 const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아이템 조회
     const fields = productTypes[productType] || {};
@@ -77,6 +77,17 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                                             InputProps={{
                                                                 inputProps: {
                                                                     min: 0,
+                                                                },
+                                                            }}
+                                                        />
+                                                    ) : field.type === 'date' ? (
+                                                        <TextField
+                                                            value={item[key] || ''}
+                                                            type={field.type}
+                                                            style={{ width: '100%', backgroundColor: '#ffffff' }}
+                                                            InputProps={{
+                                                                inputProps: {
+                                                                    min: field.type === 'date'? new Date() : undefined,
                                                                 },
                                                             }}
                                                         />
