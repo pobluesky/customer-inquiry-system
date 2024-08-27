@@ -9,14 +9,20 @@ export const processInquiries = (data) => {
             case 'RECEIPT':
                 progressText = '문의접수';
                 break;
-            case 'FIRST_REVIEW':
-                progressText = '1차검토중';
+            case 'FIRST_REVIEW_COMPLETED':
+                progressText = '1차검토완료';
                 break;
-            case 'QUALITY_REVIEW':
-                progressText = '품질검토중';
+            case 'QUALITY_REVIEW_REQUEST':
+                progressText = '품질검토요청';
                 break;
-            case 'FINAL_REVIEW':
-                progressText = '최종검토중';
+            case 'QUALITY_REVIEW_RESPONSE':
+                progressText = '품질검토접수';
+                break;
+            case 'QUALITY_REVIEW_COMPLETED':
+                progressText = '품질검토완료';
+                break;
+            case 'FINAL_REVIEW_COMPLETED':
+                progressText = '최종검토완료';
                 break;
             default:
                 progressText = '-';
