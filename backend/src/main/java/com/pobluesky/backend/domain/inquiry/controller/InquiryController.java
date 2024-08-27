@@ -148,9 +148,9 @@ public class InquiryController {
     }
 
     // 담당자 Inquiry 조회
-    @GetMapping("/managers/inquiries")
+    @GetMapping("/managers/sales/inquiries")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByManagerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesBySalesManagerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
@@ -164,13 +164,46 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByManagerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesBySalesManagerWithoutPaging(
             token,
             sortBy,
             progress,
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
+            startDate,
+            endDate,
+            salesManagerName,
+            qualityManagerName
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(inquiries));
+    }
+
+    @GetMapping("/managers/quality/inquiries")
+    @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getInquiriesByQualityManagerWithoutPaging(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) Progress progress,
+        @RequestParam(required = false) ProductType productType,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) String salesPerson,
+        @RequestParam(required = false) Industry industry,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+        @RequestParam(required = false) String salesManagerName,
+        @RequestParam(required = false) String qualityManagerName
+    ) {
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByQualityManagerWithoutPaging(
+            token,
+            sortBy,
+            progress,
+            productType,
+            customerName,
             salesPerson,
             industry,
             startDate,
