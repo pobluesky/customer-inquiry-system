@@ -59,7 +59,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         productType: '',
         progress: '',
         salesPerson: '',
-        lineItemResponseDTOs: inquiriesDataDetail?.lineItemResponseDTOs || [],
+        lineItemResponseDTOs: [],
 
         // review
         reviewText: '',
@@ -83,9 +83,12 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         try {
             const response = await getInquiryDetail(userId, id);
             setInquiriesDataDetail(response.data);
+            console.log("getInquiryDataDetail : ", response.data)
             setFormData(prevData => ({
                 ...prevData,
-                lineItemResponseDTOs: response.data.lineItemResponseDTOs || []
+                ...response.data,
+                lineItemRequestDTOs: response.data.lineItemResponseDTOs || [],
+                files: response.data.files || [],
             }));
         } catch (error) {
             console.log('Error fetching InquiryDetail:', error);
@@ -158,11 +161,14 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         if (event && event.preventDefault) {
             event.preventDefault();
         }
+        const updatedFormData = {
+            ...formData,
+            files: formData.files || [],
+            lineItemResponseDTOs: formData.lineItemResponseDTOs || []
+        };
+        console.log("updatedFormData: ", updatedFormData);
         try {
-            const inquiryUpdateResponse = await putInquiry(id, {
-                ...formData,
-                lineItemResponseDTOs: formData.lineItemResponseDTOs,
-            });
+            const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(userId, {
                 notificationContents: `${formData.name}님의 Inquiry가 수정되었습니다.`,
             })

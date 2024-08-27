@@ -10,7 +10,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
     const [files, setFiles] = useState(formData.files || null);
     const [currentFileData, setCurrentFileData] = useState(fileData);
 
-    console.log("files: ", files);
+    console.log("formData.files: ", formData.files);
     const btnName = files ? '파일수정' : '파일업로드';
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
 
     const handleFileUpload = (event) => {
         const selectedFile = event.target.files[0];
-        setFiles(selectedFile);
+        setFiles(selectedFile || formData.files);
         handleFormDataChange('files', selectedFile);
     };
 
@@ -34,6 +34,17 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
         handleFormDataChange('files', null);
         setCurrentFileData(null);
     };
+
+    useEffect(() => {
+        if (files || currentFileData) {
+            setCurrentFileData(prevData => ({
+                ...prevData,
+                pastFiles: fileData?.fileName || prevData.pastFiles,
+                filePath: fileData?.filePath || prevData.filePath,
+                currentFiles: files?.name || prevData.currentFiles,
+            }));
+        }
+    }, [files, fileData]);
 
     console.log("formData.files: ", formData.files);
     console.log("fileData: ", fileData);
