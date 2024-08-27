@@ -47,7 +47,7 @@ function Login() {
     };
 
     useEffect(() => {
-        if (getCookie('userId')) {
+        if (getCookie('userRole')) {
             navigate('/');
         }
     }, []);

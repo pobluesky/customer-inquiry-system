@@ -10,7 +10,7 @@ function Intro() {
 
     useEffect(() => {
         console.log(
-            `현재 로그인 중인 유저 정보: *${currentUserRole}*, *${currentUserEmail}*`,
+            `현재 로그인 중인 유저 정보: *쿠키: ${currentUserRole}*, *전역변수: ${currentUserEmail}*`,
         );
     }, [currentUserRole]);
 
