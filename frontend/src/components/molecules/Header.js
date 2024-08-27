@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
 import profile from '../../assets/css/icons/profile.svg';
-import { Container, User } from '../../assets/css/Header.css';
+import { Container, Container_Nav } from '../../assets/css/Header.css';
 import { useAuth } from '../../hooks/useAuth';
 import {
     getUserInfoByCustomers,
@@ -31,6 +31,7 @@ function Header({ inq, voc, dashboard }) {
     const [username, setUsername] = useState(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [openNav, setOpenNav] = useState(false);
     const notificationButtonRef = useRef(null);
 
     const toggleModal = () => {
@@ -67,6 +68,12 @@ function Header({ inq, voc, dashboard }) {
         }
     }, [didLogin, userId, role]);
 
+    useEffect(() => {
+        if (!username) {
+            navigate('/login');
+        }
+    }, []);
+
     return (
         <div>
             <div className={Container} style={{ backgroundColor }}>
@@ -77,11 +84,32 @@ function Header({ inq, voc, dashboard }) {
                 >
                     <div></div>
                     {/* 로그인 완료 */}
-                    <img src={mainlogo} alt="poscodx" />
+                    <img
+                        src={mainlogo}
+                        alt="poscodx"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            navigate('/');
+                        }}
+                    />
                     {didLogin ? (
                         <>
                             <div>
-                                <MenuLink
+                                <div
+                                    style={{
+                                        color:
+                                            inq && !voc && !dashboard
+                                                ? '#03507d'
+                                                : '#c1c1c1',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        setOpenNav(true);
+                                    }}
+                                >
+                                    Inquiry
+                                </div>
+                                {/* <MenuLink
                                     to={url}
                                     style={{
                                         color:
@@ -91,9 +119,25 @@ function Header({ inq, voc, dashboard }) {
                                     }}
                                 >
                                     Inquiry
-                                </MenuLink>
+                                </MenuLink> */}
                             </div>
                             <div>
+                                <div
+                                    style={{
+                                        color:
+                                            !inq && voc && !dashboard
+                                                ? '#03507d'
+                                                : '#c1c1c1',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        setOpenNav(true);
+                                    }}
+                                >
+                                    VoC
+                                </div>
+                            </div>
+                            {/* <div>
                                 <MenuLink
                                     to="/voc-main"
                                     style={{
@@ -105,7 +149,7 @@ function Header({ inq, voc, dashboard }) {
                                 >
                                     VoC
                                 </MenuLink>
-                            </div>
+                            </div> */}
                             <div>
                                 {/*<MenuLink*/}
                                 {/*    to="/dashboard"*/}
@@ -119,7 +163,7 @@ function Header({ inq, voc, dashboard }) {
                                 {/*    DashBoard*/}
                                 {/*</MenuLink>*/}
                             </div>
-                            <div className={User}>
+                            <div>
                                 <div>
                                     <img src={profile} alt="user" />
                                 </div>
@@ -164,7 +208,7 @@ function Header({ inq, voc, dashboard }) {
                     ) : (
                         <>
                             <div>
-                                <MenuLink to={url}>Inquiry</MenuLink>
+                                <MenuLink to="/inq-main">Inquiry</MenuLink>
                             </div>
                             <div>
                                 <MenuLink to="/voc-main">VoC</MenuLink>
@@ -207,6 +251,120 @@ function Header({ inq, voc, dashboard }) {
                     )}
                 </div>
             </div>
+            {didLogin && openNav && (
+                <div className={Container_Nav}>
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div>
+                            {role === 'CUSTOMER' && (
+                                <>
+                                    <div
+                                        onClick={() => {
+                                            setOpenNav(false);
+                                        }}
+                                    >
+                                        <MenuLink to={url}>
+                                            Inquiry 조회
+                                        </MenuLink>
+                                    </div>
+                                    <div
+                                        onClick={() => {
+                                            setOpenNav(false);
+                                        }}
+                                    >
+                                        <MenuLink to="/inq-form/customer">
+                                            Inquiry 등록
+                                        </MenuLink>
+                                    </div>
+                                </>
+                            )}
+                            {role === 'SALES' && (
+                                <>
+                                    <div
+                                        onClick={() => {
+                                            setOpenNav(false);
+                                        }}
+                                    >
+                                        <MenuLink to={url}>
+                                            Inquiry 조회
+                                        </MenuLink>
+                                    </div>
+                                </>
+                            )}
+                            {role === 'QUALITY' && (
+                                <>
+                                    <div
+                                        onClick={() => {
+                                            setOpenNav(false);
+                                        }}
+                                    >
+                                        <MenuLink to={url}>
+                                            품질설계연계조회
+                                        </MenuLink>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                        <div
+                            onClick={() => {
+                                setOpenNav(false);
+                            }}
+                        >
+                            {role === 'CUSTOMER' && (
+                                <>
+                                    <div>
+                                        <MenuLink to="voc-list/question">
+                                            문의 조회
+                                        </MenuLink>
+                                    </div>
+                                    <div>
+                                        <MenuLink to="voc-form/question">
+                                            문의 등록
+                                        </MenuLink>
+                                    </div>
+                                </>
+                            )}
+                            {role === 'SALES' && (
+                                <>
+                                    <div>
+                                        <MenuLink to="/voc-list/question">
+                                            문의 조회
+                                        </MenuLink>
+                                    </div>
+                                    <div>
+                                        <MenuLink to="/voc-list/collaboration">
+                                            협업 조회
+                                        </MenuLink>
+                                    </div>
+                                    {/* <div>협업 등록</div> */}
+                                </>
+                            )}
+                            {role === 'QUALITY' && (
+                                <>
+                                    <div>
+                                        <MenuLink to="/voc-list/question">
+                                            문의 조회
+                                        </MenuLink>
+                                    </div>
+                                    <div>
+                                        <MenuLink to="/voc-list/collaboration">
+                                            협업 조회
+                                        </MenuLink>
+                                    </div>
+                                    {/* <div>협업 등록</div> */}
+                                </>
+                            )}
+                        </div>
+                        {/* 대시보드 메뉴 추가 ▼ */}
+                        <div></div>
+                        {/* 개인정보 메뉴 추가 ▼ */}
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -59,10 +59,53 @@
     border: none !important;
 }
 
-.User {
+.Container_Nav {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    color: #03507D;
-    font-weight: 700;
+    width: 100%;
+    height: max-content;
+    position: absolute;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Container_Nav > div {
+    display: grid;
+    grid-template-columns: 45px 340px 170px 144px 150px 150px 44px 166px 55px;
+    background-color: #ffffff;
+    position: relative;
+    justify-content: center;
+    gap: 10px;
+}
+
+.Container_Nav > div > div:nth-child(2) {
+    width: 120px;
+}
+
+/* Inquiry 메뉴 */
+.Container_Nav > div > div:nth-child(3) {
+    margin: 2vh 0 2vh 0;
+}
+
+/* Inquiry 메뉴 리스트별 */
+.Container_Nav > div > div:nth-child(3) > div {
+    margin: 2vh 0 2vh 0;
+}
+
+/* Inquiry 메뉴 리스트별 */
+.Container_Nav > div > div:nth-child(3) > div:hover {
+    font-weight: 600;
+}
+
+/* VoC 메뉴 */
+.Container_Nav > div > div:nth-child(4) {
+    margin: 2vh 0 2vh 0;
+}
+
+/* VoC 메뉴 리스트별 */
+.Container_Nav > div > div:nth-child(4) > div {
+    margin: 2vh 0 2vh 0;
+}
+
+/* VoC 메뉴 리스트별 */
+.Container_Nav > div > div:nth-child(4) > div:hover {
+    font-weight: 600;
 }

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/molecules/LoginInput';
@@ -32,6 +34,7 @@ function Login() {
     const [showFailedAlert, canShowFailedAlert] = useState(false);
     // const [showCompleteAlert, canShowCompleteAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [openBackDrop, setOpenBackDrop] = useState(false);
 
     const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
@@ -73,11 +76,12 @@ function Login() {
             setUserId(getCookie('userId')); // 전역 userId 저장
             setRole(getCookie('userRole')); // 전역 역할 저장
             setGlobalEmail(email); // 이메일 저장
-            navigate('/');
+            setOpenBackDrop(true);
             // canShowCompleteAlert(true);
-            // setTimeout(() => {
-            //     navigate('/');
-            // }, '2000');
+            setTimeout(() => {
+                setOpenBackDrop(false);
+                navigate('/');
+            }, '2000');
         } catch (error) {
             setErrorMsg(error.response.data.message);
             canShowFailedAlert(true);
@@ -146,6 +150,16 @@ function Login() {
                     </div>
                 </div>
             </div>
+            <Backdrop
+                sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={openBackDrop}
+                // onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     );
 }
