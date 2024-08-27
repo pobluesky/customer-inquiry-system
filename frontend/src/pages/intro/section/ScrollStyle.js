@@ -12,9 +12,9 @@ const fadeInUp = keyframes`
 `;
 
 export const ScrollStyle = styled.div`
-  opacity: 0;
-  min-height: 100vh;
-  &.visible {
-    animation: ${fadeInUp} 1s forwards;
-  }
+    opacity: 0;
+    min-height: 100vh;
+    &.visible {
+        animation: ${fadeInUp} 1s forwards;
+    }
 `;

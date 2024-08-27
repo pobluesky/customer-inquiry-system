@@ -18,6 +18,8 @@ import {
     Question_Modal,
     Completed,
 } from '../../assets/css/Voc.css';
+import { getUserName } from '../../index';
+import { useRecoilValue } from 'recoil';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -41,6 +43,7 @@ function QuestionModal({
     setOpenModal,
 }) {
     const sanitizer = dompurify.sanitize;
+    const navigate = useNavigate();
 
     const role = getCookie('userRole');
     const inqRole = role.toLowerCase();
@@ -55,8 +58,6 @@ function QuestionModal({
     const [type, setType] = useState('');
 
     const fileInputRef = useRef(null);
-
-    const navigate = useNavigate();
 
     const fetchPostAnswerByQuestionId = async (questionId) => {
         try {
@@ -127,7 +128,7 @@ function QuestionModal({
 
     useEffect(() => {
         questionType();
-    }, [questionDetail])
+    }, [questionDetail]);
 
     return (
         <div className={Question_Modal_Container}>

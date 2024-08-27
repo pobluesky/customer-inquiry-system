@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, useParams } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route } from 'react-router';
 
 import { Intro } from './pages/intro';
@@ -43,8 +43,10 @@ function App() {
                 <Layout>
                     <Routes>
                         <Route index path="" element={<Intro />} />
+
                         <Route path="login" element={<Login />} />
                         <Route path="join" element={<Join />} />
+
                         <Route path="inq-main" element={<InqMain />} />
 
                         <Route path="inq-form/customer" element={<CustomerInqForm />} />
@@ -59,8 +61,10 @@ function App() {
                         <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
                         <Route path="voc-main" element={<VocMain />} />
+
                         <Route path="voc-form/question" element={<VocQuestionForm />} />
                         <Route path="voc-form/collaboration" element={<VocColForm />} />
+
                         <Route path="voc-list/question" element={<VocQuestionList />} />
                         <Route path="voc-list/collaboration" element={<VocColList />} />
 

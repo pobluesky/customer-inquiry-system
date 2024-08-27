@@ -5,6 +5,8 @@ import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
 import profile from '../../assets/css/icons/profile.svg';
 import { Container, Container_Nav } from '../../assets/css/Header.css';
+import { getUserName, userName } from '../../index';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAuth } from '../../hooks/useAuth';
 import {
     getUserInfoByCustomers,
@@ -28,7 +30,9 @@ function Header({ inq, voc, dashboard }) {
         : '45px 340px 170px 144px 150px 150px';
 
     const backgroundColor = didLogin ? '#EDFAFF' : '';
-    const [username, setUsername] = useState(null);
+    const [name, setName] = useState(null);
+    const [, setGlobalName] = useRecoilState(userName);
+    const currentUserName = useRecoilValue(getUserName);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openNav, setOpenNav] = useState(false);
@@ -52,12 +56,14 @@ function Header({ inq, voc, dashboard }) {
         try {
             if (role === 'CUSTOMER') {
                 const customer = await getUserInfoByCustomers(userId);
-                setUsername(customer.data.data.name);
+                setName(customer.data.data.name);
+                setGlobalName(customer.data.data.name);
             } else {
                 const manager = await getUserInfoByManagers(userId);
-                setUsername(manager.data.data.name);
+                setName(manager.data.data.name);
+                setGlobalName(manager.data.data.name);
             }
-            return username;
+            return name;
         } catch (error) {
             console.log(error);
         }
@@ -68,12 +74,6 @@ function Header({ inq, voc, dashboard }) {
             findUserName();
         }
     }, [didLogin, userId, role]);
-
-    useEffect(() => {
-        if (!username) {
-            navigate('/login');
-        }
-    }, []);
 
     // 바깥 영역 클릭 시 nav 닫기
     useEffect(() => {
@@ -187,7 +187,7 @@ function Header({ inq, voc, dashboard }) {
                                 <div>
                                     <img src={profile} alt="user" />
                                 </div>
-                                <div>{username && `${username}님`}</div>
+                                <div>{currentUserName && `${currentUserName}님`}</div>
                             </div>
                             <div
                                 style={{

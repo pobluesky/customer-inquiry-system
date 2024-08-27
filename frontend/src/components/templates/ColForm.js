@@ -5,8 +5,6 @@ import ColFindManagerModal from '../molecules/ColFindManagerModal';
 
 export default function ColForm() {
     const [openModal, setOpenModal] = useState(false);
-    const [colManager, setColManager] = useState('');
-    const [inquiryId, setInquiryId] = useState('');
     const [colResId, setColResId] = useState('');
 
     if (openModal) {

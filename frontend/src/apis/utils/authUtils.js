@@ -1,6 +1,5 @@
 import axiosInstance from '../utils/axiosInstance';
-import { getCookie, setCookie } from './cookies';
-import { getEmailFromToken } from './tokenUtils';
+import { setCookie } from './cookies';
 
 const signInApi = async (endpoint, credentials) => {
     try {
@@ -33,7 +32,6 @@ const signInApi = async (endpoint, credentials) => {
         }
     } catch (error) {
         console.error('로그인 API ERROR: ', error.message || error);
-        throw error;
     }
 };
 
@@ -50,7 +48,6 @@ const signUpApi = async (endpoint, userInfo) => {
         return json;
     } catch (error) {
         console.error('회원가입 API ERROR: ', error.message || error);
-        throw error;
     }
 };
 
@@ -67,7 +64,7 @@ const getUserInfoApi = async (endpoint) => {
             return { success: false, message: 'Get user info failed' };
         }
     } catch (error) {
-        console.log('Get user info error:', error);
+        // console.log('Get user info error:', error);
         return { success: false, message: error.toString() };
     }
 };
