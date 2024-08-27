@@ -1,3 +1,8 @@
+import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Swal from 'sweetalert2';
+
 export const actions = {
     초기화: () => {
         if (window.confirm('모든 내용을 초기화 하시겠습니까?')) {
@@ -46,11 +51,7 @@ export const actions = {
     },
 };
 
-import React from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import Swal from 'sweetalert2';
-
+// 회원가입 이름 미입력
 const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -62,13 +63,18 @@ const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 이름을 입력하세요.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 고유 코드 미입력
 const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -80,13 +86,18 @@ const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
-                유효하지 않은 고객 코드입니다.
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                유효하지 않은 코드입니다.
             </Alert>
         </Snackbar>
     );
 };
 
+// 회원가입 역할 미선택
 const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -98,48 +109,75 @@ const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 권한을 선택하세요.
             </Alert>
         </Snackbar>
     );
 };
 
-const JoinCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        titleText: '회원가입이 완료되었습니다.',
-        text: '잠시 후 로그인 페이지로 이동합니다.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-    });
+// 회원가입 성공
+const JoinCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                회원가입이 완료되었습니다.
+            </Alert>
+        </Snackbar>
+    );
 };
 
-const JoinFailedAlert = (message) => {
-    Swal.fire({
-        icon: 'error',
-        titleText: '회원가입 실패',
-        text: `${message}`,
-        showConfirmButton: false,
-        timer: 2000,
-        allowOutsideClick: false,
-    });
+// 회원가입 실패
+const JoinFailedAlert = ({ showAlert, onClose, message }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
 };
 
-const LoginCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        titleText: '로그인이 완료되었습니다.',
-        text: '잠시 후 메인 화면으로 이동합니다.',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-    });
+// 로그인 성공
+const LoginCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                로그인이 완료되었습니다.
+            </Alert>
+        </Snackbar>
+    );
 };
 
+// 로그인 실패
 const LoginFailedAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -169,7 +207,11 @@ const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 제목은 1자 이상 20자 이하로 입력하세요.
             </Alert>
         </Snackbar>
@@ -187,7 +229,11 @@ const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 답변을 10자 이상 입력하세요.
             </Alert>
         </Snackbar>
@@ -280,6 +326,16 @@ const InquiryCompleteAlert = () => {
     });
 };
 
+// inquiry 수정 완료
+const InquiryUpdateAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Inquiry 문의 내용이 수정되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+    });
+}
+
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
     Swal.fire({
@@ -336,6 +392,7 @@ export {
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
     InquiryCompleteAlert,
+    InquiryUpdateAlert,
     QualityReviewCompleteAlert,
     FirstReviewCompleteAlert,
     QualityCompleteAlert,

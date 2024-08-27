@@ -3,6 +3,9 @@ export const processInquiries = (data) => {
     return data.map((inquiry) => {
         let progressText;
         switch (inquiry.progress) {
+            case 'SUBMIT':
+                progressText = '문의제출';
+                break;
             case 'RECEIPT':
                 progressText = '문의접수';
                 break;
@@ -21,9 +24,6 @@ export const processInquiries = (data) => {
 
         let inquiryTypeText;
         switch (inquiry.inquiryType) {
-            case 'QUALITY_INQUIRY':
-                inquiryTypeText = '품질 문의';
-                break;
             case 'QUOTE_INQUIRY':
                 inquiryTypeText = '견적 문의';
                 break;
@@ -154,9 +154,9 @@ export const processInquiries = (data) => {
     });
 };
 
-// Inquiry 데이터 LineItem 포맷 변환 함수
+// Inquiry 데이터 LineItem 포맷 변환 함수 (post, put)
 export const processInquiryData = (data) => {
-    const { productType, ...rest } = data;
+    const { productType, lineItemRequestDTOs = [], ...rest } = data;
 
     let formattedData;
     switch (productType) {
@@ -164,7 +164,7 @@ export const processInquiryData = (data) => {
             formattedData = {
                 ...rest,
                 productType,
-                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
                     lab: item.lab,
                     kind: item.kind,
                     standardOrg: item.standardOrg,
@@ -186,7 +186,7 @@ export const processInquiryData = (data) => {
             formattedData = {
                 ...rest,
                 productType,
-                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
                     kind: item.kind,
                     inqName: item.inqName,
                     orderCategory: item.orderCategory,
@@ -196,7 +196,7 @@ export const processInquiryData = (data) => {
                     orderEdge: item.orderEdge,
                     inDiameter: item.inDiameter,
                     outDiameter: item.outDiameter,
-                    expectedDeliveryDate: item.expectedDeliveryDate,
+                    expectedDeadline: item.expectedDeadline,
                     sleeveThickness: item.sleeveThickness,
                     tensileStrength: item.tensileStrength,
                     elongationRatio: item.elongationRatio,
@@ -208,7 +208,7 @@ export const processInquiryData = (data) => {
             formattedData = {
                 ...rest,
                 productType,
-                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
                     kind: item.kind,
                     inqName: item.inqName,
                     orderCategory: item.orderCategory,
@@ -230,7 +230,7 @@ export const processInquiryData = (data) => {
             formattedData = {
                 ...rest,
                 productType,
-                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
                     generalDetails: item.generalDetails,
                     orderInfo: item.orderInfo,
                     ladleIngredient: item.ladleIngredient,
@@ -252,7 +252,7 @@ export const processInquiryData = (data) => {
             formattedData = {
                 ...rest,
                 productType,
-                lineItemRequestDTOs: data.lineItemRequestDTOs.map((item) => ({
+                lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
                     kind: item.kind,
                     inqName: item.inqName,
                     orderCategory: item.orderCategory,
@@ -282,6 +282,7 @@ export const createFormInquiryData = (formData) => {
 
     const inquiryData = processInquiryData(formData);
     delete inquiryData.files;
+
     form.append(
         'inquiry',
         new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }),
@@ -290,7 +291,6 @@ export const createFormInquiryData = (formData) => {
     if (formData.files) {
         form.append('files', formData.files);
     }
-
     return form;
 };
 

@@ -19,7 +19,6 @@ import com.pobluesky.backend.domain.lineitem.service.LineItemService;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
-
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
@@ -230,8 +229,8 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        String fileName = null;
-        String filePath = null;
+        String fileName = inquiry.getFileName();
+        String filePath = inquiry.getFilePath();
 
         if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);

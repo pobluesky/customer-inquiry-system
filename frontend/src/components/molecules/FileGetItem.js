@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { _FileItem, _FileName } from "../../assets/css/Form.css";
 
-const FileGetItem = ({ files, filePath }) => {
+const FileGetItem = ({ pastFile, filePath, currentFile }) => {
+    const [isFileUpdate, setIsFileUpdate] = useState(false);
+
+    useEffect(() => {
+        if (typeof currentFile !== 'undefined') {
+            setIsFileUpdate(true);
+        }
+   }, [pastFile, currentFile]);
+
+    console.log("pastFile: ", pastFile);
+    console.log("currentFile: ", currentFile);
+
     return (
         <div className={_FileItem}>
-            {files !== null ? (
-                <a
-                    href={filePath}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={_FileName}
-                 >
-                {files}
-                </a>
-        ) : (
-                <div>파일 없음</div>
-            )}
+            <a
+                href={filePath}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={_FileName}
+             >
+                {isFileUpdate ? currentFile : pastFile}
+            </a>
         </div>
     );
 };

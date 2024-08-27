@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import mainlogo from '../../assets/css/icons/mainlogo.svg';
-import person from '../../assets/css/icons/person.svg';
+import profile from '../../assets/css/icons/profile.svg';
 import { Container, User } from '../../assets/css/Header.css';
 import { useAuth } from '../../hooks/useAuth';
 import {
@@ -21,7 +21,7 @@ function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout, userId, role } = useAuth();
 
-    const url = `/inq-list/${role}`;
+    const url = `/inq-list/${role?.toLowerCase()}`;
 
     const columns = didLogin
         ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
@@ -121,7 +121,7 @@ function Header({ inq, voc, dashboard }) {
                             </div>
                             <div className={User}>
                                 <div>
-                                    <img src={person} alt="user" />
+                                    <img src={profile} alt="user" />
                                 </div>
                                 <div>{username}님</div>
                             </div>

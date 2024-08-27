@@ -8,18 +8,18 @@ import { getCookie } from '../utils/cookies';
 import { getEmailFromToken } from '../utils/tokenUtils';
 
 // 고객사 회원가입
-export const signUpApiByCustomers = (name, email, password, phone, customerCode, customerName, setJoinErrorMsg) => {
-    return signUpApi('/customers/sign-up', { name, email, password, phone, customerCode, customerName }, setJoinErrorMsg);
+export const signUpApiByCustomers = (name, email, password, phone, customerCode, customerName) => {
+    return signUpApi('/customers/sign-up', { name, email, password, phone, customerCode, customerName });
 };
 
 // 담당자 회원가입
-export const signUpApiByManagers = (name, email, password, phone, empNo, role, department, setJoinErrorMsg) => {
-    return signUpApi('/managers/sign-up', { name, email, password, phone, empNo, role, department }, setJoinErrorMsg);
+export const signUpApiByManagers = (name, email, password, phone, empNo, role, department) => {
+    return signUpApi('/managers/sign-up', { name, email, password, phone, empNo, role, department });
 };
 
 // 로그인
-export const signInApiByUsers = (email, password, setLoginErrorMsg) => {
-    return signInApi('/users/sign-in', { email, password }, setLoginErrorMsg);
+export const signInApiByUsers = (email, password) => {
+    return signInApi('/users/sign-in', { email, password });
 };
 
 // 고객사 이름 조회 ByEmail

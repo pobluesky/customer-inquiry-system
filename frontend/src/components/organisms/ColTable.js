@@ -210,7 +210,7 @@ export default function ColTable({
 
     useEffect(() => {
         fetchGetCol(filterArgs);
-    }, [userId, filterArgs]);
+    }, [userId, filterArgs, status]);
 
     const columns = [
         {
