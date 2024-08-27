@@ -316,6 +316,24 @@ const QuestionCompleteAlert = () => {
     });
 };
 
+const ColDoneAlert = ({ showAlert, onClose, message }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
+};
+
 // inquiry 작성 완료
 const InquiryCompleteAlert = () => {
     Swal.fire({
@@ -389,6 +407,7 @@ export {
     AnswerCompleteAlert,
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
+    ColDoneAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
     InquiryCompleteAlert,

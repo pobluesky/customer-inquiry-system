@@ -6,8 +6,8 @@ function VocColForm() {
     return (
         <>
             <ColPath
-                largeCategory={'협업 목록'}
-                mediumCategory={'협업 목록 조회'}
+                largeCategory={'문의 목록'}
+                mediumCategory={'협업 요청'}
             />
             <ColForm />
         </>

@@ -114,14 +114,6 @@ export default function QuestionDashboard() {
                 questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}
             />
-            <Text
-                name={'문의 목록'}
-                width={'1320px'}
-                margin={'24px auto 24px auto'}
-                fontSize={'24px'}
-                fontWeight={'600'}
-                textColor={'#49454f'}
-            />
             <QuestionTable
                 title={title}
                 startDate={startDate}

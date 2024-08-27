@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../atoms/Button';
-import SearchInput from '../molecules/SearchInput';
 import search from '../../assets/css/icons/voc/search.svg';
 import { Col_Find_Manager_Filter_Panel } from '../../assets/css/Voc.css';
 
-export default function ColReqFilterPannel({ setOpenModal, colResId }) {
-    const [managerInfo, setManagerInfo] = useState([]);
+export default function ColReqFilterPannel({
+    setOpenModal,
+    colResManagerName,
+    colResManagerDept,
+}) {
+    const [managerInfo, setManagerInfo] = useState('');
+
+    const selectedManager = () => {
+        if (colResManagerDept && colResManagerName) {
+            setManagerInfo(
+                `${colResManagerDept} 부서 품질 담당자 ${colResManagerName}님에게 협업 요청을 보냅니다.`,
+            );
+        }
+    };
+
+    useEffect(() => {
+        selectedManager();
+    }, [colResManagerName, colResManagerDept]);
 
     return (
         <>
@@ -16,24 +31,12 @@ export default function ColReqFilterPannel({ setOpenModal, colResId }) {
                         <img src={search} />
                         <div>협업 요청</div>
                     </div>
-
                     {/* 담당자 조회 */}
                     <div>
                         <div>
                             <div>담당자 조회</div>
-                            <SearchInput
-                                width={'144px'}
-                                height={'24px'}
-                                border={'solid 1px #c1c1c1'}
-                                borderRadius={'8px'}
-                                outline={'none'}
-                                padding={'0 8px 0 8px'}
-                                btnHeight={'24px'}
-                                value={colResId}
-                                // onChange={(e) => setTempTitle(e.target.value)}
-                            />
                             <Button
-                                btnName={'조회'}
+                                btnName={'검색'}
                                 width={'84px'}
                                 height={'28px'}
                                 margin={'0 0 0 24px'}
@@ -41,8 +44,11 @@ export default function ColReqFilterPannel({ setOpenModal, colResId }) {
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'20px'}
-                                onClick={() => {setOpenModal(true)}}
+                                onClick={() => {
+                                    setOpenModal(true);
+                                }}
                             />
+                            <div>{managerInfo}</div>
                         </div>
                     </div>
                 </div>

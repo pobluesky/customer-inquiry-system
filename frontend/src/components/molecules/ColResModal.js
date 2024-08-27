@@ -11,8 +11,8 @@ import {
     putDecisionByQuality,
     putCompleteByQuality,
 } from '../../apis/api/collaboration';
+import { ColDoneAlert } from '../../utils/actions';
 import { getCookie } from '../../apis/utils/cookies';
-import { useAuth } from '../../hooks/useAuth';
 
 const sanitizer = dompurify.sanitize;
 
@@ -27,7 +27,6 @@ export default function ColResModal({
     setOpenModal,
 }) {
     const role = getCookie('userRole');
-    const { userId } = useAuth();
 
     const [colStatus, setColStatus] = useState('');
     const [editorValue, setEditorValue] = useState('');
@@ -38,6 +37,9 @@ export default function ColResModal({
 
     const [tryAccept, isAccepting] = useState(false); // 협업 수락 버튼 클릭 후 수락 내용 작성 중
     const [tryReject, isRejecting] = useState(false); // 협업 거절 버튼 클릭 후 거절 내용 작성 중
+
+    const [showDoneAlert, canShowDoneAlert] = useState(false);
+    const [message, setMessage] = useState('');
 
     const fileInputRef = useRef(null);
 
@@ -71,6 +73,12 @@ export default function ColResModal({
             setColReply(response.data.colReply);
             setFileName(response.data.fileName);
             setFilePath(response.data.filePath);
+            if (response.data.colStatus === 'REFUSE') {
+                setMessage('협업이 거절되었습니다.');
+            } else {
+                setMessage('협업이 수락되었습니다.');
+            }
+            canShowDoneAlert(true);
             isRejecting(true);
         } catch (error) {
             console.error('협업 수락/거절 실패: ', error);
@@ -83,6 +91,8 @@ export default function ColResModal({
             const response = await putCompleteByQuality(colId);
             setStatus(response.data.colStatus);
             setColStatus(response.data.colStatus);
+            setMessage('협업이 완료되었습니다.');
+            canShowDoneAlert(true);
             isAccepting(false);
             isRejecting(false);
         } catch (error) {
@@ -110,10 +120,11 @@ export default function ColResModal({
                 <div>협업 요청 사유</div>
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: sanitizer(`${colDetail.colContents || colContents}`),
+                        __html: sanitizer(
+                            `${colDetail.colContents || colContents}`,
+                        ),
                     }}
-                >
-                </div>
+                ></div>
                 <div>
                     <div>고객사 첨부파일</div>
                     <div>
@@ -155,7 +166,13 @@ export default function ColResModal({
                 {/* 피드백 작성 완료 */}
                 {status !== 'READY' && (
                     <>
-                        <div>협업 요청 결과</div>
+                        <div>
+                            {status === 'REFUSE' ? (
+                                <div>협업 거절 사유</div>
+                            ) : (
+                                <div>협업 수락 피드백</div>
+                            )}
+                        </div>
                         <div>
                             <div
                                 style={{
@@ -315,6 +332,13 @@ export default function ColResModal({
                     )}
                 </div>
             </div>
+            <ColDoneAlert
+                showAlert={showDoneAlert}
+                onClose={() => {
+                    canShowDoneAlert(false);
+                }}
+                message={message}
+            />
         </div>
     );
 }
