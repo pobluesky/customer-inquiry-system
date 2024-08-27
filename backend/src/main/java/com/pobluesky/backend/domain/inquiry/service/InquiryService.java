@@ -24,14 +24,14 @@ import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,9 +94,9 @@ public class InquiryService {
         );
     }
 
-    // Inquiry 전체 조회(담당자) without paging
+    // Inquiry 전체 조회(판매 담당자) without paging
     @Transactional(readOnly = true)
-    public List<InquirySummaryResponseDTO> getInquiriesByManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> getInquiriesBySalesManagerWithoutPaging(
         String token,
         String sortBy,
         Progress progress,
@@ -118,11 +118,49 @@ public class InquiryService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return inquiryRepository.findInquiriesByManagerWithoutPaging(
+        return inquiryRepository.findInquiriesBySalesManagerWithoutPaging(
             progress,
             productType,
             customerName,
             inquiryType,
+            salesPerson,
+            industry,
+            startDate,
+            endDate,
+            sortBy,
+            salesManagerName,
+            qualityManagerName
+        );
+    }
+
+    // Inquiry 전체 조회(품질 담당자) without paging
+    @Transactional(readOnly = true)
+    public List<InquirySummaryResponseDTO> getInquiriesByQualityManagerWithoutPaging(
+        String token,
+        String sortBy,
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        String salesPerson,
+        Industry industry,
+        LocalDate startDate,
+        LocalDate endDate,
+        String salesManagerName,
+        String qualityManagerName
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(manager.getRole() == UserRole.CUSTOMER)
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
+
+        return inquiryRepository.findInquiriesByQualityManagerWithoutPaging(
+            progress,
+            productType,
+            customerName,
+            InquiryType.COMMON_INQUIRY,
             salesPerson,
             industry,
             startDate,
