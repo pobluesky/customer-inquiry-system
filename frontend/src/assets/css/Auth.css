@@ -69,7 +69,6 @@
 .SignUp > div > div > div:nth-child(4) {
     width: 360px;
     color: #03507d;
-    font-weight: 600;
     margin: 0 auto 12px auto;
     text-align: left;
 }
@@ -80,7 +79,7 @@
     width: 360px;
     height: 48px;
     margin: 0 0 24px 0;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 0;
     border: solid 1px #c1c1c1;
     border-radius: 12px;
     font-size: 16px;

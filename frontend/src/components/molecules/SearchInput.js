@@ -3,7 +3,7 @@ import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import search from '../../assets/css/icons/search.svg';
 
-const MySearchInput = forwardRef(
+const SearchInput = forwardRef(
     (
         {
             width,
@@ -22,6 +22,7 @@ const MySearchInput = forwardRef(
             btnMargin,
             onClick,
             btnFloat,
+            cursor,
         },
         ref,
     ) => (
@@ -53,9 +54,10 @@ const MySearchInput = forwardRef(
                 borderRadius={'0'}
                 onClick={onClick}
                 float={btnFloat}
+                cursor={cursor}
             />
         </div>
     ),
 );
 
-export default MySearchInput;
+export default SearchInput;

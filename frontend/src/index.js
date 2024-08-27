@@ -31,16 +31,12 @@ export const authByRole = createAtom('authByRole');
 export const userName = createAtom('userName');
 export const userEmail = createAtom('userEmail');
 export const userPassword = createAtom('userPassword');
-export const joinErrorMsg = createAtom('joinErrorMsg');
-export const loginErrorMsg = createAtom('loginErrorMsg');
 
 // [Recoil] Selector로 변수 Get 호출
 export const getAuthByRole = createSelector('getAuthByRole', authByRole);
 export const getUserName = createSelector('getUserName', userName);
 export const getUserEmail = createSelector('getUserEmail', userEmail);
 export const getUserPassword = createSelector('getUserPassword', userPassword);
-export const getJoinErrorMsg = createAtom('getJoinErrorMsg', joinErrorMsg);
-export const getLoginErrorMsg = createAtom('getLoginErrorMsg', loginErrorMsg);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
