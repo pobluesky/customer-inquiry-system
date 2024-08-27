@@ -27,7 +27,7 @@ function RequestBar({
     const { id } = useParams();
 
     const buttonConfig = {
-        'Inquiry 등록': ['초기화', '삭제', '검토의뢰'],
+        'Inquiry 등록': ['초기화', '검토의뢰'],
         'Inquiry 상세조회 및 영업검토': ['품질검토요청', '1차검토완료', '최종검토완료', '닫기'],
         'Inquiry 상세조회 및 품질검토': ['품질검토완료', '닫기'],
         'Inquiry 조회': ['수정', '닫기'],
