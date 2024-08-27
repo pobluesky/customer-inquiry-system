@@ -1,4 +1,4 @@
-// inquiry 데이터 가공
+// inquiry summary 데이터 가공
 export const processInquiries = (data) => {
     return data.map((inquiry) => {
         let progressText;
@@ -145,10 +145,28 @@ export const processInquiries = (data) => {
                 industryText = '-';
         }
 
+        let salesManagerNameText;
+        switch (inquiry.salesManagerName) {
+            case null:
+                salesManagerNameText = '미배정';
+                break;
+            default:
+                salesManagerNameText = inquiry.salesManagerName;
+        }
+
+        let qualityManagerNameText;
+        switch (inquiry.qualityManagerName) {
+            case null:
+                qualityManagerNameText = '미배정';
+                break;
+            default:
+                qualityManagerNameText = inquiry.qualityManagerName;
+        }
+
         return {
             customerName: inquiry.customerName,
-            salesManagerName: inquiry.salesManagerName,
-            qualityManagerName: inquiry.qualityManagerName,
+            salesManagerName: salesManagerNameText,
+            qualityManagerName: qualityManagerNameText,
             inquiryId: inquiry.inquiryId,
             inquiryType: inquiryTypeText,
             productType: productTypeText,

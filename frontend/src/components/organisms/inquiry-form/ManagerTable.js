@@ -8,26 +8,53 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function Row({ row, role }) {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+    const [salesAllocate, setSalesAllocate] = useState(false);
+    const [qualityAllocate, setQualityAllocate] = useState(false);
     const navigate = useNavigate();
+
+    console.log("isChecked: ", isChecked);
 
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
     };
 
+    const handleCheckboxChange = (e) => {
+        setIsChecked(e.target.checked);
+        if (e.target.checked) {
+            setSalesAllocate(true);
+            setQualityAllocate(true);
+        } else {
+            setSalesAllocate(false);
+            setQualityAllocate(false);
+        }
+    };
+
+
     return (
         <React.Fragment>
             <TableRow
                 sx={{ '& > *': { borderBottom: 'unset' }}}
-                onClick={handleClick}
                 style={{ cursor: 'pointer' }}
+                onClick={handleClick}
             >
-                <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>
-                    {row.inquiryId}
+                <TableCell className="custom-table-cell" align="left"
+                           sx={{ paddingLeft: '60px' }}>
+                    <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={handleCheckboxChange}
+                    />
                 </TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
+                <TableCell component="th" scope="row"
+                           className="custom-table-cell">{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell"
+                           align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
@@ -70,7 +97,8 @@ export default function CollapsibleTable({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '80px' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '60px' }}>✔️</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>문의번호</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>제품</TableCell>

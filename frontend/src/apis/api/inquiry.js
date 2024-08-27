@@ -153,3 +153,16 @@ export const getInquiryDetailByManagers = async (inquiryId) => {
         throw error;
     }
 };
+
+export const putManagerAllocate = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.put(
+            `/managers/inquiries/${inquiryId}/allocate`,
+        );
+        console.log('putManagerAllocateResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error putting manager allocate:', error);
+        throw error;
+    }
+}

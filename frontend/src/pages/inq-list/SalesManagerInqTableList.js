@@ -4,7 +4,8 @@ import ManagerInqPath from '../../components/atoms/ManagerInqPath';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/ManagerTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
-import { getManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
+import { getSalesManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
+import { useAuth } from '../../hooks/useAuth';
 
 const SalesManagerInqTableList = () => {
     const [rows, setRows] = useState([]);
@@ -13,13 +14,13 @@ const SalesManagerInqTableList = () => {
     const [searchParams, setSearchParams] = useState({});
     const contentRef = useRef(null);
     const paginationRef = useRef(null);
+    const { role } = useAuth();
 
     const getInquiryDataByParameter = async (queryParams = {}) => {
         try {
-            const response = await getManagerInquiriesByParameter(queryParams);
+            const response = await getSalesManagerInquiriesByParameter(queryParams);
             setRows(response);
             setCurrentPage(0);
-            console.log("getInquiryDataByParameter: ", response);
 
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -67,7 +68,7 @@ const SalesManagerInqTableList = () => {
                 handlePageChange={handlePageChange}
                 handleRowsPerPageChange={handleRowsPerPageChange}
                 paginationRef={paginationRef}
-                role="sales"
+                role={role}
             />
         </div>
     );

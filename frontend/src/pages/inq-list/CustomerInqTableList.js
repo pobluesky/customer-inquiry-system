@@ -4,7 +4,7 @@ import { getCustomerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import InqPath from '../../components/atoms/InqPath';
 import SearchResult from '../../components/molecules/SearchResult';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
-import CollapsibleTable from '../../components/organisms/inquiry-form/Table';
+import CollapsibleTable from '../../components/organisms/inquiry-form/CustomerTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 
 const CustomerInqTableList = () => {
