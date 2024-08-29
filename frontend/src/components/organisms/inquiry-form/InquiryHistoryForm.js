@@ -86,7 +86,7 @@ const InquiryHistoryForm = ({
                 margin: '0 auto',
                 borderRadius: '20px',
                 marginBottom: '100px',
-                backgroundColor: '#f0f8fc',
+                backgroundColor: '#ffffff',
             }}
         >
             <ToggleBar
@@ -97,7 +97,7 @@ const InquiryHistoryForm = ({
             {isChecked ? (
                 <>
                     <TableContainer>
-                        <Table style={{ backgroundColor: '#f0f8fc' }}>
+                        <Table style={{ backgroundColor: '#ffffff' }}>
                             <TableHead style={{ backgroundColor: '#d8e1e9' }}>
                                 <TableRow>
                                     <TableCell
