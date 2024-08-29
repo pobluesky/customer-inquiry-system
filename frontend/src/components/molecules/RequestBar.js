@@ -20,6 +20,7 @@ function RequestBar({
     onFinalSubmit,
     onQualitySubmit,
     onQualityCompleteSubmit,
+    onReset,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
@@ -65,6 +66,8 @@ function RequestBar({
             onFinalSubmit();
             updateProgress("FINAL_REVIEW_COMPLETED");
             FinalReviewCompleteAlert();
+        } else if (btnName === '초기화') {
+            onReset();
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }

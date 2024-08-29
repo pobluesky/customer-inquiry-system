@@ -92,6 +92,22 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         }
     };
 
+    const onReset = () => {
+        setFormData({
+            additionalRequests: '',
+            corporate: '',
+            corporationCode: '(주)포스코',
+            country: '',
+            customerRequestDate: '',
+            files: [],
+            industry: '',
+            inquiryType: '',
+            productType: '',
+            salesPerson: '',
+            lineItemResponseDTOs: [],
+        })
+    }
+
     useEffect(() => {
         if (userInfo) {
             setFormData(prevFormData => ({
@@ -116,6 +132,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
             <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
+                        onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
                 title={'신규 등록'}
