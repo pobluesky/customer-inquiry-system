@@ -155,18 +155,14 @@ class InquiryProgressCountChart extends Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <div className={Chart_Container}>
-                        <Chart
-                            options={this.state.options}
-                            series={this.state.series}
-                            type="line"
-                            width="450"
-                            height="250"
-                        />
-                    </div>
-                </div>
+            <div className={Chart_Container}>
+                <Chart
+                    options={this.state.options}
+                    series={this.state.series}
+                    type="line"
+                    width="450"
+                    height="250"
+                />
             </div>
         );
     }

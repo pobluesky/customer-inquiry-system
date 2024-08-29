@@ -159,18 +159,14 @@ class InquiryMonthlyFilledOrderChart extends Component {
             // <div className="app">
             //     <div className="row">
             //         <div className="mixed-chart">
-            <div>
-                <div>
-                    <div className={Chart_Container}>
-                        <Chart
-                            options={this.state.options}
-                            series={this.state.series}
-                            type="line"
-                            width="450"
-                            height="250"
-                        />
-                    </div>
-                </div>
+            <div className={Chart_Container}>
+                <Chart
+                    options={this.state.options}
+                    series={this.state.series}
+                    type="line"
+                    width="450"
+                    height="250"
+                />
             </div>
         );
     }

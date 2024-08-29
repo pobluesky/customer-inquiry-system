@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
-import { Chart_Container, Chart_Container_Custom } from '../../assets/css/Chart.css';
+import {
+    Chart_Container,
+    Chart_Container_Custom,
+} from '../../assets/css/Chart.css';
 
 // Inquiry 주문 체결 완료 및 미완료 비중
 class InquiryFilledOrderCountChart extends Component {
@@ -81,28 +84,28 @@ class InquiryFilledOrderCountChart extends Component {
 
     render() {
         return (
-            <div>
+            <div className={Chart_Container}>
+                <div className={Chart_Container_Custom}>
+                    Inquiry 주문 체결 완료 및 미완료 비중
+                </div>
                 <div>
-                    <div className={Chart_Container}>
-                        <div className={Chart_Container_Custom}>
-                            Inquiry 주문 체결 완료 및 미완료 비중
-                        </div>
-                        <div>
-                            <Chart
-                                options={this.state.options1}
-                                series={this.state.series1}
-                                type="donut"
-                                width="220"
-                                height="220"
-                            />
-                            <Chart
-                                options={this.state.options2}
-                                series={this.state.series2}
-                                type="donut"
-                                width="220"
-                                height="220"
-                            />
-                        </div>
+                    <div>
+                        <Chart
+                            options={this.state.options1}
+                            series={this.state.series1}
+                            type="donut"
+                            width="220"
+                            height="220"
+                        />
+                    </div>
+                    <div>
+                        <Chart
+                            options={this.state.options2}
+                            series={this.state.series2}
+                            type="donut"
+                            width="220"
+                            height="220"
+                        />
                     </div>
                 </div>
             </div>
