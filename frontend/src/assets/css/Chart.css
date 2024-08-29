@@ -1,0 +1,24 @@
+.Chart_Container {
+    width: fit-content;
+    height: 264px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #c1c1c1;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    padding: 2vh 1vw 2vh 1vw;
+}
+
+.Chart_Container_Custom {
+    font-family: Pretendard-Regular;
+    font-weight: 500;
+    font-size: 16px;
+    color: #25262b;
+    text-align: center;
+    padding: 2vh 0 2vh 0;
+}
+
+.Chart_Container > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    padding: 0 0 2vh 0;
+}

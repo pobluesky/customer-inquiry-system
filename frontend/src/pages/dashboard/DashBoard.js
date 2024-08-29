@@ -1,14 +1,14 @@
 import React from 'react';
 import InquiryMonthlyFilledOrderChart from '../../components/organisms/InquiryMonthlyFilledOrderChart';
-import InquiryProgressChart from '../../components/organisms/InquiryProgressChart';
+import InquiryProgressCountChart from '../../components/organisms/InquiryProgressCountChart';
 import InquiryFilledOrderCountChart from '../../components/organisms/InquiryFilledOrderCountChart';
-import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart'
+import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart';
 
 export default function DashBoard() {
     return (
         <>
             <InquiryMonthlyFilledOrderChart />
-            <InquiryProgressChart />
+            <InquiryProgressCountChart />
             <InquiryFilledOrderCountChart />
             <InquiryProductProgressChart />
         </>
