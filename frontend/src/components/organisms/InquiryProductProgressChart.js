@@ -1,16 +1,11 @@
 import React from 'react';
 import GaugeChart from 'react-gauge-chart';
-import {
-    Chart_Container,
-    Chart_Container_Custom,
-} from '../../assets/css/Chart.css';
+import { Chart_Container } from '../../assets/css/Chart.css';
 
 function InquiryProductProgressChart() {
     return (
         <div className={Chart_Container}>
-            <div className={Chart_Container_Custom}>
-                전체 제품별 주문 처리 현황
-            </div>
+            <div>전체 제품별 주문 처리 현황</div>
             <div>
                 <div>
                     <GaugeChart
