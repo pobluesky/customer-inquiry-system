@@ -427,6 +427,10 @@ public class InquiryService {
 
         List<Inquiry> inquiries = inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
 
+        if (inquiries.isEmpty()) {
+            throw new CommonException(ErrorCode.INQUIRY_LIST_EMPTY);
+        }
+
         return inquiries.stream()
             .map(inquiry -> {
                 List<LineItemResponseDTO> lineItems = lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
