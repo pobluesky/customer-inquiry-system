@@ -2,7 +2,9 @@ package com.pobluesky.backend.domain.inquiry.controller;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteUpdateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -257,5 +259,26 @@ public class InquiryController {
         InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("customers/inquiries/{userId}/{productType}/favorite")
+    @Operation(summary = "고객사 전체 Inquiry 목록 조회 (제품 유형별, 즐겨찾기 상태 포함)")
+    public ResponseEntity<JsonResult> getFavoriteInquiries(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable ProductType productType
+    ) {
+        List<InquiryFavoriteResponseDTO> response = inquiryService.getFavoriteInquiriesForCustomer(token, userId, productType);
+        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @PutMapping("customers/inquiries/{inquiryId}/favorite")
+    @Operation(summary = "고객사가 전체 Inquiry 목록 중 즐겨찾기할 경우 상태 업데이트")
+    public ResponseEntity<JsonResult> updateFavoriteInquiryStatus(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        InquiryFavoriteUpdateResponseDTO response = inquiryService.updateFavoriteInquiryStatus(token, inquiryId);
+        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
 }
