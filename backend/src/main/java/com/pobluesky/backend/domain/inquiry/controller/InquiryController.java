@@ -2,7 +2,6 @@ package com.pobluesky.backend.domain.inquiry.controller;
 
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteUpdateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
@@ -13,6 +12,7 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
+
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -275,12 +275,12 @@ public class InquiryController {
 
     @PutMapping("customers/inquiries/{inquiryId}/favorite")
     @Operation(summary = "고객사가 전체 Inquiry 목록 중 즐겨찾기할 경우 상태 업데이트")
-    public ResponseEntity<JsonResult> updateFavoriteInquiryStatus(
+    public ResponseEntity<CommonResult> updateFavoriteInquiryStatus(
         @RequestHeader("Authorization") String token,
         @PathVariable Long inquiryId
     ) {
-        InquiryFavoriteUpdateResponseDTO response = inquiryService.updateFavoriteInquiryStatus(token, inquiryId);
+        inquiryService.updateFavoriteInquiryStatus(token, inquiryId);
 
-        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
+        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 }

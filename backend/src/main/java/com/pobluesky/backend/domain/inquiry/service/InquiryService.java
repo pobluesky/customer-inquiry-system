@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteUpdateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
@@ -439,7 +438,7 @@ public class InquiryService {
     }
 
     @Transactional
-    public InquiryFavoriteUpdateResponseDTO updateFavoriteInquiryStatus(String token, Long inquiryId) {
+    public void updateFavoriteInquiryStatus(String token, Long inquiryId) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -452,7 +451,5 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         inquiry.updateFavorite();
-
-        return InquiryFavoriteUpdateResponseDTO.from(inquiry);
     }
 }
