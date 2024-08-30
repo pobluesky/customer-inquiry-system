@@ -1,4 +1,4 @@
-package com.pobluesky.config.global.error;
+package com.pobluesky.user.global.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

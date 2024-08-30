@@ -1,9 +1,10 @@
-package com.pobluesky.config.global.error;
+package com.pobluesky.user.global.error;
 
+import com.pobluesky.user.global.util.ResponseFactory;
+import com.pobluesky.user.global.util.model.CommonResult;
 
-import com.pobluesky.config.global.util.ResponseFactory;
-import com.pobluesky.config.global.util.model.CommonResult;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

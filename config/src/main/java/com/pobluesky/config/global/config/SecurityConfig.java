@@ -1,8 +1,10 @@
-package com.pobluesky.config.global.config;
+package com.pobluesky.user.global.config;
 
-import com.pobluesky.config.global.security.JwtAuthenticationFilter;
-import com.pobluesky.config.global.security.JwtTokenProvider;
+import com.pobluesky.user.global.security.JwtAuthenticationFilter;
+import com.pobluesky.user.global.security.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

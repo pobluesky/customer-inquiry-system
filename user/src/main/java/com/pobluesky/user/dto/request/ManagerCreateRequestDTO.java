@@ -1,8 +1,8 @@
 package com.pobluesky.user.dto.request;
 
+import com.pobluesky.config.global.security.UserRole;
 import com.pobluesky.user.entity.Department;
 import com.pobluesky.user.entity.Manager;
-import com.pobluesky.user.entity.UserRole;
 
 public record ManagerCreateRequestDTO(
     String name,

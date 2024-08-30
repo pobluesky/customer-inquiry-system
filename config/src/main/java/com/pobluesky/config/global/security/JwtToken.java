@@ -1,5 +1,6 @@
-package com.pobluesky.config.global.security;
+package com.pobluesky.user.global.security;
 
+import com.pobluesky.user.entity.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

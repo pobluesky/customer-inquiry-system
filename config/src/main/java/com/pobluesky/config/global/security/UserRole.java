@@ -1,4 +1,4 @@
-package com.pobluesky.config.global.security;
+package com.pobluesky.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

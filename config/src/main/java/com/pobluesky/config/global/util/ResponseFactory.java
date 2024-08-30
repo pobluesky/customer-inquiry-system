@@ -1,8 +1,7 @@
-package com.pobluesky.config.global.util;
+package com.pobluesky.user.global.util;
 
-
-import com.pobluesky.config.global.util.model.CommonResult;
-import com.pobluesky.config.global.util.model.JsonResult;
+import com.pobluesky.user.global.util.model.CommonResult;
+import com.pobluesky.user.global.util.model.JsonResult;
 
 public class ResponseFactory {
 

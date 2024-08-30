@@ -1,5 +1,6 @@
 package com.pobluesky.user.entity;
 
+import com.pobluesky.config.global.security.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
