@@ -263,6 +263,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 })
                 console.log('Review posted successfully:', reviewResponse);
                 console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting review:', error);
             }
