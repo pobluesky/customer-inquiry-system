@@ -13,9 +13,7 @@ import FileItem from '../../molecules/FileItem';
 const FileForm = ({ fileForm, formData, handleFormDataChange, onRefFile }) => {
     const [isChecked, setCheck] = useState(true);
     const [files, setFiles] = useState(formData.files || []);
-    const [inputKey, setInputKey] = useState(Date.now()); // 파일 입력 필드의 key 관리
-
-    console.log(inputKey)
+    const [inputKey, setInputKey] = useState(Date.now());
 
     const btnName = ['파일업로드', '파일삭제'];
 

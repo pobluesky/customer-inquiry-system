@@ -2,7 +2,6 @@ import React from 'react';
 import { _FileItem, _FileName } from '../../assets/css/Form.css';
 
 const FileItem = ({ files }) => {
-    console.log(files)
     return (
         <div className={_FileItem}>
             {files.length === 1 ? (
