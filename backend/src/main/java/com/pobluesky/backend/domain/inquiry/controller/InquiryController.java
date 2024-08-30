@@ -263,24 +263,26 @@ public class InquiryController {
 
     @GetMapping("customers/inquiries/{userId}/{productType}/all")
     @Operation(summary = "제품 유형에 따른 고객의 전체 Inquiry 목록 조회")
-    public ResponseEntity<JsonResult> getInquiriesByProductType(
+    public ResponseEntity<JsonResult> getAllInquiriesByProductType(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @PathVariable ProductType productType
     ) {
-        List<InquiryFavoriteResponseDTO> response = inquiryService.getInquiriesByProductType(token, userId, productType);
+        List<InquiryFavoriteResponseDTO> response =
+            inquiryService.getAllInquiriesByProductType(token, userId, productType);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
 
     @GetMapping("customers/inquiries/{userId}/{productType}/favorite")
     @Operation(summary = "제품 유형에 따른 고객의 즐겨찾기 Inquiry 목록 조회")
-    public ResponseEntity<JsonResult> getFavoriteInquiries(
+    public ResponseEntity<JsonResult> getFavoriteInquiriesByProductType(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @PathVariable ProductType productType
     ) {
-        List<InquiryFavoriteResponseDTO> response = inquiryService.getFavoriteInquiriesByProductType(token, userId, productType);
+        List<InquiryFavoriteResponseDTO> response =
+            inquiryService.getFavoriteInquiriesByProductType(token, userId, productType);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
