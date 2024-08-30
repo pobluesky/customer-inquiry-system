@@ -38,7 +38,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
     const copyRows = () => {
         const copiedRows = selectedRows.map(id => {
             const rowToCopy = rows.find(row => row.id === id);
-            return { ...rowToCopy, id: Date.now() + Math.random() }; // 새 아이디 생성
+            return { ...rowToCopy, id: Date.now() + Math.random() };
         });
         setRows([...rows, ...copiedRows]);
         setSelectedRows([]);

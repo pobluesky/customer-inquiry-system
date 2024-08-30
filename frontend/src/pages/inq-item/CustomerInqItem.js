@@ -235,7 +235,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 <RequestBar requestBarTitle={'Inquiry 조회'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             ) : (
-                <RequestBar requestBarTitle={'Inquiry 상세조회'} role={'customer'}
+                <RequestBar requestBarTitle={'Inquiry 상세조회5'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             )}
 

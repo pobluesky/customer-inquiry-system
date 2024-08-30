@@ -141,7 +141,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
+            <RequestBar requestBarTitle={"Inquiry 등록0"} role={"customer"}
                         onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
