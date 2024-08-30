@@ -142,8 +142,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getReviews(id);
             setReviewData(response.data);
             setIsReviewItem(true);
-            console.log("getReview: ", response.data);
-            if (response.data.finalReviewText !== "") {
+            if (response.data.finalReviewText === null) {
+                setIsFinalReview(false)
+            } else if (true) {
                 setIsFinalReview(true);
             }
             return response.data;

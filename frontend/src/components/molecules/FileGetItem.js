@@ -10,9 +10,6 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
         }
    }, [pastFile, currentFile]);
 
-    console.log("pastFile: " + pastFile)
-    console.log("currentFile: " + currentFile)
-
     return (
         <div className={_FileItem}>
             {(typeof pastFile === 'undefined' || pastFile === null)
