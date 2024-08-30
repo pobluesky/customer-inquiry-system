@@ -21,6 +21,7 @@ const InquiryHistoryForm = ({
     productType,
     lineItemData,
     onLineItemsChange,
+    onRefLineItems,
 }) => {
     // 라인아이템 등록
     const [localData, setLocalData] = useState(lineItemData);
@@ -29,12 +30,16 @@ const InquiryHistoryForm = ({
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
-    // const handleFieldChange = (index, field, value) => {
-    //     const updatedData = [...localData];
-    //     updatedData[index] = { ...updatedData[index], [field]: value };
-    //     setLocalData(updatedData);
-    //     onLineItemsChange(updatedData);
-    // };
+    const onResetLineItems = () => {
+        setLocalData([]);
+        onLineItemsChange([]);
+    }
+
+    useEffect(() => {
+        if (onRefLineItems) {
+            onRefLineItems(onResetLineItems);
+        }
+    }, [onRefLineItems]);
 
     const handleFieldChange = (index, field, value) => {
         setLocalData(prevData => {
@@ -47,7 +52,6 @@ const InquiryHistoryForm = ({
         });
         onLineItemsChange(localData); // 상태 업데이트
     };
-
 
     useEffect(() => {
         if (lineItemData && lineItemData.length > 0) {

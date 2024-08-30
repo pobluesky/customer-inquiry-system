@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from "../../components/molecules/RequestBar";
 import {
@@ -20,6 +20,8 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId, role, userName } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const lineItemsRef = useRef(null);
+    const fileRef = useRef(null);
 
     const [userInfo, setUserInfo] = useState(null);
 
@@ -106,6 +108,14 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             salesPerson: '',
             lineItemResponseDTOs: [],
         })
+
+        if (lineItemsRef.current) {
+            lineItemsRef.current();
+        }
+
+        if (fileRef.current) {
+            fileRef.current();
+        }
     }
 
     useEffect(() => {
@@ -130,7 +140,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
 
     return (
         <div className={InqTableContainer}>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
             <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
                         onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
@@ -142,6 +152,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 handleFormDataChange={handleFormDataChange}
             />
             <InquiryHistoryForm
+                onRefLineItems={(func) => (lineItemsRef.current = func)}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange(
@@ -150,6 +161,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
             <FileForm fileForm={"파일첨부"} formData={formData}
+                      onRefFile={(func) => (fileRef.current = func)}
                       handleFormDataChange={handleFormDataChange} />
         </div>
     );

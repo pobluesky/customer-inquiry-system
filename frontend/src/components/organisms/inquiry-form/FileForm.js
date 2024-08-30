@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Container,
     Sheet,
@@ -10,21 +10,44 @@ import ToggleBar from '../../molecules/ToggleBar';
 import Button from '../../atoms/Button';
 import FileItem from '../../molecules/FileItem';
 
-const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
+const FileForm = ({ fileForm, formData, handleFormDataChange, onRefFile }) => {
     const [isChecked, setCheck] = useState(true);
-    const [files, setFiles] = useState(formData.files || null);
+    const [files, setFiles] = useState(formData.files || []);
+    const [inputKey, setInputKey] = useState(Date.now()); // 파일 입력 필드의 key 관리
+
+    console.log(inputKey)
 
     const btnName = ['파일업로드', '파일삭제'];
 
+    const onResetFiles = () => {
+        setFiles([]);
+        handleFormDataChange('files', []);
+        setInputKey(Date.now());
+    }
+
+    useEffect(() => {
+        if (onRefFile) {
+            onRefFile(onResetFiles);
+        }
+    }, [onRefFile]);
+
     const handleFileUpload = (event) => {
-        const selectedFile = event.target.files[0];
-        setFiles(selectedFile);
-        handleFormDataChange('files', selectedFile);
+        const selectedFiles = Array.from(event.target.files);
+
+        if (selectedFiles.length > 0) {
+            const updatedFiles = [...selectedFiles];
+            setFiles(updatedFiles);
+            handleFormDataChange('files', updatedFiles);
+
+            // 입력 필드 값 초기화
+            event.target.value = null;
+        }
     };
 
     const handleFileDelete = () => {
-        setFiles(null);
-        handleFormDataChange('files', null);
+        setFiles([]);
+        handleFormDataChange('files', []);
+        setInputKey(Date.now());
     };
 
     const isUploadSection = fileForm === '파일첨부' || fileForm === '첨부파일';
@@ -87,22 +110,18 @@ const FileForm = ({ fileForm, formData, handleFormDataChange }) => {
                                 {/* 파일 목록 */}
                                 <FileItem
                                     inquiryId={formData.inquiryId}
-                                    files={files ? [files] : []}
+                                    files={files}
                                 />
                             </div>
                         ) : (
                             <div>
-                                {/* 협업첨부파일의 경우 */}
+                                {/* 첨부파일의 경우 */}
                                 <div className={FileColumn}>
                                     <div>진행단계</div>
                                     <div>첨부파일명</div>
                                 </div>
                                 <FileItem
-                                    files={
-                                        files
-                                            ? [files]
-                                            : ['조회된 파일이 없습니다.']
-                                    }
+                                    files={files}
                                 />
                             </div>
                         )}
