@@ -309,6 +309,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
                 console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
             }
