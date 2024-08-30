@@ -9,7 +9,7 @@ import {
 import {
     getInquiryDetailByManagers,
 } from '../../apis/api/inquiry';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import {
     getQualities,
@@ -35,7 +35,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
-    const { userId } = useAuth();
+    const { userId, role } = useAuth();
+    const navigate = useNavigate();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -202,7 +203,9 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 console.log('Quality posted successfully:', qualityResponse);
                 console.log('CustomerNotification posted successfully:', customerNotificationResponse);
                 // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
-
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting quality:', error);
             }
@@ -244,7 +247,10 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                                  handleFormDataChange={handleFormDataChange} />
             )}
 
-            <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
+            <FileFormItem
+                          fileForm={'첨부파일'}
+                          formData={inquiriesDataDetail}
+            />
         </div>
     )
 }

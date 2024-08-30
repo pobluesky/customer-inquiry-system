@@ -160,7 +160,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             />
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
-            <FileForm fileForm={"파일첨부"} formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}
                       handleFormDataChange={handleFormDataChange} />
         </div>

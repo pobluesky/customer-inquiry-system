@@ -10,7 +10,7 @@ import {
 import {
     getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import {
     getQualities,
@@ -45,7 +45,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
-    const { userId, userName } = useAuth();
+    const { userId, userName, role } = useAuth();
+    const navigate = useNavigate();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -279,6 +280,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 // })
                 console.log('Notification posted successfully:', customerNotificationResponse);
                 // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting notification:', error);
             }
