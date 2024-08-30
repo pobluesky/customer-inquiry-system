@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.3'
+    id 'org.springframework.boot' version '3.2.8'
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -20,6 +20,7 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -27,7 +28,14 @@ ext {
     set('springCloudVersion', "2023.0.3")
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
+    implementation 'com.pobluesky:config:0.0.1-SNAPSHOT'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
@@ -36,13 +44,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
+
 
 tasks.named('test') {
     useJUnitPlatform()
