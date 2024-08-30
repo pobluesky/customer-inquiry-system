@@ -31,15 +31,10 @@ const FileForm = ({ fileForm, formData, handleFormDataChange, onRefFile }) => {
 
     const handleFileUpload = (event) => {
         const selectedFiles = Array.from(event.target.files);
-
-        if (selectedFiles.length > 0) {
-            const updatedFiles = [...selectedFiles];
-            setFiles(updatedFiles);
-            handleFormDataChange('files', updatedFiles);
-
-            // 입력 필드 값 초기화
-            event.target.value = null;
-        }
+        const updatedFiles = [...selectedFiles];
+        setFiles(updatedFiles);
+        handleFormDataChange('files', updatedFiles[0]);
+        event.target.value = null;
     };
 
     const handleFileDelete = () => {

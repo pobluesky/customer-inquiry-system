@@ -13,22 +13,19 @@ import QualityFileItem from '../../../molecules/QualityFileItem';
 
 const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
     const [isChecked, setCheck] = useState(true);
-    const [qualityFiles, setQualityFiles] = useState(formData.qualityFiles || null);
+    const [qualityFiles, setQualityFiles] = useState(formData.qualityFiles || []);
     const [inputKey, setInputKey] = useState(Date.now());
 
     const btnName = ['파일업로드', '파일삭제'];
 
     const handleFileUpload = (event) => {
         const selectedFiles = Array.from(event.target.files);
-
-        if (selectedFiles.length > 0) {
-            const updatedFiles = [...selectedFiles];
-            setQualityFiles(updatedFiles);
-            handleFormDataChange('files', updatedFiles);
-
-            // 입력 필드 값 초기화
-            event.target.value = null;
-        }
+        console.log("selectedFiles: ", selectedFiles)
+        const updatedFiles = [...selectedFiles];
+        console.log("updatedFiles: ", updatedFiles)
+        setQualityFiles(updatedFiles);
+        handleFormDataChange('qualityFiles', updatedFiles[0]);
+        event.target.value = null;
     };
 
     const handleFileDelete = () => {
