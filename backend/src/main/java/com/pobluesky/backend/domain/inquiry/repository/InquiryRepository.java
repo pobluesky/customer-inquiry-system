@@ -1,11 +1,11 @@
 package com.pobluesky.backend.domain.inquiry.repository;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.user.entity.Manager;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.pobluesky.backend.domain.user.entity.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
