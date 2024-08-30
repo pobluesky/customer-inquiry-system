@@ -421,9 +421,8 @@ public class InquiryService {
         Customer customer = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), customerId)) {
+        if (!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
 
         List<Inquiry> inquiries = inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
 
