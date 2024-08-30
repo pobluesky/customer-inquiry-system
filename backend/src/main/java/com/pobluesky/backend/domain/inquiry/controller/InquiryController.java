@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.inquiry.controller;
 
+import com.amazonaws.Response;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
@@ -17,6 +18,7 @@ import com.pobluesky.backend.global.util.model.JsonResult;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -255,6 +257,46 @@ public class InquiryController {
         @PathVariable Long inquiryId
     ) {
         InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/managers/inquiries/dashboard/average-monthly")
+    @Operation(summary = "월별 Inquiry 주문 처리 소요일 평균")
+    public ResponseEntity<Map<String, List<Object[]>>> averageMonthlyInquiry(
+            @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = inquiryService.getAverageDaysPerMonth(token);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/managers/inquiries/dashboard/counts-by-progress")
+    @Operation(summary = "전체 Inquiry 검토 현황별 건수")
+    public ResponseEntity<Map<String, List<Object[]>>> getInquiryCountsByManager(
+            @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = inquiryService.getInquiryCountsByProgress(token);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/managers/inquiries/dashboard/percentage-completed-uncompleted")
+    @Operation(summary = " Inquiry 주문 완료 및 미완료 비중")
+    public ResponseEntity<Map<String, Map<String, String>>> getInquiryPercentageCompletedUncompleted(
+            @RequestHeader("Authorization") String token
+    ) {
+        Map<String, Map<String, String>> response = inquiryService.getInquiryPercentageCompletedUncompleted(token);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/managers/inquiries/dashboard/counts-by-productType")
+    @Operation(summary = "전체 제품별 주문 처리 현황")
+    public ResponseEntity<Map<String, List<Object[]>>> getInquiryCountsByProductType(
+            @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = inquiryService.getInquiryCountsByProductType(token);
 
         return ResponseEntity.ok(response);
     }
