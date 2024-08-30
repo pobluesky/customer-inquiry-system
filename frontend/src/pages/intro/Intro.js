@@ -46,7 +46,7 @@ function Intro() {
             <SecondIntro />
             <ThirdIntro />
             <FourthIntro /> */}
-            {currentUserRole === 'CUSTOMER' ? (
+            {currentUserRole === 'customer' ? (
                 <div
                     style={{
                         margin: '5vh 0 0 0',

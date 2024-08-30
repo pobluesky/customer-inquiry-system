@@ -139,7 +139,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     const getProgress = async () => {
         try {
             const response = await getInquiryDetail(userId, id);
-            if (response.data.progress === 'SUBMIT' && role === 'CUSTOMER') {
+            if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
             } else {
                 setIsUpdate(false);

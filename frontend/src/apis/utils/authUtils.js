@@ -20,7 +20,7 @@ const signInApi = async (endpoint, credentials) => {
                 maxAge: 7 * 24 * 60 * 60,
             });
 
-            setCookie('userRole', userRole, {
+            setCookie('userRole', userRole.toLowerCase(), {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60,
             });

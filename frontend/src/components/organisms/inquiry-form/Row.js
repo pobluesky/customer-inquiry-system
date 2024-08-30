@@ -42,10 +42,10 @@ function Row({ row, role }, ref) {
     }));
 
     useEffect(() => {
-        if (role === 'SALES') {
+        if (role === 'sales') {
             setIsDisabled(row.salesManagerName !== '-');
             setIsChecked(row.salesManagerName !== '-');
-        } else if (role === 'QUALITY') {
+        } else if (role === 'quality') {
             setIsDisabled(row.qualityManagerName !== '-');
             setIsChecked(row.qualityManagerName!== '-');
         } else {
