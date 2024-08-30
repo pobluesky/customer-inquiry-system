@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 import { Chart_Container } from '../../assets/css/Chart.css';
 
-// 월별 Inquiry 접수-주문 체결 평균 처리 기간
-class InquiryMonthlyFilledOrderChart extends Component {
+// 전체 Inquiry 검토 현황별 건수
+class InquiryProgressCountChart extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             options: {
                 chart: {
-                    id: '월별 Inquiry 접수-주문 체결 평균 처리 기간',
+                    id: '전체 Inquiry 검토 현황별 건수',
                     toolbar: {
                         show: false,
                     },
@@ -20,18 +20,13 @@ class InquiryMonthlyFilledOrderChart extends Component {
                 },
                 xaxis: {
                     categories: [
-                        '1월',
-                        '2월',
-                        '3월',
-                        '4월',
-                        '5월',
-                        '6월',
-                        '7월',
-                        '8월',
-                        '9월',
-                        '10월',
-                        '11월',
-                        '12월',
+                        '1step',
+                        '2step',
+                        '3step',
+                        '4step',
+                        '5step',
+                        '6step',
+                        '7step',
                     ],
                     axisTicks: {
                         show: false,
@@ -44,12 +39,19 @@ class InquiryMonthlyFilledOrderChart extends Component {
                     show: false,
                 },
                 stroke: {
-                    curve: 'smooth', // straight
+                    width: [0, 4],
+                },
+                markers: {
+                    size: 2, // 라인 차트 위에 표현되는 마커
+                    strokeColors: '#00DFA2',
+                    hover: {
+                        size: 4,
+                    },
                 },
                 fill: {
                     type: 'solid', // 'gradient', 'solid', 'pattern', 'image'
                 },
-                colors: ['#0079FF', '#FF0060'],
+                colors: ['#FF0060', '#00DFA2'],
                 yaxis: [
                     {
                         axisBorder: {
@@ -65,8 +67,8 @@ class InquiryMonthlyFilledOrderChart extends Component {
                                 cssClass: 'apexcharts-yaxis-title',
                             },
                         },
-                        min: 100,
-                        max: 120,
+                        min: 0,
+                        max: 700,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -90,7 +92,7 @@ class InquiryMonthlyFilledOrderChart extends Component {
                             },
                         },
                         min: 0,
-                        max: 20,
+                        max: 50,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -99,6 +101,7 @@ class InquiryMonthlyFilledOrderChart extends Component {
                         },
                     },
                 ],
+
                 legend: {
                     show: true,
                     position: 'bottom',
@@ -123,7 +126,7 @@ class InquiryMonthlyFilledOrderChart extends Component {
                     },
                 },
                 title: {
-                    text: '월별 Inquiry 접수-주문 체결 평균 처리 기간',
+                    text: '전체 Inquiry 검토 현황별 건수',
                     align: 'center',
                     margin: 10,
                     floating: false,
@@ -137,18 +140,14 @@ class InquiryMonthlyFilledOrderChart extends Component {
             },
             series: [
                 {
-                    name: '전체 평균',
-                    data: [
-                        105.2, 106.1, 107.6, 104.9, 108.9, 104.5, 112.5, 110.7,
-                        106.8, 108.4, 115.1, 109.8,
-                    ],
+                    name: '전체 평균', // 평균으로 하면 어떨지?
+                    type: 'column',
+                    data: [440, 505, 414, 671, 227, 413, 201],
                 },
                 {
                     name: '나의 평균',
-                    data: [
-                        0.88, 3.01, 6.16, 2.5, 1.02, 4.47, 3.85, 5.71, 5.47,
-                        8.35, 5.24, 7.98,
-                    ],
+                    type: 'line',
+                    data: [23, 42, 35, 27, 43, 22, 17],
                 },
             ],
         };
@@ -169,4 +168,4 @@ class InquiryMonthlyFilledOrderChart extends Component {
     }
 }
 
-export default InquiryMonthlyFilledOrderChart;
+export default InquiryProgressCountChart;
