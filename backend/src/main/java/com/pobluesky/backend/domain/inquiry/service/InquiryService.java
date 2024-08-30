@@ -414,7 +414,7 @@ public class InquiryService {
         return InquiryAllocateResponseDTO.from(inquiry);
     }
 
-    public List<InquiryFavoriteResponseDTO> getFavoriteInquiriesForCustomer(String token, Long customerId, ProductType productType) {
+    public List<InquiryFavoriteResponseDTO> getInquiriesByProductType(String token, Long customerId, ProductType productType) {
         Long userId = signService.parseToken(token);
 
         Customer customer = customerRepository.findById(userId)
@@ -424,6 +424,29 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         List<Inquiry> inquiries = inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
+
+        if (inquiries.isEmpty()) {
+            throw new CommonException(ErrorCode.INQUIRY_LIST_EMPTY);
+        }
+
+        return inquiries.stream()
+            .map(inquiry -> {
+                List<LineItemResponseDTO> lineItems = lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
+                return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<InquiryFavoriteResponseDTO> getFavoriteInquiriesByProductType(String token, Long customerId, ProductType productType) {
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<Inquiry> inquiries = inquiryRepository.findInquiriesByCustomerIdAndProductTypeAndFavorite(customerId, productType);
 
         if (inquiries.isEmpty()) {
             throw new CommonException(ErrorCode.INQUIRY_LIST_EMPTY);

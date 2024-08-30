@@ -19,6 +19,18 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
     @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.isActivated = true")
     Optional<Inquiry> findActiveInquiryByInquiryId(Long inquiryId);
 
-    @Query("SELECT i FROM Inquiry i WHERE i.customer.userId = :customerId AND i.productType = :productType AND i.isActivated = true ORDER BY i.createdDate DESC")
+    @Query("SELECT i FROM Inquiry i "
+        + "WHERE i.customer.userId = :customerId "
+        + "AND i.productType = :productType "
+        + "AND i.isActivated = true "
+        + "ORDER BY i.createdDate DESC")
     List<Inquiry> findInquiriesByCustomerIdAndProductType(Long customerId, ProductType productType);
+
+    @Query("SELECT i FROM Inquiry i "
+        + "WHERE i.customer.userId = :customerId "
+        + "AND i.productType = :productType "
+        + "AND i.isActivated = true "
+        + "AND i.isFavorite = true "
+        + "ORDER BY i.createdDate DESC")
+    List<Inquiry> findInquiriesByCustomerIdAndProductTypeAndFavorite(Long customerId, ProductType productType);
 }
