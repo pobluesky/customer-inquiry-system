@@ -7,11 +7,8 @@ import {
     QualityCompleteAlert, QualityReviewCompleteAlert,
 } from '../../utils/actions';
 import {
-    getInquiryByManagers,
-    getInquiryDetail, getInquiryDetailByManagers,
     putProgress,
 } from '../../apis/api/inquiry';
-import { displayName } from 'react-quill';
 
 function RequestBar({
     requestBarTitle,
