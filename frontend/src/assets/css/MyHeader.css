@@ -1,0 +1,97 @@
+/******************************************************************/
+/* 헤더 ***********************************************************/
+/******************************************************************/
+.Header_Container > div {
+    margin: 0 auto 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 0 8px 0;
+    font-family: 'Pretendard-Regular';
+    font-weight: 600;
+}
+
+.Header_Container > div > div {
+    display: flex;
+}
+
+/* 상단 섹션 */
+.Header_Container > div > div:first-child {
+    width: 1320px;
+    align-content: center;
+    margin: 8px auto 0 auto;
+    font-size: 14px;
+}
+
+.Header_Container > div hr {
+    width: 100%;
+    border: 1px solid #d5dbe2;
+}
+
+/* 하단 섹션 */
+.Header_Container > div > div:nth-child(3) {
+    width: 1320px;
+    margin: 0 auto 0 auto;
+}
+
+/* pobluesky 로고 + 상세 메뉴 + 프로필 사진 + 회원명 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(1),
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+/* pobluesky 로고 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(1)
+    > div:nth-child(1)
+    img {
+    width: 96px;
+    cursor: pointer;
+    margin: 0 36px 0 0;
+}
+
+/* 프로필 사진 + 회원명 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) {
+    margin: 0 0 0 auto;
+}
+
+/* 프로필 사진 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(2)
+    > div:nth-child(1)
+    img {
+    height: 36px;
+    cursor: pointer;
+    margin: 4px 0 0 0;
+}
+
+/* 프로필 사진, 회원명 간 간격 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) > :nth-child(n) {
+    margin: 0 0 0 24px;
+}
+
+/******************************************************************/
+/* 사용자 정보 모달 ************************************************/
+/******************************************************************/
+.Modal_Container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translate(-50%, 0);
+    pointer-events: none;
+}
+
+.Modal_Container > div {
+    position: relative;
+    width: 180px;
+    height: fit-content;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    float: right;
+    pointer-events: auto;
+}

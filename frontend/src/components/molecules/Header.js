@@ -21,7 +21,7 @@ export const MenuLink = styled(Link)`
 
 function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
-    const { didLogin, logout, userId, role } = useAuth();
+    const { didLogin, userId, role } = useAuth();
 
     const url = `/inq-list/${role?.toLowerCase()}`;
 

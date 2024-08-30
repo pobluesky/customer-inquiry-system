@@ -4,7 +4,6 @@ import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
 import readBell from '../../assets/css/icons/readBell.svg';
 import readCircle from '../../assets/css/icons/readCircle.svg';
-
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
@@ -96,13 +95,13 @@ const NotificationModal = ({ onClose }) => {
             <Title>알림</Title>
             <ModalTabs>
                 <TabButton
-                    active={activeTab === 'new'}
+                    $active={activeTab === 'new'}
                     onClick={() => switchTab('new')}
                 >
                     새 알림
                 </TabButton>
                 <TabButton
-                    active={activeTab === 'read'}
+                    $active={activeTab === 'read'}
                     onClick={() => switchTab('read')}
                 >
                     읽은 알림
@@ -116,7 +115,7 @@ const NotificationModal = ({ onClose }) => {
                             newNotificationList.map((notification) => (
                                 <NotificationBox
                                     key={notification.id}
-                                    read={false}
+                                    $read={false}
                                 >
                                     <div>
                                         <img src={bell} alt="notification" />
@@ -149,7 +148,7 @@ const NotificationModal = ({ onClose }) => {
                             readNotificationList.map((notification) => (
                                 <NotificationBox
                                     key={notification.id}
-                                    read={true}
+                                    $read={true}
                                 >
                                     <div>
                                         <img
@@ -163,7 +162,7 @@ const NotificationModal = ({ onClose }) => {
                                         <span>{notification.contents}</span>
                                     </NotificationText>
                                     <div>
-                                    <img
+                                        <img
                                             src={readCircle}
                                             alt="notification"
                                         />
@@ -209,9 +208,9 @@ const TabButton = styled.button`
     border: none;
     font-size: 16px;
     width: 200px;
-    color: ${(props) => (props.active ? '#03507d' : '#C1C1C1')};
-    font-weight: ${(props) => (props.active ? '800' : '600')};
-    border-bottom: ${(props) => (props.active ? '1px solid #03507d' : 'none')};
+    color: ${(props) => (props.$active ? '#03507d' : '#C1C1C1')};
+    font-weight: ${(props) => (props.$active ? '800' : '600')};
+    border-bottom: ${(props) => (props.$active ? '1px solid #03507d' : 'none')};
 `;
 
 const NotificationList = styled.div`
@@ -239,8 +238,8 @@ const NotificationBox = styled.div`
     }
 
     &:hover {
-        ${({ read }) =>
-            !read &&
+        ${({ $read }) =>
+            !$read &&
             `
       background-color: #9bccff;
       border: 1px solid #c1c1c1;
@@ -253,8 +252,8 @@ const NotificationBox = styled.div`
     `}
     }
 
-    ${({ read }) =>
-        read &&
+    ${({ $read }) =>
+        $read &&
         `
       background-color: #ffffff;
       border: 1px solid #ababab;
