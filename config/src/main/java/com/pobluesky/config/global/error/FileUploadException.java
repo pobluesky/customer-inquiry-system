@@ -1,4 +1,4 @@
-package com.pobluesky.user.global.error;
+package com.pobluesky.config.global.error;
 
 public class FileUploadException extends RuntimeException {
     public FileUploadException() {

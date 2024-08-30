@@ -1,4 +1,4 @@
-package com.pobluesky.user.global.util.model;
+package com.pobluesky.config.global.util.model;
 
 import lombok.Getter;
 

@@ -1,7 +1,7 @@
-package com.pobluesky.user.global.config;
+package com.pobluesky.config.global.config;
 
-import com.pobluesky.user.global.security.JwtAuthenticationFilter;
-import com.pobluesky.user.global.security.JwtTokenProvider;
+import com.pobluesky.config.global.security.JwtAuthenticationFilter;
+import com.pobluesky.config.global.security.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 

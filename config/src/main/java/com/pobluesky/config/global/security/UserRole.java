@@ -1,4 +1,4 @@
-package com.pobluesky.user.entity;
+package com.pobluesky.config.global.security;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ public enum UserRole {
     CUSTOMER("CUSTOMER"),
     SALES("ROLE_SALES"),
     QUALITY("ROLE_QUALITY");
-
 
     private final String role;
 }

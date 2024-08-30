@@ -1,4 +1,4 @@
-package com.pobluesky.user.global.security;
+package com.pobluesky.config.global.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

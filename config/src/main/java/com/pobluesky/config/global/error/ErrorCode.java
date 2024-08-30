@@ -1,8 +1,7 @@
-package com.pobluesky.user.global.error;
+package com.pobluesky.config.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import org.springframework.http.HttpStatus;
 
 @Getter

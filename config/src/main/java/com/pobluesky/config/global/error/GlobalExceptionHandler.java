@@ -1,7 +1,7 @@
-package com.pobluesky.user.global.error;
+package com.pobluesky.config.global.error;
 
-import com.pobluesky.user.global.util.ResponseFactory;
-import com.pobluesky.user.global.util.model.CommonResult;
+import com.pobluesky.config.global.util.ResponseFactory;
+import com.pobluesky.config.global.util.model.CommonResult;
 
 import lombok.extern.slf4j.Slf4j;
 

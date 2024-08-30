@@ -1,4 +1,4 @@
-package com.pobluesky.user.global;
+package com.pobluesky.config.global;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

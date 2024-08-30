@@ -1,8 +1,7 @@
-package com.pobluesky.user.global.security;
+package com.pobluesky.config.global.security;
 
-import com.pobluesky.user.entity.UserRole;
-import com.pobluesky.user.global.error.CommonException;
-import com.pobluesky.user.global.error.ErrorCode;
+import com.pobluesky.config.global.error.CommonException;
+import com.pobluesky.config.global.error.ErrorCode;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
