@@ -36,6 +36,8 @@ import CustomerInqUpdateForm from './pages/inq-form/CustomerInqUpdateForm';
 import { getInquiryDetail } from './apis/api/inquiry';
 import { useAuth } from './hooks/useAuth';
 
+import MyHeader from './components/molecules/MyHeader';
+
 function App() {
     return (
         <AuthProvider>
@@ -49,26 +51,60 @@ function App() {
 
                         <Route path="inq-main" element={<InqMain />} />
 
-                        <Route path="inq-form/customer" element={<CustomerInqForm />} />
+                        <Route
+                            path="inq-form/customer"
+                            element={<CustomerInqForm />}
+                        />
 
-                        <Route path="inq-list/customer" element={<CustomerInqTableList />} />
-                        <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
-                        <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
+                        <Route
+                            path="inq-list/customer"
+                            element={<CustomerInqTableList />}
+                        />
+                        <Route
+                            path="inq-list/sales"
+                            element={<SalesManagerInqTableList />}
+                        />
+                        <Route
+                            path="inq-list/quality"
+                            element={<QualityManagerInqTableList />}
+                        />
 
-                         <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
+                        <Route
+                            path="inq-list/customer/:id"
+                            element={<CustomerInqItem />}
+                        />
 
-                        <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
-                        <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
+                        <Route
+                            path="inq-list/sales/:id"
+                            element={<SalesManagerInqItem />}
+                        />
+                        <Route
+                            path="inq-list/quality/:id"
+                            element={<QualityManagerInqItem />}
+                        />
 
                         <Route path="voc-main" element={<VocMain />} />
 
-                        <Route path="voc-form/question" element={<VocQuestionForm />} />
-                        <Route path="voc-form/collaboration" element={<VocColForm />} />
+                        <Route
+                            path="voc-form/question"
+                            element={<VocQuestionForm />}
+                        />
+                        <Route
+                            path="voc-form/collaboration"
+                            element={<VocColForm />}
+                        />
 
-                        <Route path="voc-list/question" element={<VocQuestionList />} />
-                        <Route path="voc-list/collaboration" element={<VocColList />} />
+                        <Route
+                            path="voc-list/question"
+                            element={<VocQuestionList />}
+                        />
+                        <Route
+                            path="voc-list/collaboration"
+                            element={<VocColList />}
+                        />
 
                         <Route path="dashboard" element={<DashBoard />} />
+                        <Route path="header-test" element={<MyHeader />} />
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>
