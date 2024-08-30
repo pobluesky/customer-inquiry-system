@@ -156,9 +156,6 @@ class InquiryMonthlyFilledOrderChart extends Component {
 
     render() {
         return (
-            // <div className="app">
-            //     <div className="row">
-            //         <div className="mixed-chart">
             <div className={Chart_Container}>
                 <Chart
                     options={this.state.options}

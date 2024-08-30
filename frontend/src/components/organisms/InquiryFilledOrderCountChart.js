@@ -76,6 +76,13 @@ class InquiryFilledOrderCountChart extends Component {
                 },
             },
             series2: [30, 70],
+            options: {
+                title: {
+                    text: 'Inquiry 주문 체결 완료 및 미완료 비중',
+                },
+            },
+            series: [44, 56],
+            labels: ['주문 체결 완료', '주문 체결 미완료'],
         };
     }
 
