@@ -1,4 +1,4 @@
-package com.pobluesky.user.entity;
+package com.pobluesky.config.global.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
