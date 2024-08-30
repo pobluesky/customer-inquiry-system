@@ -58,7 +58,7 @@ function Row({ row, role }, ref) {
             <TableRow
                 className={_Table}
                 sx={{ '& > *': { borderBottom: 'unset' }, }}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 onClick={handleClick}
             >
                 <TableCell
