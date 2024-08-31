@@ -29,11 +29,11 @@ const NotificationModal = ({ onClose }) => {
     const fetchNotifications = async () => {
         try {
             let notificationData;
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 notificationData = await getNotificationByCustomers(
                     currentUserId,
                 );
-            } else if (role === 'QUALITY' || role === 'SALES') {
+            } else if (role === 'quality' || role === 'sales') {
                 notificationData = await getNotificationByManagers(
                     currentUserId,
                 );
