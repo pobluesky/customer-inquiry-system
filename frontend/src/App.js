@@ -32,11 +32,6 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import CustomerInqUpdateForm from './pages/inq-form/CustomerInqUpdateForm';
-import { getInquiryDetail } from './apis/api/inquiry';
-import { useAuth } from './hooks/useAuth';
-
-import MyHeader from './components/molecules/MyHeader';
 
 function App() {
     return (
@@ -104,7 +99,6 @@ function App() {
                         />
 
                         <Route path="dashboard" element={<DashBoard />} />
-                        <Route path="header-test" element={<MyHeader />} />
                         {/* Route path="*" element={<Error404 />} /> */}
                     </Routes>
                 </Layout>
