@@ -191,7 +191,7 @@ function QuestionModal({
                     <div>
                         <AnswerContent />
                     </div>
-                ) : isAnswering && status === 'READY' && role !== 'CUSTOMER' ? ( // 답변 입력 중
+                ) : isAnswering && status === 'READY' && role !== 'customer' ? ( // 답변 입력 중
                     <div>
                         <AnswerTitleInput titleChange={titleChange} />
                         <TextEditor
@@ -232,7 +232,7 @@ function QuestionModal({
                 <div>
                     <div>
                         {/* 하단 버튼 좌측 첨부파일란 */}
-                        {role !== 'CUSTOMER' && status === 'READY' && (
+                        {role !== 'customer' && status === 'READY' && (
                             <>
                                 <img src={folder} />
                                 <span>첨부파일</span>
@@ -250,7 +250,7 @@ function QuestionModal({
                             }}
                         />
                     </div>
-                    {status === 'READY' && role !== 'CUSTOMER' && (
+                    {status === 'READY' && role !== 'customer' && (
                         <>
                             {/* [답변하기] */}
                             {!isAnswering && (
@@ -264,7 +264,7 @@ function QuestionModal({
                                 </div>
                             )}
                             {/* 협업 요청] */}
-                            {!isAnswering && role === 'SALES' && (
+                            {!isAnswering && role === 'sales' && (
                                 <div>
                                     <AnswerButton
                                         btnName={'협업 요청'}

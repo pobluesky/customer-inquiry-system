@@ -27,7 +27,7 @@ function MyHeader() {
     const navigate = useNavigate();
     const { didLogin, userId, role } = useAuth();
 
-    const url = `/inq-list/${role?.toLowerCase()}`;
+    const url = `/inq-list/${role}`;
 
     const [name, setName] = useState(null);
     const [, setGlobalName] = useRecoilState(userName);
@@ -61,7 +61,7 @@ function MyHeader() {
 
     const findUserName = async () => {
         try {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 const customer = await getUserInfoByCustomers(userId);
                 setName(customer.data.data.name);
                 setGlobalName(customer.data.data.name);
@@ -222,6 +222,7 @@ function MyHeader() {
                                     </div>
                                     <div>{currentUserName}</div>
                                     <div>
+                                        {/* [To Do] 알림 개수 연동 필요 */}
                                         <button
                                             ref={notificationButtonRef}
                                             onClick={toggleNotifyModal}

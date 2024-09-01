@@ -45,11 +45,11 @@ const NotificationModal = () => {
     const fetchReadNotifications = async () => {
         try {
             let readNotificationData;
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 readNotificationData = await getReadNotificationByCustomers(
                     userId,
                 );
-            } else if (role === 'QUALITY' || role === 'SALES') {
+            } else if (role === 'quality' || role === 'sales') {
                 readNotificationData = await getReadNotificationByManagers(
                     userId,
                 );
@@ -72,9 +72,9 @@ const NotificationModal = () => {
 
     const handleNotificationClick = async (notificationId) => {
         try {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 await updateNotificationIsReadByCustomer(notificationId);
-            } else if (role === 'QUALITY' || role === 'SALES') {
+            } else if (role === 'quality' || role === 'sales') {
                 await updateNotificationIsReadByManager(notificationId);
             }
             fetchNotifications();

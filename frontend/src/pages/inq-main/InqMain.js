@@ -21,7 +21,7 @@ const InqMain = () => {
 
     const checkLogin = () => {
         if (role) {
-            if (role !== 'CUSTOMER') {
+            if (role !== 'customer') {
                 navigate(`/inq-form/customer`);
             }
         } else {
@@ -31,12 +31,12 @@ const InqMain = () => {
 
     return (
         <div className={InqTableContainer}>
-            {role === 'CUSTOMER' ? (
+            {role === 'customer' ? (
                 <InqPath
                     largeCategory={'Inquiry'}
                     mediumCategory={'Inquiry 조회'}
                 />
-            ) : role === 'SALES' ? (
+            ) : role === 'sales' ? (
                 <ManagerInqPath
                     largeCategory={'Inquiry'}
                     mediumCategory={'Inquiry 조회'}
