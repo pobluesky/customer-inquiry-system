@@ -7,6 +7,82 @@ class InquiryProgressCountChart extends Component {
     constructor(props) {
         super(props);
 
+        const { data } = props;
+
+        const managerMaxRange = data.manager.reduce((max, current) => {
+            return current[1] > max[1] ? current : max;
+        }, data.manager[0]);
+
+        const totalMaxRange = data.total.reduce((max, current) => {
+            return current[1] > max[1] ? current : max;
+        }, data.total[0]);
+
+        const maxM =
+            managerMaxRange[1] % 5
+                ? managerMaxRange[1] + 5 - (managerMaxRange[1] % 5)
+                : managerMaxRange[1] + 5;
+
+        const maxT =
+            totalMaxRange[1] % 5
+                ? totalMaxRange[1] + 5 - (totalMaxRange[1] % 5)
+                : totalMaxRange[1] + 5;
+
+        const managerArr = [
+            ['SUBMIT', 0],
+            ['RECEIPT', 0],
+            ['QUALITY_REVIEW_REQUEST', 0],
+            ['QUALITY_REVIEW_RESPONSE', 0],
+            ['QUALITY_REVIEW_COMPLETED', 0],
+            ['FINAL_REVIEW_COMPLETED', 0],
+        ];
+
+        const totalArr = [
+            ['SUBMIT', 0],
+            ['RECEIPT', 0],
+            ['QUALITY_REVIEW_REQUEST', 0],
+            ['QUALITY_REVIEW_RESPONSE', 0],
+            ['QUALITY_REVIEW_COMPLETED', 0],
+            ['FINAL_REVIEW_COMPLETED', 0],
+        ];
+
+        data.manager.map((data) => {
+            switch (data[0]) {
+                case 'SUBMIT':
+                    managerArr[0][1] = data[1];
+                case 'RECEIPT':
+                    managerArr[1][1] = data[1];
+                case 'QUALITY_REVIEW_REQUEST':
+                    managerArr[2][1] = data[1];
+                case 'QUALITY_REVIEW_RESPONSE':
+                    managerArr[3][1] = data[1];
+                case 'QUALITY_REVIEW_COMPLETED':
+                    managerArr[4][1] = data[1];
+                case 'FINAL_REVIEW_COMPLETED':
+                    managerArr[5][1] = data[1];
+                default:
+                    return 0;
+            }
+        });
+
+        data.total.map((data) => {
+            switch (data[0]) {
+                case 'SUBMIT':
+                    totalArr[0][1] = data[1];
+                case 'RECEIPT':
+                    totalArr[1][1] = data[1];
+                case 'QUALITY_REVIEW_REQUEST':
+                    totalArr[2][1] = data[1];
+                case 'QUALITY_REVIEW_RESPONSE':
+                    totalArr[3][1] = data[1];
+                case 'QUALITY_REVIEW_COMPLETED':
+                    totalArr[4][1] = data[1];
+                case 'FINAL_REVIEW_COMPLETED':
+                    totalArr[5][1] = data[1];
+                default:
+                    return 0;
+            }
+        });
+
         this.state = {
             options: {
                 chart: {
@@ -68,7 +144,7 @@ class InquiryProgressCountChart extends Component {
                             },
                         },
                         min: 0,
-                        max: 700,
+                        max: maxT,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -92,7 +168,7 @@ class InquiryProgressCountChart extends Component {
                             },
                         },
                         min: 0,
-                        max: 50,
+                        max: maxM,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -128,7 +204,7 @@ class InquiryProgressCountChart extends Component {
                 title: {
                     text: '전체 Inquiry 검토 현황별 건수',
                     align: 'center',
-                    margin: 10,
+                    margin: 5,
                     floating: false,
                     style: {
                         fontSize: '16px',
@@ -140,14 +216,18 @@ class InquiryProgressCountChart extends Component {
             },
             series: [
                 {
-                    name: '전체 평균', // 평균으로 하면 어떨지?
+                    name: '전체 평균',
                     type: 'column',
-                    data: [440, 505, 414, 671, 227, 413, 201],
+                    data: totalArr.map((data) =>
+                        data[1] !== 0 ? data[1] : null,
+                    ),
                 },
                 {
                     name: '나의 평균',
                     type: 'line',
-                    data: [23, 42, 35, 27, 43, 22, 17],
+                    data: managerArr.map((data) =>
+                        data[1] !== 0 ? data[1] : null,
+                    ),
                 },
             ],
         };
@@ -161,7 +241,7 @@ class InquiryProgressCountChart extends Component {
                     series={this.state.series}
                     type="line"
                     width="450"
-                    height="250"
+                    height="240"
                 />
             </div>
         );

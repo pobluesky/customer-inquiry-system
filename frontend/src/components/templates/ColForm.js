@@ -16,9 +16,6 @@ export default function ColForm() {
         document.body.style.overflow = 'auto';
     }
 
-    console.log(getCookie('userId'))
-    console.log(getCookie('userRole'))
-
     return (
         <div>
             <ColReqFilterPannel
