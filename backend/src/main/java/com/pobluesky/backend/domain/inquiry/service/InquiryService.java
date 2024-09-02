@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -29,6 +30,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -410,5 +412,71 @@ public class InquiryService {
         }
 
         return InquiryAllocateResponseDTO.from(inquiry);
+    }
+
+    public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
+        String token,
+        Long customerId,
+        ProductType productType
+    ) {
+        validateUserAndToken(token, customerId);
+
+        List<Inquiry> inquiries =
+            inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
+
+        return convertToResponseDTO(inquiries);
+    }
+
+    public List<InquiryFavoriteResponseDTO> getFavoriteInquiriesByProductType(
+        String token,
+        Long customerId,
+        ProductType productType
+    ) {
+        validateUserAndToken(token, customerId);
+
+        List<Inquiry> inquiries =
+            inquiryRepository.findFavoriteInquiriesByCustomerIdAndProductType(customerId, productType);
+
+        return convertToResponseDTO(inquiries);
+    }
+
+    @Transactional
+    public void updateFavoriteInquiryStatus(String token, Long inquiryId) {
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if(!Objects.equals(customer.getUserId(), inquiry.getCustomer().getUserId()))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        inquiry.updateFavorite();
+    }
+
+    private void validateUserAndToken(String token, Long customerId) {
+        Long userId = signService.parseToken(token);
+
+        Customer customer = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+    }
+
+    private List<InquiryFavoriteResponseDTO> convertToResponseDTO(List<Inquiry> inquiries) {
+        if (inquiries.isEmpty()) {
+            throw new CommonException(ErrorCode.INQUIRY_LIST_EMPTY);
+        }
+
+        return inquiries.stream()
+                    .map(inquiry -> {
+                        List<LineItemResponseDTO> lineItems =
+                            lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
+                        return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
+                    })
+                    .collect(Collectors.toList());
     }
 }
