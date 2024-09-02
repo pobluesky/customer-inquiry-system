@@ -50,9 +50,10 @@ export const AuthProvider = ({ children }) => {
 
     // 로그아웃 함수
     const logout = () => {
-        removeCookie('accessToken');
-        removeCookie('userRole');
-        removeCookie('userId');
+        removeCookie('accessToken', { path: '/'});
+        removeCookie('refreshToken',  { path: '/'});
+        removeCookie('userRole',  { path: '/'});
+        removeCookie('userId',  { path: '/'});
 
         setRole(null);
         setToken(null);

@@ -151,7 +151,7 @@ export default function ColTable({
 
     // 해당 협업 관련 담당자 여부 확인
     const isAuthorized = (authorizedId) => {
-        if (role === 'QUALITY' && authorizedId !== userId) {
+        if (role === 'quality' && authorizedId !== userId) {
             setAuth(false);
         }
     };

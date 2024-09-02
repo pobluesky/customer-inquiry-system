@@ -10,7 +10,7 @@ import {
 import {
     getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import {
     getQualities,
@@ -45,7 +45,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
-    const { userId, userName } = useAuth();
+    const { userId, userName, role } = useAuth();
+    const navigate = useNavigate();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -56,6 +57,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [isQualityItem, setIsQualityItem] = useState(false);
     const [isOfferSheetItem, setIsOfferSheetItem] = useState(false);
     const [isFinalReview, setIsFinalReview] = useState(false);
+    const [currentProgress, setCurrentProgress] = useState(null);
+    const [currentInqType, setCurrentInqType] = useState(null);
+    const [requestTitle, setRequestTitle] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -116,6 +120,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         try {
             const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
+            setCurrentProgress(response.data.progress);
+            setCurrentInqType(response.data.inquiryType);
             setFormData(prevData => ({
                 ...prevData,
                 customerId: response.data.customerId,
@@ -141,8 +147,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getReviews(id);
             setReviewData(response.data);
             setIsReviewItem(true);
-            console.log("getReview: ", response.data);
-            if (response.data.finalReviewText !== "") {
+            if (response.data.finalReviewText === null) {
+                setIsFinalReview(false)
+            } else if (true) {
                 setIsFinalReview(true);
             }
             return response.data;
@@ -173,7 +180,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             }));
             return response.data;
         } catch (error) {
-            console.log('Error fetching OfferSheet:', error);
         }
     }
 
@@ -257,6 +263,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 })
                 console.log('Review posted successfully:', reviewResponse);
                 console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting review:', error);
             }
@@ -279,6 +288,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 // })
                 console.log('Notification posted successfully:', customerNotificationResponse);
                 // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting notification:', error);
             }
@@ -305,6 +317,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
                 console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
             }
@@ -318,15 +333,33 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }));
     };
 
+    useEffect(() => {
+        if (currentProgress === 'SUBMIT') {
+            setRequestTitle('Inquiry 상세조회6');
+        } else if (currentProgress === 'RECEIPT') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토1');
+        } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'QUOTE_INQUIRY') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토3');
+        } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
+                setRequestTitle('Inquiry 상세조회 및 영업검토2');
+        } else if (currentProgress === 'QUALITY_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토3');
+        } else {
+            setRequestTitle('Inquiry 상세조회6');
+        }
+    }, [currentProgress, currentInqType]);
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'sales'} />
+
             <RequestBar
-                        requestBarTitle={'Inquiry 상세조회 및 영업검토'}
-                        onReviewSubmit={handleReviewSubmit}
-                        onQualitySubmit={handleQualitySubmit}
-                        onFinalSubmit={handleFinalSubmit} />
+                requestBarTitle={requestTitle}
+                onReviewSubmit={handleReviewSubmit}
+                onQualitySubmit={handleQualitySubmit}
+                onFinalSubmit={handleFinalSubmit} />
+
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}

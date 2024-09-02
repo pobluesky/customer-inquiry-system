@@ -10,7 +10,7 @@ import { getCookie } from '../../apis/utils/cookies';
 function QuestionOverview({ questionCount, answerCount, colCount }) {
     const thisRole = getCookie('userRole');
     const gridTemplateColumns =
-        thisRole === 'CUSTOMER'
+        thisRole === 'customer'
             ? '360px 120px 360px 120px 360px' // isCustomer
             : '240px 96px 240px 96px 240px 96px 240px'; // isManager
 
@@ -38,7 +38,7 @@ function QuestionOverview({ questionCount, answerCount, colCount }) {
                     <div>답변 완료</div>
                     <div>{answerCount || ''}</div>
                 </div>
-                {thisRole !== 'CUSTOMER' && (
+                {thisRole !== 'customer' && (
                     <>
                         <img src={partition} />
 

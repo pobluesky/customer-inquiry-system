@@ -59,7 +59,7 @@ const LineItemTableForm = () => {
 
     return (
         <div>
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"} onSubmit={handleSubmit(handleInquirySubmit)} />
+            <RequestBar requestBarTitle={"Inquiry 등록0"} role={"customer"} onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
                 register={register}
                 errors={errors}

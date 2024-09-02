@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
             try {
                 const refreshToken = getCookie('refreshToken');
                 if (!refreshToken) {
-                    removeCookie('accessToken');
+                    removeCookie('accessToken', {path: '/'});
                     return Promise.reject(error);
                 }
 
@@ -75,8 +75,12 @@ axiosInstance.interceptors.response.use(
 
                 return { ...updatedResponse, userRole: newRole };
             } catch (err) {
-                removeCookie('accessToken');
-                removeCookie('refreshToken');
+                removeCookie('accessToken', {
+                    path: '/'
+                });
+                removeCookie('refreshToken', {
+                    path: '/'
+                });
                 return Promise.reject(err);
             }
         }

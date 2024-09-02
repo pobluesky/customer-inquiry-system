@@ -10,19 +10,21 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
         }
    }, [pastFile, currentFile]);
 
-    console.log("pastFile: ", pastFile);
-    console.log("currentFile: ", currentFile);
-
     return (
         <div className={_FileItem}>
-            <a
-                href={filePath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={_FileName}
-             >
-                {isFileUpdate ? currentFile : pastFile}
-            </a>
+            {(typeof pastFile === 'undefined' || pastFile === null)
+            && typeof currentFile === 'undefined' ? (
+                <div>파일 없음</div>
+            ) : (
+                <a
+                    href={filePath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={_FileName}
+                >
+                    {isFileUpdate ? currentFile : pastFile}
+                </a>
+                )}
         </div>
     );
 };

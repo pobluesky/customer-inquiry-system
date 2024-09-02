@@ -32,9 +32,6 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import CustomerInqUpdateForm from './pages/inq-form/CustomerInqUpdateForm';
-import { getInquiryDetail } from './apis/api/inquiry';
-import { useAuth } from './hooks/useAuth';
 
 function App() {
     return (

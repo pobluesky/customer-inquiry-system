@@ -7,10 +7,10 @@ import FileGetItem from '../../molecules/FileGetItem';
 
 const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) => {
     const [isChecked, setCheck] = useState(true);
-    const [files, setFiles] = useState(formData.files || null);
+    const [files, setFiles] = useState(formData.files);
     const [currentFileData, setCurrentFileData] = useState(fileData);
+    const [inputKey, setInputKey] = useState(Date.now());
 
-    console.log("formData.files: ", formData.files);
     const btnName = files ? '파일수정' : '파일업로드';
 
     useEffect(() => {
@@ -18,21 +18,23 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
             setCurrentFileData({
                 pastFiles: fileData.fileName,
                 filePath: fileData.filePath,
-                currentFiles: files.name,
+                currentFiles: files[0]?.name,
             });
         }
     }, [files]);
 
     const handleFileUpload = (event) => {
-        const selectedFile = event.target.files[0];
-        setFiles(selectedFile || formData.files);
-        handleFormDataChange('files', selectedFile);
+        const selectedFiles = Array.from(event.target.files);
+        const updatedFiles = [...selectedFiles];
+        setFiles(updatedFiles);
+        handleFormDataChange('files', updatedFiles[0]);
+        event.target.value = null;
     };
 
     const handleFileDelete = () => {
-        setFiles(null);
-        handleFormDataChange('files', null);
-        setCurrentFileData(null);
+        setCurrentFileData([]);
+        handleFormDataChange('files', []);
+        setInputKey(Date.now());
     };
 
     useEffect(() => {
@@ -45,12 +47,6 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
             }));
         }
     }, [files, fileData]);
-
-    console.log("formData.files: ", formData.files);
-    console.log("fileData: ", fileData);
-    console.log("currentFileData.pastFiles: ", currentFileData.pastFiles);
-    console.log("currentFileData.filePath: ", currentFileData.filePath);
-    console.log("currentFileData.currentFiles: ", currentFileData.currentFiles);
 
     return (
         <div className={Container} style={{ marginTop: '-2vh' }}>
@@ -132,7 +128,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                     <div>진행단계</div>
                                     <div>첨부파일명</div>
                                 </div>
-                                <FileItem files={[]} />
+                                <FileItem files={formData.files} />
                             </>
                         )}
                     </div>

@@ -38,7 +38,7 @@ export default function QuestionDashboard() {
     const [searchCount, setSearchCount] = useState(0);
 
     const fetchGetQuestionCount =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(userId, '');
@@ -57,7 +57,7 @@ export default function QuestionDashboard() {
               };
 
     const fetchGetAnswerCount =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async () => {
                   try {
                       const response = await getAnswerByUserId(userId, '');

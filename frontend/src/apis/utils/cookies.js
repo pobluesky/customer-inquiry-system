@@ -11,9 +11,5 @@ export const getCookie = (name) => {
 };
 
 export const removeCookie = (name, options = {}) => {
-  const defaultOptions = { path: '/' };
-
-  const mergedOptions = { ...defaultOptions, ...options };
-
-  return cookies.remove(name, mergedOptions);
+  return cookies.remove(name, options);
 };

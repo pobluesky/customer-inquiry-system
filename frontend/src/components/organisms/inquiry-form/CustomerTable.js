@@ -24,7 +24,7 @@ function Row({ row, role }) {
             <TableRow
                 sx={{ '& > *': { borderBottom: 'unset' }}}
                 onClick={handleClick}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 className={_Table}
             >
                 <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>

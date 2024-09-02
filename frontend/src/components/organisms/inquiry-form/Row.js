@@ -42,10 +42,10 @@ function Row({ row, role }, ref) {
     }));
 
     useEffect(() => {
-        if (role === 'SALES') {
+        if (role === 'sales') {
             setIsDisabled(row.salesManagerName !== '-');
             setIsChecked(row.salesManagerName !== '-');
-        } else if (role === 'QUALITY') {
+        } else if (role === 'quality') {
             setIsDisabled(row.qualityManagerName !== '-');
             setIsChecked(row.qualityManagerName!== '-');
         } else {
@@ -58,7 +58,7 @@ function Row({ row, role }, ref) {
             <TableRow
                 className={_Table}
                 sx={{ '& > *': { borderBottom: 'unset' }, }}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 onClick={handleClick}
             >
                 <TableCell
