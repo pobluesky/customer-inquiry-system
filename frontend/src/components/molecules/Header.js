@@ -104,12 +104,12 @@ function MyHeader() {
             <div>
                 <MenuLink to={url}>Inquiry 조회</MenuLink>
             </div>
-            {role === 'CUSTOMER' && (
+            {role === 'customer' && (
                 <div>
                     <MenuLink to="/inq-form/customer">Inquiry 등록</MenuLink>
                 </div>
             )}
-            {role !== 'CUSTOMER' && (
+            {role !== 'customer' && (
                 <div>
                     <MenuLink to="/dashboard">대시보드</MenuLink>
                 </div>
