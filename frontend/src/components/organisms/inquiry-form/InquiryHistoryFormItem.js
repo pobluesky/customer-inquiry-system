@@ -15,11 +15,12 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                 margin: '0 auto',
                 borderRadius: '20px',
                 marginBottom: '90px',
-        }}>
+                backgroundColor: '#ffffff',
+            }}>
             <ToggleBar title={"라인아이템"} isChecked={isChecked} setCheck={setChecked} />
             {isChecked ? (
                 <TableContainer>
-                    <Table style={{ backgroundColor: '#f0f8fc' }}>
+                    <Table style={{ backgroundColor: '#ffffff' }}>
                         <TableHead style={{ backgroundColor: '#d8e1e9' }}>
                             <TableRow>
                                 {Object.keys(fields).map((key) => (
@@ -36,7 +37,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                 ))}
                             </TableRow>
                         </TableHead>
-                        <TableBody style={{ backgroundColor: '#f0f8fc' }}>
+                        <TableBody style={{ backgroundColor: '#fffffff' }}>
                             {lineItemData.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={Object.keys(fields).length}>데이터 없음</TableCell>

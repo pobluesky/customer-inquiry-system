@@ -13,19 +13,25 @@ import QualityFileItem from '../../../molecules/QualityFileItem';
 
 const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
     const [isChecked, setCheck] = useState(true);
-    const [qualityFiles, setQualityFiles] = useState(formData.qualityFiles || null);
+    const [qualityFiles, setQualityFiles] = useState(formData.qualityFiles || []);
+    const [inputKey, setInputKey] = useState(Date.now());
 
     const btnName = ['파일업로드', '파일삭제'];
 
     const handleFileUpload = (event) => {
-        const selectedFile = event.target.files[0];
-        setQualityFiles(selectedFile);
-        handleFormDataChange('qualityFiles', selectedFile);
+        const selectedFiles = Array.from(event.target.files);
+        console.log("selectedFiles: ", selectedFiles)
+        const updatedFiles = [...selectedFiles];
+        console.log("updatedFiles: ", updatedFiles)
+        setQualityFiles(updatedFiles);
+        handleFormDataChange('qualityFiles', updatedFiles[0]);
+        event.target.value = null;
     };
 
     const handleFileDelete = () => {
-        setQualityFiles(null);
-        handleFormDataChange('qualityFiles', null);
+        setQualityFiles([]);
+        handleFormDataChange('qualityFiles', []);
+        setInputKey(Date.now());
     };
 
     const isUploadSection = fileForm === '품질검토 파일첨부' || fileForm === '첨부파일';
@@ -87,22 +93,18 @@ const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
                                 </div>
                                 {/* 파일 목록 */}
                                 <QualityFileItem
-                                    qualityFiles={qualityFiles ? [qualityFiles] : []}
+                                    qualityFiles={qualityFiles}
                                 />
                             </div>
                         ) : (
                             <div>
-                                {/* 협업첨부파일의 경우 */}
+                                {/* 첨부파일의 경우 */}
                                 <div className={FileColumn}>
                                     <div>진행단계</div>
                                     <div>첨부파일명</div>
                                 </div>
                                 <FileItem
-                                    files={
-                                        qualityFiles
-                                            ? [qualityFiles]
-                                            : ['조회된 파일이 없습니다.']
-                                    }
+                                    files={qualityFiles}
                                 />
                             </div>
                         )}

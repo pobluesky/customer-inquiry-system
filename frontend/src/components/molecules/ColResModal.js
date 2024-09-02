@@ -197,7 +197,7 @@ export default function ColResModal({
                 {/* 버튼 그룹 */}
                 <div>
                     {(status !== 'READY' || tryAccept !== tryReject) &&
-                        role === 'QUALITY' && (
+                        role === 'quality' && (
                             <>
                                 <div>담당자 첨부파일</div>
                                 <div style={filesEllipsis}>
@@ -233,7 +233,7 @@ export default function ColResModal({
                     {auth &&
                         !tryAccept &&
                         !tryReject &&
-                        role === 'QUALITY' &&
+                        role === 'quality' &&
                         status === 'READY' && (
                             <>
                                 <ColReqResButton
@@ -253,7 +253,7 @@ export default function ColResModal({
                             </>
                         )}
                     {/* 협업 수락 피드백 작성 중 */}
-                    {status === 'READY' && tryAccept && role === 'QUALITY' && (
+                    {status === 'READY' && tryAccept && role === 'quality' && (
                         <>
                             <ColReqResButton
                                 btnName={'피드백 등록'}
@@ -286,7 +286,7 @@ export default function ColResModal({
                         </>
                     )}
                     {/* 협업 거절 사유 작성 중 */}
-                    {status === 'READY' && tryReject && role === 'QUALITY' && (
+                    {status === 'READY' && tryReject && role === 'quality' && (
                         <>
                             <ColReqResButton
                                 btnName={'사유 등록'}

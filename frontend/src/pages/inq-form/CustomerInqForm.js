@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from "../../components/molecules/RequestBar";
 import {
@@ -20,6 +20,8 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId, role, userName } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const lineItemsRef = useRef(null);
+    const fileRef = useRef(null);
 
     const [userInfo, setUserInfo] = useState(null);
 
@@ -92,6 +94,30 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         }
     };
 
+    const onReset = () => {
+        setFormData({
+            additionalRequests: '',
+            corporate: '',
+            corporationCode: '(주)포스코',
+            country: '',
+            customerRequestDate: '',
+            files: [],
+            industry: '',
+            inquiryType: '',
+            productType: '',
+            salesPerson: '',
+            lineItemResponseDTOs: [],
+        })
+
+        if (lineItemsRef.current) {
+            lineItemsRef.current();
+        }
+
+        if (fileRef.current) {
+            fileRef.current();
+        }
+    }
+
     useEffect(() => {
         if (userInfo) {
             setFormData(prevFormData => ({
@@ -114,8 +140,9 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
 
     return (
         <div className={InqTableContainer}>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} />
-            <RequestBar requestBarTitle={"Inquiry 등록"} role={"customer"}
+            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
+            <RequestBar requestBarTitle={"Inquiry 등록0"} role={"customer"}
+                        onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
                 title={'신규 등록'}
@@ -125,6 +152,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 handleFormDataChange={handleFormDataChange}
             />
             <InquiryHistoryForm
+                onRefLineItems={(func) => (lineItemsRef.current = func)}
                 productType={formData.productType}
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange(
@@ -132,7 +160,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             />
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
-            <FileForm fileForm={"파일첨부"} formData={formData}
+                      onRefFile={(func) => (fileRef.current = func)}
                       handleFormDataChange={handleFormDataChange} />
         </div>
     );

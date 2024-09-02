@@ -23,7 +23,7 @@ function Header({ inq, voc, dashboard }) {
     const navigate = useNavigate();
     const { didLogin, logout, userId, role } = useAuth();
 
-    const url = `/inq-list/${role?.toLowerCase()}`;
+    const url = `/inq-list/${role}`;
 
     const columns = didLogin
         ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
@@ -54,7 +54,7 @@ function Header({ inq, voc, dashboard }) {
 
     const findUserName = async () => {
         try {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 const customer = await getUserInfoByCustomers(userId);
                 setName(customer.data.data.name);
                 setGlobalName(customer.data.data.name);
@@ -277,7 +277,7 @@ function Header({ inq, voc, dashboard }) {
                         <div></div>
                         <div></div>
                         <div>
-                            {role === 'CUSTOMER' && (
+                            {role === 'customer' && (
                                 <>
                                     <div
                                         onClick={() => {
@@ -299,7 +299,7 @@ function Header({ inq, voc, dashboard }) {
                                     </div>
                                 </>
                             )}
-                            {role === 'SALES' && (
+                            {role === 'sales' && (
                                 <>
                                     <div
                                         onClick={() => {
@@ -312,7 +312,7 @@ function Header({ inq, voc, dashboard }) {
                                     </div>
                                 </>
                             )}
-                            {role === 'QUALITY' && (
+                            {role === 'quality' && (
                                 <>
                                     <div
                                         onClick={() => {
@@ -331,7 +331,7 @@ function Header({ inq, voc, dashboard }) {
                                 setOpenNav(false);
                             }}
                         >
-                            {role === 'CUSTOMER' && (
+                            {role === 'customer' && (
                                 <>
                                     <div>
                                         <MenuLink to="voc-list/question">
@@ -345,7 +345,7 @@ function Header({ inq, voc, dashboard }) {
                                     </div>
                                 </>
                             )}
-                            {role === 'SALES' && (
+                            {role === 'sales' && (
                                 <>
                                     <div>
                                         <MenuLink to="/voc-list/question">
@@ -360,7 +360,7 @@ function Header({ inq, voc, dashboard }) {
                                     {/* <div>협업 등록</div> */}
                                 </>
                             )}
-                            {role === 'QUALITY' && (
+                            {role === 'quality' && (
                                 <>
                                     <div>
                                         <MenuLink to="/voc-list/question">

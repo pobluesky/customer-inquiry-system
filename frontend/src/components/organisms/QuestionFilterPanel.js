@@ -35,9 +35,9 @@ function QuestionFilterPanel({
     const [tempTypeFilter, setTempTypeFilter] = useState(null);
 
     const role = getCookie('userRole');
-    const height = role === 'CUSTOMER' ? '228px' : '288px';
+    const height = role === 'customer' ? '228px' : '288px';
     const gridTemplateRows =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? '52px 52px 36px 32px' // isCustomer
             : '52px 52px 52px 36px 32px'; // isManager
 
@@ -140,7 +140,7 @@ function QuestionFilterPanel({
                         </div>
                     </div>
                     {/* [담당자 전용] 문의 번호 + 고객사명 */}
-                    {role !== 'CUSTOMER' && (
+                    {role !== 'customer' && (
                         <div>
                             <div>
                                 <div>문의 번호</div>
