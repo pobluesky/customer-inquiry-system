@@ -128,6 +128,90 @@
 }
 
 /******************************************************************/
+/* 질문 검색 기능 **************************************************/
+/******************************************************************/
+.Question_Filter_Input {
+    display: flex;
+    width: 1200px;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+.Question_Filter_Input select {
+    width: 84px;
+    height: 36px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+    outline: none;
+    background-color: #ffffff;
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
+}
+
+.Question_Filter_Input input::placeholder {
+    text-align: center;
+}
+
+/******************************************************************/
+/* 질문 리스트 *****************************************************/
+/******************************************************************/
+.Question_List {
+    display: grid;
+    grid-template-rows: 36px 36px 24px;
+    width: 1200px;
+    margin: 0 auto;
+    /* border: 1px solid blue; */
+    align-items: center;
+}
+
+.Question_List > div:first-child {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 136px 1fr;
+    margin: 0 0 0 12px;
+}
+
+/* 문의 유형 */
+.Question_List > div:first-child > div:first-child {
+    width: 116px;
+    height: 28px;
+    line-height: 28px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #1748ac;
+    background-color: #1748ac;
+    border-radius: 16px;
+    text-align: center;
+}
+
+/* 제목 */
+.Question_List > div:first-child > div:nth-child(2) {
+    color: #25262b;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 내용 */
+.Question_List > div:nth-child(2) {
+    color: #64636a;
+    margin: 0 0 0 24px;
+}
+
+/*  */
+.Question_List > div:nth-child(3) {
+    color: #8b94a0;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    font-size: 12px;
+    margin: 0 0 0 24px;
+}
+
+.Question_List hr {
+    width: 1200px;
+}
+/******************************************************************/
 /* 질문 등록 시 선택하는 유형 그룹 **********************************/
 /******************************************************************/
 .Question_Type_Selector {
@@ -702,7 +786,7 @@
     margin: 0 1vw 0 0;
 }
 
-.Col_Res_Modal > div:first-child > div:nth-child(n+2) {
+.Col_Res_Modal > div:first-child > div:nth-child(n + 2) {
     font-weight: 600;
 }
 
