@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
@@ -395,7 +396,11 @@ public class InquiryService {
         Long customerId,
         ProductType productType
     ) {
-        validateUserAndToken(token, customerId);
+        Customer customer = validateCustomer(token);
+
+        if (!Objects.equals(customer.getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         List<Inquiry> inquiries =
             inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
@@ -408,7 +413,11 @@ public class InquiryService {
         Long customerId,
         ProductType productType
     ) {
-        validateUserAndToken(token, customerId);
+        Customer customer = validateCustomer(token);
+
+        if (!Objects.equals(customer.getUserId(), customerId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
 
         List<Inquiry> inquiries =
             inquiryRepository.findFavoriteInquiriesByCustomerIdAndProductType(customerId, productType);
@@ -418,10 +427,7 @@ public class InquiryService {
 
     @Transactional
     public void updateFavoriteInquiryStatus(String token, Long inquiryId) {
-        Long userId = signService.parseToken(token);
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Customer customer = validateCustomer(token);
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -432,14 +438,23 @@ public class InquiryService {
         inquiry.updateFavorite();
     }
 
-    private void validateUserAndToken(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
+    public InquiryFavoriteLineItemResponseDTO getLineItemsByInquiryId(
+        String token,
+        Long userId,
+        Long inquiryId
+    ) {
+        Customer customer = validateCustomer(token);
 
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!Objects.equals(customer.getUserId(), customerId))
+        if (!Objects.equals(customer.getUserId(), userId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
+
+        Inquiry inquiry = inquiryRepository.findByCustomer_UserIdAndInquiryId(userId, inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        List<LineItemResponseDTO> lineItems = lineItemService.getFullLineItemsByInquiry(inquiryId);
+
+        return InquiryFavoriteLineItemResponseDTO.of(inquiry, lineItems);
     }
 
     private List<InquiryFavoriteResponseDTO> convertToResponseDTO(List<Inquiry> inquiries) {
