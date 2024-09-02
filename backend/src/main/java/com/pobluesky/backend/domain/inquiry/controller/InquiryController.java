@@ -4,6 +4,7 @@ import com.amazonaws.Response;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
@@ -297,6 +298,19 @@ public class InquiryController {
         inquiryService.updateFavoriteInquiryStatus(token, inquiryId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
+    }
+
+    @GetMapping("customers/inquiries/{userId}/{inquiryId}/line-items")
+    @Operation(summary = "특정 inquiryId에 해당하는 라인 아이템 조회")
+    public ResponseEntity<JsonResult> getLineItemsByInquiryId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long inquiryId
+    ) {
+        InquiryFavoriteLineItemResponseDTO response =
+            inquiryService.getLineItemsByInquiryId(token, userId, inquiryId);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
 
     /* [Start] Dashboard API */
