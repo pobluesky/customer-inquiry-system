@@ -66,6 +66,9 @@ public class InquiryService {
 
         Customer customer = userClient.getCustomerById(userId);
         //
+        if(customer==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -106,6 +109,9 @@ public class InquiryService {
 
         Manager manager = userClient.getManagerById(userId);
         //
+        if(manager==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
@@ -144,6 +150,9 @@ public class InquiryService {
 
         Manager manager = userClient.getManagerById(userId);
         //
+        if(manager==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
@@ -174,6 +183,9 @@ public class InquiryService {
 
         Customer customer = userClient.getCustomerById(userId);
         //
+        if(customer==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -212,6 +224,9 @@ public class InquiryService {
 
         Customer customer = userClient.getCustomerById(userId);
         //
+        if(customer==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -261,6 +276,9 @@ public class InquiryService {
 
         Customer customer = userClient.getCustomerById(userId);
         //
+        if(customer==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -283,6 +301,9 @@ public class InquiryService {
 
         Customer customer = userClient.getCustomerById(userId);
         //
+        if(customer==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -308,6 +329,9 @@ public class InquiryService {
 
         Manager manager = userClient.getManagerById(userId);
         //
+        if(manager==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -331,6 +355,9 @@ public class InquiryService {
 
         Manager manager = userClient.getManagerById(userId);
         //
+        if(manager==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
@@ -386,6 +413,9 @@ public class InquiryService {
 
         Manager manager = userClient.getManagerById(userId);
         //
+        if(manager==null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
