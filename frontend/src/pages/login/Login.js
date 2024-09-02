@@ -11,7 +11,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { userEmail, userPassword } from '../../index';
 import { getUserName, getUserEmail, getUserPassword } from '../../index';
 import { LoginFailedAlert } from '../../utils/actions';
-// import { LoginCompleteAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
@@ -35,7 +34,6 @@ function Login() {
     const passwordChange = (e) => setPassword(e.target.value);
 
     const [showFailedAlert, canShowFailedAlert] = useState(false);
-    // const [showCompleteAlert, canShowCompleteAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
@@ -75,13 +73,12 @@ function Login() {
         try {
             const response = await signInApiByUsers(email, password);
             console.log('로그인 성공: ', response);
-            setDidLogin(true); // 로그인 상태 변화
-            setUserId(getCookie('userId')); // 전역 userId 저장
-            setRole(getCookie('userRole')); // 전역 역할 저장
-            setGlobalEmail(email); // 이메일 저장
             setOpenBackDrop(true);
-            // canShowCompleteAlert(true);
             setTimeout(() => {
+                setDidLogin(true); // 로그인 상태 변화
+                setUserId(getCookie('userId')); // 전역 userId 저장
+                setRole(getCookie('userRole')); // 전역 역할 저장
+                setGlobalEmail(email); // 이메일 저장
                 setOpenBackDrop(false);
                 navigate('/');
             }, '2000');
@@ -143,12 +140,6 @@ function Login() {
                             }}
                             message={errorMsg}
                         />
-                        {/* <LoginCompleteAlert
-                            showAlert={showCompleteAlert}
-                            onClose={() => {
-                                canShowCompleteAlert(false);
-                            }}
-                        /> */}
                         <a href="/join">회원이 아니신가요?</a>
                     </div>
                 </div>
@@ -159,7 +150,6 @@ function Login() {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
                 open={openBackDrop}
-                // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
