@@ -4,6 +4,7 @@ import com.amazonaws.Response;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -261,6 +262,44 @@ public class InquiryController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("customers/inquiries/{userId}/{productType}/all")
+    @Operation(summary = "제품 유형에 따른 고객의 전체 Inquiry 목록 조회")
+    public ResponseEntity<JsonResult> getAllInquiriesByProductType(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable ProductType productType
+    ) {
+        List<InquiryFavoriteResponseDTO> response =
+            inquiryService.getAllInquiriesByProductType(token, userId, productType);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("customers/inquiries/{userId}/{productType}/favorite")
+    @Operation(summary = "제품 유형에 따른 고객의 즐겨찾기 Inquiry 목록 조회")
+    public ResponseEntity<JsonResult> getFavoriteInquiriesByProductType(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable ProductType productType
+    ) {
+        List<InquiryFavoriteResponseDTO> response =
+            inquiryService.getFavoriteInquiriesByProductType(token, userId, productType);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @PutMapping("customers/inquiries/{inquiryId}/favorite")
+    @Operation(summary = "고객사가 전체 Inquiry 목록 중 즐겨찾기할 경우 상태 업데이트")
+    public ResponseEntity<CommonResult> updateFavoriteInquiryStatus(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long inquiryId
+    ) {
+        inquiryService.updateFavoriteInquiryStatus(token, inquiryId);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
+    }
+
+    /* [Start] Dashboard API */
     @GetMapping("/managers/inquiries/dashboard/average-monthly")
     @Operation(summary = "월별 Inquiry 주문 처리 소요일 평균")
     public ResponseEntity<Map<String, List<Object[]>>> averageMonthlyInquiry(
