@@ -78,6 +78,8 @@ public class Inquiry extends BaseEntity {
 
     private Boolean isActivated;
 
+    private Boolean isFavorite;
+
     @Builder
     private Inquiry(
         Customer customer,
@@ -111,6 +113,7 @@ public class Inquiry extends BaseEntity {
         this.filePath = filePath;
         this.responseDeadline = responseDeadline;
         this.isActivated = true;
+        this.isFavorite = false;
     }
 
     public void updateInquiry(
@@ -145,6 +148,10 @@ public class Inquiry extends BaseEntity {
 
     public void updateProgress(Progress newProgress) {
         this.progress = newProgress;
+    }
+
+    public void updateFavorite() {
+        this.isFavorite = !this.isFavorite;
     }
 
     public void allocateSalesManager(Manager manager) {
