@@ -86,7 +86,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
         "WHERE i.qualityManager =:manager")
     Integer countInquiriesByQualityManager(@Param("manager") Manager manager);
 
-
     @Query("SELECT i.productType AS productType, COUNT(i) AS count " +
         "FROM Inquiry i " +
         "GROUP BY i.productType")

@@ -282,7 +282,7 @@ public class InquiryController {
     }
 
     @GetMapping("/managers/inquiries/dashboard/percentage-completed-uncompleted")
-    @Operation(summary = " Inquiry 주문 완료 및 미완료 비중")
+    @Operation(summary = "Inquiry 주문 완료 및 미완료 비중")
     public ResponseEntity<Map<String, Map<String, String>>> getInquiryPercentageCompletedUncompleted(
         @RequestHeader("Authorization") String token
     ) {
