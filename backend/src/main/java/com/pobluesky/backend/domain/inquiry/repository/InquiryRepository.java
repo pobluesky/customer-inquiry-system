@@ -20,6 +20,9 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
     @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.isActivated = true")
     Optional<Inquiry> findActiveInquiryByInquiryId(Long inquiryId);
 
+    @Query("SELECT i FROM Inquiry i WHERE i.isActivated = true")
+    List<Inquiry> findActiveInquiries();
+
     @Query(value = "SELECT EXTRACT(MONTH FROM i.created_date) AS month, " +
         "ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1) AS avgDays " +
         "FROM Inquiry i " +
