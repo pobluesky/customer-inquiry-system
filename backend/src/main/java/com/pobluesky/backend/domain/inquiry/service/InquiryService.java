@@ -4,11 +4,7 @@ import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.*;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
@@ -27,14 +23,16 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.text.DecimalFormat;
+
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -296,7 +294,10 @@ public class InquiryService {
         String token,
         Long inquiryId
     ) {
-        validateManager(token);
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -388,102 +389,17 @@ public class InquiryService {
         return InquiryAllocateResponseDTO.from(inquiry);
     }
 
-    private List<Object[]> getManagerSpecificInquiryData(
-            Manager manager,
-            Supplier<List<Object[]>> salesQuery,
-            Supplier<List<Object[]>> qualityQuery
+    public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
+        String token,
+        Long customerId,
+        ProductType productType
     ) {
+        validateUserAndToken(token, customerId);
 
-        return manager.getRole() == UserRole.SALES ? salesQuery.get() : qualityQuery.get();
-    }
+        List<Inquiry> inquiries =
+            inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
 
-    private Integer getManagerSpecificCount(
-            Manager manager,
-            Supplier<Integer> salesCount,
-            Supplier<Integer> qualityCount
-    ) {
-
-        return manager.getRole() == UserRole.SALES ? salesCount.get() : qualityCount.get();
-    }
-
-    public Map<String, List<Object[]>> getAverageDaysPerMonth(String token) {
-        Manager manager = validateManager(token);
-        Map<String, List<Object[]>> results = new HashMap<>();
-
-        results.put("total", inquiryRepository.findAverageDaysPerMonth());
-        results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.findAverageDaysPerMonthBySalesManager(manager.getUserId()),
-                () -> inquiryRepository.findAverageDaysPerMonthByQualityManager(manager.getUserId())
-        ));
-
-        return results;
-    }
-
-    public Map<String, List<Object[]>> getInquiryCountsByProgress(String token) {
-        Manager manager = validateManager(token);
-        Map<String, List<Object[]>> results = new HashMap<>();
-
-        results.put("total", inquiryRepository.countInquiriesByProgress());
-        results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.countInquiriesBySalesManagerAndProgress(manager),
-                () -> inquiryRepository.countInquiriesByQualityManagerAndProgress(manager)
-        ));
-
-        return results;
-    }
-
-    public Map<String, Map<String, String>> getInquiryPercentageCompletedUncompleted(String token) {
-        Manager manager = validateManager(token);
-        Map<String, Map<String, String>> results = new HashMap<>();
-
-        Integer totalByManager = getManagerSpecificCount(
-                manager,
-                () -> inquiryRepository.countInquiriesBySalesManager(manager),
-                () -> inquiryRepository.countInquiriesByQualityManager(manager)
-        );
-
-        Integer completedCountsByManager = getManagerSpecificCount(
-                manager,
-                () -> inquiryRepository.countInquiriesByFinalProgressBySalesManager(manager),
-                () -> inquiryRepository.countInquiriesByFinalProgressByQualityManager(manager)
-        );
-
-        int totalInquiries = inquiryRepository.findAll().size();
-        Integer completedCounts = inquiryRepository.countInquiriesByFinalProgress();
-
-        DecimalFormat df = new DecimalFormat("#.#");
-
-        results.put("total", calculateCompletionPercentages(totalInquiries, completedCounts, df));
-        results.put("manager", calculateCompletionPercentages(totalByManager, completedCountsByManager, df));
-
-        return results;
-    }
-
-    private Map<String, String> calculateCompletionPercentages(int total, int completed, DecimalFormat df) {
-        double compPercentage = ((double) completed / total) * 100;
-        double unCompPercentage = (total - (double) completed) / total * 100;
-
-        Map<String, String> result = new HashMap<>();
-        result.put("completed", df.format(compPercentage));
-        result.put("uncompleted", df.format(unCompPercentage));
-
-        return result;
-    }
-
-    public Map<String, List<Object[]>> getInquiryCountsByProductType(String token) {
-        Manager manager = validateManager(token);
-        Map<String, List<Object[]>> results = new HashMap<>();
-
-        results.put("total", inquiryRepository.countInquiriesByProductType());
-        results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.countInquiriesByProductTypeAndSalesManager(manager),
-                () -> inquiryRepository.countInquiriesByProductTypeAndQualityManager(manager)
-        ));
-
-        return results;
+        return convertToResponseDTO(inquiries);
     }
 
     public List<InquiryFavoriteResponseDTO> getFavoriteInquiriesByProductType(
@@ -531,25 +447,123 @@ public class InquiryService {
         }
 
         return inquiries.stream()
-                    .map(inquiry -> {
-                        List<LineItemResponseDTO> lineItems =
-                            lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
-                        return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
-                    })
-                    .collect(Collectors.toList());
+            .map(inquiry -> {
+                List<LineItemResponseDTO> lineItems =
+                    lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
+                return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
+            })
+            .collect(Collectors.toList());
     }
 
     private Manager validateManager(String token) {
         Long userId = signService.parseToken(token);
 
         return managerRepository.findById(userId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 
     private Customer validateCustomer(String token) {
         Long userId = signService.parseToken(token);
 
         return customerRepository.findById(userId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private List<Object[]> getManagerSpecificInquiryData(
+            Manager manager,
+            Supplier<List<Object[]>> salesQuery,
+            Supplier<List<Object[]>> qualityQuery
+    ) {
+
+        return manager.getRole() == UserRole.SALES ? salesQuery.get() : qualityQuery.get();
+    }
+
+    private Integer getManagerSpecificCount(
+            Manager manager,
+            Supplier<Integer> salesCount,
+            Supplier<Integer> qualityCount
+    ) {
+
+        return manager.getRole() == UserRole.SALES ? salesCount.get() : qualityCount.get();
+    }
+
+    public Map<String, List<Object[]>> getAverageDaysPerMonth(String token) {
+        Manager manager = validateManager(token);
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", inquiryRepository.findAverageDaysPerMonth());
+        results.put("manager", getManagerSpecificInquiryData(
+            manager,
+            () -> inquiryRepository.findAverageDaysPerMonthBySalesManager(manager.getUserId()),
+            () -> inquiryRepository.findAverageDaysPerMonthByQualityManager(manager.getUserId())
+        ));
+
+        return results;
+    }
+
+    public Map<String, List<Object[]>> getInquiryCountsByProgress(String token) {
+        Manager manager = validateManager(token);
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", inquiryRepository.countInquiriesByProgress());
+        results.put("manager", getManagerSpecificInquiryData(
+            manager,
+            () -> inquiryRepository.countInquiriesBySalesManagerAndProgress(manager),
+            () -> inquiryRepository.countInquiriesByQualityManagerAndProgress(manager)
+        ));
+
+        return results;
+    }
+
+    public Map<String, Map<String, String>> getInquiryPercentageCompletedUncompleted(String token) {
+        Manager manager = validateManager(token);
+        Map<String, Map<String, String>> results = new HashMap<>();
+
+        Integer totalByManager = getManagerSpecificCount(
+            manager,
+            () -> inquiryRepository.countInquiriesBySalesManager(manager),
+            () -> inquiryRepository.countInquiriesByQualityManager(manager)
+        );
+
+        Integer completedCountsByManager = getManagerSpecificCount(
+            manager,
+            () -> inquiryRepository.countInquiriesByFinalProgressBySalesManager(manager),
+            () -> inquiryRepository.countInquiriesByFinalProgressByQualityManager(manager)
+        );
+
+        int totalInquiries = inquiryRepository.findAll().size();
+        Integer completedCounts = inquiryRepository.countInquiriesByFinalProgress();
+
+        DecimalFormat df = new DecimalFormat("#.#");
+
+        results.put("total", calculateCompletionPercentages(totalInquiries, completedCounts, df));
+        results.put("manager", calculateCompletionPercentages(totalByManager, completedCountsByManager, df));
+
+        return results;
+    }
+
+    private Map<String, String> calculateCompletionPercentages(int total, int completed, DecimalFormat df) {
+        double compPercentage = ((double) completed / total) * 100;
+        double unCompPercentage = (total - (double) completed) / total * 100;
+
+        Map<String, String> result = new HashMap<>();
+        result.put("completed", df.format(compPercentage));
+        result.put("uncompleted", df.format(unCompPercentage));
+
+        return result;
+    }
+
+    public Map<String, List<Object[]>> getInquiryCountsByProductType(String token) {
+        Manager manager = validateManager(token);
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", inquiryRepository.countInquiriesByProductType());
+        results.put("manager", getManagerSpecificInquiryData(
+            manager,
+            () -> inquiryRepository.countInquiriesByProductTypeAndSalesManager(manager),
+            () -> inquiryRepository.countInquiriesByProductTypeAndQualityManager(manager)
+        ));
+
+        return results;
     }
 }

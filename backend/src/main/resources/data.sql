@@ -20,21 +20,21 @@ VALUES
 -- INQUIRY
 INSERT INTO inquiry (user_id, sales_manager_id, quality_manager_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, is_favorite, created_date, modified_date)
 VALUES
-    (1, null, null, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, true,'2023-01-29 14:22:37.123456+00', '2023-02-28 14:22:37.123456+00'),
-    (2, null,null,'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, true,'2023-02-28 14:22:37.123456+00', '2023-03-28 14:22:37.123456+00'),
-    (3, 1,2,'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, false, '2023-03-29 14:22:37.123456+00', '2023-04-29 14:22:37.123456+00'),
-    (4, 5,4,'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, false,'2023-04-29 14:22:37.123456+00', '2023-05-29 14:22:37.123456+00'),
-    (5, 3,null,'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, false,'2023-05-29 14:22:37.123456+00', '2023-06-29 14:22:37.123456+00'),
-    (1, 5,4,'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2023-08-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2023-08-22', true, false,'2023-06-29 14:22:37.123456+00', '2023-07-29 14:22:37.123456+00'),
-    (2, 3,null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2023-08-25', true, true,'2023-07-29 14:22:37.123456+00', '2023-08-29 14:22:37.123456+00'),
-    (3, 1,null,'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2023-08-07', '수출용', 'file8.pdf', 'file8Name', '2023-08-30', true, false,'2023-08-29 14:22:37.123456+00', '2023-09-29 14:22:37.123456+00'),
-    (4, 5,null,'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'FINAL_REVIEW_COMPLETED', '2023-08-08', '배타적 계약', 'file9.pdf', 'file9Name', '2023-09-01', true, false,'2023-09-29 14:22:37.123456+00', '2023-10-29 14:22:37.123456+00'),
-    (5, 3,null,'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FIRST_REVIEW_COMPLETED', '2023-08-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2023-09-05', true, false,'2023-10-29 14:22:37.123456+00', '2023-11-29 14:22:37.123456+00'),
-    (1, 1,4,'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2023-08-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2023-09-10', true, false,'2023-11-29 14:22:37.123456+00', '2023-12-29 14:22:37.123456+00'),
-    (2, 1,null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-11', '견적 요청', 'file12.pdf', 'file12Name', '2023-09-15', true, true,'2023-12-29 14:22:37.123456+00', '2024-01-29 14:22:37.123456+00'),
-    (3, 5,null,'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2023-09-20', true, false, '2023-07-29 14:22:37.123456+00', '2023-08-15 14:22:37.123456+00'),
-    (4, 3,4,'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, true,'2023-08-29 14:22:37.123456+00', '2023-09-18 14:22:37.123456+00'),
-    (5, 3,null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, false,'2023-09-29 14:22:37.123456+00', '2023-10-20 14:22:37.123456+00');
+    (1, null, null, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, true, '2023-01-29 14:22:37.123456+00', '2023-02-28 14:22:37.123456+00'),
+    (2, null, null,'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, true, '2023-02-28 14:22:37.123456+00', '2023-03-28 14:22:37.123456+00'),
+    (3, 1, 2,'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, false, '2023-03-29 14:22:37.123456+00', '2023-04-29 14:22:37.123456+00'),
+    (4, 5, 4,'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, false, '2023-04-29 14:22:37.123456+00', '2023-05-29 14:22:37.123456+00'),
+    (5, 3, null,'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, false, '2023-05-29 14:22:37.123456+00', '2023-06-29 14:22:37.123456+00'),
+    (1, 5, 4,'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2023-08-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2023-08-22', true, true, '2023-06-29 14:22:37.123456+00', '2023-07-29 14:22:37.123456+00'),
+    (2, 3, null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2023-08-25', true, false, '2023-07-29 14:22:37.123456+00', '2023-08-29 14:22:37.123456+00'),
+    (3, 1, null,'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2023-08-07', '수출용', 'file8.pdf', 'file8Name', '2023-08-30', true, false, '2023-08-29 14:22:37.123456+00', '2023-09-29 14:22:37.123456+00'),
+    (4, 5, null,'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'FINAL_REVIEW_COMPLETED', '2023-08-08', '배타적 계약', 'file9.pdf', 'file9Name', '2023-09-01', true, false, '2023-09-29 14:22:37.123456+00', '2023-10-29 14:22:37.123456+00'),
+    (5, 3, null,'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FIRST_REVIEW_COMPLETED', '2023-08-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2023-09-05', true, false, '2023-10-29 14:22:37.123456+00', '2023-11-29 14:22:37.123456+00'),
+    (1, 1, 4,'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2023-08-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2023-09-10', true, true, '2023-11-29 14:22:37.123456+00', '2023-12-29 14:22:37.123456+00'),
+    (2, 1, null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-11', '견적 요청', 'file12.pdf', 'file12Name', '2023-09-15', true, false, '2023-12-29 14:22:37.123456+00', '2024-01-29 14:22:37.123456+00'),
+    (3, 5, null,'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2023-09-20', true, true, '2023-07-29 14:22:37.123456+00', '2023-08-15 14:22:37.123456+00'),
+    (4, 3, 4,'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, false, '2023-08-29 14:22:37.123456+00', '2023-09-18 14:22:37.123456+00'),
+    (5, 3, null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, true, '2023-09-29 14:22:37.123456+00', '2023-10-20 14:22:37.123456+00');
 
 -- INSERT INTO car_line_items
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, edge, tolerance, annual_cost, is_activated, created_date, modified_date)
@@ -327,38 +327,38 @@ ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
 ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
 
 -- QUESTION
-INSERT INTO question (created_date, inquiry_id, user_id, title, contents, file_name, file_path, type, status, is_activated)
+INSERT INTO question (created_date, inquiry_id, user_id, title, contents, file_name, file_path, type, status)
 VALUES
-    ('2024-08-01 10:00:00', null, 1, '문의 소요 기간', '평균 문의 소요 기간에 대해 알고 싶습니다', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED',true),
-    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'READY',true),
-    ('2024-08-03 14:30:00', 12, 2, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'COMPLETED',true),
-    ('2024-08-03 14:30:00', 14, 4, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY',true),
-    ('2024-08-03 14:30:00', 8, 3, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'COMPLETED',true),
-    ('2024-08-04 09:00:00', 1, 1, '배송 상태 확인', '현재 배송 상태가 궁금합니다', 'voc_report6.pdf', 'https://cdn.example.com/image1.jpg', 'INQ', 'READY',true),
-    ('2024-08-05 10:00:00', null, 2, '회원 가입 문제', '회원 가입 과정에서 문제가 발생했습니다', 'voc_report7.pdf', 'https://cdn.example.com/image2.jpg', 'SITE', 'COMPLETED',true),
-    ('2024-08-06 11:00:00', 2, 2, '결제 오류', '결제 과정에서 오류가 발생했습니다', 'voc_report8.pdf', 'https://cdn.example.com/image3.jpg', 'INQ', 'READY',true),
-    ('2024-08-07 12:00:00', null, 4, '계정 복구', '계정 복구를 요청합니다', 'voc_report9.pdf', 'https://cdn.example.com/image4.jpg', 'SITE', 'COMPLETED',true),
-    ('2024-08-08 13:00:00', null, 5, '기술 지원 요청', '기술 지원이 필요합니다', 'voc_report10.pdf', 'https://cdn.example.com/image5.jpg', 'ETC', 'READY',true),
-    ('2024-08-09 14:00:00', 5, 5, '환불 요청', '구매한 제품의 환불을 요청합니다', 'voc_report11.pdf', 'https://cdn.example.com/image6.jpg', 'INQ', 'COMPLETED',true),
-    ('2024-08-10 15:00:00', null, 2, '제품 재고 문의', '현재 제품 재고가 얼마나 있나요?', 'voc_report12.pdf', 'https://cdn.example.com/image7.jpg', 'SITE', 'READY',true),
-    ('2024-08-11 16:00:00', null, 3, '서비스 개선 요청', '서비스 개선을 위한 피드백을 제출합니다', 'voc_report13.pdf', 'https://cdn.example.com/image8.jpg', 'ETC', 'COMPLETED',true),
-    ('2024-08-12 17:00:00', 8, 3, '배송 주소 변경', '배송 주소를 변경하고 싶습니다', 'voc_report14.pdf', 'https://cdn.example.com/image9.jpg', 'INQ', 'READY',true),
-    ('2024-08-13 18:00:00', null, 5, '이벤트 문의', '현재 진행 중인 이벤트에 대해 문의합니다', 'voc_report15.pdf', 'https://cdn.example.com/image10.jpg', 'SITE', 'COMPLETED',true),
-    ('2024-08-14 09:00:00', null, 1, '회원 탈퇴', '회원 탈퇴를 요청합니다', 'voc_report16.pdf', 'https://cdn.example.com/image11.jpg', 'ETC', 'READY',true),
-    ('2024-08-15 10:00:00', 11, 1, '로그인 문제', '로그인할 수 없는 문제를 보고합니다', 'voc_report17.pdf', 'https://cdn.example.com/image12.jpg', 'INQ', 'COMPLETED',true),
-    ('2024-08-16 11:00:00', null, 3, '주문 내역 확인', '주문 내역을 확인하고 싶습니다', 'voc_report18.pdf', 'https://cdn.example.com/image13.jpg', 'SITE', 'READY',true),
-    ('2024-08-17 12:00:00', 12, 2, '제품 사용법', '제품의 사용법을 알고 싶습니다', 'voc_report19.pdf', 'https://cdn.example.com/image14.jpg', 'INQ', 'COMPLETED',true),
-    ('2024-08-18 13:00:00', null, 5, '기타 문의', '기타 문의사항이 있습니다', 'voc_report20.pdf', 'https://cdn.example.com/image15.jpg', 'ETC', 'READY',true),
-    ('2024-08-19 14:00:00', null, 1, '구매 확인서 요청', '구매 확인서를 요청합니다', 'voc_report21.pdf', 'https://cdn.example.com/image16.jpg', 'SITE', 'COMPLETED',true),
-    ('2024-08-20 15:00:00', 13, 3, '기술 문제', '기술적인 문제로 도움을 요청합니다', 'voc_report22.pdf', 'https://cdn.example.com/image17.jpg', 'INQ', 'READY',true),
-    ('2024-08-21 16:00:00', null, 3, '결제 확인', '결제 상태를 확인하고 싶습니다', 'voc_report23.pdf', 'https://cdn.example.com/image18.jpg', 'ETC', 'COMPLETED',true),
-    ('2024-08-22 17:00:00', null, 4, '신규 기능 요청', '새로운 기능을 요청합니다', 'voc_report24.pdf', 'https://cdn.example.com/image19.jpg', 'SITE', 'READY',true),
-    ('2024-08-23 18:00:00', 14, 4, '서비스 관련 질문', '서비스에 관한 질문이 있습니다', 'voc_report25.pdf', 'https://cdn.example.com/image20.jpg', 'INQ', 'COMPLETED',true),
-    ('2024-08-24 09:00:00', null, 1, '계정 설정 문의', '계정 설정에 관한 문의입니다', 'voc_report26.pdf', 'https://cdn.example.com/image21.jpg', 'ETC', 'READY',true),
-    ('2024-08-25 10:00:00', null, 2, '할인 코드 문의', '할인 코드에 대한 문의입니다', 'voc_report27.pdf', 'https://cdn.example.com/image22.jpg', 'SITE', 'COMPLETED',true),
-    ('2024-08-26 11:00:00', 15, 5, '계정 권한 문제', '계정 권한에 대한 문제를 보고합니다', 'voc_report28.pdf', 'https://cdn.example.com/image23.jpg', 'INQ', 'READY',true),
-    ('2024-08-27 12:00:00', null, 4, '회원 등급 변경', '회원 등급 변경을 요청합니다', 'voc_report29.pdf', 'https://cdn.example.com/image24.jpg', 'ETC', 'COMPLETED',true),
-    ('2024-08-28 13:00:00', null, 5, '구매 기록 조회', '구매 기록을 조회하고 싶습니다', 'voc_report30.pdf', 'https://cdn.example.com/image25.jpg', 'SITE', 'READY',true);
+    ('2024-08-01 10:00:00', null, 1, '문의 소요 기간', '평균 문의 소요 기간에 대해 알고 싶습니다', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED'),
+    ('2024-08-02 11:15:00', null, 2, '제품 문의 방법', '제품 문의하는 방법에 대한 내용은 어디서 알 수 있을까요', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'READY'),
+    ('2024-08-03 14:30:00', 12, 2, '문의 질문', '답변이 아직 오지 않고 있습니다', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'COMPLETED'),
+    ('2024-08-03 14:30:00', 14, 4, '품질 문의 질문', '선재 규격에 대한 자세한 정보가 필요합니다', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY'),
+    ('2024-08-03 14:30:00', 8, 3, '제품 문의', '후판 제품 가격에 대한 명세를 요구합니다', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'COMPLETED'),
+    ('2024-08-04 09:00:00', 1, 1, '배송 상태 확인', '현재 배송 상태가 궁금합니다', 'voc_report6.pdf', 'https://cdn.example.com/image1.jpg', 'INQ', 'READY'),
+    ('2024-08-05 10:00:00', null, 2, '회원 가입 문제', '회원 가입 과정에서 문제가 발생했습니다', 'voc_report7.pdf', 'https://cdn.example.com/image2.jpg', 'SITE', 'COMPLETED'),
+    ('2024-08-06 11:00:00', 2, 2, '결제 오류', '결제 과정에서 오류가 발생했습니다', 'voc_report8.pdf', 'https://cdn.example.com/image3.jpg', 'INQ', 'READY'),
+    ('2024-08-07 12:00:00', null, 4, '계정 복구', '계정 복구를 요청합니다', 'voc_report9.pdf', 'https://cdn.example.com/image4.jpg', 'SITE', 'COMPLETED'),
+    ('2024-08-08 13:00:00', null, 5, '기술 지원 요청', '기술 지원이 필요합니다', 'voc_report10.pdf', 'https://cdn.example.com/image5.jpg', 'ETC', 'READY'),
+    ('2024-08-09 14:00:00', 5, 5, '환불 요청', '구매한 제품의 환불을 요청합니다', 'voc_report11.pdf', 'https://cdn.example.com/image6.jpg', 'INQ', 'COMPLETED'),
+    ('2024-08-10 15:00:00', null, 2, '제품 재고 문의', '현재 제품 재고가 얼마나 있나요?', 'voc_report12.pdf', 'https://cdn.example.com/image7.jpg', 'SITE', 'READY'),
+    ('2024-08-11 16:00:00', null, 3, '서비스 개선 요청', '서비스 개선을 위한 피드백을 제출합니다', 'voc_report13.pdf', 'https://cdn.example.com/image8.jpg', 'ETC', 'COMPLETED'),
+    ('2024-08-12 17:00:00', 8, 3, '배송 주소 변경', '배송 주소를 변경하고 싶습니다', 'voc_report14.pdf', 'https://cdn.example.com/image9.jpg', 'INQ', 'READY'),
+    ('2024-08-13 18:00:00', null, 5, '이벤트 문의', '현재 진행 중인 이벤트에 대해 문의합니다', 'voc_report15.pdf', 'https://cdn.example.com/image10.jpg', 'SITE', 'COMPLETED'),
+    ('2024-08-14 09:00:00', null, 1, '회원 탈퇴', '회원 탈퇴를 요청합니다', 'voc_report16.pdf', 'https://cdn.example.com/image11.jpg', 'ETC', 'READY'),
+    ('2024-08-15 10:00:00', 11, 1, '로그인 문제', '로그인할 수 없는 문제를 보고합니다', 'voc_report17.pdf', 'https://cdn.example.com/image12.jpg', 'INQ', 'COMPLETED'),
+    ('2024-08-16 11:00:00', null, 3, '주문 내역 확인', '주문 내역을 확인하고 싶습니다', 'voc_report18.pdf', 'https://cdn.example.com/image13.jpg', 'SITE', 'READY'),
+    ('2024-08-17 12:00:00', 12, 2, '제품 사용법', '제품의 사용법을 알고 싶습니다', 'voc_report19.pdf', 'https://cdn.example.com/image14.jpg', 'INQ', 'COMPLETED'),
+    ('2024-08-18 13:00:00', null, 5, '기타 문의', '기타 문의사항이 있습니다', 'voc_report20.pdf', 'https://cdn.example.com/image15.jpg', 'ETC', 'READY'),
+    ('2024-08-19 14:00:00', null, 1, '구매 확인서 요청', '구매 확인서를 요청합니다', 'voc_report21.pdf', 'https://cdn.example.com/image16.jpg', 'SITE', 'COMPLETED'),
+    ('2024-08-20 15:00:00', 13, 3, '기술 문제', '기술적인 문제로 도움을 요청합니다', 'voc_report22.pdf', 'https://cdn.example.com/image17.jpg', 'INQ', 'READY'),
+    ('2024-08-21 16:00:00', null, 3, '결제 확인', '결제 상태를 확인하고 싶습니다', 'voc_report23.pdf', 'https://cdn.example.com/image18.jpg', 'ETC', 'COMPLETED'),
+    ('2024-08-22 17:00:00', null, 4, '신규 기능 요청', '새로운 기능을 요청합니다', 'voc_report24.pdf', 'https://cdn.example.com/image19.jpg', 'SITE', 'READY'),
+    ('2024-08-23 18:00:00', 14, 4, '서비스 관련 질문', '서비스에 관한 질문이 있습니다', 'voc_report25.pdf', 'https://cdn.example.com/image20.jpg', 'INQ', 'COMPLETED'),
+    ('2024-08-24 09:00:00', null, 1, '계정 설정 문의', '계정 설정에 관한 문의입니다', 'voc_report26.pdf', 'https://cdn.example.com/image21.jpg', 'ETC', 'READY'),
+    ('2024-08-25 10:00:00', null, 2, '할인 코드 문의', '할인 코드에 대한 문의입니다', 'voc_report27.pdf', 'https://cdn.example.com/image22.jpg', 'SITE', 'COMPLETED'),
+    ('2024-08-26 11:00:00', 15, 5, '계정 권한 문제', '계정 권한에 대한 문제를 보고합니다', 'voc_report28.pdf', 'https://cdn.example.com/image23.jpg', 'INQ', 'READY'),
+    ('2024-08-27 12:00:00', null, 4, '회원 등급 변경', '회원 등급 변경을 요청합니다', 'voc_report29.pdf', 'https://cdn.example.com/image24.jpg', 'ETC', 'COMPLETED'),
+    ('2024-08-28 13:00:00', null, 5, '구매 기록 조회', '구매 기록을 조회하고 싶습니다', 'voc_report30.pdf', 'https://cdn.example.com/image25.jpg', 'SITE', 'READY');
 
 -- ANSWER
 INSERT INTO answer (created_date, inquiry_id, user_id, question_id, title, contents, file_name, file_path)
