@@ -1,4 +1,4 @@
-package com.pobluesky.notification.dto.response;
+package com.pobluesky.feign;
 
 import com.pobluesky.config.global.security.UserRole;
 import lombok.Getter;

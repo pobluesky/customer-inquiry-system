@@ -7,13 +7,13 @@ import com.pobluesky.notification.dto.request.CustomerNotificationUpdateRequestD
 import com.pobluesky.notification.dto.request.ManagerNotificationCreateRequestDTO;
 import com.pobluesky.notification.dto.request.ManagerNotificationUpdateRequestDTO;
 
-import com.pobluesky.notification.dto.response.Customer;
-import com.pobluesky.notification.dto.response.Manager;
+import com.pobluesky.feign.Customer;
+import com.pobluesky.feign.Manager;
 import com.pobluesky.notification.dto.response.CustomerNotificationResponseDTO;
 import com.pobluesky.notification.dto.response.ManagerNotificationResponseDTO;
 import com.pobluesky.notification.entity.CustomerNotification;
 import com.pobluesky.notification.entity.ManagerNotification;
-import com.pobluesky.notification.feign.UserClient;
+import com.pobluesky.feign.UserClient;
 import com.pobluesky.notification.repository.CustomerNotificationRepository;
 import com.pobluesky.notification.repository.ManagerNotificationRepository;
 import java.util.List;

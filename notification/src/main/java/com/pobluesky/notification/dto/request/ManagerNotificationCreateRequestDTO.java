@@ -1,7 +1,7 @@
 package com.pobluesky.notification.dto.request;
 
 
-import com.pobluesky.notification.dto.response.Manager;
+import com.pobluesky.feign.Manager;
 import com.pobluesky.notification.entity.ManagerNotification;
 
 public record ManagerNotificationCreateRequestDTO(

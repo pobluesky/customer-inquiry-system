@@ -1,14 +1,12 @@
-package com.pobluesky.notification.dto.response;
+package com.pobluesky.feign;
 
-import com.pobluesky.config.global.entity.Department;
 import com.pobluesky.config.global.security.UserRole;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Manager {
+public class Customer {
     private Long userId;
     protected String name;
     protected String email;
@@ -16,8 +14,8 @@ public class Manager {
     protected String phone;
     protected Boolean isActivated;
     protected UserRole role;
-    private String empNo;
-    private Department department;
+    private String customerCode;
+    private String customerName;
     private String securityRole;
 
 }

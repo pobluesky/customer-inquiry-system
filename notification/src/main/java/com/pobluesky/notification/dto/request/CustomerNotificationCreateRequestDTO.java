@@ -1,7 +1,7 @@
 package com.pobluesky.notification.dto.request;
 
 
-import com.pobluesky.notification.dto.response.Customer;
+import com.pobluesky.feign.Customer;
 import com.pobluesky.notification.entity.CustomerNotification;
 
 public record CustomerNotificationCreateRequestDTO(
