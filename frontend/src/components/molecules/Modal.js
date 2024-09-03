@@ -47,7 +47,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
             setError(''); // 이전 에러 메시지를 초기화
             try {
                 const response = await getInquiriesByProductType(userId, productType);
-                setInquiries(response.data || []);
+                setInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching inquiries:', error);
                 setError('문제가 발생했습니다. 다시 시도해 주세요.');
@@ -63,7 +63,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
             setError(''); // 이전 에러 메시지를 초기화
             try {
                 const response = await getFavoriteInquiriesByProductType(userId, productType);
-                setFavoriteInquiries(response.data || []);
+                setFavoriteInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching favorite inquiries:', error);
                 setError('문제가 발생했습니다. 다시 시도해 주세요.');
@@ -163,6 +163,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>선택</TableCell>
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>라인아이템 조회</TableCell>
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>Inquiry 번호</TableCell>
+                                        <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>제품유형</TableCell>
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>판매계약자</TableCell>
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>산업분류</TableCell>
                                         <TableCell style={{ backgroundColor: '#03507d', color: '#ffffff' }}>고객사</TableCell>
@@ -188,6 +189,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                                                     </IconButton>
                                                 </TableCell>
                                                 <TableCell>{inquiry.inquiryId}</TableCell>
+                                                <TableCell>{inquiry.productType}</TableCell>
                                                 <TableCell>{inquiry.salesPerson}</TableCell>
                                                 <TableCell>{inquiry.industry}</TableCell>
                                                 <TableCell>{inquiry.customerName}</TableCell>

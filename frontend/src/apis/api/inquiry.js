@@ -1,6 +1,6 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
-    createFormInquiryData,
+    createFormInquiryData, processHistoryData,
     processInquiries,
 } from '../utils/inquiryUtils';
 
@@ -189,7 +189,7 @@ export const getInquiriesByProductType = async (userId, productType) => {
             `/customers/inquiries/${userId}/${productType}/all`,
         );
         console.log(response.data);
-        return response.data;
+        return processHistoryData(response.data.data);
     } catch (error) {
         throw error;
     }
@@ -202,7 +202,7 @@ export const getFavoriteInquiriesByProductType = async (userId, productType) => 
             `/customers/inquiries/${userId}/${productType}/favorite`,
         );
         console.log(response.data);
-        return response.data;
+        return  processHistoryData(response.data.data);
     } catch (error) {
         throw error;
     }
