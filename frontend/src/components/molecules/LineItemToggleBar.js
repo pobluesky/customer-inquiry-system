@@ -13,8 +13,8 @@ const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItem
     const closeModal = () => setIsModalOpen(false);
 
     const handleSelect = (selectedData) => {
-        onLineItemsChange(selectedData);
-        closeModal(); // Close modal after selection
+        // onLineItemsChange(selectedData);
+        closeModal();
     };
 
     return (

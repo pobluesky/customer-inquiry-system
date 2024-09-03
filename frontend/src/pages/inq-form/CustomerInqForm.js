@@ -145,7 +145,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                         onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
-                title={'신규 등록'}
+                title={'기본정보'}
                 register={register}
                 errors={errors}
                 formData={formData}
