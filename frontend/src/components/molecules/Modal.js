@@ -46,7 +46,6 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
             setError('');
             try {
                 const response = await getInquiriesByProductType(userId, productType);
-                console.log("전체: ", response);
                 setInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching inquiries:', error);
@@ -63,7 +62,6 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
             setError('');
             try {
                 const response = await getFavoriteInquiriesByProductType(userId, productType);
-                console.log("즐겨찾기: ", response);
                 setFavoriteInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching favorite inquiries:', error);
@@ -112,12 +110,11 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
     };
 
     const handleSelect = () => {
-        console.log("선택된 행 ID: ", selectedInquiry);
         if (selectedInquiry) {
             const selectedData = inquiries.find(inquiry => inquiry.inquiryId === selectedInquiry);
             onSelect([selectedData]);
-            console.log("선택된 데이터: ", [selectedData])
             onClose();
+            return [selectedData];
         }
     };
 
@@ -134,8 +131,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
 
     const getSequentialLineItemIds = (lineItems) => {
         const lineItemIds = lineItems.map(item => item.lineItemId);
-        const minLineItemId = Math.min(...lineItemIds);
-
+        Math.min(...lineItemIds);
         const lineItemIdMap = lineItemIds
         .sort((a, b) => a - b)
         .reduce((acc, id, index) => {
