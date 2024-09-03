@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerNotificationRepository extends JpaRepository<CustomerNotification, Long> {
 
-    List<CustomerNotification> findByCustomer_UserId(Long userId);
+    List<CustomerNotification> findByCustomer_UserIdAndIsReadFalse(Long userId);
 
     @Query("SELECT cn FROM CustomerNotification cn WHERE cn.customer.userId = :userId AND cn.isRead = :isRead ORDER BY cn.createdDate DESC")
     Page<CustomerNotification> findRecentNotificationsByuserIdAndIsRead(
@@ -21,4 +21,6 @@ public interface CustomerNotificationRepository extends JpaRepository<CustomerNo
         Pageable pageable
     );
 
+    @Query("SELECT COUNT(cn) FROM CustomerNotification cn WHERE cn.customer.userId = :userId AND cn.isRead = false")
+    long countUnreadNotificationsByCustomer_UserId(@Param("userId") Long userId);
 }
