@@ -12,7 +12,7 @@ public interface InquiryClient {
     @GetMapping("/api/inquiries/exists/{inquiryId}")
     Boolean checkInquiryExists(@PathVariable("inquiryId") Long inquiryId);
 
-    @GetMapping("/api/managers/inquiries/{inquiryId}")
+    @GetMapping("/api/inquiries/managers/inquiries/{inquiryId}")
     Inquiry getInquiryById( @PathVariable("inquiryId") Long inquiryId);
 
 }

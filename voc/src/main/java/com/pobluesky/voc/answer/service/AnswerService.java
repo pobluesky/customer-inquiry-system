@@ -140,7 +140,11 @@ public class AnswerService {
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
         }
 
-        Inquiry inquiry = validateInquiry(question);
+        if(question.getInquiryId()!= null && inquiryClient.checkInquiryExists(question.getInquiryId())) {
+            throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
+        }
+
+//        Inquiry inquiry = validateInquiry(question);
 
         Customer customer = userClient.getCustomerById(question.getCustomerId());
         if (customer == null) {

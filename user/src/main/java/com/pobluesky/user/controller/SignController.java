@@ -1,13 +1,10 @@
 package com.pobluesky.user.controller;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.config.global.security.JwtToken;
 
 import com.pobluesky.user.dto.request.LogInDto;
 import com.pobluesky.user.service.SignService;
 
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;

@@ -36,13 +36,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/inquiries")
 public class InquiryController {
 
     private final InquiryService inquiryService;
 
     // msa에 사용할 존재 여부만 확인하는 간단한 API 추가
-    @GetMapping("/inquiries/exists/{inquiryId}")
+    @GetMapping("/exists/{inquiryId}")
     public ResponseEntity<Boolean> checkInquiryExists(@PathVariable("inquiryId") Long inquiryId) {
         boolean exists = inquiryService.existsById(inquiryId);
         return ResponseEntity.ok(exists);
