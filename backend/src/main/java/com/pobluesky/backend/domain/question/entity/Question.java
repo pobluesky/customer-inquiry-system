@@ -50,6 +50,8 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Answer answer;
 
+    private Boolean isActivated;
+
     @Builder
     private Question(
         Inquiry inquiry,
@@ -69,6 +71,11 @@ public class Question extends BaseEntity {
         this.filePath = filePath;
         this.status = status;
         this.type = type;
+        this.isActivated = true;
+    }
+
+    public void deleteQuestion() {
+        this.isActivated = false;
     }
 
     public void updateQuestion(
