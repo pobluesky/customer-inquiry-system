@@ -254,6 +254,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                         lineItemData={formData.lineItemResponseDTOs}
                         onLineItemsChange={(lineItems) => handleFormDataChange(
                             'lineItemRequestDTOs', lineItems)}
+                        isUpdate={isUpdate}
                     />
                     <AdditionalRequestForm formData={formData}
                                            handleFormDataChange={handleFormDataChange} />

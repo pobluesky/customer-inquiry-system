@@ -16,19 +16,16 @@ import {
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
 import { productTypes } from '../../../utils/inquiry';
 import LineItemToggleBar from '../../molecules/LineItemToggleBar';
-import { useAuth } from '../../../hooks/useAuth';
 
 const InquiryHistoryForm = ({
     productType,
     lineItemData,
     onLineItemsChange,
     onRefLineItems,
+    isUpdate,
 }) => {
-    const { userId } = useAuth();
-    // 라인아이템 등록
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
-    const [selectedRows, setSelectedRows] = useState([]);
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
@@ -114,6 +111,7 @@ const InquiryHistoryForm = ({
                 productType={productType}
                 onLineItemsChange={onLineItemsChange}
                 onSelect={handleSelect}
+                isUpdate={isUpdate}
             />
             {isChecked ? (
                 <>

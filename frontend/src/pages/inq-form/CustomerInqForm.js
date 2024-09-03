@@ -22,6 +22,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { register, handleSubmit, formState: { errors } } = useForm();
     const lineItemsRef = useRef(null);
     const fileRef = useRef(null);
+    const [isUpdate, setIsUpdate] = useState(true);
 
     const [userInfo, setUserInfo] = useState(null);
 
@@ -157,6 +158,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 lineItemData={formData.lineItemResponseDTOs}
                 onLineItemsChange={(lineItems) => handleFormDataChange(
                     'lineItemRequestDTOs', lineItems)}
+                isUpdate={isUpdate}
             />
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
