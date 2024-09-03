@@ -2,7 +2,12 @@ import React from 'react';
 import GaugeChart from 'react-gauge-chart';
 import { Chart_Container } from '../../assets/css/Chart.css';
 
-function InquiryProductProgressChart() {
+// 전체 제품별 주문 처리 현황
+function InquiryProductProgressChart({ data }) {
+    console.log(data)
+
+    // 제품별 버튼 추가 필요
+
     return (
         <div className={Chart_Container}>
             <div>전체 제품별 주문 처리 현황</div>

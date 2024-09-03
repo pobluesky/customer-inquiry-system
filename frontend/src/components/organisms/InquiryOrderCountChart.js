@@ -3,9 +3,16 @@ import Chart from 'react-apexcharts';
 import { Chart_Container } from '../../assets/css/Chart.css';
 
 // Inquiry 주문 체결 완료 및 미완료 비중
-class InquiryFilledOrderCountChart extends Component {
+class InquiryOrderCountChart extends Component {
     constructor(props) {
         super(props);
+
+        const { data } = props;
+
+        const managerCompleted = Math.round(data.manager.completed);
+        const managerUncompleted = Math.round(data.manager.uncompleted);
+        const totalCompleted = Math.round(data.total.completed);
+        const totalUncompleted = Math.round(data.total.uncompleted);
 
         this.state = {
             // 전체
@@ -15,8 +22,8 @@ class InquiryFilledOrderCountChart extends Component {
                         show: false,
                     },
                 },
-                labels: ['주문 체결 완료', '주문 체결 미완료'],
-                colors: ['#00A9FF', '#B3C8CF'],
+                labels: ['주문 체결 미완료', '주문 체결 완료'],
+                colors: ['#B3C8CF', '#00A9FF'],
                 legend: {
                     show: true,
                     position: 'bottom',
@@ -41,7 +48,8 @@ class InquiryFilledOrderCountChart extends Component {
                     },
                 },
             },
-            series1: [44, 56],
+            series1: [totalCompleted, totalUncompleted],
+
             // 내 평균
             options2: {
                 chart: {
@@ -49,8 +57,8 @@ class InquiryFilledOrderCountChart extends Component {
                         show: false,
                     },
                 },
-                labels: ['주문 체결 완료', '주문 체결 미완료'],
-                colors: ['#F7418F', '#B3C8CF'],
+                labels: ['주문 체결 미완료', '주문 체결 완료'],
+                colors: ['#B3C8CF', '#F7418F'],
                 legend: {
                     show: true,
                     position: 'bottom',
@@ -75,14 +83,7 @@ class InquiryFilledOrderCountChart extends Component {
                     },
                 },
             },
-            series2: [30, 70],
-            options: {
-                title: {
-                    text: 'Inquiry 주문 체결 완료 및 미완료 비중',
-                },
-            },
-            series: [44, 56],
-            labels: ['주문 체결 완료', '주문 체결 미완료'],
+            series2: [managerCompleted, managerUncompleted], // 내 평균 데이터
         };
     }
 
@@ -115,4 +116,4 @@ class InquiryFilledOrderCountChart extends Component {
     }
 }
 
-export default InquiryFilledOrderCountChart;
+export default InquiryOrderCountChart;

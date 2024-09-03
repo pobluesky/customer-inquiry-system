@@ -3,9 +3,29 @@ import Chart from 'react-apexcharts';
 import { Chart_Container } from '../../assets/css/Chart.css';
 
 // 월별 Inquiry 접수-주문 체결 평균 처리 기간
-class InquiryMonthlyFilledOrderChart extends Component {
+class InquiryMonthlyOrderChart extends Component {
     constructor(props) {
         super(props);
+
+        const { data } = props;
+
+        const managerMaxRange = data.manager.reduce((max, current) => {
+            return current[1] > max[1] ? current : max;
+        }, data.manager[0]);
+
+        const totalMaxRange = data.total.reduce((max, current) => {
+            return current[1] > max[1] ? current : max;
+        }, data.total[0]);
+
+        const maxM =
+            managerMaxRange[1] % 5
+                ? managerMaxRange[1] + 5 - (managerMaxRange[1] % 5)
+                : managerMaxRange[1] + 5;
+
+        const maxT =
+            totalMaxRange[1] % 5
+                ? totalMaxRange[1] + 5 - (totalMaxRange[1] % 5)
+                : totalMaxRange[1] + 5;
 
         this.state = {
             options: {
@@ -65,8 +85,8 @@ class InquiryMonthlyFilledOrderChart extends Component {
                                 cssClass: 'apexcharts-yaxis-title',
                             },
                         },
-                        min: 100,
-                        max: 120,
+                        min: 0,
+                        max: maxT,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -90,7 +110,7 @@ class InquiryMonthlyFilledOrderChart extends Component {
                             },
                         },
                         min: 0,
-                        max: 20,
+                        max: maxT,
                         tickAmount: 5,
                         labels: {
                             formatter: function (value) {
@@ -125,7 +145,7 @@ class InquiryMonthlyFilledOrderChart extends Component {
                 title: {
                     text: '월별 Inquiry 접수-주문 체결 평균 처리 기간',
                     align: 'center',
-                    margin: 10,
+                    margin: 5,
                     floating: false,
                     style: {
                         fontSize: '16px',
@@ -138,17 +158,15 @@ class InquiryMonthlyFilledOrderChart extends Component {
             series: [
                 {
                     name: '전체 평균',
-                    data: [
-                        105.2, 106.1, 107.6, 104.9, 108.9, 104.5, 112.5, 110.7,
-                        106.8, 108.4, 115.1, 109.8,
-                    ],
+                    data: props.data.total.map((data) =>
+                        data[1] !== 0 ? data[1] : null,
+                    ),
                 },
                 {
                     name: '나의 평균',
-                    data: [
-                        0.88, 3.01, 6.16, 2.5, 1.02, 4.47, 3.85, 5.71, 5.47,
-                        8.35, 5.24, 7.98,
-                    ],
+                    data: props.data.manager.map((data) =>
+                        data[1] !== 0 ? data[1] : null,
+                    ),
                 },
             ],
         };
@@ -162,11 +180,11 @@ class InquiryMonthlyFilledOrderChart extends Component {
                     series={this.state.series}
                     type="line"
                     width="450"
-                    height="250"
+                    height="240"
                 />
             </div>
         );
     }
 }
 
-export default InquiryMonthlyFilledOrderChart;
+export default InquiryMonthlyOrderChart;

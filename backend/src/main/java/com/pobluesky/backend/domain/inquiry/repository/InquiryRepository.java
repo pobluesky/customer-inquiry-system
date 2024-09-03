@@ -1,12 +1,12 @@
 package com.pobluesky.backend.domain.inquiry.repository;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.inquiry.entity.ProductType;
-import com.pobluesky.backend.domain.user.entity.Manager;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.pobluesky.backend.domain.inquiry.entity.ProductType;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +20,9 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
 
     @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.isActivated = true")
     Optional<Inquiry> findActiveInquiryByInquiryId(Long inquiryId);
+
+    @Query("SELECT i FROM Inquiry i WHERE i.isActivated = true")
+    List<Inquiry> findActiveInquiries();
 
     @Query("SELECT i FROM Inquiry i "
         + "WHERE i.customer.userId = :customerId "
@@ -39,22 +42,35 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
     @Query(value = "SELECT EXTRACT(MONTH FROM i.created_date) AS month, " +
         "ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1) AS avgDays " +
         "FROM Inquiry i " +
-        "GROUP BY EXTRACT(MONTH FROM i.created_date)", nativeQuery = true)
+        "GROUP BY EXTRACT(MONTH FROM i.created_date) " +
+        "ORDER BY EXTRACT(MONTH FROM i.created_date)", nativeQuery = true)
     List<Object[]> findAverageDaysPerMonth();
 
-    @Query(value = "SELECT EXTRACT(MONTH FROM i.created_date) AS month, " +
-        "ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1) AS avgDays " +
-        "FROM Inquiry i " +
-        "WHERE i.sales_manager_id = :managerId " +
-        "GROUP BY EXTRACT(MONTH FROM i.created_date), i.sales_manager_id",
+    @Query(value = "WITH months AS (" +
+        "    SELECT generate_series(1, 12) AS month" +
+        ")" +
+        "SELECT m.month, " +
+        "       COALESCE(ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1), 0) AS avgDays " +
+        "FROM months m " +
+        "LEFT JOIN Inquiry i " +
+        "ON EXTRACT(MONTH FROM i.created_date) = m.month " +
+        "AND i.sales_manager_id = :managerId " +
+        "GROUP BY m.month " +
+        "ORDER BY m.month",
         nativeQuery = true)
     List<Object[]> findAverageDaysPerMonthBySalesManager(@Param("managerId") Long managerId);
 
-    @Query(value = "SELECT EXTRACT(MONTH FROM i.created_date) AS month, " +
-        "ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1) AS avgDays " +
-        "FROM Inquiry i " +
-        "WHERE i.quality_manager_id = :managerId " +
-        "GROUP BY EXTRACT(MONTH FROM i.created_date), i.sales_manager_id",
+    @Query(value = "WITH months AS (" +
+        "    SELECT generate_series(1, 12) AS month" +
+        ")" +
+        "SELECT m.month, " +
+        "       COALESCE(ROUND(AVG(EXTRACT(DAY FROM (i.modified_date - i.created_date))), 1), 0) AS avgDays " +
+        "FROM months m " +
+        "LEFT JOIN Inquiry i " +
+        "ON EXTRACT(MONTH FROM i.created_date) = m.month " +
+        "AND i.quality_manager_id = :managerId " +
+        "GROUP BY m.month " +
+        "ORDER BY m.month",
         nativeQuery = true)
     List<Object[]> findAverageDaysPerMonthByQualityManager(@Param("managerId") Long managerId);
 

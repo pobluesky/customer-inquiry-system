@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.question.service;
 
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
+import com.pobluesky.backend.domain.question.dto.response.MobileQuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -208,5 +210,22 @@ public class QuestionService {
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
+    }
+
+    // 모바일 전체 문의 조회
+    @Transactional(readOnly = true)
+    public List<MobileQuestionSummaryResponseDTO> getAllQuestions() {
+        return questionRepository.findActiveQuestions().stream()
+                .map(MobileQuestionSummaryResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    // 모바일 상세 문의 조회
+    @Transactional(readOnly = true)
+    public MobileQuestionSummaryResponseDTO getQuestionById(Long questionId) {
+        Question question = questionRepository.findActiveQuestionByQuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return MobileQuestionSummaryResponseDTO.from(question);
     }
 }

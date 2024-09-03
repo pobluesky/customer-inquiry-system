@@ -134,15 +134,13 @@ function MyHeader() {
         </>
     );
 
-    console.log(openInfoModal);
-
     return (
         <>
             <div className={Header_Container}>
                 <div>
                     <div>
                         <MenuLink
-                            to={url}
+                            to={didLogin && url}
                             onClick={() => {
                                 setCurPage('inq');
                             }}
@@ -150,7 +148,7 @@ function MyHeader() {
                             Inquiry
                         </MenuLink>
                         <MenuLink
-                            to="voc-list/question"
+                            to={didLogin && 'voc-list/question'}
                             onClick={() => {
                                 setCurPage('voc');
                             }}

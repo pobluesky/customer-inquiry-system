@@ -1,9 +1,24 @@
+.Question_Dashboard {
+    width: 1200px;
+    margin: 0 auto 24px auto;
+    font-size: 16px;
+    color: #25262b;
+}
+
+.Question_Dashboard span {
+    color: #ff0000;
+    font-weight: 600;
+}
+
 /******************************************************************/
 /* 질문 현황 정보 그룹 *********************************************/
 /******************************************************************/
 .Question_Overview {
-    width: 1320px;
-    margin: 36px auto 0 auto;
+    width: 1200px;
+    border: 1px solid #adb0b4;
+    border-radius: 8px;
+    margin: 36px auto 24px auto;
+    padding: 8px 0;
 }
 
 .Question_Overview > div:first-child {
@@ -12,119 +27,185 @@
 }
 
 /* 전체 문의 그룹, 답변 대기 그룹, 답변 완료 그룹 */
-.Question_Overview div div {
+.Question_Overview > div:first-child > div {
     display: grid;
-    grid-template-rows: 84px 28px 64px;
+    grid-template-rows: 42px 42px;
     font-size: 20px;
-    font-weight: 700;
-    /* color: #454545; */
-    color: #212121;
+    color: #25262b;
     text-align: center;
-}
-
-/* 카테고리 아이콘 */
-.Question_Overview div div img {
-    margin: 0 auto 0 auto;
-}
-
-/* 구분선 */
-.Question_Overview > div img {
-    margin: auto;
-}
-
-/* 카테고리별 문의 개수 */
-.Question_Overview div:nth-child(3) {
-    font-size: 48px;
-    font-weight: 400;
-    color: #03507d;
-}
-
-/******************************************************************/
-/* 질문 조회 시 사용하는 조건 그룹 **********************************/
-/******************************************************************/
-.Question_Filter_Panel {
-    width: 1320px;
-    margin: 36px auto 0 auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.Question_Filter_Panel > div:first-child {
-    display: grid;
-    margin: 36px 0 0 36px;
-}
-
-/* 아이콘 + 문의 조회 */
-.Question_Filter_Panel > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 48px 120px;
-    align-items: start;
-    font-size: 24px;
-    font-weight: 600;
-    /* color: #49454f; */
-    color: #212121;
-}
-
-/* 문의 제목 + 문의 등록일 */
-.Question_Filter_Panel > div > div:nth-child(2) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 320px 128px 180px 28px 1fr 1fr 1fr;
+    justify-content: center;
     align-items: center;
-    font-size: 16px;
-    /* color: #8b8b8b; */
-    color: #212121;
 }
 
-/* [담당자 전용] 문의 번호 + 고객사명 */
-.Question_Filter_Panel > div > div:nth-child(3) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 320px 128px 200px;
-    align-items: center;
-    font-size: 16px;
-    /* color: #8b8b8b; */
-    color: #212121;
-}
-
-/* 정렬 조건 + 정렬 버튼 */
-.Question_Filter_Panel > div > div:nth-last-child(3) {
-    display: grid;
-    grid-template-columns: 120px 96px 96px 96px 96px 96px;
-    align-items: center;
-    font-size: 16px;
-    /* color: #8b8b8b; */
-    color: #212121;
-}
-
-.Question_Filter_Panel select {
-    width: 84px;
+.Question_Overview > div:first-child > div > div:first-child {
+    width: 96px;
     height: 28px;
-    background: none;
+    line-height: 28px;
+}
+
+/******************************************************************/
+/* 질문 검색 기능(상단) ********************************************/
+/******************************************************************/
+.Question_Filter_Input_Container {
+    width: 1200px;
+    margin: 0 auto 20px auto;
+}
+
+/* 전체, 답변 완료, 답변 대기 그룹 */
+.Question_Filter_Input_Container > div:first-child {
+    display: flex;
+    color: #25262b;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 그룹 구분선 */
+.Question_Filter_Input_Container > div:nth-child(2) {
+    display: flex;
+}
+
+.Question_Filter_Input_Container
+    > div:nth-child(2)
+    > div:nth-last-child(n + 2) {
+    width: 96px;
+}
+
+.Question_Filter_Input_Container > div:nth-child(2) > div:nth-last-child(1) {
+    width: 912px;
+}
+
+.Selected hr {
+    border: 1px solid #25262b;
+    border-radius: 12px;
+}
+
+.NotSelected hr {
+    border: 0.5px solid #c1c1c1;
+}
+
+/******************************************************************/
+/* 질문 검색 기능(하단) ********************************************/
+/******************************************************************/
+.Question_Filter_Input {
+    display: flex;
+    width: 1200px;
+    margin: 0 auto 24px auto;
+    justify-content: space-around;
+}
+
+.Question_Filter_Input select {
+    width: 84px;
+    height: 34px;
     border: solid 1px #c1c1c1;
-    border-radius: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #adb0b4;
+    outline: none;
+    background-color: #ffffff;
     -webkit-appearance: none; /* 크롬 화살표 없애기 */
     -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
     appearance: none; /* 화살표 없애기 */
 }
 
-/* 검색 결과 */
-.Question_Filter_Panel > div > div:nth-last-child(2) {
-    display: grid;
-    grid-template-columns: 30fr 1fr 0.5fr 1fr;
-    align-items: center;
-    font-size: 16px;
-    /* color: #8b8b8b; */
-    color: #212121;
-    text-align: right;
+.Question_Filter_Input input::placeholder {
+    text-align: center;
+    font-weight: 600;
+    color: #adb0b4;
 }
 
-/* 검색 결과 개수 */
-.Question_Filter_Panel > div > div:nth-last-child(2) > div {
+.Question_Filter_Input > div:last-child {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 412px;
+    height: 32px;
+    border: solid 1px #c1c1c1;
+    border-radius: 8px;
+}
+
+/******************************************************************/
+/* 질문 리스트 *****************************************************/
+/******************************************************************/
+.Question_List_Container hr,
+.Question_List hr {
+    width: 1200px;
+    border: 0.5px solid #8c95a1;
+}
+
+.Question_List {
+    display: grid;
+    grid-template-rows: 32px 24px 24px;
+    width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    cursor: pointer;
+}
+
+.Question_List > div:first-child {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 108px 84px 1fr;
     margin: 0 0 0 12px;
-    font-size: 24px;
+}
+
+/* 문의 유형 */
+.Question_List > div:first-child > div:first-child {
+    width: 96px;
+    height: 20px;
+    line-height: 20px;
+    color: #ffffff;
+    font-size: 12px;
     font-weight: 600;
-    color: red;
+    border: 1px solid #1748ac;
+    background-color: #1748ac;
+    border-radius: 100px;
+    text-align: center;
+}
+
+/* 답변 대기, 답변 완료 */
+.Question_List > div:first-child > div:nth-child(2) {
+    width: 72px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 100px;
+    text-align: center;
+}
+
+.Question_List > div:first-child > .Ready {
+    color: #25262b;
+    border: 1px solid #ffcecb;
+    background-color: #ffcecb;
+}
+
+.Question_List > div:first-child > .Completed {
+    color: #ffffff;
+    border: 1px solid #c1c1c1;
+    background-color: #c1c1c1;
+}
+
+/* 제목 */
+.Question_List > div:first-child > div:nth-child(3) {
+    color: #25262b;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 내용 */
+.Question_List > div:nth-child(2) {
+    color: #64636a;
+    font-size: 14px;
+    margin: 0 0 0 24px;
+}
+
+/* 질문 작성 날짜, 고객사명 */
+.Question_List > div:nth-child(3) {
+    color: #8b94a0;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    font-size: 12px;
+    margin: 0 0 0 24px;
 }
 
 /******************************************************************/
@@ -153,7 +234,7 @@
     font-size: 24px;
     font-weight: 600;
     /* color: #49454f; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 문의 유형 + 라디오 버튼 */
@@ -164,7 +245,7 @@
     font-size: 20px;
     font-weight: 600;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* Inquiry No. + 검색창 */
@@ -175,7 +256,7 @@
     font-size: 20px;
     font-weight: 600;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* Inquiry No. */
@@ -247,21 +328,17 @@
     grid-template-columns: 120px 96px 96px 600px;
     align-items: center;
     font-size: 20px;
-    font-weight: 400;
-    /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 첨부파일 안내 문구 */
 .Question_Input > div > div:nth-child(4) > div:nth-child(4) {
     font-size: 12px;
-    font-weight: 400;
 }
 
 /* 첨부파일 안내 문구 */
 .Question_Input > div > div:nth-child(5) {
     font-size: 12px;
-    font-weight: 400;
 }
 
 /* 첨부파일 박스 */
@@ -359,14 +436,14 @@
     font-size: 24px;
     font-weight: 600;
     /* color: #6e6e6e; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 질문 내용 */
 .Question_Modal > div:nth-child(3) > div:nth-child(2) {
     font-size: 16px;
     /* color: #6e6e6e; */
-    color: #212121;
+    color: #25262b;
     margin: 4px 72px 0 72px;
     max-height: 84px;
     overflow-y: auto;
@@ -411,7 +488,7 @@
     font-size: 24px;
     font-weight: 600;
     /* color: #6e6e6e; */
-    color: #212121;
+    color: #25262b;
     padding: 0 0 0 8px;
 }
 
@@ -501,7 +578,7 @@
     align-items: center;
     font-size: 20px;
     font-weight: 600;
-    color: #212121;
+    color: #25262b;
 }
 
 /* Inquiry 목록 그룹 */
@@ -544,7 +621,7 @@
     > div:nth-child(n + 2) {
     font-size: 20px;
     font-weight: 600;
-    color: #212121;
+    color: #25262b;
 }
 
 /* 기존에 작성한 Inquiry가 없을 경우 */
@@ -585,7 +662,7 @@
     font-size: 24px;
     font-weight: 600;
     /* color: #49454f; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 협업 번호 + 협업 담당자 + 조회 버튼 */
@@ -595,7 +672,7 @@
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 협업 등록일 */
@@ -605,7 +682,7 @@
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 정렬 조건 + 정렬 버튼 */
@@ -615,7 +692,7 @@
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 정렬 조건 + 정렬 버튼 */
@@ -637,7 +714,7 @@
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
     text-align: right;
 }
 
@@ -695,14 +772,14 @@
     margin: 3vh 3vw 0 3vw;
     display: flex;
     font-size: 16px;
-    color: #212121;
+    color: #25262b;
 }
 
 .Col_Res_Modal > div:first-child > div:nth-child(n) {
     margin: 0 1vw 0 0;
 }
 
-.Col_Res_Modal > div:first-child > div:nth-child(n+2) {
+.Col_Res_Modal > div:first-child > div:nth-child(n + 2) {
     font-weight: 600;
 }
 
@@ -712,13 +789,13 @@
     font-size: 24px;
     height: fit-content;
     font-weight: 600;
-    color: #212121;
+    color: #25262b;
 }
 
 /* 협업 요청 사유 내용 */
 .Col_Res_Modal > div:nth-child(3) {
     height: 120px;
-    color: #212121;
+    color: #25262b;
     margin: 0 3vw 0 3vw;
     padding: 1vh 1vw 1vh 1vw;
     border: 1px solid #8b8b8b;
@@ -757,7 +834,7 @@
     font-size: 24px;
     height: fit-content;
     font-weight: 600;
-    color: #212121;
+    color: #25262b;
 }
 
 /* 버튼 그룹 */
@@ -813,7 +890,7 @@
     font-size: 24px;
     font-weight: 600;
     /* color: #49454f; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 담당자 조회 */
@@ -823,7 +900,7 @@
     align-items: center;
     font-size: 16px;
     /* color: #8b8b8b; */
-    color: #212121;
+    color: #25262b;
 }
 
 /* 담당자 이름, 부서, 권한 */
@@ -904,7 +981,7 @@
     align-items: center;
     font-size: 20px;
     font-weight: 600;
-    color: #212121;
+    color: #25262b;
 }
 
 /* Col Manager 목록 그룹 */
