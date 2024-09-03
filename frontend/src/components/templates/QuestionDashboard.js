@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Text from '../../components/atoms/Text';
 import QuestionOverview from '../organisms/QuestionOverview';
-import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
-import QuestionTable from '../organisms/QuestionTable';
+import QuestionFilterInput from '../organisms/QuestionFilterInput';
+import QuestionList from '../organisms/QuestionList';
 import QuestionModal from '../molecules/QuestionModal';
-// import Notification from '../../components/molecules/NotificationModal';
+import { Question_Dashboard } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
@@ -97,7 +96,14 @@ export default function QuestionDashboard() {
                 answerCount={answerCount}
                 colCount={colCount}
             />
-            <QuestionFilterPanel
+            {searchCount ? (
+                <div className={Question_Dashboard}>
+                    검색 결과는 총 <span>{searchCount}</span>건입니다.
+                </div>
+            ) : (
+                <div className={Question_Dashboard}>검색 결과가 없습니다.</div>
+            )}
+            <QuestionFilterInput
                 searchCount={searchCount}
                 title={title}
                 startDate={startDate}
@@ -110,11 +116,12 @@ export default function QuestionDashboard() {
                 setQuestionNo={setQuestionNo}
                 setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
+                status={status}
                 setStatusFilter={setStatusFilter}
                 questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}
             />
-            <QuestionTable
+            <QuestionList
                 title={title}
                 startDate={startDate}
                 endDate={endDate}
@@ -144,7 +151,6 @@ export default function QuestionDashboard() {
                     setOpenModal={setOpenModal}
                 />
             )}
-            {/* <Notification /> */}
         </>
     );
 }

@@ -104,12 +104,12 @@ function MyHeader() {
             <div>
                 <MenuLink to={url}>Inquiry 조회</MenuLink>
             </div>
-            {role === 'CUSTOMER' && (
+            {role === 'customer' && (
                 <div>
                     <MenuLink to="/inq-form/customer">Inquiry 등록</MenuLink>
                 </div>
             )}
-            {role !== 'CUSTOMER' && (
+            {role !== 'customer' && (
                 <div>
                     <MenuLink to="/dashboard">대시보드</MenuLink>
                 </div>
@@ -134,15 +134,13 @@ function MyHeader() {
         </>
     );
 
-    console.log(openInfoModal);
-
     return (
         <>
             <div className={Header_Container}>
                 <div>
                     <div>
                         <MenuLink
-                            to={url}
+                            to={didLogin && url}
                             onClick={() => {
                                 setCurPage('inq');
                             }}
@@ -150,7 +148,7 @@ function MyHeader() {
                             Inquiry
                         </MenuLink>
                         <MenuLink
-                            to="voc-list/question"
+                            to={didLogin && 'voc-list/question'}
                             onClick={() => {
                                 setCurPage('voc');
                             }}
