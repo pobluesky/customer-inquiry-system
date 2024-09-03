@@ -139,7 +139,6 @@ export default function QuestionDashboard() {
                 setOpenModal={setOpenModal}
                 openModal={openModal}
             />
-
             {openModal && (
                 <QuestionModal
                     questionDetail={questionDetail}

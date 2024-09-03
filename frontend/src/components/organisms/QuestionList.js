@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
@@ -40,6 +41,7 @@ export default function QuestionList({
 }) {
     const { userId } = useAuth();
     const role = getCookie('userRole');
+    const navigate = useNavigate();
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
@@ -201,12 +203,19 @@ export default function QuestionList({
                     <div
                         className={Question_List}
                         onClick={() => {
-                            setStatus(data.status);
-                            setQuestionId(data.questionId);
-                            fetchGetQuestionDetail(
-                                data.questionId,
-                                data.status,
-                            );
+                            navigate('/voc-form/answer', {
+                                state: {
+                                    questionId: data.questionId,
+                                    status: data.status,
+                                    /* 필요한 다른 데이터들 */
+                                },
+                            });
+                            // setStatus(data.status);
+                            // setQuestionId(data.questionId);
+                            // fetchGetQuestionDetail(
+                            //     data.questionId,
+                            //     data.status,
+                            // );
                         }}
                     >
                         <div>
