@@ -1,6 +1,6 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
-    createFormInquiryData,
+    createFormInquiryData, processHistoryData,
     processInquiries,
 } from '../utils/inquiryUtils';
 
@@ -178,6 +178,46 @@ export const putProgress = async (inquiryId, progress) => {
         return response.data;
     } catch (error) {
         console.log('Error putting progress update:', error);
+        throw error;
+    }
+}
+
+// 제품 유형에 따른 고객 전체 Inquiry 목록 조회
+export const getInquiriesByProductType = async (userId, productType) => {
+    try {
+        const response = await axiosInstance.get(
+            `/customers/inquiries/${userId}/${productType}/all`,
+        );
+        console.log(response.data);
+        return processHistoryData(response.data.data);
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 제품 유형에 따른 고객 즐겨찾기 Inquiry 목록 조회
+export const getFavoriteInquiriesByProductType = async (userId, productType) => {
+    try {
+        const response = await axiosInstance.get(
+            `/customers/inquiries/${userId}/${productType}/favorite`,
+        );
+        console.log(response.data);
+        return  processHistoryData(response.data.data);
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 특정 Inquiry 즐겨찾기 설정
+export const putFavoriteInquiry = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.put(
+            `/customers/inquiries/${inquiryId}/favorite`,
+        );
+        console.log('putFavoriteInquiryResponse: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error putting favorite inquiry:', error);
         throw error;
     }
 }

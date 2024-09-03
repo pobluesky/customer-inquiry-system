@@ -14,8 +14,9 @@ import {
     Button,
 } from '@mui/material';
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
-import ToggleBar from '../../molecules/ToggleBar';
 import { productTypes } from '../../../utils/inquiry';
+import LineItemToggleBar from '../../molecules/LineItemToggleBar';
+import { useAuth } from '../../../hooks/useAuth';
 
 const InquiryHistoryForm = ({
     productType,
@@ -23,6 +24,7 @@ const InquiryHistoryForm = ({
     onLineItemsChange,
     onRefLineItems,
 }) => {
+    const { userId } = useAuth();
     // 라인아이템 등록
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
@@ -93,10 +95,11 @@ const InquiryHistoryForm = ({
                 backgroundColor: '#ffffff',
             }}
         >
-            <ToggleBar
+            <LineItemToggleBar
                 title={'라인아이템'}
                 isChecked={isChecked}
                 setCheck={setChecked}
+                productType={productType}
             />
             {isChecked ? (
                 <>
