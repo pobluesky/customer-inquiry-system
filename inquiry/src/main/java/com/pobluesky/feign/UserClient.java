@@ -18,7 +18,7 @@ public interface UserClient {
     @GetMapping("/api/managers/summary/{userId}")
     ManagerSummaryResponseDTO getManagerSummaryById(@PathVariable("userId") Long userId);
 
-    @GetMapping("/api/sign/token")
+    @GetMapping("/api/users/token")
     Long parseToken(@RequestParam("token") String token);
 
 }

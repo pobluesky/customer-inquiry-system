@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.pobluesky.config.global"})
+@ComponentScan(basePackages = {"com.pobluesky.config.global","com.pobluesky.user"})
 public class UserApplication {
 
 	public static void main(String[] args) {

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDetails {
+public class Manager {
     private Long userId;
     private String role;
 

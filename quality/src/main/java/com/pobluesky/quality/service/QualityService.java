@@ -10,14 +10,13 @@ import com.pobluesky.quality.feign.FileClient;
 import com.pobluesky.quality.feign.FileInfo;
 import com.pobluesky.quality.feign.Inquiry;
 import com.pobluesky.quality.feign.InquiryClient;
+import com.pobluesky.quality.feign.Manager;
 import com.pobluesky.quality.feign.UserClient;
-import com.pobluesky.quality.feign.UserDetails;
 import com.pobluesky.quality.repository.QualityRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.Manager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,8 +38,8 @@ public class QualityService {
     public List<QualityResponseDTO> getAllQualities(String token) {
         Long userId = userClient.parseToken(token);
 
-        UserDetails userDetails = userClient.getUserDetails(userId);
-        if (userDetails == null) {
+        Manager manager = userClient.getManagerById(userId);
+        if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -60,12 +59,12 @@ public class QualityService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        UserDetails userDetails = userClient.getUserDetails(userId);
-        if (userDetails == null) {
+        Manager manager = userClient.getManagerById(userId);
+        if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        if(!UserRole.QUALITY.name().equals(userDetails.getRole()))
+        if(!UserRole.QUALITY.name().equals(manager.getRole()))
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
 
         Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
@@ -96,8 +95,8 @@ public class QualityService {
     public QualityResponseDTO getReviewByInquiry(String token, Long inquiryId) {
         Long userId = userClient.parseToken(token);
 
-        UserDetails userDetails = userClient.getUserDetails(userId);
-        if (userDetails == null) {
+        Manager manager = userClient.getManagerById(userId);
+        if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
