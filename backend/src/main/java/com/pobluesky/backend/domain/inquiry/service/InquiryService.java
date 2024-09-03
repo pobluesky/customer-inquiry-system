@@ -23,14 +23,16 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.text.DecimalFormat;
+
 import java.time.LocalDate;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -453,18 +455,18 @@ public class InquiryService {
 
 
     private List<Object[]> getManagerSpecificInquiryData(
-            Manager manager,
-            Supplier<List<Object[]>> salesQuery,
-            Supplier<List<Object[]>> qualityQuery
+        Manager manager,
+        Supplier<List<Object[]>> salesQuery,
+        Supplier<List<Object[]>> qualityQuery
     ) {
 
         return manager.getRole() == UserRole.SALES ? salesQuery.get() : qualityQuery.get();
     }
 
     private Integer getManagerSpecificCount(
-            Manager manager,
-            Supplier<Integer> salesCount,
-            Supplier<Integer> qualityCount
+        Manager manager,
+        Supplier<Integer> salesCount,
+        Supplier<Integer> qualityCount
     ) {
 
         return manager.getRole() == UserRole.SALES ? salesCount.get() : qualityCount.get();
@@ -477,9 +479,9 @@ public class InquiryService {
 
         results.put("total", inquiryRepository.findAverageDaysPerMonth());
         results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.findAverageDaysPerMonthBySalesManager(manager.getUserId()),
-                () -> inquiryRepository.findAverageDaysPerMonthByQualityManager(manager.getUserId())
+            manager,
+            () -> inquiryRepository.findAverageDaysPerMonthBySalesManager(manager.getUserId()),
+            () -> inquiryRepository.findAverageDaysPerMonthByQualityManager(manager.getUserId())
         ));
 
         return results;
@@ -492,9 +494,9 @@ public class InquiryService {
 
         results.put("total", inquiryRepository.countInquiriesByProgress());
         results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.countInquiriesBySalesManagerAndProgress(manager),
-                () -> inquiryRepository.countInquiriesByQualityManagerAndProgress(manager)
+            manager,
+            () -> inquiryRepository.countInquiriesBySalesManagerAndProgress(manager),
+            () -> inquiryRepository.countInquiriesByQualityManagerAndProgress(manager)
         ));
 
         return results;
@@ -506,15 +508,15 @@ public class InquiryService {
         Map<String, Map<String, String>> results = new HashMap<>();
 
         Integer totalByManager = getManagerSpecificCount(
-                manager,
-                () -> inquiryRepository.countInquiriesBySalesManager(manager),
-                () -> inquiryRepository.countInquiriesByQualityManager(manager)
+            manager,
+            () -> inquiryRepository.countInquiriesBySalesManager(manager),
+            () -> inquiryRepository.countInquiriesByQualityManager(manager)
         );
 
         Integer completedCountsByManager = getManagerSpecificCount(
-                manager,
-                () -> inquiryRepository.countInquiriesByFinalProgressBySalesManager(manager),
-                () -> inquiryRepository.countInquiriesByFinalProgressByQualityManager(manager)
+            manager,
+            () -> inquiryRepository.countInquiriesByFinalProgressBySalesManager(manager),
+            () -> inquiryRepository.countInquiriesByFinalProgressByQualityManager(manager)
         );
 
         int totalInquiries = inquiryRepository.findAll().size();
@@ -546,9 +548,9 @@ public class InquiryService {
 
         results.put("total", inquiryRepository.countInquiriesByProductType());
         results.put("manager", getManagerSpecificInquiryData(
-                manager,
-                () -> inquiryRepository.countInquiriesByProductTypeAndSalesManager(manager),
-                () -> inquiryRepository.countInquiriesByProductTypeAndQualityManager(manager)
+            manager,
+            () -> inquiryRepository.countInquiriesByProductTypeAndSalesManager(manager),
+            () -> inquiryRepository.countInquiriesByProductTypeAndQualityManager(manager)
         ));
 
         return results;
@@ -570,26 +572,26 @@ public class InquiryService {
         }
 
         return inquiries.stream()
-                    .map(inquiry -> {
-                        List<LineItemResponseDTO> lineItems =
-                            lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
-                        return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
-                    })
-                    .collect(Collectors.toList());
+            .map(inquiry -> {
+                List<LineItemResponseDTO> lineItems =
+                    lineItemService.getFullLineItemsByInquiry(inquiry.getInquiryId());
+                return InquiryFavoriteResponseDTO.of(inquiry, lineItems);
+            })
+            .collect(Collectors.toList());
     }
 
     private Manager validateManager(String token) {
         Long userId = signService.parseToken(token);
 
         return managerRepository.findById(userId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 
     private Customer validateCustomer(String token) {
         Long userId = signService.parseToken(token);
 
         return customerRepository.findById(userId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 
     // 모바일 전체 Inquiry 조회
@@ -597,15 +599,15 @@ public class InquiryService {
     public List<MobileInquirySummaryResponseDTO> getAllInquiries() {
 
         return inquiryRepository.findActiveInquiries().stream()
-                .map(MobileInquirySummaryResponseDTO::from)
-                .collect(Collectors.toList());
+            .map(MobileInquirySummaryResponseDTO::from)
+            .collect(Collectors.toList());
     }
 
     // 모바일 상세 Inquiry 조회
     @Transactional(readOnly = true)
     public MobileInquirySummaryResponseDTO getInquiryById(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
-                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         return MobileInquirySummaryResponseDTO.from(inquiry);
     }
