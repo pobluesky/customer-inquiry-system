@@ -100,4 +100,8 @@ public class CustomerService {
 
         customer.deleteUser();
     }
+
+    public boolean existsById(Long userId) {
+        return customerRepository.existsById(userId);
+    }
 }

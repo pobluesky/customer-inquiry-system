@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "inquiry")
 public interface InquiryClient {
 
-    @GetMapping("/inquiries/{id}")
-    Inquiry getInquiryById(@PathVariable("id") Long inquiryId);
+    @GetMapping("/api/inquiries/exists/{inquiryId}")
+    Boolean checkInquiryExists(@PathVariable("inquiryId") Long inquiryId);
 }

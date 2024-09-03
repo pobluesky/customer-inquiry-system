@@ -42,7 +42,7 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswers(String token) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -59,7 +59,7 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerDetails(userId);
+        Customer user = userClient.getCustomerById(userId);
         if(user == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -83,7 +83,7 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -99,7 +99,7 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionId(String token, Long customerId, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerDetails(userId);
+        Customer customer = userClient.getCustomerById(userId);
         if(customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -128,7 +128,7 @@ public class AnswerService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         } // 존재하지 않는 담당자일 경우
@@ -142,7 +142,7 @@ public class AnswerService {
 
         Inquiry inquiry = validateInquiry(question);
 
-        Customer customer = userClient.getCustomerDetails(question.getCustomerId());
+        Customer customer = userClient.getCustomerById(question.getCustomerId());
         if (customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }

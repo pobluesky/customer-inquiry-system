@@ -101,4 +101,8 @@ public class ManagerService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         return manager;
     }
+
+    public boolean existsById(Long userId) {
+        return managerRepository.existsById(userId);
+    }
 }

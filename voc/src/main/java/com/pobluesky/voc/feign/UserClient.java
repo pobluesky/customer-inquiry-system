@@ -2,17 +2,18 @@ package com.pobluesky.voc.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "user")
 public interface UserClient {
 
-    @GetMapping("/managers/details")
-    Manager getManagerDetails(@RequestParam("managerId") Long managerId);
+    @GetMapping("/api/managers/{userId}")
+    Manager getManagerById(@PathVariable("userId") Long userId);
 
-    @GetMapping("/customers/details")
-    Customer getCustomerDetails(@RequestParam("managerId") Long managerId);
+    @GetMapping("/api/customers/{userId}")
+    Customer getCustomerById(@PathVariable("userId") Long userId);
 
-    @GetMapping("/api/sign/token")
+    @GetMapping("/api/users/token")
     Long parseToken(@RequestParam("token") String token);
 }

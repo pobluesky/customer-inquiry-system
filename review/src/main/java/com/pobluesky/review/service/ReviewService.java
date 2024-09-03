@@ -10,10 +10,9 @@ import com.pobluesky.review.entity.Review;
 import com.pobluesky.review.feign.Inquiry;
 import com.pobluesky.review.feign.InquiryClient;
 import com.pobluesky.review.feign.UserClient;
-import com.pobluesky.review.feign.UserDetails;
+import com.pobluesky.review.feign.Manager;
 import com.pobluesky.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.Manager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +29,17 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewResponseDTO getReviewByInquiry(String token, Long inquiryId){
-        Long userId = inquiryClient.parseToken(token);
+        Long userId = userClient.parseToken(token);
 
-        if (!userClient.existsById(userId)) {
+        boolean customerExists = userClient.customerExistsById(userId);
+        boolean managerExists = userClient.managerExistsById(userId);
+
+        if (!customerExists && !managerExists) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-        if (inquiry == null) {
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
@@ -53,20 +55,22 @@ public class ReviewService {
         Long inquiryId,
         ReviewCreateRequestDTO dto
         ) {
-        Long userId = inquiryClient.parseToken(token);
+        Long userId = userClient.parseToken(token);
 
-        if (!userClient.existsById(userId)) {
+        boolean customerExists = userClient.customerExistsById(userId);
+        boolean managerExists = userClient.managerExistsById(userId);
+
+        if (!customerExists && !managerExists) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        UserDetails userDetails = userClient.getUserDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
 
-        if(userDetails.getRole() != UserRole.SALES)
+        if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-
-        if(inquiry == null){
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
@@ -86,20 +90,22 @@ public class ReviewService {
         Long inquiryId,
         ReviewUpdateRequestDTO request) {
 
-        Long userId = inquiryClient.parseToken(token);
+        Long userId = userClient.parseToken(token);
 
-        if (!userClient.existsById(userId)) {
+        boolean customerExists = userClient.customerExistsById(userId);
+        boolean managerExists = userClient.managerExistsById(userId);
+
+        if (!customerExists && !managerExists) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        UserDetails userDetails = userClient.getUserDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
 
-        if(userDetails.getRole() != UserRole.SALES)
+        if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-
-        if(inquiry == null){
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 

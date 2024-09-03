@@ -54,7 +54,7 @@ public class QuestionService {
 
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -65,7 +65,7 @@ public class QuestionService {
         // 고객 이름을 서비스 레이어에서 필터링
         return questions.stream()
             .map(dto -> {
-                Customer customer = userClient.getCustomerDetails(dto.customerId());
+                Customer customer = userClient.getCustomerById(dto.customerId());
                 if (customer == null) {
                     throw new CommonException(ErrorCode.USER_NOT_FOUND);
                 }
@@ -111,7 +111,7 @@ public class QuestionService {
 
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerDetails(userId);
+        Customer user = userClient.getCustomerById(userId);
         if(user == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -127,7 +127,7 @@ public class QuestionService {
         // 고객 이름 설정
         return questions.stream()
             .map(dto -> {
-                Customer customerDetails = userClient.getCustomerDetails(dto.customerId());
+                Customer customerDetails = userClient.getCustomerById(dto.customerId());
                 if (customerDetails == null) {
                     throw new CommonException(ErrorCode.USER_NOT_FOUND);
                 }
@@ -151,7 +151,7 @@ public class QuestionService {
     public QuestionResponseDTO getQuestionByQuestionIdForManager(String token, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerDetails(userId);
+        Manager manager = userClient.getManagerById(userId);
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -167,7 +167,7 @@ public class QuestionService {
     public QuestionResponseDTO getQuestionByQuestionId(String token, Long customerId, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerDetails(userId);
+        Customer customer = userClient.getCustomerById(userId);
         if(customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -197,7 +197,7 @@ public class QuestionService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerDetails(userId);
+        Customer user = userClient.getCustomerById(userId);
         if(user == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -205,8 +205,8 @@ public class QuestionService {
         if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-        if(inquiry == null) {
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
@@ -235,7 +235,7 @@ public class QuestionService {
         ) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerDetails(userId);
+        Customer user = userClient.getCustomerById(userId);
         if(user == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }

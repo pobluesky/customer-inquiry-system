@@ -434,4 +434,9 @@ public class InquiryService {
 
         return InquiryAllocateResponseDTO.from(inquiry, userClient);
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsById(Long inquiryId) {
+        return inquiryRepository.existsById(inquiryId);
+    }
 }

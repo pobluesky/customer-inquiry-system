@@ -22,7 +22,7 @@ public record QuestionSummaryResponseDTO(
 ) {
 
     public static QuestionSummaryResponseDTO from(Question question, UserClient userClient) {
-        String customerName = userClient.getCustomerDetails(question.getCustomerId()).getName();
+        String customerName = userClient.getCustomerById(question.getCustomerId()).getName();
 
         return QuestionSummaryResponseDTO.builder()
             .questionId(question.getQuestionId())

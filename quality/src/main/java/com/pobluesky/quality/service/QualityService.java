@@ -67,8 +67,8 @@ public class QualityService {
         if(!UserRole.QUALITY.name().equals(manager.getRole()))
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-        if(inquiry == null){
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
@@ -100,8 +100,8 @@ public class QualityService {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
-        if(inquiry == null){
+        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
+        if (!inquiryExists) {
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 

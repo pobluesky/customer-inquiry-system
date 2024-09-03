@@ -10,9 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient(name = "file")
 public interface FileClient {
 
-    @GetMapping("/files/info")
-    FileInfo getFileInfo(@RequestParam("fileId") Long fileId);
-
-    @PostMapping(value = "/api/files/upload", consumes = "multipart/form-data")
-    FileInfo uploadFile(@RequestPart("file") MultipartFile file);
+    @PostMapping(value = "/api/upload", consumes = "multipart/form-data")
+    FileInfo uploadFile(@RequestParam("file") MultipartFile file);
 }

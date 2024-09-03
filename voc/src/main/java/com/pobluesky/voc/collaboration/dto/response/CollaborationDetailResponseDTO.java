@@ -22,10 +22,10 @@ public record CollaborationDetailResponseDTO(
 ) {
 
     public static CollaborationDetailResponseDTO from(Collaboration collaboration, UserClient userClient) {
-        Manager managerFromDetails = userClient.getManagerDetails(collaboration.getColRequestManagerId());
+        Manager managerFromDetails = userClient.getManagerById(collaboration.getColRequestManagerId());
         ManagerResponseDTO managerFromResponseDTO = ManagerResponseDTO.from(managerFromDetails);
 
-        Manager managerToDetails = userClient.getManagerDetails(collaboration.getColResponseManagerId());
+        Manager managerToDetails = userClient.getManagerById(collaboration.getColResponseManagerId());
         ManagerResponseDTO managerToResponseDTO = ManagerResponseDTO.from(managerToDetails);
 
         return CollaborationDetailResponseDTO.builder()

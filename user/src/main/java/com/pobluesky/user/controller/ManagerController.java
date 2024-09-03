@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -36,6 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ManagerController {
 
     private final ManagerService managerService;
+
+    // msa 용도 매니저 존재 여부 확인 엔드포인트
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> managerExists(@RequestParam("userId") Long userId) {
+        boolean exists = managerService.existsById(userId);
+        return ResponseEntity.ok(exists);
+    }
 
     @GetMapping
     @Operation(summary = "담당자 조회")

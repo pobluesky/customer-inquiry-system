@@ -24,7 +24,7 @@ public record QuestionResponseDTO(
 ) {
 
     public static QuestionResponseDTO from(Question question, UserClient userClient) {
-        String customerName = userClient.getCustomerDetails(question.getCustomerId()).getName();
+        String customerName = userClient.getCustomerById(question.getCustomerId()).getName();
 
         return QuestionResponseDTO.builder()
             .inquiryId(Optional.ofNullable(question.getInquiryId()))

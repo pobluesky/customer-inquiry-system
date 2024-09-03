@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -36,6 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
     private final CustomerService customerService;
+
+    // msa 용도 고객 존재 여부 확인 엔드포인트
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> customerExists(@RequestParam("userId") Long userId) {
+        boolean exists = customerService.existsById(userId);
+        return ResponseEntity.ok(exists);
+    }
 
     @GetMapping
     @Operation(summary = "고객사 전체 조회")
