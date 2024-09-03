@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Button from '../atoms/Button';
-import { Question_List } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
+import {
+    Question_List_Container,
+    Question_List,
+    Ready,
+    Completed,
+} from '../../assets/css/Voc.css';
 import {
     getAllQuestion,
     getQuestionByUserId,
@@ -45,14 +49,17 @@ export default function QuestionList({
         if (title) {
             args += `${args ? '&' : ''}title=${title}`;
         }
-        if (startDate && endDate) {
+        if (startDate) {
             const s = `startDate=${
                 new Date(startDate).toISOString().split('T')[0]
             }`;
+            args += `${args ? '&' : ''}${s}`;
+        }
+        if (endDate) {
             const e = `endDate=${
                 new Date(endDate).toISOString().split('T')[0]
             }`;
-            args += `${args ? '&' : ''}${s}&${e}`;
+            args += `${args ? '&' : ''}${e}`;
         }
         if (questionNo) {
             args += `${args ? '&' : ''}questionId=${questionNo}`;
@@ -189,21 +196,10 @@ export default function QuestionList({
     return (
         <>
             {questionSummary.map((data, idx) => (
-                <>
-                    {!idx && <hr style={{ width: '1200px' }} />}
-                    <div className={Question_List}>
-                        <div>
-                            <div>
-                                {data.type === 'INQ'
-                                    ? 'Inquiry 문의'
-                                    : data.type === 'SITE'
-                                    ? '사이트 문의'
-                                    : '기타 문의'}
-                            </div>
-                            <div>{data.title}</div>
-                        </div>
-                        <div style={contentsEllipsis}>{data.contents}</div>
-                        {/* <div
+                <div className={Question_List_Container}>
+                    {!idx && <hr />}
+                    <div
+                        className={Question_List}
                         onClick={() => {
                             setStatus(data.status);
                             setQuestionId(data.questionId);
@@ -213,8 +209,22 @@ export default function QuestionList({
                             );
                         }}
                     >
-                        {data.questionId}
-                    </div> */}
+                        <div>
+                            <div>
+                                {data.type === 'INQ'
+                                    ? 'Inquiry 문의'
+                                    : data.type === 'SITE'
+                                    ? '사이트 문의'
+                                    : '기타 문의'}
+                            </div>
+                            {data.status === 'READY' ? (
+                                <div className={Ready}>답변 대기</div>
+                            ) : (
+                                <div className={Completed}>답변 완료</div>
+                            )}
+                            <div>{data.title}</div>
+                        </div>
+                        <div style={contentsEllipsis}>{data.contents}</div>
                         <div>
                             <div>{data.questionCreatedAt.substring(0, 10)}</div>
                             <div>{data.customerName}</div>
@@ -225,7 +235,7 @@ export default function QuestionList({
                         </div>
                         <hr />
                     </div>
-                </>
+                </div>
             ))}
         </>
     );

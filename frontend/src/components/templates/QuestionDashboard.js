@@ -127,6 +127,7 @@ export default function QuestionDashboard() {
                 setQuestionNo={setQuestionNo}
                 setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
+                status={status}
                 setStatusFilter={setStatusFilter}
                 questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}

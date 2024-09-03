@@ -11,41 +11,35 @@ function QuestionOverview({ questionCount, answerCount, colCount }) {
     const thisRole = getCookie('userRole');
     const gridTemplateColumns =
         thisRole === 'customer'
-            ? '360px 120px 360px 120px 360px' // isCustomer
-            : '240px 96px 240px 96px 240px 96px 240px'; // isManager
+            ? // ? '360px 120px 360px 120px 360px' // isCustomer
+              // : '228px 96px 228px 96px 228px 96px 228px'; // isManager
+              '400px 400px 400px' // isCustomer
+            : '300px 300px 300px 300px'; // isManager
 
     return (
         <div className={Question_Overview}>
             <div style={{ gridTemplateColumns }}>
                 <div>
-                    <img src={total} />
                     <div>전체 문의</div>
-                    <div>{questionCount || ''}</div>
+                    <div>{questionCount || ''}건</div>
                 </div>
-                <img src={partition} />
                 <div>
-                    <img src={ready} />
                     <div>답변 대기</div>
                     <div>
                         {questionCount - answerCount < 0
                             ? ''
-                            : questionCount - answerCount}
+                            : questionCount - answerCount}건
                     </div>
                 </div>
-                <img src={partition} />
                 <div>
-                    <img src={completed} />
                     <div>답변 완료</div>
-                    <div>{answerCount || ''}</div>
+                    <div>{answerCount || ''}건</div>
                 </div>
                 {thisRole !== 'customer' && (
                     <>
-                        <img src={partition} />
-
                         <div>
-                            <img src={collaboration} />
                             <div>협업</div>
-                            <div>{colCount || 0}</div>
+                            <div>{colCount || 0}건</div>
                         </div>
                     </>
                 )}
