@@ -23,6 +23,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Star from '@mui/icons-material/Star';
 import StarBorder from '@mui/icons-material/StarBorder';
+import { } from '../../assets/css/Inquiry.css';
 import { getInquiriesByProductType, putFavoriteInquiry, getFavoriteInquiriesByProductType } from '../../apis/api/inquiry';
 import { productTypes } from '../../utils/inquiry';
 import { useAuth } from '../../hooks/useAuth';
@@ -224,85 +225,189 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                                 <div style={{ flex: '1 1 auto', overflow: 'auto' }}>
                                     <Table style={{ tableLayout: 'fixed' }}>
                                         <TableBody>
-                                            {(tabValue === 0 ? inquiries : favoriteInquiries).map((inquiry, inquiryIndex) => (
-                                                <React.Fragment key={inquiry.inquiryId}>
-                                                    <TableRow>
-                                                        <TableCell align="center" style={{ padding: '5px', width: '60px' }}>
-                                                            <Radio
-                                                                checked={selectedInquiry === inquiry.inquiryId}
-                                                                onChange={() => setSelectedInquiry(inquiry.inquiryId)}
-                                                                value={inquiry.inquiryId}
-                                                                sx={{
-                                                                    '& .MuiSvgIcon-root': {
-                                                                        fontSize: 18,
-                                                                    },
-                                                                    color: '#d3d3d3',
-                                                                    '&.Mui-checked': {
-                                                                        color: '#03507d',
-                                                                    },
-                                                                }}
-                                                            />
-                                                        </TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>
-                                                            <IconButton
-                                                                onClick={() => handleExpandToggle(inquiryIndex)}
-                                                            >
-                                                                {expandedRows[inquiryIndex] ? <ExpandLessIcon style={{ color: '#d3d3d3' }} /> : <ExpandMoreIcon style={{ color: '#d3d3d3' }} />}
-                                                            </IconButton>
-                                                        </TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>{inquiry.inquiryId}</TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>{inquiry.productType}</TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>{inquiry.salesPerson}</TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>{inquiry.industry}</TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>{inquiry.customerName}</TableCell>
-                                                        <TableCell align="center" style={{ padding: '5px' }}>
-                                                            <IconButton
-                                                                color={inquiry.isFavorite ? 'primary' : 'default'}
-                                                                onClick={() => handleFavoriteToggle(inquiry.inquiryId, inquiryIndex)}
-                                                            >
-                                                                {inquiry.isFavorite ? <Star /> : <StarBorder />}
-                                                            </IconButton>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                    {expandedRows[inquiryIndex] && inquiry.lineItemList && (
-                                                        <TableRow>
-                                                            <TableCell colSpan={8} sx={{ padding: 0 }}>
-                                                                <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', borderTop: '1px solid #e0e0e0', padding: '12px' }}>
-                                                                    <Table style={{ tableLayout: 'auto', border: '1px solid #e0e0e0' }}>
-                                                                        <TableHead style={{ backgroundColor: '#ebebeb' }}>
-                                                                            <TableRow>
-                                                                                {Object.keys(inquiry.lineItemList[0] || {}).map((key) => (
-                                                                                    key !== 'inquiryId' && key !== 'isActivated' && (
-                                                                                        <TableCell key={key} style={{ fontWeight: '700', padding: '7px', fontSize: '14px' }} align="center">
-                                                                                            {columnLabels[key] || key}
-                                                                                        </TableCell>
-                                                                                    )
-                                                                                ))}
-                                                                            </TableRow>
-                                                                        </TableHead>
-                                                                        <TableBody>
-                                                                            {inquiry.lineItemList.map((lineItem, lineIndex) => {
-                                                                                const lineItemIdMap = getSequentialLineItemIds(inquiry.lineItemList);
-                                                                                return (
-                                                                                    <TableRow key={lineIndex} sx={{ height: '40px' }}>
-                                                                                        {Object.entries(lineItem).map(([key, value]) => (
-                                                                                            key !== 'inquiryId' && key !== 'isActivated' && (
-                                                                                                <TableCell key={key} align="center" sx={{ padding: '7px', fontSize: '14px' }}>
-                                                                                                    {key === 'lineItemId' ? lineItemIdMap[lineItem[key]] : (typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value)}
-                                                                                                </TableCell>
-                                                                                            )
-                                                                                        ))}
-                                                                                    </TableRow>
-                                                                                );
-                                                                            })}
-                                                                        </TableBody>
-                                                                    </Table>
-                                                                </div>
+                                            {(tabValue === 0 ? inquiries : favoriteInquiries).map((inquiry, inquiryIndex) => {
+                                                const isExpanded = expandedRows[inquiryIndex];
+                                                const borderStyle = isExpanded ? '2.5px solid #7BCEFF' : 'none';
+
+                                                return (
+                                                    <React.Fragment
+                                                        key={inquiry.inquiryId}>
+                                                        <TableRow
+                                                            hover={true}
+                                                            sx={{
+                                                                cursor: 'pointer',
+                                                                '&:hover': { backgroundColor: '#f6f6f6' },
+                                                                border: borderStyle,
+                                                                borderBottom: 'none'
+                                                            }}>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{
+                                                                    padding: '5px',
+                                                                    width: '60px'
+                                                                }}>
+                                                                <Radio
+                                                                    checked={selectedInquiry
+                                                                        === inquiry.inquiryId}
+                                                                    onChange={() => setSelectedInquiry(
+                                                                        inquiry.inquiryId)}
+                                                                    value={inquiry.inquiryId}
+                                                                    sx={{
+                                                                        '& .MuiSvgIcon-root': {
+                                                                            fontSize: 18,
+                                                                        },
+                                                                        color: '#d3d3d3',
+                                                                        '&.Mui-checked': {
+                                                                            color: '#03507d',
+                                                                        },
+                                                                    }}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>
+                                                                <IconButton
+                                                                    onClick={() => handleExpandToggle(
+                                                                        inquiryIndex)}
+                                                                >
+                                                                    {expandedRows[inquiryIndex]
+                                                                        ?
+                                                                        <ExpandLessIcon
+                                                                            style={{ color: '#d3d3d3' }} />
+                                                                        :
+                                                                        <ExpandMoreIcon
+                                                                            style={{ color: '#d3d3d3' }} />}
+                                                                </IconButton>
+                                                            </TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>{inquiry.inquiryId}</TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>{inquiry.productType}</TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>{inquiry.salesPerson}</TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>{inquiry.industry}</TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>{inquiry.customerName}</TableCell>
+                                                            <TableCell
+                                                                align="center"
+                                                                style={{ padding: '5px' }}>
+                                                                <IconButton
+                                                                    color={inquiry.isFavorite
+                                                                        ? 'primary'
+                                                                        : 'default'}
+                                                                    onClick={() => handleFavoriteToggle(
+                                                                        inquiry.inquiryId,
+                                                                        inquiryIndex)}
+                                                                >
+                                                                    {inquiry.isFavorite
+                                                                        ?
+                                                                        <Star />
+                                                                        :
+                                                                        <StarBorder />}
+                                                                </IconButton>
                                                             </TableCell>
                                                         </TableRow>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
+                                                        {expandedRows[inquiryIndex]
+                                                            && inquiry.lineItemList
+                                                            && (
+                                                                <TableRow sx={{ border: borderStyle, borderTop: 'none' }}>
+                                                                    <TableCell
+                                                                        colSpan={8}
+                                                                        sx={{ padding: 0 }}>
+                                                                        <div
+                                                                            style={{
+                                                                                overflowX: 'auto',
+                                                                                whiteSpace: 'nowrap',
+                                                                                borderTop: '1px solid #e0e0e0',
+                                                                                padding: '12px'
+                                                                            }}>
+                                                                            <Table
+                                                                                style={{
+                                                                                    tableLayout: 'auto',
+                                                                                    border: '1px solid #e0e0e0'
+                                                                                }}>
+                                                                                <TableHead
+                                                                                    style={{ backgroundColor: '#ebebeb' }}>
+                                                                                    <TableRow>
+                                                                                        {Object.keys(
+                                                                                            inquiry.lineItemList[0]
+                                                                                            || {}).map(
+                                                                                            (key) => (
+                                                                                                key
+                                                                                                !== 'inquiryId'
+                                                                                                && key
+                                                                                                !== 'isActivated'
+                                                                                                && (
+                                                                                                    <TableCell
+                                                                                                        key={key}
+                                                                                                        style={{
+                                                                                                            fontWeight: '700',
+                                                                                                            padding: '7px',
+                                                                                                            fontSize: '14px'
+                                                                                                        }}
+                                                                                                        align="center">
+                                                                                                        {columnLabels[key]
+                                                                                                            || key}
+                                                                                                    </TableCell>
+                                                                                                )
+                                                                                            ))}
+                                                                                    </TableRow>
+                                                                                </TableHead>
+                                                                                <TableBody>
+                                                                                    {inquiry.lineItemList.map(
+                                                                                        (lineItem,
+                                                                                            lineIndex) => {
+                                                                                            const lineItemIdMap = getSequentialLineItemIds(
+                                                                                                inquiry.lineItemList);
+                                                                                            return (
+                                                                                                <TableRow
+                                                                                                    key={lineIndex}
+                                                                                                    sx={{ height: '40px' }}>
+                                                                                                    {Object.entries(
+                                                                                                        lineItem).map(
+                                                                                                        ([key, value]) => (
+                                                                                                            key
+                                                                                                            !== 'inquiryId'
+                                                                                                            && key
+                                                                                                            !== 'isActivated'
+                                                                                                            && (
+                                                                                                                <TableCell
+                                                                                                                    key={key}
+                                                                                                                    align="center"
+                                                                                                                    sx={{
+                                                                                                                        padding: '7px',
+                                                                                                                        fontSize: '14px'
+                                                                                                                    }}>
+                                                                                                                    {key
+                                                                                                                    === 'lineItemId'
+                                                                                                                        ? lineItemIdMap[lineItem[key]]
+                                                                                                                        : (typeof value
+                                                                                                                        === 'boolean'
+                                                                                                                            ? (value
+                                                                                                                                ? 'Yes'
+                                                                                                                                : 'No')
+                                                                                                                            : value)}
+                                                                                                                </TableCell>
+                                                                                                            )
+                                                                                                        ))}
+                                                                                                </TableRow>
+                                                                                            );
+                                                                                        })}
+                                                                                </TableBody>
+                                                                            </Table>
+                                                                        </div>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            )}
+                                                    </React.Fragment>
+                                                );
+                                            })}
                                         </TableBody>
                                     </Table>
                                 </div>
