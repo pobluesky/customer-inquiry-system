@@ -16,6 +16,10 @@ import {
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Header_Container } from '../../assets/css/Header.css';
+import {
+    getNotificationByCustomers,
+    getNotificationByManagers,
+} from '../../apis/api/notification';
 
 export const MenuLink = styled(Link)`
     text-decoration: none;
@@ -32,6 +36,8 @@ function MyHeader() {
     const [name, setName] = useState(null);
     const [, setGlobalName] = useRecoilState(userName);
     const currentUserName = useRecoilValue(getUserName);
+
+    const [totalElements, setTotalElements] = useState(0);
 
     const [openNotifyModal, setOpenNotifyModal] = useState(false);
     const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -76,9 +82,24 @@ function MyHeader() {
         }
     };
 
+    const fetchNotificationsCount = async () => {
+        try {
+            if (role === 'customer') {
+                const response = await getNotificationByCustomers(userId);
+                setTotalElements(response.totalElements);
+            } else if (role === 'quality' || role === 'sales') {
+                const response = await getNotificationByManagers(userId);
+                setTotalElements(response.totalElements);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         if (didLogin && userId) {
             findUserName();
+            fetchNotificationsCount();
         }
     }, [didLogin, userId, role]);
 
@@ -226,7 +247,7 @@ function MyHeader() {
                                             onClick={toggleNotifyModal}
                                         >
                                             <Badge
-                                                badgeContent={4}
+                                                badgeContent={totalElements}
                                                 color="primary"
                                             >
                                                 <NotificationsNoneIcon color="action" />
