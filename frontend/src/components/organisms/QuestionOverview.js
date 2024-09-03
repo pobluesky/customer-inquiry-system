@@ -1,9 +1,4 @@
 import React from 'react';
-import total from '../../assets/css/icons/voc/question_total.svg';
-import ready from '../../assets/css/icons/voc/question_ready.svg';
-import completed from '../../assets/css/icons/voc/question_completed.svg';
-import partition from '../../assets/css/icons/voc/question_partition.svg';
-import collaboration from '../../assets/css/icons/voc/question_collaboration.svg';
 import { Question_Overview } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 

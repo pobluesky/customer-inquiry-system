@@ -187,7 +187,10 @@ function QuestionFilterInput({
                     name="type"
                     id="type"
                     value={tempType}
-                    onChange={(e) => setTempType(e.target.value)}
+                    onChange={(e) => {
+                        setTempType(e.target.value);
+                        setTypeFilter(e.target.value);
+                    }}
                 >
                     <option value="" selected>
                         문의 유형
@@ -240,7 +243,6 @@ function QuestionFilterInput({
                         type={'date'}
                         width={'180px'}
                         height={'28px'}
-                        // border={'solid 1px #c1c1c1'}
                         border={'none'}
                         borderRadius={'8px'}
                         outline={'none'}
@@ -251,7 +253,6 @@ function QuestionFilterInput({
                         type={'date'}
                         width={'180px'}
                         height={'28px'}
-                        // border={'solid 1px #c1c1c1'}
                         border={'none'}
                         borderRadius={'8px'}
                         outline={'none'}

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import QuestionOverview from '../organisms/QuestionOverview';
-import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
-import QuestionTable from '../organisms/QuestionTable';
+import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
 import QuestionModal from '../molecules/QuestionModal';
+import { Question_Dashboard } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
-import QuestionFilterInput from '../organisms/QuestionFilterInput';
 
 export default function QuestionDashboard() {
     // 검색 기능
@@ -97,23 +96,13 @@ export default function QuestionDashboard() {
                 answerCount={answerCount}
                 colCount={colCount}
             />
-            {/* <QuestionFilterPanel
-                searchCount={searchCount}
-                title={title}
-                startDate={startDate}
-                endDate={endDate}
-                questionNo={questionNo}
-                customerName={customerName}
-                setTitle={setTitle}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-                setQuestionNo={setQuestionNo}
-                setCustomerName={setCustomerName}
-                setTimeFilter={setTimeFilter}
-                setStatusFilter={setStatusFilter}
-                questionDetail={questionDetail}
-                setTypeFilter={setTypeFilter}
-            /> */}
+            {searchCount ? (
+                <div className={Question_Dashboard}>
+                    검색 결과는 총 <span>{searchCount}</span>건입니다.
+                </div>
+            ) : (
+                <div className={Question_Dashboard}>검색 결과가 없습니다.</div>
+            )}
             <QuestionFilterInput
                 searchCount={searchCount}
                 title={title}
@@ -132,24 +121,6 @@ export default function QuestionDashboard() {
                 questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}
             />
-            {/* <QuestionTable
-                title={title}
-                startDate={startDate}
-                endDate={endDate}
-                questionNo={questionNo}
-                customerName={customerName}
-                timeFilter={timeFilter}
-                statusFilter={statusFilter}
-                typeFilter={typeFilter}
-                setSearchCount={setSearchCount}
-                setQuestionDetail={setQuestionDetail}
-                setAnswerDetail={setAnswerDetail}
-                setQuestionId={setQuestionId}
-                setStatus={setStatus}
-                status={status}
-                setOpenModal={setOpenModal}
-                openModal={openModal}
-            /> */}
             <QuestionList
                 title={title}
                 startDate={startDate}
