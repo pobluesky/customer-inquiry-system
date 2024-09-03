@@ -187,16 +187,16 @@ export default function QuestionList({
     }, [userId, filterArgs, openModal]);
 
     const contentsEllipsis = {
-        maxWidth: '1200px',
+        maxWidth: '1320px',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     };
 
     return (
-        <>
+        <div className={Question_List_Container}>
             {questionSummary.map((data, idx) => (
-                <div className={Question_List_Container}>
+                <div key={idx}>
                     {!idx && <hr />}
                     <div
                         className={Question_List}
@@ -237,6 +237,6 @@ export default function QuestionList({
                     </div>
                 </div>
             ))}
-        </>
+        </div>
     );
 }

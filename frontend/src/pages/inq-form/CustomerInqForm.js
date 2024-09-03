@@ -145,7 +145,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                         onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)} />
             <InquiryNewForm
-                title={'신규 등록'}
+                title={'기본정보'}
                 register={register}
                 errors={errors}
                 formData={formData}
@@ -160,6 +160,8 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             />
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
+            <FileForm fileForm={"파일첨부"}
+                      formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}
                       handleFormDataChange={handleFormDataChange} />
         </div>
