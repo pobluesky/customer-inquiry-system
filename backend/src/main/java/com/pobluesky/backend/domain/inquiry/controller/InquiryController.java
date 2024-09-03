@@ -271,7 +271,11 @@ public class InquiryController {
         @PathVariable ProductType productType
     ) {
         List<InquiryFavoriteResponseDTO> response =
-            inquiryService.getAllInquiriesByProductType(token, userId, productType);
+            inquiryService.getAllInquiriesByProductType(
+                    token,
+                    userId,
+                    productType
+            );
 
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
@@ -284,7 +288,11 @@ public class InquiryController {
         @PathVariable ProductType productType
     ) {
         List<InquiryFavoriteResponseDTO> response =
-            inquiryService.getFavoriteInquiriesByProductType(token, userId, productType);
+            inquiryService.getFavoriteInquiriesByProductType(
+                    token,
+                    userId,
+                    productType
+            );
 
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
