@@ -338,7 +338,7 @@ export const createFormQualityData = (formData) => {
 
 // 과거 이력 조회 데이터 변환
 export const processHistoryData = (data) => {
-    return data.map((inquiry) => {
+    return data?.map((inquiry) => {
         let productTypeText;
         switch (inquiry.productType) {
             case 'CAR':
@@ -424,6 +424,7 @@ export const processHistoryData = (data) => {
             customerName: inquiry.customerName,
             productType: productTypeText,
             lineItemList: inquiry.lineItemList,
+            isFavorite: inquiry.isFavorite,
         };
     });
 };

@@ -34,8 +34,8 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
     const [favoriteInquiries, setFavoriteInquiries] = useState([]);
     const [expandedRows, setExpandedRows] = useState({});
     const [error, setError] = useState('');
-    const [tabValue, setTabValue] = useState(0); // 0: 전체, 1: 즐겨찾기
-    const [selectedInquiry, setSelectedInquiry] = useState(null); // 단일 선택
+    const [tabValue, setTabValue] = useState(0);
+    const [selectedInquiry, setSelectedInquiry] = useState(null);
 
     useEffect(() => {
         const fetchInquiries = async () => {
@@ -44,9 +44,10 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                 return;
             }
 
-            setError(''); // 이전 에러 메시지를 초기화
+            setError('');
             try {
                 const response = await getInquiriesByProductType(userId, productType);
+                console.log("전체: ", response)
                 setInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching inquiries:', error);
@@ -60,9 +61,10 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                 return;
             }
 
-            setError(''); // 이전 에러 메시지를 초기화
+            setError('');
             try {
                 const response = await getFavoriteInquiriesByProductType(userId, productType);
+                console.log("즐겨찾기: ", response)
                 setFavoriteInquiries(response || []);
             } catch (error) {
                 console.error('Error fetching favorite inquiries:', error);
@@ -85,7 +87,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
 
     const handleFavoriteToggle = async (inquiryId, index) => {
         try {
-            const updatedInquiries = inquiries.map((inquiry, i) =>
+            const updatedInquiries = inquiries?.map((inquiry, i) =>
                 i === index ? { ...inquiry, isFavorite: !inquiry.isFavorite } : inquiry
             );
             setInquiries(updatedInquiries);
@@ -98,7 +100,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
             await putFavoriteInquiry(inquiryId);
 
             const response = await getFavoriteInquiriesByProductType(userId, productType);
-            setFavoriteInquiries(response.data || []);
+            setFavoriteInquiries(response || []);
         } catch (error) {
             console.error('Failed to toggle favorite:', error);
             setInquiries(inquiries);
@@ -113,7 +115,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
     const handleSelect = () => {
         if (selectedInquiry) {
             const selectedData = inquiries.find(inquiry => inquiry.inquiryId === selectedInquiry);
-            onSelect([selectedData]); // 배열로 전달
+            onSelect([selectedData]);
             onClose();
         }
     };
@@ -150,13 +152,30 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                 )}
                 {!error && (
                     <>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <Tabs value={tabValue} onChange={handleTabChange} aria-label="tabs">
+                        <Box sx={{ bgcolor: '#ffffff', borderColor: 'divider' }}>
+                            <Tabs
+                                value={tabValue}
+                                onChange={handleTabChange}
+                                aria-label="customized tabs"
+                                indicatorColor='none'
+                                sx={{
+                                    '& .MuiTab-root': {
+                                        transition: 'background-color 0.3s',
+                                        border: '1px solid #c1c1c1',
+                                        borderRadius: '3px',
+                                    },
+                                    '& .Mui-selected': {
+                                        bgcolor: '#03507d',
+                                        color: '#ffffff !important',
+                                        borderRadius: '3px',
+                                    }
+                                }}
+                            >
                                 <Tab label="전체" />
                                 <Tab label="즐겨찾기" />
                             </Tabs>
                         </Box>
-                        <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+                        <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto', borderRadius: '3px' }}>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -242,7 +261,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                             color="primary"
                             onClick={handleSelect}
                             sx={{ mt: 2 }}
-                            disabled={!selectedInquiry} // 선택되지 않은 경우 버튼 비활성화
+                            disabled={!selectedInquiry}
                         >
                             확인
                         </Button>
