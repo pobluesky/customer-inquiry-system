@@ -30,8 +30,8 @@ function RequestBar({
         'Inquiry 상세조회 및 영업검토2': ['품질검토요청', '닫기'],
         'Inquiry 상세조회 및 영업검토3': ['최종검토완료', '닫기'],
         'Inquiry 상세조회 및 품질검토4': ['품질검토완료', '닫기'],
-        'Inquiry 상세조회5': ['수정', '닫기'],
-        'Inquiry 상세조회6': ['닫기'],
+        'Inquiry 조회5': ['수정', '닫기'],
+        'Inquiry 조회6': ['닫기'],
     };
 
     const buttons = buttonConfig[requestBarTitle];

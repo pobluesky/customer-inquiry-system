@@ -1,5 +1,6 @@
 export const productTypes = {
     "CAR": {
+        "lineItemId": { label: "번호", type: "int" },
         "lab": { label: "가능소", type: "enum", options: ["POHANG", "GWANGYANG"] },
         "kind": { label: "품종", type: "enum", options: ["SEDAN", "SUV", "TRUCK"] },
         "standardOrg": { label: "규격기관", type: "enum", options: ["ASTM", "ANSI"] },
@@ -16,6 +17,7 @@ export const productTypes = {
         "annualCost": { label: "연소요량", type: "string" }
     },
     "COLD_ROLLED": {
+        "lineItemId": { label: "번호", type: "int" },
         "kind": { label: "품종", type: "enum", options: ["CR", "CRC", "CRCA"] },
         "inqName": { label: "INQ규격명", type: "enum", options: ["JS_SI123", "JS_SI456", "JS_SI789", "JS_SI321", "JS_SI654", "JS_SI987"] },
         "orderCategory": { label: "주문용도", type: "string" },
@@ -32,6 +34,7 @@ export const productTypes = {
         "hardness": { label: "경도", type: "string" }
     },
     "HOT_ROLLED": {
+        "lineItemId": { label: "번호", type: "int" },
         "kind": { label: "품종", type: "enum", options: ["HR", "HRC", "HRPO"] },
         "inqName": { label: "INQ규격명", type: "enum", options: ["JS_SI123", "JS_SI456", "JS_SI789", "JS_SI321", "JS_SI654", "JS_SI987"] },
         "orderCategory": { label: "주문용도", type: "string" },
@@ -48,6 +51,7 @@ export const productTypes = {
         "annualCost": { label: "연소요량", type: "string" }
     },
     "THICK_PLATE": {
+        "lineItemId": { label: "번호", type: "int" },
         "generalDetails": { label: "일반사항", type: "string" },
         "orderInfo": { label: "주문정보", type: "string" },
         "ladleIngredient": { label: "성분(ladle)", type: "string" },
@@ -64,6 +68,7 @@ export const productTypes = {
         "ultrasonicTransducer": { label: "초음파탐상시험", type: "boolean" }
     },
     "WIRE_ROD": {
+        "lineItemId": { label: "번호", type: "int" },
         "kind": { label: "품종", type: "enum", options: ["SWRH", "SWRM", "SWRS"] },
         "inqName": { label: "INQ규격명", type: "enum", options: ["JS_SI123", "JS_SI456", "JS_SI789", "JS_SI321", "JS_SI654", "JS_SI987"] },
         "orderCategory": { label: "주문용도", type: "string" },

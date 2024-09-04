@@ -33,18 +33,27 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+    typography: {
+        fontFamily: 'Pretendard-Regular'
+    }
+})
+
 function App() {
     return (
-        <AuthProvider>
-            <Router>
-                <Layout>
-                    <Routes>
-                        <Route index path="" element={<Intro />} />
+        <ThemeProvider theme={theme}>
+            <AuthProvider>
+                <Router>
+                    <Layout>
+                        <Routes>
+                            <Route index path="" element={<Intro />} />
 
-                        <Route path="login" element={<Login />} />
-                        <Route path="join" element={<Join />} />
+                            <Route path="login" element={<Login />} />
+                            <Route path="join" element={<Join />} />
 
-                        <Route path="inq-main" element={<InqMain />} />
+                            <Route path="inq-main" element={<InqMain />} />
 
                         <Route path="inq-form/customer" element={<CustomerInqForm />} />
 
@@ -57,7 +66,7 @@ function App() {
                         <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
                         <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
-                        <Route path="voc-main" element={<VocMain />} />
+                            <Route path="voc-main" element={<VocMain />} />
 
                         <Route path="voc-form/question" element={<VocQuestionForm />} />
                         <Route path="voc-form/answer" element={<VocAnswerForm />} />
@@ -66,12 +75,13 @@ function App() {
                         <Route path="voc-list/question" element={<VocQuestionList />} />
                         <Route path="voc-list/collaboration" element={<VocColList />} />
 
-                        <Route path="dashboard" element={<DashBoard />} />
-                        {/* Route path="*" element={<Error404 />} /> */}
-                    </Routes>
-                </Layout>
-            </Router>
-        </AuthProvider>
+                            <Route path="dashboard" element={<DashBoard />} />
+                            {/* Route path="*" element={<Error404 />} /> */}
+                        </Routes>
+                    </Layout>
+                </Router>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 

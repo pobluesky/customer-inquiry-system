@@ -14,19 +14,18 @@ import {
     Button,
 } from '@mui/material';
 import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
-import ToggleBar from '../../molecules/ToggleBar';
 import { productTypes } from '../../../utils/inquiry';
+import LineItemToggleBar from '../../molecules/LineItemToggleBar';
 
 const InquiryHistoryForm = ({
     productType,
     lineItemData,
     onLineItemsChange,
     onRefLineItems,
+    isUpdate,
 }) => {
-    // 라인아이템 등록
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
-    const [selectedRows, setSelectedRows] = useState([]);
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
@@ -41,16 +40,28 @@ const InquiryHistoryForm = ({
         }
     }, [onRefLineItems]);
 
-    const handleFieldChange = (index, field, value) => {
+    const handleFieldChange = (index, field, value, data) => {
+        const updatedData = data ? data : localData;
+
         setLocalData(prevData => {
-            const updatedData = [...prevData];
-            updatedData[index] = {
-                ...updatedData[index],
-                [field]: value || updatedData[index][field], // 값이 없을 경우 이전 값을 유지
-            };
-            return updatedData;
+            const newData = [...updatedData];
+            if (index !== null && field !== null) {
+                newData[index] = {
+                    ...newData[index],
+                    [field]: value || newData[index][field],
+                };
+            }
+            return newData;
         });
-        onLineItemsChange(localData); // 상태 업데이트
+        onLineItemsChange(updatedData);
+    };
+
+    const handleSelect = (selectedData) => {
+        if (selectedData) {
+            handleFieldChange(null, null, null, selectedData);
+        } else {
+            handleFieldChange(null, null, null, localData);
+        }
     };
 
     useEffect(() => {
@@ -93,10 +104,14 @@ const InquiryHistoryForm = ({
                 backgroundColor: '#ffffff',
             }}
         >
-            <ToggleBar
+            <LineItemToggleBar
                 title={'라인아이템'}
                 isChecked={isChecked}
                 setCheck={setChecked}
+                productType={productType}
+                onLineItemsChange={onLineItemsChange}
+                onSelect={handleSelect}
+                isUpdate={isUpdate}
             />
             {isChecked ? (
                 <>
@@ -108,19 +123,21 @@ const InquiryHistoryForm = ({
                                         style={{ minWidth: 100 }}
                                     ></TableCell>
                                     {Object.keys(fields).map((key) => (
-                                        <TableCell
-                                            key={key}
-                                            style={{
-                                                minWidth: 200,
-                                                fontSize: '20px',
-                                                fontWeight: '800',
-                                                color: '#49454F',
-                                                textAlign: 'center',
-                                            }}
-                                        >
-                                            &nbsp;&nbsp;&nbsp;
-                                            {fields[key].label}
-                                        </TableCell>
+                                        key !== 'lineItemId' && (
+                                            <TableCell
+                                                key={key}
+                                                style={{
+                                                    minWidth: 200,
+                                                    fontSize: '20px',
+                                                    fontWeight: '800',
+                                                    color: '#49454F',
+                                                    textAlign: 'center',
+                                                }}
+                                            >
+                                                &nbsp;&nbsp;&nbsp;
+                                                {fields[key].label}
+                                            </TableCell>
+                                        )
                                     ))}
                                 </TableRow>
                             </TableHead>
@@ -151,113 +168,115 @@ const InquiryHistoryForm = ({
                                             {Object.keys(fields).map((key) => {
                                                 const field = fields[key];
                                                 return (
-                                                    <TableCell key={key}>
-                                                        {field.type ===
-                                                        'enum' ? (
-                                                            <Select
-                                                                style={{
-                                                                    width: '100%',
-                                                                    backgroundColor:
-                                                                        '#ffffff',
-                                                                }}
-                                                                value={
-                                                                    item[key] ||
-                                                                    ''
-                                                                }
-                                                                onChange={(e) =>
-                                                                    handleFieldChange(
-                                                                        index,
-                                                                        key,
-                                                                        e.target
-                                                                            .value,
-                                                                    )
-                                                                }
-                                                            >
-                                                                {field.options.map(
-                                                                    (
-                                                                        option,
-                                                                    ) => (
-                                                                        <MenuItem
-                                                                            key={
-                                                                                option
-                                                                            }
-                                                                            value={
-                                                                                option
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                option
-                                                                            }
-                                                                        </MenuItem>
-                                                                    ),
-                                                                )}
-                                                            </Select>
-                                                        ) : field.type ===
-                                                          'boolean' ? (
-                                                            <Select
-                                                                style={{
-                                                                    width: '100%',
-                                                                    backgroundColor:
-                                                                        '#ffffff',
-                                                                }}
-                                                                value={
-                                                                    item[key]
-                                                                        ? 'true'
-                                                                        : 'false'
-                                                                }
-                                                                onChange={(e) =>
-                                                                    handleFieldChange(
-                                                                        index,
-                                                                        key,
-                                                                        e.target
-                                                                            .value ===
+                                                    key !== 'lineItemId' && (
+                                                        <TableCell key={key}>
+                                                            {field.type ===
+                                                            'enum' ? (
+                                                                <Select
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        backgroundColor:
+                                                                            '#ffffff',
+                                                                    }}
+                                                                    value={
+                                                                        item[key] ||
+                                                                        ''
+                                                                    }
+                                                                    onChange={(e) =>
+                                                                        handleFieldChange(
+                                                                            index,
+                                                                            key,
+                                                                            e.target
+                                                                                .value,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {field.options.map(
+                                                                        (
+                                                                            option,
+                                                                        ) => (
+                                                                            <MenuItem
+                                                                                key={
+                                                                                    option
+                                                                                }
+                                                                                value={
+                                                                                    option
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    option
+                                                                                }
+                                                                            </MenuItem>
+                                                                        ),
+                                                                    )}
+                                                                </Select>
+                                                            ) : field.type ===
+                                                            'boolean' ? (
+                                                                <Select
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        backgroundColor:
+                                                                            '#ffffff',
+                                                                    }}
+                                                                    value={
+                                                                        item[key]
+                                                                            ? 'true'
+                                                                            : 'false'
+                                                                    }
+                                                                    onChange={(e) =>
+                                                                        handleFieldChange(
+                                                                            index,
+                                                                            key,
+                                                                            e.target
+                                                                                .value ===
                                                                             'true',
-                                                                    )
-                                                                }
-                                                            >
-                                                                <MenuItem value="true">
-                                                                    Yes
-                                                                </MenuItem>
-                                                                <MenuItem value="false">
-                                                                    No
-                                                                </MenuItem>
-                                                            </Select>
-                                                        ) : (
-                                                            <TextField
-                                                                value={
-                                                                    item[key] ||
-                                                                    ''
-                                                                }
-                                                                type={
-                                                                    field.type
-                                                                }
-                                                                style={{
-                                                                    width: '100%',
-                                                                    backgroundColor:
-                                                                        '#ffffff',
-                                                                }}
-                                                                onChange={(e) =>
-                                                                    handleFieldChange(
-                                                                        index,
-                                                                        key,
-                                                                        e.target
-                                                                            .value,
-                                                                    )
-                                                                }
-                                                                InputProps={
-                                                                    field.type ===
-                                                                    'int'
-                                                                        ? {
-                                                                              inputProps:
-                                                                                  {
-                                                                                      min: 0,
-                                                                                  },
-                                                                          }
-                                                                        : {}
-                                                                }
-                                                            />
-                                                        )}
-                                                    </TableCell>
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <MenuItem value="true">
+                                                                        Yes
+                                                                    </MenuItem>
+                                                                    <MenuItem value="false">
+                                                                        No
+                                                                    </MenuItem>
+                                                                </Select>
+                                                            ) : (
+                                                                <TextField
+                                                                    value={
+                                                                        item[key] ||
+                                                                        ''
+                                                                    }
+                                                                    type={
+                                                                        field.type
+                                                                    }
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        backgroundColor:
+                                                                            '#ffffff',
+                                                                    }}
+                                                                    onChange={(e) =>
+                                                                        handleFieldChange(
+                                                                            index,
+                                                                            key,
+                                                                            e.target
+                                                                                .value,
+                                                                        )
+                                                                    }
+                                                                    InputProps={
+                                                                        field.type ===
+                                                                        'int'
+                                                                            ? {
+                                                                                inputProps:
+                                                                                    {
+                                                                                        min: 0,
+                                                                                    },
+                                                                            }
+                                                                            : {}
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </TableCell>
+                                                    )
                                                 );
                                             })}
                                         </TableRow>
