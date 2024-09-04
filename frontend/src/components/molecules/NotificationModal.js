@@ -28,15 +28,13 @@ const NotificationModal = () => {
 
     const fetchNotifications = async () => {
         try {
-            let notificationData;
             if (role === 'customer') {
-                notificationData = await getNotificationByCustomers(userId);
+                const response = await getNotificationByCustomers(userId);
+                setNewNotificationList(response.notifications);
             } else if (role === 'quality' || role === 'sales') {
-                notificationData = await getNotificationByManagers(userId);
+                const response = await getNotificationByManagers(userId);
+                setNewNotificationList(response.notifications);
             }
-            setNewNotificationList(
-                notificationData.filter((notification) => !notification.isRead),
-            );
         } catch (error) {
             console.log(error);
         }

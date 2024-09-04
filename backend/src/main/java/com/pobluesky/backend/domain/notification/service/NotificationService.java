@@ -14,7 +14,6 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
-import com.pobluesky.backend.domain.user.service.CustomUserDetailsService;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
@@ -55,12 +54,17 @@ public class NotificationService {
                 if(!Objects.equals(customer.getUserId(), userId))
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-                List<CustomerNotification> notifications =
-                    customerNotificationRepository.findByCustomer_UserId(id);
+                List<CustomerNotification> customerNotifications =
+                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalse(id);
 
-                return notifications.stream()
-                    .map(CustomerNotificationResponseDTO::from)
-                    .collect(Collectors.toList());
+                Long totalCustomerElements = customerNotificationRepository.countUnreadNotificationsByCustomer_UserId(id);
+
+                return List.of(
+                    customerNotifications.stream()
+                        .map(CustomerNotificationResponseDTO::from)
+                        .collect(Collectors.toList()),
+                    totalCustomerElements
+                );
 
             case MANAGER:
                 Manager manager = managerRepository.findById(userId)
@@ -70,11 +74,16 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<ManagerNotification> managerNotifications =
-                    managerNotificationRepository.findByManager_UserId(id);
+                    managerNotificationRepository.findByManager_UserIdAndIsReadFalse(id);
 
-                return managerNotifications.stream()
-                    .map(ManagerNotificationResponseDTO::from)
-                    .collect(Collectors.toList());
+                Long totalManagerElements = managerNotificationRepository.countUnreadNotificationsByManager_UserId(id);
+
+                return List.of(
+                    managerNotifications.stream()
+                        .map(ManagerNotificationResponseDTO::from)
+                        .collect(Collectors.toList()),
+                    totalManagerElements
+                );
 
             default:
                 throw new CommonException(ErrorCode.USER_NOT_FOUND);
