@@ -5,16 +5,54 @@ import React, {
     useEffect,
 } from 'react';
 import { TableRow, TableCell, Checkbox } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
 import { useNavigate } from 'react-router-dom';
 import {
     putManagerAllocate,
 } from '../../../apis/api/inquiry';
 import { _Table } from '../../../assets/css/Inquiry.css';
+import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [percentage, setPercentage] = useState(0);
+    const [inquiryTypeColor, setInquiryTypeColor] = useState('');
     const navigate = useNavigate();
+
+    const calculatePercentage = () => {
+        if (row.progress === '문의제출') {
+            setPercentage(5);
+        } else if (row.progress === '문의접수') {
+            setPercentage(20);
+        } else if (row.progress === '1차검토완료') {
+            setPercentage(35);
+        } else if (row.progress === '품질검토요청') {
+            setPercentage(45);
+        } else if (row.progress === '품질검토접수') {
+            setPercentage(65);
+        } else if (row.progress === '품질검토완료') {
+            setPercentage(80);
+        } else if (row.progress === '최종검토완료') {
+            setPercentage(100);
+        }
+    }
+
+    useEffect(() => {
+        calculatePercentage();
+    }, [row.progress]);
+
+    const selectInquiryTypeColor = () => {
+        if (row.inquiryType === '견적 문의') {
+            setInquiryTypeColor('primary');
+        } else if (row.inquiryType === '품질+견적 문의') {
+            setInquiryTypeColor('secondary')
+        }
+    }
+
+    useEffect(() => {
+        selectInquiryTypeColor();
+    }, [row.inquiryType]);
 
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
@@ -79,7 +117,7 @@ function Row({ row, role }, ref) {
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.inquiryType}</TableCell>
+                <TableCell className="custom-table-cell" align="left"><CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />{row.inquiryType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
@@ -89,6 +127,9 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
+                <TableCell className="custom-table-cell" align="left" sx={{ width: '120px' }}>
+                    <BorderLinearProgress variant="determinate" value={percentage} />
+                </TableCell>
             </TableRow>
             <TableRow>
             </TableRow>

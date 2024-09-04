@@ -66,6 +66,7 @@ export default function CollapsibleTable({
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>판매상사</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>법인코드</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff' }}>Inquiry 진행률</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
