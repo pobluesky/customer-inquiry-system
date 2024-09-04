@@ -3,8 +3,9 @@ import React, {
     forwardRef,
     useImperativeHandle,
     useEffect,
+    useRef,
 } from 'react';
-import { TableRow, TableCell, Checkbox } from '@mui/material';
+import { TableRow, TableCell, Checkbox, Popover } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
     putManagerAllocate,
@@ -12,17 +13,30 @@ import {
 import { _Table } from '../../../assets/css/Inquiry.css';
 import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
 import InquiryTypeBadge from '../../atoms/Chip';
+import StepTracker from '../../molecules/StepTracker';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
     const [percentage, setPercentage] = useState(0);
-    // const [inquiryTypeColor, setInquiryTypeColor] = useState('');
+    const [anchorEl, setAnchorEl] = useState(null);
+    const popoverRef = useRef(null);
+
     const navigate = useNavigate();
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
 
     const calculatePercentage = () => {
         if (row.progress === '문의제출') {
-            setPercentage(5);
+            setPercentage(10);
         } else if (row.progress === '문의접수') {
             setPercentage(20);
         } else if (row.progress === '1차검토완료') {
@@ -44,6 +58,29 @@ function Row({ row, role }, ref) {
     useEffect(() => {
         calculatePercentage();
     }, [row.progress]);
+
+    const calculateStep = () => {
+        switch (row.progress) {
+            case '문의제출':
+                return 1;
+            case '문의접수':
+                return 2;
+            case '1차검토완료':
+                return row.inquiryType === '견적 문의' ? 4 : 3;
+            case '품질검토요청':
+                return 4;
+            case '품질검토접수':
+                return 5;
+            case '품질검토완료':
+                return 6;
+            case '최종검토완료':
+                return 7;
+            default:
+                return 1;
+        }
+    };
+
+    const currentStep = calculateStep();
 
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
@@ -121,12 +158,35 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
-                <TableCell className="custom-table-cell" align="left" sx={{ width: '120px' }}>
+                <TableCell
+                    className="custom-table-cell"
+                    align="left"
+                    sx={{ width: '120px' }}
+                    ref={popoverRef}
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                >
                     <BorderLinearProgress variant="determinate" value={percentage} />
                 </TableCell>
             </TableRow>
-            <TableRow>
-            </TableRow>
+            <Popover
+                id="progress-popover"
+                sx={{ pointerEvents: 'none', width: '570px', height: '100%' }}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+            >
+                <StepTracker currentStep={currentStep} inquiryType={row.inquiryType} />
+            </Popover>
         </React.Fragment>
     );
 }
