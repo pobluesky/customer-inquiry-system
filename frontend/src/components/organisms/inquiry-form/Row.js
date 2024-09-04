@@ -5,7 +5,6 @@ import React, {
     useEffect,
 } from 'react';
 import { TableRow, TableCell, Checkbox } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
 import { useNavigate } from 'react-router-dom';
 import {
     putManagerAllocate,
@@ -17,7 +16,7 @@ function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
     const [percentage, setPercentage] = useState(0);
-    const [inquiryTypeColor, setInquiryTypeColor] = useState('');
+    // const [inquiryTypeColor, setInquiryTypeColor] = useState('');
     const navigate = useNavigate();
 
     const calculatePercentage = () => {
@@ -45,17 +44,17 @@ function Row({ row, role }, ref) {
         calculatePercentage();
     }, [row.progress]);
 
-    const selectInquiryTypeColor = () => {
-        if (row.inquiryType === '견적 문의') {
-            setInquiryTypeColor('primary');
-        } else if (row.inquiryType === '품질+견적 문의') {
-            setInquiryTypeColor('secondary')
-        }
-    }
-
-    useEffect(() => {
-        selectInquiryTypeColor();
-    }, [row.inquiryType]);
+    // const selectInquiryTypeColor = () => {
+    //     if (row.inquiryType === '견적 문의') {
+    //         setInquiryTypeColor('primary');
+    //     } else if (row.inquiryType === '품질+견적 문의') {
+    //         setInquiryTypeColor('secondary')
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     selectInquiryTypeColor();
+    // }, [row.inquiryType]);
 
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
@@ -120,8 +119,20 @@ function Row({ row, role }, ref) {
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="left">
-                    <CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />
-                    {row.inquiryType}
+                    <div
+                        style={{
+                                borderRadius: '20px',
+                                width: '95%',
+                                height: '35px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontWeight: '800',
+                                color: '#666a73',
+                                backgroundColor: row.inquiryType === '견적 문의' ? '#c5deda' : row.inquiryType === '품질+견적 문의' ? '#f7edda' : '#000000',
+                            }}>
+                        {row.inquiryType}
+                    </div>
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>

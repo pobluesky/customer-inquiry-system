@@ -55,7 +55,7 @@ export default function CollapsibleTable({
                                 </Button>
                             </TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>문의번호</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>고객사</TableCell>

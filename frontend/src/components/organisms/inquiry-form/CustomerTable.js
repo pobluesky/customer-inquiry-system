@@ -71,8 +71,20 @@ function Row({ row, role }) {
                     {row.inquiryId}
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">
-                    <CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />
-                    {row.inquiryType}
+                    <div
+                        style={{
+                            borderRadius: '20px',
+                            width: '95%',
+                            height: '35px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: '800',
+                            color: '#666a73',
+                            backgroundColor: row.inquiryType === '견적 문의' ? '#c5deda' : row.inquiryType === '품질+견적 문의' ? '#f7edda' : '#000000',
+                        }}>
+                        {row.inquiryType}
+                    </div>
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
@@ -115,7 +127,7 @@ export default function CollapsibleTable({
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '80px', fontWeight: '700' }}>문의번호</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>고객사</TableCell>
