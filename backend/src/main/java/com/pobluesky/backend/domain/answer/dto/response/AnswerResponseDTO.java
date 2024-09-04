@@ -19,7 +19,7 @@ public record AnswerResponseDTO(
     String filePath,
     LocalDateTime createdDate
 ) {
-    public static AnswerResponseDTO from(Answer answer) { // 매니저 아이디를 파라미터로 추가
+    public static AnswerResponseDTO from(Answer answer) {
         return AnswerResponseDTO.builder()
             .inquiryId(Optional.ofNullable(answer.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
