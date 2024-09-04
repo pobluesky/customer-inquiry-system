@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.answer.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
 
