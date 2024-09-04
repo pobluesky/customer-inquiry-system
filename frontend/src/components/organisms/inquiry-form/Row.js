@@ -45,18 +45,6 @@ function Row({ row, role }, ref) {
         calculatePercentage();
     }, [row.progress]);
 
-    // const selectInquiryTypeColor = () => {
-    //     if (row.inquiryType === '견적 문의') {
-    //         setInquiryTypeColor('primary');
-    //     } else if (row.inquiryType === '품질+견적 문의') {
-    //         setInquiryTypeColor('secondary')
-    //     }
-    // }
-    //
-    // useEffect(() => {
-    //     selectInquiryTypeColor();
-    // }, [row.inquiryType]);
-
     const handleClick = () => {
         navigate(`/inq-list/${role}/${row.inquiryId}`);
     };
@@ -106,7 +94,8 @@ function Row({ row, role }, ref) {
                     component="th"
                     scope="row"
                     className="custom-table-cell"
-                    sx={{ paddingLeft: '80px' }}
+                    align="center"
+                    sx={{ paddingLeft: '40px' }}
                 >
                     <Checkbox
                         checked={isChecked}
@@ -118,8 +107,8 @@ function Row({ row, role }, ref) {
                         }}
                     />
                 </TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
-                <TableCell className="custom-table-cell" align="left">
+                <TableCell className="custom-table-cell" align="center" sx={{ width: '80px' }}>{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="center">
                     <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>

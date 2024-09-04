@@ -10,8 +10,8 @@ import TablePagination from '@mui/material/TablePagination';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { _Table } from '../../../assets/css/Inquiry.css';
-import CircleIcon from '@mui/icons-material/Circle';
 import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
+import InquiryTypeBadge from '../../atoms/Chip';
 
 function Row({ row, role }) {
     const [percentage, setPercentage] = useState(0);
@@ -67,24 +67,16 @@ function Row({ row, role }) {
                 style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 className={_Table}
             >
-                <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>
+                <TableCell
+                        component="th"
+                        scope="row"
+                        className="custom-table-cell"
+                        sx={{ paddingLeft: '70px', width: '50px' }}
+                        align="center">
                     {row.inquiryId}
                 </TableCell>
-                <TableCell className="custom-table-cell" align="left">
-                    <div
-                        style={{
-                            borderRadius: '20px',
-                            width: '95%',
-                            height: '35px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: '800',
-                            color: '#666a73',
-                            backgroundColor: row.inquiryType === '견적 문의' ? '#c5deda' : row.inquiryType === '품질+견적 문의' ? '#f7edda' : '#000000',
-                        }}>
-                        {row.inquiryType}
-                    </div>
+                <TableCell className="custom-table-cell" align="center">
+                    <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
@@ -94,7 +86,7 @@ function Row({ row, role }) {
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
-                <TableCell className="custom-table-cell" align="left" sx={{ width: '120px' }}>
+                <TableCell className="custom-table-cell" align="left" sx={{ width: '120px', paddingRight: '35px' }}>
                     <BorderLinearProgress variant="determinate" value={percentage} />
                 </TableCell>
             </TableRow>
@@ -126,7 +118,7 @@ export default function CollapsibleTable({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '80px', fontWeight: '700' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '70px', fontWeight: '700' }}>문의번호</TableCell>
                             <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
