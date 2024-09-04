@@ -4,28 +4,28 @@ import '../../assets/css/animations.css';
 import {
     MailOutline as MailOutlineIcon,
     Inbox as InboxIcon,
-    CheckCircleOutline as CheckCircleOutlineIcon,
-    Search as SearchIcon,
-    Description as DescriptionIcon,
     CheckBox as CheckBoxIcon,
-    Flag as FlagIcon,
+    HighQuality as HighQualityIcon,
+    Description as DescriptionIcon,
+    FactCheck as FactCheckIcon,
+    LibraryAddCheck as LibraryAddCheckIcon,
 } from '@mui/icons-material';
 
 const commonSteps = [
     { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
     { id: 2, label: '문의접수', icon: <InboxIcon /> },
-    { id: 3, label: '1차검토완료', icon: <CheckCircleOutlineIcon /> },
-    { id: 4, label: '품질검토요청', icon: <SearchIcon /> },
+    { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },
+    { id: 4, label: '품질검토요청', icon: <HighQualityIcon /> },
     { id: 5, label: '품질검토접수', icon: <DescriptionIcon /> },
-    { id: 6, label: '품질검토완료', icon: <CheckBoxIcon /> },
-    { id: 7, label: '최종검토완료', icon: <FlagIcon /> }
+    { id: 6, label: '품질검토완료', icon: <FactCheckIcon /> },
+    { id: 7, label: '최종검토완료', icon: <LibraryAddCheckIcon /> }
 ];
 
 const quoteSteps = [
     { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
     { id: 2, label: '문의접수', icon: <InboxIcon /> },
-    { id: 3, label: '1차검토완료', icon: <CheckCircleOutlineIcon /> },
-    { id: 4, label: '최종검토완료', icon: <FlagIcon /> }
+    { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },
+    { id: 4, label: '최종검토완료', icon: <LibraryAddCheckIcon /> }
 ];
 
 const StepTracker = ({ currentStep, inquiryType }) => {
