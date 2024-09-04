@@ -18,7 +18,7 @@ function InquiryTypeBadge({ inquiryType }) {
             label={inquiryType}
             style={{
                 borderRadius: '20px',
-                width: '90%',
+                width: '85%',
                 height: '35px',
                 fontWeight: '800',
                 color: '#666a73',
