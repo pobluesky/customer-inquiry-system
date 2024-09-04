@@ -4,7 +4,7 @@ import { _ToggleOpen, _ToggleClose } from '../../assets/css/Form.css';
 import { Button } from '@mui/material';
 import Modal from './Modal';
 
-const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItemsChange }) => {
+const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItemsChange, onSelect, isUpdate }) => {
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,8 +13,10 @@ const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItem
     const closeModal = () => setIsModalOpen(false);
 
     const handleSelect = (selectedData) => {
-        // onLineItemsChange(selectedData);
+        onLineItemsChange(selectedData);
+        onSelect(selectedData[0]?.lineItemList);
         closeModal();
+        return selectedData[0]?.lineItemList;
     };
 
     return (
@@ -33,18 +35,24 @@ const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItem
                     >
                         &nbsp;&nbsp;{title}
                     </span>
-                    <Button
-                        style={{
-                            marginLeft: 'auto',
-                            color: '#03507D',
-                            backgroundColor: '#ffffff',
-                            cursor: 'pointer',
-                        }}
-                        onClick={openModal}
-                    >
-                        과거이력조회
-                    </Button>
-                    <Modal isOpen={isModalOpen} onClose={closeModal} productType={productType} onSelect={handleSelect} />
+                    { isUpdate ? (
+                        <>
+                            <Button
+                                style={{
+                                    marginLeft: 'auto',
+                                    color: '#03507D',
+                                    backgroundColor: '#ffffff',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={openModal}
+                            >
+                                과거이력조회
+                            </Button>
+                            <Modal isOpen={isModalOpen} onClose={closeModal} productType={productType} onSelect={handleSelect} />
+                        </>
+                    ) : (
+                        ''
+                    )}
                 </div>
             ) : (
                 <div className={_ToggleClose} style={{ borderRadius }}>
