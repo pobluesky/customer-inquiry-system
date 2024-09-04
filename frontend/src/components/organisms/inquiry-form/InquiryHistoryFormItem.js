@@ -24,6 +24,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                         <TableHead style={{ backgroundColor: '#d8e1e9' }}>
                             <TableRow>
                                 {Object.keys(fields).map((key) => (
+                                    key !== 'lineItemId' && (
                                     <TableCell key={key} style={{
                                         minWidth: 200,
                                         fontSize: '20px',
@@ -34,6 +35,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                         &nbsp;&nbsp;&nbsp;
                                         {fields[key].label}
                                     </TableCell>
+                                    )
                                 ))}
                             </TableRow>
                         </TableHead>
@@ -48,6 +50,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                         {Object.keys(fields).map((key) => {
                                             const field = fields[key];
                                             return (
+                                                key !== 'lineItemId' && (
                                                 <TableCell key={key}>
                                                     {field.type === 'enum' ? (
                                                         <Select
@@ -105,6 +108,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                                         />
                                                     )}
                                                 </TableCell>
+                                                )
                                             );
                                         })}
                                     </TableRow>
