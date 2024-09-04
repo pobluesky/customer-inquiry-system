@@ -9,6 +9,7 @@ import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
@@ -48,7 +49,7 @@ public class AnswerService {
 
     // 답변 전체 조회 (담당자)
     public List<AnswerResponseDTO> getAnswers(String token) {
-        Long userId = signService.parseToken(token); // 매니저 아이디
+        Long userId = signService.parseToken(token);
 
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
@@ -56,7 +57,7 @@ public class AnswerService {
         List<Answer> answers = answerRepository.findAll();
 
         return answers.stream()
-            .map(answer -> AnswerResponseDTO.from(answer, userId)) // 매니저 아이디를 전달
+            .map(answer -> AnswerResponseDTO.from(answer))
             .collect(Collectors.toList());
     }
 
@@ -78,7 +79,7 @@ public class AnswerService {
         }
 
         return answers.stream()
-            .map(answer -> AnswerResponseDTO.from(answer, null))
+            .map(answer -> AnswerResponseDTO.from(answer))
             .collect(Collectors.toList());
     }
 
@@ -93,7 +94,7 @@ public class AnswerService {
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
-        return AnswerResponseDTO.from(answer, userId);
+        return AnswerResponseDTO.from(answer);
     }
 
     // 질문 번호별 답변 상세 조회 (고객사)
@@ -115,7 +116,7 @@ public class AnswerService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        return AnswerResponseDTO.from(answer, userId);
+        return AnswerResponseDTO.from(answer);
     }
 
     // 질문별 답변 작성 (담당자)
@@ -128,7 +129,7 @@ public class AnswerService {
     ) {
         Long userId = signService.parseToken(token);
 
-        managerRepository.findById(userId)
+        Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 존재하지 않는 담당자일 경우
 
         Question question = questionRepository.findById(questionId)
@@ -152,13 +153,13 @@ public class AnswerService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Answer answer = dto.toAnswerEntity(question, inquiry, customer, fileName, filePath);
+        Answer answer = dto.toAnswerEntity(question, inquiry, customer, manager, fileName, filePath);
         Answer savedAnswer = answerRepository.save(answer);
 
         question.setStatus(QuestionStatus.COMPLETED);
         questionRepository.save(question);
 
-        return AnswerResponseDTO.from(savedAnswer, userId);
+        return AnswerResponseDTO.from(savedAnswer);
     }
 
     private Inquiry validateInquiry(Question question) {

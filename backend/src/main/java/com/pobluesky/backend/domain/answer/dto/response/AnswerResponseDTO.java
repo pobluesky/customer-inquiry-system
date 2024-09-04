@@ -11,7 +11,7 @@ import java.util.Optional;
 public record AnswerResponseDTO(
     Long questionId,
     Optional<Long> inquiryId,
-    Long userId,
+    Long customerId,
     Long managerId,
     String title,
     String contents,
@@ -19,13 +19,13 @@ public record AnswerResponseDTO(
     String filePath,
     LocalDateTime createdDate
 ) {
-    public static AnswerResponseDTO from(Answer answer, Long managerId) { // 매니저 아이디를 파라미터로 추가
+    public static AnswerResponseDTO from(Answer answer) { // 매니저 아이디를 파라미터로 추가
         return AnswerResponseDTO.builder()
             .inquiryId(Optional.ofNullable(answer.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
-            .userId(answer.getCustomer().getUserId())
-            .managerId(managerId)
+            .customerId(answer.getCustomer().getUserId())
+            .managerId(answer.getManager().getUserId())
             .title(answer.getTitle())
             .contents(answer.getContents())
             .createdDate(answer.getCreatedDate())
