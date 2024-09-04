@@ -27,6 +27,9 @@ function Row({ row, role }, ref) {
             setPercentage(20);
         } else if (row.progress === '1차검토완료') {
             setPercentage(35);
+            if (row.inquiryType === '견적 문의') {
+                setPercentage(60);
+            }
         } else if (row.progress === '품질검토요청') {
             setPercentage(45);
         } else if (row.progress === '품질검토접수') {
@@ -95,7 +98,7 @@ function Row({ row, role }, ref) {
         <React.Fragment>
             <TableRow
                 className={_Table}
-                sx={{ '& > *': { borderBottom: 'unset' }, }}
+                sx={{ '& > *': { borderBottom: 'unset' } }}
                 style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 onClick={handleClick}
             >
@@ -117,7 +120,10 @@ function Row({ row, role }, ref) {
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
-                <TableCell className="custom-table-cell" align="left"><CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />{row.inquiryType}</TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />
+                    {row.inquiryType}
+                </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
