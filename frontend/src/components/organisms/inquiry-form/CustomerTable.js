@@ -70,18 +70,18 @@ function Row({ row, role }) {
                 <TableCell component="th" scope="row" className="custom-table-cell" sx={{ paddingLeft: '80px' }}>
                     {row.inquiryId}
                 </TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">
                     <CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />
                     {row.inquiryType}
                 </TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.country}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell className="custom-table-cell" align="left" sx={{ width: '120px' }}>
                     <BorderLinearProgress variant="determinate" value={percentage} />
                 </TableCell>
@@ -115,15 +115,15 @@ export default function CollapsibleTable({
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '80px', fontWeight: '700' }}>문의번호</TableCell>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>고객사</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>진행현황</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>국가</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>판매상사</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>법인코드</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>진행현황</TableCell>
                             <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>Inquiry 진행률</TableCell>
                         </TableRow>
                     </TableHead>

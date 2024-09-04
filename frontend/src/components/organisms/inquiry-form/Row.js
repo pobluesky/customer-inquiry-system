@@ -119,20 +119,20 @@ function Row({ row, role }, ref) {
                     />
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">
                     <CircleIcon color={inquiryTypeColor} style={{ width: '10px', margin: '0 4px 0 0' }} />
                     {row.inquiryType}
                 </TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.customerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.country}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell className="custom-table-cell" align="left" sx={{ width: '120px' }}>
                     <BorderLinearProgress variant="determinate" value={percentage} />
                 </TableCell>
