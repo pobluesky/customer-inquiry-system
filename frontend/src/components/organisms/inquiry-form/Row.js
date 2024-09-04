@@ -66,7 +66,7 @@ function Row({ row, role }, ref) {
             case '문의접수':
                 return 2;
             case '1차검토완료':
-                return row.inquiryType === '견적 문의' ? 4 : 3;
+                return 3;
             case '품질검토요청':
                 return 4;
             case '품질검토접수':
