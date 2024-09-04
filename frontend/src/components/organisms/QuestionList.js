@@ -36,8 +36,6 @@ export default function QuestionList({
     setQuestionId,
     setStatus,
     status,
-    setOpenModal,
-    openModal,
 }) {
     const { userId } = useAuth();
     const role = getCookie('userRole');
@@ -116,77 +114,9 @@ export default function QuestionList({
                   }
               };
 
-    // 질문 상세 조회 (모달로 전달)
-    const fetchGetQuestionDetail =
-        role === 'customer'
-            ? async (questionId, status) => {
-                  try {
-                      const response = await getQuestionByQuestionId(
-                          userId,
-                          questionId,
-                      );
-                      setQuestionDetail(response.data); // 질문 상세 내용 저장
-                      if (status === 'COMPLETED') {
-                          // 답변 완료 질문인 경우
-                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
-                      } else {
-                          // 답변 대기 질문인 경우
-                          setAnswerDetail([]); // 답변 Empty Array 전달
-                          setOpenModal(true); // 모달 열기
-                      }
-                  } catch (error) {
-                      console.log('고객사 질문 상세 조회 실패: ', error);
-                  }
-              }
-            : async (questionId, status) => {
-                  try {
-                      const response = await getQuestionByQuestionIdForManager(
-                          questionId,
-                      );
-                      setQuestionDetail(response.data); // 질문 상세 내용 저장
-                      if (status === 'COMPLETED') {
-                          // 답변 완료 질문인 경우
-                          fetchGetAnswerDetail(questionId); // 답변 상세 조회 API 호출
-                      } else {
-                          // 답변 대기 질문인 경우
-                          setAnswerDetail([]); // 답변 Empty Array 전달
-                          setOpenModal(true); // 모달 열기
-                      }
-                  } catch (error) {
-                      console.log('담당자 질문 상세 조회 실패: ', error);
-                  }
-              };
-
-    // 답변 상세 조회 (모달로 전달)
-    const fetchGetAnswerDetail =
-        role === 'customer'
-            ? async (questionId) => {
-                  try {
-                      const response = await getAnswerByQuestionId(
-                          userId,
-                          questionId,
-                      );
-                      setAnswerDetail(response.data); // 답변 상세 내용 저장
-                      setOpenModal(true); // 모달 열기
-                  } catch (error) {
-                      console.log('고객사 답변 상세 조회 실패: ', error);
-                  }
-              }
-            : async (questionId) => {
-                  try {
-                      const response = await getAnswerByQuestionIdForManager(
-                          questionId,
-                      );
-                      setAnswerDetail(response.data); // 답변 상세 내용 저장
-                      setOpenModal(true); // 모달 열기
-                  } catch (error) {
-                      console.log('담당자 답변 상세 조회 실패: ', error);
-                  }
-              };
-
     useEffect(() => {
         fetchGetQuestions();
-    }, [userId, filterArgs, openModal]);
+    }, [userId, filterArgs]);
 
     const contentsEllipsis = {
         maxWidth: '1320px',
@@ -210,12 +140,6 @@ export default function QuestionList({
                                     /* 필요한 다른 데이터들 */
                                 },
                             });
-                            // setStatus(data.status);
-                            // setQuestionId(data.questionId);
-                            // fetchGetQuestionDetail(
-                            //     data.questionId,
-                            //     data.status,
-                            // );
                         }}
                     >
                         <div>
@@ -233,7 +157,9 @@ export default function QuestionList({
                             )}
                             <div>{data.title}</div>
                         </div>
-                        <div style={contentsEllipsis}>{data.contents}</div>
+                        <div style={contentsEllipsis}>
+                            {data.contents.replace(/<\/?[^>]+(>|$)/g, '')}
+                        </div>
                         <div>
                             <div>{data.questionCreatedAt.substring(0, 10)}</div>
                             <div>{data.customerName}</div>

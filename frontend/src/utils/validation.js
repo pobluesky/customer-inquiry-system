@@ -73,7 +73,7 @@ export const validateAnswerTitle = (answerTitle) => {
 
 // 답변 내용 길이
 export const validateAnswerContents = (answerContents) => {
-    if (answerContents.length < 10) {
+    if (answerContents.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
         return true;
     }
     return '';
@@ -92,7 +92,7 @@ export const validateQuestionTitle = (questionTitle) => {
 
 // 질문 내용 길이
 export const validateQuestionContents = (questionContents) => {
-    if (questionContents.length < 10) {
+    if (questionContents.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
         return true;
     }
     return '';
