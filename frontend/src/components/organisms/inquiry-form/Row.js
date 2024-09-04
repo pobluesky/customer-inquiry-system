@@ -11,6 +11,7 @@ import {
 } from '../../../apis/api/inquiry';
 import { _Table } from '../../../assets/css/Inquiry.css';
 import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
+import InquiryTypeBadge from '../../atoms/Chip';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
@@ -119,20 +120,7 @@ function Row({ row, role }, ref) {
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="left">
-                    <div
-                        style={{
-                                borderRadius: '20px',
-                                width: '95%',
-                                height: '35px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontWeight: '800',
-                                color: '#666a73',
-                                backgroundColor: row.inquiryType === '견적 문의' ? '#c5deda' : row.inquiryType === '품질+견적 문의' ? '#f7edda' : '#000000',
-                            }}>
-                        {row.inquiryType}
-                    </div>
+                    <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
