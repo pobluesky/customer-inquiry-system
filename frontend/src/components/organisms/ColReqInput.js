@@ -82,34 +82,12 @@ export default function ColReqInput({ colResId }) {
                     </div>
                 </div>
             </div>
-            {/* <WrongQuestionTitleAlert
-                showAlert={showTitleAlert}
-                onClose={() => {
-                    canShowTitleAlert(false);
-                }}
-                inert
-            />
-            <WrongQuestionContentAlert
-                showAlert={showContentAlert}
-                onClose={() => {
-                    canShowContentAlert(false);
-                }}
-                inert
-            />
-            <InquiryIdisNullAlert
-                showAlert={showFailedAlert}
-                onClose={() => {
-                    canShowFailedAlert(false);
-                }}
-                inert
-            /> */}
             <Backdrop
                 sx={{
                     color: '#fff',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
                 open={openBackDrop}
-                // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>

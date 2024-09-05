@@ -123,7 +123,11 @@ function MyHeader() {
     const InquiryMenu = () => (
         <>
             <div>
-                <MenuLink to={url}>Inquiry 조회</MenuLink>
+                {role === 'quality' ? (
+                    <MenuLink to={url}>품질설계연계조회</MenuLink>
+                ) : (
+                    <MenuLink to={url}>Inquiry 조회</MenuLink>
+                )}
             </div>
             {role === 'customer' && (
                 <div>
@@ -154,6 +158,10 @@ function MyHeader() {
             )}
         </>
     );
+
+    useEffect(() => {
+        setCurPage(location.pathname.substring(1, 4));
+    }, [location]);
 
     return (
         <>
@@ -189,13 +197,12 @@ function MyHeader() {
                                     }}
                                 />
                             </div>
-                            {didLogin
-                                ? curPage === 'inq' || curPage === ''
+                            {didLogin &&
+                                (curPage === 'inq'
                                     ? InquiryMenu()
                                     : curPage === 'voc'
                                     ? VoCMenu()
-                                    : ''
-                                : ''}
+                                    : '')}
                         </div>
                         <div>
                             {/* 로그인 & 회원가입 버튼 */}

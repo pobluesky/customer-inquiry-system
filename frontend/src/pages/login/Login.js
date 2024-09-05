@@ -14,7 +14,7 @@ import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
     const navigate = useNavigate();
-    
+
     // 로그인을 통해 유입된 사용자 정보: 로그인 단계에서 저장
     const currentUserName = useRecoilValue(getUserName);
 
@@ -125,6 +125,7 @@ function Login() {
                                 canShowFailedAlert(false);
                             }}
                             message={errorMsg}
+                            inert
                         />
                         <a href="/join">회원이 아니신가요?</a>
                     </div>

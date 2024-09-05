@@ -48,7 +48,7 @@ export default function AnswerInput({
                 answerData,
                 questionId,
             );
-            setAnswerDetail(response.data); // 답변 등록으로 갱신된 답변 데이터 저장
+            setAnswerDetail(response.data);
             canShowSuccessAlert(true);
             setTimeout(() => {
                 window.location.reload();
