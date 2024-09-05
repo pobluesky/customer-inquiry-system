@@ -86,6 +86,7 @@ export default function QuestionDashboard() {
         fetchGetQuestionCount();
         fetchGetAnswerCount();
         fetchGetColCount();
+        localStorage.clear();
     }, [userId]);
 
     return (
