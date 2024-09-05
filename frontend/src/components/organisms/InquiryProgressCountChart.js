@@ -49,18 +49,21 @@ class InquiryProgressCountChart extends Component {
             switch (data[0]) {
                 case 'SUBMIT':
                     managerArr[0][1] = data[1];
+                    break;
                 case 'RECEIPT':
                     managerArr[1][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_REQUEST':
                     managerArr[2][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_RESPONSE':
                     managerArr[3][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_COMPLETED':
                     managerArr[4][1] = data[1];
+                    break;
                 case 'FINAL_REVIEW_COMPLETED':
                     managerArr[5][1] = data[1];
-                default:
-                    return 0;
             }
         });
 
@@ -68,18 +71,22 @@ class InquiryProgressCountChart extends Component {
             switch (data[0]) {
                 case 'SUBMIT':
                     totalArr[0][1] = data[1];
+                    break;
                 case 'RECEIPT':
                     totalArr[1][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_REQUEST':
                     totalArr[2][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_RESPONSE':
                     totalArr[3][1] = data[1];
+                    break;
                 case 'QUALITY_REVIEW_COMPLETED':
                     totalArr[4][1] = data[1];
+                    break;
                 case 'FINAL_REVIEW_COMPLETED':
                     totalArr[5][1] = data[1];
-                default:
-                    return 0;
+                    break;
             }
         });
 
