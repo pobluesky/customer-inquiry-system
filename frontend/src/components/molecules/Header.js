@@ -63,7 +63,7 @@ function MyHeader() {
     const isMainPage = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const isJoinPage = location.pathname === '/join';
-    const [curPage, setCurPage] = useState('inq');
+    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
 
     const findUserName = async () => {
         try {
