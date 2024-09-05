@@ -20,11 +20,13 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
+                            caretColor={'transparent'}
                         />
                     </div>
                     <div>
                         <div>이메일</div>
                         <Input
+                            type={'email'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -35,8 +37,22 @@ export default function ExistingUserInfo({ userDetail }) {
                         />
                     </div>
                     <div>
+                        <div>비밀번호</div>
+                        <Input
+                            type={'password'}
+                            width={'336px'}
+                            height={'48px'}
+                            padding={'0 0 0 20px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'12px'}
+                            fontSize={'16px'}
+                            value={userDetail.password}
+                        />
+                    </div>
+                    <div>
                         <div>전화번호</div>
                         <Input
+                            type={'tel'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -83,11 +99,13 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
+                            caretColor={'transparent'}
                         />
                     </div>
                     <div>
                         <div>이메일</div>
                         <Input
+                            type={'email'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -95,11 +113,26 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.email}
+                            caretColor={'transparent'}
+                        />
+                    </div>
+                    <div>
+                        <div>비밀번호</div>
+                        <Input
+                            type={'password'}
+                            width={'336px'}
+                            height={'48px'}
+                            padding={'0 0 0 20px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'12px'}
+                            fontSize={'16px'}
+                            value={userDetail.password}
                         />
                     </div>
                     <div>
                         <div>전화번호</div>
                         <Input
+                            password={'tel'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -107,6 +140,7 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.phone}
+                            caretColor={'transparent'}
                         />
                     </div>
                 </>

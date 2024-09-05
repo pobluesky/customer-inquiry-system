@@ -14,6 +14,7 @@ export default function UserAccountOverview() {
     const role = getCookie('userRole');
 
     const [edit, setEdit] = useState(true);
+    const [completeEdit, setCompleteEdit] = useState(false);
     const [userDetail, setUserDetail] = useState([]);
 
     // 사용자 상세 정보 조회 API
@@ -47,14 +48,26 @@ export default function UserAccountOverview() {
             {edit ? (
                 <ExistingUserInfo userDetail={userDetail} />
             ) : (
-                <EditingUserInfo userDetail={userDetail} />
+                <EditingUserInfo
+                    userDetail={userDetail}
+                    completeEdit={completeEdit}
+                />
             )}
-            <CheckButton
-                btnName={'수정'}
-                onClick={() => {
-                    setEdit(!edit);
-                }}
-            />
+            {edit ? (
+                <CheckButton
+                    btnName={'계정 정보 수정'}
+                    onClick={() => {
+                        setEdit(!edit);
+                    }}
+                />
+            ) : (
+                <CheckButton
+                    btnName={'수정 완료'}
+                    onClick={() => {
+                        setCompleteEdit(true);
+                    }}
+                />
+            )}
         </div>
     );
 }
