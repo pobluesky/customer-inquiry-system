@@ -38,14 +38,14 @@ function Row({ row, role }, ref) {
         if (row.progress === '문의제출') {
             setPercentage(10);
         } else if (row.progress === '문의접수') {
-            setPercentage(20);
+            setPercentage(25);
         } else if (row.progress === '1차검토완료') {
-            setPercentage(35);
+            setPercentage(40);
             if (row.inquiryType === '견적 문의') {
                 setPercentage(60);
             }
         } else if (row.progress === '품질검토요청') {
-            setPercentage(45);
+            setPercentage(50);
         } else if (row.progress === '품질검토접수') {
             setPercentage(65);
         } else if (row.progress === '품질검토완료') {
