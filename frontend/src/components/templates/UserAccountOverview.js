@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ExistingUserInfo from '../organisms/ExistingUserInfo';
+import EditingUserInfo from '../organisms/EditingUserInfo';
+import { User_Account } from '../../assets/css/Auth.css';
 
 export default function UserAccountOverview() {
+    const [edit, setEdit] = useState(false);
+
     return (
-        <div>
-            <div>유저 정보 들어갈 컴포넌트</div>
+        <div className={User_Account}>
+            <button
+                onClick={() => {
+                    setEdit(!edit);
+                }}
+            >
+                수정
+            </button>
+            {edit ? <ExistingUserInfo /> : <EditingUserInfo />}
         </div>
     );
 }
