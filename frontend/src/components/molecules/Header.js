@@ -94,7 +94,7 @@ function MyHeader() {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
         if (didLogin && userId) {
@@ -190,9 +190,11 @@ function MyHeader() {
                                 />
                             </div>
                             {didLogin
-                                ? curPage === 'inq'
+                                ? curPage === 'inq' || curPage === ''
                                     ? InquiryMenu()
-                                    : VoCMenu()
+                                    : curPage === 'voc'
+                                    ? VoCMenu()
+                                    : ''
                                 : ''}
                         </div>
                         <div>
