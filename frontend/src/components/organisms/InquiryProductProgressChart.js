@@ -61,7 +61,6 @@ function InquiryProductProgressChart({ data }) {
             <div>제품별 주문 체결 현황 (전체 대비 나의 성과)</div>
             <GaugeChart
                 id="gauge-chart5"
-                nrOfLevels={420}
                 arcsLength={[1.428, 1.428, 1.428, 1.428, 1.428, 1.428, 1.432]}
                 colors={['#5BE12C', '#F5CD19', '#EA4228']}
                 percent={percent}
@@ -69,6 +68,7 @@ function InquiryProductProgressChart({ data }) {
                 arcPadding={0.02}
                 hideText={true}
                 animDelay={0}
+                animateDuration={2000}
             />
             <div>
                 {productNames[selectedProduct]} {Math.round(percent * 100)}%
