@@ -230,7 +230,41 @@ INSERT INTO offersheet (inquiry_id, price_terms, payment_terms, shipment, validi
 VALUES
     (2, 'CIF 30', 'Telegraphic Transfer', '2023-09-01', '2023-12-31', '보람', '최종검토바람'),
     (4, 'FOB 45', 'Document Against Payment', '2023-10-01', '2024-01-31', '금강', '유효기간 내 제품 배송 확인'),
-    (5, 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료');
+    (5, 'EXW 10', 'Document Against Acceptance', '2023-11-01', '2024-02-28', '세신', '최종승인 완료'),
+    (6, 'CIF 60', 'Letter of Credit', '2023-12-01', '2024-03-31', '호수', '제품의 정확한 사양 확인 필요'),
+    (11, 'FOB 30', 'Cash in Advance', '2024-01-01', '2024-06-30', '강산', '선급금 확인 후 출고');
+
+-- RECEIPTS
+INSERT INTO receipts (offer_sheet_id, product, specification, surface_finish, usage, thickness, diameter, width, quantity, price, unit_min_weight, unit_max_weight, edge)
+VALUES
+    (1, '자동차', 'ASTM A36', 'Hot Rolled', 'Construction', '6mm', '500mm', '1500mm', '800', '950', '600', '700', 'Mill Edge'),
+    (1, '자동차', 'JIS G3131', 'Hot Rolled', 'Automotive', '7mm', '600mm', '2000mm', '500', '900', '500', '600', 'Trimmed Edge'),
+    (1, '자동차', 'EN 10130', 'Cold Rolled', 'Electronics', '0.8mm', '700mm', '1200mm', '1200', '950', '350', '400', 'Trimmed Edge'),
+    (1, '자동차', 'ISO 9001', 'Cold Drawn', 'Automotive', '4mm', '600mm', '1400mm', '400', '1100', '500', '600', 'Round Edge'),
+    (1, '자동차', 'ASTM A228', 'Cold Drawn', 'Wire', '3mm', '500mm', '1000mm', '900', '700', '400', '500', 'Round Edge'),
+    (2, '열연', 'ASTM A36', 'Hot Rolled', 'Construction', '5mm', '150mm', '1500mm', '1000', '750', '500', '600', 'Mill Edge'),
+    (2, '열연', 'API 5L', 'Seamless', 'Oil & Gas', '10mm', '300mm', '1000mm', '500', '1200', '800', '900', 'Trimmed Edge'),
+    (2, '열연', 'JIS G3131', 'Hot Rolled', 'Automotive', '8mm', '500mm', '1200mm', '600', '900', '700', '800', 'Trimmed Edge'),
+    (2, '열연', 'EN 10130', 'Cold Rolled', 'Electronics', '0.8mm', '600mm', '1000mm', '1200', '950', '300', '350', 'Trimmed Edge'),
+    (3, '냉연', 'ASTM A36', 'Hot Rolled', 'Construction', '6mm', '400mm', '1500mm', '400', '800', '500', '600', 'Mill Edge'),
+    (3, '냉연', 'ASTM A283', 'Hot Rolled', 'Structural', '9mm', '500mm', '1800mm', '600', '850', '600', '700', 'Trimmed Edge'),
+    (3, '냉연', 'JIS G3141', 'Cold Rolled', 'Electronics', '1mm', '600mm', '1200mm', '800', '900', '350', '400', 'Trimmed Edge'),
+    (3, '냉연', 'ISO 14001', 'Cold Drawn', 'Automotive', '3mm', '700mm', '1400mm', '500', '950', '400', '450', 'Round Edge'),
+    (3, '냉연', 'ASTM A228', 'Cold Drawn', 'Wire', '2mm', '500mm', '1000mm', '1000', '650', '300', '350', 'Round Edge'),
+    (3, '냉연', 'API 5L', 'Seamless', 'Oil & Gas', '14mm', '350mm', '2000mm', '200', '1450', '700', '800', 'Trimmed Edge'),
+    (3, '냉연', 'JIS G3131', 'Hot Rolled', 'Automotive', '7mm', '600mm', '2000mm', '300', '900', '500', '600', 'Mill Edge'),
+    (3, '냉연', 'EN 10130', 'Cold Rolled', 'Appliances', '0.5mm', '500mm', '1500mm', '600', '950', '300', '350', 'Trimmed Edge'),
+    (4, '후판', 'SS400', 'Hot Rolled', 'Structural', '8mm', '600mm', '1800mm', '800', '950', '600', '700', 'Mill Edge'),
+    (4, '후판', 'ASTM A1011', 'Hot Rolled', 'Construction', '6mm', '800mm', '2000mm', '500', '850', '500', '650', 'Mill Edge'),
+    (4, '후판', 'JIS G3141', 'Cold Rolled', 'Appliances', '1mm', '700mm', '1500mm', '700', '1000', '350', '400', 'Trimmed Edge'),
+    (4, '후판', 'ISO 639', 'Cold Rolled', 'Automotive', '2mm', '600mm', '1400mm', '300', '1100', '400', '450', 'Trimmed Edge'),
+    (4, '후판', 'ASTM A580', 'Cold Drawn', 'Wire', '3mm', '500mm', '1000mm', '1000', '600', '500', '600', 'Round Edge'),
+    (5, '선재', 'ASTM A572', 'Cold Rolled', 'Bridge Construction', '12mm', '500mm', '2000mm', '300', '1300', '700', '850', 'Mill Edge'),
+    (5, '선재', 'JIS G3131', 'Hot Rolled', 'Structural', '10mm', '800mm', '1800mm', '500', '1000', '600', '750', 'Trimmed Edge'),
+    (5, '선재', 'EN 10139', 'Cold Rolled', 'Machinery', '2mm', '700mm', '1500mm', '400', '950', '350', '400', 'Trimmed Edge'),
+    (5, '선재', 'ISO 9001', 'Cold Drawn', 'Automotive', '4mm', '600mm', '1400mm', '200', '1200', '500', '550', 'Round Edge'),
+    (5, '선재', 'JIS G3507', 'Cold Drawn', 'Construction', '5mm', '400mm', '1000mm', '600', '700', '600', '650', 'Round Edge'),
+    (5, '선재', 'API 5CT', 'Seamless', 'Oil & Gas', '15mm', '400mm', '1500mm', '200', '1450', '700', '800', 'Trimmed Edge');
 
 -- QUALITY
 INSERT INTO quality (inquiry_id, final_result, final_result_details, standard, order_category, coating_metal_quantity, coating_oil_quantity, thickness_tolerance, order_edge, customerqreq, available_lab, quality_comments, file_name, file_path)

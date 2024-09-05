@@ -18,8 +18,6 @@ function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) {
         'Unit Weight Max',
         'Unit Weight Min'
     ];
-    // const sizeSample = ['Thickness', 'Diameter', 'Width'];
-    // const weightSample = ['Max', 'Min'];
     const productSample = [
         '자동차',
         '열연',

@@ -399,17 +399,18 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             )}
 
             {isOfferSheetItem ? (
-                <Offersheet formData={offerSheetData}
-                            inquiryData={inquiriesDataDetail}
-                            lineItemData={offerSheetData.receipts}
-                            isOfferSheetItem={isOfferSheetItem}
+                <Offersheet
+                        formData={offerSheetData}
+                        inquiryData={inquiriesDataDetail}
+                        lineItemData={offerSheetData.receipts}
+                        isOfferSheetItem={isOfferSheetItem}
                 />
             ) : (
                 <Offersheet formData={formData}
-                            inquiryData={inquiriesDataDetail}
-                            lineItemData={formData.receipts}
-                            handleFormDataChange={handleFormDataChange}
-                            onLineItemsChange={(newLineItems) => setFormData(
+                                  inquiryData={inquiriesDataDetail}
+                                  lineItemData={formData.receipts}
+                                  handleFormDataChange={handleFormDataChange}
+                                  onLineItemsChange={(newLineItems) => setFormData(
                                 prev => ({
                                     ...prev,
                                     receipts: newLineItems,
