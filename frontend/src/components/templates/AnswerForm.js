@@ -15,7 +15,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 export default function AnswerForm() {
     const location = useLocation();
-    const { questionId, status } = location.state;
+    const { questionId } = location.state;
     const { userId } = useAuth();
     const role = getCookie('userRole');
     const [questionDetail, setQuestionDetail] = useState([]);

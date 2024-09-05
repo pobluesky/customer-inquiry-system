@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
@@ -24,7 +23,6 @@ export default function AnswerInput({
     setAnswerDetail,
 }) {
     const sanitizer = dompurify.sanitize;
-    const navigate = useNavigate();
 
     const role = getCookie('userRole');
 
@@ -51,7 +49,6 @@ export default function AnswerInput({
             );
             setAnswerDetail(response.data); // 답변 등록으로 갱신된 답변 데이터 저장
             AnswerCompleteAlert(); // 답변 완료 알림
-            setAnswering(false); // 답변 입력창 제거
             setTimeout(() => {
                 window.location.reload();
             }, '1000');
