@@ -16,15 +16,11 @@ function QuestionTypeSelector({
     return (
         <div className={Question_Type_Selector}>
             <div>
-                {/* 아이콘 + VoC 문의하기 */}
+                {/* 1 */}
+                <div>문의 유형을 선택하세요</div>
+                {/* 2 */}
                 <div>
-                    <img src={search} alt="검색 아이콘" />
-                    <div>VoC 문의하기</div>
-                </div>
-                {/* 문의 유형 */}
-                <div>
-                    <div>문의 유형</div>
-                    <div className="radio">
+                    <div>
                         <label>
                             <input
                                 type="radio"
@@ -35,9 +31,9 @@ function QuestionTypeSelector({
                             />
                         </label>
                     </div>
-                    <div>주문 문의</div>
+                    <div>Inquiry 문의</div>
 
-                    <div className="radio">
+                    <div>
                         <label>
                             <input
                                 type="radio"
@@ -62,26 +58,22 @@ function QuestionTypeSelector({
                         </label>
                     </div>
                     <div>기타 문의</div>
-                </div>
-                <div>
                     {selectedType === 'INQ' && (
                         <>
-                            <div>Inquiry No.</div>
-                            {inquiryId && <div>{inquiryId}</div>}
                             <div>
                                 <Button
-                                    btnName={'번호 조회'}
+                                    btnName={'Inquiry 조회'}
                                     width={'96px'}
                                     height={'28px'}
-                                    backgroundColor={'#03507d'}
-                                    textColor={'#ffffff'}
-                                    border={'none'}
-                                    borderRadius={'12px'}
+                                    backgroundColor={'#ffffff'}
+                                    textColor={'#1748ac'}
+                                    border={'1px solid #1748ac'}
                                     onClick={() => {
                                         setOpenModal(true);
                                     }}
                                 />
                             </div>
+                            <div>{inquiryId && `No. ${inquiryId}`}</div>
                         </>
                     )}
                 </div>

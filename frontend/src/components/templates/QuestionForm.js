@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import QuestionInput from '../organisms/QuestionInput';
 import QuestionTypeSelector from '../organisms/QuestionTypeSelector';
 import QuestionInquirySearchModal from '../molecules/QuestoinInquirySearchModal';
@@ -8,6 +9,10 @@ function QuestionForm() {
     const [selectedType, setSelectedType] = useState('INQ'); // type 상태 관리
     const [inquiryId, setInquiryId] = useState(''); // Inquiry Id 상태 관리
 
+    // To Do: 담당자 접근 시 질문 조회 화면으로 이동
+    const navigate = useNavigate();
+
+    // 고객사 Inquiry 조회 Modal
     if (openModal) {
         document.body.style.overflow = 'hidden';
     } else {

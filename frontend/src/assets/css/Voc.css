@@ -15,67 +15,89 @@
 /******************************************************************/
 .Question_Type_Selector {
     width: 1320px;
-    height: 228px;
+    height: fit-content;
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.Question_Type_Selector > div:first-child {
-    display: grid;
-    grid-template-rows: 64px 52px 36px;
-    margin: 36px 0 0 36px;
-}
-
-/* 아이콘 + VoC 문의하기 */
-.Question_Type_Selector > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 48px 160px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #25262b;
-}
-
-/* 문의 유형 + 라디오 버튼 */
-.Question_Type_Selector > div > div:nth-child(2) {
-    display: grid;
-    grid-template-columns: 200px 48px 108px 48px 164px 48px 108px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
-}
-
-/* Inquiry No. + 검색창 */
-.Question_Type_Selector > div > div:nth-child(3) {
+.Question_Type_Selector > div:first-child > div {
     display: flex;
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
-}
-
-/* Inquiry No. */
-.Question_Type_Selector > div > div:nth-child(3) > div:nth-child(1) {
-    width: 176px;
-}
-
-/* 검색 결과 */
-.Question_Type_Selector > div > div:nth-child(3) > div:nth-child(2) {
-    margin: 0px 24px 0px 0px;
-}
-
-/* Inquiry No. + 결과 창 정렬 */
-.Question_Type_Selector > div > div:nth-child(3) Input,
-.Question_Type_Selector > div > div:nth-child(3) Button {
-    display: grid;
+    width: 1224px;
     align-items: center;
 }
 
-/* 문의 유형 Margin */
-.Question_Type_Selector > div > div:nth-child(2) > div:first-child,
-.Question_Type_Selector > div > div:nth-child(3) > div:first-child {
-    margin: 0 0 0 48px;
+/* 문의 유형을 선택하세요 */
+.Question_Type_Selector > div:first-child > div:nth-child(1) {
+    margin: 24px auto 0 auto;
+    height: 28px;
+    color: #25262b;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 라디오 버튼 + Inquiry No + 번호 조회 버튼 */
+.Question_Type_Selector > div:first-child > div:nth-child(2) {
+    height: 28px;
+    margin: 12px auto 24px auto;
+    color: #25262b;
+    font-size: 16px;
+}
+
+.Question_Type_Selector
+    > div:first-child
+    > div:nth-child(2)
+    > div:nth-child(even) {
+    margin: 0 28px 0 0;
+}
+
+/* 번호 조회 버튼 */
+.Question_Type_Selector
+    > div:first-child
+    > div:nth-child(2)
+    > div:nth-child(7) {
+    width: fit-content;
+    margin: 0 28px 0 0;
+}
+
+.Question_Type_Selector input[type='radio'] {
+    -webkit-appearance: none; /* 웹킷 브라우저에서 기본 스타일 제거 */
+    -moz-appearance: none; /* 모질라 브라우저에서 기본 스타일 제거 */
+    appearance: none; /* 기본 브라우저에서 기본 스타일 제거 */
+    width: 18px;
+    height: 18px;
+    border: 2px solid #8b8b8b; /* 체크되지 않았을 때의 테두리 색상 */
+    border-radius: 50%;
+    outline: none; /* focus 시에 나타나는 기본 스타일 제거 */
+    cursor: pointer;
+    float: left;
+}
+
+.Question_Type_Selector input[type='radio']:checked {
+    background-color: #1748ac; /* 체크 시 내부 원으로 표시될 색상 */
+    border: 3px solid white; /* 테두리가 아닌, 테두리와 원 사이의 색상 */
+    box-shadow: 0 0 0 1.6px #1748ac; /* 테두리 */
+    transition: 0.2s all linear;
+}
+
+.Question_Type_Selector
+    > div:first-child
+    > div:nth-child(2)
+    > div:nth-child(n + 8) {
+    margin: 0 28px 0 0;
+}
+
+/* Inquiry 검색 결과 */
+.Question_Type_Selector
+    > div:first-child
+    > div:nth-child(2)
+    > div:nth-child(8) {
+    width: fit-content;
+    height: 28px;
+    line-height: 28px;
+    font-weight: 600;
+    color: #1748ac;
 }
 
 /******************************************************************/
@@ -83,78 +105,62 @@
 /******************************************************************/
 .Question_Input {
     width: 1320px;
-    height: 580px;
-    margin: 36px auto 72px auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    margin: 24px auto 0 auto;
 }
 
-.Question_Input > div:first-child {
-    display: grid;
-    grid-template-rows: 72px 56px 176px 84px 64px 48px;
-    margin: 36px 0 0 36px;
+/* 제목, 파일 업로드 버튼 */
+.Question_Input > div:nth-child(1) {
+    display: flex;
+    margin: 0 auto;
 }
 
-/* 성명, 이메일 */
-.Question_Input > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 180px 228px 180px 480px;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 600;
+/* 제목 */
+.Question_Input > div:nth-child(1) > :nth-child(1) {
+    width: 980px;
+    margin: 0 0 24px 0;
+}
+
+/* 제목 길이 */
+.Question_Input > div:nth-child(1) > :nth-child(2) {
+    width: 24px;
+    line-height: 36px;
+    text-align: right;
     color: #8b8b8b;
+    margin: 0 0 24px 0;
 }
 
-/* 성명, 이메일 */
-.Question_Input > div > div:nth-child(1) > div:nth-child(even) {
-    color: #03507d;
+/* 30 */
+.Question_Input > div:nth-child(1) > :nth-child(3) {
+    width: 40px;
+    line-height: 36px;
+    text-align: left;
+    color: #8b8b8b;
+    margin: 0 0 24px 0;
 }
 
-/* 성명 + 이메일 + 문의 작성 Margin */
-.Question_Input > div > div {
-    margin: 0 0 0 48px;
+/* 파일 업로드 버튼 */
+.Question_Input > div:nth-child(1) > :nth-child(4) {
+    margin: 0 12px;
 }
 
-/* 첨부파일, 파일 추가, 파일 삭제 */
-.Question_Input > div > div:nth-child(4) {
-    height: 92px;
-    display: grid;
-    grid-template-columns: 120px 96px 96px 600px;
-    align-items: center;
-    font-size: 20px;
-    color: #25262b;
-}
-
-/* 첨부파일 안내 문구 */
-.Question_Input > div > div:nth-child(4) > div:nth-child(4) {
-    font-size: 12px;
-}
-
-/* 첨부파일 안내 문구 */
-.Question_Input > div > div:nth-child(5) {
-    font-size: 12px;
-}
-
-/* 첨부파일 박스 */
-.Question_Input > div > div:nth-child(5) {
-    width: 1144px;
+/* 첨부파일명 길이 제한 */
+.Question_Input > div:nth-child(1) > :nth-child(5) {
+    width: 180px;
     height: 36px;
-    align-content: center;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
+    line-height: 36px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* 첨부파일명 */
-.Question_Input > div > div:nth-child(5) > div {
-    text-align: center;
+/* 질문 내용 입력 Text Editor */
+.Question_Input > :nth-child(2) {
+    margin: 0 0 24px 0;
 }
 
-/* 문의 등록 버튼 */
-.Question_Input > div > div:nth-child(6) {
-    margin: 0 84px 0 48px;
-    text-align: center;
+.Question_Input > div:nth-child(3) > button {
+    float: right;
+    margin: 0 0 24px 24px;
 }
 
 /******************************************************************/
@@ -466,11 +472,10 @@
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.Question_Viewer > div:nth-child(-n+2) {
+.Question_Viewer > div:nth-child(-n + 2) {
     display: flex;
     width: 1224px;
     align-items: center;
@@ -560,22 +565,40 @@
 /* 제목, 파일 업로드 버튼 */
 .Answer_Input .Ready > div:nth-child(1) {
     display: flex;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
 }
 
 /* 제목 */
 .Answer_Input .Ready > div:nth-child(1) > :nth-child(1) {
-    width: 1020px;
+    width: 980px;
+    margin: 0 0 24px 0;
+}
+
+/* 제목 길이 */
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(2) {
+    width: 24px;
+    line-height: 36px;
+    text-align: right;
+    color: #8b8b8b;
+    margin: 0 0 24px 0;
+}
+
+/* 30 */
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(3) {
+    width: 40px;
+    line-height: 36px;
+    text-align: left;
+    color: #8b8b8b;
     margin: 0 0 24px 0;
 }
 
 /* 파일 업로드 버튼 */
-.Answer_Input .Ready > div:nth-child(1) > :nth-child(2) {
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(4) {
     margin: 0 12px;
 }
 
 /* 첨부파일명 길이 제한 */
-.Answer_Input .Ready > div:nth-child(1) > :nth-child(3) {
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(5) {
     width: 180px;
     height: 36px;
     line-height: 36px;
@@ -595,16 +618,20 @@
     margin: 24px auto 0 auto;
 }
 
+.Answer_Input .Completed {
+    width: 1320px;
+    margin: 0 auto 12px auto;
+}
+
 .Answer_Input .Completed > div:nth-child(1) {
     width: 1320px;
     height: fit-content;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.Answer_Input .Completed > div:nth-child(1) > div:nth-child(-n+2) {
+.Answer_Input .Completed > div:nth-child(1) > div:nth-child(-n + 2) {
     display: flex;
     width: 1224px;
     align-items: center;
@@ -614,7 +641,6 @@
     width: 1224px;
     align-items: center;
 }
-
 
 /* 답변 완료 + 제목 + 첨부파일 */
 .Answer_Input .Completed > div:nth-child(1) > div:nth-child(1) {
@@ -698,8 +724,7 @@
     margin: 36px auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .Collaboration_Filter_Pannel > div:first-child {

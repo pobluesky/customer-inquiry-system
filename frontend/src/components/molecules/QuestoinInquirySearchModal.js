@@ -133,7 +133,6 @@ function createData(
 }
 
 export default function QuestionInquirySearchModal({
-    inquiryId,
     setInquiryId,
     openModal,
     setOpenModal,
@@ -331,22 +330,13 @@ export default function QuestionInquirySearchModal({
 
                 <TableContainer
                     component={Paper}
-                    // sx={{
-                    //     width: 900,
-                    //     margin: '24px auto 0 auto',
-                    //     overflowX: 'auto',
-                    // }}
                     sx={{
                         width: 900,
                         overflowX: 'auto',
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    <Table
-                        size="medium"
-                        // stickyHeader="true"
-                        aria-label="collapsible table"
-                    >
+                    <Table size="medium" aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
                                 {columns.map((column) => (
@@ -379,6 +369,10 @@ export default function QuestionInquirySearchModal({
                                     className={Select}
                                     onClick={() => {
                                         setInquiryId(row.inquiryId);
+                                        window.open(
+                                            `/inq-list/customer/${row.inquiryId}`,
+                                            '_blank',
+                                        );
                                         setOpenModal(false);
                                     }}
                                 >
@@ -436,11 +430,6 @@ export default function QuestionInquirySearchModal({
                                         }}
                                     >
                                         {row.progress}
-                                        {/* {row.type === 'INQ'
-                                    ? 'Inquiry'
-                                    : row.type === 'SITE'
-                                    ? '사이트 문의'
-                                    : '기타 문의'} */}
                                     </TableCell>
                                     <TableCell
                                         sx={{
@@ -520,118 +509,5 @@ export default function QuestionInquirySearchModal({
                 </TableContainer>
             </div>
         </div>
-
-        // <div className={Question_Inquiry_Modal_Container}>
-        //     <div className={Question_Inquiry_Modal} ref={contentRef}>
-        //         <div>
-        //             <div>Inquiry No</div>
-        //             <div>
-        //                 <Input
-        //                     type="text"
-        //                     value={searchId}
-        //                     onChange={(e) => setSearchId(e.target.value)}
-        //                     width={'196px'}
-        //                     height={'26px'}
-        //                     padding={'0 8px 0 8px'}
-        //                     border={'solid 1px #c1c1c1'}
-        //                     borderRadius={'8px'}
-        //                     onKeyDown={enterKeyDown}
-        //                 />
-        //             </div>
-        //             <div>
-        //                 <Button
-        //                     btnName={'번호 조회'}
-        //                     width={'96px'}
-        //                     height={'28px'}
-        //                     backgroundColor={'#03507d'}
-        //                     textColor={'#ffffff'}
-        //                     border={'none'}
-        //                     borderRadius={'12px'}
-        //                     onClick={() => {
-        //                         setInquiryId(searchId);
-        //                     }}
-        //                 />
-        //             </div>
-        //             <div>
-        //                 <Button
-        //                     width={'96px'}
-        //                     height={'28px'}
-        //                     backgroundColor={'transparent'}
-        //                     border={'none'}
-        //                     imgSrc={close}
-        //                     onClick={() => {
-        //                         setOpenModal(false);
-        //                     }}
-        //                 />
-        //             </div>
-        //         </div>
-        //         <div>
-        //             {inquiryData.length > 0
-        //                 ? inquiryData.map((data) => (
-        //                       <div key={data.inquiryId}>
-        //                           <div>
-        //                               ????
-        //                               <Button
-        //                                   btnName={'✅'}
-        //                                   width={'24px'}
-        //                                   border={'none'}
-        //                                   backgroundColor={'transparent'}
-        //                                   onClick={() => {
-        //                                       setInquiryId(data.inquiryId);
-        //                                       setOpenModal(false);
-        //                                   }}
-        //                               />
-        //                           </div>
-        //                           <div>
-        //                               <Button
-        //                                   btnName={data.inquiryType}
-        //                                   width={'96px'}
-        //                                   height={'32px'}
-        //                                   fontSize={'16px'}
-        //                                   fontWeight={'600'}
-        //                                   textColor={'#ffffff'}
-        //                                   border={'none'}
-        //                                   borderRadius={'18px'}
-        //                                   backgroundColor={'#03507d'}
-        //                               />
-        //                           </div>
-        //                           <div>{data.salesPerson}</div>
-        //                           <div>{data.customerName}</div>
-        //                           <div>{data.productType}</div>
-        //                           <div>
-        //                               <Link
-        //                                   style={{
-        //                                       textDecoration: 'none',
-        //                                       color: '#212121',
-        //                                   }}
-        //                                   to="/inq-item/customer"
-        //                                   target="_blank"
-        //                               >
-        //                                   <Button
-        //                                       btnName={'상세 내역'}
-        //                                       width={'96px'}
-        //                                       height={'32px'}
-        //                                       fontSize={'16px'}
-        //                                       fontWeight={'600'}
-        //                                       textColor={'#ffffff'}
-        //                                       border={'none'}
-        //                                       borderRadius={'18px'}
-        //                                       backgroundColor={
-        //                                           data.progress === '문의 접수'
-        //                                               ? '#ff3b30'
-        //                                               : '#007aff'
-        //                                       }
-        //                                   />
-        //                               </Link>
-        //                           </div>
-        //                       </div>
-        //                   ))
-        //                 : ''}
-        //         </div>
-        //         {inquiryData.length <= 0 && (
-        //             <div className={Data_Doesnt_Exist}>데이터가 없습니다.</div>
-        //         )}
-        //     </div>
-        // </div>
     );
 }

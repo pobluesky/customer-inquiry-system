@@ -22,7 +22,7 @@ const FilterButton = ({
     />
 );
 
-const AnswerButton = ({ btnName, onClick, backgroundColor, textColor }) => (
+const QuestionAnswerButton = ({ btnName, onClick, backgroundColor, textColor }) => (
     <Button
         btnName={btnName}
         onClick={onClick}
@@ -51,6 +51,6 @@ const ColReqResButton = ({ btnName, onClick, margin }) => (
 
 export {
     FilterButton,
-    AnswerButton,
+    QuestionAnswerButton,
     ColReqResButton,
 };
