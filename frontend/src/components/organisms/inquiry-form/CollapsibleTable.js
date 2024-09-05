@@ -34,7 +34,7 @@ export default function CollapsibleTable({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '60px' }}>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', paddingLeft: '40px' }}>
                                 <Button
                                     onClick={handleButtonClick}
                                     variant="contained"
@@ -42,7 +42,7 @@ export default function CollapsibleTable({
                                     sx={{
                                         backgroundColor: '#ffffff',
                                         color: '#03507d',
-                                        width: '85px',
+                                        width: '95px',
                                         borderRadius: '10px',
                                         fontWeight: '700',
                                         '&:hover': {
@@ -54,18 +54,19 @@ export default function CollapsibleTable({
                                     담당자 배정
                                 </Button>
                             </TableCell>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>문의번호</TableCell>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>판매계약자</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>제품</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>고객사</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>판매담당자</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>품질담당자</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>진행현황</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>국가</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>판매상사</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>법인코드</TableCell>
-                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>고객사</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>국가</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>판매상사</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>법인코드</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>판매담당자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>품질담당자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>진행현황</TableCell>
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>Inquiry 진행률</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

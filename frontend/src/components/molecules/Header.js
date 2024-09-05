@@ -241,7 +241,6 @@ function MyHeader() {
                                     </div>
                                     <div>{currentUserName}</div>
                                     <div>
-                                        {/* [To Do] 알림 개수 연동 필요 */}
                                         <button
                                             ref={notificationButtonRef}
                                             onClick={toggleNotifyModal}
@@ -275,7 +274,10 @@ function MyHeader() {
                         position: 'relative',
                     }}
                 >
-                    <NotificationModal onClose={toggleNotifyModal} />
+                    <NotificationModal
+                        onClose={toggleNotifyModal}
+                        onUpdateNotificationsCount={fetchNotificationsCount}
+                    />
                 </div>
             )}
         </>

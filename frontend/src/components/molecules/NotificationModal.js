@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { Notify_Modal_Container } from '../../assets/css/Header.css';
 
-const NotificationModal = () => {
+const NotificationModal = ({ onUpdateNotificationsCount }) => {
     const { role, userId } = useAuth();
 
     const [activeTab, setActiveTab] = useState('new');
@@ -78,6 +78,9 @@ const NotificationModal = () => {
             fetchNotifications();
             if (activeTab === 'read') {
                 fetchReadNotifications();
+            }
+            if (onUpdateNotificationsCount) {
+                onUpdateNotificationsCount();
             }
         } catch (error) {
             console.log(error);
