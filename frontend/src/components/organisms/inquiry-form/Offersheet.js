@@ -15,8 +15,6 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
         return;
     }
 
-    console.log("inquiryData: ", inquiryData)
-
     const [lineItems, setLineItems] = useState([]);
 
     const [isChecked, setCheck] = useState(true);

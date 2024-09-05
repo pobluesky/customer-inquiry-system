@@ -26,7 +26,6 @@ function OffertableItem({ lineItems }) {
         '선재',
     ];
 
-    console.log("lineItems: ", lineItems);
     return (
         <div className={Offer_Table}>
             <div>
