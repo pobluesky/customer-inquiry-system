@@ -67,7 +67,7 @@ function QuestionFilterInput({
                 <div>
                     <Button
                         btnName={'전체 문의'}
-                        width={'96px'}
+                        width={'108px'}
                         height={'34px'}
                         border={'none'}
                         fontWeight={'600'}
@@ -82,7 +82,7 @@ function QuestionFilterInput({
                     />
                     <Button
                         btnName={'답변 완료'}
-                        width={'96px'}
+                        width={'108px'}
                         height={'34px'}
                         border={'none'}
                         fontWeight={'600'}
@@ -99,7 +99,7 @@ function QuestionFilterInput({
                     />
                     <Button
                         btnName={'답변 대기'}
-                        width={'96px'}
+                        width={'108px'}
                         height={'34px'}
                         border={'none'}
                         fontWeight={'600'}
@@ -192,7 +192,7 @@ function QuestionFilterInput({
                         setTypeFilter(e.target.value);
                     }}
                 >
-                    <option value="" selected>
+                    <option value="" defaultValue>
                         문의 유형
                     </option>
                     <option value="INQ">Inquiry</option>

@@ -6,10 +6,8 @@ function QuestionOverview({ questionCount, answerCount, colCount }) {
     const thisRole = getCookie('userRole');
     const gridTemplateColumns =
         thisRole === 'customer'
-            ? // ? '360px 120px 360px 120px 360px' // isCustomer
-              // : '228px 96px 228px 96px 228px 96px 228px'; // isManager
-              '400px 400px 400px' // isCustomer
-            : '300px 300px 300px 300px'; // isManager
+            ? '440px 440px 440px' // isCustomer
+            : '330px 330px 330px 330px'; // isManager
 
     return (
         <div className={Question_Overview}>
@@ -23,7 +21,8 @@ function QuestionOverview({ questionCount, answerCount, colCount }) {
                     <div>
                         {questionCount - answerCount < 0
                             ? ''
-                            : questionCount - answerCount}건
+                            : questionCount - answerCount}
+                        건
                     </div>
                 </div>
                 <div>

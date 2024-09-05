@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.answer.entity;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.global.BaseEntity;
 
@@ -32,8 +33,12 @@ public class Answer extends BaseEntity {
     private Inquiry inquiry; // 문의 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer; // 고객사 번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
+    private Manager manager; // 답변을 입력한 담당자 번호
 
     @Column(columnDefinition = "TEXT")
     private String title;
@@ -52,6 +57,7 @@ public class Answer extends BaseEntity {
         Question question,
         Inquiry inquiry,
         Customer customer,
+        Manager manager,
         String title,
         String contents,
         String fileName,
@@ -60,6 +66,7 @@ public class Answer extends BaseEntity {
         this.question = question;
         this.inquiry = inquiry;
         this.customer = customer;
+        this.manager = manager;
         this.title = title;
         this.contents = contents;
         this.fileName = fileName;

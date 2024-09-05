@@ -9,6 +9,7 @@ import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
@@ -53,10 +54,10 @@ public class AnswerService {
         managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-        List<Answer> answer = answerRepository.findAll();
+        List<Answer> answers = answerRepository.findAll();
 
-        return answer.stream()
-            .map(AnswerResponseDTO::from)
+        return answers.stream()
+            .map(answer -> AnswerResponseDTO.from(answer))
             .collect(Collectors.toList());
     }
 
@@ -78,7 +79,7 @@ public class AnswerService {
         }
 
         return answers.stream()
-            .map(AnswerResponseDTO::from)
+            .map(answer -> AnswerResponseDTO.from(answer))
             .collect(Collectors.toList());
     }
 
@@ -128,7 +129,7 @@ public class AnswerService {
     ) {
         Long userId = signService.parseToken(token);
 
-        managerRepository.findById(userId)
+        Manager manager = managerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 존재하지 않는 담당자일 경우
 
         Question question = questionRepository.findById(questionId)
@@ -152,7 +153,7 @@ public class AnswerService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Answer answer = dto.toAnswerEntity(question, inquiry, customer, fileName, filePath);
+        Answer answer = dto.toAnswerEntity(question, inquiry, customer, manager, fileName, filePath);
         Answer savedAnswer = answerRepository.save(answer);
 
         question.setStatus(QuestionStatus.COMPLETED);

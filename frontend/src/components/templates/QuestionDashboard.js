@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import QuestionOverview from '../organisms/QuestionOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
-import QuestionModal from '../molecules/QuestionModal';
 import { Question_Dashboard } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
@@ -139,18 +138,6 @@ export default function QuestionDashboard() {
                 setOpenModal={setOpenModal}
                 openModal={openModal}
             />
-
-            {openModal && (
-                <QuestionModal
-                    questionDetail={questionDetail}
-                    setAnswerDetail={setAnswerDetail}
-                    answerDetail={answerDetail}
-                    questionId={questionId}
-                    setStatus={setStatus}
-                    status={status}
-                    setOpenModal={setOpenModal}
-                />
-            )}
         </>
     );
 }

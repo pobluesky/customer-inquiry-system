@@ -11,20 +11,21 @@ import java.util.Optional;
 public record AnswerResponseDTO(
     Long questionId,
     Optional<Long> inquiryId,
-    Long userId,
+    Long customerId,
+    Long managerId,
     String title,
     String contents,
     String fileName,
     String filePath,
     LocalDateTime createdDate
-
 ) {
     public static AnswerResponseDTO from(Answer answer) {
         return AnswerResponseDTO.builder()
             .inquiryId(Optional.ofNullable(answer.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
             .questionId(answer.getQuestion().getQuestionId())
-            .userId(answer.getCustomer().getUserId())
+            .customerId(answer.getCustomer().getUserId())
+            .managerId(answer.getManager().getUserId())
             .title(answer.getTitle())
             .contents(answer.getContents())
             .createdDate(answer.getCreatedDate())
