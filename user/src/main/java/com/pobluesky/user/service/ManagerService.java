@@ -5,7 +5,9 @@ import com.pobluesky.config.global.error.ErrorCode;
 
 import com.pobluesky.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.user.dto.request.ManagerUpdateRequestDTO;
+import com.pobluesky.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.user.dto.response.ManagerSummaryResponseDTO;
 import com.pobluesky.user.entity.Manager;
 
 import com.pobluesky.user.repository.ManagerRepository;
@@ -66,6 +68,15 @@ public class ManagerService {
         return  ManagerResponseDTO.from(manager);
     }
 
+    @Transactional(readOnly = true)
+    public ManagerSummaryResponseDTO getSummaryManagerById(Long targetId) {
+
+        Manager manager = managerRepository.findById(targetId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return ManagerSummaryResponseDTO.from(manager);
+    }
+
     @Transactional
     public ManagerResponseDTO updateManagerById(
         String token,
@@ -104,5 +115,12 @@ public class ManagerService {
 
     public boolean existsById(Long userId) {
         return managerRepository.existsById(userId);
+    }
+
+    public ManagerResponseDTO getManagerByIdWithoutToken(Long userId) {
+
+        return managerRepository.findById(userId)
+            .map(ManagerResponseDTO::from)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 }

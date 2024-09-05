@@ -56,7 +56,7 @@ module.exports = function () {
             proxy: [
                 {
                     context: ['/api'],
-                    target: 'http://localhost:8080',
+                    target: 'http://localhost:8000',
                     changeOrigin: true,
                 },
             ],

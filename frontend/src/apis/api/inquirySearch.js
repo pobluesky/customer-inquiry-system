@@ -9,7 +9,7 @@ export const getCustomerInquiriesByParameter = async (userId, queryParams) => {
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}?${query}`
+            `/inquiries/customers/inquiries/${userId}?${query}`
         );
         console.log("getCustomerInquiriesByParameter: ", response.data.data);
         return processInquiries(response.data.data);
@@ -26,7 +26,7 @@ export const getSalesManagerInquiriesByParameter = async (queryParams) => {
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
-            `/managers/sales/inquiries?${query}`
+            `/inquiries/managers/sales/inquiries?${query}`
         );
         console.log("getManagerInquiriesByParameter: ", response.data.data);
         return processInquiries(response.data.data);
@@ -43,7 +43,7 @@ export const getQualityManagerInquiriesByParameter = async (queryParams) => {
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
-            `/managers/quality/inquiries?${query}`
+            `/inquiries/managers/quality/inquiries?${query}`
         );
         console.log("getManagerInquiriesByParameter: ", response.data.data);
         return processInquiries(response.data.data);

@@ -6,8 +6,10 @@ import com.pobluesky.config.global.util.model.JsonResult;
 
 import com.pobluesky.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.user.dto.request.ManagerUpdateRequestDTO;
+import com.pobluesky.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.user.dto.response.ManagerResponseDTO;
 
+import com.pobluesky.user.dto.response.ManagerSummaryResponseDTO;
 import com.pobluesky.user.service.ManagerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,6 +47,28 @@ public class ManagerController {
         return ResponseEntity.ok(exists);
     }
 
+    // msa 용도 매니저 summary 조회
+    @GetMapping("/summary/{userId}")
+    public ResponseEntity<JsonResult> getManagerSummaryById(
+        @PathVariable("userId") Long userId
+    ){
+        ManagerSummaryResponseDTO response = managerService.getSummaryManagerById(userId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/without-token/{userId}")
+    @Operation(summary = "토큰 없이 고객사 조회")
+    public ResponseEntity<JsonResult> getManagerrByIdWithoutToken(
+        @PathVariable("userId") Long userId
+    ) {
+        ManagerResponseDTO response = managerService.getManagerByIdWithoutToken(userId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
     @GetMapping
     @Operation(summary = "담당자 조회")
     public ResponseEntity<JsonResult> getManagers() {
@@ -60,7 +84,7 @@ public class ManagerController {
         @RequestHeader("Authorization") String token,
         @PathVariable("userId") Long userId
     ) {
-        ManagerResponseDTO response = managerService.getManagerById(token, userId);
+        ManagerResponseDTO response = managerService.getManagerById(token,userId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

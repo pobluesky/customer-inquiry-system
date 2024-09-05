@@ -52,7 +52,7 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public CustomerResponseDTO getCustomerById(String token, Long targetId) {
+    public CustomerResponseDTO getCustomerById(String token,Long targetId) {
         Long userId = signService.parseToken(token);
 
         if (!userId.equals(targetId))
@@ -103,5 +103,11 @@ public class CustomerService {
 
     public boolean existsById(Long userId) {
         return customerRepository.existsById(userId);
+    }
+
+    public CustomerResponseDTO getCustomerByIdWithoutToken(Long userId) {
+        return customerRepository.findById(userId)
+            .map(CustomerResponseDTO::from)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 }

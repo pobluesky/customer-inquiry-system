@@ -1,5 +1,8 @@
 package com.pobluesky.offersheet.dto.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.offersheet.entity.OfferSheet;
@@ -23,9 +26,9 @@ public record OfferSheetResponseDTO(
     String message,
     List<ReceiptResponse> receipts
 ) {
-    public static OfferSheetResponseDTO from(OfferSheet offerSheet, UserClient userClient) {
-        Customer customer = userClient.getCustomerById(offerSheet.getInquiry().getCustomerId());
+    public static OfferSheetResponseDTO from(OfferSheet offerSheet,UserClient userClient) {
 
+        Customer customer = userClient.getCustomerByIdWithoutToken(offerSheet.getInquiry().getInquiryId()).getData();
         return OfferSheetResponseDTO.builder()
             .offerSheetId(offerSheet.getOfferSheetId())
             .inquiryId(offerSheet.getInquiry().getInquiryId())

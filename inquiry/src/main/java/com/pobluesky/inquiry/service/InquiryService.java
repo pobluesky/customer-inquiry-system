@@ -1,8 +1,11 @@
 package com.pobluesky.inquiry.service;
 
+import ch.qos.logback.classic.Logger;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pobluesky.config.global.error.CommonException;
 import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.config.global.security.UserRole;
+import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.FileClient;
 import com.pobluesky.feign.Manager;
@@ -13,6 +16,7 @@ import com.pobluesky.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.inquiry.dto.response.ManagerSummaryResponseDTO;
 import com.pobluesky.inquiry.entity.FileInfo;
 import com.pobluesky.inquiry.entity.Industry;
 import com.pobluesky.inquiry.entity.Inquiry;
@@ -41,9 +45,9 @@ public class InquiryService {
 
     private final InquiryRepository inquiryRepository;
 
-    private final FileClient fileClient;
-
     private final UserClient userClient;
+
+    private final FileClient fileClient;
 
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
@@ -64,9 +68,9 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        //
-        if(customer==null){
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+
+        if(customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -107,11 +111,12 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        //
+        Manager manager=userClient.getManagerByIdWithoutToken(userId).getData();
+
         if(manager==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
+
 
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
@@ -148,8 +153,8 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        //
+        Manager manager=userClient.getManagerByIdWithoutToken(userId).getData();
+
         if(manager==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -181,11 +186,7 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        //
-        if(customer==null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -200,7 +201,6 @@ public class InquiryService {
         }
 
         Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
-
         inquiry.setCustomerId(customer.getUserId());
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
@@ -222,11 +222,7 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        //
-        if(customer==null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -274,11 +270,7 @@ public class InquiryService {
     public void deleteInquiryById(String token, Long inquiryId) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        //
-        if(customer==null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -299,11 +291,7 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        //
-        if(customer==null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
@@ -327,8 +315,8 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        //
+        Manager manager=userClient.getManagerByIdWithoutToken(userId).getData();
+
         if(manager==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -353,8 +341,8 @@ public class InquiryService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        //
+        Manager manager=userClient.getManagerByIdWithoutToken(userId).getData();
+
         if(manager==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -411,8 +399,8 @@ public class InquiryService {
     public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        //
+        Manager manager=userClient.getManagerByIdWithoutToken(userId).getData();
+
         if(manager==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -432,11 +420,11 @@ public class InquiryService {
             } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         }
 
-        return InquiryAllocateResponseDTO.from(inquiry, userClient);
+        return InquiryAllocateResponseDTO.from(inquiry,userClient);
     }
 
-    @Transactional(readOnly = true)
     public boolean existsById(Long inquiryId) {
+
         return inquiryRepository.existsById(inquiryId);
     }
 }

@@ -1,22 +1,19 @@
 package com.pobluesky.feign;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pobluesky.config.global.entity.Department;
 import com.pobluesky.config.global.security.UserRole;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class Manager {
+
     private Long userId;
-    protected String name;
-    protected String email;
-    protected String password;
-    protected String phone;
-    protected Boolean isActivated;
-    protected UserRole role;
-    private String empNo;
-    private Department department;
-    private String securityRole;
+    private String name;
+    private UserRole role;
 
 }

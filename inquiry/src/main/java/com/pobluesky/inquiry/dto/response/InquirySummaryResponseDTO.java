@@ -1,5 +1,8 @@
 package com.pobluesky.inquiry.dto.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
@@ -9,8 +12,11 @@ import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.inquiry.entity.InquiryType;
 import com.pobluesky.inquiry.entity.ProductType;
 import com.pobluesky.inquiry.entity.Progress;
+import jakarta.jws.soap.SOAPBinding.Use;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Builder
 public record InquirySummaryResponseDTO(
     Long inquiryId,
@@ -29,32 +35,37 @@ public record InquirySummaryResponseDTO(
 
     public static InquirySummaryResponseDTO from(Inquiry inquiry, UserClient userClient) {
 
-        String customerName = null;
+        Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getInquiryId()).getData();
+
         String salesManagerName = null;
         String qualityManagerName = null;
 
-        // Customer 조회
-        if (inquiry.getCustomerId() != null) {
-            Customer customer = userClient.getCustomerById(inquiry.getCustomerId());
-            if (customer != null) {
-                customerName = customer.getCustomerName();
+        try {
+            // Sales Manager의 정보 가져오기
+            if (inquiry.getSalesManagerId() != null) {
+                ManagerSummaryResponseDTO salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
+                // salesManager가 null이 아니면 이름 가져오기
+                if (salesManager != null) {
+                    salesManagerName = salesManager.name();
+                }
             }
+        } catch (Exception e) {
+            // 예외 발생 시 로그 남기기
+            log.error("Failed to fetch sales manager summary for userId: {}", inquiry.getSalesManagerId(), e);
         }
 
-        // Sales Manager 조회
-        if (inquiry.getSalesManagerId() != null) {
-            Manager salesManager = userClient.getManagerById(inquiry.getSalesManagerId());
-            if (salesManager != null) {
-                salesManagerName = salesManager.getName();
+        try {
+            // Quality Manager의 정보 가져오기
+            if (inquiry.getQualityManagerId() != null) {
+                ManagerSummaryResponseDTO qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
+                // qualityManager가 null이 아니면 이름 가져오기
+                if (qualityManager != null) {
+                    qualityManagerName = qualityManager.name();
+                }
             }
-        }
-
-        // Quality Manager 조회
-        if (inquiry.getQualityManagerId() != null) {
-            Manager qualityManager = userClient.getManagerById(inquiry.getQualityManagerId());
-            if (qualityManager != null) {
-                qualityManagerName = qualityManager.getName();
-            }
+        } catch (Exception e) {
+            // 예외 발생 시 로그 남기기
+            log.error("Failed to fetch quality manager summary for userId: {}", inquiry.getQualityManagerId(), e);
         }
 
         return InquirySummaryResponseDTO.builder()
@@ -63,7 +74,7 @@ public record InquirySummaryResponseDTO(
             .progress(inquiry.getProgress())
             .productType(inquiry.getProductType())
             .inquiryType(inquiry.getInquiryType())
-            .customerName(customerName)
+            .customerName(customer.getCustomerName())
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .corporationCode(inquiry.getCorporationCode())

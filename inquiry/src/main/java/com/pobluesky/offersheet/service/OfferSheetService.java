@@ -1,8 +1,10 @@
 package com.pobluesky.offersheet.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pobluesky.config.global.error.CommonException;
 import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.config.global.security.UserRole;
+import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
@@ -26,11 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OfferSheetService {
 
-    private final UserClient userClient;
-
     private final OfferSheetRepository offerSheetRepository;
 
     private final InquiryRepository inquiryRepository;
+
+    private final UserClient userClient;
+
 
     @Transactional(readOnly = true)
     public OfferSheetResponseDTO getOfferSheetByInquiryId(String token, Long inquiryId) {
@@ -39,15 +42,20 @@ public class OfferSheetService {
         OfferSheet offerSheet = offerSheetRepository.findByInquiryInquiryId(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.OFFERSHEET_NOT_FOUND));
 
-        if (userClient.getManagerById(userId) == null) {
-            Customer customer = userClient.getCustomerById(userId);
 
-            if(customer == null) {
+        if (!userClient.managerExists(userId)) {
+            // 고객 정보 조회 (Feign Client 사용)
+            Customer customer = userClient.getCustomerByIdWithoutToken(userId)
+                .getData(); // Feign을 통해 받은 JsonResult에서 데이터 추출
+
+            if (customer == null) {
                 throw new CommonException(ErrorCode.USER_NOT_FOUND);
             }
 
-            if(!Objects.equals(customer.getUserId(), offerSheet.getInquiry().getCustomerId()))
+            // 고객 ID와 offerSheet에 있는 고객 ID를 비교하여 일치 여부 확인
+            if (!Objects.equals(customer.getUserId(), offerSheet.getInquiry().getCustomerId())) {
                 throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+            }
         }
 
         return OfferSheetResponseDTO.from(offerSheet,userClient);
@@ -61,9 +69,9 @@ public class OfferSheetService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
 
-        if(manager == null) {
+        if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -100,9 +108,9 @@ public class OfferSheetService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
 
-        if(manager == null) {
+        if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 

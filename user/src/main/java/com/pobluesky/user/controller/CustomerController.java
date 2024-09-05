@@ -40,6 +40,7 @@ public class CustomerController {
 
     // msa 용도 고객 존재 여부 확인 엔드포인트
     @GetMapping("/exists")
+    @Operation(summary = "msa 용도 고객 존재 여부 확인 엔드포인트")
     public ResponseEntity<Boolean> customerExists(@RequestParam("userId") Long userId) {
         boolean exists = customerService.existsById(userId);
         return ResponseEntity.ok(exists);
@@ -49,6 +50,17 @@ public class CustomerController {
     @Operation(summary = "고객사 전체 조회")
     public ResponseEntity<JsonResult> getCustomers() {
         List<CustomerResponseDTO> response = customerService.getCustomers();
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/without-token/{userId}")
+    @Operation(summary = "토큰 없이 고객사 조회")
+    public ResponseEntity<JsonResult> getCustomerByIdWithoutToken(
+        @PathVariable("userId") Long userId
+    ) {
+        CustomerResponseDTO response = customerService.getCustomerByIdWithoutToken(userId);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));

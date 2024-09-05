@@ -8,7 +8,7 @@ import {
 export const getInquiry = async (userId, page = 0) => {
     try {
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}/all?page=${page}`,
+            `/inquiries/customers/inquiries/${userId}/all?page=${page}`,
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
@@ -25,7 +25,7 @@ export const getInquiry = async (userId, page = 0) => {
 // 고객사 inquiry list 가져오기 (all)
 export const getAllInquiries = async (userId) => {
     try {
-        const response = await axiosInstance.get(`/customers/inquiries/${userId}`);
+        const response = await axiosInstance.get(`/inquiries/customers/inquiries/${userId}`);
         console.log(response.data);
 
         const inquiryInfo = response?.data?.data;
@@ -47,7 +47,7 @@ export const getAllInquiries = async (userId) => {
 export const getInquiryDetail = async (userId, inquiryId) => {
     try {
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}/${inquiryId}`,
+            `/inquiries/customers/inquiries/${userId}/${inquiryId}`,
         );
         console.log(response.data);
         return response.data;
@@ -62,7 +62,7 @@ export const postInquiry = async (userId, inquiryData) => {
         const formData = createFormInquiryData(inquiryData);
 
         const response = await axiosInstance.post(
-            `/customers/inquiries/${userId}`,
+            `/inquiries/customers/inquiries/${userId}`,
             formData,
             {
                 headers: {
@@ -84,7 +84,7 @@ export const putInquiry = async (inquiryId, inquiryData) => {
         const formData = createFormInquiryData(inquiryData);
 
         const response = await axiosInstance.put(
-            `/customers/inquiries/${inquiryId}`,
+            `/inquiries/customers/inquiries/${inquiryId}`,
             formData,
             {
                 headers: {
@@ -104,7 +104,7 @@ export const putInquiry = async (inquiryId, inquiryData) => {
 export const getInquiryByManagers = async (page = 0) => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries/all?page=${page}`,
+            `/inquiries/managers/inquiries/all?page=${page}`,
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
@@ -122,7 +122,7 @@ export const getInquiryByManagers = async (page = 0) => {
 export const getAllInquiriesByManagers = async () => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries`,
+            `/inquiries/managers/inquiries`,
         );
         console.log(response.data);
 
@@ -145,7 +145,7 @@ export const getAllInquiriesByManagers = async () => {
 export const getInquiryDetailByManagers = async (inquiryId) => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries/${inquiryId}`,
+            `/inquiries/managers/inquiries/${inquiryId}`,
         );
         console.log(response.data);
         return response.data;
@@ -158,7 +158,7 @@ export const getInquiryDetailByManagers = async (inquiryId) => {
 export const putManagerAllocate = async (inquiryId) => {
     try {
         const response = await axiosInstance.put(
-            `/managers/inquiries/${inquiryId}/allocate`,
+            `/inquiries/managers/inquiries/${inquiryId}/allocate`,
         );
         console.log('putManagerAllocateResponse: ', response);
         return response.data;
@@ -172,7 +172,7 @@ export const putManagerAllocate = async (inquiryId) => {
 export const putProgress = async (inquiryId, progress) => {
     try {
         const response = await axiosInstance.put(
-            `/managers/inquiries/${inquiryId}/progress/${progress}`,
+            `/inquiries/managers/inquiries/${inquiryId}/progress/${progress}`,
         );
         console.log('putProgressUpdateResponse: ', response);
         return response.data;

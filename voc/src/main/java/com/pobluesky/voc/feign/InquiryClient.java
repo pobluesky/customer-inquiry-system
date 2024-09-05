@@ -10,5 +10,6 @@ public interface InquiryClient {
     @GetMapping("/api/inquiries/exists/{inquiryId}")
     Boolean checkInquiryExists(@PathVariable("inquiryId") Long inquiryId);
 
+    @GetMapping("/api/inquiries/{id}")
     Inquiry getInquiryById(Long inquiryId);
 }
