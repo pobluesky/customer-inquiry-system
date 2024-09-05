@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
-import { AnswerButton } from '../atoms/VocButton';
+import { QuestionAnswerButton } from '../atoms/VocButton';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     WrongAnswerTitleAlert,
@@ -24,13 +23,13 @@ export default function AnswerInput({
     setAnswerDetail,
 }) {
     const sanitizer = dompurify.sanitize;
-    const navigate = useNavigate();
 
     const role = getCookie('userRole');
 
     const [isAnswering, setAnswering] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
 
     const [title, setTitle] = useState('');
     const [editorValue, setEditorValue] = useState('');
@@ -49,19 +48,22 @@ export default function AnswerInput({
                 answerData,
                 questionId,
             );
-            setAnswerDetail(response.data); // 답변 등록으로 갱신된 답변 데이터 저장
-            AnswerCompleteAlert(); // 답변 완료 알림
-            setAnswering(false); // 답변 입력창 제거
+            setAnswerDetail(response.data);
+            canShowSuccessAlert(true);
             setTimeout(() => {
                 window.location.reload();
-            }, '1000');
+            }, '2000');
         } catch (error) {
             console.log('답변 등록 실패: ', error);
         }
     };
 
     const titleChange = (e) => {
-        setTitle(e.target.value);
+        const inputTitle = e.target.value;
+
+        if (inputTitle.length <= 30) {
+            setTitle(inputTitle);
+        }
     };
 
     const attachFile = (event) => {
@@ -105,13 +107,16 @@ export default function AnswerInput({
                             <Input
                                 value={title}
                                 onChange={titleChange}
-                                width={'988px'}
+                                width={'924px'}
                                 height={'36px'}
                                 margin={'0 auto 0 auto'}
                                 padding={'0px 12px 0px 12px'}
-                                border={'1px solid #c1c1c1'}
+                                border={'1px solid #8b8b8b'}
                                 placeholder={'제목을 입력하세요. (30자)'}
                             />
+                            {/* 답변 제목 길이 */}
+                            <div>{title.length}</div>
+                            <div>/30</div>
                             {/* 파일 업로드 버튼 */}
                             <div>
                                 <Input
@@ -121,14 +126,14 @@ export default function AnswerInput({
                                     onChange={attachFile}
                                 />
                                 {file ? (
-                                    <AnswerButton
+                                    <QuestionAnswerButton
                                         btnName={'파일 삭제'}
                                         backgroundColor={'#ffffff'}
                                         textColor={'#1748ac'}
                                         onClick={() => setFile(null)}
                                     />
                                 ) : (
-                                    <AnswerButton
+                                    <QuestionAnswerButton
                                         btnName={'파일 업로드'}
                                         backgroundColor={'#ffffff'}
                                         textColor={'#1748ac'}
@@ -152,6 +157,7 @@ export default function AnswerInput({
                             inputMaxHeight={'240px'}
                             padding={'0px'}
                             value={editorValue}
+                            border={'1px solid #8b8b8b'}
                             onChange={setEditorValue}
                         />
                     </div>
@@ -186,7 +192,7 @@ export default function AnswerInput({
                             <>
                                 {/* [답변하기] */}
                                 {!isAnswering && (
-                                    <AnswerButton
+                                    <QuestionAnswerButton
                                         btnName={'답변하기'}
                                         backgroundColor={'#1748ac'}
                                         textColor={'#ffffff'}
@@ -197,7 +203,7 @@ export default function AnswerInput({
                                 )}
                                 {/* 협업 요청] */}
                                 {!isAnswering && role === 'sales' && (
-                                    <AnswerButton
+                                    <QuestionAnswerButton
                                         btnName={'협업 요청'}
                                         backgroundColor={'#1748ac'}
                                         textColor={'#ffffff'}
@@ -212,7 +218,7 @@ export default function AnswerInput({
                                 {/* [답변 등록] */}
                                 {isAnswering && (
                                     <>
-                                        <AnswerButton
+                                        <QuestionAnswerButton
                                             btnName={'작성 취소'}
                                             backgroundColor={'#1748ac'}
                                             textColor={'#ffffff'}
@@ -220,7 +226,7 @@ export default function AnswerInput({
                                                 setAnswering(false);
                                             }}
                                         />
-                                        <AnswerButton
+                                        <QuestionAnswerButton
                                             btnName={'답변 등록'}
                                             backgroundColor={'#1748ac'}
                                             textColor={'#ffffff'}
@@ -239,12 +245,21 @@ export default function AnswerInput({
                 onClose={() => {
                     canShowTitleAlert(false);
                 }}
+                inert
             />
             <WrongAnswerContentAlert
                 showAlert={showContentAlert}
                 onClose={() => {
                     canShowContentAlert(false);
                 }}
+                inert
+            />
+            <AnswerCompleteAlert
+                showAlert={showSuccessAlert}
+                onClose={() => {
+                    canShowSuccessAlert(false);
+                }}
+                inert
             />
         </div>
     );

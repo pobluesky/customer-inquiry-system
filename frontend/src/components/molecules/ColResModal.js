@@ -338,6 +338,7 @@ export default function ColResModal({
                     canShowDoneAlert(false);
                 }}
                 message={message}
+                inert
             />
         </div>
     );

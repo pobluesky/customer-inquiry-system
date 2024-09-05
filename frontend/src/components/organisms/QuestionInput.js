@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import TextEditor from '../atoms/TextEditor';
+import { QuestionAnswerButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
-import { getCookie } from '../../apis/utils/cookies';
-import { useRecoilValue } from 'recoil';
-import { getUserEmail } from './../../index';
 import {
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
@@ -17,7 +15,6 @@ import {
     validateQuestionTitle,
     validateQuestionContents,
 } from '../../utils/validation';
-import { getCustomerInfo, getManagerInfo } from '../../apis/api/auth';
 import {
     postQuestionByUserIdAboutInquiry,
     postQuestionByUserId,
@@ -29,34 +26,17 @@ function QuestionInput({ selectedType, inquiryId }) {
     const navigate = useNavigate();
 
     const [editorValue, setEditorValue] = useState('');
-    const [userName, setUserName] = useState('');
-    const userEmail = useRecoilValue(getUserEmail);
-
     const [title, setTitle] = useState('');
     const [file, setFile] = useState('');
+
+    const fileInputRef = useRef(null);
+
     const status = 'READY';
 
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
-    const [showFailedAlert, canShowFailedAlert] = useState(false);
-
-    const titleRef = useRef(null);
-    const fileInputRef = useRef(null);
-
-    const findUserName = async () => {
-        try {
-            const customer = await getCustomerInfo();
-            setUserName(customer);
-
-            if (customer === 'Name not found') {
-                const manager = await getManagerInfo();
-                setUserName(manager);
-            }
-            return userName;
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const [showInquiryIdAlert, canShowInquiryIdAlert] = useState(false);
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
 
     // 질문 등록
     const fetchPostQuestionByUserId = async () => {
@@ -68,8 +48,12 @@ function QuestionInput({ selectedType, inquiryId }) {
                 status,
             };
 
-            // 문의 관련 질문인 경우
             if (selectedType === 'INQ') {
+                if (!inquiryId) {
+                    canShowInquiryIdAlert(true);
+                    return;
+                }
+                // 문의 관련 질문인 경우
                 const result = await postQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
@@ -77,36 +61,35 @@ function QuestionInput({ selectedType, inquiryId }) {
                     inquiryId,
                 );
                 if (result) {
-                    QuestionCompleteAlert();
+                    canShowSuccessAlert(true);
                     setTimeout(() => {
-                        navigate('/voc-list');
+                        navigate('/voc-list/question');
                     }, '2000');
-                    resetForm();
-                } else {
-                    console.log('INQ 질문 등록 실패: ', error);
-                    canShowFailedAlert(true);
                 }
-
-                // 문의와 무관한 질문인 경우
             } else {
+                // 문의와 무관한 질문인 경우
                 const result = await postQuestionByUserId(
                     file,
                     questionData,
                     userId,
                 );
                 if (result) {
-                    QuestionCompleteAlert();
+                    canShowSuccessAlert(true);
                     setTimeout(() => {
-                        navigate('/voc-list');
+                        navigate('/voc-list/question');
                     }, '2000');
-                    resetForm();
-                } else {
-                    console.log('SITE/ETC 질문 등록 실패: ', error);
-                    canShowFailedAlert(true);
                 }
             }
         } catch (error) {
-            console.error('Error in posting question:', error);
+            console.error('질문 등록 실패: ', error);
+        }
+    };
+
+    const titleChange = (e) => {
+        const inputTitle = e.target.value;
+
+        if (inputTitle.length <= 30) {
+            setTitle(inputTitle);
         }
     };
 
@@ -115,15 +98,6 @@ function QuestionInput({ selectedType, inquiryId }) {
         if (selectedFile) {
             setFile(selectedFile);
         }
-    };
-
-    const resetForm = () => {
-        setTitle('');
-        setEditorValue('');
-        if (titleRef.current) {
-            titleRef.current.value = '';
-        }
-        setFile(null);
     };
 
     const completedQuestion = () => {
@@ -138,100 +112,75 @@ function QuestionInput({ selectedType, inquiryId }) {
         }
     };
 
-    useEffect(() => {
-        findUserName();
-    }, []);
-
     return (
         <>
             <div className={Question_Input}>
+                {/* 제목 + 첨부파일 그룹 */}
                 <div>
-                    <div>
-                        <div>성명</div>
-                        <div>{userName}</div>
-                        <div>이메일</div>
-                        <div>{userEmail}</div>
-                    </div>
+                    {/* 질문 제목 */}
+                    <Input
+                        value={title}
+                        onChange={titleChange}
+                        width={'924px'}
+                        height={'36px'}
+                        margin={'0 auto 0 auto'}
+                        padding={'0px 12px 0px 12px'}
+                        border={'1px solid #8b8b8b'}
+                        placeholder={'제목을 입력하세요. (30자)'}
+                    />
+                    {/* 질문 제목 길이 */}
+                    <div>{title.length}</div>
+                    <div>/30</div>
+                    {/* 파일 업로드 버튼 */}
                     <div>
                         <Input
-                            type="text"
-                            width={'1118px'}
-                            height={'32px'}
-                            padding={'0 12px 0 12px'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'8px'}
-                            ref={titleRef}
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            type="file"
+                            display={'none'}
+                            ref={fileInputRef}
+                            onChange={attachFile}
                         />
-                    </div>
-                    <div>
-                        <TextEditor
-                            placeholder={'답변을 입력하세요.'}
-                            width={'1144px'}
-                            inputHeight={'144px'}
-                            inputMaxHeight={'144px'}
-                            value={editorValue}
-                            onChange={setEditorValue}
-                        />
-                    </div>
-                    <div>
-                        <div>첨부파일</div>
-                        <div>
-                            <Input
-                                type="file"
-                                display={'none'}
-                                ref={fileInputRef}
-                                onChange={attachFile}
-                            />
-                            <Button
-                                btnName={'파일 추가'}
-                                width={'72px'}
-                                height={'28px'}
-                                fontSize={'12px'}
-                                backgroundColor={'#ffffff'}
-                                // textColor={'#8b8b8b'}
-                                border={'solid 1px #c1c1c1'}
-                                borderRadius={'4px'}
-                                onClick={() => fileInputRef.current.click()}
-                            />
-                        </div>
-                        <div>
-                            <Button
+                        {file ? (
+                            <QuestionAnswerButton
                                 btnName={'파일 삭제'}
-                                width={'72px'}
-                                height={'28px'}
-                                fontSize={'12px'}
                                 backgroundColor={'#ffffff'}
-                                // textColor={'#8b8b8b'}
-                                border={'solid 1px #c1c1c1'}
-                                borderRadius={'4px'}
+                                textColor={'#1748ac'}
                                 onClick={() => setFile(null)}
                             />
-                        </div>
-                        <div>
-                            * 파일은 최대 1개까지 첨부 가능하며, 최대 용량은 총
-                            10MB의 용량 제한이 있습니다.
-                        </div>
+                        ) : (
+                            <QuestionAnswerButton
+                                btnName={'파일 업로드'}
+                                backgroundColor={'#ffffff'}
+                                textColor={'#1748ac'}
+                                onClick={() => fileInputRef.current.click()}
+                            />
+                        )}
                     </div>
                     <div>
-                        <div>{file ? file.name : '파일 첨부'}</div>
+                        {file
+                            ? `첨부파일: ${file.name}`
+                            : '파일을 첨부할 수 있습니다.'}
                     </div>
-                    <div>
-                        <Button
-                            btnName={'문의 등록'}
-                            width={'108px'}
-                            height={'48px'}
-                            fontSize={'18px'}
-                            backgroundColor={'#03507d'}
-                            textColor={'#ffffff'}
-                            border={'none'}
-                            borderRadius={'12px'}
-                            onClick={() => {
-                                completedQuestion();
-                            }}
-                        />
-                    </div>
+                </div>
+                {/* 질문 입력 */}
+                <TextEditor
+                    placeholder={'질문을 입력하세요.'}
+                    width={'1320px'}
+                    inputHeight={'240px'}
+                    inputMaxHeight={'240px'}
+                    padding={'0px'}
+                    value={editorValue}
+                    border={'1px solid #8b8b8b'}
+                    onChange={setEditorValue}
+                />
+                <div>
+                    <QuestionAnswerButton
+                        btnName={'질문 등록'}
+                        backgroundColor={'#1748ac'}
+                        textColor={'#ffffff'}
+                        onClick={() => {
+                            completedQuestion();
+                        }}
+                    />
                 </div>
             </div>
             <WrongQuestionTitleAlert
@@ -249,9 +198,16 @@ function QuestionInput({ selectedType, inquiryId }) {
                 inert
             />
             <InquiryIdisNullAlert
-                showAlert={showFailedAlert}
+                showAlert={showInquiryIdAlert}
                 onClose={() => {
-                    canShowFailedAlert(false);
+                    canShowInquiryIdAlert(false);
+                }}
+                inert
+            />
+            <QuestionCompleteAlert
+                showAlert={showSuccessAlert}
+                onClose={() => {
+                    canShowSuccessAlert(false);
                 }}
                 inert
             />

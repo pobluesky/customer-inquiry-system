@@ -516,6 +516,7 @@ function Join() {
                                 onClose={() => {
                                     canShowCompleteAlert(false);
                                 }}
+                                inert
                             />
                             <JoinFailedAlert
                                 showAlert={showFailedAlert}
@@ -523,6 +524,7 @@ function Join() {
                                     canShowFailedAlert(false);
                                 }}
                                 message={errorMsg}
+                                inert
                             />
                         </>
                     )}

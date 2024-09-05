@@ -65,7 +65,7 @@ export const validateCustomerName = (customerName) => {
 /******************************************************************/
 // 답변 제목 길이
 export const validateAnswerTitle = (answerTitle) => {
-    if (answerTitle.length > 21 || answerTitle.length < 1) {
+    if (answerTitle.length > 31 || answerTitle.length < 1) {
         return true;
     }
     return '';

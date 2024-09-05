@@ -177,6 +177,95 @@ const LoginFailedAlert = ({ showAlert, onClose, message }) => {
     );
 };
 
+// 질문 제목 길이 제한
+const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                제목은 1자 이상 30자 이하로 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 질문 내용 길이 제한
+const WrongQuestionContentAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                질문을 10자 이상 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// Inquiry ID 미선택
+const InquiryIdisNullAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                Inquiry 번호를 선택하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 질문 등록 성공
+const QuestionCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                질문이 등록되었습니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 답변 제목 길이 제한
 const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -199,6 +288,7 @@ const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
     );
 };
 
+// 답변 내용 길이 제한
 const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
@@ -221,18 +311,8 @@ const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
     );
 };
 
-const AnswerCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        // title: `<div style="font-size: 16px; font-weight : bolder;">답변이 등록되었습니다.</div>`,
-        title: '답변이 등록되었습니다.',
-        showConfirmButton: false,
-        timer: 1000,
-        allowOutsideClick: false,
-    });
-};
-
-const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
+// 답변 등록 성공
+const AnswerCompleteAlert = ({ showAlert, onClose }) => {
     return (
         <Snackbar
             autoHideDuration={2000}
@@ -243,58 +323,11 @@ const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
             open={showAlert}
             onClose={onClose}
         >
-            <Alert severity="error" sx={{ width: '336px' }}>
-                제목은 1자 이상 20자 이하로 입력하세요.
+            <Alert severity="success" sx={{ width: '336px' }}>
+                답변이 등록되었습니다.
             </Alert>
         </Snackbar>
     );
-};
-
-const WrongQuestionContentAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="error" sx={{ width: '336px' }}>
-                질문을 10자 이상 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-const InquiryIdisNullAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="error" sx={{ width: '336px' }}>
-                Inquiry 번호를 선택하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-const QuestionCompleteAlert = () => {
-    Swal.fire({
-        icon: 'success',
-        // title: `<div style="font-size: 16px; font-weight : bolder;">답변이 등록되었습니다.</div>`,
-        title: '질문이 등록되었습니다.',
-        showConfirmButton: false,
-        timer: 2000,
-        allowOutsideClick: false,
-    });
 };
 
 const ColDoneAlert = ({ showAlert, onClose, message }) => {
@@ -333,7 +366,7 @@ const InquiryUpdateAlert = () => {
         showConfirmButton: false,
         timer: 2000,
     });
-}
+};
 
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
@@ -387,9 +420,9 @@ export {
     AnswerCompleteAlert,
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
-    ColDoneAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
+    ColDoneAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,
     QualityReviewCompleteAlert,

@@ -19,7 +19,7 @@ export default function QuestionViewer({
 
     const questionType = () => {
         if (questionDetail.type === 'INQ') {
-            setType('Inquiry 주문 문의');
+            setType('Inquiry 문의');
         } else if (questionDetail.type === 'SITE') {
             setType('사이트 문의');
         } else if (questionDetail.type === 'ETC') {
