@@ -26,6 +26,7 @@ function OffertableItem({ lineItems }) {
         '선재',
     ];
 
+    console.log("lineItems: ", lineItems);
     return (
         <div className={Offer_Table}>
             <div>
@@ -40,7 +41,7 @@ function OffertableItem({ lineItems }) {
                     </tr>
                     </thead>
                     <tbody>
-                    {lineItems.map((row, rowIndex) => (  // lineItems 배열에 따라 여러 행 리턴
+                    {lineItems.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                             <td>
                                 <select

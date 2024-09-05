@@ -7,7 +7,7 @@ import {
     BasicInfoForm,
     FileFormItem,
     Offersheet,
-    InquiryHistoryFormItem, InquiryNewForm, InquiryHistoryForm, FileForm,
+    InquiryHistoryFormItem, InquiryNewForm, InquiryHistoryForm,
 } from '../../components/organisms/inquiry-form';
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail, putInquiry } from '../../apis/api/inquiry';
@@ -283,10 +283,11 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             )}
 
             {isOfferSheetItem ? (
-                <Offersheet formData={offerSheetData}
-                            inquiryData={inquiriesDataDetail}
-                            lineItemData={offerSheetData.receipts}
-                            isOfferSheetItem={isOfferSheetItem}
+                <Offersheet
+                    formData={offerSheetData}
+                    inquiryData={inquiriesDataDetail}
+                    lineItemData={offerSheetData.receipts}
+                    isOfferSheetItem={isOfferSheetItem}
                 />
             ) : (
                 ''
