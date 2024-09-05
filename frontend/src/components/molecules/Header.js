@@ -198,7 +198,7 @@ function MyHeader() {
                                 />
                             </div>
                             {didLogin &&
-                                (curPage === 'inq'
+                                (curPage === 'inq' || curPage === 'das'
                                     ? InquiryMenu()
                                     : curPage === 'voc'
                                     ? VoCMenu()
