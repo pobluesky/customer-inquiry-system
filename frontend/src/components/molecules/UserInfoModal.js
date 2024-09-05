@@ -21,7 +21,7 @@ function UserInfoModal() {
                     onClick={() => {
                         alert('내 정보 페이지 구현 중');
                     }}
-                    btnName={'내 정보 수정'}
+                    btnName={'설정'}
                     width={'fit-content'}
                     height={'40px'}
                     backgroundColor={'#ffffff'}
@@ -31,7 +31,11 @@ function UserInfoModal() {
                     fontSize={'16px'}
                 />
                 <Button
-                    onClick={() => handleLogout()}
+                    onClick={() => {
+                        window.confirm('로그아웃 하시겠습니까?')
+                            ? handleLogout()
+                            : '';
+                    }}
                     btnName={'로그아웃'}
                     width={'fit-content'}
                     height={'40px'}
