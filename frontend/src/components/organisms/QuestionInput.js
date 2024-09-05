@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../atoms/Input';
-import Button from '../atoms/Button';
 import TextEditor from '../atoms/TextEditor';
 import { QuestionAnswerButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';

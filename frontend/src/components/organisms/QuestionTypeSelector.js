@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../atoms/Button';
-import search from '../../assets/css/icons/voc/search.svg';
 import { Question_Type_Selector } from '../../assets/css/Voc.css';
 
 function QuestionTypeSelector({
