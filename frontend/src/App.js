@@ -66,7 +66,7 @@ function App() {
                             <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
                             <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
-                        <Route path="voc-main" element={<VocMain />} />
+                            <Route path="voc-main" element={<VocMain />} />
 
                             <Route path="voc-form/question" element={<VocQuestionForm />} />
                             <Route path="voc-form/answer" element={<VocAnswerForm />} />
