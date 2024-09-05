@@ -8,6 +8,7 @@ import OfferTable from '../../organisms/inquiry-form/Offertable';
 import { Offer_Sheet } from '../../../assets/css/Form.css';
 import OfferTableItem from '../../organisms/inquiry-form/OffertableItem';
 import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, handleFormDataChange, isOfferSheetItem }) {
     if(!formData || !inquiryData) {
@@ -337,7 +338,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
         // 엑셀 파일 생성 및 다운로드
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'OfferSheet.xlsx');
+        saveAs(blob, `${formData.name}님 OfferSheet.xlsx`);
     };
 
     return (
