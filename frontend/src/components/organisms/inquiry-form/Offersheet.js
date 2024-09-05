@@ -338,7 +338,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
         // 엑셀 파일 생성 및 다운로드
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, `${formData.name}님 OfferSheet.xlsx`);
+        saveAs(blob, `${inquiryData.name}님 OfferSheet.xlsx`);
     };
 
     return (
