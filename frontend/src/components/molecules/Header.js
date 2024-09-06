@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
-import profile from '../../assets/css/icons/profile-sample.png';
+import profile from '../../assets/css/icons/profile.svg';
 import UserInfoModal from './UserInfoModal';
 import NotificationModal from '../molecules/NotificationModal';
 import { getUserName, userName } from '../../index';

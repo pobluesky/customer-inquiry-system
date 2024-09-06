@@ -107,7 +107,7 @@
 }
 
 .User_Modal_Container > div Button:hover {
-    border: 1px solid #25262b !important;
+    border: 2px solid #25262b !important;
     color: #25262b !important;
     font-weight: 600;
 }

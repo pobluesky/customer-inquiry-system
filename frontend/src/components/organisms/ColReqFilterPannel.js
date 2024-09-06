@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../atoms/Button';
-import search from '../../assets/css/icons/voc/search.svg';
+import search from '../../assets/css/icons/voc-search.svg';
 import { Col_Find_Manager_Filter_Panel } from '../../assets/css/Voc.css';
 
 export default function ColReqFilterPannel({
