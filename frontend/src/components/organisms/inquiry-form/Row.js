@@ -101,6 +101,7 @@ function Row({ row, role }, ref) {
             if (isChecked && !isDisabled) {
                 const response = await putManagerAllocate(row.inquiryId);
                 setIsDisabled(true);
+                console.log("Manager Allocated Success: ", response);
 
                 const inquiryInfo = await getInquiryDetailByManagers(row.inquiryId);
                 if (role === 'sales') {
