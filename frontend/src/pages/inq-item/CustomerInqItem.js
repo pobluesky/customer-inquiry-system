@@ -228,6 +228,43 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         }
     }, [inquiriesDataDetail, userInfo]);
 
+    // 데이터 저장 시
+    useEffect(() => {
+        if (inquiriesDataDetail) {
+            localStorage.setItem('inquiryData', JSON.stringify(inquiriesDataDetail));
+        }
+        if (userInfo) {
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        }
+        if (reviewData) {
+            localStorage.setItem('reviewData', JSON.stringify(reviewData));
+        }
+        if (offerSheetData) {
+            localStorage.setItem('offerSheetData', JSON.stringify(offerSheetData));
+        }
+    }, [inquiriesDataDetail, userInfo, reviewData, offerSheetData]);
+
+    // 새로고침 시 데이터 불러오기
+    useEffect(() => {
+        const storedInquiryData = localStorage.getItem('inquiryData');
+        const storedUserInfo = localStorage.getItem('userInfo');
+        const storedReviewData = localStorage.getItem('reviewData');
+        const storedOfferSheetData = localStorage.getItem('offerSheetData');
+
+        if (storedInquiryData) {
+            setInquiriesDataDetail(JSON.parse(storedInquiryData));
+        }
+        if (storedUserInfo) {
+            setUserInfo(JSON.parse(storedUserInfo));
+        }
+        if (storedReviewData) {
+            setReviewData(JSON.parse(storedReviewData));
+        }
+        if (storedOfferSheetData) {
+            setOfferSheetData(JSON.parse(storedOfferSheetData));
+        }
+    }, []);
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
@@ -236,7 +273,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 <RequestBar requestBarTitle={'Inquiry 조회5'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             ) : (
-                <RequestBar requestBarTitle={'Inquiry 조회5'} role={'customer'}
+                <RequestBar requestBarTitle={'Inquiry 조회6'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             )}
 
