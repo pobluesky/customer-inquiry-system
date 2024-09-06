@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
-
 import { Intro } from './pages/intro';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
 import { UserAccount } from './pages/account';
-
 import { InqMain } from './pages/inq-main';
 import { CustomerInqForm } from './pages/inq-form';
 import {
@@ -19,12 +17,11 @@ import {
     SalesManagerInqItem,
     QualityManagerInqItem,
 } from './pages/inq-item';
-
 import { VocMain } from './pages/voc-main';
 import { VocQuestionList, VocColList } from './pages/voc-list';
 import { VocQuestionForm, VocAnswerForm, VocColForm } from './pages/voc-form';
-
 import { DashBoard } from './pages/dashboard';
+import Error404 from './pages/error/Error404'
 
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/templates/Layout';
@@ -72,7 +69,8 @@ function App() {
                             <Route path="voc-list/collaboration" element={<VocColList />} />
 
                             <Route path="dashboard" element={<DashBoard />} />
-                            {/* Route path="*" element={<Error404 />} /> */}
+
+                            <Route path="*" element={<Error404 />} />
                         </Routes>
                     </Layout>
                 </Router>
