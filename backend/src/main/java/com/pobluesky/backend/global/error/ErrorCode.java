@@ -33,7 +33,8 @@ public enum ErrorCode {
     PROGRESS_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0003", "존재하지 않는 진행단계입니다."),
     INVALID_PROGRESS_UPDATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0004", "올바르지 않은 Progress 업데이트 요청입니다."),
     INQUIRY_UNABLE_TO_MODIFY(HttpStatus.INTERNAL_SERVER_ERROR, "I0005", "이미 접수되어 수정 불가능한 문의입니다."),
-    INQUIRY_INVALID_PRODUCTTYPE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "올바르지 않은 Product Type 요청입니다."),
+    INQUIRY_UNABLE_ALLOCATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "해당 문의에는 담당자를 배정할 수 없습니다."),
+    INQUIRY_LIST_EMPTY(HttpStatus.NO_CONTENT, "I0007", "해당 제품 유형에 대한 문의가 없습니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
