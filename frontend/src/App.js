@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Intro } from './pages/intro';
 import { Login } from './pages/login';
 import { Join } from './pages/join';
+import { UserAccount } from './pages/account';
 
 import { InqMain } from './pages/inq-main';
 import { CustomerInqForm } from './pages/inq-form';
@@ -34,7 +35,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { createTheme, ThemeProvider } from '@mui/material';
-import { UserAccount } from './pages/account';
 
 const theme = createTheme({
     typography: {
@@ -56,62 +56,20 @@ function App() {
                             <Route path="account" element={<UserAccount />} />
 
                             <Route path="inq-main" element={<InqMain />} />
-
-                            <Route
-                                path="inq-form/customer"
-                                element={<CustomerInqForm />}
-                            />
-
-                            <Route
-                                path="inq-list/customer"
-                                element={<CustomerInqTableList />}
-                            />
-                            <Route
-                                path="inq-list/sales"
-                                element={<SalesManagerInqTableList />}
-                            />
-                            <Route
-                                path="inq-list/quality"
-                                element={<QualityManagerInqTableList />}
-                            />
-
-                            <Route
-                                path="inq-list/customer/:id"
-                                element={<CustomerInqItem />}
-                            />
-
-                            <Route
-                                path="inq-list/sales/:id"
-                                element={<SalesManagerInqItem />}
-                            />
-                            <Route
-                                path="inq-list/quality/:id"
-                                element={<QualityManagerInqItem />}
-                            />
+                            <Route path="inq-form/customer" element={<CustomerInqForm />} />
+                            <Route path="inq-list/customer" element={<CustomerInqTableList />} />
+                            <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
+                            <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
+                            <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
+                            <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
+                            <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
 
                             <Route path="voc-main" element={<VocMain />} />
-
-                            <Route
-                                path="voc-form/question"
-                                element={<VocQuestionForm />}
-                            />
-                            <Route
-                                path="voc-form/answer"
-                                element={<VocAnswerForm />}
-                            />
-                            <Route
-                                path="voc-form/collaboration"
-                                element={<VocColForm />}
-                            />
-
-                            <Route
-                                path="voc-list/question"
-                                element={<VocQuestionList />}
-                            />
-                            <Route
-                                path="voc-list/collaboration"
-                                element={<VocColList />}
-                            />
+                            <Route path="voc-form/question" element={<VocQuestionForm />} />
+                            <Route path="voc-form/answer" element={<VocAnswerForm />} />
+                            <Route path="voc-form/collaboration" element={<VocColForm />} />
+                            <Route path="voc-list/question" element={<VocQuestionList />} />
+                            <Route path="voc-list/collaboration" element={<VocColList />} />
 
                             <Route path="dashboard" element={<DashBoard />} />
                             {/* Route path="*" element={<Error404 />} /> */}
