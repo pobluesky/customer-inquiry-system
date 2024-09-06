@@ -13,6 +13,7 @@ public enum ErrorCode {
     INVALID_REQUEST(HttpStatus.INTERNAL_SERVER_ERROR, "G0002", "잘못된 요청입니다."),
     EXTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "G0003", "외부 서버 오류입니다."),
     INVALID_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "G0004","권한 정보가 없는 토큰입니다."),
+    JSON_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "G0005","JSON 처리 중 오류가 발생했습니다."),
 
     // User
     USER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0001", "존재하지 않는 사용자입니다."),
@@ -32,8 +33,7 @@ public enum ErrorCode {
     PROGRESS_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0003", "존재하지 않는 진행단계입니다."),
     INVALID_PROGRESS_UPDATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0004", "올바르지 않은 Progress 업데이트 요청입니다."),
     INQUIRY_UNABLE_TO_MODIFY(HttpStatus.INTERNAL_SERVER_ERROR, "I0005", "이미 접수되어 수정 불가능한 문의입니다."),
-    INQUIRY_UNABLE_ALLOCATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "해당 문의에는 담당자를 배정할 수 없습니다."),
-    INQUIRY_LIST_EMPTY(HttpStatus.NO_CONTENT, "I0007", "해당 제품 유형에 대한 문의가 없습니다."),
+    INQUIRY_INVALID_PRODUCTTYPE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "올바르지 않은 Product Type 요청입니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
@@ -66,10 +66,15 @@ public enum ErrorCode {
     COLLABORATION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "C0003", "이미 완료된 협업입니다."),
     COLLABORATION_STATUS_REFUSED(HttpStatus.INTERNAL_SERVER_ERROR, "C0004", "이미 거절된 협업입니다."),
     COLLABORATION_INFO_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "C0005", "일치하지 않은 협업 정보입니다."),
-    RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0006", "해당 협업의 응답 담당자가 아닙니다.");
+    RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0006", "해당 협업의 응답 담당자가 아닙니다."),
+
+    // AI
+    OCR_PROCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "AI001", "텍스트 추출에 실패했습니다."),
+    UPLOAD_FAIL_TO_GOOGLE(HttpStatus.INTERNAL_SERVER_ERROR, "AI002", "구글 스토리지에 파일 업로드를 실패했습니다."),
+    PDF_CONVERSION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI003", "PDF를 통한 이미지 변환에 실패했습니다."),
+    PDF_CONVERSION_NO_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, "AI004", "변환된 이미지가 존재하지 않습니다.");
 
     private HttpStatus status;
     private String code;
     private String message;
 }
-
