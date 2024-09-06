@@ -311,7 +311,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
             { label: 'Destination', value: formData.destination },
             { label: 'Validity', value: formData.validity },
             { label: 'Remark', value: formData.remark },
-            { label: 'Additional Message', value: formData.message },
+            { label: 'Additional Message', value: formData.message || '전달사항 없음' },
         ];
 
         let startRow = lastRow + 2;

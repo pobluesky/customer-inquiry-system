@@ -130,7 +130,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 ...prevData,
                 receipts: response.data.receipts || []
             }));
-            console.log("offersheet: ", response)
             return response.data;
         } catch (error) {
             console.log('Error fetching OfferSheet:', error);
@@ -145,7 +144,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             } else {
                 setIsUpdate(false);
             }
-            console.log("getProgress: ", response.data.progress)
         } catch (error) {
             console.log('Error fetching Progress:', error);
         }
@@ -170,7 +168,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         try {
             const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(userId, {
-                notificationContents: `${formData.name}님의 Inquiry가 수정되었습니다.`,
+                notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
             })
             console.log('Inquiry posted successfully:', inquiryUpdateResponse);
             console.log('Notification posted successfully:', notificationResponse);
@@ -228,6 +226,43 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         }
     }, [inquiriesDataDetail, userInfo]);
 
+    // 데이터 저장 시
+    useEffect(() => {
+        if (inquiriesDataDetail) {
+            localStorage.setItem('inquiryData', JSON.stringify(inquiriesDataDetail));
+        }
+        if (userInfo) {
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        }
+        if (reviewData) {
+            localStorage.setItem('reviewData', JSON.stringify(reviewData));
+        }
+        if (offerSheetData) {
+            localStorage.setItem('offerSheetData', JSON.stringify(offerSheetData));
+        }
+    }, [inquiriesDataDetail, userInfo, reviewData, offerSheetData]);
+
+    // 새로고침 시 데이터 불러오기
+    useEffect(() => {
+        const storedInquiryData = localStorage.getItem('inquiryData');
+        const storedUserInfo = localStorage.getItem('userInfo');
+        const storedReviewData = localStorage.getItem('reviewData');
+        const storedOfferSheetData = localStorage.getItem('offerSheetData');
+
+        if (storedInquiryData) {
+            setInquiriesDataDetail(JSON.parse(storedInquiryData));
+        }
+        if (storedUserInfo) {
+            setUserInfo(JSON.parse(storedUserInfo));
+        }
+        if (storedReviewData) {
+            setReviewData(JSON.parse(storedReviewData));
+        }
+        if (storedOfferSheetData) {
+            setOfferSheetData(JSON.parse(storedOfferSheetData));
+        }
+    }, []);
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
@@ -236,10 +271,9 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 <RequestBar requestBarTitle={'Inquiry 조회5'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             ) : (
-                <RequestBar requestBarTitle={'Inquiry 조회5'} role={'customer'}
+                <RequestBar requestBarTitle={'Inquiry 조회6'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             )}
-
 
             {isUpdate ? (
                 <>{/* 신규작성 및 수정 때 */}
