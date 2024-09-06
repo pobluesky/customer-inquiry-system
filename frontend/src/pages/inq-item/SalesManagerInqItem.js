@@ -305,7 +305,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     ...formData,
                     receipts: formData.receipts,
                 });
-                const notificationResponse = await postNotificationByCustomers(formData.customerId, {
+                await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
                         `${inquiriesDataDetail.name}님의 문의 최종 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 확인해 주세요.`,
                 })
@@ -317,7 +317,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 }
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
-                console.log('Notification posted successfully:', notificationResponse);
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
                 }, '2000');

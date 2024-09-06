@@ -130,7 +130,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 ...prevData,
                 receipts: response.data.receipts || []
             }));
-            console.log("offersheet: ", response)
             return response.data;
         } catch (error) {
             console.log('Error fetching OfferSheet:', error);
@@ -145,7 +144,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             } else {
                 setIsUpdate(false);
             }
-            console.log("getProgress: ", response.data.progress)
         } catch (error) {
             console.log('Error fetching Progress:', error);
         }
