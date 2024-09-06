@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pobluesky.backend.domain.inquiry.dto.request.ChatRequestMsgDto;
 import com.pobluesky.backend.domain.inquiry.dto.response.ChatCompletionDto;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
+import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.repository.CustomerRepository;
+import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import java.util.Collections;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,12 +32,25 @@ public class IntegratedOcrGptService {
 
     private final OcrService ocrService;
     private final GptPromptService gptPromptService;
+    private final SignService signService;
+    private final CustomerRepository customerRepository;
     private final ObjectMapper objectMapper;
 
     @Value("${openai.model}")
     private String openAiModel;
 
-    public JsonResult<?> processFileAndStructureData(MultipartFile file, ProductType productType) {
+    public JsonResult<?> processFileAndStructureData(
+        String token,
+        Long userId,
+        MultipartFile file,
+        ProductType productType
+    ) {
+        Customer customer = validateCustomer(token);
+
+        if (!Objects.equals(customer.getUserId(), userId)) {
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        }
+
         List<String> textResults = ocrService.processPdfAndDetectText(file);
 
         Map<String, Object> structuredData = getStructuredDataFromGPT(textResults, productType);
@@ -61,8 +78,7 @@ public class IntegratedOcrGptService {
         for (String text : textResults) {
             promptBuilder.append(text).append("\n");
         }
-
-        promptBuilder.append("Please structure the JSON as follows, without any additional text or formatting:\n");
+        promptBuilder.append("Provide only the raw JSON, without any explanatory text or code formatting.");
         promptBuilder.append("{\n  \"lineItemResponseDTOs\": [\n    {\n");
 
         switch (productType) {
@@ -163,13 +179,11 @@ public class IntegratedOcrGptService {
         promptBuilder.append("Ensure all relevant information from the input text is included in the JSON structure.");
         promptBuilder.append("If there are multiple line items, ensure each is represented as a separate object in the lineItemResponseDTOs array.");
         promptBuilder.append("For 'inqName', replace any spaces with an underscore (_).");
-        promptBuilder.append("Provide only the raw JSON, without any explanatory text or code formatting.");
 
         return promptBuilder.toString();
     }
 
     public Map<String, Object> extractJsonFromChatGptResponse(String chatGptResponse) {
-        System.out.println("ChatGPT Response: " + chatGptResponse);
         try {
             JsonNode rootNode = objectMapper.readTree(chatGptResponse);
             JsonNode contentNode = rootNode.path("choices")
@@ -184,5 +198,12 @@ public class IntegratedOcrGptService {
         } catch (JsonProcessingException e) {
             throw new CommonException(ErrorCode.JSON_PROCESSING_ERROR);
         }
+    }
+
+    private Customer validateCustomer(String token) {
+        Long userId = signService.parseToken(token);
+
+        return customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 }
