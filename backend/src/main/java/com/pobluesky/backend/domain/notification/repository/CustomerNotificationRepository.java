@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerNotificationRepository extends JpaRepository<CustomerNotification, Long> {
 
-    List<CustomerNotification> findByCustomer_UserIdAndIsReadFalse(Long userId);
+    List<CustomerNotification> findByCustomer_UserIdAndIsReadFalseOrderByCreatedDateDesc(Long userId);
 
     @Query("SELECT cn FROM CustomerNotification cn WHERE cn.customer.userId = :userId AND cn.isRead = :isRead ORDER BY cn.createdDate DESC")
     Page<CustomerNotification> findRecentNotificationsByuserIdAndIsRead(

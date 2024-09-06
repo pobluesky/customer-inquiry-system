@@ -55,7 +55,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<CustomerNotification> customerNotifications =
-                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalse(id);
+                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalseOrderByCreatedDateDesc(id);
 
                 Long totalCustomerElements = customerNotificationRepository.countUnreadNotificationsByCustomer_UserId(id);
 
@@ -74,7 +74,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<ManagerNotification> managerNotifications =
-                    managerNotificationRepository.findByManager_UserIdAndIsReadFalse(id);
+                    managerNotificationRepository.findByManager_UserIdAndIsReadFalseOrderByCreatedDateDesc(id);
 
                 Long totalManagerElements = managerNotificationRepository.countUnreadNotificationsByManager_UserId(id);
 
