@@ -55,7 +55,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<CustomerNotification> customerNotifications =
-                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalse(id);
+                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalseOrderByCreatedDateDesc(id);
 
                 Long totalCustomerElements = customerNotificationRepository.countUnreadNotificationsByCustomer_UserId(id);
 
@@ -74,7 +74,7 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<ManagerNotification> managerNotifications =
-                    managerNotificationRepository.findByManager_UserIdAndIsReadFalse(id);
+                    managerNotificationRepository.findByManager_UserIdAndIsReadFalseOrderByCreatedDateDesc(id);
 
                 Long totalManagerElements = managerNotificationRepository.countUnreadNotificationsByManager_UserId(id);
 
@@ -147,14 +147,14 @@ public class NotificationService {
         Long id,
         NotificationType notificationType
     ) {
-        Long userId = signService.parseToken(token);
+//        Long userId = signService.parseToken(token);
 
         switch (notificationType) {
             case CUSTOMER:
-                Customer customer = customerRepository.findById(userId)
+                Customer customer = customerRepository.findById(id)
                     .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-                if(!Objects.equals(customer.getUserId(), userId))
+                if(!Objects.equals(customer.getUserId(), id))
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 CustomerNotification customerNotification =
@@ -167,10 +167,10 @@ public class NotificationService {
                 return CustomerNotificationResponseDTO.from(savedCustomerNotification);
 
             case MANAGER:
-                Manager manager = managerRepository.findById(userId)
+                Manager manager = managerRepository.findById(id)
                     .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
-                if(!Objects.equals(manager.getUserId(), userId))
+                if(!Objects.equals(manager.getUserId(), id))
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 ManagerNotification managerNotification =

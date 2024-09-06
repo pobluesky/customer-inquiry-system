@@ -21,7 +21,6 @@ const SalesManagerInqTableList = () => {
             const response = await getSalesManagerInquiriesByParameter(queryParams);
             setRows(response);
             setCurrentPage(0);
-            console.log("getInquiryDataByParameter: ", response);
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }
@@ -56,7 +55,6 @@ const SalesManagerInqTableList = () => {
     };
 
     const handleSearch = (newSearchParams) => {
-        console.log("newSearchParams: ", newSearchParams)
         setSearchParams(newSearchParams);
     };
 

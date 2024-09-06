@@ -80,11 +80,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 ...formData,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
-            const notificationResponse = await postNotificationByCustomers(userId, {
+            await postNotificationByCustomers(userId, {
                 notificationContents: `${formData.name}님의 Inquiry가 접수되었습니다.`,
             })
             console.log('Inquiry posted successfully:', inquiryResponse);
-            console.log('Notification posted successfully:', notificationResponse);
 
             InquiryCompleteAlert();
             setTimeout(() => {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ManagerNotificationRepository extends JpaRepository<ManagerNotification, Long> {
 
-    List<ManagerNotification> findByManager_UserIdAndIsReadFalse(Long userId);
+    List<ManagerNotification> findByManager_UserIdAndIsReadFalseOrderByCreatedDateDesc(Long userId);
 
     @Query("SELECT mn FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = :isRead ORDER BY mn.createdDate DESC")
     Page<ManagerNotification> findRecentNotificationsByuserIdAndIsRead(

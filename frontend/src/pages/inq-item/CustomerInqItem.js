@@ -130,7 +130,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 ...prevData,
                 receipts: response.data.receipts || []
             }));
-            console.log("offersheet: ", response)
             return response.data;
         } catch (error) {
             console.log('Error fetching OfferSheet:', error);
@@ -145,7 +144,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             } else {
                 setIsUpdate(false);
             }
-            console.log("getProgress: ", response.data.progress)
         } catch (error) {
             console.log('Error fetching Progress:', error);
         }
@@ -170,7 +168,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         try {
             const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(userId, {
-                notificationContents: `${formData.name}님의 Inquiry가 수정되었습니다.`,
+                notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
             })
             console.log('Inquiry posted successfully:', inquiryUpdateResponse);
             console.log('Notification posted successfully:', notificationResponse);
@@ -276,7 +274,6 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 <RequestBar requestBarTitle={'Inquiry 조회6'} role={'customer'}
                             onUpdate={handleSubmit(handleUpdate)} />
             )}
-
 
             {isUpdate ? (
                 <>{/* 신규작성 및 수정 때 */}
