@@ -1,18 +1,36 @@
-import React from 'react';
-import Input from '../atoms/Input';
+import React, { useEffect } from 'react';
+import UserInput from '../molecules/JoinInput';
 import { User_Account_Exsisting } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 
-export default function ExistingUserInfo({ userDetail }) {
+export default function ExistingUserInfo({
+    userDetail,
+    checkUser,
+    setCheckUser,
+}) {
     const role = getCookie('userRole');
+
+    const enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setCheckUser(!checkUser);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', enterKeyDown);
+        return () => {
+            window.removeEventListener('keydown', enterKeyDown);
+        };
+    }, [checkUser]);
 
     return (
         <div className={User_Account_Exsisting}>
             {role === 'customer' ? (
                 <>
                     <div>
-                        <div>이름</div>
-                        <Input
+                        <UserInput
+                            categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -20,12 +38,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
-                            caretColor={'transparent'}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>이메일</div>
-                        <Input
+                        <UserInput
+                            categoryName={'이메일'}
                             type={'email'}
                             width={'336px'}
                             height={'48px'}
@@ -34,24 +52,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.email}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>비밀번호</div>
-                        <Input
-                            type={'password'}
-                            width={'336px'}
-                            height={'48px'}
-                            padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'12px'}
-                            fontSize={'16px'}
-                            value={userDetail.password}
-                        />
-                    </div>
-                    <div>
-                        <div>전화번호</div>
-                        <Input
+                        <UserInput
+                            categoryName={'전화번호'}
                             type={'tel'}
                             width={'336px'}
                             height={'48px'}
@@ -60,11 +66,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.phone}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>고객 코드</div>
-                        <Input
+                        <UserInput
+                            categoryName={'고객 코드'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -72,11 +79,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.customerCode}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>고객사명</div>
-                        <Input
+                        <UserInput
+                            categoryName={'고객사명'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -84,14 +92,15 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.customerName}
+                            readOnly={true}
                         />
                     </div>
                 </>
             ) : (
                 <>
                     <div>
-                        <div>이름</div>
-                        <Input
+                        <UserInput
+                            categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
                             padding={'0 0 0 20px'}
@@ -99,12 +108,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
-                            caretColor={'transparent'}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>이메일</div>
-                        <Input
+                        <UserInput
+                            categoryName={'이메일'}
                             type={'email'}
                             width={'336px'}
                             height={'48px'}
@@ -113,25 +122,12 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.email}
-                            caretColor={'transparent'}
+                            readOnly={true}
                         />
                     </div>
                     <div>
-                        <div>비밀번호</div>
-                        <Input
-                            type={'password'}
-                            width={'336px'}
-                            height={'48px'}
-                            padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
-                            borderRadius={'12px'}
-                            fontSize={'16px'}
-                            value={userDetail.password}
-                        />
-                    </div>
-                    <div>
-                        <div>전화번호</div>
-                        <Input
+                        <UserInput
+                            categoryName={'전화번호'}
                             password={'tel'}
                             width={'336px'}
                             height={'48px'}
@@ -140,7 +136,7 @@ export default function ExistingUserInfo({ userDetail }) {
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.phone}
-                            caretColor={'transparent'}
+                            readOnly={true}
                         />
                     </div>
                 </>

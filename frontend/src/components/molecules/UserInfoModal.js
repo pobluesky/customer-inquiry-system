@@ -19,7 +19,7 @@ function UserInfoModal() {
             <div>
                 <Button
                     onClick={() => {
-                        alert('내 정보 페이지 구현 중');
+                        navigate('/account');
                     }}
                     btnName={'설정'}
                     width={'fit-content'}

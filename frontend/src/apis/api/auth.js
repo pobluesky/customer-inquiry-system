@@ -79,7 +79,6 @@ export const getUserInfoByManagers = (userId) => {
 
 // 사용자 정보 수정
 export const putUserInfo = async (role, userId, userData) => {
-    console.log(role, userId, userData);
     try {
         let response;
         if (role === 'CUSTOMER') {

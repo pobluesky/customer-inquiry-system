@@ -97,10 +97,13 @@ function MyHeader() {
     };
 
     useEffect(() => {
-        if (didLogin && userId) {
-            findUserName();
-            fetchNotificationsCount();
-        }
+        const init = async () => {
+            if (didLogin && userId) {
+                await findUserName();
+                await fetchNotificationsCount();
+            }
+        };
+        init();
     }, [didLogin, userId, role]);
 
     // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기

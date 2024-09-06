@@ -31,8 +31,7 @@ const Input = forwardRef(
             display,
             float,
             overflowY,
-            caretColor,
-            onlyread,
+            readOnly,
         },
         ref,
     ) => (
@@ -86,10 +85,10 @@ const Input = forwardRef(
                         float,
                         display,
                         overflowY,
-                        caretColor,
                     }}
                     autoComplete="off"
-                    spellcheck="false"
+                    spellCheck="false"
+                    readOnly={readOnly}
                 />
             </form>
         </div>

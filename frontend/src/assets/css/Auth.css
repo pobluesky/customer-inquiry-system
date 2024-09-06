@@ -97,21 +97,24 @@
 .User_Account {
     width: 420px;
     height: fit-content;
-    margin: 36px auto 0 auto;
+    margin: 36px auto 5vh auto;
     padding: 24px 0 24px 0;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.User_Account_Exsisting > input {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-use-select: none;
-    user-select: none;
-    background-color: pink;
+.User_Account > div {
+    width: 356px;
+    margin: 24px auto 24px auto;
 }
 
-.User_Account_Editing {
-    background-color: antiquewhite;
+.User_Account_Exsisting > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
+}
+
+.User_Account_Editing > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
 }

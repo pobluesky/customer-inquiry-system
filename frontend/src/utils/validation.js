@@ -35,6 +35,15 @@ export const validatePhone = (phone) => {
     return '';
 };
 
+// 전화번호 수정
+export const validatePhoneEdit = (phone) => {
+    const phoneRegex = /^(010-\d{3,4}-\d{4}|011-\d{3}-\d{4})$/;
+    if (!phoneRegex.test(phone)) {
+        return '전화번호가 잘못된 형식입니다.';
+    }
+    return '';
+};
+
 // 비밀번호
 export const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
