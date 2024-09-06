@@ -56,7 +56,6 @@ const SalesManagerInqTableList = () => {
     };
 
     const handleSearch = (newSearchParams) => {
-        console.log("newSearchParams: ", newSearchParams)
         setSearchParams(newSearchParams);
     };
 
