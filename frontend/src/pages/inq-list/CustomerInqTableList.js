@@ -62,6 +62,10 @@ const CustomerInqTableList = () => {
         setSearchParams(newSearchParams);
     };
 
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     return (
         <div className={InqTableContainer}>
             <InqPath
