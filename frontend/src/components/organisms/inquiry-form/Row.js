@@ -15,7 +15,10 @@ import { _Table } from '../../../assets/css/Inquiry.css';
 import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
 import InquiryTypeBadge from '../../atoms/Chip';
 import StepTracker from '../../molecules/StepTracker';
-import { postNotificationByCustomers } from '../../../apis/api/notification';
+import {
+    postNotificationByCustomers,
+    postNotificationByManagers,
+} from '../../../apis/api/notification';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
@@ -96,14 +99,23 @@ function Row({ row, role }, ref) {
     const handleSubmit = async () => {
         try {
             if (isChecked && !isDisabled) {
-                await putManagerAllocate(row.inquiryId);
+                const response = await putManagerAllocate(row.inquiryId);
                 setIsDisabled(true);
 
                 const inquiryInfo = await getInquiryDetailByManagers(row.inquiryId);
+                if (role === 'sales') {
+                    await postNotificationByCustomers(
+                        inquiryInfo.data.customerId, {
+                            notificationContents: `${inquiryInfo.data.name}님의 Inquiry ${row.inquiryId}번 담당자가 배정되었습니다.`,
+                        })
+                } else if (role === 'quality') {
+                    await postNotificationByManagers(inquiryInfo.data.salesManagerSummaryDto.userId, {
+                        notificationContents:
+                            `Inquiry ${row.inquiryId}번 문의의 품질 담당자가 배정되었습니다.`,
+                    })
+                } else {
+                }
 
-                await postNotificationByCustomers(inquiryInfo.data.customerId, {
-                    notificationContents: `${inquiryInfo.data.name}님의 Inquiry 담당자가 배정되었습니다.`,
-                })
             }
         } catch (error) {
             console.log('Error putting Manager Allocation:', error);

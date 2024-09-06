@@ -51,7 +51,6 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         country: '',
         customerCode: '',
         customerId: null,
-        managerId: null,
         customerName: '',
         customerRequestDate: '',
         files: [],
@@ -136,7 +135,6 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 country: inquiriesDataDetail.country || '',
                 customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
-                managerId: inquiriesDataDetail.managerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
                 files: inquiriesDataDetail.files || [],
@@ -192,17 +190,16 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     },
                     qualityComments: formData.qualityComments,
                 });
-                const customerNotificationResponse = await postNotificationByCustomers(formData.customerId, {
+                await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 Inquiry 문의 품질검토가 완료되었습니다.`,
+                        `${inquiriesDataDetail.name}님의 Inquiry 문의 품질 검토가 완료되었습니다.`,
                 })
-                // const managerNotificationResponse = await postNotificationByManagers(formData.managerId, {
-                //     notificationContents:
-                //         `Inquiry ${id}번 문의의 품질검토가 완료되었습니다. 최종검토내용과 OfferSheet를 작성해 주세요.`,
-                // })
+                const response = await getInquiryDetailByManagers(id);
+                await postNotificationByManagers(response.data.salesManagerSummaryDto.userId, {
+                    notificationContents:
+                        `Inquiry ${id}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
+                })
                 console.log('Quality posted successfully:', qualityResponse);
-                console.log('CustomerNotification posted successfully:', customerNotificationResponse);
-                // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
                 }, '2000');
@@ -223,8 +220,14 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'quality'} />
-            <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토4'}
-                        onQualityCompleteSubmit={handleSubmit} />
+
+            {isQualityItem ? (
+                <RequestBar requestBarTitle={'Inquiry 조회6'} />
+            ) : (
+                <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토4'}
+                            onQualityCompleteSubmit={handleSubmit} />
+            )}
+
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
