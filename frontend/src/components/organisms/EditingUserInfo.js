@@ -27,7 +27,7 @@ export default function EditingUserInfo({
 }) {
     const navigate = useNavigate();
     const userId = getCookie('userId');
-    const role = getCookie('userRole')?.toUpperCase();
+    const role = getCookie('userRole');
     const { logout } = useAuth();
 
     const [email, setEmail] = useState(userDetail.email);
@@ -61,7 +61,7 @@ export default function EditingUserInfo({
     // 수정 완료 버튼을 눌렀을 때 사용자 입력값 검증
     useEffect(() => {
         if (checkValidationTest) {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 if (
                     !validateEmail(email) &&
                     !validatePhoneEdit(phone) &&
@@ -87,12 +87,6 @@ export default function EditingUserInfo({
         }
     }, [
         checkValidationTest,
-        // email,
-        // phone,
-        // customerCode,
-        // customerName,
-        // password,
-        // passwordCheck,
         tryEdit,
     ]);
 
@@ -105,7 +99,7 @@ export default function EditingUserInfo({
     const fetchPutUserInfo = async () => {
         try {
             let userData;
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 userData = {
                     name: userDetail.name,
                     email,
@@ -117,7 +111,7 @@ export default function EditingUserInfo({
             } else {
                 userData = {
                     name: userDetail.name,
-                    role,
+                    role: role?.toUpperCase(),
                     email,
                     password,
                     phone,
@@ -131,7 +125,7 @@ export default function EditingUserInfo({
             navigate('/login');
         } catch (error) {
             console.error(
-                `${role === 'CUSTOMER' ? '고객사' : '담당자'} 정보 수정 실패: `,
+                `${role === 'customer' ? '고객사' : '담당자'} 정보 수정 실패: `,
                 error,
             );
         }
