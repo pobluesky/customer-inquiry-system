@@ -81,7 +81,7 @@ export const getUserInfoByManagers = (userId) => {
 export const putUserInfo = async (role, userId, userData) => {
     try {
         let response;
-        if (role === 'CUSTOMER') {
+        if (role === 'customer') {
             response = await axiosInstance.put(
                 `/customers/${userId}`,
                 userData,
