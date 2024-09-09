@@ -207,28 +207,25 @@ public class AnswerService {
         answer.deleteAnswer();
     }
 
-    private List<Object[]> getManagerSpecificAnswerData(
-        Manager manager,
-        Supplier<List<Object[]>> salesQuery,
-        Supplier<List<Object[]>> qualityQuery
-    ) {
-
-        return manager.getRole() == UserRole.SALES ? salesQuery.get() : qualityQuery.get();
-    }
-
+    // 월별 담당자별 VoC 답변 건수
     @Transactional(readOnly = true)
     public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {
         Manager manager = validateManager(token);
         Map<String, List<Object[]>> results = new HashMap<>();
 
         results.put("total", answerRepository.findAverageCountPerMonth());
-        results.put("manager", getManagerSpecificAnswerData(
-            manager,
-            () -> answerRepository.findAverageCountPerMonthBySalesManager(manager.getUserId()),
-            () -> answerRepository.findAverageCountPerMonthByQualityManager(manager.getUserId())
-        ));
+        results.put("manager", answerRepository.findAverageCountPerMonthByManager(manager.getUserId()));
 
         return results;
+    }
+
+    // 모바일 - 질문 번호별 답변 상세 조회
+    @Transactional(readOnly = true)
+    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return MobileAnswerSummaryResponseDTO.from(answer);
     }
 
     private Inquiry validateInquiry(Question question) {
@@ -252,14 +249,5 @@ public class AnswerService {
 
         return customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    // 모바일 - 질문 번호별 답변 상세 조회
-    @Transactional(readOnly = true)
-    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
-
-        return MobileAnswerSummaryResponseDTO.from(answer);
     }
 }

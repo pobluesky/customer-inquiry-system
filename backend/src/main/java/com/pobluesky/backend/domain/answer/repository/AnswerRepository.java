@@ -17,38 +17,36 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Optional<Answer> findByQuestion_QuestionId(Long questionId);
 
-    @Query(value = "SELECT EXTRACT(MONTH FROM a.created_date) AS month, " +
-        "ROUND(AVG(EXTRACT(DAY FROM (a.modified_date - a.created_date))), 1) AS avgDays " +
-        "FROM Answer a " +
-        "GROUP BY EXTRACT(MONTH FROM a.created_date) " +
-        "ORDER BY EXTRACT(MONTH FROM a.created_date)", nativeQuery = true)
+    @Query(value = "WITH months AS (" +
+        "    SELECT generate_series(1, 12) AS month" +
+        "), " +
+        "counts AS (" +
+        "    SELECT EXTRACT(MONTH FROM a.created_date) AS month, " +
+        "           COUNT(*) AS answer_count " +
+        "    FROM Answer a " +
+        "    GROUP BY EXTRACT(MONTH FROM a.created_date)" +
+        ") " +
+        "SELECT m.month, " +
+        "       COALESCE(c.answer_count, 0) AS answer_count " +
+        "FROM months m " +
+        "LEFT JOIN counts c ON m.month = c.month " +
+        "ORDER BY m.month", nativeQuery = true)
     List<Object[]> findAverageCountPerMonth();
 
     @Query(value = "WITH months AS (" +
         "    SELECT generate_series(1, 12) AS month" +
-        ")" +
+        "), " +
+        "counts AS (" +
+        "    SELECT EXTRACT(MONTH FROM a.created_date) AS month, " +
+        "           COUNT(*) AS answer_count " +
+        "    FROM Answer a " +
+        "    WHERE a.manager_id = :managerId " +
+        "    GROUP BY EXTRACT(MONTH FROM a.created_date)" +
+        ") " +
         "SELECT m.month, " +
-        "       COALESCE(ROUND(AVG(EXTRACT(DAY FROM (a.modified_date - a.created_date))), 1), 0) AS avgDays " +
+        "       COALESCE(c.answer_count, 0) AS answer_count " +
         "FROM months m " +
-        "LEFT JOIN Answer a " +
-        "ON EXTRACT(MONTH FROM a.created_date) = m.month " +
-        "AND a.manager_id = :managerId " +
-        "GROUP BY m.month " +
-        "ORDER BY m.month",
-        nativeQuery = true)
-    List<Object[]> findAverageCountPerMonthBySalesManager(@Param("managerId") Long managerId);
-
-    @Query(value = "WITH months AS (" +
-        "    SELECT generate_series(1, 12) AS month" +
-        ")" +
-        "SELECT m.month, " +
-        "       COALESCE(ROUND(AVG(EXTRACT(DAY FROM (a.modified_date - a.created_date))), 1), 0) AS avgDays " +
-        "FROM months m " +
-        "LEFT JOIN Answer a " +
-        "ON EXTRACT(MONTH FROM a.created_date) = m.month " +
-        "AND a.manager_id = :managerId " +
-        "GROUP BY m.month " +
-        "ORDER BY m.month",
-        nativeQuery = true)
-    List<Object[]> findAverageCountPerMonthByQualityManager(@Param("managerId") Long managerId);
+        "LEFT JOIN counts c ON m.month = c.month " +
+        "ORDER BY m.month", nativeQuery = true)
+    List<Object[]> findAverageCountPerMonthByManager(@Param("managerId") Long managerId);
 }
