@@ -2,6 +2,7 @@ package com.pobluesky.backend.domain.question.service;
 
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
+import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.MobileQuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
@@ -166,6 +167,9 @@ public class QuestionService {
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
+        if(!Objects.equals(inquiry.getCustomer().getUserId(), customerId))
+            throw new CommonException(ErrorCode.INQUIRY_NOT_MATCHED);
+
         String fileName = null;
         String filePath = null;
 
@@ -210,6 +214,161 @@ public class QuestionService {
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion);
+    }
+
+    // 고객사 문의별 질문 수정
+    @Transactional
+    public QuestionResponseDTO updateInquiryQuestionById(
+        String token,
+        Long customerId,
+        Long inquiryId,
+        Long questionId,
+        MultipartFile file,
+        QuestionUpdateRequestDTO dto
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!Objects.equals(user.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        String fileName = question.getFileName();
+        String filePath = question.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        question.updateQuestion(
+            inquiry,
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath,
+            dto.type(),
+            dto.status()
+        );
+
+        return QuestionResponseDTO.from(question);
+    }
+
+    // 고객사 기타 질문 수정
+    @Transactional
+    public QuestionResponseDTO updateNotInquiryQuestionById(
+        String token,
+        Long customerId,
+        Long questionId,
+        MultipartFile file,
+        QuestionUpdateRequestDTO dto
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(user.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Inquiry inquiry = null;
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        String fileName = question.getFileName();
+        String filePath = question.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        question.updateQuestion(
+            inquiry,
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath,
+            dto.type(),
+            dto.status()
+        );
+
+        return QuestionResponseDTO.from(question);
+    }
+
+    // 질문 삭제 (고객사용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long customerId,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(user.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
+
+        question.deleteQuestion();
+    }
+
+    // 질문 삭제 (담당자용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
+
+        question.deleteQuestion();
     }
 
     // 모바일 전체 문의 조회

@@ -11,7 +11,7 @@ import java.util.Map;
 public record InquiryUpdateRequestDTO(
     Country country,
     String corporate,
-    String  salesPerson,
+    String salesPerson,
     InquiryType inquiryType,
     Industry industry,
     ProductType productType,

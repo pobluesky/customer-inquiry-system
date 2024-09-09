@@ -7,13 +7,17 @@ import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
 public record QuestionCreateRequestDTO(
+
     String title,
+
     String contents,
+
     QuestionStatus status,
+
     QuestionType type
 ) {
-
     public Question toQuestionEntity(Inquiry inquiry, Customer customer, String fileName, String filePath) {
+
         return Question.builder()
             .customer(customer)
             .inquiry(inquiry)

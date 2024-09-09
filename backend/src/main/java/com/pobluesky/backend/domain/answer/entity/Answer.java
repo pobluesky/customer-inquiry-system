@@ -8,10 +8,7 @@ import com.pobluesky.backend.global.BaseEntity;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
@@ -52,6 +49,8 @@ public class Answer extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
+    private Boolean isActivated;
+
     @Builder
     private Answer(
         Question question,
@@ -71,5 +70,20 @@ public class Answer extends BaseEntity {
         this.contents = contents;
         this.fileName = fileName;
         this.filePath = filePath;
+        this.isActivated = true;
     }
+
+    public void updateAnswer(
+        String title,
+        String contents,
+        String fileName,
+        String filePath
+    ) {
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
+    }
+
+    public void deleteAnswer() { this.isActivated = false; }
 }
