@@ -98,8 +98,8 @@ export default function QuestionList({
                           getCookie('userId'),
                           filterArgs,
                       );
-                      setQuestionSummary(response.data);
-                      setSearchCount(response.data.length);
+                      setQuestionSummary(response.data.questionsInfo);
+                      setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('고객사 질문 요약 조회 실패: ', error);
                   }
@@ -107,8 +107,8 @@ export default function QuestionList({
             : async () => {
                   try {
                       const response = await getAllQuestion(filterArgs);
-                      setQuestionSummary(response.data);
-                      setSearchCount(response.data.length);
+                      setQuestionSummary(response.data.questionsInfo);
+                      setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('담당자 질문 요약 조회 실패: ', error);
                   }
@@ -137,7 +137,6 @@ export default function QuestionList({
                                 state: {
                                     questionId: data.questionId,
                                     status: data.status,
-                                    /* 필요한 다른 데이터들 */
                                 },
                             });
                         }}
@@ -163,10 +162,6 @@ export default function QuestionList({
                         <div>
                             <div>{data.questionCreatedAt.substring(0, 10)}</div>
                             <div>{data.customerName}</div>
-                            {/* <div>
-                            {data.answerCreatedAt &&
-                                data.answerCreatedAt.substring(0, 10)}
-                        </div> */}
                         </div>
                         <hr />
                     </div>
