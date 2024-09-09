@@ -15,6 +15,7 @@ import { InquiryCompleteAlert } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
+import FileUpload from '../../components/molecules/FileUpload';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId, role, userName } = useAuth();
