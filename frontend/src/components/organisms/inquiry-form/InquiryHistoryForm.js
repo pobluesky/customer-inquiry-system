@@ -13,7 +13,7 @@ import {
     IconButton,
     Button,
 } from '@mui/material';
-import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
+import { Add, DeleteOutline, FileCopy, Remove } from '@mui/icons-material';
 import { productTypes } from '../../../utils/inquiry';
 import LineItemToggleBar from '../../molecules/LineItemToggleBar';
 
@@ -85,6 +85,11 @@ const InquiryHistoryForm = ({
         const updatedData = localData.filter((_, i) => i !== index);
         setLocalData(updatedData);
         onLineItemsChange(updatedData);
+    };
+
+    const deleteAllRows = () => {
+        setLocalData([]);
+        onLineItemsChange([]);
     };
 
     const copyRow = (index) => {
@@ -296,7 +301,7 @@ const InquiryHistoryForm = ({
                     <Button
                         startIcon={<Add />}
                         style={{
-                            margin: '20px',
+                            margin: '15px',
                             backgroundColor: '#03507d',
                             color: '#ffffff',
                             fontWeight: '800',
@@ -304,6 +309,17 @@ const InquiryHistoryForm = ({
                         onClick={addRow}
                     >
                         행추가
+                    </Button>
+                    <Button
+                        startIcon={<Remove />}
+                        style={{
+                            backgroundColor: '#03507d',
+                            color: '#ffffff',
+                            fontWeight: '800',
+                        }}
+                        onClick={deleteAllRows}
+                    >
+                        전체삭제
                     </Button>
                 </>
             ) : (
