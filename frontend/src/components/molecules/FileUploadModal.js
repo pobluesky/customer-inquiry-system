@@ -35,8 +35,8 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
         setFile(file);
 
         let uploadComplete = false;
-        const uploadInterval = 2000;
-        const uploadStep = 7;
+        const uploadInterval = 2200;
+        const uploadStep = 8;
 
         const fakeUpload = setInterval(() => {
             setUploadPercentage((prev) => {
@@ -46,7 +46,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
                     uploadComplete = true;
                     setUploadPercentage(100);
                     setIsUploadComplete(true);
-                    if(nextPercentage >= 10) {
+                    if(nextPercentage >= 5) {
                         postOCRFile(file);
                     }
                     return 100;
@@ -62,7 +62,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
                     setUploadPercentage(100);
                     postOCRFile(file);
                 }
-            }, 20000);
+            }, 100000);
         }
     };
 

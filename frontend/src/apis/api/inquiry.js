@@ -228,7 +228,6 @@ export const postOCR = async (userId, file, productType) => {
         const formData = new FormData();
         formData.append('files', file);
         formData.append('productType', productType);
-        console.log("formData: ", formData)
 
         const response = await axiosInstance.post(
             `/customers/inquiries/${userId}/optimized`,
@@ -237,7 +236,7 @@ export const postOCR = async (userId, file, productType) => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-                timeout: 10000,
+                timeout: 100000,
             },
         );
 
