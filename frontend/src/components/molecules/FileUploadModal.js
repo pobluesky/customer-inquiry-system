@@ -81,9 +81,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
         try {
             const response = await postOCR(userId, file, productType);
             const lineItems = response.data.lineItemResponseDTOs;
-
             setLineItemsFromOCR(lineItems);
-            console.log('OCR Response:', lineItems);
 
             if (onLineItemsUpdate) {
                 onLineItemsUpdate(lineItems);
