@@ -11,11 +11,16 @@ import {
     modalOverlay,
     modalContent
 } from '../../assets/css/FileUpload.css';
+import { postOCR } from '../../apis/api/inquiry';
+import { useAuth } from '../../hooks/useAuth';
 
 const FileUploadModal = () => {
+    const { userId } = useAuth();
+
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [file, setFile] = useState(null);
 
     const fileInputRef = useRef(null);
 
@@ -25,6 +30,7 @@ const FileUploadModal = () => {
 
         setIsUploading(true);
         setIsModalOpen(true);
+        setFile(file);
 
         const fakeUpload = setInterval(() => {
             setUploadPercentage((prev) => {
@@ -50,6 +56,15 @@ const FileUploadModal = () => {
         setIsUploading(false);
         setUploadPercentage(0);
     };
+
+    const postOCRLineItems = async () => {
+        try {
+            const response = await postOCR(userId, 'CAR');
+        } catch (error) {
+            console.error('Error posting OCR Line Items:', error);
+        }
+    }
+    console.log(file)
 
     return (
         <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
