@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Button } from '@mui/material';
+import React, { useState, useRef, useEffect } from 'react';
+import { Alert, Button } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
     fileUploadContainer,
     fileUploadText,
@@ -9,7 +10,8 @@ import {
     progressBar,
     progressText,
     modalOverlay,
-    modalContent
+    modalContent,
+    modalContentComplete
 } from '../../assets/css/FileUpload.css';
 import { postOCR } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
@@ -26,6 +28,13 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
 
     const fileInputRef = useRef(null);
 
+    useEffect(() => {
+        if (uploadPercentage === 100 && !isUploadComplete) {
+            setIsUploadComplete(true);
+            setTimeout(() => closeModal(), 3000); // Close modal after a delay to allow animation
+        }
+    }, [uploadPercentage, isUploadComplete]);
+
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -36,7 +45,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
 
         let uploadComplete = false;
         const uploadInterval = 2200;
-        const uploadStep = 8;
+        const uploadStep = 7;
 
         const fakeUpload = setInterval(() => {
             setUploadPercentage((prev) => {
@@ -45,7 +54,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
                     clearInterval(fakeUpload);
                     uploadComplete = true;
                     setUploadPercentage(100);
-                    setIsUploadComplete(true);
                     if(nextPercentage >= 5) {
                         postOCRFile(file);
                     }
@@ -54,16 +62,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
                 return nextPercentage;
             });
         }, uploadInterval);
-
-        // if (!uploadComplete) {
-        //     setTimeout(() => {
-        //         if (!uploadComplete) {
-        //             clearInterval(fakeUpload);
-        //             setUploadPercentage(100);
-        //             postOCRFile(file);
-        //         }
-        //     }, 100000);
-        // }
     };
 
     const openFileDialog = () => {
@@ -92,57 +90,63 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
             }
         } catch (error) {
             console.error('Error posting OCR Line Items:', error);
-        } finally {
-            setIsUploading(false);
-            closeModal();
         }
     };
 
     return (
-        <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
-            <input
-                type="file"
-                id="file-upload-input"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-                ref={fileInputRef}
-            />
+        <>
+            <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
+                <input
+                    type="file"
+                    id="file-upload-input"
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
+                />
 
-            <Button
-                style={{
-                    marginLeft: 'auto',
-                    color: '#03507D',
-                    backgroundColor: '#ffffff',
-                    cursor: 'pointer',
-                }}
-                onClick={openFileDialog}
-            >
-                PDF 업로드
-            </Button>
+                <Button
+                    style={{
+                        marginLeft: 'auto',
+                        color: '#03507D',
+                        backgroundColor: '#ffffff',
+                        cursor: 'pointer',
+                    }}
+                    onClick={openFileDialog}
+                >
+                    PDF 업로드
+                </Button>
 
-            {isModalOpen && (
+                {isModalOpen && !isUploadComplete && (
+                    <div className={modalOverlay} onClick={closeModal}>
+                        <div className={modalContent} onClick={(e) => e.stopPropagation()}>
+                            {isUploading && !isUploadComplete && (
+                                <div className={uploadingIndicator}>
+                                    <div className={`loaderContainer ${isUploadComplete ? 'hidden' : ''}`}>
+                                        <div className={loader}></div>
+                                    </div>
+                                    <p className={fileUploadText}>AI 기술을 활용해 내역을 등록 중입니다.</p>
+                                    <div className={progressBarContainer}>
+                                        <div
+                                            className={progressBar}
+                                            style={{ width: `${uploadPercentage}%` }}
+                                        ></div>
+                                    </div>
+                                    <p className={progressText}>{uploadPercentage}% 완료</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+            {isModalOpen && isUploadComplete && (
                 <div className={modalOverlay} onClick={closeModal}>
-                    <div className={modalContent} onClick={(e) => e.stopPropagation()}>
-                        {isUploading && (
-                            <div className={uploadingIndicator}>
-                                <div className={`loader-container ${isUploadComplete ? 'hidden' : ''}`}>
-                                    <div className={loader}></div>
-                                    <div className={`checkmark ${isUploadComplete ? 'visible' : ''}`}></div>
-                                </div>
-                                <p className={fileUploadText}>파일 업로드 중...</p>
-                                <div className={progressBarContainer}>
-                                    <div
-                                        className={progressBar}
-                                        style={{ width: `${uploadPercentage}%` }}
-                                    ></div>
-                                </div>
-                                <p className={progressText}>{uploadPercentage}% 완료</p>
-                            </div>
-                        )}
+                    <div className={modalContentComplete} onClick={(e) => e.stopPropagation()}>
+                            <CheckCircleIcon style={{ margin: '47px 0 0 0', fontSize: 60, color: '#00c6ff', opacity: isUploadComplete ? 1 : 0, transition: 'opacity 0.5s ease' }} />
+                            <div className={fileUploadText}>업로드 완료</div>
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

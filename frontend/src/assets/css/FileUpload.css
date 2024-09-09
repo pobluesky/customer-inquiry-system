@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
 
 .modalContent {
@@ -15,16 +16,30 @@
   padding: 30px;
   border-radius: 10px;
   width: 400px;
-  height: 188px;
+  height: 208px;
   text-align: center;
   justify-content: center;
   align-items: center;
+  z-index: 10000;
+}
+
+.modalContentComplete {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  height: 208px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
 }
 
 .uploadingIndicator {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .loaderContainer {
@@ -100,7 +115,7 @@
   height: 15px;
   background-color: #e0e0e0;
   border-radius: 5px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .progressBar {
@@ -112,8 +127,9 @@
 
 .progressText {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 18px;
   color: #555;
+  font-weight: 600;
 }
 
 .fileUploadContainer {
@@ -135,7 +151,8 @@
 }
 
 .fileUploadText {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 15px;
+  font-size: 20px;
   color: #555;
+  font-weight: 700;
 }

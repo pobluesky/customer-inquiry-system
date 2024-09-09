@@ -94,9 +94,7 @@ const InquiryHistoryForm = ({
         onLineItemsChange(updatedData);
     };
 
-    // OCR 데이터로 행 추가하는 함수
     const handleLineItemsChangeByOCR = (newLineItems) => {
-        // 각 오브젝트를 하나의 행으로 추가
         const updatedData = [...localData, ...newLineItems];
         setLocalData(updatedData);
         onLineItemsChange(updatedData);
@@ -297,12 +295,11 @@ const InquiryHistoryForm = ({
                         </Table>
                     </TableContainer>
                     <Button
-                        variant="contained"
-                        color="primary"
                         startIcon={<Add />}
                         style={{
                             margin: '20px',
                             backgroundColor: '#03507d',
+                            color: '#ffffff',
                             fontWeight: '800',
                         }}
                         onClick={addRow}
