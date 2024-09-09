@@ -52,7 +52,7 @@ export const productTypes = {
     },
     "THICK_PLATE": {
         "lineItemId": { label: "번호", type: "int" },
-        "generalDetails": { label: "일반사항", type: "string" },
+        "orderPurpose": { label: "일반사항", type: "string" },
         "orderInfo": { label: "주문정보", type: "string" },
         "ladleIngredient": { label: "성분(ladle)", type: "string" },
         "productIngredient": { label: "성분(product)", type: "string" },

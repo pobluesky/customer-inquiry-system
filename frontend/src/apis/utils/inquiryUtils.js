@@ -257,7 +257,7 @@ export const processInquiryData = (data) => {
                 ...rest,
                 productType,
                 lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
-                    generalDetails: item.generalDetails,
+                    orderPurpose: item.orderPurpose,
                     orderInfo: item.orderInfo,
                     ladleIngredient: item.ladleIngredient,
                     productIngredient: item.productIngredient,
