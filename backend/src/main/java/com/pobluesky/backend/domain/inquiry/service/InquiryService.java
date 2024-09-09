@@ -605,10 +605,13 @@ public class InquiryService {
 
     // 모바일 상세 Inquiry 조회
     @Transactional(readOnly = true)
-    public MobileInquirySummaryResponseDTO getInquiryById(Long inquiryId) {
+    public MobileInquiryResponseDTO getInquiryById(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        return MobileInquirySummaryResponseDTO.from(inquiry);
+        List<LineItemResponseDTO> lineItemsByInquiry =
+                lineItemService.getFullLineItemsByInquiry(inquiryId);
+
+        return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
     }
 }

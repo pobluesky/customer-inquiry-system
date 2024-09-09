@@ -11,7 +11,9 @@ public record MobileInquirySummaryResponseDTO (
 
     String inquiryType, //유형 e.g 품질문의, 공통(견적/품질문의)
 
-    String customerName  //고객사명 e.g. AAT
+    String customerName, //고객사명 e.g. AAT
+
+    String productType
 ) {
     public static MobileInquirySummaryResponseDTO from(Inquiry inquiry) {
 
@@ -20,6 +22,7 @@ public record MobileInquirySummaryResponseDTO (
                 .progress(inquiry.getProgress().getTerm())
                 .inquiryType(inquiry.getInquiryType().getName())
                 .customerName(inquiry.getCustomer().getCustomerName())
+                .productType(inquiry.getProductType().toString())
                 .build();
     }
 }
