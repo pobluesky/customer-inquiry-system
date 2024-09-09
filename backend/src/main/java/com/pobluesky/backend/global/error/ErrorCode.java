@@ -34,6 +34,7 @@ public enum ErrorCode {
     INQUIRY_UNABLE_TO_MODIFY(HttpStatus.INTERNAL_SERVER_ERROR, "I0005", "이미 접수되어 수정 불가능한 문의입니다."),
     INQUIRY_UNABLE_ALLOCATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "해당 문의에는 담당자를 배정할 수 없습니다."),
     INQUIRY_LIST_EMPTY(HttpStatus.NO_CONTENT, "I0007", "해당 제품 유형에 대한 문의가 없습니다."),
+    INQUIRY_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "I0009", "해당 사용자가 작성한 Inquiry가 아닙니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
@@ -55,7 +56,8 @@ public enum ErrorCode {
 
     // Question
     QUESTION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 질문입니다."),
-    QUESTION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0003", "이미 답변이 완료된 질문입니다."),
+    QUESTION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0002", "이미 답변이 완료된 질문입니다."),
+    QUESTION_TYPE_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0003", "INQ 타입 질문에 Inquiry가 선택되지 않았습니다."),
 
     // Answer
     ANSWER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A0001", "존재하지 않는 답변입니다."),

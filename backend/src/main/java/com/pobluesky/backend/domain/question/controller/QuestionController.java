@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.question.controller;
 
 import com.pobluesky.backend.domain.question.dto.request.QuestionCreateRequestDTO;
+import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionResponseDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
@@ -143,7 +144,7 @@ public class QuestionController {
     }
 
     @PostMapping("/customers/{userId}")
-    @Operation(summary = "타입별 질문 작성(고객사)", description = "문의 외적인 새로운 질문을 등록한다.")
+    @Operation(summary = "기타 질문 작성(고객사)", description = "문의 외적인 새로운 질문을 등록한다.")
     public ResponseEntity<JsonResult> createQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -155,6 +156,50 @@ public class QuestionController {
             file,
             questionCreateRequestDTO
             );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "문의별 질문 수정", description = "문의별 질문을 수정한다.")
+    @PutMapping("/customers/{userId}/{inquiryId}/{questionId}")
+    public ResponseEntity<JsonResult> updateQuestion(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long inquiryId,
+        @PathVariable Long questionId,
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("question") QuestionUpdateRequestDTO questionUpdateRequestDTO
+    ) {
+        QuestionResponseDTO response = questionService.updateInquiryQuestionById(
+            token,
+            userId,
+            inquiryId,
+            questionId,
+            file,
+            questionUpdateRequestDTO
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "기타 질문 수정", description = "기타 질문을 수정한다.")
+    @PutMapping("/customers/{userId}/{questionId}")
+    public ResponseEntity<JsonResult> updateQuestion(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long questionId,
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("question") QuestionUpdateRequestDTO questionUpdateRequestDTO
+    ) {
+        QuestionResponseDTO response = questionService.updateNotInquiryQuestionById(
+            token,
+            userId,
+            questionId,
+            file,
+            questionUpdateRequestDTO
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
