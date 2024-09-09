@@ -231,6 +231,9 @@ public class QuestionService {
         Customer user = customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
+        if(!Objects.equals(user.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
@@ -243,8 +246,8 @@ public class QuestionService {
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
 
-        if(!Objects.equals(user.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
 
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
@@ -295,6 +298,9 @@ public class QuestionService {
 
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
 
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
