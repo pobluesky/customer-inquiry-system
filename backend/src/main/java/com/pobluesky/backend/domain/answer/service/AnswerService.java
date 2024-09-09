@@ -15,7 +15,6 @@ import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
-import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -69,14 +67,9 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
         Customer customer = validateCustomer(token);
 
-        if (!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        validateUserMatch(customer.getUserId(), customerId);
 
         List<Answer> answers = answerRepository.findAllByCustomer_UserId(customerId);
-
-        if (answers.isEmpty()) {
-            throw new CommonException(ErrorCode.ANSWER_NOT_FOUND);
-        }
 
         return answers.stream()
             .map(answer -> AnswerResponseDTO.from(answer))
@@ -88,8 +81,7 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
         validateManager(token);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
         return AnswerResponseDTO.from(answer);
     }
@@ -99,15 +91,11 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionId(String token, Long customerId, Long questionId) {
         Customer customer = validateCustomer(token);
 
-        if (!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        Answer answer = validateAnswer(questionId);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        validateUserMatch(customer.getUserId(), customerId);
 
-        if (!Objects.equals(answer.getCustomer().getUserId(), customerId)) {
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
+        validateUserMatch(answer.getCustomer().getUserId(), customerId);
 
         return AnswerResponseDTO.from(answer);
     }
@@ -122,17 +110,13 @@ public class AnswerService {
     ) {
         Manager manager = validateManager(token);
 
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
-
-        if (question.getStatus() == QuestionStatus.COMPLETED) {
-            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
-        }
+        Question question = validateAndRetrieveQuestion(questionId);
 
         Inquiry inquiry = validateInquiry(question);
 
-        Customer customer = customerRepository.findById(question.getCustomer().getUserId())
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Customer customer = validateAndRetrieveCustomer(question);
+
+        validateQuestionStatus(question);
 
         String fileName = null;
         String filePath = null;
@@ -162,14 +146,11 @@ public class AnswerService {
     ) {
         Manager manager = validateManager(token);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
-        if(!Objects.equals(answer.getManager().getUserId(), manager.getUserId()))
-            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+        validateAnswerMatch(answer, manager);
 
-        if(!answer.getIsActivated())
-            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+        validateAnswerActivated(answer);
 
         String fileName = answer.getFileName();
         String filePath = answer.getFilePath();
@@ -198,11 +179,9 @@ public class AnswerService {
     ) {
         validateManager(token);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(()-> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
-        if(!answer.getIsActivated())
-            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+        validateAnswerActivated(answer);
 
         answer.deleteAnswer();
     }
@@ -223,7 +202,7 @@ public class AnswerService {
     @Transactional(readOnly = true)
     public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
         return MobileAnswerSummaryResponseDTO.from(answer);
     }
@@ -249,5 +228,42 @@ public class AnswerService {
 
         return customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Customer validateAndRetrieveCustomer(Question question) {
+        return customerRepository.findById(question.getCustomer().getUserId())
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Answer validateAnswer(Long questionId) {
+
+        return answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+    }
+
+    private Question validateAndRetrieveQuestion(Long questionId) {
+        return questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+    }
+
+    private void validateUserMatch(Long userId, Long customerId) {
+        if(!Objects.equals(userId, customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+    }
+
+    private void validateAnswerMatch(Answer answer, Manager manager) {
+        if(!Objects.equals(answer.getManager().getUserId(), manager.getUserId()))
+            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+    }
+
+    private void validateAnswerActivated(Answer answer) {
+        if(!answer.getIsActivated())
+            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+    }
+
+    private void validateQuestionStatus(Question question) {
+        if (question.getStatus() == QuestionStatus.COMPLETED) {
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+        }
     }
 }
