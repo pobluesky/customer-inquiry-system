@@ -19,7 +19,7 @@ public class QLineItem extends EntityPathBase<LineItem> {
 
     public static final QLineItem lineItem = new QLineItem("lineItem");
 
-    public final com.pobluesky.config.global.QBaseEntity _super = new com.pobluesky.config.global.QBaseEntity(this);
+    public final com.pobluesky.global.QBaseEntity _super = new com.pobluesky.global.QBaseEntity(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;

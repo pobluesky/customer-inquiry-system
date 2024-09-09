@@ -22,7 +22,7 @@ public class QReceipt extends EntityPathBase<Receipt> {
 
     public static final QReceipt receipt = new QReceipt("receipt");
 
-    public final com.pobluesky.config.global.QBaseEntity _super = new com.pobluesky.config.global.QBaseEntity(this);
+    public final com.pobluesky.global.QBaseEntity _super = new com.pobluesky.global.QBaseEntity(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;

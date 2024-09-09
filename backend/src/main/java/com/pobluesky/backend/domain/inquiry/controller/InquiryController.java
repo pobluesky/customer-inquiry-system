@@ -13,7 +13,7 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
-import com.pobluesky.backend.domain.inquiry.service.IntegratedOcrGptService;
+//import com.pobluesky.backend.domain.inquiry.service.IntegratedOcrGptService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -47,7 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class InquiryController {
 
     private final InquiryService inquiryService;
-    private final IntegratedOcrGptService integratedOcrGptService;
+//    private final IntegratedOcrGptService integratedOcrGptService;
 
     @GetMapping("/customers/inquiries/{userId}")
     @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
@@ -366,17 +366,17 @@ public class InquiryController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/customers/inquiries/{userId}/optimized")
-    @Operation(summary = "제품 유형별 라인아이템 등록 최적화")
-    public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long userId,
-        @RequestParam("files") MultipartFile file,
-        @RequestParam("productType") ProductType productType
-    ) {
-        JsonResult<?> response =
-            integratedOcrGptService.processFileAndStructureData(token, userId, file, productType);
-
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/customers/inquiries/{userId}/optimized")
+//    @Operation(summary = "제품 유형별 라인아이템 등록 최적화")
+//    public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
+//        @RequestHeader("Authorization") String token,
+//        @PathVariable Long userId,
+//        @RequestParam("files") MultipartFile file,
+//        @RequestParam("productType") ProductType productType
+//    ) {
+//        JsonResult<?> response =
+//            integratedOcrGptService.processFileAndStructureData(token, userId, file, productType);
+//
+//        return ResponseEntity.ok(response);
+//    }
 }

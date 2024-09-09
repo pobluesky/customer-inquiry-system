@@ -37,8 +37,6 @@ public class QThickPlateLineItem extends EntityPathBase<ThickPlateLineItem> {
 
     public final StringPath extraShow = createString("extraShow");
 
-    public final StringPath generalDetails = createString("generalDetails");
-
     public final BooleanPath grainSizeAnalysis = createBoolean("grainSizeAnalysis");
 
     public final StringPath hardness = createString("hardness");
@@ -56,6 +54,8 @@ public class QThickPlateLineItem extends EntityPathBase<ThickPlateLineItem> {
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final StringPath orderInfo = createString("orderInfo");
+
+    public final StringPath orderPurpose = createString("orderPurpose");
 
     public final StringPath productIngredient = createString("productIngredient");
 

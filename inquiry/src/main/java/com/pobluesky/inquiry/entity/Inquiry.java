@@ -1,17 +1,16 @@
 package com.pobluesky.inquiry.entity;
 
-import com.pobluesky.config.global.BaseEntity;
 import com.pobluesky.feign.Customer;
-import com.pobluesky.feign.Manager;
-
+import com.pobluesky.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,9 +72,11 @@ public class Inquiry extends BaseEntity {
 
     private Boolean isActivated;
 
+    private Boolean isFavorite;
+
     @Builder
     private Inquiry(
-        Customer customer,
+        Long customerId,
         Country country,
         String corporate,
         String  salesPerson,
@@ -106,6 +107,7 @@ public class Inquiry extends BaseEntity {
         this.filePath = filePath;
         this.responseDeadline = responseDeadline;
         this.isActivated = true;
+        this.isFavorite = false;
     }
 
     public void updateInquiry(
@@ -140,6 +142,10 @@ public class Inquiry extends BaseEntity {
 
     public void updateProgress(Progress newProgress) {
         this.progress = newProgress;
+    }
+
+    public void updateFavorite() {
+        this.isFavorite = !this.isFavorite;
     }
 
     public void allocateSalesManager(Long managerId) {

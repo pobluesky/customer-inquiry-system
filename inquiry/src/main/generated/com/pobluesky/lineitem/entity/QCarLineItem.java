@@ -29,8 +29,6 @@ public class QCarLineItem extends EntityPathBase<CarLineItem> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final StringPath edge = createString("edge");
-
     public final StringPath expectedDeliveryDate = createString("expectedDeliveryDate");
 
     public final com.pobluesky.inquiry.entity.QInquiry inquiry;
@@ -48,6 +46,8 @@ public class QCarLineItem extends EntityPathBase<CarLineItem> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    public final StringPath orderEdge = createString("orderEdge");
 
     public final StringPath partName = createString("partName");
 

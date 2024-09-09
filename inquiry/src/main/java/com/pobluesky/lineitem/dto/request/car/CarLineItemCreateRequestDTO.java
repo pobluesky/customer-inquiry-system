@@ -3,9 +3,9 @@ package com.pobluesky.lineitem.dto.request.car;
 import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.lineitem.entity.CarLineItem;
 import com.pobluesky.lineitem.entity.type.car.IxPlate;
+import com.pobluesky.lineitem.entity.type.car.Kind;
 import com.pobluesky.lineitem.entity.type.car.Lab;
 import com.pobluesky.lineitem.entity.type.car.StandardOrg;
-import com.pobluesky.lineitem.entity.type.car.Kind;
 
 public record CarLineItemCreateRequestDTO(
     Lab lab,
@@ -19,7 +19,7 @@ public record CarLineItemCreateRequestDTO(
     Integer quantity,
     String expectedDeliveryDate,
     String transportationDestination,
-    String edge,
+    String orderEdge,
     String tolerance,
     String annualCost
 ) {
@@ -38,7 +38,7 @@ public record CarLineItemCreateRequestDTO(
             .quantity(quantity)
             .expectedDeliveryDate(expectedDeliveryDate)
             .transportationDestination(transportationDestination)
-            .edge(edge)
+            .orderEdge(orderEdge)
             .tolerance(tolerance)
             .annualCost(annualCost)
             .build();

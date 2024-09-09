@@ -2,8 +2,8 @@ package com.pobluesky.lineitem.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
+import com.pobluesky.global.error.CommonException;
+import com.pobluesky.global.error.ErrorCode;
 import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.inquiry.entity.ProductType;
 import com.pobluesky.inquiry.repository.InquiryRepository;

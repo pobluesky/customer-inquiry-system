@@ -1,9 +1,7 @@
 package com.pobluesky.inquiry.dto.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.feign.Customer;
+import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.inquiry.entity.Country;
 import com.pobluesky.inquiry.entity.Industry;
@@ -14,9 +12,7 @@ import com.pobluesky.inquiry.entity.Progress;
 import com.pobluesky.lineitem.dto.response.LineItemResponseDTO;
 import java.util.List;
 import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Builder
 public record InquiryResponseDTO(
     Long inquiryId,
@@ -48,31 +44,17 @@ public record InquiryResponseDTO(
     public static InquiryResponseDTO of(
         Inquiry inquiry,
         List<LineItemResponseDTO> lineItemResponseDTOs,
-        UserClient userClient,
-        String token
+        UserClient userClient
     ) {
-        Long userId = userClient.parseToken(token);
+        Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getCustomerId()).getData();
         ManagerSummaryResponseDTO salesManager = null;
         ManagerSummaryResponseDTO qualityManager = null;
-        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
-        try {
-            // Feign 클라이언트를 통해 매니저 정보 가져오기
-            if (inquiry.getSalesManagerId() != null) {
-                salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
-            }
-        } catch (Exception e) {
-            // 예외 발생 시 로그 남기기
-            log.error("Failed to fetch sales manager summary for userId: {}", inquiry.getSalesManagerId(), e);
+        if(inquiry.getSalesManagerId()!=null){
+            salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
         }
-
-        try {
-            if (inquiry.getQualityManagerId() != null) {
-                qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
-            }
-        } catch (Exception e) {
-            // 예외 발생 시 로그 남기기
-            log.error("Failed to fetch quality manager summary for userId: {}", inquiry.getQualityManagerId(), e);
+        if(inquiry.getQualityManagerId()!=null){
+            qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
         }
 
         return InquiryResponseDTO.builder()

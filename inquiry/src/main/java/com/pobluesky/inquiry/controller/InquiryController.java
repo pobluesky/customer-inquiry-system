@@ -6,6 +6,8 @@ import com.pobluesky.global.util.model.JsonResult;
 import com.pobluesky.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
+import com.pobluesky.inquiry.dto.response.InquiryFavoriteResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquirySummaryResponseDTO;

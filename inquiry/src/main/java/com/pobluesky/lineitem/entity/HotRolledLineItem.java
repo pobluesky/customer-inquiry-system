@@ -1,9 +1,9 @@
 package com.pobluesky.lineitem.entity;
 
+
 import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.lineitem.entity.type.InqName;
 import com.pobluesky.lineitem.entity.type.hotrolled.Kind;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

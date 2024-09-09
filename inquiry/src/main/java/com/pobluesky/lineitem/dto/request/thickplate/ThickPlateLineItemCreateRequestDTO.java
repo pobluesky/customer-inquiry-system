@@ -4,7 +4,7 @@ import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.lineitem.entity.ThickPlateLineItem;
 
 public record ThickPlateLineItemCreateRequestDTO(
-    String generalDetails,
+    String orderPurpose,
     String orderInfo,
     String ladleIngredient,
     String productIngredient,
@@ -24,7 +24,7 @@ public record ThickPlateLineItemCreateRequestDTO(
 
         return ThickPlateLineItem.builder()
             .inquiry(inquiry)
-            .generalDetails(generalDetails)
+            .orderPurpose(orderPurpose)
             .orderInfo(orderInfo)
             .ladleIngredient(ladleIngredient)
             .productIngredient(productIngredient)

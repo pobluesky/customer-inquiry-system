@@ -2,9 +2,10 @@ package com.pobluesky.lineitem.entity;
 
 import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.lineitem.entity.type.car.IxPlate;
-import com.pobluesky.lineitem.entity.type.car.Kind;
 import com.pobluesky.lineitem.entity.type.car.Lab;
 import com.pobluesky.lineitem.entity.type.car.StandardOrg;
+import com.pobluesky.lineitem.entity.type.car.Kind;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -61,7 +62,7 @@ public class CarLineItem extends LineItem {
 
     private String transportationDestination;
 
-    private String edge;
+    private String orderEdge;
 
     private String tolerance;
 
@@ -81,7 +82,7 @@ public class CarLineItem extends LineItem {
         Integer quantity,
         String expectedDeliveryDate,
         String transportationDestination,
-        String edge,
+        String orderEdge,
         String tolerance,
         String annualCost
     ) {
@@ -98,7 +99,7 @@ public class CarLineItem extends LineItem {
         this.isActivated = true;
         this.expectedDeliveryDate = expectedDeliveryDate;
         this.transportationDestination = transportationDestination;
-        this.edge = edge;
+        this.orderEdge = orderEdge;
         this.tolerance = tolerance;
         this.annualCost = annualCost;
     }

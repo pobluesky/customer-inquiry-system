@@ -1,8 +1,9 @@
 package com.pobluesky.lineitem.dto.request.car;
 
+
 import com.pobluesky.lineitem.entity.type.car.IxPlate;
-import com.pobluesky.lineitem.entity.type.car.Lab;
 import com.pobluesky.lineitem.entity.type.car.Kind;
+import com.pobluesky.lineitem.entity.type.car.Lab;
 import com.pobluesky.lineitem.entity.type.car.StandardOrg;
 import java.time.LocalDate;
 
@@ -18,7 +19,7 @@ public record CarLineItemUpdateRequestDTO(
     Integer quantity,
     LocalDate expectedDeliveryDate,
     String transportationDestination,
-    String edge,
+    String orderEdge,
     String tolerance,
     String annualCost
 ) {

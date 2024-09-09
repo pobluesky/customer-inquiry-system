@@ -1,5 +1,6 @@
 package com.pobluesky.lineitem.dto.request.hotrolled;
 
+
 import com.pobluesky.lineitem.entity.type.InqName;
 import com.pobluesky.lineitem.entity.type.hotrolled.Kind;
 

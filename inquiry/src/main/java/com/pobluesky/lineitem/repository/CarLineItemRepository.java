@@ -1,6 +1,5 @@
 package com.pobluesky.lineitem.repository;
 
-
 import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.lineitem.entity.CarLineItem;
 import java.util.List;

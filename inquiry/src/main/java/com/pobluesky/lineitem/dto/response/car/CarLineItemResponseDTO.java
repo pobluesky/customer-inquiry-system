@@ -3,9 +3,10 @@ package com.pobluesky.lineitem.dto.response.car;
 import com.pobluesky.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.lineitem.entity.CarLineItem;
 import com.pobluesky.lineitem.entity.type.car.IxPlate;
-import com.pobluesky.lineitem.entity.type.car.Kind;
 import com.pobluesky.lineitem.entity.type.car.Lab;
 import com.pobluesky.lineitem.entity.type.car.StandardOrg;
+import com.pobluesky.lineitem.entity.type.car.Kind;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -41,7 +42,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private String transportationDestination;
 
-    private String edge;
+    private String orderEdge;
 
     private String tolerance;
 
@@ -64,7 +65,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .isActivated(carLineItem.getIsActivated())
             .expectedDeliveryDate(carLineItem.getExpectedDeliveryDate())
             .transportationDestination(carLineItem.getTransportationDestination())
-            .edge(carLineItem.getEdge())
+            .orderEdge(carLineItem.getOrderEdge())
             .tolerance(carLineItem.getTolerance())
             .annualCost(carLineItem.getAnnualCost())
             .build();

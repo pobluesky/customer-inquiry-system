@@ -13,7 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
     "com.pobluesky.global",
     "com.pobluesky.inquiry",
     "com.pobluesky.lineitem",
-    "com.pobluesky.offersheet"
+    "com.pobluesky.offersheet",
+    "com.pobluesky.review",
+    "com.pobluesky.quality"
 })
 @EnableFeignClients(basePackages = "com.pobluesky.feign")
 public class InquiryApplication {

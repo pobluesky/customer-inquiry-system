@@ -1,6 +1,6 @@
 package com.pobluesky.lineitem.entity;
 
-import com.pobluesky.config.global.BaseEntity;
+import com.pobluesky.global.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 

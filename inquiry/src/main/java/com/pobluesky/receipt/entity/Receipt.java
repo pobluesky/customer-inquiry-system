@@ -1,6 +1,6 @@
 package com.pobluesky.receipt.entity;
 
-import com.pobluesky.config.global.BaseEntity;
+import com.pobluesky.global.BaseEntity;
 import com.pobluesky.offersheet.entity.OfferSheet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

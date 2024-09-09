@@ -1,5 +1,6 @@
 package com.pobluesky.inquiry.dto.response;
 
+
 import com.pobluesky.feign.Manager;
 import lombok.Builder;
 
@@ -8,6 +9,7 @@ public record ManagerSummaryResponseDTO(
     Long userId,
     String name
 ) {
+
     public static ManagerSummaryResponseDTO from(Manager manager) {
         if (manager == null) return null;
         else {

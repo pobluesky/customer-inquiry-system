@@ -19,7 +19,7 @@ public class QInquiry extends EntityPathBase<Inquiry> {
 
     public static final QInquiry inquiry = new QInquiry("inquiry");
 
-    public final com.pobluesky.config.global.QBaseEntity _super = new com.pobluesky.config.global.QBaseEntity(this);
+    public final com.pobluesky.global.QBaseEntity _super = new com.pobluesky.global.QBaseEntity(this);
 
     public final StringPath additionalRequests = createString("additionalRequests");
 
@@ -47,6 +47,8 @@ public class QInquiry extends EntityPathBase<Inquiry> {
     public final EnumPath<InquiryType> inquiryType = createEnum("inquiryType", InquiryType.class);
 
     public final BooleanPath isActivated = createBoolean("isActivated");
+
+    public final BooleanPath isFavorite = createBoolean("isFavorite");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;

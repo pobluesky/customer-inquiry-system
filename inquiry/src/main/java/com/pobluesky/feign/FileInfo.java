@@ -1,16 +1,20 @@
-package com.pobluesky.inquiry.entity;
+package com.pobluesky.feign;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class FileInfo {
 
     private String originName;
+
     private String storedFilePath;
 
-    public FileInfo(String originName, String storedFilePath) {
+    @Builder
+    private FileInfo(
+        String originName,
+        String storedFilePath
+    ) {
         this.originName = originName;
         this.storedFilePath = storedFilePath;
     }

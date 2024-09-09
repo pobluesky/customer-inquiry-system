@@ -36,4 +36,7 @@ public interface UserClient {
     @GetMapping("/api/managers/exists")
     Boolean managerExists(@RequestParam("userId") Long userId);
 
+    @GetMapping("/api/customers/exists")
+    Boolean customerExists(@RequestParam("userId") Long userId);
+
 }
