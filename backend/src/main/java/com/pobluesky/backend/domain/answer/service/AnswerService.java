@@ -15,14 +15,18 @@ import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.answer.repository.AnswerRepository;
 import com.pobluesky.backend.domain.question.repository.QuestionRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -51,10 +55,7 @@ public class AnswerService {
 
     // 답변 전체 조회 (담당자)
     public List<AnswerResponseDTO> getAnswers(String token) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        validateManager(token);
 
         List<Answer> answers = answerRepository.findAll();
 
@@ -66,12 +67,9 @@ public class AnswerService {
     // 고객별 답변 전체 조회 (고객사)
     @Transactional(readOnly = true)
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
+        Customer customer = validateCustomer(token);
 
-        Customer user = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!user.getUserId().equals(customerId))
+        if (!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         List<Answer> answers = answerRepository.findAllByCustomer_UserId(customerId);
@@ -88,10 +86,7 @@ public class AnswerService {
     // 질문 번호별 답변 상세 조회 (담당자)
     @Transactional(readOnly = true)
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        validateManager(token);
 
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
@@ -102,14 +97,10 @@ public class AnswerService {
     // 질문 번호별 답변 상세 조회 (고객사)
     @Transactional(readOnly = true)
     public AnswerResponseDTO getAnswerByQuestionId(String token, Long customerId, Long questionId) {
-        Long userId = signService.parseToken(token);
+        Customer customer = validateCustomer(token);
 
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!Objects.equals(customer.getUserId(), customerId)) {
+        if (!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
 
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
@@ -129,16 +120,13 @@ public class AnswerService {
         MultipartFile file,
         AnswerCreateRequestDTO dto
     ) {
-        Long userId = signService.parseToken(token);
-
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 존재하지 않는 담당자일 경우
+        Manager manager = validateManager(token);
 
         Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND)); // 존재하지 않는 질문인 경우
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         if (question.getStatus() == QuestionStatus.COMPLETED) {
-            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
         }
 
         Inquiry inquiry = validateInquiry(question);
@@ -172,15 +160,12 @@ public class AnswerService {
         MultipartFile file,
         AnswerUpdateRequestDTO dto
     ) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Manager manager = validateManager(token);
 
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
-        if(!Objects.equals(answer.getManager().getUserId(), userId))
+        if(!Objects.equals(answer.getManager().getUserId(), manager.getUserId()))
             throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
 
         String fileName = answer.getFileName();
@@ -208,10 +193,7 @@ public class AnswerService {
         String token,
         Long questionId
     ) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        validateManager(token);
 
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(()-> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
@@ -222,6 +204,30 @@ public class AnswerService {
         answer.deleteAnswer();
     }
 
+    private List<Object[]> getManagerSpecificAnswerData(
+        Manager manager,
+        Supplier<List<Object[]>> salesQuery,
+        Supplier<List<Object[]>> qualityQuery
+    ) {
+
+        return manager.getRole() == UserRole.SALES ? salesQuery.get() : qualityQuery.get();
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {
+        Manager manager = validateManager(token);
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", answerRepository.findAverageCountPerMonth());
+        results.put("manager", getManagerSpecificAnswerData(
+            manager,
+            () -> answerRepository.findAverageCountPerMonthBySalesManager(manager.getUserId()),
+            () -> answerRepository.findAverageCountPerMonthByQualityManager(manager.getUserId())
+        ));
+
+        return results;
+    }
+
     private Inquiry validateInquiry(Question question) {
         if (question.getInquiry() == null) {
             return null;
@@ -229,6 +235,20 @@ public class AnswerService {
 
         return inquiryRepository.findById(question.getInquiry().getInquiryId())
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    }
+
+    private Manager validateManager(String token) {
+        Long userId = signService.parseToken(token);
+
+        return managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Customer validateCustomer(String token) {
+        Long userId = signService.parseToken(token);
+
+        return customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
 
     // 모바일 - 질문 번호별 답변 상세 조회
