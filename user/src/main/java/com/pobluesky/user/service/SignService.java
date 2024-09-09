@@ -1,15 +1,13 @@
 package com.pobluesky.user.service;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
-import com.pobluesky.config.global.security.JwtToken;
-import com.pobluesky.config.global.security.JwtTokenProvider;
-import com.pobluesky.config.global.security.UserRole;
-
 import com.pobluesky.user.entity.User;
 import com.pobluesky.user.entity.Manager;
 import com.pobluesky.user.entity.Customer;
 
+import com.pobluesky.global.error.CommonException;
+import com.pobluesky.global.error.ErrorCode;
+import com.pobluesky.global.security.JwtToken;
+import com.pobluesky.global.security.JwtTokenProvider;
 import com.pobluesky.user.repository.CustomerRepository;
 import com.pobluesky.user.repository.ManagerRepository;
 

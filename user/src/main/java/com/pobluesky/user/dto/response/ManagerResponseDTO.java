@@ -1,9 +1,8 @@
 package com.pobluesky.user.dto.response;
 
-import com.pobluesky.config.global.entity.Department;
-import com.pobluesky.config.global.security.UserRole;
 import com.pobluesky.user.entity.Manager;
-
+import com.pobluesky.global.entity.Department;
+import com.pobluesky.global.security.UserRole;
 import lombok.Builder;
 
 @Builder

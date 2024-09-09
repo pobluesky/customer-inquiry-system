@@ -13,6 +13,9 @@ public interface InquiryClient {
     Boolean checkInquiryExists(@PathVariable("inquiryId") Long inquiryId);
 
     @GetMapping("/api/inquiries/managers/inquiries/{inquiryId}")
-    Inquiry getInquiryById( @PathVariable("inquiryId") Long inquiryId);
+    Inquiry getInquiryDetailForManager(
+        @RequestHeader("Authorization") String token,
+        @PathVariable("inquiryId") Long inquiryId
+    );
 
 }

@@ -20,7 +20,6 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -35,18 +34,44 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation 'com.pobluesky:config:0.0.1-SNAPSHOT'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //Querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    //Query Log
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-feign:1.4.7.RELEASE'
+
+    //Jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //postgres
+    implementation 'org.postgresql:postgresql:42.7.4'
 }
 
 

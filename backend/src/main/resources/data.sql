@@ -37,7 +37,7 @@ VALUES
     (5, 3, null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, true, '2023-09-29 14:22:37.123456+00', '2023-10-20 14:22:37.123456+00');
 
 -- INSERT INTO car_line_items
-INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, edge, tolerance, annual_cost, is_activated, created_date, modified_date)
+INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, order_edge, tolerance, annual_cost, is_activated, created_date, modified_date)
 VALUES
     (1, 'GWANGYANG', 'SEDAN', 'ASTM',  'Hyundai Sonata', '엔진 컨트롤 유닛', 'DASH_PANEL', '2mm', '1500mm', 100, '2023-09-01', '서울', 'Mill Edge', '±0.1mm', '$10,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (1, 'GWANGYANG', 'SUV', 'ANSI',  'Kia Sorento', '트랜스퍼 케이스', 'FLOOR_PANEL', '3mm', '1800mm', 200, '2023-09-05', '부산', 'Mill Edge', '±0.2mm', '$20,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -194,7 +194,7 @@ VALUES
     (13, 'SWRM', 'JS_SI456', '와이어로프', '9.5mm', 500, '2025-11-01', 150, '냉간 인발', '엘레베이터 와이어로프', '광주', '$15,000', 'approved', 'All checks passed', '(주)현대건설', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- INSERT INTO thickplate_line_items
-INSERT INTO thickplate_line_items (inquiry_id, general_details, order_info, ladle_ingredient, product_ingredient, seal, grain_size_analysis, show, extra_show, aging_show, curve, additional_requests, hardness, drop_weight_test, ultrasonic_transducer, is_activated, created_date, modified_date)
+INSERT INTO thickplate_line_items (inquiry_id, order_purpose, order_info, ladle_ingredient, product_ingredient, seal, grain_size_analysis, show, extra_show, aging_show, curve, additional_requests, hardness, drop_weight_test, ultrasonic_transducer, is_activated, created_date, modified_date)
 VALUES
     (5, '교량용', 'TP001', '마그네시아', 'Carbon', '450 MPa ~ 630 MPa', true, '27 J @ -20°C', '40 J @ -30°C', '35 J @ -40°C', '500 MPa', '최대한 빠른 납부 바람', '200HB', true, false, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (5, '선박용도', 'TP002', '알루미나', 'Silicon', '350 MPa ~ 530 MPa', false, '35 J @ -10°C', '45 J @ -20°C', '30 J @ -25°C', '550 MPa', '강도에 특히 신경을 써주세요', '220HB', false, true, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -395,35 +395,20 @@ VALUES
     ('2024-08-28 13:00:00', null, 5, '최근 구매 기록 조회를 위한 정보 요청', '귀사에서 제공하는 서비스를 이용하며, 최근의 구매 기록을 조회하고자 합니다. 구매 기록을 이메일로 제공해 주시면 감사하겠습니다. 또한, 구매 기록 확인을 위한 추가 절차가 있다면 안내해 주시기 바랍니다.', 'voc_report30.pdf', 'https://cdn.example.com/image25.jpg', 'SITE', 'READY', true);
 
 -- ANSWER
-INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, manager_id, title, contents, file_name, file_path)
+INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, manager_id, title, contents, file_name, file_path, is_activated)
 VALUES
-    (CURRENT_TIMESTAMP, null, 1, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A'),
---    (CURRENT_TIMESTAMP, null, 2, 2, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다', 'voc_answer2.pdf', 'https://pbs.twimg.com/media/E4lJvfeVIAAp-U8.jpg'),
-    (CURRENT_TIMESTAMP, 12, 2, 3, 2, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A'),
---    (CURRENT_TIMESTAMP, 14, 4, 4, '문의해주셔서 감사합니다', '제품 문의를 하기 위해 회원가입 및 로그인 후 Inquiry 등록을 통해 문의를 주시면 신속한 처리를 해드리겠습니다', 'voc_answer2.pdf', 'https://pbs.twimg.com/media/E4lJvfeVIAAp-U8.jpg'),
-    (CURRENT_TIMESTAMP, 8, 3, 5, 3, '문의해주셔서 감사합니다', '문제가 발생한 경우, 가능한 상세한 정보를 제공해주시면 더욱 신속하게 문제를 해결할 수 있습니다', 'voc_answer3.pdf', 'https://example.com/image3.jpg'),
---    (CURRENT_TIMESTAMP, 1, 1, 6, '문의해주셔서 감사합니다', '고객님의 문의 사항에 대해 빠르고 정확한 답변을 드리겠습니다', 'voc_answer4.pdf', 'https://example.com/image4.jpg'),
-    (CURRENT_TIMESTAMP, null, 2, 7, 4, '문의해주셔서 감사합니다', '제품 사용 중 불편사항이 있을 경우 언제든지 문의해주시기 바랍니다', 'voc_answer5.pdf', 'https://example.com/image5.jpg'),
---    (CURRENT_TIMESTAMP, 2, 2, 8, '문의해주셔서 감사합니다', '문의사항은 최대한 빨리 해결해드리도록 하겠습니다', 'voc_answer6.pdf', 'https://example.com/image6.jpg'),
-    (CURRENT_TIMESTAMP, null, 4, 9, 5, '문의해주셔서 감사합니다', '자주 묻는 질문을 먼저 확인해보세요. 도움이 될 수 있습니다', 'voc_answer7.pdf', 'https://example.com/image7.jpg'),
---    (CURRENT_TIMESTAMP, null, 5, 10, '문의해주셔서 감사합니다', '문의는 등록된 이메일로 회신 드리겠습니다', 'voc_answer8.pdf', 'https://example.com/image8.jpg'),
-    (CURRENT_TIMESTAMP, 5, 5, 11, 1, '문의해주셔서 감사합니다', '모든 문의는 신속하게 처리되도록 하겠습니다', 'voc_answer9.pdf', 'https://example.com/image9.jpg'),
---    (CURRENT_TIMESTAMP, null, 2, 12, '문의해주셔서 감사합니다', '고객님의 문의에 감사드리며, 최대한 빠른 답변을 드리겠습니다', 'voc_answer10.pdf', 'https://example.com/image10.jpg'),
-    (CURRENT_TIMESTAMP, null, 3, 13, 2, '문의해주셔서 감사합니다', '문의하신 내용은 검토 후 답변을 드리겠습니다', 'voc_answer11.pdf', 'https://example.com/image11.jpg'),
---    (CURRENT_TIMESTAMP, 8, 3, 14, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 빠르게 처리하겠습니다', 'voc_answer12.pdf', 'https://example.com/image12.jpg'),
-    (CURRENT_TIMESTAMP, null, 5, 15, 3, '문의해주셔서 감사합니다', '문의 내용에 대한 정확한 답변을 제공하겠습니다', 'voc_answer13.pdf', 'https://example.com/image13.jpg'),
---    (CURRENT_TIMESTAMP, null, 1, 16, '문의해주셔서 감사합니다', '빠른 처리를 위해 상세한 정보를 제공해 주세요', 'voc_answer14.pdf', 'https://example.com/image14.jpg'),
-    (CURRENT_TIMESTAMP, 11, 1, 17, 4, '문의해주셔서 감사합니다', '제품 관련 문의는 이곳에 남겨주시면 됩니다', 'voc_answer15.pdf', 'https://example.com/image15.jpg'),
---    (CURRENT_TIMESTAMP, null, 3, 18, '문의해주셔서 감사합니다', '문의 사항이 접수되었습니다. 최대한 빠르게 처리하겠습니다', 'voc_answer16.pdf', 'https://example.com/image16.jpg'),
-    (CURRENT_TIMESTAMP, 12, 2, 19, 5, '문의해주셔서 감사합니다', '저희가 최대한 신속히 답변을 드리겠습니다', 'voc_answer17.pdf', 'https://example.com/image17.jpg'),
---    (CURRENT_TIMESTAMP, null, 5, 20, '문의해주셔서 감사합니다', '자세한 정보 제공 시 더욱 빠른 답변이 가능합니다', 'voc_answer18.pdf', 'https://example.com/image18.jpg'),
-    (CURRENT_TIMESTAMP, null, 1, 21, 1, '문의해주셔서 감사합니다', '문의사항은 최선을 다해 답변 드리겠습니다', 'voc_answer19.pdf', 'https://example.com/image19.jpg'),
---    (CURRENT_TIMESTAMP, 13, 3, 22, '문의해주셔서 감사합니다', '빠른 시간 안에 답변을 드리겠습니다', 'voc_answer20.pdf', 'https://example.com/image20.jpg'),
-    (CURRENT_TIMESTAMP, null, 3, 23, 2, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 답변까지 시간이 걸릴 수 있습니다', 'voc_answer21.pdf', 'https://example.com/image21.jpg'),
---    (CURRENT_TIMESTAMP, null, 4, 24, '문의해주셔서 감사합니다', '문의하신 내용은 신속히 처리될 것입니다', 'voc_answer22.pdf', 'https://example.com/image22.jpg'),
-    (CURRENT_TIMESTAMP, 14, 4, 25, 3, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 최대한 빠르게 처리하겠습니다', 'voc_answer23.pdf', 'https://example.com/image23.jpg'),
---    (CURRENT_TIMESTAMP, null, 1, 26, '문의해주셔서 감사합니다', '문의 내용이 확인되었습니다. 최대한 빨리 답변을 드리겠습니다', 'voc_answer24.pdf', 'https://example.com/image24.jpg'),
-    (CURRENT_TIMESTAMP, null, 2, 27, 4, '문의해주셔서 감사합니다', '문의하신 내용에 대해 최대한 빠른 답변을 드리겠습니다', 'voc_answer25.pdf', 'https://example.com/image25.jpg'),
---    (CURRENT_TIMESTAMP, 15, 5, 28, '문의해주셔서 감사합니다', '문의 사항은 접수된 후 신속하게 처리하겠습니다', 'voc_answer26.pdf', 'https://example.com/image26.jpg'),
-    (CURRENT_TIMESTAMP, null, 4, 29, 5, '문의해주셔서 감사합니다', '자세한 정보를 제공해 주시면 빠르게 처리하겠습니다', 'voc_answer27.pdf', 'https://example.com/image27.jpg');
---    (CURRENT_TIMESTAMP, null, 5, 30, '문의해주셔서 감사합니다', '문의하신 내용에 대해 답변 드리겠습니다', 'voc_answer28.pdf', 'https://example.com/image28.jpg');
+    (CURRENT_TIMESTAMP, null, 1, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
+    (CURRENT_TIMESTAMP, 12, 2, 3, 2, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
+    (CURRENT_TIMESTAMP, 8, 3, 5, 3, '문의해주셔서 감사합니다', '문제가 발생한 경우, 가능한 상세한 정보를 제공해주시면 더욱 신속하게 문제를 해결할 수 있습니다', 'voc_answer3.pdf', 'https://example.com/image3.jpg', true),
+    (CURRENT_TIMESTAMP, null, 2, 7, 4, '문의해주셔서 감사합니다', '제품 사용 중 불편사항이 있을 경우 언제든지 문의해주시기 바랍니다', 'voc_answer5.pdf', 'https://example.com/image5.jpg', true),
+    (CURRENT_TIMESTAMP, null, 4, 9, 5, '문의해주셔서 감사합니다', '자주 묻는 질문을 먼저 확인해보세요. 도움이 될 수 있습니다', 'voc_answer7.pdf', 'https://example.com/image7.jpg', true),
+    (CURRENT_TIMESTAMP, 5, 5, 11, 1, '문의해주셔서 감사합니다', '모든 문의는 신속하게 처리되도록 하겠습니다', 'voc_answer9.pdf', 'https://example.com/image9.jpg', true),
+    (CURRENT_TIMESTAMP, null, 3, 13, 2, '문의해주셔서 감사합니다', '문의하신 내용은 검토 후 답변을 드리겠습니다', 'voc_answer11.pdf', 'https://example.com/image11.jpg', true),
+    (CURRENT_TIMESTAMP, null, 5, 15, 3, '문의해주셔서 감사합니다', '문의 내용에 대한 정확한 답변을 제공하겠습니다', 'voc_answer13.pdf', 'https://example.com/image13.jpg', true),
+    (CURRENT_TIMESTAMP, 11, 1, 17, 4, '문의해주셔서 감사합니다', '제품 관련 문의는 이곳에 남겨주시면 됩니다', 'voc_answer15.pdf', 'https://example.com/image15.jpg', true),
+    (CURRENT_TIMESTAMP, 12, 2, 19, 5, '문의해주셔서 감사합니다', '저희가 최대한 신속히 답변을 드리겠습니다', 'voc_answer17.pdf', 'https://example.com/image17.jpg', true),
+    (CURRENT_TIMESTAMP, null, 1, 21, 1, '문의해주셔서 감사합니다', '문의사항은 최선을 다해 답변 드리겠습니다', 'voc_answer19.pdf', 'https://example.com/image19.jpg', true),
+    (CURRENT_TIMESTAMP, null, 3, 23, 2, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 답변까지 시간이 걸릴 수 있습니다', 'voc_answer21.pdf', 'https://example.com/image21.jpg', true),
+    (CURRENT_TIMESTAMP, 14, 4, 25, 3, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 최대한 빠르게 처리하겠습니다', 'voc_answer23.pdf', 'https://example.com/image23.jpg', true),
+    (CURRENT_TIMESTAMP, null, 2, 27, 4, '문의해주셔서 감사합니다', '문의하신 내용에 대해 최대한 빠른 답변을 드리겠습니다', 'voc_answer25.pdf', 'https://example.com/image25.jpg', true),
+    (CURRENT_TIMESTAMP, null, 4, 29, 5, '문의해주셔서 감사합니다', '자세한 정보를 제공해 주시면 빠르게 처리하겠습니다', 'voc_answer27.pdf', 'https://example.com/image27.jpg', true);

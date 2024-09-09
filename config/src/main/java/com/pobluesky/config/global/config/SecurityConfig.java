@@ -40,7 +40,8 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/webjars/**",
-                        "/h2-console/**"
+                        "/h2-console/**",
+                        "/api/upload/**"
                     ).permitAll()
                     .requestMatchers("/api/customers/**").permitAll()
                     .requestMatchers("/api/managers/**").permitAll()

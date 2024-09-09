@@ -14,7 +14,7 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
 
     private Long inquiryId;
 
-    private String generalDetails;
+    private String orderPurpose;
 
     private String orderInfo;
 
@@ -49,7 +49,7 @@ public class ThickPlateLineItemResponseDTO extends LineItemResponseDTO {
         return ThickPlateLineItemResponseDTO.builder()
             .lineItemId(thickPlateLineItem.getLineItemId())
             .inquiryId(thickPlateLineItem.getInquiry().getInquiryId())
-            .generalDetails(thickPlateLineItem.getGeneralDetails())
+            .orderPurpose(thickPlateLineItem.getOrderPurpose())
             .orderInfo(thickPlateLineItem.getOrderInfo())
             .ladleIngredient(thickPlateLineItem.getLadleIngredient())
             .productIngredient(thickPlateLineItem.getProductIngredient())

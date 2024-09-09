@@ -1,6 +1,6 @@
 package com.pobluesky.notification.entity;
 
-import com.pobluesky.config.global.BaseEntity;
+import com.pobluesky.global.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

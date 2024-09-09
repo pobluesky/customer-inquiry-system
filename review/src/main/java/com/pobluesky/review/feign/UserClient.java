@@ -1,5 +1,6 @@
 package com.pobluesky.review.feign;
 
+import com.pobluesky.config.global.util.model.JsonResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +17,8 @@ public interface UserClient {
     @GetMapping("/api/managers/exists")
     boolean managerExistsById(@RequestParam("userId") Long userId);
 
-    @GetMapping("/api/managers/{userId}")
-    Manager getManagerById(@PathVariable("userId") Long userId);
+    @GetMapping("/api/managers/without-token/{userId}")
+    JsonResult<Manager> getManagerByIdWithoutToken(@PathVariable("userId") Long userId);
 
     @GetMapping("/api/users/token")
     Long parseToken(@RequestParam("token") String token);

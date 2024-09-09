@@ -19,7 +19,7 @@ public record CarLineItemCreateRequestDTO(
     Integer quantity,
     String expectedDeliveryDate,
     String transportationDestination,
-    String edge,
+    String orderEdge,
     String tolerance,
     String annualCost
 ) {
@@ -38,7 +38,7 @@ public record CarLineItemCreateRequestDTO(
             .quantity(quantity)
             .expectedDeliveryDate(expectedDeliveryDate)
             .transportationDestination(transportationDestination)
-            .edge(edge)
+            .orderEdge(orderEdge)
             .tolerance(tolerance)
             .annualCost(annualCost)
             .build();

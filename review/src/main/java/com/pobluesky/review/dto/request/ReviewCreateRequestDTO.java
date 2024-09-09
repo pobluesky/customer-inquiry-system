@@ -11,9 +11,9 @@ public record ReviewCreateRequestDTO(
     String tsReviewReq
 )
 {
-    public Review toReviewEntity(Long inquiryId,InquiryClient inquiryClient) {
+    public Review toReviewEntity(Long inquiryId,InquiryClient inquiryClient,String token) {
 
-        Inquiry inquiry = inquiryClient.getInquiryById(inquiryId);
+        Inquiry inquiry = inquiryClient.getInquiryDetailForManager(token,inquiryId);
 
         return Review.builder()
             .inquiryId(inquiryId)

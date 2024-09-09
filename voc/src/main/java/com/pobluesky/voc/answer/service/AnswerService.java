@@ -42,7 +42,7 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswers(String token) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -59,7 +59,7 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerById(userId);
+        Customer user = userClient.getCustomerByIdWithoutToken(userId).getData();
         if(user == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -83,7 +83,7 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -99,7 +99,7 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionId(String token, Long customerId, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
         if(customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -128,7 +128,7 @@ public class AnswerService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         } // 존재하지 않는 담당자일 경우
@@ -146,7 +146,7 @@ public class AnswerService {
 
 //        Inquiry inquiry = validateInquiry(question);
 
-        Customer customer = userClient.getCustomerById(question.getCustomerId());
+        Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
         if (customer == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -169,17 +169,17 @@ public class AnswerService {
         return AnswerResponseDTO.from(savedAnswer);
     }
 
-    private Inquiry validateInquiry(Question question) {
-        if (question.getInquiryId() == null) {
-            return null;
-        }
-
-        Inquiry inquiry = inquiryClient.getInquiryById(question.getInquiryId());
-
-        if (inquiry == null) {
-            throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
-        }
-
-        return inquiry;
-    }
+//    private Inquiry validateInquiry(Question question) {
+//        if (question.getInquiryId() == null) {
+//            return null;
+//        }
+//
+//        Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(question.getInquiryId());
+//
+//        if (inquiry == null) {
+//            throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
+//        }
+//
+//        return inquiry;
+//    }
 }

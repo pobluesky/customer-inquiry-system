@@ -21,7 +21,7 @@ public record CollaborationSummaryResponseDTO(
 
     public static CollaborationSummaryResponseDTO from(Collaboration collaboration, UserClient userClient) {
 
-        Manager managerDetails = userClient.getManagerById(collaboration.getColRequestManagerId());
+        Manager managerDetails = userClient.getManagerByIdWithoutToken(collaboration.getColRequestManagerId()).getData();
 
         if (managerDetails == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);

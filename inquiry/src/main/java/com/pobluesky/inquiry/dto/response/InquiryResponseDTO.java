@@ -48,11 +48,13 @@ public record InquiryResponseDTO(
     public static InquiryResponseDTO of(
         Inquiry inquiry,
         List<LineItemResponseDTO> lineItemResponseDTOs,
-        UserClient userClient
+        UserClient userClient,
+        String token
     ) {
+        Long userId = userClient.parseToken(token);
         ManagerSummaryResponseDTO salesManager = null;
         ManagerSummaryResponseDTO qualityManager = null;
-        Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getInquiryId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         try {
             // Feign 클라이언트를 통해 매니저 정보 가져오기
@@ -72,7 +74,6 @@ public record InquiryResponseDTO(
             // 예외 발생 시 로그 남기기
             log.error("Failed to fetch quality manager summary for userId: {}", inquiry.getQualityManagerId(), e);
         }
-
 
         return InquiryResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())

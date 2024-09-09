@@ -1,8 +1,8 @@
 package com.pobluesky.user.entity;
 
-import com.pobluesky.config.global.BaseEntity;
+import com.pobluesky.global.BaseEntity;
+import com.pobluesky.global.security.UserRole;
 
-import com.pobluesky.config.global.security.UserRole;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;

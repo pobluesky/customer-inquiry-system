@@ -16,8 +16,8 @@ public record ReviewResponseDTO (
     String finalReviewText,
     String tsReviewReq
 ) {
-    public static ReviewResponseDTO from(Review review, InquiryClient inquiryClient) {
-        Inquiry inquiry = inquiryClient.getInquiryById(review.getInquiryId());
+    public static ReviewResponseDTO from(Review review, InquiryClient inquiryClient,String token) {
+        Inquiry inquiry = inquiryClient.getInquiryDetailForManager(token,review.getInquiryId());
 
         return ReviewResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())

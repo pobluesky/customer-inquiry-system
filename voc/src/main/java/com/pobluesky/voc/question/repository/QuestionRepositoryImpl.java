@@ -75,13 +75,13 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         String sortBy
     ) {
         return queryFactory
-            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
+            .select(Projections.fields(QuestionSummaryResponseDTO.class,
                 question.questionId,
                 question.title,
                 question.status,
                 question.type,
                 question.contents,
-                question.customerId,
+                question.customerId.as("customerId"),
                 question.createdDate.as("questionCreatedAt"),
                 answer.createdDate.as("answerCreatedAt")
             ))

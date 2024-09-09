@@ -38,7 +38,7 @@ public class QualityService {
     public List<QualityResponseDTO> getAllQualities(String token) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -59,7 +59,7 @@ public class QualityService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -95,7 +95,7 @@ public class QualityService {
     public QualityResponseDTO getReviewByInquiry(String token, Long inquiryId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }

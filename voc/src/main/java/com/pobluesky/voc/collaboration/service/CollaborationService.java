@@ -54,7 +54,7 @@ public class CollaborationService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -80,7 +80,7 @@ public class CollaborationService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -105,7 +105,7 @@ public class CollaborationService {
         ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -114,13 +114,13 @@ public class CollaborationService {
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         // 요청한 Manager 정보 가져오기
-        Manager reqManager = userClient.getManagerById(requestDTO.colReqId());
+        Manager reqManager = userClient.getManagerByIdWithoutToken(requestDTO.colReqId()).getData();
         if (reqManager == null) {
             throw new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND);
         }
 
         // 응답할 Manager 정보 가져오기
-        Manager resManager = userClient.getManagerById(requestDTO.colResId());
+        Manager resManager = userClient.getManagerByIdWithoutToken(requestDTO.colResId()).getData();
         if (resManager == null) {
             throw new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND);
         }
@@ -162,19 +162,19 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_INPROGRESS);
         }
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
         // 요청한 Manager 정보 가져오기
-        Manager reqManager = userClient.getManagerById(requestDTO.colReqId());
+        Manager reqManager = userClient.getManagerByIdWithoutToken(requestDTO.colReqId()).getData();
         if (reqManager == null) {
             throw new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND);
         }
 
         // 응답할 Manager 정보 가져오기
-        Manager resManager = userClient.getManagerById(requestDTO.colResId());
+        Manager resManager = userClient.getManagerByIdWithoutToken(requestDTO.colResId()).getData();
         if (resManager == null) {
             throw new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND);
         }
@@ -214,7 +214,7 @@ public class CollaborationService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
         if (manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }

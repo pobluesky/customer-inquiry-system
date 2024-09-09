@@ -1,12 +1,11 @@
 package com.pobluesky.user.service;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
-
 import com.pobluesky.user.dto.request.CustomerCreateRequestDTO;
 import com.pobluesky.user.dto.request.CustomerUpdateRequestDTO;
 import com.pobluesky.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.user.entity.Customer;
+import com.pobluesky.global.error.CommonException;
+import com.pobluesky.global.error.ErrorCode;
 import com.pobluesky.user.repository.CustomerRepository;
 
 import java.util.List;

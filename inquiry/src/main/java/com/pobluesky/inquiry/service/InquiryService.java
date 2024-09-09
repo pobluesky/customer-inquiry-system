@@ -187,14 +187,23 @@ public class InquiryService {
         Long userId = userClient.parseToken(token);
 
         Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        log.debug("token {}",token);
+        log.debug("userId {}",userId);
+        log.debug("customerId {}",customerId);
+        log.debug("customer.getUserId() {}",customer.getUserId());
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), customerId)) {
+            log.debug("aaaaaa");
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
+        }
+        log.debug("bbbbbb");
         String fileName = null;
         String filePath = null;
 
         if (file != null) {
+            log.debug("qqqqq");
+            log.debug("파일 업로드 시작");
+            log.debug("file {}",file);
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -204,13 +213,13 @@ public class InquiryService {
         inquiry.setCustomerId(customer.getUserId());
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
-
+        log.debug("ccccc");
         List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
             inquiry,
             dto.lineItemRequestDTOs()
         );
-
-        return InquiryResponseDTO.of(savedInquiry, lineItems,userClient);
+        log.debug("ddddd");
+        return InquiryResponseDTO.of(savedInquiry, lineItems,userClient,token);
     }
 
     @Transactional
@@ -263,7 +272,7 @@ public class InquiryService {
             inquiryUpdateRequestDTO.lineItemRequestDTOs()
         );
 
-        return InquiryResponseDTO.of(inquiry, lineItemResponseDTOS,userClient);
+        return InquiryResponseDTO.of(inquiry, lineItemResponseDTOS,userClient,token);
     }
 
     @Transactional
@@ -305,7 +314,7 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), inquiry.getCustomerId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry,userClient);
+        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry,userClient,token);
     }
 
     @Transactional(readOnly = true)
@@ -330,7 +339,7 @@ public class InquiryService {
         List<LineItemResponseDTO> lineItemsByInquiry =
             lineItemService.getFullLineItemsByInquiry(inquiryId);
 
-        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry,userClient);
+        return InquiryResponseDTO.of(inquiry, lineItemsByInquiry,userClient,token);
     }
 
     @Transactional
@@ -427,4 +436,6 @@ public class InquiryService {
 
         return inquiryRepository.existsById(inquiryId);
     }
+
+
 }

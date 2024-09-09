@@ -1,4 +1,4 @@
-package com.pobluesky.file.config;
+package com.pobluesky.global.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

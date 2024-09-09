@@ -54,46 +54,28 @@ public class QuestionService {
 
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        if(manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
-        // Question 데이터베이스 조회
+
         List<QuestionSummaryResponseDTO> questions = questionRepository.findAllQuestionsByManagerWithoutPaging(
-            status, type, title, questionId, null, startDate, endDate, sortBy);
+            status,
+            type,
+            title,
+            questionId,
+            customerName,
+            startDate,
+            endDate,
+            sortBy
+        );
 
-        // 고객 이름을 서비스 레이어에서 필터링
-        return questions.stream()
-            .map(dto -> {
-                Customer customer = userClient.getCustomerById(dto.customerId());
-                if (customer == null) {
-                    throw new CommonException(ErrorCode.USER_NOT_FOUND);
-                }
-                // 빌더를 사용하여 새로운 DTO 객체 생성
-                return QuestionSummaryResponseDTO.builder()
-                    .questionId(dto.questionId())
-                    .title(dto.title())
-                    .status(dto.status())
-                    .type(dto.type())
-                    .contents(dto.contents())
-                    .customerId(dto.customerId())
-                    .customerName(customerName) // 고객 이름 설정
-                    .questionCreatedAt(dto.questionCreatedAt())
-                    .answerCreatedAt(dto.answerCreatedAt())
-                    .build();
-            })
-            .filter(dto -> !StringUtils.hasText(customerName) || Objects.equals(dto.customerName(), customerName))
-            .collect(Collectors.toList());
+        // 각 Question에 대해 customerName을 UserClient로부터 조회
+        questions.forEach(question -> {
+            Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
+            question.setCustomerName(customer.getName());  // customerName 세팅
+        });
 
-//        return questionRepository.findAllQuestionsByManagerWithoutPaging(
-//            status,
-//            type,
-//            title,
-//            questionId,
-//            customerName,
-//            startDate,
-//            endDate,
-//            sortBy);
+        return questions;
     }
 
     // 질문 전체 조회 (고객사) without paging
@@ -111,39 +93,25 @@ public class QuestionService {
 
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerById(userId);
-        if(user == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+
+        if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        if (!Objects.equals(user.getUserId(), customerId)) {
+        if (!Objects.equals(customer.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        // Question 데이터베이스 조회
-        List<QuestionSummaryResponseDTO> questions = questionRepository.findAllQuestionsByCustomerWithoutPaging(
-            customerId, status, type, title, questionId, startDate, endDate, sortBy);
-
-        // 고객 이름 설정
-        return questions.stream()
-            .map(dto -> {
-                Customer customerDetails = userClient.getCustomerById(dto.customerId());
-                if (customerDetails == null) {
-                    throw new CommonException(ErrorCode.USER_NOT_FOUND);
-                }
-                return new QuestionSummaryResponseDTO(
-                    dto.questionId(),
-                    dto.title(),
-                    dto.customerId(),
-                    dto.status(),
-                    dto.type(),
-                    dto.contents(),
-                    customerDetails.getName(),
-                    dto.questionCreatedAt(),
-                    dto.answerCreatedAt()
-                );
-            })
-            .collect(Collectors.toList());
+        return questionRepository.findAllQuestionsByCustomerWithoutPaging(
+            customerId,
+            status,
+            type,
+            title,
+            questionId,
+            startDate,
+            endDate,
+            sortBy);
     }
 
     // 질문 번호별 질문 조회 (담당자)
@@ -151,8 +119,7 @@ public class QuestionService {
     public QuestionResponseDTO getQuestionByQuestionIdForManager(String token, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerById(userId);
-        if(manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -167,8 +134,9 @@ public class QuestionService {
     public QuestionResponseDTO getQuestionByQuestionId(String token, Long customerId, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Customer customer = userClient.getCustomerById(userId);
-        if(customer == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+
+        if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -197,16 +165,15 @@ public class QuestionService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerById(userId);
-        if(user == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        if(!Objects.equals(user.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Boolean inquiryExists = inquiryClient.checkInquiryExists(inquiryId);
-        if (!inquiryExists) {
+        if(!inquiryClient.checkInquiryExists(inquiryId)){
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
@@ -219,7 +186,7 @@ public class QuestionService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(inquiryId, userId, fileName, filePath);
+        Question question = dto.toQuestionEntity(inquiryId, customerId, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion,userClient);
@@ -232,15 +199,15 @@ public class QuestionService {
         Long customerId,
         MultipartFile file,
         QuestionCreateRequestDTO dto
-        ) {
+    ) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerById(userId);
-        if(user == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        if(!Objects.equals(user.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         String fileName = null;
@@ -252,7 +219,7 @@ public class QuestionService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Question question = dto.toQuestionEntity(null, userId, fileName, filePath);
+        Question question = dto.toQuestionEntity(null, customerId, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
         return QuestionResponseDTO.from(savedQuestion,userClient);

@@ -4,14 +4,20 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import com.pobluesky.config.global.error.FileUploadException;
 import com.pobluesky.file.dto.FileInfo;
+
+import com.pobluesky.global.error.FileUploadException;
 import io.github.cdimascio.dotenv.Dotenv;
+
 import java.io.IOException;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 @RequiredArgsConstructor

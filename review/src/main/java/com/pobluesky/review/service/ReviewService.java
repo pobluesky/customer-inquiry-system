@@ -46,7 +46,7 @@ public class ReviewService {
         Review review = reviewRepository.findByInquiryId(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
 
-        return ReviewResponseDTO.from(review,inquiryClient);
+        return ReviewResponseDTO.from(review,inquiryClient,token);
     }
 
     @Transactional
@@ -64,7 +64,7 @@ public class ReviewService {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
 
         if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -78,10 +78,10 @@ public class ReviewService {
             throw new CommonException(ErrorCode.REVIEW_ALREADY_EXISTS);
         }
 
-        Review review = dto.toReviewEntity(inquiryId,inquiryClient);
+        Review review = dto.toReviewEntity(inquiryId,inquiryClient,token);
         Review savedReview = reviewRepository.save(review);
 
-        return ReviewResponseDTO.from(savedReview,inquiryClient);
+        return ReviewResponseDTO.from(savedReview,inquiryClient,token);
     }
 
     @Transactional
@@ -99,7 +99,7 @@ public class ReviewService {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Manager manager = userClient.getManagerById(userId);
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
 
         if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -114,6 +114,6 @@ public class ReviewService {
 
         review.updateReview(request.finalReviewText());
 
-        return ReviewResponseDTO.from(review,inquiryClient);
+        return ReviewResponseDTO.from(review,inquiryClient,token);
     }
 }

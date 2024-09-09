@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
     "com.pobluesky.config.global",
-    "com.pobluesky.voc",
+    "com.pobluesky.voc"
 })
 @EnableFeignClients(basePackages = "com.pobluesky.voc.feign")
 public class VocApplication {

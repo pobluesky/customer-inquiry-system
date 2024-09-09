@@ -1,6 +1,6 @@
 package com.pobluesky.user.controller;
 
-import com.pobluesky.config.global.security.JwtToken;
+import com.pobluesky.global.security.JwtToken;
 
 import com.pobluesky.user.dto.request.LogInDto;
 import com.pobluesky.user.service.SignService;

@@ -1,15 +1,13 @@
 package com.pobluesky.user.controller;
 
-import com.pobluesky.config.global.util.ResponseFactory;
-import com.pobluesky.config.global.util.model.CommonResult;
-import com.pobluesky.config.global.util.model.JsonResult;
-
 import com.pobluesky.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.user.dto.request.ManagerUpdateRequestDTO;
-import com.pobluesky.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.user.dto.response.ManagerResponseDTO;
 
 import com.pobluesky.user.dto.response.ManagerSummaryResponseDTO;
+import com.pobluesky.global.util.ResponseFactory;
+import com.pobluesky.global.util.model.CommonResult;
+import com.pobluesky.global.util.model.JsonResult;
 import com.pobluesky.user.service.ManagerService;
 
 import io.swagger.v3.oas.annotations.Operation;

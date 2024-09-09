@@ -1,7 +1,7 @@
 package com.pobluesky.notification.controller;
 
-import com.pobluesky.config.global.util.ResponseFactory;
-import com.pobluesky.config.global.util.model.JsonResult;
+import com.pobluesky.global.util.ResponseFactory;
+import com.pobluesky.global.util.model.JsonResult;
 
 import com.pobluesky.notification.dto.request.CustomerNotificationCreateRequestDTO;
 import com.pobluesky.notification.dto.request.CustomerNotificationUpdateRequestDTO;
@@ -14,8 +14,10 @@ import com.pobluesky.notification.service.NotificationType;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+import java.util.HashMap;
 import java.util.List;
 
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -37,17 +39,24 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     // 고객사
-    @Operation(summary = "고객사 계정별 알림 조회")
+    @Operation(summary = "고객사 계정별 읽지 않은 알림 전체 조회")
     @GetMapping("/customers/{userId}")
     public ResponseEntity<JsonResult> getCustomerNotificationsById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId
     ) {
-        List<?> notification = notificationService.getNotificationsById(
+        List<?> response = notificationService.getNotificationsById(
             token,
             userId,
             NotificationType.CUSTOMER
         );
+
+        List<CustomerNotificationResponseDTO> notifications = (List<CustomerNotificationResponseDTO>) response.get(0);
+        Long totalElements = (Long) response.get(1);
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("notifications", notifications);
+        notification.put("totalElements", totalElements);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));
@@ -110,17 +119,24 @@ public class NotificationController {
 
 
     // 담당자
-    @Operation(summary = "담당자 계정별 알림 조회")
+    @Operation(summary = "담당자 계정별 읽지 않은 알림 전체 조회")
     @GetMapping("/managers/{userId}")
     public ResponseEntity<JsonResult> getAllManagerNotifications(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId
     ) {
-        List<?> notification = notificationService.getNotificationsById(
+        List<?> response = notificationService.getNotificationsById(
             token,
             userId,
             NotificationType.MANAGER
         );
+
+        List<ManagerNotificationResponseDTO> notifications = (List<ManagerNotificationResponseDTO>) response.get(0);
+        Long totalElements = (Long) response.get(1);
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("notifications", notifications);
+        notification.put("totalElements", totalElements);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(notification));

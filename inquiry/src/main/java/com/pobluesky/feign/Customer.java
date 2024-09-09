@@ -1,6 +1,7 @@
 package com.pobluesky.feign;
 
-import com.pobluesky.config.global.security.UserRole;
+import com.pobluesky.global.security.UserRole;
+
 import lombok.Getter;
 import lombok.Setter;
 
