@@ -240,7 +240,6 @@ export const postOCR = async (userId, file, productType) => {
             },
         );
 
-        // processInquiryData(formData);
         console.log('postOCR: ', response);
         return response.data;
     } catch (error) {
