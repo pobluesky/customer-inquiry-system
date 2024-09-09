@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,37 +52,46 @@ public class QuestionService {
 
     private final FileService fileService;
 
-    // 질문 전체 조회 (담당자) without paging
+    // 질문 전체 조회 (담당자)
     @Transactional(readOnly = true)
-    public List<QuestionSummaryResponseDTO> getAllQuestionsByManagerWithoutPaging(
+    public Page<QuestionSummaryResponseDTO> getQuestionsByManager(
         String token,
+        int page,
+        int size,
         String sortBy,
         QuestionStatus status,
         QuestionType type,
         String title,
         Long questionId,
         String customerName,
+        Boolean isActivated,
         LocalDate startDate,
         LocalDate endDate) {
 
         validateManager(token);
 
-        return questionRepository.findAllQuestionsByManagerWithoutPaging(
+        Pageable pageable = PageRequest.of(page, size);
+
+        return questionRepository.findQuestionsByManager(
+            pageable,
             status,
             type,
             title,
             questionId,
             customerName,
+            isActivated,
             startDate,
             endDate,
             sortBy);
     }
 
-    // 질문 전체 조회 (고객사) without paging
+    // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
-    public List<QuestionSummaryResponseDTO> getAllQuestionsByCustomerWithoutPaging(
+    public Page<QuestionSummaryResponseDTO> getQuestionsByCustomer(
         String token,
         Long customerId,
+        int page,
+        int size,
         String sortBy,
         QuestionStatus status,
         QuestionType type,
@@ -92,7 +104,10 @@ public class QuestionService {
 
         validateUserMatch(customer.getUserId(), customerId);
 
-        return questionRepository.findAllQuestionsByCustomerWithoutPaging(
+        Pageable pageable = PageRequest.of(page, size);
+
+        return questionRepository.findQuestionsByCustomer(
+            pageable,
             customerId,
             status,
             type,
