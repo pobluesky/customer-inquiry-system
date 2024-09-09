@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.collaboration.service;
 
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreateRequestDTO;
+import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationModifyRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResponseDTO;
@@ -202,6 +203,62 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
 
         collaboration.completeCollaboration();
+
+        return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
+    // 협업 게시판 수정
+    @Transactional
+    public CollaborationDetailResponseDTO modifyCollaboration(
+        String token,
+        Long collaborationId,
+        MultipartFile file,
+        CollaborationModifyRequestDTO requestDTO
+    ) {
+        Long userId = signService.parseToken(token);
+        Collaboration collaboration = collaborationRepository.findById(collaborationId)
+            .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+
+        // 1. 상태 기반 권한 체크
+        if (collaboration.getColStatus() == ColStatus.READY) {
+            if (!userId.equals(collaboration.getColRequestManager().getUserId())) {
+                throw new CommonException(ErrorCode.REQMANAGER_NOT_MACHED);
+            }
+        } else if (collaboration.getColStatus() == ColStatus.INPROGRESS) {
+            if (!userId.equals(collaboration.getColResponseManager().getUserId())) {
+                throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
+            }
+        } else if (collaboration.getColStatus() == ColStatus.COMPLETE) {
+            throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
+        }
+
+        // 2. 내용 및 파일 수정
+        collaboration.modifyCollaborationContents(requestDTO.colContents());
+
+        // 3. 파일 수정 처리
+        String fileName = collaboration.getFileName(); // 기존 파일 이름으로 가져오고
+        String filePath = collaboration.getFilePath(); // 기존 파일 경로 가져오고, 없다면 null로
+
+        if (file != null) {
+            // 4. 새로운 파일이 들어오면 파일 업로드
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        // 5. 파일 정보를 업데이트
+        collaboration.updateFiles(fileName, filePath);
+
+        // 6. colReply와 isAccepted 상태 변경 처리
+        if (requestDTO.isAccepted() != null) {
+            // 협업 상태를 업데이트 (거절 -> 수락, 수락 -> 거절)
+            collaboration.updateCollaborationStatus(requestDTO.isAccepted());
+        }
+
+        // 7. colReply 값이 있을 경우 해당 값도 업데이트
+        if (requestDTO.colReply() != null) {
+            collaboration.modifyColReply(requestDTO.colReply());
+        }
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }
