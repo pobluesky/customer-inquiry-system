@@ -15,8 +15,11 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import java.time.LocalDate;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,30 +35,42 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/managers")
-    @Operation(summary = "질문 조회(담당자)", description = "등록된 모든 질문을 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getAllQuestionsByManagerWithoutPaging(
+    @GetMapping("/managers/all")
+    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    public ResponseEntity<JsonResult> getQuestionByManager(
         @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) QuestionType type,
         @RequestParam(required = false) String title,
         @RequestParam(required = false) Long questionId,
         @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) Boolean isActivated,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        List<QuestionSummaryResponseDTO> response = questionService.getAllQuestionsByManagerWithoutPaging(
+        Page<QuestionSummaryResponseDTO> questions = questionService.getQuestionsByManager(
             token,
+            page,
+            size,
             sortBy,
             status,
             type,
             title,
             questionId,
             customerName,
+            isActivated,
             startDate,
             endDate
         );
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("questionsInfo", questions.getContent());
+        response.put("totalElements", questions.getTotalElements());
+        response.put("totalPages", questions.getTotalPages());
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
