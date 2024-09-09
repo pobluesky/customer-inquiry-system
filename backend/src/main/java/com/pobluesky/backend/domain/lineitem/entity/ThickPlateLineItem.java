@@ -31,7 +31,7 @@ public class ThickPlateLineItem extends LineItem{
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
-    private String generalDetails;
+    private String orderPurpose;
 
     private String orderInfo;
 
@@ -62,7 +62,7 @@ public class ThickPlateLineItem extends LineItem{
     @Builder
     public ThickPlateLineItem(
         Inquiry inquiry,
-        String generalDetails,
+        String orderPurpose,
         String orderInfo,
         String ladleIngredient,
         String productIngredient,
@@ -78,7 +78,7 @@ public class ThickPlateLineItem extends LineItem{
         Boolean ultrasonicTransducer
     ){
         this.inquiry = inquiry;
-        this.generalDetails = generalDetails;
+        this.orderPurpose = orderPurpose;
         this.orderInfo = orderInfo;
         this.ladleIngredient = ladleIngredient;
         this.productIngredient = productIngredient;
