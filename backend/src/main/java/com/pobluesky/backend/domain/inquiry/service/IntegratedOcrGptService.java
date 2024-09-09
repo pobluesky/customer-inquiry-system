@@ -110,8 +110,8 @@ public class IntegratedOcrGptService {
                         "      \"kind\": \"[COLD ROLLED Type: The type of product, such as 'CR' or 'CRC']\",\n" +
                         "      \"inqName\": \"[Inquiry Name: The name or identifier of the product, such as 'JS_SI123']\",\n" +
                         "      \"orderCategory\": \"[Order Category: The intended use of the product, such as 'Pipe Material', 'Automotive Parts']\",\n" +
-                        "      \"thickness\": \"[Thickness in mm: The thickness of the product, e.g., '2.5 mm']\",\n" +
-                        "      \"width\": \"[Width in mm: The width of the product, e.g., '1500 mm']\",\n" +
+                        "      \"thickness\": \"[Thickness in mm: The thickness of the part or material, e.g., '2mm']\",\n" +
+                        "      \"width\": \"[Width in mm: The width of the part or material, e.g., '1500 mm']\",\n" +
                         "      \"quantity\": [Quantity as a number: The number of items, e.g., 300],\n" +
                         "      \"expectedDeadline\": \"[Expected Deadline in yyyy-MM-dd format]\",\n" +
                         "      \"orderEdge\": \"[Edge Type: The edge type required for the order]\",\n" +
@@ -133,8 +133,8 @@ public class IntegratedOcrGptService {
                         "      \"kind\": \"[HOT_ROLLED Type: The type of product, such as 'HR' or 'HRC' or 'HRPO']\",\n" +
                         "      \"inqName\": \"[Inquiry Name: The name or identifier of the product, such as 'JS_SI123']\",\n" +
                         "      \"orderCategory\": \"[Order Category: The intended use of the product]\",\n" +
-                        "      \"thickness\": \"[TThickness in mm format]\",\n" +
-                        "      \"width\": \"[Width in mm format]\",\n" +
+                        "      \"thickness\": \"[Thickness in mm: The thickness of the part or material, e.g., '2mm']\",\n" +
+                        "      \"width\": \"[Width in mm: The width of the part or material, e.g., '1500 mm']\",\n" +
                         "      \"hardness\": \"[Hardness in HV format]\",\n" +
                         "      \"flatness\": [Flatness],\n" +
                         "      \"orderEdge\": \"[Edge Type: The edge type required for the order]\",\n" +
