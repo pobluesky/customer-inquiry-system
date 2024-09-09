@@ -58,7 +58,7 @@ public class ManagerController {
 
     @GetMapping("/without-token/{userId}")
     @Operation(summary = "토큰 없이 고객사 조회")
-    public ResponseEntity<JsonResult> getManagerrByIdWithoutToken(
+    public ResponseEntity<JsonResult> getManagerByIdWithoutToken(
         @PathVariable("userId") Long userId
     ) {
         ManagerResponseDTO response = managerService.getManagerByIdWithoutToken(userId);

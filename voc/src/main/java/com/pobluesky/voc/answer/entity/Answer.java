@@ -1,8 +1,8 @@
 package com.pobluesky.voc.answer.entity;
 
-
-import com.pobluesky.config.global.BaseEntity;
-
+import com.pobluesky.voc.feign.Customer;
+import com.pobluesky.voc.feign.Inquiry;
+import com.pobluesky.voc.global.BaseEntity;
 import com.pobluesky.voc.question.entity.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,8 +37,11 @@ public class Answer extends BaseEntity {
     @JoinColumn(name = "inquiry_id")
     private Long inquiryId; // 문의 번호
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     private Long customerId; // 고객사 번호
+
+    @JoinColumn(name = "manager_id")
+    private Long managerId; // 답변을 입력한 담당자 번호
 
     @Column(columnDefinition = "TEXT")
     private String title;
@@ -52,11 +55,14 @@ public class Answer extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
+    private Boolean isActivated;
+
     @Builder
     private Answer(
         Question question,
         Long inquiryId,
         Long customerId,
+        Long managerId,
         String title,
         String contents,
         String fileName,
@@ -65,9 +71,25 @@ public class Answer extends BaseEntity {
         this.question = question;
         this.inquiryId = inquiryId;
         this.customerId = customerId;
+        this.managerId = managerId;
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.isActivated = true;
+    }
+
+    public void updateAnswer(
+        String title,
+        String contents,
+        String fileName,
+        String filePath
+    ) {
         this.title = title;
         this.contents = contents;
         this.fileName = fileName;
         this.filePath = filePath;
     }
+
+    public void deleteAnswer() { this.isActivated = false; }
 }

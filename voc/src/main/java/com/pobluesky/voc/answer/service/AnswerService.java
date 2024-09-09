@@ -1,9 +1,9 @@
 package com.pobluesky.voc.answer.service;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.voc.answer.dto.request.AnswerCreateRequestDTO;
+import com.pobluesky.voc.answer.dto.request.AnswerUpdateRequestDTO;
 import com.pobluesky.voc.answer.dto.response.AnswerResponseDTO;
+import com.pobluesky.voc.answer.dto.response.MobileAnswerSummaryResponseDTO;
 import com.pobluesky.voc.answer.entity.Answer;
 import com.pobluesky.voc.answer.repository.AnswerRepository;
 import com.pobluesky.voc.feign.Customer;
@@ -13,6 +13,8 @@ import com.pobluesky.voc.feign.Inquiry;
 import com.pobluesky.voc.feign.InquiryClient;
 import com.pobluesky.voc.feign.Manager;
 import com.pobluesky.voc.feign.UserClient;
+import com.pobluesky.voc.global.error.CommonException;
+import com.pobluesky.voc.global.error.ErrorCode;
 import com.pobluesky.voc.question.entity.Question;
 import com.pobluesky.voc.question.entity.QuestionStatus;
 import com.pobluesky.voc.question.repository.QuestionRepository;
@@ -32,9 +34,9 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
 
-    private final UserClient userClient;
-
     private final InquiryClient inquiryClient;
+
+    private final UserClient userClient;
 
     private final FileClient fileClient;
 
@@ -42,15 +44,14 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswers(String token) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        List<Answer> answer = answerRepository.findAll();
+        List<Answer> answers = answerRepository.findAll();
 
-        return answer.stream()
-            .map(AnswerResponseDTO::from)
+        return answers.stream()
+            .map(answer -> AnswerResponseDTO.from(answer,inquiryClient))
             .collect(Collectors.toList());
     }
 
@@ -59,12 +60,12 @@ public class AnswerService {
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
         Long userId = userClient.parseToken(token);
 
-        Customer user = userClient.getCustomerByIdWithoutToken(userId).getData();
-        if(user == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        if (!user.getUserId().equals(customerId))
+        if (!customer.getUserId().equals(customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         List<Answer> answers = answerRepository.findAllByCustomerId(customerId);
@@ -74,7 +75,7 @@ public class AnswerService {
         }
 
         return answers.stream()
-            .map(AnswerResponseDTO::from)
+            .map(answer -> AnswerResponseDTO.from(answer,inquiryClient))
             .collect(Collectors.toList());
     }
 
@@ -83,15 +84,14 @@ public class AnswerService {
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
-        return AnswerResponseDTO.from(answer);
+        return AnswerResponseDTO.from(answer,inquiryClient);
     }
 
     // 질문 번호별 답변 상세 조회 (고객사)
@@ -100,7 +100,7 @@ public class AnswerService {
         Long userId = userClient.parseToken(token);
 
         Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
-        if(customer == null) {
+        if(customer==null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -115,7 +115,7 @@ public class AnswerService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        return AnswerResponseDTO.from(answer);
+        return AnswerResponseDTO.from(answer,inquiryClient);
     }
 
     // 질문별 답변 작성 (담당자)
@@ -129,9 +129,9 @@ public class AnswerService {
         Long userId = userClient.parseToken(token);
 
         Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null) {
+        if(manager == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        } // 존재하지 않는 담당자일 경우
+        }  // 존재하지 않는 담당자일 경우
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND)); // 존재하지 않는 질문인 경우
@@ -140,14 +140,13 @@ public class AnswerService {
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
         }
 
-        if(question.getInquiryId()!= null && inquiryClient.checkInquiryExists(question.getInquiryId())) {
+        Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(question.getInquiryId()).getData();
+        if(inquiry == null){
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
 
-//        Inquiry inquiry = validateInquiry(question);
-
-        Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
-        if (customer == null) {
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -160,26 +159,92 @@ public class AnswerService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Answer answer = dto.toAnswerEntity(question, question.getInquiryId(), question.getCustomerId(), fileName, filePath);
+        Answer answer = dto.toAnswerEntity(question, inquiry.getInquiryId(), customer.getUserId(), manager.getUserId(), fileName, filePath);
         Answer savedAnswer = answerRepository.save(answer);
 
         question.setStatus(QuestionStatus.COMPLETED);
         questionRepository.save(question);
 
-        return AnswerResponseDTO.from(savedAnswer);
+        return AnswerResponseDTO.from(savedAnswer,inquiryClient);
+    }
+
+    // 답변 수정
+    @Transactional
+    public AnswerResponseDTO updateAnswerById(
+        String token,
+        Long questionId,
+        MultipartFile file,
+        AnswerUpdateRequestDTO dto
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
+        if(manager == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        if(!Objects.equals(answer.getManagerId(), userId))
+            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+
+        String fileName = answer.getFileName();
+        String filePath = answer.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileClient.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        answer.updateAnswer(
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath
+        );
+
+        return AnswerResponseDTO.from(answer,inquiryClient);
+    }
+
+    // 답변 삭제
+    @Transactional
+    public void deleteAnswerById(
+        String token,
+        Long questionId
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
+        if(manager == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(()-> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        if(!answer.getIsActivated())
+            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+
+        answer.deleteAnswer();
     }
 
 //    private Inquiry validateInquiry(Question question) {
-//        if (question.getInquiryId() == null) {
+//        if (question.getInquiry() == null) {
 //            return null;
 //        }
 //
-//        Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(question.getInquiryId());
-//
-//        if (inquiry == null) {
-//            throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
-//        }
-//
-//        return inquiry;
+//        return inquiryRepository.findById(question.getInquiry().getInquiryId())
+//            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 //    }
+
+    // 모바일 - 질문 번호별 답변 상세 조회
+    @Transactional(readOnly = true)
+    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return MobileAnswerSummaryResponseDTO.from(answer);
+    }
 }

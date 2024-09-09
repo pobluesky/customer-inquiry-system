@@ -1,8 +1,7 @@
 package com.pobluesky.voc.question.entity;
 
-
-import com.pobluesky.config.global.BaseEntity;
 import com.pobluesky.voc.answer.entity.Answer;
+import com.pobluesky.voc.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -35,7 +33,6 @@ public class Question extends BaseEntity {
 
     @JoinColumn(name = "inquiry_id")
     private Long inquiryId; // 문의 번호
-
 
     @JoinColumn(name = "user_id")
     private Long customerId; // 고객사 번호
@@ -61,6 +58,8 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Answer answer;
 
+    private Boolean isActivated;
+
     @Builder
     private Question(
         Long inquiryId,
@@ -80,11 +79,28 @@ public class Question extends BaseEntity {
         this.filePath = filePath;
         this.status = status;
         this.type = type;
+        this.isActivated = true;
     }
 
     public void updateQuestion(
+        Long inquiryId,
+        String title,
+        String contents,
+        String fileName,
+        String filePath,
+        QuestionType type,
         QuestionStatus status
     ) {
+        this.inquiryId = inquiryId;
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.type = type;
         this.status = status;
+    }
+
+    public void deleteQuestion() {
+        this.isActivated = false;
     }
 }

@@ -1,19 +1,22 @@
 package com.pobluesky.voc.answer.controller;
 
-
-import com.pobluesky.config.global.util.ResponseFactory;
-import com.pobluesky.config.global.util.model.JsonResult;
 import com.pobluesky.voc.answer.dto.request.AnswerCreateRequestDTO;
+import com.pobluesky.voc.answer.dto.request.AnswerUpdateRequestDTO;
 import com.pobluesky.voc.answer.dto.response.AnswerResponseDTO;
 import com.pobluesky.voc.answer.service.AnswerService;
+import com.pobluesky.voc.global.util.ResponseFactory;
+import com.pobluesky.voc.global.util.model.CommonResult;
+import com.pobluesky.voc.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -103,5 +106,35 @@ public class AnswerController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @PutMapping("/managers/{questionId}")
+    @Operation(summary = "질문별 답변 수정(담당자)", description = "질문 번호로 질문을 검색하고 답변을 수정한다.")
+    public ResponseEntity<JsonResult> updateAnswer(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId,
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("answer") AnswerUpdateRequestDTO answerUpdateRequestDTO
+    ) {
+        AnswerResponseDTO response = answerService.updateAnswerById(
+            token,
+            questionId,
+            file,
+            answerUpdateRequestDTO
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @DeleteMapping("/managers/{questionId}")
+    @Operation(summary = "답변 삭제(담당자)", description = "답변을 삭제한다.")
+    public ResponseEntity<CommonResult> deleteAnswerByID(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        answerService.deleteAnswerById(token, questionId);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 }

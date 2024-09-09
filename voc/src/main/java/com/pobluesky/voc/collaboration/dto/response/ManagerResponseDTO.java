@@ -1,7 +1,7 @@
 package com.pobluesky.voc.collaboration.dto.response;
 
-import com.pobluesky.config.global.entity.Department;
 import com.pobluesky.voc.feign.Manager;
+import com.pobluesky.voc.global.entity.Department;
 import lombok.Builder;
 
 @Builder

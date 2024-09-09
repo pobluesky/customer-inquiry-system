@@ -12,6 +12,7 @@ import com.pobluesky.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.inquiry.entity.Industry;
+import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.inquiry.entity.InquiryType;
 import com.pobluesky.inquiry.entity.ProductType;
 import com.pobluesky.inquiry.entity.Progress;
@@ -51,6 +52,14 @@ public class InquiryController {
     public ResponseEntity<Boolean> checkInquiryExists(@PathVariable("inquiryId") Long inquiryId) {
         boolean exists = inquiryService.existsById(inquiryId);
         return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/without-token/{inquiryId}")
+    public ResponseEntity<JsonResult> getInquiryByIdWithoutToken(@PathVariable("inquiryId") Long inquiryId) {
+        Inquiry inquiry = inquiryService.getInquiryByIdWithoutToken(inquiryId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(inquiry));
     }
 
 

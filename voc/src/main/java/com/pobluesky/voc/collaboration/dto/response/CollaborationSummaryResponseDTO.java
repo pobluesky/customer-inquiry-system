@@ -1,7 +1,5 @@
 package com.pobluesky.voc.collaboration.dto.response;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.voc.collaboration.entity.ColStatus;
 import com.pobluesky.voc.collaboration.entity.Collaboration;
 import com.pobluesky.voc.feign.Manager;
@@ -20,17 +18,13 @@ public record CollaborationSummaryResponseDTO(
 ) {
 
     public static CollaborationSummaryResponseDTO from(Collaboration collaboration, UserClient userClient) {
-
-        Manager managerDetails = userClient.getManagerByIdWithoutToken(collaboration.getColRequestManagerId()).getData();
-
-        if (managerDetails == null) {
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Manager manager = userClient.getManagerByIdWithoutToken(
+            collaboration.getColRequestManagerId()).getData();
 
         return CollaborationSummaryResponseDTO.builder()
             .colId(collaboration.getColId())
             .questionId(collaboration.getQuestion().getQuestionId())
-            .colReqManager(managerDetails.getName())
+            .colReqManager(manager.getName())
             .colStatus(collaboration.getColStatus())
             .colContents(collaboration.getColContents())
             .createdDate(collaboration.getCreatedDate())

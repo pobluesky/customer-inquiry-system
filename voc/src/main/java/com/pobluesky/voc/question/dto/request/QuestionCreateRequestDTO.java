@@ -5,13 +5,17 @@ import com.pobluesky.voc.question.entity.QuestionStatus;
 import com.pobluesky.voc.question.entity.QuestionType;
 
 public record QuestionCreateRequestDTO(
+
     String title,
+
     String contents,
+
     QuestionStatus status,
+
     QuestionType type
 ) {
-
     public Question toQuestionEntity(Long inquiryId, Long customerId, String fileName, String filePath) {
+
         return Question.builder()
             .customerId(customerId)
             .inquiryId(inquiryId)

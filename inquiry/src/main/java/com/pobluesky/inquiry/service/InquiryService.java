@@ -615,4 +615,9 @@ public class InquiryService {
     public boolean existsById(Long inquiryId) {
         return inquiryRepository.existsById(inquiryId);
     }
+
+    public Inquiry getInquiryByIdWithoutToken(Long inquiryId) {
+        return inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    }
 }

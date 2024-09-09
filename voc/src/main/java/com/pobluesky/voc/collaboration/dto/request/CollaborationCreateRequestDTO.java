@@ -1,6 +1,7 @@
 package com.pobluesky.voc.collaboration.dto.request;
 
 import com.pobluesky.voc.collaboration.entity.Collaboration;
+import com.pobluesky.voc.feign.Manager;
 import com.pobluesky.voc.question.entity.Question;
 
 public record CollaborationCreateRequestDTO(

@@ -22,17 +22,16 @@ public record CollaborationDetailResponseDTO(
 ) {
 
     public static CollaborationDetailResponseDTO from(Collaboration collaboration, UserClient userClient) {
-        Manager managerFromDetails = userClient.getManagerByIdWithoutToken(collaboration.getColRequestManagerId()).getData();
-        ManagerResponseDTO managerFromResponseDTO = ManagerResponseDTO.from(managerFromDetails);
-
-        Manager managerToDetails = userClient.getManagerByIdWithoutToken(collaboration.getColResponseManagerId()).getData();
-        ManagerResponseDTO managerToResponseDTO = ManagerResponseDTO.from(managerToDetails);
+        Manager salesManager = userClient.getManagerByIdWithoutToken(
+            collaboration.getColRequestManagerId()).getData();
+        Manager qualityManager = userClient.getManagerByIdWithoutToken(
+            collaboration.getColResponseManagerId()).getData();
 
         return CollaborationDetailResponseDTO.builder()
             .colId(collaboration.getColId())
             .questionId(collaboration.getQuestion().getQuestionId())
-            .colManagerFromResponseDto(managerFromResponseDTO)
-            .colManagerToResponseDto(managerToResponseDTO)
+            .colManagerFromResponseDto(ManagerResponseDTO.from(salesManager))
+            .colManagerToResponseDto(ManagerResponseDTO.from(qualityManager))
             .colStatus(collaboration.getColStatus())
             .colContents(collaboration.getColContents())
             .colReply(collaboration.getColReply())

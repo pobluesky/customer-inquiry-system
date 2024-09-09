@@ -22,7 +22,7 @@ public class QAnswer extends EntityPathBase<Answer> {
 
     public static final QAnswer answer = new QAnswer("answer");
 
-    public final com.pobluesky.config.global.QBaseEntity _super = new com.pobluesky.config.global.QBaseEntity(this);
+    public final com.pobluesky.voc.global.QBaseEntity _super = new com.pobluesky.voc.global.QBaseEntity(this);
 
     public final NumberPath<Long> answerId = createNumber("answerId", Long.class);
 
@@ -38,6 +38,10 @@ public class QAnswer extends EntityPathBase<Answer> {
     public final StringPath filePath = createString("filePath");
 
     public final NumberPath<Long> inquiryId = createNumber("inquiryId", Long.class);
+
+    public final BooleanPath isActivated = createBoolean("isActivated");
+
+    public final NumberPath<Long> managerId = createNumber("managerId", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;

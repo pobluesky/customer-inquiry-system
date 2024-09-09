@@ -1,9 +1,5 @@
 package com.pobluesky.voc.collaboration.service;
 
-
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
-import com.pobluesky.config.global.security.UserRole;
 import com.pobluesky.voc.collaboration.dto.request.CollaborationCreateRequestDTO;
 import com.pobluesky.voc.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.voc.collaboration.dto.response.CollaborationDetailResponseDTO;
@@ -13,16 +9,18 @@ import com.pobluesky.voc.collaboration.entity.ColStatus;
 import com.pobluesky.voc.collaboration.entity.Collaboration;
 import com.pobluesky.voc.collaboration.repository.CollaborationRepository;
 import com.pobluesky.voc.feign.FileClient;
-import com.pobluesky.voc.feign.FileInfo;
 import com.pobluesky.voc.feign.Manager;
 import com.pobluesky.voc.feign.UserClient;
+import com.pobluesky.voc.feign.FileInfo;
+import com.pobluesky.voc.global.error.CommonException;
+import com.pobluesky.voc.global.error.ErrorCode;
+import com.pobluesky.voc.global.security.UserRole;
 import com.pobluesky.voc.question.entity.Question;
 import com.pobluesky.voc.question.entity.QuestionStatus;
 import com.pobluesky.voc.question.repository.QuestionRepository;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class CollaborationService {
-
-
 
     private final CollaborationRepository collaborationRepository;
 
@@ -55,7 +51,7 @@ public class CollaborationService {
         Long userId = userClient.parseToken(token);
 
         Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if (manager == null) {
+        if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -81,7 +77,7 @@ public class CollaborationService {
         Long userId = userClient.parseToken(token);
 
         Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if (manager == null) {
+        if(manager == null) {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
@@ -105,23 +101,20 @@ public class CollaborationService {
         ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if (manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        // 요청한 Manager 정보 가져오기
         Manager reqManager = userClient.getManagerByIdWithoutToken(requestDTO.colReqId()).getData();
-        if (reqManager == null) {
+        if(reqManager == null) {
             throw new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND);
         }
 
-        // 응답할 Manager 정보 가져오기
         Manager resManager = userClient.getManagerByIdWithoutToken(requestDTO.colResId()).getData();
-        if (resManager == null) {
+        if(reqManager == null) {
             throw new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND);
         }
 
@@ -162,33 +155,27 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_INPROGRESS);
         }
 
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if (manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        // 요청한 Manager 정보 가져오기
         Manager reqManager = userClient.getManagerByIdWithoutToken(requestDTO.colReqId()).getData();
-        if (reqManager == null) {
+        if(reqManager == null) {
             throw new CommonException(ErrorCode.REQ_MANAGER_NOT_FOUND);
         }
 
-        // 응답할 Manager 정보 가져오기
         Manager resManager = userClient.getManagerByIdWithoutToken(requestDTO.colResId()).getData();
-        if (resManager == null) {
+        if(reqManager == null) {
             throw new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND);
         }
 
-        // Manager의 ID를 비교하여 검증
         if (!collaboration.getColRequestManagerId().equals(reqManager.getUserId()) ||
             !collaboration.getColResponseManagerId().equals(resManager.getUserId())) {
             throw new CommonException(ErrorCode.COLLABORATION_INFO_MISMATCH);
         }
 
-        // 응답 매니저가 현재 인증된 사용자와 일치하는지 확인
-        if (!userId.equals(resManager.getUserId())) {
+        if(!userId.equals(collaboration.getColResponseManagerId()))
             throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
-        }
 
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
@@ -214,8 +201,7 @@ public class CollaborationService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if (manager == null) {
+        if(!userClient.managerExists(userId)){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 

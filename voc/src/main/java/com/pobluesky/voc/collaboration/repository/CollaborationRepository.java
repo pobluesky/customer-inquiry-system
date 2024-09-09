@@ -9,8 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CollaborationRepository extends JpaRepository<Collaboration, Long>,
-    CollaborationRepositoryCustom {
+public interface CollaborationRepository extends JpaRepository<Collaboration, Long>, CollaborationRepositoryCustom {
 
     @Query("SELECT c FROM Collaboration c WHERE c.colId = :collaborationId AND c.question = :question")
     Optional<Collaboration> findByIdAndQuestion(@Param("collaborationId") Long collaborationId, @Param("question") Question question);

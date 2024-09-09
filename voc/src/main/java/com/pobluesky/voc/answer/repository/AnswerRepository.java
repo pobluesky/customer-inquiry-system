@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    List<Answer> findAllByCustomerId(Long customerId);
+    List<Answer> findAllByCustomerId(Long userId);
 
     Optional<Answer> findByQuestion_QuestionId(Long questionId);
 }

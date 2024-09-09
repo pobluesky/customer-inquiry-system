@@ -1,7 +1,8 @@
 package com.pobluesky.voc.feign;
 
-import com.pobluesky.config.global.entity.Department;
-import com.pobluesky.config.global.security.UserRole;
+import com.pobluesky.voc.global.entity.Department;
+import com.pobluesky.voc.global.security.UserRole;
+
 import lombok.Getter;
 import lombok.Setter;
 

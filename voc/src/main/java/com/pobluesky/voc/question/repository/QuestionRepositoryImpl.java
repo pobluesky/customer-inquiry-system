@@ -1,13 +1,15 @@
 package com.pobluesky.voc.question.repository;
 
 
-
 import static com.pobluesky.voc.answer.entity.QAnswer.answer;
 import static com.pobluesky.voc.question.entity.QQuestion.question;
 
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
+import com.pobluesky.voc.feign.Customer;
+import com.pobluesky.voc.feign.UserClient;
+import com.pobluesky.voc.global.error.CommonException;
+import com.pobluesky.voc.global.error.ErrorCode;
 import com.pobluesky.voc.question.dto.response.QuestionSummaryResponseDTO;
+import com.pobluesky.voc.question.entity.Question;
 import com.pobluesky.voc.question.entity.QuestionStatus;
 import com.pobluesky.voc.question.entity.QuestionType;
 import com.querydsl.core.types.OrderSpecifier;
@@ -18,6 +20,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -26,6 +29,8 @@ import org.springframework.util.StringUtils;
 public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    private final UserClient userClient;
 
     @Override
     public List<QuestionSummaryResponseDTO> findAllQuestionsByCustomerWithoutPaging(
@@ -38,18 +43,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         LocalDate endDate,
         String sortBy
     ) {
-        return queryFactory
-            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
-                question.questionId,
-                question.title,
-                question.status,
-                question.type,
-                question.contents,
-                question.customerId,
-                question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt")
-            ))
-            .from(question)
+        List<Question> questions = queryFactory
+            .selectFrom(question)
             .leftJoin(question.answer, answer)
             .where(
                 question.customerId.eq(userId),
@@ -61,6 +56,27 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             )
             .orderBy(getOrderSpecifier(sortBy))
             .fetch();
+
+        // 2. 조회된 Question 목록을 처리하며 Customer 정보를 Feign 클라이언트를 통해 가져옴
+        return questions.stream()
+            .map(q -> {
+                // Feign을 사용해 Customer 정보를 가져옴
+                Customer customer = userClient.getCustomerByIdWithoutToken(q.getCustomerId()).getData();
+
+                // DTO로 변환
+                return QuestionSummaryResponseDTO.builder()
+                    .questionId(q.getQuestionId())
+                    .title(q.getTitle())
+                    .status(q.getStatus())
+                    .type(q.getType())
+                    .contents(q.getContents())
+                    .customerName(customer != null ? customer.getName() : null)  // Feign을 통해 조회된 고객 정보
+                    .questionCreatedAt(q.getCreatedDate())
+                    .answerCreatedAt(q.getAnswer() != null ? q.getAnswer().getCreatedDate() : null)
+                    .isActivated(q.getIsActivated())
+                    .build();
+            })
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -74,18 +90,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         LocalDate endDate,
         String sortBy
     ) {
-        return queryFactory
-            .select(Projections.fields(QuestionSummaryResponseDTO.class,
-                question.questionId,
-                question.title,
-                question.status,
-                question.type,
-                question.contents,
-                question.customerId.as("customerId"),
-                question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt")
-            ))
-            .from(question)
+        List<Question> questions = queryFactory
+            .selectFrom(question)
             .leftJoin(question.answer, answer)
             .where(
                 statusEq(status),
@@ -96,6 +102,29 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             )
             .orderBy(getOrderSpecifier(sortBy))
             .fetch();
+
+        // 2. 조회된 Question 목록을 처리하며 Customer 정보를 Feign 클라이언트를 통해 가져옴
+        return questions.stream()
+            .map(q -> {
+                // Feign을 사용해 Customer 정보를 가져옴
+                Customer customer = userClient.getCustomerByIdWithoutToken(q.getCustomerId()).getData();
+
+                // DTO로 변환
+                return QuestionSummaryResponseDTO.builder()
+                    .questionId(q.getQuestionId())
+                    .title(q.getTitle())
+                    .status(q.getStatus())
+                    .type(q.getType())
+                    .contents(q.getContents())
+                    .customerName(customer != null ? customer.getName() : null)  // Feign을 통해 조회된 고객 정보
+                    .questionCreatedAt(q.getCreatedDate())
+                    .answerCreatedAt(q.getAnswer() != null ? q.getAnswer().getCreatedDate() : null)
+                    .isActivated(q.getIsActivated())
+                    .build();
+            })
+            // 3. customerName이 존재하면 메모리에서 필터링
+            .filter(dto -> StringUtils.hasText(customerName) || dto.customerName().contains(customerName))
+            .collect(Collectors.toList());
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
@@ -135,6 +164,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     private BooleanExpression questionIdEq(Long questionId) {
         return questionId != null ? question.questionId.eq(questionId) : null;
     }
+
+//    private BooleanExpression customerNameContains(String customerName) {
+//        return StringUtils.hasText(customerName) ? customer.customerName.contains(customerName) : null;
+//    }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
         if (startDate == null && endDate == null) {

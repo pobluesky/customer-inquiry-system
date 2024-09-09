@@ -1,7 +1,6 @@
 package com.pobluesky.voc.collaboration.entity;
 
-
-import com.pobluesky.config.global.BaseEntity;
+import com.pobluesky.voc.global.BaseEntity;
 import com.pobluesky.voc.question.entity.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.Manager;
 
 @Entity
 @Getter

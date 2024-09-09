@@ -1,16 +1,16 @@
 package com.pobluesky.voc.question.service;
 
-
-import com.pobluesky.config.global.error.CommonException;
-import com.pobluesky.config.global.error.ErrorCode;
 import com.pobluesky.voc.feign.Customer;
 import com.pobluesky.voc.feign.FileClient;
 import com.pobluesky.voc.feign.FileInfo;
 import com.pobluesky.voc.feign.Inquiry;
 import com.pobluesky.voc.feign.InquiryClient;
-import com.pobluesky.voc.feign.Manager;
 import com.pobluesky.voc.feign.UserClient;
+import com.pobluesky.voc.global.error.CommonException;
+import com.pobluesky.voc.global.error.ErrorCode;
 import com.pobluesky.voc.question.dto.request.QuestionCreateRequestDTO;
+import com.pobluesky.voc.question.dto.request.QuestionUpdateRequestDTO;
+import com.pobluesky.voc.question.dto.response.MobileQuestionSummaryResponseDTO;
 import com.pobluesky.voc.question.dto.response.QuestionResponseDTO;
 import com.pobluesky.voc.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.voc.question.entity.Question;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -58,7 +57,7 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
-        List<QuestionSummaryResponseDTO> questions = questionRepository.findAllQuestionsByManagerWithoutPaging(
+        return questionRepository.findAllQuestionsByManagerWithoutPaging(
             status,
             type,
             title,
@@ -66,16 +65,7 @@ public class QuestionService {
             customerName,
             startDate,
             endDate,
-            sortBy
-        );
-
-        // 각 Question에 대해 customerName을 UserClient로부터 조회
-        questions.forEach(question -> {
-            Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
-            question.setCustomerName(customer.getName());  // customerName 세팅
-        });
-
-        return questions;
+            sortBy);
     }
 
     // 질문 전체 조회 (고객사) without paging
@@ -94,7 +84,6 @@ public class QuestionService {
         Long userId = userClient.parseToken(token);
 
         Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
-
         if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -123,10 +112,11 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
 
+
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        return QuestionResponseDTO.from(question,userClient);
+        return QuestionResponseDTO.from(question,userClient,inquiryClient);
     }
 
     // 질문 번호별 질문 조회 (고객사)
@@ -135,7 +125,6 @@ public class QuestionService {
         Long userId = userClient.parseToken(token);
 
         Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
-
         if(customer == null){
             throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
@@ -151,7 +140,7 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        return QuestionResponseDTO.from(question,userClient);
+        return QuestionResponseDTO.from(question,userClient,inquiryClient);
     }
 
     // 문의별 질문 작성 (고객사)
@@ -173,9 +162,13 @@ public class QuestionService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        if(!inquiryClient.checkInquiryExists(inquiryId)){
+        Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(inquiryId).getData();
+        if(inquiry == null){
             throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
         }
+
+        if(!Objects.equals(inquiry.getCustomerId(), customerId))
+            throw new CommonException(ErrorCode.INQUIRY_NOT_MATCHED);
 
         String fileName = null;
         String filePath = null;
@@ -189,7 +182,7 @@ public class QuestionService {
         Question question = dto.toQuestionEntity(inquiryId, customerId, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
-        return QuestionResponseDTO.from(savedQuestion,userClient);
+        return QuestionResponseDTO.from(savedQuestion,userClient,inquiryClient);
     }
 
     // 타입별 질문 작성 (고객사)
@@ -199,7 +192,7 @@ public class QuestionService {
         Long customerId,
         MultipartFile file,
         QuestionCreateRequestDTO dto
-    ) {
+        ) {
         Long userId = userClient.parseToken(token);
 
         Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
@@ -222,6 +215,186 @@ public class QuestionService {
         Question question = dto.toQuestionEntity(null, customerId, fileName, filePath);
         Question savedQuestion = questionRepository.save(question);
 
-        return QuestionResponseDTO.from(savedQuestion,userClient);
+        return QuestionResponseDTO.from(savedQuestion,userClient,inquiryClient);
+    }
+
+    // 고객사 문의별 질문 수정
+    @Transactional
+    public QuestionResponseDTO updateInquiryQuestionById(
+        String token,
+        Long customerId,
+        Long inquiryId,
+        Long questionId,
+        MultipartFile file,
+        QuestionUpdateRequestDTO dto
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(inquiryId).getData();
+        if(inquiry == null){
+            throw new CommonException(ErrorCode.INQUIRY_NOT_FOUND);
+        }
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomerId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        String fileName = question.getFileName();
+        String filePath = question.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileClient.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        question.updateQuestion(
+            inquiryId,
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath,
+            dto.type(),
+            dto.status()
+        );
+
+        return QuestionResponseDTO.from(question,userClient,inquiryClient);
+    }
+
+    // 고객사 기타 질문 수정
+    @Transactional
+    public QuestionResponseDTO updateNotInquiryQuestionById(
+        String token,
+        Long customerId,
+        Long questionId,
+        MultipartFile file,
+        QuestionUpdateRequestDTO dto
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        if(!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Inquiry inquiry = null;
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomerId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        String fileName = question.getFileName();
+        String filePath = question.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileClient.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        question.updateQuestion(
+            inquiry.getInquiryId(),
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath,
+            dto.type(),
+            dto.status()
+        );
+
+        return QuestionResponseDTO.from(question,userClient,inquiryClient);
+    }
+
+    // 질문 삭제 (고객사용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long customerId,
+        Long questionId
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
+        if(customer == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        if(!Objects.equals(customer.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(!Objects.equals(question.getCustomerId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
+
+        question.deleteQuestion();
+    }
+
+    // 질문 삭제 (담당자용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long questionId
+    ) {
+        Long userId = userClient.parseToken(token);
+
+        if(!userClient.managerExists(userId)){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
+
+        question.deleteQuestion();
+    }
+
+    // 모바일 전체 문의 조회
+    public List<MobileQuestionSummaryResponseDTO> getAllQuestions() {
+        return questionRepository.findActiveQuestions().stream()
+            .map(question -> MobileQuestionSummaryResponseDTO.from(question, userClient)) // 람다식을 사용하여 userClient 전달
+            .collect(Collectors.toList());
+    }
+
+    // 모바일 상세 문의 조회
+    @Transactional(readOnly = true)
+    public MobileQuestionSummaryResponseDTO getQuestionById(Long questionId) {
+        Question question = questionRepository.findActiveQuestionByQuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        return MobileQuestionSummaryResponseDTO.from(question,userClient);
     }
 }
