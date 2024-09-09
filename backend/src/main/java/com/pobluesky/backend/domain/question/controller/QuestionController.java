@@ -92,7 +92,7 @@ public class QuestionController {
 
     @GetMapping("/customers/{userId}")
     @Operation(summary = "질문 조회(고객사)", description = "등록된 모든 질문을 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getAllQuestionsByCustomerWithoutPaging(
+    public ResponseEntity<JsonResult> getQuestionsByCustomer(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page,
