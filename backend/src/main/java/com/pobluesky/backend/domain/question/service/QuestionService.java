@@ -168,9 +168,6 @@ public class QuestionService {
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if(!Objects.equals(inquiry.getCustomer().getUserId(), customerId))
-            throw new CommonException(ErrorCode.INQUIRY_NOT_MATCHED);
-
         String fileName = null;
         String filePath = null;
 
@@ -244,9 +241,6 @@ public class QuestionService {
         if(!Objects.equals(user.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        if(!Objects.equals(inquiry.getCustomer().getUserId(), customerId))
-            throw new CommonException(ErrorCode.INQUIRY_NOT_MATCHED);
-
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
@@ -314,6 +308,50 @@ public class QuestionService {
         );
 
         return QuestionResponseDTO.from(question);
+    }
+
+    // 질문 삭제 (고객사용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long customerId,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Customer user = customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(user.getUserId(), customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        question.deleteQuestion();
+    }
+
+    // 질문 삭제 (담당자용)
+    @Transactional
+    public void deleteQuestionById(
+        String token,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        if(question.getStatus() == QuestionStatus.COMPLETED)
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        question.deleteQuestion();
     }
 
     // 모바일 전체 문의 조회

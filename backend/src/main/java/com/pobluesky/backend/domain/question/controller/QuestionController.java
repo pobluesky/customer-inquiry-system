@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 import com.pobluesky.backend.domain.question.service.QuestionService;
 import com.pobluesky.backend.global.util.ResponseFactory;
+import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +33,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/managers")
-    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    @Operation(summary = "질문 조회(담당자)", description = "등록된 모든 질문을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getAllQuestionsByManagerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
@@ -77,7 +78,7 @@ public class QuestionController {
     }
 
     @GetMapping("/customers/{userId}")
-    @Operation(summary = "Question 조회(고객사)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    @Operation(summary = "질문 조회(고객사)", description = "등록된 모든 질문을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getAllQuestionsByCustomerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -203,5 +204,28 @@ public class QuestionController {
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(summary = "질문 삭제 (고객사용)", description = "고객사가 작성한 질문을 삭제한다.")
+    @DeleteMapping("/customers/{userId}/{questionId}")
+    public ResponseEntity<CommonResult> deleteQuestionById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @PathVariable Long questionId
+    ) {
+        questionService.deleteQuestionById(token, userId, questionId);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
+    }
+
+    @Operation(summary = "질문 삭제 (담당자용)", description = "담당자가 고객사의 질문을 삭제한다.")
+    @DeleteMapping("/managers/{questionId}")
+    public ResponseEntity<CommonResult> deleteQuestionById(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        questionService.deleteQuestionById(token, questionId);
+
+        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 }

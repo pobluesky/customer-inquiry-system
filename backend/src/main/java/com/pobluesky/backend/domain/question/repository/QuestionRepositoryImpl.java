@@ -50,7 +50,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.contents,
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt")
+                answer.createdDate.as("answerCreatedAt"),
+                question.isActivated
             ))
             .from(question)
             .leftJoin(question.answer, answer)
@@ -87,7 +88,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 question.contents,
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt")
+                answer.createdDate.as("answerCreatedAt"),
+                question.isActivated
             ))
             .from(question)
             .leftJoin(question.answer, answer)

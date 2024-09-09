@@ -11,5 +11,4 @@ public record QuestionUpdateRequestDTO(
     QuestionStatus status,
     QuestionType type
 ) {
-
 }
