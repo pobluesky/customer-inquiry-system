@@ -116,7 +116,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
         DateTemplate<LocalDate> dateTemplate = Expressions.dateTemplate(
             LocalDate.class,
-            "CAST({0} AS DATE)",
+            "DATE({0})",
             collaboration.createdDate
         );
 
