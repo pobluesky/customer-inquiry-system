@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.user.service;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.backend.domain.user.dto.response.MobileManagerResponseDTO;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.global.error.CommonException;
@@ -98,5 +99,18 @@ public class ManagerService {
         if (!userId.equals(targetId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         return manager;
+    }
+
+    @Transactional(readOnly = true)
+    public MobileManagerResponseDTO getManagerByIdForMobile(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Manager manager = managerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return  MobileManagerResponseDTO.from(manager);
     }
 }

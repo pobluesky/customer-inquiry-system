@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.answer.service;
 
 import com.pobluesky.backend.domain.answer.dto.request.AnswerUpdateRequestDTO;
+import com.pobluesky.backend.domain.answer.dto.response.MobileAnswerSummaryResponseDTO;
 import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
@@ -228,5 +229,14 @@ public class AnswerService {
 
         return inquiryRepository.findById(question.getInquiry().getInquiryId())
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    }
+
+    // 모바일 - 질문 번호별 답변 상세 조회
+    @Transactional(readOnly = true)
+    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return MobileAnswerSummaryResponseDTO.from(answer);
     }
 }

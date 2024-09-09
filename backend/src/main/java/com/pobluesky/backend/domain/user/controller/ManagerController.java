@@ -66,7 +66,6 @@ public class ManagerController {
     }
 
 
-
     @PostMapping("/sign-up")
     @Operation(summary = "담당자 회원가입")
     public ResponseEntity<JsonResult> signUp(@RequestBody ManagerCreateRequestDTO signUpDto) {
