@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.inquiry.controller;
 
-import com.amazonaws.Response;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;

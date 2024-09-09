@@ -44,7 +44,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
 
     private String transportationDestination;
 
-    private String edge;
+    private String orderEdge;
 
     private String tolerance;
 
@@ -67,7 +67,7 @@ public class CarLineItemResponseDTO extends LineItemResponseDTO {
             .isActivated(carLineItem.getIsActivated())
             .expectedDeliveryDate(carLineItem.getExpectedDeliveryDate())
             .transportationDestination(carLineItem.getTransportationDestination())
-            .edge(carLineItem.getEdge())
+            .orderEdge(carLineItem.getOrderEdge())
             .tolerance(carLineItem.getTolerance())
             .annualCost(carLineItem.getAnnualCost())
             .build();

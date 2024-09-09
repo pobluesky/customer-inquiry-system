@@ -1,7 +1,7 @@
 package com.pobluesky.backend.domain.lineitem.dto.request.thickplate;
 
 public record ThickPlateLineItemUpdateRequestDTO(
-    String generalDetails,
+    String orderPurpose,
     String orderInfo,
     String ladleIngredient,
     String productIngredient,

@@ -65,7 +65,7 @@ public class CarLineItem extends LineItem {
 
     private String transportationDestination;
 
-    private String edge;
+    private String orderEdge;
 
     private String tolerance;
 
@@ -85,7 +85,7 @@ public class CarLineItem extends LineItem {
         Integer quantity,
         String expectedDeliveryDate,
         String transportationDestination,
-        String edge,
+        String orderEdge,
         String tolerance,
         String annualCost
     ) {
@@ -102,7 +102,7 @@ public class CarLineItem extends LineItem {
         this.isActivated = true;
         this.expectedDeliveryDate = expectedDeliveryDate;
         this.transportationDestination = transportationDestination;
-        this.edge = edge;
+        this.orderEdge = orderEdge;
         this.tolerance = tolerance;
         this.annualCost = annualCost;
     }

@@ -84,29 +84,34 @@ public class IntegratedOcrGptService {
         switch (productType) {
             case CAR:
                 promptBuilder.append(
-                    "      \"lab\": \"[Lab Name]\",\n" +
-                        "      \"kind\": \"[Vehicle Type]\",\n" +
-                        "      \"standardOrg\": \"[Standard Organization]\",\n" +
-                        "      \"salesVehicleName\": \"[Vehicle Name]\",\n" +
-                        "      \"partName\": \"[Part Name]\",\n" +
-                        "      \"ixPlate\": \"[Plate Type]\",\n" +
-                        "      \"thickness\": \"[Thickness in mm]\",\n" +
-                        "      \"width\": \"[Width in mm]\",\n" +
-                        "      \"quantity\": [Quantity as a number],\n" +
-                        "      \"expectedDeliveryDate\": \"[Delivery Date in yyyy-MM-dd format]\",\n" +
-                        "      \"transportationDestination\": \"[Destination]\",\n" +
-                        "      \"edge\": \"[Edge Type]\",\n" +
-                        "      \"tolerance\": \"[Tolerance in ±mm format]\",\n" +
-                        "      \"annualCost\": \"[Annual Cost in $XX,XXX format]\"\n"
+                        "      \"lab\": \"[Lab Name: The name of the laboratory or testing facility]\",\n" +
+                        "      \"kind\": \"[Vehicle Type: The type of vehicle, e.g., 'Sedan', 'SUV', 'Truck']\",\n" +
+                        "      \"standardOrg\": \"[Standard Organization: The organization setting the standards, e.g., 'ASTM', 'ANSI']\",\n" +
+                        "      \"salesVehicleName\": \"[Vehicle Name: The commercial name of the vehicle model]\",\n" +
+                        "      \"partName\": \"[Part Name: The specific name of the automotive part]\",\n" +
+                        "      \"ixPlate\": \"[Plate Type: The type of plate used, e.g., 'FLOOR_PANEL', 'DASH_PANEL']\",\n" +
+                        "      \"thickness\": \"[Thickness in mm: The thickness of the part or material]\",\n" +
+                        "      \"width\": \"[Width in mm: The width of the part or material]\",\n" +
+                        "      \"quantity\": [Quantity as a number: The number of parts or units ordered],\n" +
+                        "      \"expectedDeliveryDate\": \"[Expected Deadline in yyyy-MM-dd format]\",\n" +
+                        "      \"transportationDestination\": \"[Destination: The final delivery location for the parts]\",\n" +
+                        "      \"orderEdge\": \"[Edge Type: The type of edge treatment required]\",\n" +
+                        "      \"tolerance\": \"[Tolerance in ±mm format: The acceptable deviation from the specified dimensions]\",\n" +
+                        "      \"annualCost\": \"[Annual Cost in $XX,XXX format: The estimated yearly cost for the parts]\"\n"
                 );
+                promptBuilder.append("\nPlease adhere to the following guidelines:\n");
+                promptBuilder.append("1. For CAR type, the above JSON structure represents a single complete data set.\n");
+                promptBuilder.append("2. Always use the exact numbers from the original data.");
+                promptBuilder.append("3. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
+                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
                 break;
             case COLD_ROLLED:
                 promptBuilder.append(
-                    "      \"kind\": \"[COLD ROLLED Type: The type of product, such as 'CR' or 'CRC']\",\n" +
+                        "      \"kind\": \"[COLD ROLLED Type: The type of product, such as 'CR' or 'CRC']\",\n" +
                         "      \"inqName\": \"[Inquiry Name: The name or identifier of the product, such as 'JS_SI123']\",\n" +
                         "      \"orderCategory\": \"[Order Category: The intended use of the product, such as 'Pipe Material', 'Automotive Parts']\",\n" +
-                        "      \"thickness\": \"[Thickness in mm: The thickness of the product, e.g., '2.5 mm']\",\n" +
-                        "      \"width\": \"[Width in mm: The width of the product, e.g., '1500 mm']\",\n" +
+                        "      \"thickness\": \"[Thickness in mm: The thickness of the part or material, e.g., '2mm']\",\n" +
+                        "      \"width\": \"[Width in mm: The width of the part or material, e.g., '1500 mm']\",\n" +
                         "      \"quantity\": [Quantity as a number: The number of items, e.g., 300],\n" +
                         "      \"expectedDeadline\": \"[Expected Deadline in yyyy-MM-dd format]\",\n" +
                         "      \"orderEdge\": \"[Edge Type: The edge type required for the order]\",\n" +
@@ -117,14 +122,19 @@ public class IntegratedOcrGptService {
                         "      \"elongationRatio\": \"[Elongation Ratio in %: The elongation ratio of the material]\",\n" +
                         "      \"hardness\": \"[Hardness in HV: The hardness of the material]\"\n"
                 );
+                promptBuilder.append("\nPlease adhere to the following guidelines:\n");
+                promptBuilder.append("1. For COLD_ROLLED type, the above JSON structure represents a single complete data set.\n");
+                promptBuilder.append("2. Always use the exact numbers from the original data.");
+                promptBuilder.append("3. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
+                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
                 break;
             case HOT_ROLLED:
                 promptBuilder.append(
-                    "      \"kind\": \"[HOT ROLLED Type]\",\n" +
+                        "      \"kind\": \"[HOT_ROLLED Type: The type of product, such as 'HR' or 'HRC' or 'HRPO']\",\n" +
                         "      \"inqName\": \"[Inquiry Name: The name or identifier of the product, such as 'JS_SI123']\",\n" +
                         "      \"orderCategory\": \"[Order Category: The intended use of the product]\",\n" +
-                        "      \"thickness\": \"[TThickness in mm format]\",\n" +
-                        "      \"width\": \"[Width in mm format]\",\n" +
+                        "      \"thickness\": \"[Thickness in mm: The thickness of the part or material, e.g., '2mm']\",\n" +
+                        "      \"width\": \"[Width in mm: The width of the part or material, e.g., '1500 mm']\",\n" +
                         "      \"hardness\": \"[Hardness in HV format]\",\n" +
                         "      \"flatness\": [Flatness],\n" +
                         "      \"orderEdge\": \"[Edge Type: The edge type required for the order]\",\n" +
@@ -135,28 +145,45 @@ public class IntegratedOcrGptService {
                         "      \"camber\": \"[Camber in mm format]\",\n" +
                         "      \"annualCost\": \"[Annual Cost in $XX,XXX format]\"\n"
                 );
+                promptBuilder.append("\nPlease adhere to the following guidelines:\n");
+                promptBuilder.append("1. For HOT_ROLLED type, the above JSON structure represents a single complete data set.\n");
+                promptBuilder.append("2. Always use the exact numbers from the original data.");
+                promptBuilder.append("3. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
+                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
                 break;
             case THICK_PLATE:
                 promptBuilder.append(
-                    "      \"generalDetails\": \"[Each General Details]\",\n" +
-                        "      \"orderInfo\": \"[Each Order Info]\",\n" +
-                        "      \"ladleIngredient\": \"[Ladle Ingredient]\",\n" +
-                        "      \"productIngredient\": \"[Product Ingredient]\",\n" +
-                        "      \"seal\": \"[Seal in MPa range]\",\n" +
+                        "      \"orderPurpose\": \"[Extract from 일반사항]\",\n" +
+                        "      \"orderInfo\": \"[Extract from 주문정보]\",\n" +
+                        "      \"ladleIngredient\": \"[Extract from 성분(ladle)]\",\n" +
+                        "      \"productIngredient\": \"[Extract from 성분(product)]\",\n" +
+                        "      \"seal\": \"[Extract from 인장, format as 'X MPa ~ Y MPa']\",\n" +
                         "      \"grainSizeAnalysis\": [Boolean],\n" +
-                        "      \"show\": \"[Show, e.g. '27 J @ -20°C']\",\n" +
-                        "      \"extraShow\": \"[Extra Show, e.g. '27 J @ -20°C']\",\n" +
-                        "      \"agingShow\": \"[Aging Show, e.g. '27 J @ -20°C']\",\n" +
-                        "      \"curve\": \"[Curve in MPa format]\",\n" +
+                        "      \"show\": \"[Extract from 충격, e.g. '27 J @ -20°C']\",\n" +
+                        "      \"extraShow\": \"[Extract from 추가 충격, e.g. '27 J @ -20°C']\",\n" +
+                        "      \"agingShow\": \"[Extract from 시효 충격, e.g. '27 J @ -20°C']\",\n" +
+                        "      \"curve\": \"[Extract from 굴곡 in MPa]\",\n" +
                         "      \"additionalRequests\": \"[Additional Requests]\",\n" +
                         "      \"hardness\": \"[Hardness in HV format]\",\n" +
                         "      \"dropWeightTest\": [Boolean],\n" +
                         "      \"ultrasonicTransducer\": [Boolean]\n"
                 );
+                promptBuilder.append("\nPlease adhere to the following guidelines:\n");
+                promptBuilder.append("1. For THICK_PLATE type, each field in a JSON object must contain only a single value, not a list or array of values.\n");
+                promptBuilder.append("2. If multiple values exist for a field, create separate objects in the lineItemResponseDTOs array for each set of values.\n");
+                promptBuilder.append("3. For the 'seal' field no matter what data format comes in, convert it to 'X MPa ~ Y MPa'.\n");
+                promptBuilder.append("   a. Always use the exact numbers from the original data.\n");
+                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
+                promptBuilder.append("5. Do not make assumptions or inferences about missing data. Use only the information explicitly provided in the input.\n");
+                promptBuilder.append("6. For the 'show', 'extraShow', and 'agingShow' fields:\n");
+                promptBuilder.append("   a. If the data starts with 's', put it in the 'show' field.\n");
+                promptBuilder.append("   b. If the data starts with 'es', put it in the 'extraShow' field.\n");
+                promptBuilder.append("   c. If the data starts with 'as', put it in the 'agingShow' field.\n");
+                promptBuilder.append("   d. Remove the 's', 'es', or 'as' prefix before putting the data in the respective field.\n");
                 break;
             case WIRE_ROD:
                 promptBuilder.append(
-                    "      \"kind\": \"[WIRE ROD Type]\",\n" +
+                        "      \"kind\": \"[WIRE_ROD Type: The type of product, such as 'SWRH' or 'SWRM' or 'SWRS']\",\n" +
                         "      \"inqName\": \"[Inquiry Name: The name or identifier of the product, such as 'JS_SI123']\",\n" +
                         "      \"orderCategory\": \"[Order Category: The intended use of the product]\",\n" +
                         "      \"diameter\": \"[Diameter in mm format]\",\n" +
@@ -171,14 +198,20 @@ public class IntegratedOcrGptService {
                         "      \"legalRegulatoryReviewDetail\": \"[Legal Regulatory Review Detail]\",\n" +
                         "      \"finalCustomer\": \"[Final Customer]\"\n"
                 );
+                promptBuilder.append("\nPlease adhere to the following guidelines:\n");
+                promptBuilder.append("1. For WIRE_ROD type, the above JSON structure represents a single complete data set.\n");
+                promptBuilder.append("2. Always use the exact numbers from the original data.");
+                promptBuilder.append("3. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
+                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
                 break;
             default:
                 throw new CommonException(ErrorCode.INQUIRY_INVALID_PRODUCTTYPE);
         }
         promptBuilder.append("    }\n  ]\n}\n\n");
-        promptBuilder.append("Ensure all relevant information from the input text is included in the JSON structure.");
-        promptBuilder.append("If there are multiple line items, ensure each is represented as a separate object in the lineItemResponseDTOs array.");
+        promptBuilder.append("Do not make assumptions or inferences about missing data. Use only the information explicitly provided in the input.\n");
         promptBuilder.append("For 'inqName', replace any spaces with an underscore (_).");
+        promptBuilder.append("If a field is missing in a data set, include the field in the JSON object but leave its value empty.\n");
+        promptBuilder.append("If multiple sets of data are provided, create separate objects in the lineItemResponseDTOs array for each complete set of values.\n");
 
         return promptBuilder.toString();
     }
