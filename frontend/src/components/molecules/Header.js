@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
-import mainlogo from '../../assets/css/icons/mainlogo.svg';
-import profile from '../../assets/css/icons/profile.svg';
-import { Container, Container_Nav } from '../../assets/css/Header.css';
+import pobluesky from '../../assets/css/icons/pobluesky.png';
+import profile from '../../assets/css/icons/profile-sample.png';
+import UserInfoModal from './UserInfoModal';
+import NotificationModal from '../molecules/NotificationModal';
 import { getUserName, userName } from '../../index';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAuth } from '../../hooks/useAuth';
@@ -12,49 +13,61 @@ import {
     getUserInfoByCustomers,
     getUserInfoByManagers,
 } from '../../apis/api/auth';
-import NotificationModal from '../molecules/NotificationModal';
+import Badge from '@mui/material/Badge';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { Header_Container } from '../../assets/css/Header.css';
+import {
+    getNotificationByCustomers,
+    getNotificationByManagers,
+} from '../../apis/api/notification';
 
 export const MenuLink = styled(Link)`
-    color: #03507d;
     text-decoration: none;
+    color: #25262b;
+    margin: 0 36px 0 0;
 `;
 
-function Header({ inq, voc, dashboard }) {
+function MyHeader() {
     const navigate = useNavigate();
-    const { didLogin, logout, userId, role } = useAuth();
+    const { didLogin, userId, role } = useAuth();
 
-    const url = `/inq-list/${role?.toLowerCase()}`;
+    const url = `/inq-list/${role}`;
 
-    const columns = didLogin
-        ? '45px 340px 170px 144px 150px 150px 44px 166px 55px'
-        : '45px 340px 170px 144px 150px 150px';
-
-    const backgroundColor = didLogin ? '#EDFAFF' : '';
     const [name, setName] = useState(null);
     const [, setGlobalName] = useRecoilState(userName);
     const currentUserName = useRecoilValue(getUserName);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [openNav, setOpenNav] = useState(false);
-    const navRef = useRef(null);
-    const notificationButtonRef = useRef(null);
+    const [totalElements, setTotalElements] = useState(0);
 
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+    const [openNotifyModal, setOpenNotifyModal] = useState(false);
+    const [openInfoModal, setOpenInfoModal] = useState(false);
+    const notificationButtonRef = useRef(null);
+    const infoButtonRef = useRef(null);
+    const modalRef = useRef(null);
+
+    const toggleNotifyModal = () => {
+        if (openInfoModal) {
+            setOpenInfoModal(false);
+        }
+        setOpenNotifyModal(!openNotifyModal);
+    };
+
+    const toggleInfoModal = () => {
+        if (openNotifyModal) {
+            setOpenNotifyModal(false);
+        }
+        setOpenInfoModal(!openInfoModal);
     };
 
     const location = useLocation();
+    const isMainPage = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const isJoinPage = location.pathname === '/join';
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
+    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
 
     const findUserName = async () => {
         try {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 const customer = await getUserInfoByCustomers(userId);
                 setName(customer.data.data.name);
                 setGlobalName(customer.data.data.name);
@@ -69,324 +82,215 @@ function Header({ inq, voc, dashboard }) {
         }
     };
 
+    const fetchNotificationsCount = async () => {
+        try {
+            if (role === 'customer') {
+                const response = await getNotificationByCustomers(userId);
+                setTotalElements(response.totalElements);
+            } else if (role === 'quality' || role === 'sales') {
+                const response = await getNotificationByManagers(userId);
+                setTotalElements(response.totalElements);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         if (didLogin && userId) {
             findUserName();
+            fetchNotificationsCount();
         }
     }, [didLogin, userId, role]);
 
-    // 바깥 영역 클릭 시 nav 닫기
+    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
     useEffect(() => {
         const clickOutside = (event) => {
-            if (navRef.current && !navRef.current.contains(event.target)) {
-                setOpenNav(false);
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setOpenInfoModal(false);
+                setOpenNotifyModal(false);
             }
         };
-
-        document.addEventListener('mouseup', clickOutside);
-        return () => {
-            document.removeEventListener('mouseup', clickOutside);
-        };
+        window.addEventListener('mouseup', clickOutside);
+        return () => window.removeEventListener('mouseup', clickOutside);
     }, []);
 
-    // 페이지가 변경될 때 nav 닫기
     useEffect(() => {
-        setOpenNav(false);
+        setOpenInfoModal(false);
+        setOpenNotifyModal(false);
+    }, [location]);
+
+    const InquiryMenu = () => (
+        <>
+            <div>
+                {role === 'quality' ? (
+                    <MenuLink to={url}>품질설계연계조회</MenuLink>
+                ) : (
+                    <MenuLink to={url}>Inquiry 조회</MenuLink>
+                )}
+            </div>
+            {role === 'customer' && (
+                <div>
+                    <MenuLink to="/inq-form/customer">Inquiry 등록</MenuLink>
+                </div>
+            )}
+            {role !== 'customer' && (
+                <div>
+                    <MenuLink to="/dashboard">대시보드</MenuLink>
+                </div>
+            )}
+        </>
+    );
+
+    const VoCMenu = () => (
+        <>
+            <div>
+                <MenuLink to="/voc-list/question">문의 조회</MenuLink>
+            </div>
+            {role === 'sales' || role === 'quality' ? (
+                <div>
+                    <MenuLink to="/voc-list/collaboration">협업 조회</MenuLink>
+                </div>
+            ) : (
+                <div>
+                    <MenuLink to="/voc-form/question">문의 등록</MenuLink>
+                </div>
+            )}
+        </>
+    );
+
+    useEffect(() => {
+        setCurPage(location.pathname.substring(1, 4));
     }, [location]);
 
     return (
-        <div>
-            <div className={Container} style={{ backgroundColor }}>
-                <div
-                    style={{
-                        gridTemplateColumns: columns,
-                    }}
-                >
-                    <div></div>
-                    {/* 로그인 완료 */}
-                    <img
-                        src={mainlogo}
-                        alt="poscodx"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                            navigate('/');
-                        }}
-                    />
-                    {didLogin ? (
-                        <>
+        <>
+            <div className={Header_Container}>
+                <div>
+                    <div>
+                        <MenuLink
+                            to={didLogin && url}
+                            onClick={() => {
+                                setCurPage('inq');
+                            }}
+                        >
+                            Inquiry
+                        </MenuLink>
+                        <MenuLink
+                            to={didLogin && 'voc-list/question'}
+                            onClick={() => {
+                                setCurPage('voc');
+                            }}
+                        >
+                            VoC
+                        </MenuLink>
+                    </div>
+                    <hr />
+                    <div>
+                        <div>
                             <div>
-                                <div
-                                    style={{
-                                        color:
-                                            inq && !voc && !dashboard
-                                                ? '#03507d'
-                                                : '#c1c1c1',
-                                        cursor: 'pointer',
-                                    }}
+                                <img
+                                    src={pobluesky}
+                                    alt="poscodx"
                                     onClick={() => {
-                                        setOpenNav(true);
+                                        navigate('/');
                                     }}
-                                >
-                                    Inquiry
-                                </div>
-                                {/* <MenuLink
-                                    to={url}
-                                    style={{
-                                        color:
-                                            inq && !voc && !dashboard
-                                                ? '#03507d'
-                                                : '#c1c1c1',
-                                    }}
-                                >
-                                    Inquiry
-                                </MenuLink> */}
-                            </div>
-                            <div>
-                                <div
-                                    style={{
-                                        color:
-                                            !inq && voc && !dashboard
-                                                ? '#03507d'
-                                                : '#c1c1c1',
-                                        cursor: 'pointer',
-                                    }}
-                                    onClick={() => {
-                                        setOpenNav(true);
-                                    }}
-                                >
-                                    VoC
-                                </div>
-                            </div>
-                            {/* <div>
-                                <MenuLink
-                                    to="/voc-main"
-                                    style={{
-                                        color:
-                                            !inq && voc && !dashboard
-                                                ? '#03507d'
-                                                : '#c1c1c1',
-                                    }}
-                                >
-                                    VoC
-                                </MenuLink>
-                            </div> */}
-                            <div>
-                                {/*<MenuLink*/}
-                                {/*    to="/dashboard"*/}
-                                {/*    style={{*/}
-                                {/*        color:*/}
-                                {/*            !inq && !voc && dashboard*/}
-                                {/*                ? '#03507d'*/}
-                                {/*                : '#c1c1c1',*/}
-                                {/*    }}*/}
-                                {/*>*/}
-                                {/*    DashBoard*/}
-                                {/*</MenuLink>*/}
-                            </div>
-                            <div>
-                                <div>
-                                    <img src={profile} alt="user" />
-                                </div>
-                                <div>{currentUserName && `${currentUserName}님`}</div>
-                            </div>
-                            <div
-                                style={{
-                                    position: 'relative',
-                                    display: 'inline-block',
-                                }}
-                            >
-                                <Button
-                                    ref={notificationButtonRef}
-                                    onClick={toggleModal}
-                                    btnName={'알림'}
-                                    width={'44px'}
-                                    height={'40px'}
-                                    backgroundColor={'#ffffff'}
-                                    textColor={'#03507d'}
-                                    border={'solid #c1c1c1 1px'}
-                                    borderRadius={'12px'}
-                                    fontSize={'13px'}
-                                />
-                                {isModalOpen && (
-                                    <NotificationModal onClose={toggleModal} />
-                                )}
-                            </div>
-                            <div>
-                                <Button
-                                    onClick={() => handleLogout()}
-                                    btnName={'로그아웃'}
-                                    width={'84px'}
-                                    height={'40px'}
-                                    backgroundColor={'#edfaff'}
-                                    textColor={'#c1c1c1'}
-                                    border={'solid #c1c1c1 1px'}
-                                    borderRadius={'12px'}
-                                    fontSize={'16px'}
                                 />
                             </div>
-                        </>
-                    ) : (
-                        <>
-                            <div>
-                                <MenuLink to="/inq-main">Inquiry</MenuLink>
-                            </div>
-                            <div>
-                                <MenuLink to="/voc-main">VoC</MenuLink>
-                            </div>
-                            <div>
-                                {/*<MenuLink to="/dashboard">DashBoard</MenuLink>*/}
-                            </div>
+                            {didLogin &&
+                                (curPage === 'inq' || curPage === 'das'
+                                    ? InquiryMenu()
+                                    : curPage === 'voc'
+                                    ? VoCMenu()
+                                    : '')}
+                        </div>
+                        <div>
                             {/* 로그인 & 회원가입 버튼 */}
-                            {!didLogin && !isLoginPage && (
+                            {!didLogin && (isJoinPage || isMainPage) && (
                                 <div>
                                     <Button
                                         onClick={() => navigate('/login')}
                                         btnName={'로그인'}
                                         width={'84px'}
-                                        height={'40px'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#eeeeee'}
-                                        border={'solid #c1c1c1 1px'}
-                                        borderRadius={'12px'}
-                                        fontSize={'16px'}
+                                        height={'36px'}
+                                        textColor={'#64636A'}
+                                        backgroundColor={'#ffffff'}
+                                        border={'solid #d5dbe2 1px'}
+                                        borderRadius={'4px'}
+                                        fontSize={'18px'}
+                                        fontFamily={'Pretendard-Regular'}
                                     />
                                 </div>
                             )}
-                            {!didLogin && !isJoinPage && isLoginPage && (
+                            {!didLogin && isLoginPage && (
                                 <div>
                                     <Button
                                         onClick={() => navigate('/join')}
                                         btnName={'회원가입'}
                                         width={'84px'}
-                                        height={'40px'}
+                                        height={'36px'}
+                                        textColor={'#64636A'}
                                         backgroundColor={'#ffffff'}
-                                        textColor={'#03507d'}
-                                        border={'solid #c1c1c1 1px'}
-                                        borderRadius={'12px'}
-                                        fontSize={'16px'}
+                                        border={'solid #d5dbe2 1px'}
+                                        borderRadius={'4px'}
+                                        fontSize={'18px'}
+                                        fontFamily={'Pretendard-Regular'}
                                     />
                                 </div>
                             )}
-                        </>
-                    )}
-                </div>
-            </div>
-            {didLogin && openNav && (
-                <div className={Container_Nav} ref={navRef}>
-                    <div>
-                        <div></div>
-                        <div></div>
-                        <div>
-                            {role === 'CUSTOMER' && (
+                            {didLogin && (
                                 <>
-                                    <div
-                                        onClick={() => {
-                                            setOpenNav(false);
-                                        }}
-                                    >
-                                        <MenuLink to={url}>
-                                            Inquiry 조회
-                                        </MenuLink>
+                                    <div>
+                                        <button
+                                            ref={infoButtonRef}
+                                            onClick={toggleInfoModal}
+                                        >
+                                            <img src={profile} />
+                                        </button>
                                     </div>
-                                    <div
-                                        onClick={() => {
-                                            setOpenNav(false);
-                                        }}
-                                    >
-                                        <MenuLink to="/inq-form/customer">
-                                            Inquiry 등록
-                                        </MenuLink>
-                                    </div>
-                                </>
-                            )}
-                            {role === 'SALES' && (
-                                <>
-                                    <div
-                                        onClick={() => {
-                                            setOpenNav(false);
-                                        }}
-                                    >
-                                        <MenuLink to={url}>
-                                            Inquiry 조회
-                                        </MenuLink>
-                                    </div>
-                                </>
-                            )}
-                            {role === 'QUALITY' && (
-                                <>
-                                    <div
-                                        onClick={() => {
-                                            setOpenNav(false);
-                                        }}
-                                    >
-                                        <MenuLink to={url}>
-                                            품질설계연계조회
-                                        </MenuLink>
+                                    <div>{currentUserName}</div>
+                                    <div>
+                                        <button
+                                            ref={notificationButtonRef}
+                                            onClick={toggleNotifyModal}
+                                        >
+                                            <Badge
+                                                badgeContent={totalElements}
+                                                color="primary"
+                                            >
+                                                <NotificationsNoneIcon color="action" />
+                                            </Badge>
+                                        </button>
                                     </div>
                                 </>
                             )}
                         </div>
-                        <div
-                            onClick={() => {
-                                setOpenNav(false);
-                            }}
-                        >
-                            {role === 'CUSTOMER' && (
-                                <>
-                                    <div>
-                                        <MenuLink to="voc-list/question">
-                                            문의 조회
-                                        </MenuLink>
-                                    </div>
-                                    <div>
-                                        <MenuLink to="voc-form/question">
-                                            문의 등록
-                                        </MenuLink>
-                                    </div>
-                                </>
-                            )}
-                            {role === 'SALES' && (
-                                <>
-                                    <div>
-                                        <MenuLink to="/voc-list/question">
-                                            문의 조회
-                                        </MenuLink>
-                                    </div>
-                                    <div>
-                                        <MenuLink to="/voc-list/collaboration">
-                                            협업 조회
-                                        </MenuLink>
-                                    </div>
-                                    {/* <div>협업 등록</div> */}
-                                </>
-                            )}
-                            {role === 'QUALITY' && (
-                                <>
-                                    <div>
-                                        <MenuLink to="/voc-list/question">
-                                            문의 조회
-                                        </MenuLink>
-                                    </div>
-                                    <div>
-                                        <MenuLink to="/voc-list/collaboration">
-                                            협업 조회
-                                        </MenuLink>
-                                    </div>
-                                    {/* <div>협업 등록</div> */}
-                                </>
-                            )}
-                        </div>
-                        {/* 대시보드 메뉴 추가 ▼ */}
-                        <div></div>
-                        {/* 개인정보 메뉴 추가 ▼ */}
-                        <div></div>
-                        <div></div>
-                        <div></div>
                     </div>
                 </div>
+            </div>
+            {openInfoModal && (
+                <div
+                    style={{
+                        position: 'relative',
+                    }}
+                >
+                    <UserInfoModal onClose={toggleInfoModal} />
+                </div>
             )}
-        </div>
+            {openNotifyModal && (
+                <div
+                    style={{
+                        position: 'relative',
+                    }}
+                >
+                    <NotificationModal
+                        onClose={toggleNotifyModal}
+                        onUpdateNotificationsCount={fetchNotificationsCount}
+                    />
+                </div>
+            )}
+        </>
     );
 }
 
-export default Header;
+export default MyHeader;

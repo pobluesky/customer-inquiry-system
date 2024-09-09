@@ -7,16 +7,14 @@ import LoginInput from '../../components/molecules/LoginInput';
 import { SignIn } from '../../assets/css/Auth.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { userEmail, userPassword } from '../../index';
+import { useRecoilValue } from 'recoil';
 import { getUserName, getUserEmail, getUserPassword } from '../../index';
 import { LoginFailedAlert } from '../../utils/actions';
-// import { LoginCompleteAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
     const navigate = useNavigate();
-    
+
     // 로그인을 통해 유입된 사용자 정보: 로그인 단계에서 저장
     const currentUserName = useRecoilValue(getUserName);
 
@@ -27,19 +25,14 @@ function Login() {
     const [email, setEmail] = useState(currentUserEmail);
     const [password, setPassword] = useState(currentUserPassword);
 
-    // 기존 사용자 정보: 로그인 단계에서 저장
-    const [, setGlobalEmail] = useRecoilState(userEmail);
-    const [, setGlobalPassword] = useRecoilState(userPassword);
-
     const emailChange = (e) => setEmail(e.target.value);
     const passwordChange = (e) => setPassword(e.target.value);
 
     const [showFailedAlert, canShowFailedAlert] = useState(false);
-    // const [showCompleteAlert, canShowCompleteAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
-    const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
+    const { setDidLogin, setRole, setUserId } = useAuth();
 
     // 엔터 키 기능 (로그인 버튼 클릭)
     const enterKeyDown = async (e) => {
@@ -62,26 +55,16 @@ function Login() {
         };
     }, [email, password]);
 
-    // 로그인 실패: 새로고침 시 경고 메시지 초기화
-    useEffect(() => {
-        if (!didLogin) {
-            setGlobalEmail('');
-            setGlobalPassword('');
-        }
-    }, [didLogin]);
-
     // 로그인 API
     const GetAuth = async () => {
         try {
             const response = await signInApiByUsers(email, password);
             console.log('로그인 성공: ', response);
-            setDidLogin(true); // 로그인 상태 변화
-            setUserId(getCookie('userId')); // 전역 userId 저장
-            setRole(getCookie('userRole')); // 전역 역할 저장
-            setGlobalEmail(email); // 이메일 저장
             setOpenBackDrop(true);
-            // canShowCompleteAlert(true);
             setTimeout(() => {
+                setDidLogin(true); // 로그인 상태 변화
+                setUserId(getCookie('userId')); // 전역 userId 저장
+                setRole(getCookie('userRole')); // 전역 역할 저장
                 setOpenBackDrop(false);
                 navigate('/');
             }, '2000');
@@ -142,13 +125,8 @@ function Login() {
                                 canShowFailedAlert(false);
                             }}
                             message={errorMsg}
+                            inert
                         />
-                        {/* <LoginCompleteAlert
-                            showAlert={showCompleteAlert}
-                            onClose={() => {
-                                canShowCompleteAlert(false);
-                            }}
-                        /> */}
                         <a href="/join">회원이 아니신가요?</a>
                     </div>
                 </div>
@@ -159,7 +137,6 @@ function Login() {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
                 open={openBackDrop}
-                // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>

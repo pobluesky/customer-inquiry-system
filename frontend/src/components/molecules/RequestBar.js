@@ -7,8 +7,6 @@ import {
     QualityCompleteAlert, QualityReviewCompleteAlert,
 } from '../../utils/actions';
 import {
-    getInquiryByManagers,
-    getInquiryDetail, getInquiryDetailByManagers,
     putProgress,
 } from '../../apis/api/inquiry';
 
@@ -20,20 +18,24 @@ function RequestBar({
     onFinalSubmit,
     onQualitySubmit,
     onQualityCompleteSubmit,
+    onReset,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
     const { id } = useParams();
 
     const buttonConfig = {
-        'Inquiry 등록': ['초기화', '검토의뢰'],
-        'Inquiry 상세조회 및 영업검토': ['품질검토요청', '1차검토완료', '최종검토완료', '닫기'],
-        'Inquiry 상세조회 및 품질검토': ['품질검토완료', '닫기'],
-        'Inquiry 조회': ['수정', '닫기'],
-        'Inquiry 상세조회': ['닫기'],
+        'Inquiry 등록0': ['초기화', '검토의뢰'],
+        'Inquiry 상세조회 및 영업검토1': ['1차검토완료', '닫기'],
+        'Inquiry 상세조회 및 영업검토2': ['품질검토요청', '닫기'],
+        'Inquiry 상세조회 및 영업검토3': ['최종검토완료', '닫기'],
+        'Inquiry 상세조회 및 품질검토4': ['품질검토완료', '닫기'],
+        'Inquiry 조회5': ['수정', '닫기'],
+        'Inquiry 조회6': ['닫기'],
     };
 
     const buttons = buttonConfig[requestBarTitle];
+    const displayName = requestBarTitle?.slice(0, -1);
 
     const updateProgress = async (nextProgress) => {
         try {
@@ -65,6 +67,8 @@ function RequestBar({
             onFinalSubmit();
             updateProgress("FINAL_REVIEW_COMPLETED");
             FinalReviewCompleteAlert();
+        } else if (btnName === '초기화') {
+            onReset();
         } else {
             console.log(`Action for ${btnName} is not implemented`);
         }
@@ -97,11 +101,11 @@ function RequestBar({
                     color: '#49454F',
                 }}
             >
-                <div style={{ marginLeft: '2vw' }}>{requestBarTitle}</div>
+                <div style={{ marginLeft: '2vw' }}>{displayName}</div>
                 <div>
                     {Array.isArray(buttons) && buttons.length > 0 ? (
                         buttons.map((btnName, index) => (
-                            <Button
+                        <Button
                                 key={index}
                                 onClick={() => handleButtonClick(btnName)}
                                 btnName={btnName}

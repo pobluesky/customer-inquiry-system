@@ -10,7 +10,7 @@ import {
 import {
     getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import {
     getQualities,
@@ -40,12 +40,16 @@ import FinalReviewTextForm
 import ReviewTextFormItem
     from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
-import { postNotificationByCustomers } from '../../apis/api/notification';
+import {
+    postNotificationByCustomers,
+    postNotificationByManagers,
+} from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
-    const { userId, userName } = useAuth();
+    const { userId, userName, role } = useAuth();
+    const navigate = useNavigate();
 
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -56,6 +60,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [isQualityItem, setIsQualityItem] = useState(false);
     const [isOfferSheetItem, setIsOfferSheetItem] = useState(false);
     const [isFinalReview, setIsFinalReview] = useState(false);
+    const [currentProgress, setCurrentProgress] = useState(null);
+    const [currentInqType, setCurrentInqType] = useState(null);
+    const [requestTitle, setRequestTitle] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -116,6 +123,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         try {
             const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
+            setCurrentProgress(response.data.progress);
+            setCurrentInqType(response.data.inquiryType);
             setFormData(prevData => ({
                 ...prevData,
                 customerId: response.data.customerId,
@@ -141,8 +150,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             const response = await getReviews(id);
             setReviewData(response.data);
             setIsReviewItem(true);
-            console.log("getReview: ", response.data);
-            if (response.data.finalReviewText !== "") {
+            if (response.data.finalReviewText === null) {
+                setIsFinalReview(false)
+            } else if (true) {
                 setIsFinalReview(true);
             }
             return response.data;
@@ -173,7 +183,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             }));
             return response.data;
         } catch (error) {
-            console.log('Error fetching OfferSheet:', error);
         }
     }
 
@@ -184,7 +193,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         getQuality();
         getOfferSheet();
     }, [id]);
-
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -251,12 +259,14 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     },
                     reviewText: formData.reviewText,
                 });
-                const notificationResponse = await postNotificationByCustomers(formData.customerId, {
+                await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의 1차검토가 완료되었습니다.`,
+                        `${inquiriesDataDetail.name}님의 문의 1차 검토가 완료되었습니다.`,
                 })
                 console.log('Review posted successfully:', reviewResponse);
-                console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting review:', error);
             }
@@ -269,16 +279,13 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const customerNotificationResponse = await postNotificationByCustomers(formData.customerId, {
+                await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의는 현재 품질검토진행 중입니다.`,
+                        `${inquiriesDataDetail.name}님의 문의는 현재 품질 검토 진행 중입니다.`,
                 })
-                // const managerNotificationResponse = await postNotificationByManagers(formData.managerId, {
-                //     notificationContents:
-                //         `Inquiry ${id}번 문의의 품질검토요청이 접수되었으니, 확인 바랍니다.`,
-                // })
-                console.log('Notification posted successfully:', customerNotificationResponse);
-                // console.log('ManagerNotification posted successfully:', managerNotificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error posting notification:', error);
             }
@@ -298,13 +305,21 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     ...formData,
                     receipts: formData.receipts,
                 });
-                const notificationResponse = await postNotificationByCustomers(formData.customerId, {
+                await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의 최종 검토가 완료되었습니다. 최종검토내용과 OfferSheet를 확인해 주세요.`,
+                        `${inquiriesDataDetail.name}님의 문의 최종 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 확인해 주세요.`,
                 })
+                if (inquiriesDataDetail.qualityManagerSummaryDto !== null) {
+                    await postNotificationByManagers(inquiriesDataDetail.qualityManagerSummaryDto.userId, {
+                        notificationContents:
+                            `Inquiry ${id}번 최종 검토가 완료되었습니다.`,
+                    })
+                }
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
-                console.log('Notification posted successfully:', notificationResponse);
+                setTimeout(() => {
+                    navigate(`/inq-list/${role}`);
+                }, '2000');
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
             }
@@ -318,15 +333,33 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }));
     };
 
+    useEffect(() => {
+        if (currentProgress === 'SUBMIT') {
+            setRequestTitle('Inquiry 상세조회6');
+        } else if (currentProgress === 'RECEIPT') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토1');
+        } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'QUOTE_INQUIRY') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토3');
+        } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
+                setRequestTitle('Inquiry 상세조회 및 영업검토2');
+        } else if (currentProgress === 'QUALITY_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토3');
+        } else {
+            setRequestTitle('Inquiry 상세조회6');
+        }
+    }, [currentProgress, currentInqType]);
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'sales'} />
+
             <RequestBar
-                        requestBarTitle={'Inquiry 상세조회 및 영업검토'}
-                        onReviewSubmit={handleReviewSubmit}
-                        onQualitySubmit={handleQualitySubmit}
-                        onFinalSubmit={handleFinalSubmit} />
+                requestBarTitle={requestTitle}
+                onReviewSubmit={handleReviewSubmit}
+                onQualitySubmit={handleQualitySubmit}
+                onFinalSubmit={handleFinalSubmit} />
+
             <ManagerBasicInfoForm formData={inquiriesDataDetail} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
@@ -366,17 +399,18 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             )}
 
             {isOfferSheetItem ? (
-                <Offersheet formData={offerSheetData}
-                            inquiryData={inquiriesDataDetail}
-                            lineItemData={offerSheetData.receipts}
-                            isOfferSheetItem={isOfferSheetItem}
+                <Offersheet
+                        formData={offerSheetData}
+                        inquiryData={inquiriesDataDetail}
+                        lineItemData={offerSheetData.receipts}
+                        isOfferSheetItem={isOfferSheetItem}
                 />
             ) : (
                 <Offersheet formData={formData}
-                            inquiryData={inquiriesDataDetail}
-                            lineItemData={formData.receipts}
-                            handleFormDataChange={handleFormDataChange}
-                            onLineItemsChange={(newLineItems) => setFormData(
+                                  inquiryData={inquiriesDataDetail}
+                                  lineItemData={formData.receipts}
+                                  handleFormDataChange={handleFormDataChange}
+                                  onLineItemsChange={(newLineItems) => setFormData(
                                 prev => ({
                                     ...prev,
                                     receipts: newLineItems,

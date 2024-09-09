@@ -4,7 +4,6 @@ import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
 import readBell from '../../assets/css/icons/readBell.svg';
 import readCircle from '../../assets/css/icons/readCircle.svg';
-
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
@@ -14,12 +13,12 @@ import {
     updateNotificationIsReadByManager,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { Notify_Modal_Container } from '../../assets/css/Header.css';
 
-const NotificationModal = ({ onClose }) => {
+const NotificationModal = ({ onUpdateNotificationsCount }) => {
     const { role, userId } = useAuth();
 
     const [activeTab, setActiveTab] = useState('new');
-    const [currentUserId, setCurrentUserId] = useState(userId);
     const [newNotificationList, setNewNotificationList] = useState([]);
     const [readNotificationList, setReadNotificationList] = useState([]);
 
@@ -29,19 +28,13 @@ const NotificationModal = ({ onClose }) => {
 
     const fetchNotifications = async () => {
         try {
-            let notificationData;
-            if (role === 'CUSTOMER') {
-                notificationData = await getNotificationByCustomers(
-                    currentUserId,
-                );
-            } else if (role === 'QUALITY' || role === 'SALES') {
-                notificationData = await getNotificationByManagers(
-                    currentUserId,
-                );
+            if (role === 'customer') {
+                const response = await getNotificationByCustomers(userId);
+                setNewNotificationList(response.notifications);
+            } else if (role === 'quality' || role === 'sales') {
+                const response = await getNotificationByManagers(userId);
+                setNewNotificationList(response.notifications);
             }
-            setNewNotificationList(
-                notificationData.filter((notification) => !notification.isRead),
-            );
         } catch (error) {
             console.log(error);
         }
@@ -50,13 +43,13 @@ const NotificationModal = ({ onClose }) => {
     const fetchReadNotifications = async () => {
         try {
             let readNotificationData;
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 readNotificationData = await getReadNotificationByCustomers(
-                    currentUserId,
+                    userId,
                 );
-            } else if (role === 'QUALITY' || role === 'SALES') {
+            } else if (role === 'quality' || role === 'sales') {
                 readNotificationData = await getReadNotificationByManagers(
-                    currentUserId,
+                    userId,
                 );
             }
             setReadNotificationList(readNotificationData);
@@ -67,24 +60,27 @@ const NotificationModal = ({ onClose }) => {
 
     useEffect(() => {
         fetchNotifications();
-    }, [currentUserId]);
+    }, [userId]);
 
     useEffect(() => {
         if (activeTab === 'read') {
             fetchReadNotifications();
         }
-    }, [activeTab, currentUserId]);
+    }, [activeTab, userId]);
 
     const handleNotificationClick = async (notificationId) => {
         try {
-            if (role === 'CUSTOMER') {
+            if (role === 'customer') {
                 await updateNotificationIsReadByCustomer(notificationId);
-            } else if (role === 'QUALITY' || role === 'SALES') {
+            } else if (role === 'quality' || role === 'sales') {
                 await updateNotificationIsReadByManager(notificationId);
             }
             fetchNotifications();
             if (activeTab === 'read') {
                 fetchReadNotifications();
+            }
+            if (onUpdateNotificationsCount) {
+                onUpdateNotificationsCount();
             }
         } catch (error) {
             console.log(error);
@@ -92,115 +88,104 @@ const NotificationModal = ({ onClose }) => {
     };
 
     return (
-        <ModalContent onClick={(e) => e.stopPropagation()}>
-            <Title>알림</Title>
-            <ModalTabs>
-                <TabButton
-                    active={activeTab === 'new'}
-                    onClick={() => switchTab('new')}
-                >
-                    새 알림
-                </TabButton>
-                <TabButton
-                    active={activeTab === 'read'}
-                    onClick={() => switchTab('read')}
-                >
-                    읽은 알림
-                </TabButton>
-            </ModalTabs>
+        <div className={Notify_Modal_Container}>
+            <div onClick={(e) => e.stopPropagation()}>
+                <div>
+                    <TabButton
+                        $active={activeTab === 'new'}
+                        onClick={() => switchTab('new')}
+                    >
+                        새 알림
+                    </TabButton>
+                    <TabButton
+                        $active={activeTab === 'read'}
+                        onClick={() => switchTab('read')}
+                    >
+                        읽은 알림
+                    </TabButton>
+                </div>
 
-            <div>
-                {activeTab === 'new' ? (
-                    <NotificationList>
-                        {newNotificationList.length > 0 ? (
-                            newNotificationList.map((notification) => (
-                                <NotificationBox
-                                    key={notification.id}
-                                    read={false}
-                                >
-                                    <div>
-                                        <img src={bell} alt="notification" />
-                                    </div>
-                                    <NotificationText
-                                        onClick={() =>
-                                            handleNotificationClick(
-                                                notification.id,
-                                            )
-                                        }
+                <div>
+                    {activeTab === 'new' ? (
+                        <div>
+                            {newNotificationList.length > 0 ? (
+                                newNotificationList.map((notification) => (
+                                    <NotificationBox
+                                        key={notification.id}
+                                        $read={false}
                                     >
-                                        {notification.date}
-                                        <br />
-                                        <span>{notification.contents}</span>
-                                    </NotificationText>
-                                    <div>
-                                        <img src={circle} alt="notification" />
-                                    </div>
-                                </NotificationBox>
-                            ))
-                        ) : (
-                            <NoNotifications>
-                                새 알림이 없습니다.
-                            </NoNotifications>
-                        )}
-                    </NotificationList>
-                ) : (
-                    <NotificationList>
-                        {readNotificationList.length > 0 ? (
-                            readNotificationList.map((notification) => (
-                                <NotificationBox
-                                    key={notification.id}
-                                    read={true}
-                                >
-                                    <div>
-                                        <img
-                                            src={readBell}
-                                            alt="notification"
-                                        />
-                                    </div>
-                                    <NotificationText>
-                                        {notification.date}
-                                        <br />
-                                        <span>{notification.contents}</span>
-                                    </NotificationText>
-                                    <div>
-                                    <img
-                                            src={readCircle}
-                                            alt="notification"
-                                        />
-                                    </div>
-                                </NotificationBox>
-                            ))
-                        ) : (
-                            <NoNotifications>
-                                읽은 알림이 없습니다.
-                            </NoNotifications>
-                        )}
-                    </NotificationList>
-                )}
+                                        <div>
+                                            <img
+                                                src={bell}
+                                                alt="notification"
+                                            />
+                                        </div>
+                                        <div
+                                            onClick={() =>
+                                                handleNotificationClick(
+                                                    notification.id,
+                                                )
+                                            }
+                                        >
+                                            {notification.date}
+                                            <br />
+                                            <span>{notification.contents}</span>
+                                        </div>
+                                        <div>
+                                            <img
+                                                src={circle}
+                                                alt="notification"
+                                            />
+                                        </div>
+                                    </NotificationBox>
+                                ))
+                            ) : (
+                                <NoNotifications>
+                                    새 알림이 없습니다.
+                                </NoNotifications>
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            {readNotificationList.length > 0 ? (
+                                readNotificationList.map((notification) => (
+                                    <NotificationBox
+                                        key={notification.id}
+                                        $read={true}
+                                    >
+                                        <div>
+                                            <img
+                                                src={readBell}
+                                                alt="notification"
+                                            />
+                                        </div>
+                                        <div>
+                                            {notification.date}
+                                            <br />
+                                            <span>{notification.contents}</span>
+                                        </div>
+                                        <div>
+                                            <img
+                                                src={readCircle}
+                                                alt="notification"
+                                            />
+                                        </div>
+                                    </NotificationBox>
+                                ))
+                            ) : (
+                                <NoNotifications>
+                                    읽은 알림이 없습니다.
+                                </NoNotifications>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-        </ModalContent>
+        </div>
     );
 };
 
 export default NotificationModal;
-
-const ModalContent = styled.div`
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
-`;
-
-const ModalTabs = styled.div`
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-`;
 
 const TabButton = styled.button`
     padding: 10px;
@@ -209,20 +194,14 @@ const TabButton = styled.button`
     border: none;
     font-size: 16px;
     width: 200px;
-    color: ${(props) => (props.active ? '#03507d' : '#C1C1C1')};
-    font-weight: ${(props) => (props.active ? '800' : '600')};
-    border-bottom: ${(props) => (props.active ? '1px solid #03507d' : 'none')};
-`;
-
-const NotificationList = styled.div`
-    height: 100%;
-    overflow-y: auto;
+    color: ${(props) => (props.$active ? '#03507d' : '#C1C1C1')};
+    font-weight: ${(props) => (props.$active ? '800' : '600')};
+    border-bottom: ${(props) => (props.$active ? '1px solid #03507d' : 'none')};
 `;
 
 const NotificationBox = styled.div`
-    width: 87%;
     padding: 15px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     border: 1px solid #03507d;
     border-radius: 5px;
     background-color: #f9f9f9;
@@ -239,8 +218,8 @@ const NotificationBox = styled.div`
     }
 
     &:hover {
-        ${({ read }) =>
-            !read &&
+        ${({ $read }) =>
+            !$read &&
             `
       background-color: #9bccff;
       border: 1px solid #c1c1c1;
@@ -253,8 +232,8 @@ const NotificationBox = styled.div`
     `}
     }
 
-    ${({ read }) =>
-        read &&
+    ${({ $read }) =>
+        $read &&
         `
       background-color: #ffffff;
       border: 1px solid #ababab;
@@ -266,26 +245,9 @@ const NotificationBox = styled.div`
     `}
 `;
 
-const Title = styled.h2`
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 20px;
-`;
-
-const NotificationText = styled.div`
-    font-size: 15px;
-    line-height: 20px;
-    font-weight: 700;
-    text-align: left;
-
-    span {
-        font-weight: 400;
-    }
-`;
-
 const NoNotifications = styled.div`
     text-align: center;
     color: #999;
     font-size: 14px;
-    margin-top: 20px;
+    margin: 20px 0 20px 0;
 `;

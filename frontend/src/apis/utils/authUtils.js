@@ -17,11 +17,17 @@ const signInApi = async (endpoint, credentials) => {
 
             setCookie('refreshToken', refreshToken, {
                 path: '/',
-                maxAge: 7 * 24 * 60 * 60, // 7일 동안 유효
+                maxAge: 7 * 24 * 60 * 60,
             });
 
-            setCookie('userRole', userRole);
-            setCookie('userId', userId);
+            setCookie('userRole', userRole.toLowerCase(), {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60,
+            });
+            setCookie('userId', userId, {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60,
+            });
 
             return {
                 success: true,

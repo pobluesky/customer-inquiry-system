@@ -203,7 +203,7 @@ export default function QuestionTable({
 
     // 질문 요약 조회
     const fetchGetQuestions =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(
@@ -228,7 +228,7 @@ export default function QuestionTable({
 
     // 질문 상세 조회 (모달로 전달)
     const fetchGetQuestionDetail =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async (questionId, status) => {
                   try {
                       const response = await getQuestionByQuestionId(
@@ -269,7 +269,7 @@ export default function QuestionTable({
 
     // 답변 상세 조회 (모달로 전달)
     const fetchGetAnswerDetail =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async (questionId) => {
                   try {
                       const response = await getAnswerByQuestionId(

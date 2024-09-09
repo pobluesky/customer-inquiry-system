@@ -101,7 +101,7 @@ export default function CollapsibleTable({
 
     const handleCheckboxChange = async (isChecked) => {
         if (isChecked === true) {
-                if (role === 'SALES') {
+                if (role === 'sales') {
                     setSalesAllocate(true);
                 } else {
                     setQualityAllocate(true);

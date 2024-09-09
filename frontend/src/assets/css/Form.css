@@ -12,33 +12,6 @@ body {
 }
 
 /******************************************************************/
-/* ▼ 삭제 예정 *****************************************************/
-/******************************************************************/
-.Datepicker {
-    width: 144px;
-    height: 24px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 0 8px 0 8px;
-}
-
-.DatepickerPeriod {
-    width: 90px;
-    height: 24px;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    outline: none;
-    padding: 2px 4px 2px 12px;
-    color: #65636c;
-    font-weight: bold;
-    margin-left: 25px;
-}
-/******************************************************************/
-/* ▲ 삭제 예정 *****************************************************/
-/******************************************************************/
-
-/******************************************************************/
 /* 오퍼 시트 *******************************************************/
 /******************************************************************/
 .Offer_Sheet {
@@ -53,7 +26,7 @@ body {
     margin: 0 auto 24px auto;
     border: solid #c1c1c1 1px;
     border-radius: 20px;
-    background-color: #f0f8fc;
+    background-color: #ffffff;
 }
 
 /* 행 추가, 행 삭제, 행 복사 */
@@ -509,7 +482,7 @@ select {
 .Container .Opend {
     height: max-content;
     border-radius: 0 0 20px 20px;
-    background-color: #f0f8fc;
+    background-color: #ffffff;
     padding: 4vh 0 4vh 0;
 }
 

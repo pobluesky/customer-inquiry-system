@@ -335,3 +335,96 @@ export const createFormQualityData = (formData) => {
 
     return form;
 };
+
+// 과거 이력 조회 데이터 변환
+export const processHistoryData = (data) => {
+    return data?.map((inquiry) => {
+        let productTypeText;
+        switch (inquiry.productType) {
+            case 'CAR':
+                productTypeText = '자동차';
+                break;
+            case 'HOT_ROLLED':
+                productTypeText = '열연';
+                break;
+            case 'COLD_ROLLED':
+                productTypeText = '냉연';
+                break;
+            case 'THICK_PLATE':
+                productTypeText = '후판';
+                break;
+            case 'WIRE_ROD':
+                productTypeText = '선재';
+                break;
+            default:
+                productTypeText = '-';
+        }
+
+        let industryText;
+        switch (inquiry.industry) {
+            case 'AUTOMOBILE':
+                industryText = 'Automobile';
+                break;
+            case 'OTHERS':
+                industryText = 'Others';
+                break;
+            case 'CONSTRUCTION':
+                industryText = 'Construction';
+                break;
+            case 'DISTRIBUTION':
+                industryText = 'Distribution';
+                break;
+            case 'ELECTRIC':
+                industryText = 'Electric';
+                break;
+            case 'FURNITURE':
+                industryText = 'Furniture';
+                break;
+            case 'PLATING':
+                industryText = 'Plating';
+                break;
+            case 'HIGH_CARBON':
+                industryText = 'High-Carbon';
+                break;
+            case 'KITCHEN':
+                industryText = 'Kitchen';
+                break;
+            case 'LOW_CARBON':
+                industryText = 'Low-Carbon';
+                break;
+            case 'MACHINERY':
+                industryText = 'Machinery';
+                break;
+            case 'PIPE':
+                industryText = 'Pipe';
+                break;
+            case 'REROLLING':
+                industryText = 'Rerolling';
+                break;
+            case 'SHIPBUILDING':
+                industryText = 'Shipbuilding';
+                break;
+            case 'TRANSPORTATION':
+                industryText = 'Transportation';
+                break;
+            case 'VESSEL':
+                industryText = 'Vessel';
+                break;
+            case 'BEAM':
+                industryText = 'Beam';
+                break;
+            default:
+                industryText = '-';
+        }
+
+        return {
+            inquiryId: inquiry.inquiryId,
+            salesPerson: inquiry.salesPerson,
+            industry: industryText,
+            customerName: inquiry.customerName,
+            productType: productTypeText,
+            lineItemList: inquiry.lineItemList,
+            isFavorite: inquiry.isFavorite,
+        };
+    });
+};

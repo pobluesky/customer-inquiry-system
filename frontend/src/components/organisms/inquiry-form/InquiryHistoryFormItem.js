@@ -15,14 +15,16 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                 margin: '0 auto',
                 borderRadius: '20px',
                 marginBottom: '90px',
-        }}>
+                backgroundColor: '#ffffff',
+            }}>
             <ToggleBar title={"라인아이템"} isChecked={isChecked} setCheck={setChecked} />
             {isChecked ? (
                 <TableContainer>
-                    <Table style={{ backgroundColor: '#f0f8fc' }}>
+                    <Table style={{ backgroundColor: '#ffffff' }}>
                         <TableHead style={{ backgroundColor: '#d8e1e9' }}>
                             <TableRow>
                                 {Object.keys(fields).map((key) => (
+                                    key !== 'lineItemId' && (
                                     <TableCell key={key} style={{
                                         minWidth: 200,
                                         fontSize: '20px',
@@ -33,10 +35,11 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                         &nbsp;&nbsp;&nbsp;
                                         {fields[key].label}
                                     </TableCell>
+                                    )
                                 ))}
                             </TableRow>
                         </TableHead>
-                        <TableBody style={{ backgroundColor: '#f0f8fc' }}>
+                        <TableBody style={{ backgroundColor: '#fffffff' }}>
                             {lineItemData.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={Object.keys(fields).length}>데이터 없음</TableCell>
@@ -47,6 +50,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                         {Object.keys(fields).map((key) => {
                                             const field = fields[key];
                                             return (
+                                                key !== 'lineItemId' && (
                                                 <TableCell key={key}>
                                                     {field.type === 'enum' ? (
                                                         <Select
@@ -104,6 +108,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                                                         />
                                                     )}
                                                 </TableCell>
+                                                )
                                             );
                                         })}
                                     </TableRow>

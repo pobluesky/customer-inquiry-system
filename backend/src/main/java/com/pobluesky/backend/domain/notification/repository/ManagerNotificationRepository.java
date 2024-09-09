@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ManagerNotificationRepository extends JpaRepository<ManagerNotification, Long> {
 
-    List<ManagerNotification> findByManager_UserId(Long userId);
+    List<ManagerNotification> findByManager_UserIdAndIsReadFalseOrderByCreatedDateDesc(Long userId);
 
     @Query("SELECT mn FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = :isRead ORDER BY mn.createdDate DESC")
     Page<ManagerNotification> findRecentNotificationsByuserIdAndIsRead(
@@ -20,4 +20,7 @@ public interface ManagerNotificationRepository extends JpaRepository<ManagerNoti
         @Param("isRead") Boolean isRead,
         Pageable pageable
     );
+
+    @Query("SELECT COUNT(mn) FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = false")
+    long countUnreadNotificationsByManager_UserId(@Param("userId") Long userId);
 }

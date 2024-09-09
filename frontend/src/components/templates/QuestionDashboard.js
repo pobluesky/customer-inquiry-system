@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Text from '../../components/atoms/Text';
 import QuestionOverview from '../organisms/QuestionOverview';
-import QuestionFilterPanel from '../organisms/QuestionFilterPanel';
-import QuestionTable from '../organisms/QuestionTable';
-import QuestionModal from '../molecules/QuestionModal';
-// import Notification from '../../components/molecules/NotificationModal';
+import QuestionFilterInput from '../organisms/QuestionFilterInput';
+import QuestionList from '../organisms/QuestionList';
+import { Question_Dashboard } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
@@ -38,7 +36,7 @@ export default function QuestionDashboard() {
     const [searchCount, setSearchCount] = useState(0);
 
     const fetchGetQuestionCount =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(userId, '');
@@ -57,7 +55,7 @@ export default function QuestionDashboard() {
               };
 
     const fetchGetAnswerCount =
-        role === 'CUSTOMER'
+        role === 'customer'
             ? async () => {
                   try {
                       const response = await getAnswerByUserId(userId, '');
@@ -88,6 +86,7 @@ export default function QuestionDashboard() {
         fetchGetQuestionCount();
         fetchGetAnswerCount();
         fetchGetColCount();
+        localStorage.clear();
     }, [userId]);
 
     return (
@@ -97,7 +96,14 @@ export default function QuestionDashboard() {
                 answerCount={answerCount}
                 colCount={colCount}
             />
-            <QuestionFilterPanel
+            {searchCount ? (
+                <div className={Question_Dashboard}>
+                    검색 결과는 총 <span>{searchCount}</span>건입니다.
+                </div>
+            ) : (
+                <div className={Question_Dashboard}>검색 결과가 없습니다.</div>
+            )}
+            <QuestionFilterInput
                 searchCount={searchCount}
                 title={title}
                 startDate={startDate}
@@ -110,11 +116,12 @@ export default function QuestionDashboard() {
                 setQuestionNo={setQuestionNo}
                 setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
+                status={status}
                 setStatusFilter={setStatusFilter}
                 questionDetail={questionDetail}
                 setTypeFilter={setTypeFilter}
             />
-            <QuestionTable
+            <QuestionList
                 title={title}
                 startDate={startDate}
                 endDate={endDate}
@@ -132,19 +139,6 @@ export default function QuestionDashboard() {
                 setOpenModal={setOpenModal}
                 openModal={openModal}
             />
-
-            {openModal && (
-                <QuestionModal
-                    questionDetail={questionDetail}
-                    setAnswerDetail={setAnswerDetail}
-                    answerDetail={answerDetail}
-                    questionId={questionId}
-                    setStatus={setStatus}
-                    status={status}
-                    setOpenModal={setOpenModal}
-                />
-            )}
-            {/* <Notification /> */}
         </>
     );
 }
