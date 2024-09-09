@@ -12,7 +12,7 @@ export const productTypes = {
         "quantity": { label: "수량", type: "int" },
         "expectedDeliveryDate": { label: "희망납기일", type: "date" },
         "transportationDestination": { label: "운송목적지", type: "string" },
-        "edge": { label: "주문(Edge)", type: "string" },
+        "orderEdge": { label: "주문(Edge)", type: "string" },
         "tolerance": { label: "공차", type: "string" },
         "annualCost": { label: "연소요량", type: "string" }
     },

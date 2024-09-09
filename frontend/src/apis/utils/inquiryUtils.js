@@ -202,7 +202,7 @@ export const processInquiryData = (data) => {
                     quantity: item.quantity,
                     expectedDeliveryDate: item.expectedDeliveryDate,
                     transportationDestination: item.transportationDestination,
-                    edge: item.edge,
+                    orderEdge: item.orderEdge,
                     tolerance: item.tolerance,
                     annualCost: item.annualCost,
                 })),
