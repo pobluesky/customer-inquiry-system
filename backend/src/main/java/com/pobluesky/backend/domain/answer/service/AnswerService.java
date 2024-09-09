@@ -168,6 +168,9 @@ public class AnswerService {
         if(!Objects.equals(answer.getManager().getUserId(), manager.getUserId()))
             throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
 
+        if(!answer.getIsActivated())
+            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+
         String fileName = answer.getFileName();
         String filePath = answer.getFilePath();
 
