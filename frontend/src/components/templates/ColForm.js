@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ColReqFilterPannel from '../organisms/ColReqFilterPannel';
 import ColReqInput from '../organisms/ColReqInput';
 import ColFindManagerModal from '../molecules/ColFindManagerModal';
-import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColForm() {
     const [openModal, setOpenModal] = useState(false);

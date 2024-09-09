@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
-import profile from '../../assets/css/icons/profile-sample.png';
+import profile from '../../assets/css/icons/profile.svg';
 import UserInfoModal from './UserInfoModal';
 import NotificationModal from '../molecules/NotificationModal';
 import { getUserName, userName } from '../../index';
@@ -97,10 +97,13 @@ function MyHeader() {
     };
 
     useEffect(() => {
-        if (didLogin && userId) {
-            findUserName();
-            fetchNotificationsCount();
-        }
+        const init = async () => {
+            if (didLogin && userId) {
+                await findUserName();
+                await fetchNotificationsCount();
+            }
+        };
+        init();
     }, [didLogin, userId, role]);
 
     // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기

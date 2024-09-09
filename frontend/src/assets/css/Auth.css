@@ -1,3 +1,6 @@
+/******************************************************************/
+/* 회원가입, 로그인 ************************************************/
+/******************************************************************/
 .SignIn,
 .SignUp {
     width: 1320px;
@@ -86,4 +89,36 @@
     -webkit-appearance: none; /* 크롬 화살표 없애기 */
     -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
     appearance: none; /* 화살표 없애기 */
+}
+
+/******************************************************************/
+/* 사용자 정보 *****************************************************/
+/******************************************************************/
+.User_Account {
+    margin: 10vh 0 0 0;
+}
+
+.User_Account_Overview {
+    width: 420px;
+    height: fit-content;
+    margin: 36px auto 5vh auto;
+    padding: 24px 0 24px 0;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.User_Account_Overview > div {
+    width: 356px;
+    margin: 24px auto 24px auto;
+}
+
+.User_Account_Exsisting > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
+}
+
+.User_Account_Editing > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
 }

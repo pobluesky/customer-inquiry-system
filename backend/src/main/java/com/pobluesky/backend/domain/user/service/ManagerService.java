@@ -75,7 +75,7 @@ public class ManagerService {
         manager.updateManager(
             managerUpdateRequestDTO.name(),
             managerUpdateRequestDTO.email(),
-            managerUpdateRequestDTO.password(),
+            passwordEncoder.encode(managerUpdateRequestDTO.password()),
             managerUpdateRequestDTO.phone()
         );
 

@@ -28,10 +28,6 @@
     border: 1px solid #d5dbe2;
 }
 
-/* div {
-    border: 1px solid blue;
-} */
-
 /* 하단 섹션 */
 .Header_Container > div > div:nth-child(3) {
     width: 1320px;
@@ -100,7 +96,7 @@
 
 .User_Modal_Container > div {
     position: relative;
-    width: 196px;
+    width: 132px;
     padding: 20px;
     height: fit-content;
     border: 1px solid #d5dbe2;
@@ -111,7 +107,7 @@
 }
 
 .User_Modal_Container > div Button:hover {
-    border: 1px solid #25262b !important;
+    border: 2px solid #25262b !important;
     color: #25262b !important;
     font-weight: 600;
 }

@@ -6,15 +6,46 @@ import {
 } from '../utils/authUtils';
 import { getCookie } from '../utils/cookies';
 import { getEmailFromToken } from '../utils/tokenUtils';
+import axiosInstance from '../utils/axiosInstance';
 
 // 고객사 회원가입
-export const signUpApiByCustomers = (name, email, password, phone, customerCode, customerName) => {
-    return signUpApi('/customers/sign-up', { name, email, password, phone, customerCode, customerName });
+export const signUpApiByCustomers = (
+    name,
+    email,
+    password,
+    phone,
+    customerCode,
+    customerName,
+) => {
+    return signUpApi('/customers/sign-up', {
+        name,
+        email,
+        password,
+        phone,
+        customerCode,
+        customerName,
+    });
 };
 
 // 담당자 회원가입
-export const signUpApiByManagers = (name, email, password, phone, empNo, role, department) => {
-    return signUpApi('/managers/sign-up', { name, email, password, phone, empNo, role, department });
+export const signUpApiByManagers = (
+    name,
+    email,
+    password,
+    phone,
+    empNo,
+    role,
+    department,
+) => {
+    return signUpApi('/managers/sign-up', {
+        name,
+        email,
+        password,
+        phone,
+        empNo,
+        role,
+        department,
+    });
 };
 
 // 로그인
@@ -44,4 +75,31 @@ export const getUserInfoByCustomers = (userId) => {
 // 담당자 정보 조회
 export const getUserInfoByManagers = (userId) => {
     return getUserInfoApi(`/managers/${userId}`);
+};
+
+// 사용자 정보 수정
+export const putUserInfo = async (role, userId, userData) => {
+    try {
+        let response;
+        if (role === 'customer') {
+            response = await axiosInstance.put(
+                `/customers/${userId}`,
+                userData,
+            );
+        } else {
+            response = await axiosInstance.put(
+                `/managers/${userId}`,
+                userData
+            );
+        }
+
+        const json = response.data;
+        if (json.result !== 'success') {
+            throw new Error(json.message);
+        }
+        return json;
+    } catch (error) {
+        console.error('사용자 정보 수정 API ERROR: ', error.message || error);
+        throw error;
+    }
 };
