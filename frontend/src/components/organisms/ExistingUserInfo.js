@@ -24,6 +24,13 @@ export default function ExistingUserInfo({
         };
     }, [checkUser]);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
     return (
         <div className={User_Account_Exsisting}>
             {role === 'customer' ? (

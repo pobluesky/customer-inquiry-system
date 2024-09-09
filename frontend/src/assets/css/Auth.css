@@ -95,6 +95,10 @@
 /* 사용자 정보 *****************************************************/
 /******************************************************************/
 .User_Account {
+    margin: 10vh 0 0 0;
+}
+
+.User_Account_Overview {
     width: 420px;
     height: fit-content;
     margin: 36px auto 5vh auto;
@@ -104,7 +108,7 @@
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.User_Account > div {
+.User_Account_Overview > div {
     width: 356px;
     margin: 24px auto 24px auto;
 }

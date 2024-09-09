@@ -3,7 +3,7 @@ import ExistingUserInfo from '../organisms/ExistingUserInfo';
 import EditingUserInfo from '../organisms/EditingUserInfo';
 import AuthenticateUser from '../organisms/AuthenticateUser';
 import { CheckButton } from '../molecules/JoinButton';
-import { User_Account } from '../../assets/css/Auth.css';
+import { User_Account_Overview } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 import {
     getUserInfoByCustomers,
@@ -47,7 +47,7 @@ export default function UserAccountOverview() {
     }, []);
 
     return (
-        <div className={User_Account}>
+        <div className={User_Account_Overview}>
             {!isAuthenticated ? (
                 <>
                     <AuthenticateUser

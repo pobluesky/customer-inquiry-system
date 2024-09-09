@@ -37,8 +37,6 @@ public class Customer extends User {
         String customerName,
         String securityRole
     ) {
-        // TODO : 빈칸일 경우 validate
-
         this.name = name;
         this.email = email;
         this.password = password;
@@ -54,12 +52,16 @@ public class Customer extends User {
         String name,
         String email,
         String password,
-        String phone
+        String phone,
+        String customerCode,
+        String customerName
     ) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.customerCode = customerCode;
+        this.customerName = customerName;
     }
 
     @Override
