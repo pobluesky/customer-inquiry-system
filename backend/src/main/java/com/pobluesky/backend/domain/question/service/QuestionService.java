@@ -168,6 +168,9 @@ public class QuestionService {
             .findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
+        if(!Objects.equals(inquiry.getCustomer().getUserId(), customerId))
+            throw new CommonException(ErrorCode.INQUIRY_NOT_MATCHED);
+
         String fileName = null;
         String filePath = null;
 
@@ -235,6 +238,9 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
 
@@ -285,6 +291,9 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
 
@@ -328,8 +337,14 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
+        if(!Objects.equals(question.getCustomer().getUserId(), customerId))
+            throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
+
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
 
         question.deleteQuestion();
     }
@@ -350,6 +365,9 @@ public class QuestionService {
 
         if(question.getStatus() == QuestionStatus.COMPLETED)
             throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+
+        if(!question.getIsActivated())
+            throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
 
         question.deleteQuestion();
     }

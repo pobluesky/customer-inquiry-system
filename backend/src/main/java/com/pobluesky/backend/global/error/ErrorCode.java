@@ -36,6 +36,7 @@ public enum ErrorCode {
     INQUIRY_UNABLE_ALLOCATE(HttpStatus.INTERNAL_SERVER_ERROR, "I0006", "해당 문의에는 담당자를 배정할 수 없습니다."),
     INQUIRY_LIST_EMPTY(HttpStatus.NO_CONTENT, "I0007", "해당 제품 유형에 대한 문의가 없습니다."),
     INQUIRY_INVALID_PRODUCTTYPE(HttpStatus.INTERNAL_SERVER_ERROR, "I0008", "올바르지 않은 Product Type 요청입니다."),
+    INQUIRY_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "I0009", "해당 사용자가 작성한 Inquiry가 아닙니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
@@ -58,6 +59,8 @@ public enum ErrorCode {
     // Question
     QUESTION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "Q0001", "존재하지 않는 질문입니다."),
     QUESTION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0002", "이미 답변이 완료된 질문입니다."),
+    QUESTION_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0003", "해당 사용자가 작성한 질문이 아닙니다."),
+    QUESTION_ALREADY_DELETED(HttpStatus.INTERNAL_SERVER_ERROR, "Q0004", "이미 삭제된 질문입니다."),
 
     // Answer
     ANSWER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A0001", "존재하지 않는 답변입니다."),
