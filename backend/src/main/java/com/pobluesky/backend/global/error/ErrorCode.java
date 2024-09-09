@@ -64,6 +64,8 @@ public enum ErrorCode {
 
     // Answer
     ANSWER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "A0001", "존재하지 않는 답변입니다."),
+    ANSWER_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "A0002", "해당 담당자가 작성한 답변이 아닙니다."),
+    ANSWER_ALREADY_DELETED(HttpStatus.INTERNAL_SERVER_ERROR, "A0003", "이미 삭제된 답변입니다."),
 
     // Collaboration
     COLLABORATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "C0001", "존재하지 않는 협업입니다."),

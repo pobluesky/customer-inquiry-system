@@ -162,8 +162,8 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "문의별 질문 수정", description = "문의별 질문을 수정한다.")
     @PutMapping("/customers/{userId}/{inquiryId}/{questionId}")
+    @Operation(summary = "문의별 질문 수정", description = "문의별 질문을 수정한다.")
     public ResponseEntity<JsonResult> updateQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -185,8 +185,8 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "기타 질문 수정", description = "기타 질문을 수정한다.")
     @PutMapping("/customers/{userId}/{questionId}")
+    @Operation(summary = "기타 질문 수정", description = "기타 질문을 수정한다.")
     public ResponseEntity<JsonResult> updateQuestion(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -206,8 +206,8 @@ public class QuestionController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @Operation(summary = "질문 삭제 (고객사용)", description = "고객사가 작성한 질문을 삭제한다.")
     @DeleteMapping("/customers/{userId}/{questionId}")
+    @Operation(summary = "질문 삭제(고객사용)", description = "고객사가 작성한 질문을 삭제한다.")
     public ResponseEntity<CommonResult> deleteQuestionById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
@@ -218,8 +218,8 @@ public class QuestionController {
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
     }
 
-    @Operation(summary = "질문 삭제 (담당자용)", description = "담당자가 고객사의 질문을 삭제한다.")
     @DeleteMapping("/managers/{questionId}")
+    @Operation(summary = "질문 삭제(담당자용)", description = "담당자가 고객사의 질문을 삭제한다.")
     public ResponseEntity<CommonResult> deleteQuestionById(
         @RequestHeader("Authorization") String token,
         @PathVariable Long questionId

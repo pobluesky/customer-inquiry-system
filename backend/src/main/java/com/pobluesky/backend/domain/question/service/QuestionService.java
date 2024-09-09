@@ -1,6 +1,5 @@
 package com.pobluesky.backend.domain.question.service;
 
-import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
