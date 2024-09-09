@@ -95,7 +95,7 @@ public class IntegratedOcrGptService {
                         "      \"quantity\": [Quantity as a number: The number of parts or units ordered],\n" +
                         "      \"expectedDeliveryDate\": \"[Expected Deadline in yyyy-MM-dd format]\",\n" +
                         "      \"transportationDestination\": \"[Destination: The final delivery location for the parts]\",\n" +
-                        "      \"edge\": \"[Edge Type: The type of edge treatment required]\",\n" +
+                        "      \"orderEdge\": \"[Edge Type: The type of edge treatment required]\",\n" +
                         "      \"tolerance\": \"[Tolerance in ±mm format: The acceptable deviation from the specified dimensions]\",\n" +
                         "      \"annualCost\": \"[Annual Cost in $XX,XXX format: The estimated yearly cost for the parts]\"\n"
                 );
