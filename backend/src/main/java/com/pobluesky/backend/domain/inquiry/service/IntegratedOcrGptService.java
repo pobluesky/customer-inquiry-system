@@ -101,9 +101,16 @@ public class IntegratedOcrGptService {
                 );
                 promptBuilder.append("\nPlease adhere to the following guidelines:\n");
                 promptBuilder.append("1. For CAR type, the above JSON structure represents a single complete data set.\n");
-                promptBuilder.append("2. Always use the exact numbers from the original data.");
-                promptBuilder.append("3. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
-                promptBuilder.append("4. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
+                promptBuilder.append("2. Each object in the lineItemResponseDTOs array MUST contain ALL fields listed above, even if the value is empty or null. This is crucial for maintaining a consistent data structure.\n");
+                promptBuilder.append("3. Always use the exact numbers from the original data.\n");
+                promptBuilder.append("4. Each object in the lineItemResponseDTOs array should contain all fields listed above, representing one complete data set.\n");
+                promptBuilder.append("5. Ensure all relevant information from the input text is included across all objects in the JSON structure.\n");
+                promptBuilder.append("6. For 'ixPlate', use only the following enum values: DASH_PANEL, FLOOR_PANEL, DOOR_PANEL, TRUNK_LID. Replace any spaces with an underscore (_).\n");
+                promptBuilder.append("7. For 'kind', use only the following enum values: SEDAN, SUV, TRUCK.\n");
+                promptBuilder.append("8. For 'lab', use only the following enum values: GWANGYANG, POHANG.\n");
+                promptBuilder.append("9. For 'standardOrg', use only the following enum values: ASTM, ANSI.\n");
+                promptBuilder.append("10. Keep all other fields as they appear in the input, without any modifications.\n");
+                promptBuilder.append("11. If a field is missing in the input, include it in the JSON object but leave its value empty.\n");
                 break;
             case COLD_ROLLED:
                 promptBuilder.append(
