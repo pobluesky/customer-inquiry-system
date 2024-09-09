@@ -4,27 +4,40 @@ import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import lombok.Builder;
+
 @Builder
 public record QuestionResponseDTO(
-    Optional<Long> inquiryId,
-    Long userId,
-    Long questionId,
-    String customerName,
-    String title,
-    String contents,
-    String fileName,
-    String filePath,
-    QuestionStatus status,
-    QuestionType type,
-    LocalDateTime createdDate
-) {
 
+    Optional<Long> inquiryId,
+
+    Long userId,
+
+    Long questionId,
+
+    String customerName,
+
+    String title,
+
+    String contents,
+
+    String fileName,
+
+    String filePath,
+
+    QuestionStatus status,
+
+    QuestionType type,
+
+    LocalDateTime createdDate,
+
+    Boolean isActivated
+) {
     public static QuestionResponseDTO from(Question question) {
+
         return QuestionResponseDTO.builder()
             .inquiryId(Optional.ofNullable(question.getInquiry())
                 .map(inquiry -> inquiry.getInquiryId()))
@@ -38,6 +51,7 @@ public record QuestionResponseDTO(
             .status(question.getStatus())
             .type(question.getType())
             .createdDate(question.getCreatedDate())
+            .isActivated(question.getIsActivated())
             .build();
     }
 }

@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.answer.service;
 
+import com.pobluesky.backend.domain.answer.dto.request.AnswerUpdateRequestDTO;
+import com.pobluesky.backend.domain.answer.dto.response.MobileAnswerSummaryResponseDTO;
 import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.answer.dto.request.AnswerCreateRequestDTO;
 import com.pobluesky.backend.domain.answer.dto.response.AnswerResponseDTO;
@@ -19,15 +21,15 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -162,6 +164,64 @@ public class AnswerService {
         return AnswerResponseDTO.from(savedAnswer);
     }
 
+    // 답변 수정
+    @Transactional
+    public AnswerResponseDTO updateAnswerById(
+        String token,
+        Long questionId,
+        MultipartFile file,
+        AnswerUpdateRequestDTO dto
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        if(!Objects.equals(answer.getManager().getUserId(), userId))
+            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+
+        String fileName = answer.getFileName();
+        String filePath = answer.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        answer.updateAnswer(
+            dto.title(),
+            dto.contents(),
+            fileName,
+            filePath
+        );
+
+        return AnswerResponseDTO.from(answer);
+    }
+
+    // 답변 삭제
+    @Transactional
+    public void deleteAnswerById(
+        String token,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(()-> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        if(!answer.getIsActivated())
+            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+
+        answer.deleteAnswer();
+    }
+
     private Inquiry validateInquiry(Question question) {
         if (question.getInquiry() == null) {
             return null;
@@ -169,5 +229,14 @@ public class AnswerService {
 
         return inquiryRepository.findById(question.getInquiry().getInquiryId())
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+    }
+
+    // 모바일 - 질문 번호별 답변 상세 조회
+    @Transactional(readOnly = true)
+    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
+        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+
+        return MobileAnswerSummaryResponseDTO.from(answer);
     }
 }

@@ -19,7 +19,7 @@ public record CarLineItemUpdateRequestDTO(
     Integer quantity,
     LocalDate expectedDeliveryDate,
     String transportationDestination,
-    String edge,
+    String orderEdge,
     String tolerance,
     String annualCost
 ) {

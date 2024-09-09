@@ -190,7 +190,6 @@ export default function AnswerInput({
                     {questionDetail.status === 'READY' &&
                         role !== 'customer' && (
                             <>
-                                {/* [답변하기] */}
                                 {!isAnswering && (
                                     <QuestionAnswerButton
                                         btnName={'답변하기'}
@@ -201,7 +200,6 @@ export default function AnswerInput({
                                         }}
                                     />
                                 )}
-                                {/* 협업 요청] */}
                                 {!isAnswering && role === 'sales' && (
                                     <QuestionAnswerButton
                                         btnName={'협업 요청'}
@@ -215,7 +213,6 @@ export default function AnswerInput({
                                         }}
                                     />
                                 )}
-                                {/* [답변 등록] */}
                                 {isAnswering && (
                                     <>
                                         <QuestionAnswerButton
@@ -223,7 +220,11 @@ export default function AnswerInput({
                                             backgroundColor={'#1748ac'}
                                             textColor={'#ffffff'}
                                             onClick={() => {
-                                                setAnswering(false);
+                                                window.confirm(
+                                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                                )
+                                                    ? setAnswering(false)
+                                                    : '';
                                             }}
                                         />
                                         <QuestionAnswerButton

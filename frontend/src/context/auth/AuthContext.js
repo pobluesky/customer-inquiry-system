@@ -23,9 +23,9 @@ export const AuthProvider = ({ children }) => {
             setName(response.data.data.name);
             return response.data.data.name;
         } catch (error) {
-            console.log('Error fetching Name:', error);
+            console.log('사용자 이름 조회 실패 :', error);
         }
-    }
+    };
     useEffect(() => {
         // 페이지 새로고침 시 쿠키에서 토큰을 가져와 로그인 상태를 설정
         const token = getCookie('accessToken');
@@ -41,19 +41,20 @@ export const AuthProvider = ({ children }) => {
             setUserId(currentUserId);
             return;
         }
-
-        }, []);
+    }, []);
 
     useEffect(() => {
-        getUserInfo()
+        if (getCookie('userId')) {
+            getUserInfo();
+        }
     }, []);
 
     // 로그아웃 함수
     const logout = () => {
-        removeCookie('accessToken', { path: '/'});
-        removeCookie('refreshToken',  { path: '/'});
-        removeCookie('userRole',  { path: '/'});
-        removeCookie('userId',  { path: '/'});
+        removeCookie('accessToken', { path: '/' });
+        removeCookie('refreshToken', { path: '/' });
+        removeCookie('userRole', { path: '/' });
+        removeCookie('userId', { path: '/' });
 
         setRole(null);
         setToken(null);
@@ -65,9 +66,9 @@ export const AuthProvider = ({ children }) => {
 
         setDidLogin(false);
 
-        console.log("로그아웃!");
-        console.log(getCookie('userRole'))
-        console.log(getCookie('userId'))
+        console.log('로그아웃!');
+        console.log(getCookie('userRole'));
+        console.log(getCookie('userId'));
     };
 
     // console.log("현재 로그인 상태: ", didLogin);
@@ -75,7 +76,17 @@ export const AuthProvider = ({ children }) => {
     // console.log("현재 유저의 userId: ", userId);
 
     return (
-        <AuthContext.Provider value={{ didLogin, role, logout, setDidLogin, setRole, userId, setUserId }}>
+        <AuthContext.Provider
+            value={{
+                didLogin,
+                role,
+                logout,
+                setDidLogin,
+                setRole,
+                userId,
+                setUserId,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

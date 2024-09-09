@@ -19,25 +19,29 @@ function UserInfoModal() {
             <div>
                 <Button
                     onClick={() => {
-                        alert('내 정보 페이지 구현 중');
+                        navigate('/account');
                     }}
-                    btnName={'내 정보 수정'}
+                    btnName={'설정'}
                     width={'fit-content'}
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#64636a'}
-                    border={'solid #64636a 1px'}
+                    border={'solid #64636a 2px'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                 />
                 <Button
-                    onClick={() => handleLogout()}
+                    onClick={() => {
+                        window.confirm('로그아웃 하시겠습니까?')
+                            ? handleLogout()
+                            : '';
+                    }}
                     btnName={'로그아웃'}
                     width={'fit-content'}
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#d5dbe2'}
-                    border={'solid #d5dbe2 1px'}
+                    border={'solid #d5dbe2 2px'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                     float={'right'}

@@ -12,7 +12,7 @@ export const productTypes = {
         "quantity": { label: "수량", type: "int" },
         "expectedDeliveryDate": { label: "희망납기일", type: "date" },
         "transportationDestination": { label: "운송목적지", type: "string" },
-        "edge": { label: "주문(Edge)", type: "string" },
+        "orderEdge": { label: "주문(Edge)", type: "string" },
         "tolerance": { label: "공차", type: "string" },
         "annualCost": { label: "연소요량", type: "string" }
     },
@@ -52,7 +52,7 @@ export const productTypes = {
     },
     "THICK_PLATE": {
         "lineItemId": { label: "번호", type: "int" },
-        "generalDetails": { label: "일반사항", type: "string" },
+        "orderPurpose": { label: "일반사항", type: "string" },
         "orderInfo": { label: "주문정보", type: "string" },
         "ladleIngredient": { label: "성분(ladle)", type: "string" },
         "productIngredient": { label: "성분(product)", type: "string" },

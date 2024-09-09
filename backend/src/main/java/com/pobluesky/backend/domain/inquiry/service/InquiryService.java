@@ -556,16 +556,6 @@ public class InquiryService {
         return results;
     }
 
-    private void validateUserAndToken(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
-
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!Objects.equals(customer.getUserId(), customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-    }
-
     private List<InquiryFavoriteResponseDTO> convertToResponseDTO(List<Inquiry> inquiries) {
         if (inquiries.isEmpty()) {
             throw new CommonException(ErrorCode.INQUIRY_LIST_EMPTY);
@@ -605,10 +595,13 @@ public class InquiryService {
 
     // 모바일 상세 Inquiry 조회
     @Transactional(readOnly = true)
-    public MobileInquirySummaryResponseDTO getInquiryById(Long inquiryId) {
+    public MobileInquiryResponseDTO getInquiryById(Long inquiryId) {
         Inquiry inquiry = inquiryRepository.findActiveInquiryByInquiryId(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        return MobileInquirySummaryResponseDTO.from(inquiry);
+        List<LineItemResponseDTO> lineItemsByInquiry =
+                lineItemService.getFullLineItemsByInquiry(inquiryId);
+
+        return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
     }
 }

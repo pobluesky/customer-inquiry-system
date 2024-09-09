@@ -74,13 +74,25 @@ public class Question extends BaseEntity {
         this.isActivated = true;
     }
 
-    public void deleteQuestion() {
-        this.isActivated = false;
-    }
-
     public void updateQuestion(
+        Inquiry inquiry,
+        String title,
+        String contents,
+        String fileName,
+        String filePath,
+        QuestionType type,
         QuestionStatus status
     ) {
+        this.inquiry = inquiry;
+        this.title = title;
+        this.contents = contents;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.type = type;
         this.status = status;
+    }
+
+    public void deleteQuestion() {
+        this.isActivated = false;
     }
 }

@@ -13,6 +13,7 @@ export const JoinInput = ({
     needCategory = true,
     warningMsg,
     needWarningMsg = true,
+    readOnly,
 }) => (
     <Input
         ref={ref}
@@ -37,6 +38,8 @@ export const JoinInput = ({
         categoryTextAlign={'left'}
         needWarningMsg={needWarningMsg}
         warningMsg={warningMsg}
+        spellCheck="false"
+        readOnly={readOnly}
     />
 );
 

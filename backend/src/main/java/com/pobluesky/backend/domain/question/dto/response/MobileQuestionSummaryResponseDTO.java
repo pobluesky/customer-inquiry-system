@@ -14,7 +14,9 @@ public record MobileQuestionSummaryResponseDTO (
 
         String status,
 
-        String type
+        String type,
+
+        String contents
 ) {
     public static MobileQuestionSummaryResponseDTO from(Question question) {
 
@@ -24,6 +26,7 @@ public record MobileQuestionSummaryResponseDTO (
                 .title(question.getTitle())
                 .status(question.getStatus().getStatus())
                 .type(question.getType().getType())
+                .contents(question.getContents())
                 .build();
     }
 }

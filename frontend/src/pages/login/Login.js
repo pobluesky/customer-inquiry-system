@@ -32,7 +32,7 @@ function Login() {
     const [errorMsg, setErrorMsg] = useState('');
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
-    const { setDidLogin, setRole, setUserId } = useAuth();
+    const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
     // 엔터 키 기능 (로그인 버튼 클릭)
     const enterKeyDown = async (e) => {
@@ -43,10 +43,13 @@ function Login() {
     };
 
     useEffect(() => {
-        if (currentUserName && currentUserEmail && getCookie('userRole')) {
-            navigate('/');
-        }
-    }, []);
+        const init = async () => {
+            if (didLogin) {
+                navigate('/');
+            }
+        };
+        init();
+    }, [didLogin]);
 
     useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
@@ -58,8 +61,7 @@ function Login() {
     // 로그인 API
     const GetAuth = async () => {
         try {
-            const response = await signInApiByUsers(email, password);
-            console.log('로그인 성공: ', response);
+            await signInApiByUsers(email, password);
             setOpenBackDrop(true);
             setTimeout(() => {
                 setDidLogin(true); // 로그인 상태 변화

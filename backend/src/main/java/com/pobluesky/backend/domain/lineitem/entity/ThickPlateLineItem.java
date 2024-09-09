@@ -62,7 +62,7 @@ public class ThickPlateLineItem extends LineItem{
     @Builder
     public ThickPlateLineItem(
         Inquiry inquiry,
-        String generalDetails,
+        String orderPurpose,
         String orderInfo,
         String ladleIngredient,
         String productIngredient,

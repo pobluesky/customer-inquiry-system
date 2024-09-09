@@ -202,7 +202,7 @@ export const processInquiryData = (data) => {
                     quantity: item.quantity,
                     expectedDeliveryDate: item.expectedDeliveryDate,
                     transportationDestination: item.transportationDestination,
-                    edge: item.edge,
+                    orderEdge: item.orderEdge,
                     tolerance: item.tolerance,
                     annualCost: item.annualCost,
                 })),
@@ -257,7 +257,7 @@ export const processInquiryData = (data) => {
                 ...rest,
                 productType,
                 lineItemRequestDTOs: lineItemRequestDTOs.map((item) => ({
-                    generalDetails: item.generalDetails,
+                    orderPurpose: item.orderPurpose,
                     orderInfo: item.orderInfo,
                     ladleIngredient: item.ladleIngredient,
                     productIngredient: item.productIngredient,
