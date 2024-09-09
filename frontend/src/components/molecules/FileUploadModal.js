@@ -55,15 +55,15 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
             });
         }, uploadInterval);
 
-        if (!uploadComplete) {
-            setTimeout(() => {
-                if (!uploadComplete) {
-                    clearInterval(fakeUpload);
-                    setUploadPercentage(100);
-                    postOCRFile(file);
-                }
-            }, 100000);
-        }
+        // if (!uploadComplete) {
+        //     setTimeout(() => {
+        //         if (!uploadComplete) {
+        //             clearInterval(fakeUpload);
+        //             setUploadPercentage(100);
+        //             postOCRFile(file);
+        //         }
+        //     }, 100000);
+        // }
     };
 
     const openFileDialog = () => {
