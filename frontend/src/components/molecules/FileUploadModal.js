@@ -14,17 +14,19 @@ import {
 import { postOCR } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 
-const FileUploadModal = () => {
+const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
     const { userId } = useAuth();
 
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [file, setFile] = useState(null);
+    const [isUploadComplete, setIsUploadComplete] = useState(false);
+    const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
 
     const fileInputRef = useRef(null);
 
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
@@ -32,17 +34,36 @@ const FileUploadModal = () => {
         setIsModalOpen(true);
         setFile(file);
 
+        let uploadComplete = false;
+        const uploadInterval = 2000;
+        const uploadStep = 7;
+
         const fakeUpload = setInterval(() => {
             setUploadPercentage((prev) => {
-                const nextPercentage = prev + 10;
+                const nextPercentage = prev + uploadStep;
                 if (nextPercentage >= 100) {
                     clearInterval(fakeUpload);
-                    setIsUploading(false);
+                    uploadComplete = true;
+                    setUploadPercentage(100);
+                    setIsUploadComplete(true);
+                    if(nextPercentage >= 10) {
+                        postOCRFile(file);
+                    }
                     return 100;
                 }
                 return nextPercentage;
             });
-        }, 500);
+        }, uploadInterval);
+
+        if (!uploadComplete) {
+            setTimeout(() => {
+                if (!uploadComplete) {
+                    clearInterval(fakeUpload);
+                    setUploadPercentage(100);
+                    postOCRFile(file);
+                }
+            }, 20000);
+        }
     };
 
     const openFileDialog = () => {
@@ -55,16 +76,27 @@ const FileUploadModal = () => {
         setIsModalOpen(false);
         setIsUploading(false);
         setUploadPercentage(0);
+        setIsUploadComplete(false);
     };
 
-    const postOCRLineItems = async () => {
+    const postOCRFile = async (file) => {
         try {
-            const response = await postOCR(userId, 'CAR');
+            const response = await postOCR(userId, file, productType);
+            const lineItems = response.data.lineItemResponseDTOs;
+
+            setLineItemsFromOCR(lineItems);
+            console.log('OCR Response:', lineItems);
+
+            if (onLineItemsUpdate) {
+                onLineItemsUpdate(lineItems);
+            }
         } catch (error) {
             console.error('Error posting OCR Line Items:', error);
+        } finally {
+            setIsUploading(false);
+            closeModal();
         }
-    }
-    console.log(file)
+    };
 
     return (
         <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
@@ -93,7 +125,10 @@ const FileUploadModal = () => {
                     <div className={modalContent} onClick={(e) => e.stopPropagation()}>
                         {isUploading && (
                             <div className={uploadingIndicator}>
-                                <div className={loader}></div>
+                                <div className={`loader-container ${isUploadComplete ? 'hidden' : ''}`}>
+                                    <div className={loader}></div>
+                                    <div className={`checkmark ${isUploadComplete ? 'visible' : ''}`}></div>
+                                </div>
                                 <p className={fileUploadText}>파일 업로드 중...</p>
                                 <div className={progressBarContainer}>
                                     <div

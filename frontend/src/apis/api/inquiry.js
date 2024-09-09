@@ -223,9 +223,12 @@ export const putFavoriteInquiry = async (inquiryId) => {
 }
 
 // inquiry 라인아이템 optimizer (OCR API)
-export const postOCR = async (userId, productType) => {
+export const postOCR = async (userId, file, productType) => {
     try {
-        const formData = createFormOCRData(productType);
+        const formData = new FormData();
+        formData.append('files', file);
+        formData.append('productType', productType);
+        console.log("formData: ", formData)
 
         const response = await axiosInstance.post(
             `/customers/inquiries/${userId}/optimized`,
@@ -234,10 +237,11 @@ export const postOCR = async (userId, productType) => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                timeout: 10000,
             },
         );
 
-        processInquiryData(formData);
+        // processInquiryData(formData);
         console.log('postOCR: ', response);
         return response.data;
     } catch (error) {

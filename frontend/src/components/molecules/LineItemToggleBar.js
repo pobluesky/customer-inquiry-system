@@ -5,7 +5,8 @@ import { Button } from '@mui/material';
 import FileUploadModal from './FileUploadModal';
 import Modal from './Modal';
 
-const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItemsChange, onSelect, isUpdate }) => {
+const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItemsChange, handleLineItemsChangeByOCR, onSelect, isUpdate }) => {
+    const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,6 +20,14 @@ const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItem
         onSelect(selectedData[0]?.lineItemList);
         closeModal();
         return selectedData[0]?.lineItemList;
+    };
+
+    const handleLineItemsFromOCR = (newLineItems) => {
+        setLineItemsFromOCR(newLineItems);
+
+        if (handleLineItemsChangeByOCR) {
+            handleLineItemsChangeByOCR(newLineItems);
+        }
     };
 
     return (
@@ -58,7 +67,7 @@ const LineItemToggleBar = ({ title, isChecked, setCheck, productType, onLineItem
                             />
                             &nbsp;&nbsp;
                             {isFileModalOpen && (
-                                <FileUploadModal />
+                                <FileUploadModal productType={productType} onLineItemsUpdate={handleLineItemsFromOCR} />
                                 )}
                         </>
                     ) : (

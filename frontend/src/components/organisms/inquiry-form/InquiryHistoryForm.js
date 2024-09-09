@@ -26,6 +26,7 @@ const InquiryHistoryForm = ({
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
+    const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
@@ -93,6 +94,15 @@ const InquiryHistoryForm = ({
         onLineItemsChange(updatedData);
     };
 
+    // OCR 데이터로 행 추가하는 함수
+    const handleLineItemsChangeByOCR = (newLineItems) => {
+        // 각 오브젝트를 하나의 행으로 추가
+        const updatedData = [...localData, ...newLineItems];
+        setLocalData(updatedData);
+        onLineItemsChange(updatedData);
+    };
+
+    console.log("라인아이템 Inquiry History Form: ", lineItemsFromOCR)
     return (
         <Paper
             style={{
@@ -110,6 +120,7 @@ const InquiryHistoryForm = ({
                 setCheck={setChecked}
                 productType={productType}
                 onLineItemsChange={onLineItemsChange}
+                handleLineItemsChangeByOCR={handleLineItemsChangeByOCR}
                 onSelect={handleSelect}
                 isUpdate={isUpdate}
             />

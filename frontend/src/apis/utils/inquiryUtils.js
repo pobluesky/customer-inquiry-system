@@ -320,24 +320,6 @@ export const createFormInquiryData = (formData) => {
     return form;
 };
 
-// OCR API Form Data
-export const createFormOCRData = (formData) => {
-    const form = new FormData();
-
-    const inquiryData = processInquiryData(formData);
-    delete inquiryData.files;
-
-    form.append(
-        'inquiry',
-        new Blob([JSON.stringify(inquiryData)], { type: 'application/json' }),
-    );
-
-    if (formData.files) {
-        form.append('files', formData.files);
-    }
-    return form;
-};
-
 // FormData 객체 생성 함수 - quality
 export const createFormQualityData = (formData) => {
     const form = new FormData();
