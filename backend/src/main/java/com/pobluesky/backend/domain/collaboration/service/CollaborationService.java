@@ -216,10 +216,9 @@ public class CollaborationService {
         CollaborationModifyRequestDTO requestDTO
     ) {
         Long userId = signService.parseToken(token);
-        Collaboration collaboration = collaborationRepository.findById(collaborationId)
-            .orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+        Collaboration collaboration = validateCollaboration(collaborationId);
 
-        // 1. 상태 기반 권한 체크
+        // 추가 권한 체크만 수행 (validateCollaboration에서 기본 상태 검증이 이미 수행됨)
         if (collaboration.getColStatus() == ColStatus.READY) {
             if (!userId.equals(collaboration.getColRequestManager().getUserId())) {
                 throw new CommonException(ErrorCode.REQMANAGER_NOT_MACHED);
@@ -228,26 +227,13 @@ public class CollaborationService {
             if (!userId.equals(collaboration.getColResponseManager().getUserId())) {
                 throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
             }
-        } else if (collaboration.getColStatus() == ColStatus.COMPLETE) {
-            throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
         }
 
         // 2. 내용 및 파일 수정
         collaboration.modifyCollaborationContents(requestDTO.colContents());
 
-        // 3. 파일 수정 처리
-        String fileName = collaboration.getFileName(); // 기존 파일 이름으로 가져오고
-        String filePath = collaboration.getFilePath(); // 기존 파일 경로 가져오고, 없다면 null로
-
-        if (file != null) {
-            // 4. 새로운 파일이 들어오면 파일 업로드
-            FileInfo fileInfo = fileService.uploadFile(file);
-            fileName = fileInfo.getOriginName();
-            filePath = fileInfo.getStoredFilePath();
-        }
-
         // 5. 파일 정보를 업데이트
-        collaboration.updateFiles(fileName, filePath);
+        updateFile(collaboration, file);
 
         // 6. colReply와 isAccepted 상태 변경 처리
         if (requestDTO.isAccepted() != null) {
@@ -283,4 +269,30 @@ public class CollaborationService {
 
         return collaboration;
     }
+
+    private void updateFile(Collaboration collaboration, MultipartFile file) {
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
+    }
+
+//    private void checkCollaborationManagers(Collaboration collaboration, CollaborationUpdateRequestDTO requestDTO) {
+//        Manager reqManager = managerRepository.findById(requestDTO.colReqId())
+//            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+//
+//        Manager resManager = managerRepository.findById(requestDTO.colResId())
+//            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+//
+//        if (!collaboration.getColRequestManager().equals(reqManager) ||
+//            !collaboration.getColResponseManager().equals(resManager)) {
+//            throw new CommonException(ErrorCode.COLLABORATION_INFO_MISMATCH);
+//        }
+//    }
 }
