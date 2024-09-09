@@ -31,7 +31,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
     useEffect(() => {
         if (uploadPercentage === 100 && !isUploadComplete) {
             setIsUploadComplete(true);
-            setTimeout(() => closeModal(), 3000); // Close modal after a delay to allow animation
+            setTimeout(() => closeModal(), 3000);
         }
     }, [uploadPercentage, isUploadComplete]);
 
@@ -140,9 +140,17 @@ const FileUploadModal = ({ productType, onLineItemsUpdate }) => {
             </div>
             {isModalOpen && isUploadComplete && (
                 <div className={modalOverlay} onClick={closeModal}>
-                    <div className={modalContentComplete} onClick={(e) => e.stopPropagation()}>
-                            <CheckCircleIcon style={{ margin: '47px 0 0 0', fontSize: 60, color: '#00c6ff', opacity: isUploadComplete ? 1 : 0, transition: 'opacity 0.5s ease' }} />
-                            <div className={fileUploadText}>업로드 완료</div>
+                    <div className={modalContentComplete}
+                         onClick={(e) => e.stopPropagation()}>
+                        <CheckCircleIcon style={{
+                            margin: '40px 0 0 0',
+                            fontSize: 60,
+                            color: '#00c6ff',
+                            opacity: isUploadComplete ? 1 : 0,
+                            transition: 'opacity 0.5s ease',
+                        }} />
+                        <div className={fileUploadText}>업로드 완료</div>
+                        <div className={progressText}>업로드된 데이터를 확인해 주세요.</div>
                     </div>
                 </div>
             )}

@@ -100,7 +100,6 @@ const InquiryHistoryForm = ({
         onLineItemsChange(updatedData);
     };
 
-    console.log("라인아이템 Inquiry History Form: ", lineItemsFromOCR)
     return (
         <Paper
             style={{
