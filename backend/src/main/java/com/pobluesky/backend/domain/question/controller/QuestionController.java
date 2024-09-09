@@ -151,7 +151,7 @@ public class QuestionController {
         @PathVariable Long userId,
         @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestPart("question") QuestionCreateRequestDTO questionCreateRequestDTO) {
-        QuestionResponseDTO response = questionService.createNotInquiryQuestion(
+        QuestionResponseDTO response = questionService.createGeneralQuestion(
             token,
             userId,
             file,
@@ -194,7 +194,7 @@ public class QuestionController {
         @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestPart("question") QuestionUpdateRequestDTO questionUpdateRequestDTO
     ) {
-        QuestionResponseDTO response = questionService.updateNotInquiryQuestionById(
+        QuestionResponseDTO response = questionService.updateGeneralQuestion(
             token,
             userId,
             questionId,

@@ -169,7 +169,7 @@ public class QuestionService {
 
     // 타입별 질문 작성 (고객사)
     @Transactional
-    public QuestionResponseDTO createNotInquiryQuestion(
+    public QuestionResponseDTO createGeneralQuestion(
         String token,
         Long customerId,
         MultipartFile file,
@@ -249,7 +249,7 @@ public class QuestionService {
 
     // 고객사 기타 질문 수정
     @Transactional
-    public QuestionResponseDTO updateNotInquiryQuestionById(
+    public QuestionResponseDTO updateGeneralQuestion(
         String token,
         Long customerId,
         Long questionId,
