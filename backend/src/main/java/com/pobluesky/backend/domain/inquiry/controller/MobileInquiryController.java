@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.inquiry.controller;
 
+import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
 
@@ -26,7 +27,7 @@ public class MobileInquiryController {
     }
 
     @GetMapping("/{inquiryId}")
-    public MobileInquirySummaryResponseDTO getInquiryById(@PathVariable Long inquiryId) {
+    public MobileInquiryResponseDTO getInquiryById(@PathVariable Long inquiryId) {
 
         return inquiryService.getInquiryById(inquiryId);
     }

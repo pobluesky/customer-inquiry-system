@@ -317,8 +317,11 @@ public class InquiryController {
         @PathVariable Long userId,
         @PathVariable Long inquiryId
     ) {
-        InquiryFavoriteLineItemResponseDTO response =
-            inquiryService.getLineItemsByInquiryId(token, userId, inquiryId);
+        InquiryFavoriteLineItemResponseDTO response = inquiryService.getLineItemsByInquiryId(
+                token,
+                userId,
+                inquiryId
+        );
 
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
