@@ -87,11 +87,13 @@ public class QuestionService {
             sortBy);
     }
 
-    // 질문 전체 조회 (고객사) without paging
+    // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
-    public List<QuestionSummaryResponseDTO> getAllQuestionsByCustomerWithoutPaging(
+    public Page<QuestionSummaryResponseDTO> getQuestionsByCustomer(
         String token,
         Long customerId,
+        int page,
+        int size,
         String sortBy,
         QuestionStatus status,
         QuestionType type,
@@ -109,7 +111,10 @@ public class QuestionService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        return questionRepository.findAllQuestionsByCustomerWithoutPaging(
+        Pageable pageable = PageRequest.of(page, size);
+
+        return questionRepository.findQuestionsByCustomer(
+            pageable,
             customerId,
             status,
             type,

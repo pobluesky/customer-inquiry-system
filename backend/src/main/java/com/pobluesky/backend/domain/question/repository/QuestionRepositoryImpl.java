@@ -36,7 +36,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<QuestionSummaryResponseDTO> findAllQuestionsByCustomerWithoutPaging(
+    public Page<QuestionSummaryResponseDTO> findQuestionsByCustomer(
+        Pageable pageable,
         Long userId,
         QuestionStatus status,
         QuestionType type,
@@ -46,7 +47,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         LocalDate endDate,
         String sortBy
     ) {
-        return queryFactory
+        List<QuestionSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(QuestionSummaryResponseDTO.class,
                 question.questionId,
                 question.title,
@@ -67,10 +68,18 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 typeEq(type),
                 titleContains(title),
                 questionIdEq(questionId),
+                isActivatedEq(true),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
+
+        JPAQuery<Question> countQuery = getCountQueryForCustomer(
+            userId, status, type, title, questionId, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
 
@@ -141,6 +150,28 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 questionIdEq(questionId),
                 customerNameContains(customerName),
                 isActivatedEq(isActivated),
+                createdDateBetween(startDate, endDate)
+            );
+    }
+
+    private JPAQuery<Question> getCountQueryForCustomer(
+        Long userId,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        return queryFactory
+            .selectFrom(question)
+            .where(
+                question.customer.userId.eq(userId),
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                isActivatedEq(true),
                 createdDateBetween(startDate, endDate)
             );
     }

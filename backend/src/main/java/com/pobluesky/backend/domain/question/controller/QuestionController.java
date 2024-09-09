@@ -26,8 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
@@ -35,7 +33,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/managers/all")
+    @GetMapping("/managers")
     @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByManager(
         @RequestHeader("Authorization") String token,
@@ -97,6 +95,8 @@ public class QuestionController {
     public ResponseEntity<JsonResult> getAllQuestionsByCustomerWithoutPaging(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) QuestionStatus status,
         @RequestParam(required = false) QuestionType type,
@@ -105,9 +105,11 @@ public class QuestionController {
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        List<QuestionSummaryResponseDTO> response = questionService.getAllQuestionsByCustomerWithoutPaging(
+        Page<QuestionSummaryResponseDTO> questions = questionService.getQuestionsByCustomer(
             token,
             userId,
+            page,
+            size,
             sortBy,
             status,
             type,
@@ -116,6 +118,12 @@ public class QuestionController {
             startDate,
             endDate
         );
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("questionsInfo", questions.getContent());
+        response.put("totalElements", questions.getTotalElements());
+        response.put("totalPages", questions.getTotalPages());
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
