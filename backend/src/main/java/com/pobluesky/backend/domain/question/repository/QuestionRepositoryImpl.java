@@ -36,54 +36,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<QuestionSummaryResponseDTO> findQuestionsByCustomer(
-        Pageable pageable,
-        Long userId,
-        QuestionStatus status,
-        QuestionType type,
-        String title,
-        Long questionId,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy
-    ) {
-        List<QuestionSummaryResponseDTO> content = queryFactory
-            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
-                question.questionId,
-                question.title,
-                question.status,
-                question.type,
-                question.contents,
-                customer.customerName,
-                question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt"),
-                question.isActivated
-            ))
-            .from(question)
-            .leftJoin(question.answer, answer)
-            .leftJoin(question.customer, customer)
-            .where(
-                question.customer.userId.eq(userId),
-                statusEq(status),
-                typeEq(type),
-                titleContains(title),
-                questionIdEq(questionId),
-                isActivatedEq(true),
-                createdDateBetween(startDate, endDate)
-            )
-            .orderBy(getOrderSpecifier(sortBy))
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch();
-
-        JPAQuery<Question> countQuery = getCountQueryForCustomer(
-            userId, status, type, title, questionId, startDate, endDate);
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
-    }
-
-
-    @Override
     public Page<QuestionSummaryResponseDTO> findQuestionsByManager(
         Pageable pageable,
         QuestionStatus status,
@@ -127,6 +79,53 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
         JPAQuery<Question> countQuery = getCountQueryForManager(
             status, type, title, questionId, customerName, isActivated, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public Page<QuestionSummaryResponseDTO> findQuestionsByCustomer(
+        Pageable pageable,
+        Long userId,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy
+    ) {
+        List<QuestionSummaryResponseDTO> content = queryFactory
+            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
+                question.questionId,
+                question.title,
+                question.status,
+                question.type,
+                question.contents,
+                customer.customerName,
+                question.createdDate.as("questionCreatedAt"),
+                answer.createdDate.as("answerCreatedAt"),
+                question.isActivated
+            ))
+            .from(question)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
+            .where(
+                question.customer.userId.eq(userId),
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                isActivatedEq(true),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Question> countQuery = getCountQueryForCustomer(
+            userId, status, type, title, questionId, startDate, endDate);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
