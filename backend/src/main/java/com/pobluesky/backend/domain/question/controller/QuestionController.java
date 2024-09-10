@@ -34,7 +34,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/managers")
-    @Operation(summary = "Question 조회(담당자)", description = "등록된 모든 Question을 조건에 맞게 조회한다.")
+    @Operation(summary = "질문 조회(담당자)", description = "등록된 모든 질문을 조건에 맞게 조회한다.")
     public ResponseEntity<JsonResult> getQuestionByManager(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "0") int page,
