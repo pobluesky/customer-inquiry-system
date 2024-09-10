@@ -13,7 +13,7 @@ import {
     IconButton,
     Button,
 } from '@mui/material';
-import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
+import { Add, DeleteOutline, FileCopy, Remove } from '@mui/icons-material';
 import { productTypes } from '../../../utils/inquiry';
 import LineItemToggleBar from '../../molecules/LineItemToggleBar';
 
@@ -26,6 +26,7 @@ const InquiryHistoryForm = ({
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
+    const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
@@ -86,9 +87,20 @@ const InquiryHistoryForm = ({
         onLineItemsChange(updatedData);
     };
 
+    const deleteAllRows = () => {
+        setLocalData([]);
+        onLineItemsChange([]);
+    };
+
     const copyRow = (index) => {
         const rowToCopy = localData[index];
         const updatedData = [...localData, { ...rowToCopy }];
+        setLocalData(updatedData);
+        onLineItemsChange(updatedData);
+    };
+
+    const handleLineItemsChangeByOCR = (newLineItems) => {
+        const updatedData = [...localData, ...newLineItems];
         setLocalData(updatedData);
         onLineItemsChange(updatedData);
     };
@@ -110,6 +122,7 @@ const InquiryHistoryForm = ({
                 setCheck={setChecked}
                 productType={productType}
                 onLineItemsChange={onLineItemsChange}
+                handleLineItemsChangeByOCR={handleLineItemsChangeByOCR}
                 onSelect={handleSelect}
                 isUpdate={isUpdate}
             />
@@ -286,17 +299,27 @@ const InquiryHistoryForm = ({
                         </Table>
                     </TableContainer>
                     <Button
-                        variant="contained"
-                        color="primary"
                         startIcon={<Add />}
                         style={{
-                            margin: '20px',
+                            margin: '15px',
                             backgroundColor: '#03507d',
+                            color: '#ffffff',
                             fontWeight: '800',
                         }}
                         onClick={addRow}
                     >
                         행추가
+                    </Button>
+                    <Button
+                        startIcon={<Remove />}
+                        style={{
+                            backgroundColor: '#03507d',
+                            color: '#ffffff',
+                            fontWeight: '800',
+                        }}
+                        onClick={deleteAllRows}
+                    >
+                        전체삭제
                     </Button>
                 </>
             ) : (

@@ -1,7 +1,7 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
-    createFormInquiryData, processHistoryData,
-    processInquiries,
+    createFormInquiryData, createFormOCRData, processHistoryData,
+    processInquiries, processInquiryData,
 } from '../utils/inquiryUtils';
 
 // 고객사 inquiry list 가져오기 (summary)
@@ -221,3 +221,29 @@ export const putFavoriteInquiry = async (inquiryId) => {
         throw error;
     }
 }
+
+// inquiry 라인아이템 optimizer (OCR API)
+export const postOCR = async (userId, file, productType) => {
+    try {
+        const formData = new FormData();
+        formData.append('files', file);
+        formData.append('productType', productType);
+
+        const response = await axiosInstance.post(
+            `/customers/inquiries/${userId}/optimized`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                timeout: 100000,
+            },
+        );
+
+        console.log('postOCR: ', response);
+        return response.data;
+    } catch (error) {
+        console.log('Error posting inquiry:', error);
+        throw error;
+    }
+};
