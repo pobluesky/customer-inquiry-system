@@ -31,7 +31,8 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CollaborationSummaryResponseDTO> findAllCollaborationsRequestWithoutPaging(
+    public Page<CollaborationSummaryResponseDTO> findAllCollaborationsRequest(
+        Pageable pageable,
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
@@ -39,7 +40,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         LocalDate endDate,
         String sortBy) {
 
-        return queryFactory
+        List<CollaborationSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
                 collaboration.colId,
                 collaboration.question.questionId,
@@ -57,7 +58,26 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
+
+        JPAQuery<Collaboration> countQuery = getCountQuery(colStatus, colReqManager, colReqId, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private JPAQuery<Collaboration> getCountQuery(ColStatus colStatus, String colReqManagerName, Long colReqId,
+        LocalDate startDate, LocalDate endDate) {
+        return queryFactory
+            .selectFrom(collaboration)
+            .join(collaboration.colRequestManager, manager)
+            .where(
+                colStatusEq(colStatus),
+                colReqManagerEq(colReqManagerName),
+                colReqIdEq(colReqId),
+                createdDateBetween(startDate, endDate)
+            );
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
@@ -96,7 +116,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
         DateTemplate<LocalDate> dateTemplate = Expressions.dateTemplate(
             LocalDate.class,
-            "CAST({0} AS DATE)",
+            "DATE({0})",
             collaboration.createdDate
         );
 
