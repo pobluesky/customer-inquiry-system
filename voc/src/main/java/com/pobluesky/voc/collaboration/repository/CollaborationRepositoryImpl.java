@@ -52,7 +52,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         return collaborations.stream()
             .map(c -> {
                 // Feign을 사용해 Manager 정보를 가져옴
-                Manager manager = userClient.getManagerByIdWithoutToken(c.getColRequestManagerId()).getData(); // manager 정보를 ID 기반으로 가져옴
+                Manager manager = userClient.getManagerByIdWithoutToken(c.getColRequestId()).getData(); // manager 정보를 ID 기반으로 가져옴
 
                 // DTO로 변환
                 return CollaborationSummaryResponseDTO.builder()

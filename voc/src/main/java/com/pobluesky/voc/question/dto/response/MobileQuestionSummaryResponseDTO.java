@@ -22,7 +22,7 @@ public record MobileQuestionSummaryResponseDTO (
         String contents
 ) {
     public static MobileQuestionSummaryResponseDTO from(Question question, UserClient userClient) {
-        Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(question.getUserId()).getData();
 
         return MobileQuestionSummaryResponseDTO.builder()
                 .questionId(question.getQuestionId())

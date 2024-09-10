@@ -35,10 +35,10 @@ public class Collaboration extends BaseEntity {
     private Question question;
 
     @JoinColumn(name = "col_request_id")
-    private Long colRequestManagerId;
+    private Long colRequestId;
 
     @JoinColumn(name = "col_response_id")
-    private Long colResponseManagerId;
+    private Long colResponseId;
 
     @Enumerated(EnumType.STRING)
     private ColStatus colStatus;
@@ -58,15 +58,15 @@ public class Collaboration extends BaseEntity {
     @Builder
     public Collaboration(
         Question question,
-        Long colRequestManagerId,
-        Long colResponseManagerId,
+        Long colRequestId,
+        Long colResponseId,
         String colContents,
         String fileName, // 협업 첨부 파일
         String filePath // 협업 첨부 파일
     ) {
         this.question = question;
-        this.colRequestManagerId = colRequestManagerId;
-        this.colResponseManagerId = colResponseManagerId;
+        this.colRequestId = colRequestId;
+        this.colResponseId = colResponseId;
         this.colStatus = ColStatus.READY;
         this.colContents = colContents;
         this.colReply = null;

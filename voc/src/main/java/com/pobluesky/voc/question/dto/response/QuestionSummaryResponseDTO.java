@@ -30,7 +30,7 @@ public record QuestionSummaryResponseDTO(
     Boolean isActivated
 ) {
     public static QuestionSummaryResponseDTO from(Question question, UserClient userClient) {
-        Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(question.getUserId()).getData();
 
         return QuestionSummaryResponseDTO.builder()
             .questionId(question.getQuestionId())

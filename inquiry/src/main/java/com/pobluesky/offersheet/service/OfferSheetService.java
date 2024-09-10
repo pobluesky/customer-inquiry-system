@@ -44,7 +44,7 @@ public class OfferSheetService {
                 throw new CommonException(ErrorCode.USER_NOT_FOUND);
             }
 
-            if(!Objects.equals(customer.getUserId(), offerSheet.getInquiry().getCustomerId()))
+            if(!Objects.equals(customer.getUserId(), offerSheet.getInquiry().getUserId()))
                 throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 

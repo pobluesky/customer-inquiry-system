@@ -169,12 +169,12 @@ public class CollaborationService {
             throw new CommonException(ErrorCode.RES_MANAGER_NOT_FOUND);
         }
 
-        if (!collaboration.getColRequestManagerId().equals(reqManager.getUserId()) ||
-            !collaboration.getColResponseManagerId().equals(resManager.getUserId())) {
+        if (!collaboration.getColRequestId().equals(reqManager.getUserId()) ||
+            !collaboration.getColResponseId().equals(resManager.getUserId())) {
             throw new CommonException(ErrorCode.COLLABORATION_INFO_MISMATCH);
         }
 
-        if(!userId.equals(collaboration.getColResponseManagerId()))
+        if(!userId.equals(collaboration.getColResponseId()))
             throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
 
         collaboration.writeColReply(requestDTO.colReply());
@@ -207,7 +207,7 @@ public class CollaborationService {
 
         Collaboration collaboration = validateCollaboration(collaborationId);
 
-        if(!userId.equals(collaboration.getColResponseManagerId()))
+        if(!userId.equals(collaboration.getColResponseId()))
             throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
 
         collaboration.completeCollaboration();

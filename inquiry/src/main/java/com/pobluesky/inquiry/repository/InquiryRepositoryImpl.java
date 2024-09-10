@@ -56,7 +56,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .selectFrom(inquiry)
             .where(
                 inquiry.isActivated.eq(true),
-                inquiry.customerId.eq(userId),
+                inquiry.userId.eq(userId),
                 progressEq(progress),
                 productTypeEq(productType),
                 inquiryTypeEq(inquiryType),
@@ -120,7 +120,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
             .selectFrom(inquiry)
             .where(
                 inquiry.isActivated.isTrue(),
-                progressInQualityReviewStates(),
                 progressEq(progress),
                 productTypeEq(productType),
                 inquiryTypeEq(inquiryType),
@@ -135,7 +134,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         return inquiries.stream()
             .map(inq -> {
                 // Feign을 사용해 고객 정보를 조회
-                Customer customer = userClient.getCustomerByIdWithoutToken(inq.getCustomerId()).getData();
+                Customer customer = userClient.getCustomerByIdWithoutToken(inq.getUserId()).getData();
 
                 // salesManager와 qualityManager 정보를 각각의 서비스에서 가져옴
                 Manager salesManager = inq.getSalesManagerId() != null
@@ -199,7 +198,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         // Feign을 사용해 각 Inquiry에 대해 Customer, Manager 정보를 조회 후 DTO로 변환
         return inquiries.stream().map(inq -> {
                 // Feign을 사용해 고객 정보를 조회
-                Customer customer = userClient.getCustomerByIdWithoutToken(inq.getCustomerId()).getData();
+                Customer customer = userClient.getCustomerByIdWithoutToken(inq.getUserId()).getData();
 
                 // salesManager와 qualityManager 정보를 각각의 서비스에서 가져옴
                 Manager salesManager = null;

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class QuestionService {
 
+    private static final Logger log = LoggerFactory.getLogger(QuestionService.class);
     private final QuestionRepository questionRepository;
 
     private final InquiryClient inquiryClient;
@@ -49,7 +52,8 @@ public class QuestionService {
         Long questionId,
         String customerName,
         LocalDate startDate,
-        LocalDate endDate) {
+        LocalDate endDate
+        ) {
 
         Long userId = userClient.parseToken(token);
 
@@ -65,7 +69,8 @@ public class QuestionService {
             customerName,
             startDate,
             endDate,
-            sortBy);
+            sortBy
+            );
     }
 
     // 질문 전체 조회 (고객사) without paging
@@ -136,7 +141,7 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        if (!Objects.equals(question.getCustomerId(), customerId)) {
+        if (!Objects.equals(question.getUserId(), customerId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
@@ -243,7 +248,7 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        if(!Objects.equals(question.getCustomerId(), customerId))
+        if(!Objects.equals(question.getUserId(), customerId))
             throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
 
         if(question.getStatus() == QuestionStatus.COMPLETED)
@@ -298,7 +303,7 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        if(!Objects.equals(question.getCustomerId(), customerId))
+        if(!Objects.equals(question.getUserId(), customerId))
             throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
 
         if(question.getStatus() == QuestionStatus.COMPLETED)
@@ -346,7 +351,7 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        if(!Objects.equals(question.getCustomerId(), customerId))
+        if(!Objects.equals(question.getUserId(), customerId))
             throw new CommonException((ErrorCode.QUESTION_NOT_MATCHED));
 
         if(question.getStatus() == QuestionStatus.COMPLETED)

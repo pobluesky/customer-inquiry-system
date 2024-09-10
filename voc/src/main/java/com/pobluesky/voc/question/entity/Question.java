@@ -35,7 +35,7 @@ public class Question extends BaseEntity {
     private Long inquiryId; // 문의 번호
 
     @JoinColumn(name = "user_id")
-    private Long customerId; // 고객사 번호
+    private Long userId; // 고객사 번호
 
     private String title;
 
@@ -63,7 +63,7 @@ public class Question extends BaseEntity {
     @Builder
     private Question(
         Long inquiryId,
-        Long customerId,
+        Long userId,
         String title,
         String contents,
         String fileName,
@@ -72,7 +72,7 @@ public class Question extends BaseEntity {
         QuestionType type
     ) {
         this.inquiryId = inquiryId;
-        this.customerId = customerId;
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.fileName = fileName;

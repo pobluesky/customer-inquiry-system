@@ -34,7 +34,7 @@ public class NotificationService {
 
     private final ManagerNotificationRepository managerNotificationRepository;
 
-    private UserClient userClient;
+    private final UserClient userClient;
 
     public List<?> getNotificationsById(
         String token,

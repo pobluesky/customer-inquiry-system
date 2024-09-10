@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long>, InquiryRepositoryCustom{
 
-    @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.customerId = :userId AND i.isActivated = true")
+    @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.userId = :userId AND i.isActivated = true")
     Optional<Inquiry> findByCustomerIdAndInquiryId(Long userId, Long inquiryId);
 
     @Query("SELECT i FROM Inquiry i WHERE i.inquiryId = :inquiryId AND i.isActivated = true")
@@ -23,14 +23,14 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
     List<Inquiry> findActiveInquiries();
 
     @Query("SELECT i FROM Inquiry i "
-        + "WHERE i.customerId = :customerId "
+        + "WHERE i.userId = :customerId "
         + "AND i.productType = :productType "
         + "AND i.isActivated = true "
         + "ORDER BY i.createdDate DESC")
     List<Inquiry> findInquiriesByCustomerIdAndProductType(Long customerId, ProductType productType);
 
     @Query("SELECT i FROM Inquiry i "
-        + "WHERE i.customerId = :customerId "
+        + "WHERE i.userId = :customerId "
         + "AND i.productType = :productType "
         + "AND i.isActivated = true "
         + "AND i.isFavorite = true "

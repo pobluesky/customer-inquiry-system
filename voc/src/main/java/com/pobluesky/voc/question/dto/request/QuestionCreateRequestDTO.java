@@ -17,7 +17,7 @@ public record QuestionCreateRequestDTO(
     public Question toQuestionEntity(Long inquiryId, Long customerId, String fileName, String filePath) {
 
         return Question.builder()
-            .customerId(customerId)
+            .userId(customerId)
             .inquiryId(inquiryId)
             .title(title)
             .contents(contents)

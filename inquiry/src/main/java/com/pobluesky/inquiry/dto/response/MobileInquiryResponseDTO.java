@@ -15,7 +15,7 @@ import lombok.Builder;
 @Builder
 public record MobileInquiryResponseDTO(
     Long inquiryId,
-    Long customerId,
+    Long userId,
     String name,
     String customerName,
     String customerCode,
@@ -45,7 +45,7 @@ public record MobileInquiryResponseDTO(
         List<LineItemResponseDTO> lineItemResponseDTOs,
         UserClient userClient
     ) {
-        Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getCustomerId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getUserId()).getData();
         ManagerSummaryResponseDTO salesManager = null;
         ManagerSummaryResponseDTO qualityManager = null;
 
@@ -58,7 +58,7 @@ public record MobileInquiryResponseDTO(
 
         return MobileInquiryResponseDTO.builder()
             .inquiryId(inquiry.getInquiryId())
-            .customerId(inquiry.getCustomerId())
+            .userId(inquiry.getUserId())
             .name(customer.getName())
             .customerName(customer.getCustomerName())
             .customerCode(customer.getCustomerCode())

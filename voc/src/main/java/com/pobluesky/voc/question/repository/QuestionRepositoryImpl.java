@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.util.StringUtils;
 
 
@@ -47,7 +48,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .selectFrom(question)
             .leftJoin(question.answer, answer)
             .where(
-                question.customerId.eq(userId),
+                question.userId.eq(userId),
                 statusEq(status),
                 typeEq(type),
                 titleContains(title),
@@ -61,7 +62,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         return questions.stream()
             .map(q -> {
                 // Feign을 사용해 Customer 정보를 가져옴
-                Customer customer = userClient.getCustomerByIdWithoutToken(q.getCustomerId()).getData();
+                Customer customer = userClient.getCustomerByIdWithoutToken(q.getUserId()).getData();
 
                 // DTO로 변환
                 return QuestionSummaryResponseDTO.builder()
@@ -70,7 +71,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                     .status(q.getStatus())
                     .type(q.getType())
                     .contents(q.getContents())
-                    .customerName(customer != null ? customer.getName() : null)  // Feign을 통해 조회된 고객 정보
+                    .customerName(customer != null ? customer.getCustomerName() : null)  // Feign을 통해 조회된 고객 정보
                     .questionCreatedAt(q.getCreatedDate())
                     .answerCreatedAt(q.getAnswer() != null ? q.getAnswer().getCreatedDate() : null)
                     .isActivated(q.getIsActivated())
@@ -102,12 +103,11 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             )
             .orderBy(getOrderSpecifier(sortBy))
             .fetch();
-
         // 2. 조회된 Question 목록을 처리하며 Customer 정보를 Feign 클라이언트를 통해 가져옴
         return questions.stream()
             .map(q -> {
                 // Feign을 사용해 Customer 정보를 가져옴
-                Customer customer = userClient.getCustomerByIdWithoutToken(q.getCustomerId()).getData();
+                Customer customer = userClient.getCustomerByIdWithoutToken(q.getUserId()).getData();
 
                 // DTO로 변환
                 return QuestionSummaryResponseDTO.builder()
@@ -116,14 +116,20 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                     .status(q.getStatus())
                     .type(q.getType())
                     .contents(q.getContents())
-                    .customerName(customer != null ? customer.getName() : null)  // Feign을 통해 조회된 고객 정보
+                    .customerName(customer != null ? customer.getCustomerName() : null)  // Feign을 통해 조회된 고객 정보
                     .questionCreatedAt(q.getCreatedDate())
                     .answerCreatedAt(q.getAnswer() != null ? q.getAnswer().getCreatedDate() : null)
                     .isActivated(q.getIsActivated())
                     .build();
             })
             // 3. customerName이 존재하면 메모리에서 필터링
-            .filter(dto -> StringUtils.hasText(customerName) || dto.customerName().contains(customerName))
+            .filter(dto -> {
+                if (StringUtils.hasText(customerName)) {
+                    // dto.customerName()이 null이 아닐 때만 contains() 호출
+                    return dto.customerName() != null && dto.customerName().contains(customerName);
+                }
+                return true;  // customerName이 없는 경우 필터링하지 않음
+            })
             .collect(Collectors.toList());
     }
 

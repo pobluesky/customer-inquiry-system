@@ -186,7 +186,7 @@ export const putProgress = async (inquiryId, progress) => {
 export const getInquiriesByProductType = async (userId, productType) => {
     try {
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}/${productType}/all`,
+            `/inquiries/customers/inquiries/${userId}/${productType}/all`,
         );
         console.log(response.data);
         return processHistoryData(response.data.data);
@@ -199,7 +199,7 @@ export const getInquiriesByProductType = async (userId, productType) => {
 export const getFavoriteInquiriesByProductType = async (userId, productType) => {
     try {
         const response = await axiosInstance.get(
-            `/customers/inquiries/${userId}/${productType}/favorite`,
+            `/inquiries/customers/inquiries/${userId}/${productType}/favorite`,
         );
         console.log(response.data);
         return  processHistoryData(response.data.data);
@@ -212,7 +212,7 @@ export const getFavoriteInquiriesByProductType = async (userId, productType) => 
 export const putFavoriteInquiry = async (inquiryId) => {
     try {
         const response = await axiosInstance.put(
-            `/customers/inquiries/${inquiryId}/favorite`,
+            `/inquiries/customers/inquiries/${inquiryId}/favorite`,
         );
         console.log('putFavoriteInquiryResponse: ', response);
         return response.data;

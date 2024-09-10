@@ -40,7 +40,7 @@ public record QuestionResponseDTO(
 ) {
     public static QuestionResponseDTO from(Question question, UserClient userClient,
         InquiryClient inquiryClient) {
-        Customer customer = userClient.getCustomerByIdWithoutToken(question.getCustomerId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(question.getUserId()).getData();
 
         Optional<Long> inquiryId = Optional.empty();
         if (question.getInquiryId() != null) {
@@ -50,7 +50,7 @@ public record QuestionResponseDTO(
 
         return QuestionResponseDTO.builder()
             .inquiryId(inquiryId)
-            .userId(question.getCustomerId())
+            .userId(question.getUserId())
             .questionId(question.getQuestionId())
             .customerName(customer.getName())
             .title(question.getTitle())

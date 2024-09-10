@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<CommonResult> defaultException(Exception e) {
         log.error(e.getMessage());
+        log.error(String.valueOf(e));
 
         return new ResponseEntity<>(
             ResponseFactory.getFailResult(
@@ -33,6 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CommonException.class)
     protected ResponseEntity<CommonResult> handleCustomException(CommonException e) {
         log.error(e.getErrorCode().getMessage());
+
 
         ErrorCode errorCode = e.getErrorCode();
 

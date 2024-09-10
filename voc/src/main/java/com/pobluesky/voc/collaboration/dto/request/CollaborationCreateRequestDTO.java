@@ -20,8 +20,8 @@ public record CollaborationCreateRequestDTO(
 
         return Collaboration.builder()
             .question(question)
-            .colRequestManagerId(colRequestManagerId)
-            .colResponseManagerId(colResponseManagerId)
+            .colRequestId(colRequestManagerId)
+            .colResponseId(colResponseManagerId)
             .colContents(colContents)
             .fileName(fileName)
             .filePath(filePath)

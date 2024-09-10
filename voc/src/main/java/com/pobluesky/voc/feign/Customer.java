@@ -8,5 +8,6 @@ import lombok.Setter;
 public class Customer {
     Long userId;
     String name;
+    String CustomerName;
 
 }

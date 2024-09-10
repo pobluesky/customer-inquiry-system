@@ -6,6 +6,8 @@ import com.pobluesky.voc.feign.InquiryClient;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.Builder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Builder
 public record AnswerResponseDTO(
@@ -30,12 +32,13 @@ public record AnswerResponseDTO(
 
     Boolean isActivated
 ) {
+
     public static AnswerResponseDTO from(Answer answer, InquiryClient inquiryClient) {
-        Optional<Long> inquiryId = Optional.empty();
-        if (answer.getInquiryId() != null) {
-            Inquiry inquiry = inquiryClient.getInquiryByIdWithoutToken(answer.getInquiryId()).getData();
-            inquiryId = Optional.ofNullable(inquiry.getInquiryId());
-        }
+        Optional<Long> inquiryId = Optional.ofNullable(
+            answer.getInquiryId() != null
+                ? inquiryClient.getInquiryByIdWithoutToken(answer.getInquiryId()).getData().getInquiryId()
+                : null
+        );
 
         return AnswerResponseDTO.builder()
             .inquiryId(inquiryId)

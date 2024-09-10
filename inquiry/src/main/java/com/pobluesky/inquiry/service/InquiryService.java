@@ -58,7 +58,7 @@ public class InquiryService {
     @Transactional(readOnly = true)
     public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
         String token,
-        Long customerId,
+        Long userId,
         String sortBy,
         Progress progress,
         ProductType productType,
@@ -73,11 +73,11 @@ public class InquiryService {
     ) {
         Customer customer = validateCustomer(token);
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), userId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return inquiryRepository.findInquiriesByCustomerWithoutPaging(
-            customerId,
+            userId,
             progress,
             productType,
             customerName,
@@ -166,13 +166,13 @@ public class InquiryService {
     @Transactional
     public InquiryResponseDTO createInquiry(
         String token,
-        Long customerId,
+        Long userId,
         MultipartFile file,
         InquiryCreateRequestDTO dto
     ) {
         Customer customer = validateCustomer(token);
 
-        if(!Objects.equals(customer.getUserId(), customerId))
+        if(!Objects.equals(customer.getUserId(), userId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         String fileName = null;
@@ -185,7 +185,7 @@ public class InquiryService {
         }
 
         Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
-        inquiry.setCustomerId(customerId);
+        inquiry.setUserId(userId);
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
@@ -212,7 +212,7 @@ public class InquiryService {
         if(inquiry.getProgress() != Progress.SUBMIT)
             throw new CommonException(ErrorCode.INQUIRY_UNABLE_TO_MODIFY);
 
-        if(!Objects.equals(customer.getUserId(), inquiry.getCustomerId()))
+        if(!Objects.equals(customer.getUserId(), inquiry.getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         String fileName = inquiry.getFileName();
@@ -255,7 +255,7 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if (!Objects.equals(customer.getUserId(), inquiry.getCustomerId()))
+        if (!Objects.equals(customer.getUserId(), inquiry.getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         lineItemService.deleteLineItemsByInquiry(inquiry);
@@ -266,7 +266,7 @@ public class InquiryService {
     @Transactional(readOnly = true)
     public InquiryResponseDTO getInquiryDetailForCustomer(
         String token,
-        Long customerId,
+        Long userId,
         Long inquiryId
     ) {
         Customer customer = validateCustomer(token);
@@ -274,13 +274,13 @@ public class InquiryService {
         inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        Inquiry inquiry = inquiryRepository.findByCustomerIdAndInquiryId(customerId, inquiryId)
+        Inquiry inquiry = inquiryRepository.findByCustomerIdAndInquiryId(userId, inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
         List<LineItemResponseDTO> lineItemsByInquiry =
             lineItemService.getFullLineItemsByInquiry(inquiryId);
 
-        if(!Objects.equals(customer.getUserId(), inquiry.getCustomerId()))
+        if(!Objects.equals(customer.getUserId(), inquiry.getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         return InquiryResponseDTO.of(inquiry, lineItemsByInquiry,userClient);
@@ -385,17 +385,17 @@ public class InquiryService {
 
     public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
         String token,
-        Long customerId,
+        Long userId,
         ProductType productType
     ) {
         Customer customer = validateCustomer(token);
 
-        if (!Objects.equals(customer.getUserId(), customerId)) {
+        if (!Objects.equals(customer.getUserId(), userId)) {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
         List<Inquiry> inquiries =
-            inquiryRepository.findInquiriesByCustomerIdAndProductType(customerId, productType);
+            inquiryRepository.findInquiriesByCustomerIdAndProductType(userId, productType);
 
         return convertToResponseDTO(inquiries);
     }
@@ -424,7 +424,7 @@ public class InquiryService {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
 
-        if(!Objects.equals(customer.getUserId(), inquiry.getCustomerId()))
+        if(!Objects.equals(customer.getUserId(), inquiry.getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         inquiry.updateFavorite();

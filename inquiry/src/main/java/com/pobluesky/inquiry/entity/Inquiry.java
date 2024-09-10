@@ -31,7 +31,7 @@ public class Inquiry extends BaseEntity {
     private Long inquiryId;
 
     @JoinColumn(name = "user_id")
-    private Long customerId;
+    private Long userId;
 
     @JoinColumn(name = "sales_manager_id")
     private Long salesManagerId;
@@ -76,7 +76,7 @@ public class Inquiry extends BaseEntity {
 
     @Builder
     private Inquiry(
-        Long customerId,
+        Long userId,
         Country country,
         String corporate,
         String  salesPerson,
@@ -92,7 +92,7 @@ public class Inquiry extends BaseEntity {
     ){
         this.salesManagerId = null;
         this.qualityManagerId = null;
-        this.customerId = customerId;
+        this.userId = userId;
         this.country = country;
         this.corporate = corporate;
         this.salesPerson = salesPerson;

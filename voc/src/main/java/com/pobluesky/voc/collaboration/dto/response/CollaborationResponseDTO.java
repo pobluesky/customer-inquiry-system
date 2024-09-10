@@ -22,9 +22,9 @@ public record CollaborationResponseDTO(
 
     public static CollaborationResponseDTO from(Collaboration collaboration, UserClient userClient) {
         Manager salesManager = userClient.getManagerByIdWithoutToken(
-            collaboration.getColRequestManagerId()).getData();
+            collaboration.getColRequestId()).getData();
         Manager qualityManager = userClient.getManagerByIdWithoutToken(
-            collaboration.getColResponseManagerId()).getData();
+            collaboration.getColResponseId()).getData();
 
         return CollaborationResponseDTO.builder()
             .colId(collaboration.getColId())

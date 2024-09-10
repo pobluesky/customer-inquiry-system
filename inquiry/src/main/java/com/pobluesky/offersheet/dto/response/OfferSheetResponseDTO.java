@@ -24,7 +24,7 @@ public record OfferSheetResponseDTO(
     List<ReceiptResponse> receipts
 ) {
     public static OfferSheetResponseDTO from(OfferSheet offerSheet, UserClient userClient) {
-        Customer customer = userClient.getCustomerByIdWithoutToken(offerSheet.getInquiry().getCustomerId()).getData();
+        Customer customer = userClient.getCustomerByIdWithoutToken(offerSheet.getInquiry().getUserId()).getData();
 
         return OfferSheetResponseDTO.builder()
             .offerSheetId(offerSheet.getOfferSheetId())

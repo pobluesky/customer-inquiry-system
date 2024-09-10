@@ -19,7 +19,7 @@ public record CollaborationSummaryResponseDTO(
 
     public static CollaborationSummaryResponseDTO from(Collaboration collaboration, UserClient userClient) {
         Manager manager = userClient.getManagerByIdWithoutToken(
-            collaboration.getColRequestManagerId()).getData();
+            collaboration.getColRequestId()).getData();
 
         return CollaborationSummaryResponseDTO.builder()
             .colId(collaboration.getColId())
