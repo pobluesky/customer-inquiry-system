@@ -22,9 +22,11 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,10 +45,12 @@ public class CollaborationService {
 
     private final FileService fileService;
 
-    // 협업 조회 without paging
+    // 협업 조회
     @Transactional(readOnly = true)
-    public List<CollaborationSummaryResponseDTO> getAllCollaborationsWithoutPaging(
+    public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
         String token,
+        int page,
+        int size,
         String sortBy,
         ColStatus colStatus,
         String colReqManager,
@@ -62,7 +66,10 @@ public class CollaborationService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return collaborationRepository.findAllCollaborationsRequestWithoutPaging(
+        Pageable pageable = PageRequest.of(page, size);
+
+        return collaborationRepository.findAllCollaborationsRequest(
+            pageable,
             colStatus,
             colReqManager,
             colReqId,
