@@ -159,8 +159,8 @@ export default function ColTable({
     const fetchGetCol = async (filterArgs) => {
         try {
             const response = await getAllCollaboration(filterArgs);
-            setCollabs(response.data);
-            setSearchCount(response.data.length);
+            setCollabs(response.data.colListInfo);
+            setSearchCount(response.data.colListInfo.length);
         } catch (error) {
             console.error('협업 요약 조회 실패: ', error);
         }
