@@ -1,11 +1,11 @@
-package com.pobluesky.backend.domain.inquiry.service;
+package com.pobluesky.backend.domain.chat.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pobluesky.backend.domain.inquiry.dto.request.ChatRequestMsgDto;
-import com.pobluesky.backend.domain.inquiry.dto.response.ChatCompletionDto;
+import com.pobluesky.backend.domain.chat.dto.request.ChatRequestMsgDto;
+import com.pobluesky.backend.domain.chat.dto.response.ChatCompletionDto;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;

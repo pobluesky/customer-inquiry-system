@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.inquiry.service;
+package com.pobluesky.backend.domain.chat.service;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;

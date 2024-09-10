@@ -13,7 +13,7 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
-import com.pobluesky.backend.domain.inquiry.service.IntegratedOcrGptService;
+import com.pobluesky.backend.domain.chat.service.IntegratedOcrGptService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
