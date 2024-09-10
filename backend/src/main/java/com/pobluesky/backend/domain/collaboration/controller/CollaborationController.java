@@ -138,6 +138,10 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    @Operation(
+        summary = "collaborationId 별 협업 수락/거절",
+        description = "담당자별 협업 요청건에 대한 수락/거절 상태 수정"
+    )
     @PutMapping("/{collaborationId}/modify")
     public ResponseEntity<JsonResult> modifyCollaboration(
         @RequestHeader("Authorization") String token,
@@ -145,7 +149,7 @@ public class CollaborationController {
         @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestPart("collaboration") CollaborationModifyRequestDTO requestDTO
     ) {
-        CollaborationDetailResponseDTO updatedCollaboration = collaborationService.modifyCollaboration(
+        CollaborationDetailResponseDTO response = collaborationService.modifyCollaboration(
             token,
             collaborationId,
             file,
@@ -153,6 +157,6 @@ public class CollaborationController {
         );
 
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(updatedCollaboration));
+            .body(ResponseFactory.getSuccessJsonResult(response));
     }
 }
