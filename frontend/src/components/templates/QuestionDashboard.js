@@ -3,7 +3,6 @@ import QuestionOverview from '../organisms/QuestionOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
 import { Question_Dashboard } from '../../assets/css/Voc.css';
-import { useAuth } from '../../hooks/useAuth';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
@@ -28,7 +27,7 @@ export default function QuestionDashboard() {
     const [openModal, setOpenModal] = useState(false);
 
     // 질문 답변 현황
-    const { userId } = useAuth();
+    const userId = getCookie('userId');
     const role = getCookie('userRole');
     const [questionCount, setQuestionCount] = useState(0);
     const [answerCount, setAnswerCount] = useState(0);
@@ -40,7 +39,7 @@ export default function QuestionDashboard() {
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(userId, '');
-                      setQuestionCount(response.data.length);
+                      setQuestionCount(response.data.totalElements);
                   } catch (error) {
                       console.log('고객사 질문 개수 조회 실패: ', error);
                   }
@@ -48,7 +47,7 @@ export default function QuestionDashboard() {
             : async () => {
                   try {
                       const response = await getAllQuestion('');
-                      setQuestionCount(response.data.length);
+                      setQuestionCount(response.data.totalElements);
                   } catch (error) {
                       console.log('담당자 질문 개수 조회 실패: ', error);
                   }

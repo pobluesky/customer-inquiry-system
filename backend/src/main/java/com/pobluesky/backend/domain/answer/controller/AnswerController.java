@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -132,5 +133,16 @@ public class AnswerController {
         answerService.deleteAnswerById(token, questionId);
 
         return ResponseEntity.ok(ResponseFactory.getSuccessResult());
+    }
+
+    /* [Start] Dashboard API */
+    @GetMapping("/managers/voc/dashboard")
+    @Operation(summary = "월별 답변 처리 건수 평균")
+    public ResponseEntity<Map<String, List<Object[]>>> averageMonthlyAnswer(
+        @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = answerService.getAverageCountPerMonth(token);
+
+        return ResponseEntity.ok(response);
     }
 }
