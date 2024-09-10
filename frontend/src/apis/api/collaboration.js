@@ -29,6 +29,8 @@ export const getCollaborationDetail = async (questionId, colId) => {
 
         const json = response.data;
 
+        console.log(json); //
+
         if (json.result !== 'success') {
             throw new Error(json.message);
         }
