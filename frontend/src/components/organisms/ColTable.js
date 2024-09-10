@@ -1,135 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-
-import { Select } from '../../assets/css/Voc.css';
+import ColStatus from '../molecules/ColStatus';
+import ColCreatedDate from '../molecules/ColCreatedDate';
 import {
     getAllCollaboration,
     getCollaborationDetail,
 } from '../../apis/api/collaboration';
+import { Col_Table } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
-
-function TablePaginationActions(props) {
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onPageChange } = props;
-
-    const handleFirstPageButtonClick = (event) => {
-        onPageChange(event, 0);
-    };
-
-    const handleBackButtonClick = (event) => {
-        onPageChange(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event) => {
-        onPageChange(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event) => {
-        onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
-
-    return (
-        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-            <IconButton
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                {theme.direction === 'rtl' ? (
-                    <LastPageIcon />
-                ) : (
-                    <FirstPageIcon />
-                )}
-            </IconButton>
-            <IconButton
-                onClick={handleBackButtonClick}
-                disabled={page === 0}
-                aria-label="previous page"
-            >
-                {theme.direction === 'rtl' ? (
-                    <KeyboardArrowRight />
-                ) : (
-                    <KeyboardArrowLeft />
-                )}
-            </IconButton>
-            <IconButton
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                {theme.direction === 'rtl' ? (
-                    <KeyboardArrowLeft />
-                ) : (
-                    <KeyboardArrowRight />
-                )}
-            </IconButton>
-            <IconButton
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                {theme.direction === 'rtl' ? (
-                    <FirstPageIcon />
-                ) : (
-                    <LastPageIcon />
-                )}
-            </IconButton>
-        </Box>
-    );
-}
-
-TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
-
-function createData(
-    colId,
-    questionId,
-    colReqManager,
-    colStatus,
-    colContents,
-    createdDate,
-) {
-    return {
-        colId,
-        questionId,
-        colReqManager,
-        colStatus,
-        colContents,
-        createdDate,
-    };
-}
 
 export default function ColTable({
     colNo,
     colManager,
-    startDate,
-    endDate,
-    timeFilter,
-    progressFilter,
-
     setSearchCount,
-
     setQuestionId,
     setColId,
     setStatus,
@@ -143,9 +26,12 @@ export default function ColTable({
     const { userId } = useAuth();
 
     const [filterArgs, setFilterArgs] = useState('');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(15);
     const [collabs, setCollabs] = useState([]);
+
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [timeFilter, setTimeFilter] = useState('');
+    const [progressFilter, setProgressFilter] = useState('');
 
     const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
 
@@ -208,241 +94,123 @@ export default function ColTable({
         setFilterArgs(args);
     }, [colNo, colManager, startDate, endDate, timeFilter, progressFilter]);
 
+    const progressBackgroundColor = (status) => {
+        switch (status) {
+            case 'COMPLETE':
+                return '#DBEDDB'; // 협업 완료
+            case 'READY':
+                return '#F5E0E9'; // 협업 대기
+            case 'REFUSE':
+                return '#EFEFEE'; // 협업 거절
+            case 'INPROGRESS':
+                return '#D3E5EF'; // 협업 진행 중
+        }
+    };
+
+    const getStatusLabel = (status) => {
+        switch (status) {
+            case 'READY':
+                return '협업 대기';
+            case 'REFUSE':
+                return '협업 거절';
+            case 'COMPLETE':
+                return '협업 완료';
+            case 'INPROGRESS':
+                return '협업 진행 중';
+        }
+    };
+
+    const openColDetail = (status, questionId, colId) => {
+        setStatus(status);
+        setQuestionId(questionId);
+        setColId(colId);
+        fetchGetColDetail(questionId, colId);
+    };
+
     useEffect(() => {
         fetchGetCol(filterArgs);
     }, [userId, filterArgs, status]);
 
-    const columns = [
-        {
-            id: 'colId',
-            label: 'No',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
-        {
-            id: 'questionId',
-            label: '질문 번호',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
-        {
-            id: 'colReqManager',
-            label: '담당자',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
-        {
-            id: 'colStatus',
-            label: '진행 상황',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
-        {
-            id: 'colContents',
-            label: '내용',
-            align: 'center',
-            width: 240,
-            minWidth: 240,
-        },
-        {
-            id: 'createdDate',
-            label: '등록 일자',
-            align: 'center',
-            width: 120,
-            minWidth: 120,
-        },
-    ];
+    const [openStatus, setOpenStatus] = useState(false);
+    const [openDate, setOpenDate] = useState(false);
 
-    console.log(collabs);
-    const rows = collabs.map((collab) =>
-        createData(
-            collab.colId,
-            collab.questionId,
-            collab.colReqManager,
-            collab.colStatus,
-            collab.colContents,
-            collab.createdDate,
-        ),
-    );
-
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
+    // 협업 번호, 요청 담당자
     return (
-        <TableContainer
-            component={Paper}
-            sx={{ width: 1320, margin: '24px auto 10vh auto' }}
-        >
-            <Table
-                size="small"
-                // stickyHeader="true"
-                aria-label="custom pagination table"
-            >
-                <TableHead>
-                    <TableRow>
-                        {columns.map((column) => (
-                            <TableCell
-                                key={column.id}
-                                align={column.align}
-                                sx={{
-                                    width: column.width,
-                                    minWidth: column.minWidth,
-                                    backgroundColor: '#03507d',
-                                    color: '#ffffff',
-                                    fontWeight: '600',
-                                }}
-                            >
-                                {column.label}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(rowsPerPage > 0
-                        ? rows.slice(
-                              page * rowsPerPage,
-                              page * rowsPerPage + rowsPerPage,
-                          )
-                        : rows
-                    ).map((row) => (
-                        <TableRow
-                            key={row.colId}
-                            className={Select}
-                            // sx={{
-                            //     '&:last-child td, &:last-child th': {
-                            //         border: 0,
-                            //     },
-                            // }}
+        <>
+            <table className={Col_Table}>
+                <thead>
+                    <tr>
+                        <th>협업 번호</th>
+                        <th>요청 담당자</th>
+                        <th>요청 사유</th>
+                        <th
                             onClick={() => {
-                                setStatus(row.colStatus);
-                                setQuestionId(row.questionId);
-                                setColId(row.colId);
-                                fetchGetColDetail(row.questionId, row.colId);
+                                setOpenStatus(!openStatus);
                             }}
                         >
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                }}
-                            >
-                                {row.colId}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                }}
-                            >
-                                {row.questionId}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                }}
-                            >
-                                {row.colReqManager}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                    fontWeight: 600,
-                                    // color:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#ffffff'
-                                    //         : '#000000',
-                                    // backgroundColor:
-                                    //     row.colStatus === 'READY'
-                                    //         ? '#3c6cf2'
-                                    //         : row.colStatus === 'INPROGRESS'
-                                    //         ? '#a1c2ff'
-                                    //         : row.colStatus === 'REFUSE'
-                                    //         ? '#ffdb7b'
-                                    //         : '',
-                                }}
-                            >
-                                {row.colStatus === 'READY'
-                                    ? '협업 대기'
-                                    : row.colStatus === 'INPROGRESS'
-                                    ? '협업 진행 중'
-                                    : row.colStatus === 'COMPLETE'
-                                    ? '협업 완료'
-                                    : '협업 거절'}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 240,
-                                    minWidth: 240,
-                                }}
-                            >
-                                {row.colContents.replace(/<\/?[^>]+(>|$)/g, "")}
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    textAlign: 'center',
-                                    width: 120,
-                                    minWidth: 120,
-                                }}
-                            >
-                                {row.createdDate.substr(0, 10)}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                    {emptyRows > 0 && (
-                        <TableRow sx={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
-                        </TableRow>
-                    )}
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[
-                                5,
-                                10,
-                                15,
-                                20,
-                                { label: 'All', value: -1 },
-                            ]}
-                            colSpan={6}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            slotProps={{
-                                select: {
-                                    inputProps: {
-                                        'aria-label': 'rows per page',
-                                    },
-                                    native: true,
-                                },
+                            협업 상태
+                            {openStatus ? (
+                                <ColStatus
+                                    setProgressFilter={setProgressFilter}
+                                />
+                            ) : (
+                                ''
+                            )}
+                        </th>
+                        <th
+                            onClick={() => {
+                                setOpenDate(!openDate);
                             }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+                        >
+                            요청일
+                            {openDate ? (
+                                <ColCreatedDate
+                                    setTimeFilter={setTimeFilter}
+                                    startDate={startDate}
+                                    setStartDate={setStartDate}
+                                    endDate={endDate}
+                                    setEndDate={setEndDate}
+                                />
+                            ) : (
+                                ''
+                            )}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {collabs.map((col, idx) => (
+                        <tr
+                            key={idx}
+                            onClick={() => {
+                                openColDetail(
+                                    col.status,
+                                    col.questionId,
+                                    col.colId,
+                                );
+                            }}
+                        >
+                            <td>{col.colId}</td>
+                            <td>{col.colReqManager}</td>
+                            <td>
+                                {col.colContents.replace(/<\/?[^>]+(>|$)/g, '')}
+                            </td>
+                            <td>
+                                <div
+                                    style={{
+                                        backgroundColor:
+                                            progressBackgroundColor(
+                                                col.colStatus,
+                                            ),
+                                    }}
+                                >
+                                    {getStatusLabel(col.colStatus)}
+                                </div>
+                            </td>
+                            <td>{col.createdDate.substring(0, 10)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </>
     );
 }

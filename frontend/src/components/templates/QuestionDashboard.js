@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import QuestionOverview from '../organisms/QuestionOverview';
+import QuestionOverview from '../organisms/VocOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
-import { Question_Dashboard } from '../../assets/css/Voc.css';
+import { Voc_Dashboard } from '../../assets/css/Voc.css';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
@@ -96,11 +96,11 @@ export default function QuestionDashboard() {
                 colCount={colCount}
             />
             {searchCount ? (
-                <div className={Question_Dashboard}>
+                <div className={Voc_Dashboard}>
                     검색 결과는 총 <span>{searchCount}</span>건입니다.
                 </div>
             ) : (
-                <div className={Question_Dashboard}>검색 결과가 없습니다.</div>
+                <div className={Voc_Dashboard}>검색 결과가 없습니다.</div>
             )}
             <QuestionFilterInput
                 searchCount={searchCount}
