@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.collaboration.service;
 
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreateRequestDTO;
+import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationModifyRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResponseDTO;
@@ -179,16 +180,7 @@ public class CollaborationService {
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
 
-        String fileName = null;
-        String filePath = null;
-
-        if (file != null) {
-            FileInfo fileInfo = fileService.uploadFile(file);
-            fileName = fileInfo.getOriginName();
-            filePath = fileInfo.getStoredFilePath();
-        }
-
-        collaboration.updateFiles(fileName, filePath);
+        updateFile(collaboration, file);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }
@@ -213,6 +205,33 @@ public class CollaborationService {
         return CollaborationDetailResponseDTO.from(collaboration);
     }
 
+    @Transactional
+    public CollaborationDetailResponseDTO modifyCollaboration(
+        String token,
+        Long collaborationId,
+        MultipartFile file,
+        CollaborationModifyRequestDTO requestDTO
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Collaboration collaboration = validateCollaboration(collaborationId);
+
+        validateRequestManager(collaboration, requestDTO.colReqId(), userId);
+        validateResponseManager(collaboration, requestDTO.colResId(), userId);
+
+        collaboration.modifyCollaborationContents(requestDTO.colContents());
+        updateFile(collaboration, file);
+
+        if (requestDTO.isAccepted() != null) {
+            collaboration.updateCollaborationStatus(requestDTO.isAccepted());
+        }
+        if (requestDTO.colReply() != null) {
+            collaboration.modifyColReply(requestDTO.colReply());
+        }
+
+        return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
     private Collaboration validateCollaboration(Long collaborationId) {
         Collaboration collaboration = collaborationRepository
             .findById(collaborationId)
@@ -220,8 +239,6 @@ public class CollaborationService {
 
         if (collaboration.getColStatus() == ColStatus.COMPLETE) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
-        } else if (collaboration.getColStatus() == ColStatus.REFUSE) {
-            throw new CommonException(ErrorCode.COLLABORATION_STATUS_REFUSED);
         }
 
         Question question = questionRepository.findById(collaboration.getQuestion().getQuestionId())
@@ -232,5 +249,38 @@ public class CollaborationService {
         }
 
         return collaboration;
+    }
+
+    private void updateFile(Collaboration collaboration, MultipartFile file) {
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
+    }
+
+    private void validateRequestManager(Collaboration collaboration, Long reqManagerId, Long userId) {
+        if (collaboration.getColStatus() == ColStatus.READY) {
+            Manager reqManager = managerRepository.findById(reqManagerId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            if (!userId.equals(reqManager.getUserId())) {
+                throw new CommonException(ErrorCode.REQMANAGER_NOT_MACHED);
+            }
+        }
+    }
+
+    private void validateResponseManager(Collaboration collaboration, Long resManagerId, Long userId) {
+        if (collaboration.getColStatus() == ColStatus.INPROGRESS) {
+            Manager resManager = managerRepository.findById(resManagerId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            if (!userId.equals(resManager.getUserId())) {
+                throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
+            }
+        }
     }
 }
