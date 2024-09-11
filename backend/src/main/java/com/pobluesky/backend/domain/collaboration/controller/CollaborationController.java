@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.collaboration.controller;
 
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreateRequestDTO;
+import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationModifyRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResponseDTO;
@@ -143,6 +144,28 @@ public class CollaborationController {
         CollaborationDetailResponseDTO response = collaborationService.completeCollaboration(
             token,
             collaborationId
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @Operation(
+        summary = "collaborationId 별 협업 수락/거절",
+        description = "담당자별 협업 요청건에 대한 수락/거절 상태 수정"
+    )
+    @PutMapping("/{collaborationId}/modify")
+    public ResponseEntity<JsonResult> modifyCollaboration(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long collaborationId,
+        @RequestPart(value = "files", required = false) MultipartFile file,
+        @RequestPart("collaboration") CollaborationModifyRequestDTO requestDTO
+    ) {
+        CollaborationDetailResponseDTO response = collaborationService.modifyCollaboration(
+            token,
+            collaborationId,
+            file,
+            requestDTO
         );
 
         return ResponseEntity.status(HttpStatus.OK)
