@@ -79,7 +79,8 @@ public enum ErrorCode {
     OCR_PROCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "AI001", "텍스트 추출에 실패했습니다."),
     UPLOAD_FAIL_TO_GOOGLE(HttpStatus.INTERNAL_SERVER_ERROR, "AI002", "구글 스토리지에 파일 업로드를 실패했습니다."),
     PDF_CONVERSION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI003", "PDF를 통한 이미지 변환에 실패했습니다."),
-    PDF_CONVERSION_NO_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, "AI004", "변환된 이미지가 존재하지 않습니다.");
+    PDF_CONVERSION_NO_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, "AI004", "변환된 이미지가 존재하지 않습니다."),
+    UNEXPECTED_GPT_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "AI005", "GPT응답이 올바르지 않습니다.");
 
     private HttpStatus status;
     private String code;
