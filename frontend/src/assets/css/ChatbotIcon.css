@@ -164,6 +164,27 @@
   background-color: #4A65B9;
 }
 
+.faqArticle {
+  color: #FFFFFF;
+  border-radius: 15px;
+  padding: 25px;
+  margin-right: 10px;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.faqTitle {
+  font-size: 26px;
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+.faqDescription {
+  font-size: 16px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
 .faqContent {
   background-color: #FFFFFF;
   border-radius: 15px;
@@ -182,6 +203,36 @@
   background-color: #FFEE96;
   border-radius: 15px;
   margin-bottom: 10px;
+}
+
+.faqPick1 {
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 15px;
+  background-color: #4672e3;
+}
+
+.faqPick1:hover {
+  border: 1px solid #FFFFFF;
+  background-color: #4A65B9;
+}
+
+.faqPick2 {
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 15px;
+  background-color: #009DCB;
+}
+
+.faqPick2:hover {
+  border: 1px solid #FFFFFF;
+  background-color: #0091C2;
 }
 
 .chatInput {
@@ -224,6 +275,7 @@
   height: 20px;
   padding: 10px;
   border-radius: 30px;
+  margin-left: 6px;
   background-color: #F0F0F0;
 }
 
