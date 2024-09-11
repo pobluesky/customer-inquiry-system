@@ -19,11 +19,11 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 430px;
+  width: 500px;
   height: 0;
   background-color: #F8F8F8;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-y: auto;
   transition: height 0.5s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -31,7 +31,7 @@
 }
 
 .chatBoxOpen {
-  height: 700px;
+  height: 750px;
 }
 
 .chatHeader {
@@ -48,11 +48,6 @@
   margin: 0 auto;
 }
 
-.chatHeader .title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
 .chatHeader .closeButton {
   cursor: pointer;
   font-size: 18px;
@@ -65,6 +60,9 @@
   overflow-y: auto;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  max-height: 650px;
 }
 
 .dateHeader {
@@ -80,8 +78,9 @@
 }
 
 .messageBoxWrapper {
-  margin-top: 30px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .messageBox {
@@ -89,6 +88,14 @@
   align-items: center;
   margin-bottom: 10px;
   position: relative;
+}
+
+.messageBox.user {
+  flex-direction: row-reverse;
+}
+
+.messageBox.bot {
+  flex-direction: row;
 }
 
 .messageBox img {
@@ -104,27 +111,45 @@
   border-radius: 15px;
   padding: 10px;
   max-width: 70%;
-  margin-left: 10px;
   word-break: break-word;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: smoothAppear 0.2s;
+}
+
+@keyframes smoothAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.user {
+  background-color: #FFEE96;
+  margin-left: 10px;
+}
+
+.message.bot {
+  background-color: #FFFFFF;
+  margin-right: 10px;
 }
 
 .time {
-  position: absolute;
-  bottom: 0;
-  right: 30px;
-  color: #888886;
   font-size: 12px;
+  color: #888886;
 }
 
-.faqSection, .inquirySection {
+.faqSection {
   display: flex;
   overflow-x: auto;
   margin-bottom: 10px;
   margin-left: 52px;
 }
 
-.faqBox, .inquiryBox {
+.faqBox {
   background-color: #6187E7;
   color: #FFFFFF;
   border-radius: 15px;
@@ -134,49 +159,29 @@
   cursor: pointer;
 }
 
-.faqBox:hover, .inquiryBox:hover {
+.faqBox:hover {
   border: 1px solid #FFFFFF;
   background-color: #4A65B9;
 }
 
-.faqContent, .inquiryContent {
+.faqContent {
   background-color: #FFFFFF;
   border-radius: 15px;
   padding: 15px;
   margin-bottom: 10px;
 }
 
-.faqContent .question, .inquiryContent .question {
+.faqContent .question {
   border-bottom: 1px solid #000000;
   padding-bottom: 5px;
   margin-bottom: 5px;
 }
 
-.faqContent .answer, .inquiryContent .answer {
+.faqContent .answer {
   padding: 10px;
   background-color: #FFEE96;
   border-radius: 15px;
   margin-bottom: 10px;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.button {
-  background-color: #009DCB;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.button:hover {
-  background-color: #007ABF;
 }
 
 .chatInput {
@@ -185,7 +190,6 @@
   padding: 15px;
   border-top: 1px solid #ccc;
   background-color: #F9F9F9;
-  position: relative;
 }
 
 .chatInput input {
@@ -210,4 +214,51 @@
 
 .sendButton:hover {
   background-color: #0056b3;
+}
+
+.loadingDotsWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: #F0F0F0;
+}
+
+.loadingDotsWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: #F0F0F0;
+  margin-right: 6px;
+}
+
+.loadingDot {
+  width: 10px;
+  height: 10px;
+  background-color: #363636;
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: colorChange 1s ease-in-out infinite;
+}
+
+@keyframes colorChange {
+  0%, 100% { background-color: #363636; }
+  50% { background-color: #FFFFFF; }
+}
+
+.loadingDot1 {
+  animation-delay: 0s;
+}
+.loadingDot2 {
+  animation-delay: 0.2s;
+}
+.loadingDot3 {
+  animation-delay: 0.4s;
 }
