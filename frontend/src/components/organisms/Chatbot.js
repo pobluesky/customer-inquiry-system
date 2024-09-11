@@ -33,6 +33,44 @@ import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
 import { Link } from 'react-router-dom';
 
+const FAQSection = () => (
+    <div className={faqSection}>
+        <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>
+            <div className={faqTitle}>자주 묻는 질문</div>
+            <div className={faqDescription}>
+                고객사들이 자주 찾는 질문과<br />
+                답변 리스트를 안내합니다.
+            </div>
+            <div className={faqPick1}>Inquiry 문의</div>
+            <div className={faqPick1}>사이트 이용 문의</div>
+            <div className={faqPick1}>기타 문의</div>
+        </div>
+        <div className={faqArticle} style={{ backgroundColor: '#05ADD3' }}>
+            <div className={faqTitle}>직접 질문하기</div>
+            <div className={faqDescription}>
+                궁금한 내용을 하단<br />
+                채팅창에 입력해 주세요.
+            </div>
+            <div className={faqPick2}>새로운 채팅 시작하기</div>
+            <div className={faqPick2}>VOC로 1:1 문의하기</div>
+            <div className={faqPick2}>채팅 종료하기</div>
+        </div>
+    </div>
+);
+
+const DefaultSection = () => (
+    <div className={faqSection}>
+        <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>
+            <div className={faqBox}>
+                직접 VOC 문의하기
+            </div>
+        </Link>
+        <div className={faqBox}>
+            이전으로 돌아가기
+        </div>
+    </div>
+);
+
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [currentTime, setCurrentTime] = useState('');
@@ -48,7 +86,8 @@ const Chatbot = () => {
     useEffect(() => {
         const updateTime = () => {
             const now = new Date();
-            setCurrentTime(now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }));
+            setCurrentTime(now.toLocaleTimeString('ko-KR',
+                { hour: '2-digit', minute: '2-digit' }));
         };
 
         updateTime();
@@ -76,7 +115,8 @@ const Chatbot = () => {
                         아래에서 선택해 주세요.
                     `,
                     type: 'bot',
-                    time: currentTime
+                    time: currentTime,
+                    component: <FAQSection />
                 }
             ]);
         }
@@ -110,14 +150,19 @@ const Chatbot = () => {
         }, 100);
 
         try {
-            const botResponse = await new Promise((resolve) => setTimeout(async () => {
-                const response = await postChatbot({ message: messageToSend });
-                resolve(response.data);
-            }, 1500));
+            const botResponse = await new Promise(
+                (resolve) => setTimeout(async () => {
+                    const response = await postChatbot(
+                        { message: messageToSend });
+                    resolve(response.data);
+                }, 1500));
 
             setMessages(prev => [
                 ...prev,
-                { text: botResponse, type: 'bot', time: currentTime }
+                {
+                    text: botResponse, type: 'bot', time: currentTime,
+                    component: <DefaultSection />
+                }
             ]);
 
             // FAQ 섹션을 표시
@@ -132,7 +177,6 @@ const Chatbot = () => {
         }
     };
 
-
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -143,7 +187,6 @@ const Chatbot = () => {
     };
 
     const handleGoBack = () => {
-        // 안내 멘트를 메시지로 추가
         setMessages(prev => [
             ...prev,
             {
@@ -155,101 +198,8 @@ const Chatbot = () => {
             아래에서 선택해 주세요.
             `,
                 type: 'bot',
-                time: currentTime
-            }
-        ]);
-
-        // FAQ 섹션 표시
-        setShowFAQSection(true);
-        setShowInitialFAQ(true);
-    };
-
-    useEffect(() => {
-        if (showDefaultSection) {
-            console.log('showDefaultSection이 true로 설정되었습니다.');
-        }
-    }, [showDefaultSection]);  // showDefaultSection 상태가 변경될 때마다 실행
-    return (
-        <div>
-            <img
-                src={ChatbotIcon}
-                alt="chatbot"
-                className={chatBotIcon}
-                onClick={handleToggle}
-            />
-            <div className={`${chatBox} ${isOpen ? chatBoxOpen : ''}`}>
-                <div className={chatHeader}>
-                    <img src={pobluesky} alt="pobluesky" />
-                    <button className={closeButton} onClick={handleClose}>X</button>
-                </div>
-                <div className={chatContent} ref={chatContentRef}>
-                    <div className={dateHeader}>
-                        {new Date().toLocaleDateString('ko-KR', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit'
-                        })}
-                    </div>
-                    {messages.map((msg, index) => (
-                        <div key={index} className={messageBoxWrapper} style={{ display: msg.type === 'user' ? 'flex-end' : 'flex-start' }}>
-                            <div className={messageBox} style={{ flexDirection: msg.type === 'user' ? 'row-reverse' : 'row' }}>
-                                <img src={msg.type === 'user' ? profile : Poseokho} alt={msg.type === 'user' ? 'User' : 'Poseokho'} />
-                                <div className={message} style={{
-                                    backgroundColor: msg.type === 'user'
-                                        ? '#FFEE96' : '#FFFFFF',
-                                    marginLeft: msg.type === 'user' ? 0 : '6px',
-                                    marginRight: msg.type === 'bot' ? 0 : '6px',
-                                }}>
-                                    <div dangerouslySetInnerHTML={{ __html: msg.text }} />
-                                </div>
-                                <div className={time} style={{
-                                    textAlign: msg.type === 'user' ? 'right'
-                                        : 'left',
-                                    position: 'relative',
-                                    marginTop: 'auto',
-                                    marginLeft: msg.type === 'user' ? 0 : '6px',
-                                    marginRight: msg.type === 'bot' ? 0 : '6px',
-                                    bottom: '2px',
-                                    right: msg.type === 'user' ? 0 : 'auto',
-                                    left: msg.type === 'user' ? 'auto' : 0,
-                                }}>
-                                    {msg.time}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-
-                    {loading && (
-                        <div className={messageBox}>
-                            <img src={Poseokho} alt="Poseokho" />
-                            <div className={loadingDotsWrapper}>
-                                <div
-                                    className={`${loadingDot} ${loadingDot1}`}></div>
-                                <div
-                                    className={`${loadingDot} ${loadingDot2}`}></div>
-                                <div
-                                    className={`${loadingDot} ${loadingDot3}`}></div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* (1) API 호출 시 항상 뜨는 faqSection */}
-                    {!showInitialFAQ && showDefaultSection && !loading && (
-                        <div className={faqSection}>
-                            <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>
-                                <div className={faqBox} onClick={handleClose}>
-                                    직접 VOC 문의하기
-                                </div>
-                            </Link>
-                            <div className={faqBox} onClick={handleGoBack}>
-                                이전으로 돌아가기
-                            </div>
-                        </div>
-                    )}
-
-                    {/* (2) 안내 멘트와 함께 뜨는 faqSection */}
-                    {showFAQSection && showInitialFAQ && !loading && (
+                time: currentTime,
+                section: `
                         <div className={faqSection}>
                             <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>
                                 <div className={faqTitle}>자주 묻는 질문</div>
@@ -272,26 +222,154 @@ const Chatbot = () => {
                                 <div className={faqPick2}>채팅 종료하기</div>
                             </div>
                         </div>
+                `,
+            }
+        ]);
+
+        setShowFAQSection(true);
+        setShowInitialFAQ(true);
+    };
+
+    useEffect(() => {
+        if (showDefaultSection) {
+            console.log('showDefaultSection이 true로 설정되었습니다.');
+        }
+    }, [showDefaultSection]);
+    return (
+        <div>
+            <img
+                src={ChatbotIcon}
+                alt="chatbot"
+                className={chatBotIcon}
+                onClick={handleToggle}
+            />
+            <div className={`${chatBox} ${isOpen ? chatBoxOpen : ''}`}>
+                <div className={chatHeader}>
+                    <img src={pobluesky} alt="pobluesky" />
+                    <button className={closeButton} onClick={handleClose}>X
+                    </button>
+                </div>
+                <div className={chatContent} ref={chatContentRef}>
+                    <div className={dateHeader}>
+                        {new Date().toLocaleDateString('ko-KR', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        })}
+                    </div>
+                    {messages.map((msg, index) => (
+                        <div key={index} className={messageBoxWrapper} style={{
+                            display: msg.type === 'user' ? 'flex-end'
+                                : 'flex-start',
+                        }}>
+                            <div className={messageBox} style={{
+                                flexDirection: msg.type === 'user'
+                                    ? 'row-reverse' : 'row',
+                            }}>
+                                <img src={msg.type === 'user' ? profile
+                                    : Poseokho}
+                                     alt={msg.type === 'user' ? 'User'
+                                         : 'Poseokho'} />
+                                <div className={message} style={{
+                                    backgroundColor: msg.type === 'user'
+                                        ? '#FFEE96' : '#FFFFFF',
+                                    marginLeft: msg.type === 'user' ? 0 : '6px',
+                                    marginRight: msg.type === 'bot' ? 0 : '6px',
+                                }}>
+                                    <div
+                                        dangerouslySetInnerHTML={{ __html: msg.text }} />
+                                </div>
+                                <div className={time} style={{
+                                    textAlign: msg.type === 'user' ? 'right'
+                                        : 'left',
+                                    position: 'relative',
+                                    marginTop: 'auto',
+                                    marginLeft: msg.type === 'user' ? 0 : '6px',
+                                    marginRight: msg.type === 'bot' ? 0 : '6px',
+                                    bottom: '2px',
+                                    right: msg.type === 'user' ? 0 : 'auto',
+                                    left: msg.type === 'user' ? 'auto' : 0,
+                                }}>
+                                    {msg.time}
+                                </div>
+                            </div>
+                            {msg.component && <div>{msg.component}</div>}
+                        </div>
+                    ))}
+
+                    {loading && (
+                        <div className={messageBox}>
+                            <img src={Poseokho} alt="Poseokho" />
+                            <div className={loadingDotsWrapper}>
+                                <div
+                                    className={`${loadingDot} ${loadingDot1}`}></div>
+                                <div
+                                    className={`${loadingDot} ${loadingDot2}`}></div>
+                                <div
+                                    className={`${loadingDot} ${loadingDot3}`}></div>
+                            </div>
+                        </div>
                     )}
 
-                </div>
+                    {/*/!* (1) API 호출 시 항상 뜨는 faqSection *!/*/}
+                    {/*{!showInitialFAQ && showDefaultSection && !loading && (*/}
+                    {/*    <div className={faqSection}>*/}
+                    {/*        <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>*/}
+                    {/*            <div className={faqBox} onClick={handleClose}>*/}
+                    {/*                직접 VOC 문의하기*/}
+                    {/*            </div>*/}
+                    {/*        </Link>*/}
+                    {/*        <div className={faqBox} onClick={handleGoBack}>*/}
+                    {/*            이전으로 돌아가기*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
 
-                <div className={chatInput}>
-                    <input
-                        type="text"
-                        value={inputValue}
-                        placeholder={'질문을 입력해 주세요.'}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        ref={inputRef}
-                    />
-                    <button
-                        className={sendButton}
-                        onClick={handleSend}
-                        disabled={loading}
-                    >
-                        전송
-                    </button>
+                    {/*    /!* (2) 안내 멘트와 함께 뜨는 faqSection *!/*/}
+                    {/*    {showFAQSection && showInitialFAQ && !loading && (*/}
+                    {/*        <div className={faqSection}>*/}
+                    {/*            <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>*/}
+                    {/*                <div className={faqTitle}>자주 묻는 질문</div>*/}
+                    {/*                <div className={faqDescription}>*/}
+                    {/*                    고객사들이 자주 찾는 질문과<br />*/}
+                    {/*                    답변 리스트를 안내합니다.*/}
+                    {/*                </div>*/}
+                    {/*                <div className={faqPick1}>Inquiry 문의</div>*/}
+                    {/*                <div className={faqPick1}>사이트 이용 문의</div>*/}
+                    {/*                <div className={faqPick1}>기타 문의</div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className={faqArticle} style={{ backgroundColor: '#05ADD3' }}>*/}
+                    {/*                <div className={faqTitle}>직접 질문하기</div>*/}
+                    {/*                <div className={faqDescription}>*/}
+                    {/*                    궁금한 내용을 하단<br />*/}
+                    {/*                    채팅창에 입력해 주세요.*/}
+                    {/*                </div>*/}
+                    {/*                <div className={faqPick2}>새로운 채팅 시작하기</div>*/}
+                    {/*                <div className={faqPick2}>VOC로 1:1 문의하기</div>*/}
+                    {/*                <div className={faqPick2}>채팅 종료하기</div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
+
+                    <div className={chatInput}>
+                        <input
+                            type="text"
+                            value={inputValue}
+                            placeholder={'질문을 입력해 주세요.'}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            ref={inputRef}
+                        />
+                        <button
+                            className={sendButton}
+                            onClick={handleSend}
+                            disabled={loading}
+                        >
+                            전송
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
