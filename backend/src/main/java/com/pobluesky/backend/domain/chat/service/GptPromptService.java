@@ -1,6 +1,6 @@
-package com.pobluesky.backend.domain.inquiry.service;
+package com.pobluesky.backend.domain.chat.service;
 
-import com.pobluesky.backend.domain.inquiry.dto.response.ChatCompletionDto;
+import com.pobluesky.backend.domain.chat.dto.response.ChatCompletionDto;
 import com.pobluesky.backend.global.config.RestTemplateConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
