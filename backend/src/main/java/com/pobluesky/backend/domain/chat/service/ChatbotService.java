@@ -38,11 +38,9 @@ public class ChatbotService {
     @Value("${openai.model}")
     private String openAiModel;
 
-    public JsonResult<?> processChatMessage(String token, Long userId, String userMessage) {
+    public JsonResult<?> processChatMessage(String token,  String userMessage) {
         Customer customer = validateCustomer(token);
-        if (!Objects.equals(customer.getUserId(), userId)) {
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
+
         String content = handleUserInquiry(userMessage);
         return ResponseFactory.getSuccessJsonResult(content);
     }

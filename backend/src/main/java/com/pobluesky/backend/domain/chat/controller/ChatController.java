@@ -20,14 +20,14 @@ public class ChatController {
 
     private final ChatbotService chatbotService;
 
-    @PostMapping("/send/{userId}")
+    @PostMapping("/send")
     @Operation(summary = "유저 메시지에 대한 Chatbot 응답 제공")
     public ResponseEntity<JsonResult<?>> chatWithGpt(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long userId,
         @RequestBody String userMessage
     ) {
-        JsonResult<?> response = chatbotService.processChatMessage(token, userId, userMessage);
+        JsonResult<?> response = chatbotService.processChatMessage(token, userMessage);
+
         return ResponseEntity.ok(response);
     }
 }
