@@ -1,6 +1,7 @@
 package com.pobluesky.inquiry.dto.response;
 
 import com.pobluesky.feign.Customer;
+import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.inquiry.entity.Country;
 import com.pobluesky.inquiry.entity.Industry;
@@ -24,8 +25,8 @@ public record MobileInquiryResponseDTO(
     Country country,
     String corporate,
     String  salesPerson,
-    ManagerSummaryResponseDTO salesManagerSummaryDto,
-    ManagerSummaryResponseDTO qualityManagerSummaryDto,
+    Manager salesManagerSummaryDto,
+    Manager qualityManagerSummaryDto,
     InquiryType inquiryType,
     Industry industry,
     String corporationCode,
@@ -46,14 +47,14 @@ public record MobileInquiryResponseDTO(
         UserClient userClient
     ) {
         Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getUserId()).getData();
-        ManagerSummaryResponseDTO salesManager = null;
-        ManagerSummaryResponseDTO qualityManager = null;
+        Manager salesManager = null;
+        Manager qualityManager = null;
 
         if(inquiry.getSalesManagerId()!=null){
-            salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
+            salesManager = userClient.getManagerByIdWithoutToken(inquiry.getSalesManagerId()).getData();
         }
         if(inquiry.getQualityManagerId()!=null){
-            qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
+            qualityManager = userClient.getManagerByIdWithoutToken(inquiry.getQualityManagerId()).getData();
         }
 
         return MobileInquiryResponseDTO.builder()

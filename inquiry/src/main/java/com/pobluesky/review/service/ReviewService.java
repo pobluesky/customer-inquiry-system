@@ -50,12 +50,7 @@ public class ReviewService {
         Long inquiryId,
         ReviewCreateRequestDTO dto
         ) {
-        Long userId = userClient.parseToken(token);
-
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Manager manager = validateManager(token);
 
         if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -78,13 +73,7 @@ public class ReviewService {
         String token,
         Long inquiryId,
         ReviewUpdateRequestDTO request) {
-
-        Long userId = userClient.parseToken(token);
-
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null){
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
+        Manager manager = validateManager(token);
 
         if(manager.getRole() != UserRole.SALES)
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
@@ -98,5 +87,17 @@ public class ReviewService {
         review.updateReview(request.finalReviewText());
 
         return ReviewResponseDTO.from(review);
+    }
+
+    private Manager validateManager(String token) {
+        Long userId = userClient.parseToken(token);
+
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
+
+        if(manager == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return manager;
     }
 }

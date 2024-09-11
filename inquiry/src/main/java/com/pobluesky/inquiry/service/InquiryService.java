@@ -88,7 +88,8 @@ public class InquiryService {
             endDate,
             sortBy,
             salesManagerName,
-            qualityManagerName
+            qualityManagerName,
+            customer
         );
     }
 

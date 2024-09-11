@@ -1,5 +1,6 @@
 package com.pobluesky.inquiry.repository;
 
+import com.pobluesky.feign.Customer;
 import com.pobluesky.inquiry.dto.response.InquirySummaryResponseDTO;
 import com.pobluesky.inquiry.entity.Industry;
 import com.pobluesky.inquiry.entity.InquiryType;
@@ -22,7 +23,8 @@ public interface InquiryRepositoryCustom {
         LocalDate endDate,
         String sortBy,
         String salesManagerName,
-        String qualityManagerName
+        String qualityManagerName,
+        Customer customer
     );
 
     List<InquirySummaryResponseDTO> findInquiriesBySalesManagerWithoutPaging(

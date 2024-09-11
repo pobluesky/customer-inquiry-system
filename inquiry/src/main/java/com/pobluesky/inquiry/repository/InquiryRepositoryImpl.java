@@ -45,11 +45,9 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         LocalDate endDate,
         String sortBy,
         String salesManagerName,
-        String qualityManagerName
+        String qualityManagerName,
+        Customer customer
     ) {
-
-        // Feign을 사용해 customer 정보를 가져옴
-        Customer customer = userClient.getCustomerByIdWithoutToken(userId).getData();
 
         // 기본적으로 Inquiry 정보를 조회
         List<Inquiry> inquiries = queryFactory

@@ -25,8 +25,8 @@ public record InquiryResponseDTO(
     Country country,
     String corporate,
     String  salesPerson,
-    ManagerSummaryResponseDTO salesManagerSummaryDto,
-    ManagerSummaryResponseDTO qualityManagerSummaryDto,
+    Manager salesManagerSummaryDto,
+    Manager qualityManagerSummaryDto,
     InquiryType inquiryType,
     Industry industry,
     String corporationCode,
@@ -47,14 +47,14 @@ public record InquiryResponseDTO(
         UserClient userClient
     ) {
         Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getUserId()).getData();
-        ManagerSummaryResponseDTO salesManager = null;
-        ManagerSummaryResponseDTO qualityManager = null;
+        Manager salesManager = null;
+        Manager qualityManager = null;
 
         if(inquiry.getSalesManagerId()!=null){
-            salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
+            salesManager = userClient.getManagerByIdWithoutToken(inquiry.getSalesManagerId()).getData();
         }
         if(inquiry.getQualityManagerId()!=null){
-            qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
+            qualityManager = userClient.getManagerByIdWithoutToken(inquiry.getQualityManagerId()).getData();
         }
 
         return InquiryResponseDTO.builder()
@@ -69,12 +69,8 @@ public record InquiryResponseDTO(
             .country(inquiry.getCountry())
             .corporate(inquiry.getCorporate())
             .salesPerson(inquiry.getSalesPerson())
-            .salesManagerSummaryDto(
-                salesManager
-            )
-            .qualityManagerSummaryDto(
-                qualityManager
-            )
+            .salesManagerSummaryDto(salesManager)
+            .qualityManagerSummaryDto(qualityManager)
             .inquiryType(inquiry.getInquiryType())
             .industry(inquiry.getIndustry())
             .corporationCode(inquiry.getCorporationCode())

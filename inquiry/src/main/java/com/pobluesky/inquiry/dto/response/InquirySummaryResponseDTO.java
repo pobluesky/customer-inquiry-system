@@ -1,7 +1,7 @@
 package com.pobluesky.inquiry.dto.response;
 
-
 import com.pobluesky.feign.Customer;
+import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.inquiry.entity.Country;
 import com.pobluesky.inquiry.entity.Industry;
@@ -9,6 +9,7 @@ import com.pobluesky.inquiry.entity.Inquiry;
 import com.pobluesky.inquiry.entity.InquiryType;
 import com.pobluesky.inquiry.entity.ProductType;
 import com.pobluesky.inquiry.entity.Progress;
+
 import lombok.Builder;
 
 @Builder
@@ -29,18 +30,18 @@ public record InquirySummaryResponseDTO(
 
     public static InquirySummaryResponseDTO from(Inquiry inquiry, UserClient userClient) {
         Customer customer = userClient.getCustomerByIdWithoutToken(inquiry.getInquiryId()).getData();
-        ManagerSummaryResponseDTO salesManager = null;
-        ManagerSummaryResponseDTO qualityManager = null;
+        Manager salesManager = null;
+        Manager qualityManager = null;
         String salesManagerName = null;
         String qualityManagerName = null;
 
         if(inquiry.getSalesManagerId()!=null){
-            salesManager = userClient.getManagerSummaryById(inquiry.getSalesManagerId()).getData();
-            salesManagerName=salesManager.name();
+            salesManager = userClient.getManagerByIdWithoutToken(inquiry.getSalesManagerId()).getData();
+            salesManagerName=salesManager.getName();
         }
         if(inquiry.getQualityManagerId()!=null){
-            qualityManager = userClient.getManagerSummaryById(inquiry.getQualityManagerId()).getData();
-            qualityManagerName=qualityManager.name();
+            qualityManager = userClient.getManagerByIdWithoutToken(inquiry.getQualityManagerId()).getData();
+            qualityManagerName=qualityManager.getName();
         }
 
         return InquirySummaryResponseDTO.builder()
@@ -54,12 +55,8 @@ public record InquirySummaryResponseDTO(
             .corporate(inquiry.getCorporate())
             .corporationCode(inquiry.getCorporationCode())
             .industry(inquiry.getIndustry())
-            .salesManagerName(
-                salesManagerName
-            )
-            .qualityManagerName(
-                qualityManagerName
-            )
+            .salesManagerName(salesManagerName)
+            .qualityManagerName(qualityManagerName)
             .build();
     }
 }

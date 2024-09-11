@@ -49,12 +49,14 @@ public class InquiryController {
 
     // msa에 사용할 존재 여부만 확인하는 간단한 API 추가
     @GetMapping("/exists/{inquiryId}")
+    @Operation(summary = "Inquiry 존재여부)", description = "inquiry가 존재하는지 bool 출력")
     public ResponseEntity<Boolean> checkInquiryExists(@PathVariable("inquiryId") Long inquiryId) {
         boolean exists = inquiryService.existsById(inquiryId);
         return ResponseEntity.ok(exists);
     }
 
     @GetMapping("/without-token/{inquiryId}")
+    @Operation(summary = "Inquiry 토큰 없이 가져오기", description = "Inquiry 토큰 없이 가져오기")
     public ResponseEntity<JsonResult> getInquiryByIdWithoutToken(@PathVariable("inquiryId") Long inquiryId) {
         Inquiry inquiry = inquiryService.getInquiryByIdWithoutToken(inquiryId);
 
