@@ -35,6 +35,7 @@ import profile from '../../assets/css/icons/profile.svg';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     let questions = [];
@@ -103,10 +104,8 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     );
 };
 
-const FAQSection = ({ onInquiryClick }) => {
+const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, onFinishClick }) => {
     const [inqSection, setInqSection] = useState(false);
-    const [siteSection, setSiteSection] = useState(false);
-    const [etcSection, setEtcSection] = useState(false);
     const faqSectionRef = useRef(null);
 
     useEffect(() => {
@@ -117,14 +116,6 @@ const FAQSection = ({ onInquiryClick }) => {
 
     const toggleInqSection = () => {
         setInqSection(true);
-    };
-
-    const toggleSiteSection = () => {
-        setSiteSection(true);
-    };
-
-    const toggleEtcSection = () => {
-        setEtcSection(true);
     };
 
     return (
@@ -151,9 +142,14 @@ const FAQSection = ({ onInquiryClick }) => {
                         궁금한 내용을 하단<br />
                         채팅창에 입력해 주세요.
                     </div>
-                    <div className={faqPick2}>새로운 채팅 시작하기</div>
-                    <div className={faqPick2}>VOC로 1:1 문의하기</div>
-                    <div className={faqPick2}>채팅 종료하기</div>
+                    <div
+                        className={faqPick2}
+                         onClick={() => {
+                             onNewChatClick();
+                             onFocusInput();
+                         }}>새로운 채팅 시작하기</div>
+                    <div className={faqPick2} onClick={() => onVocClick()}>VOC로 1:1 문의하기</div>
+                    <div className={faqPick2} onClick={() => onFinishClick()}>채팅 종료하기</div>
                 </div>
             </div>
 
@@ -191,7 +187,39 @@ const DefaultSection = ({ onFirstComment }) => (
     </div>
 );
 
+const LoginSection = ({ onFirstComment, onClose }) => (
+    <div className={faqSection}>
+        <Link to={'/login'} style={{ textDecoration: 'none' }}>
+            <div className={faqBox} onClick={onClose}>
+                로그인 하러가기
+            </div>
+        </Link>
+        <div className={faqBox} onClick={onFirstComment}>
+            이전으로 돌아가기
+        </div>
+    </div>
+);
+
+const FinishSection = ({ onFirstComment, onClose, onRemoveMessage }) => (
+    <div className={faqSection}>
+        <div
+            className={faqBox}
+             onClick={() => {
+                onClose();
+                onRemoveMessage()
+        }}>
+            채팅 종료하기
+        </div>
+        <div className={faqBox} onClick={onFirstComment}>
+            이전으로 돌아가기
+        </div>
+    </div>
+);
+
 const Chatbot = () => {
+    const { didLogin } = useAuth();
+    const didLoginRef = useRef(didLogin);
+    const [currentLogin, setCurrentLogin] = useState(didLogin);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -199,6 +227,12 @@ const Chatbot = () => {
     const [selectedInquiryType, setSelectedInquiryType] = useState(null);
     const chatContentRef = useRef(null);
     const inputRef = useRef(null);
+
+    const focusInput = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
 
     const getCurrentTime = () => {
         const now = new Date();
@@ -225,7 +259,15 @@ Pobluesky입니다.
                     `,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component: <FAQSection onInquiryClick={handleInquiryClick} ref={chatContentRef} />
+                    component:
+                        <FAQSection
+                            onInquiryClick={handleInquiryClick}
+                            onNewChatClick={handleNewChatClick}
+                            ref={chatContentRef}
+                            onFocusInput={focusInput}
+                            onVocClick={handleVocClick}
+                            onFinishClick={handleFinishClick}
+                        />
                 }
             ]);
         }
@@ -244,7 +286,14 @@ Pobluesky입니다.
                     `,
                 type: 'bot',
                 time: getCurrentTime(),
-                component: <FAQSection onInquiryClick={handleInquiryClick} ref={chatContentRef} />
+                component:
+                    <FAQSection
+                        onInquiryClick={handleInquiryClick}
+                        ref={chatContentRef}
+                        onFocusInput={focusInput}
+                        onVocClick={handleVocClick}
+                        onFinishClick={handleFinishClick}
+                    />,
             }
         ]);
     };
@@ -279,6 +328,87 @@ Pobluesky입니다.
             },
         ]);
     };
+
+    useEffect(() => {
+        didLoginRef.current = didLogin;
+    }, [didLogin]);
+
+    const handleNewChatClick = () => {
+        if(didLoginRef.current) {
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: `아래에서 채팅을 입력해 주세요.`,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: (
+                        <DefaultSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                        />
+                    )
+                },
+            ]);
+        } else {
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: `로그인 후, 직접 질문을 입력하실 수 있습니다.`,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: (
+                        <LoginSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                            onClose={handleClose}
+                        />
+                    )
+                },
+            ]);
+        }
+    };
+
+    const handleVocClick = () => {
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: `
+VOC로 1:1 문의하실 수 있습니다.
+VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: (
+                        <DefaultSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                        />
+                    )
+                },
+            ]);
+    }
+
+    const handleFinishClick = () => {
+        setMessages(prev => [
+            ...prev,
+            {
+                text: `채팅을 종료하시겠습니까?`,
+                type: 'bot',
+                time: getCurrentTime(),
+                component: (
+                    <FinishSection
+                        onFirstComment={handleFirstComment}
+                        ref={chatContentRef}
+                        onClose={handleClose}
+                        onRemoveMessage={handleRemoveMessage}
+                    />
+                )
+            },
+        ]);
+    }
+
+    const handleRemoveMessage = () => {
+        setMessages([]);
+    }
 
     const handleQuestionClick = async (question) => {
         setMessages(prev => [
@@ -329,6 +459,24 @@ Pobluesky입니다.
 
         const messageToSend = inputValue;
 
+        if (!didLoginRef.current) {
+            setMessages(prev => [
+               ...prev,
+                {
+                    text: '로그인 후, 직접 질문을 입력하실 수 있습니다.',
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: (
+                        <LoginSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                            onClose={handleClose}
+                        />
+                    )
+                },
+            ]);
+            return;
+        }
 
         setMessages(prev => [
             ...prev,
@@ -358,7 +506,11 @@ Pobluesky입니다.
                     text: botResponse,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component: <DefaultSection onFirstComment={handleFirstComment} ref={chatContentRef} />,
+                    component:
+                        <DefaultSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                        />,
                 }
             ]);
 
