@@ -271,14 +271,6 @@ public class ChatbotService {
     @Value("${openai.model}")
     private String openAiModel;
 
-    private static final List<String> RESTRICTED_KEYWORDS = Arrays.asList(
-        "개인정보", "주민등록번호", "계좌번호", "신용카드", "결제"
-    );
-
-//    private static final List<String> DOMAIN_KEYWORDS = Arrays.asList(
-//        "inquiry", "voc", "주문", "제품", "라인아이템", "견적", "품질", "계약", "배송", "문의"
-//    );
-
     public JsonResult<?> processChatMessage(String token,  String userMessage) {
         validateCustomer(token);
 
@@ -287,15 +279,6 @@ public class ChatbotService {
     }
 
     private String handleUserInquiry(String userMessage) {
-//        if (!isDomainRelevant(userMessage)) {
-//            return "안녕하세요! 제가 도와드릴 수 있는 질문은 저희 회사의 제품과 서비스에 관한 것입니다. " +
-//                "다른 주제에 대해 문의하시려면 VoC 문의하기 버튼을 이용해 주세요. 감사합니다!";
-//        }
-
-        if (handleRestrictedKeyword(userMessage)) {
-            return handleOtherInquiry();
-        }
-
         ChatInquiryType inquiryType = determineInquiryType(userMessage);
         ChatInquirySubType inquirySubType = determineInquirySubType(userMessage, inquiryType);
 
@@ -316,21 +299,6 @@ public class ChatbotService {
         return response;
     }
 
-    private boolean handleRestrictedKeyword(String userMessage) {
-        for (String keyword : RESTRICTED_KEYWORDS) {
-            if (userMessage.contains(keyword)) {
-                log.warn("Restricted keyword detected: {}", keyword);
-                return true;
-            }
-        }
-        return false;
-    }
-
-//    private boolean isDomainRelevant(String userMessage) {
-//        return DOMAIN_KEYWORDS.stream().anyMatch(keyword ->
-//            userMessage.toLowerCase().contains(keyword.toLowerCase()));
-//    }
-
     private String handleOrderInquiry(ChatInquirySubType subType) {
         return switch (subType) {
             case SUBMISSION -> "inquiry 등록일 기준 최소 2주 예상됩니다.";
@@ -343,7 +311,7 @@ public class ChatbotService {
 
     private String handleProductInquiry(ChatInquirySubType subType) {
         return switch (subType) {
-            case LINE_ITEM -> "제품 유형에 따라 등록되어야 할 라인아이템 내역이 달라집니다.\n 제품 유형별 라인아이템 내역은 아래 표를 참고해주세요. \n또한 Inquiry 등록 화면에서도 확인 가능합자다.";
+            case LINE_ITEM -> "제품 유형에 따라 등록되어야 할 라인아이템 내역이 달라집니다. 제품 유형별 라인아이템 내역은 아래 표를 참고해주세요. 또한 Inquiry 등록 화면에서도 확인 가능합니다.";
             case FILE_FORMAT -> "현재 라인아이템 내역 파일 등록 기능은 PDF 파일 확장만 지원 가능합니다. 제품 유형별 라인아이템 내역은 아래 표를 참고해주세요. 다른 파일 형식의 업로드를 원하시면 VoC 문의하기를 통해 남겨주시면 등록 과정을 상세히 도와드리겠습니다.";
             case ESTIMATE -> "견적 문의는 품질 검토 단계가 필요없는 문의 유형이며, 견적&품질 문의는 품질 담당자에 의한 품질 검토 단계가 필요한 문의 유형입니다. 고객님이 작성하신 inquiry 문의 유형은 담당자의 검토하에 변경될 수 있습니다.";
             case OFFERSHEET -> "offersheet 내역에 대한 다운로드는 inquiry > inquiry 조회 > 다운로드할 inquiry 선택 > offersheet 내역 > 엑셀로 추출 방법으로 가능합니다. 다른 문의가 있다면 언제든 말씀해주세요!";
@@ -391,8 +359,6 @@ public class ChatbotService {
                         yield ChatInquirySubType.MODIFICATION;
                     }
                 }
-//                if (userMessage.contains("변경") || userMessage.contains("수정")) yield ChatInquirySubType.MODIFICATION;
-//                if (userMessage.contains("배송지")) yield ChatInquirySubType.SHIPPING;
                 if (userMessage.contains("프로세스") || userMessage.contains("절차")) yield ChatInquirySubType.PROCESS;
                 yield ChatInquirySubType.OTHER;
             }
@@ -435,7 +401,7 @@ public class ChatbotService {
 
         String systemPrompt =
                 "You are a helpful assistant for a Korean company that provides Inquiry and VoC systems. " +
-                "Respond in Korean. Here's important context about our systems:\n\n" +
+                "Respond in Korean. Here's important context about our systems:\n" +
                 "1. The Inquiry system handles the entire process from inquiry submission to order processing.\n" +
                 "2. Customers can use Inquiry lookup and registration functions.\n" +
                 "3. The Inquiry registration process follows these steps: Registration → Reception → Initial Review → Quality Check Decision → Quality Check Request → Quality Check Reception → Quality Check Progress → Quality Check Approval → Final Review → Customer Notification.\n" +
@@ -448,12 +414,12 @@ public class ChatbotService {
                 "10. Both systems provide four core functions.\n" +
                 "11. These functions include user-friendly UI/UX, simplified Inquiry registration, streamlined VoC inquiry processing, and intuitive task handling.\n" +
                 "12. Inquiry registration is simplified using ChatGPT & OCR for efficient inquiry reception and processing.\n" +
-                "13. VoC inquiry simplification includes real-time notification services and an integrated next-generation VoC system.\n\n" +
+                "13. VoC inquiry simplification includes real-time notification services and an integrated next-generation VoC system.\n" +
                 "Please provide accurate and relevant responses based on this information in Korean. " +
-                "If a query is outside the scope of these systems, suggest using the VoC inquiry system for more detailed assistance. " +
-                "Remember, you are a Korean chatbot named '차니', so maintain a friendly and helpful tone appropriate for Korean customer service.\n\n" +
+                "If a query is outside the scope of these systems, suggest using the VoC inquiry system for more detailed assistance." +
+                "Remember, you are a Korean chatbot named '차니', so maintain a friendly and helpful tone appropriate for Korean customer service.\n" +
                 "Important: If the user's question is completely unrelated to our company's services (e.g., asking about the weather, food recommendations, or general knowledge), " +
-                "politely inform them that you are specialized in handling inquiries related to our company's products and services. " +
+                "politely inform them that you are specialized in handling inquiries related to our company's products and services." +
                 "Suggest they use the VoC inquiry button for any questions outside of your expertise. " +
                 "DO NOT attempt to answer questions unrelated to our company's domain.";
 
@@ -500,17 +466,4 @@ public class ChatbotService {
         return customerRepository.findById(userId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
-
-//    private String getGptResponseForInquiry(String userMessage, ChatInquiryType inquiryType, ChatInquirySubType inquirySubType) {
-//        List<ChatRequestMsgDto> messages = new ArrayList<>();
-//
-//        String inquiryContext = generateInquiryContext(inquiryType, inquirySubType);
-//
-//        messages.add(new ChatRequestMsgDto("system", "You are a helpful assistant. " + inquiryContext));
-//        messages.add(new ChatRequestMsgDto("user", userMessage));
-//
-//        ChatCompletionDto chatCompletionDto = new ChatCompletionDto(openAiModel, messages);
-//
-//        return extractContentFromGptResponse(gptPromptService.prompt(chatCompletionDto));
-//    }
 }
