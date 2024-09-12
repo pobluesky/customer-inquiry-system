@@ -3,7 +3,9 @@ import { setCookie } from './cookies';
 
 const signInApi = async (endpoint, credentials) => {
     try {
-        const response = await axiosInstance.post(endpoint, credentials);
+        const response = await axiosInstance.post(endpoint, credentials,{
+            timeout: 100000, // 100초 동안 요청 대기
+        });
 
         if (response.status === 200) {
             const { accessToken, refreshToken, userRole, userId } =
