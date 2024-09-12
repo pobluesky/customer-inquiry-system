@@ -16,6 +16,7 @@ import {
     faqTitle,
     faqPick1,
     faqPick2,
+    faqType,
     faqDescription,
     faqArticle,
     chatInput,
@@ -26,6 +27,7 @@ import {
     loadingDot2,
     loadingDot3,
 } from '../../assets/css/ChatbotIcon.css';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import ChatbotIcon from '../../assets/css/icons/ChatbotIcon.png';
 import Poseokho from '../../assets/css/icons/Poseokho.png';
 import profile from '../../assets/css/icons/profile.svg';
@@ -33,39 +35,153 @@ import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
 import { Link } from 'react-router-dom';
 
-const FAQSection = () => (
-    <div className={faqSection}>
-        <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>
-            <div className={faqTitle}>자주 묻는 질문</div>
-            <div className={faqDescription}>
-                고객사들이 자주 찾는 질문과<br />
-                답변 리스트를 안내합니다.
-            </div>
-            <div className={faqPick1}>Inquiry 문의</div>
-            <div className={faqPick1}>사이트 이용 문의</div>
-            <div className={faqPick1}>기타 문의</div>
-        </div>
-        <div className={faqArticle} style={{ backgroundColor: '#05ADD3' }}>
-            <div className={faqTitle}>직접 질문하기</div>
-            <div className={faqDescription}>
-                궁금한 내용을 하단<br />
-                채팅창에 입력해 주세요.
-            </div>
-            <div className={faqPick2}>새로운 채팅 시작하기</div>
-            <div className={faqPick2}>VOC로 1:1 문의하기</div>
-            <div className={faqPick2}>채팅 종료하기</div>
-        </div>
-    </div>
-);
+const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
+    let questions = [];
+    if(questionsType === '주문 문의') {
+        questions = [
+            '주문 언제 접수되나요?',
+            '주문 변경 가능한가요?',
+            '주문 배송지 변경 가능한가요?',
+            '주문 프로세스가 궁금해요.',
+        ];
+    } else if (questionsType === '제품 통합 문의') {
+        questions = [
+            '제품 유형에 따라 라인아이템 내역도 달라지나요?',
+            '라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
+            '견적 문의와 견적+품질 문의 차이가 뭔가요?',
+            'offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
+        ];
+    } else if (questionsType === '등록 문의') {
+        questions = [
+            'inquiry 등록 방법',
+            'inquiry 수정 / 삭제 방법',
+            '결과 수신 후 계약 협의는 어떻게 하나요?',
+        ]
+    }
 
-const DefaultSection = () => (
+    return (
+        <TableContainer
+            component={Paper}
+            elevation={0}
+            sx={{
+                marginLeft: '47px',
+                width: '74%',
+                borderRadius: '10px',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+            }}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell
+                            colSpan={2}
+                            style={{
+                                textAlign: 'center',
+                                fontWeight: '800',
+                                fontSize: '18px',
+                            }}>
+                            {title}
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {questions.map((question, index) => (
+                        <TableRow
+                            key={index}
+                            hover
+                            onClick={() => onQuestionClick(question)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <TableCell style={{ fontSize: '16px', color: '#2F2F2F' }}>{question}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>    );
+};
+
+const FAQSection = ({ onInquiryClick }) => {
+    const [inqSection, setInqSection] = useState(false);
+    const [siteSection, setSiteSection] = useState(false);
+    const [etcSection, setEtcSection] = useState(false);
+    const faqSectionRef = useRef(null);
+
+    useEffect(() => {
+        if (inqSection && faqSectionRef.current) {
+            faqSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    }, [inqSection]);
+
+    const toggleInqSection = () => {
+        setInqSection(true);
+    };
+
+    const toggleSiteSection = () => {
+        setSiteSection(true);
+    };
+
+    const toggleEtcSection = () => {
+        setEtcSection(true);
+    };
+
+    return (
+        <div>
+            <div className={faqSection}>
+                <div className={faqArticle}
+                     style={{ backgroundColor: '#6187E7' }}>
+                    <div className={faqTitle}>자주 묻는 질문</div>
+                    <div className={faqDescription}>
+                        고객사들이 자주 찾는 질문과<br />
+                        답변 리스트를 안내합니다.
+                    </div>
+                    <div className={faqPick1} onClick={toggleInqSection}>Inquiry 문의
+                    </div>
+                    <div className={faqPick1}>사이트 이용 문의
+                    </div>
+                    <div className={faqPick1}>기타 문의
+                    </div>
+                </div>
+                <div className={faqArticle}
+                     style={{ backgroundColor: '#05ADD3' }}>
+                    <div className={faqTitle}>직접 질문하기</div>
+                    <div className={faqDescription}>
+                        궁금한 내용을 하단<br />
+                        채팅창에 입력해 주세요.
+                    </div>
+                    <div className={faqPick2}>새로운 채팅 시작하기</div>
+                    <div className={faqPick2}>VOC로 1:1 문의하기</div>
+                    <div className={faqPick2}>채팅 종료하기</div>
+                </div>
+            </div>
+
+            { inqSection ? (
+                <>
+                    <div className={faqSection} ref={faqSectionRef}>
+                        <div className={faqType} onClick={() => onInquiryClick('주문 문의')}>
+                            주문 문의
+                        </div>
+                        <div className={faqType} onClick={() => onInquiryClick('제품 통합 문의')}>
+                            제품 통합 문의
+                        </div>
+                        <div className={faqType} onClick={() => onInquiryClick('등록 문의')}>
+                            등록 문의
+                        </div>
+                    </div>
+                </>
+            ) : (
+                ''
+            )}
+        </div>
+    );
+};
+
+const DefaultSection = ({ onFirstComment }) => (
     <div className={faqSection}>
         <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>
             <div className={faqBox}>
                 직접 VOC 문의하기
             </div>
         </Link>
-        <div className={faqBox}>
+        <div className={faqBox} onClick={onFirstComment}>
             이전으로 돌아가기
         </div>
     </div>
@@ -73,34 +189,23 @@ const DefaultSection = () => (
 
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [currentTime, setCurrentTime] = useState('');
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [showInitialFAQ, setShowInitialFAQ] = useState(true);
-    const [showDefaultSection, setShowDefaultSection] = useState(false);
-    const [showFAQSection, setShowFAQSection] = useState(true);
+    const [selectedInquiryType, setSelectedInquiryType] = useState(null);
     const chatContentRef = useRef(null);
     const inputRef = useRef(null);
 
-    useEffect(() => {
-        const updateTime = () => {
-            const now = new Date();
-            setCurrentTime(now.toLocaleTimeString('ko-KR',
-                { hour: '2-digit', minute: '2-digit' }));
-        };
-
-        updateTime();
-        const timer = setInterval(updateTime, 60000);
-
-        return () => clearInterval(timer);
-    }, []);
+    const getCurrentTime = () => {
+        const now = new Date();
+        return now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    };
 
     useEffect(() => {
         if (chatContentRef.current) {
             chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
         }
-    }, [messages]);
+    }, [messages, selectedInquiryType]);
 
     useEffect(() => {
         if (messages.length === 0) {
@@ -115,12 +220,83 @@ const Chatbot = () => {
                         아래에서 선택해 주세요.
                     `,
                     type: 'bot',
-                    time: currentTime,
-                    component: <FAQSection />
+                    time: getCurrentTime(),
+                    component: <FAQSection onInquiryClick={handleInquiryClick} ref={chatContentRef} />
                 }
             ]);
         }
-    }, [messages.length, currentTime]);
+    }, [messages.length]);
+
+    const handleFirstComment = () => {
+        setMessages(prevMessages => [
+            ...prevMessages,
+            {
+                text: `
+                안녕하세요, 고객님.<br />
+                Pobluesky입니다.<br />
+                무엇이 궁금하신가요?<br />
+                궁금하신 내용을 직접 입력해 주시거나,<br />
+                아래에서 선택해 주세요.
+            `,
+                type: 'bot',
+                time: getCurrentTime(),
+                component: <FAQSection onInquiryClick={handleInquiryClick} ref={chatContentRef} />
+            }
+        ]);
+    };
+
+    const handleInquiryClick = (inquiryType) => {
+        setSelectedInquiryType(inquiryType);
+
+        setMessages(prev => [
+            ...prev,
+            {
+                text: `Inquiry 문의 중 '${inquiryType}' 관련 자주하는 질문 리스트를 보여드릴게요.`,
+                type: 'bot',
+                time: getCurrentTime(),
+                component: (
+                    <InquiryQuestionList
+                        title={inquiryType}
+                        questionsType={inquiryType}
+                        onQuestionClick={handleQuestionClick}
+                        ref={chatContentRef}
+                    />
+                ),
+            },
+        ]);
+    };
+
+    const handleQuestionClick = async (question) => {
+        setMessages(prev => [
+            ...prev,
+            { text: question, type: 'user', time: getCurrentTime() },
+        ]);
+
+        setLoading(true);
+
+        try {
+            const botResponse = await new Promise((resolve) =>
+                setTimeout(async () => {
+                    const response = await postChatbot({ message: question });
+                    resolve(response.data);
+                }, 1500)
+            );
+
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: botResponse,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: <DefaultSection onFirstComment={handleFirstComment} ref={chatContentRef} />,
+                },
+            ]);
+        } catch (error) {
+            console.error("Error fetching response:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
@@ -135,9 +311,10 @@ const Chatbot = () => {
 
         const messageToSend = inputValue;
 
+
         setMessages(prev => [
             ...prev,
-            { text: messageToSend, type: 'user', time: currentTime }
+            { text: messageToSend, type: 'user', time: getCurrentTime() }
         ]);
 
         setLoading(true);
@@ -160,15 +337,10 @@ const Chatbot = () => {
             setMessages(prev => [
                 ...prev,
                 {
-                    text: botResponse, type: 'bot', time: currentTime,
-                    component: <DefaultSection />
+                    text: botResponse, type: 'bot', time: getCurrentTime(),
+                    component: <DefaultSection onFirstComment={handleFirstComment} ref={chatContentRef} />,
                 }
             ]);
-
-            // FAQ 섹션을 표시
-            setShowInitialFAQ(false);
-            // API 호출 후 항상 FAQ 섹션을 표시
-            setShowDefaultSection(true);  // (1) 여기에 바로 추가
 
         } catch (error) {
             console.error("Error fetching response:", error);
@@ -186,55 +358,6 @@ const Chatbot = () => {
         }
     };
 
-    const handleGoBack = () => {
-        setMessages(prev => [
-            ...prev,
-            {
-                text: `
-            안녕하세요, 고객님.<br />
-            Pobluesky입니다.<br />
-            무엇이 궁금하신가요?<br />
-            궁금하신 내용을 직접 입력해 주시거나,<br />
-            아래에서 선택해 주세요.
-            `,
-                type: 'bot',
-                time: currentTime,
-                section: `
-                        <div className={faqSection}>
-                            <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>
-                                <div className={faqTitle}>자주 묻는 질문</div>
-                                <div className={faqDescription}>
-                                    고객사들이 자주 찾는 질문과<br />
-                                    답변 리스트를 안내합니다.
-                                </div>
-                                <div className={faqPick1}>Inquiry 문의</div>
-                                <div className={faqPick1}>사이트 이용 문의</div>
-                                <div className={faqPick1}>기타 문의</div>
-                            </div>
-                            <div className={faqArticle} style={{ backgroundColor: '#05ADD3' }}>
-                                <div className={faqTitle}>직접 질문하기</div>
-                                <div className={faqDescription}>
-                                    궁금한 내용을 하단<br />
-                                    채팅창에 입력해 주세요.
-                                </div>
-                                <div className={faqPick2}>새로운 채팅 시작하기</div>
-                                <div className={faqPick2}>VOC로 1:1 문의하기</div>
-                                <div className={faqPick2}>채팅 종료하기</div>
-                            </div>
-                        </div>
-                `,
-            }
-        ]);
-
-        setShowFAQSection(true);
-        setShowInitialFAQ(true);
-    };
-
-    useEffect(() => {
-        if (showDefaultSection) {
-            console.log('showDefaultSection이 true로 설정되었습니다.');
-        }
-    }, [showDefaultSection]);
     return (
         <div>
             <img

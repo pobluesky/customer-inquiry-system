@@ -239,6 +239,23 @@
   background-color: #0091C2;
 }
 
+.faqType {
+  background-color: #4672e3;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 14px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+  flex: 0 0 auto;
+  color: #FFFFFF;
+}
+
+.faqType:hover {
+  background-color: #4A65B9;
+}
+
 .chatInput {
   display: flex;
   align-items: center;
