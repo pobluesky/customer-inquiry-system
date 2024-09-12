@@ -28,6 +28,7 @@ import {
     loadingDot3,
 } from '../../assets/css/ChatbotIcon.css';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
 import ChatbotIcon from '../../assets/css/icons/ChatbotIcon.png';
 import Poseokho from '../../assets/css/icons/Poseokho.png';
 import profile from '../../assets/css/icons/profile.svg';
@@ -57,6 +58,8 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
             'inquiry 수정 / 삭제 방법',
             '결과 수신 후 계약 협의는 어떻게 하나요?',
         ]
+    } else if (questionsType === '사이트 이용 문의') {
+        questions = ['전화번호, 비밀번호, 이메일 변경 방법 (마이페이지)'];
     }
 
     return (
@@ -96,7 +99,8 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
                     ))}
                 </TableBody>
             </Table>
-        </TableContainer>    );
+        </TableContainer>
+    );
 };
 
 const FAQSection = ({ onInquiryClick }) => {
@@ -135,9 +139,9 @@ const FAQSection = ({ onInquiryClick }) => {
                     </div>
                     <div className={faqPick1} onClick={toggleInqSection}>Inquiry 문의
                     </div>
-                    <div className={faqPick1}>사이트 이용 문의
+                    <div className={faqPick1} onClick={() => onInquiryClick('사이트 이용 문의')}>사이트 이용 문의
                     </div>
-                    <div className={faqPick1}>기타 문의
+                    <div className={faqPick1} onClick={() => onInquiryClick('기타 문의')}>기타 문의
                     </div>
                 </div>
                 <div className={faqArticle}
@@ -213,11 +217,11 @@ const Chatbot = () => {
             setMessages([
                 {
                     text: `
-                        안녕하세요, 고객님.<br />
-                        Pobluesky입니다.<br />
-                        무엇이 궁금하신가요?<br />
-                        궁금하신 내용을 직접 입력해 주시거나,<br />
-                        아래에서 선택해 주세요.
+안녕하세요, 고객님.  
+Pobluesky입니다.  
+무엇이 궁금하신가요?  
+궁금하신 내용을 직접 입력해 주시거나,  
+아래에서 선택해 주세요.
                     `,
                     type: 'bot',
                     time: getCurrentTime(),
@@ -232,12 +236,12 @@ const Chatbot = () => {
             ...prevMessages,
             {
                 text: `
-                안녕하세요, 고객님.<br />
-                Pobluesky입니다.<br />
-                무엇이 궁금하신가요?<br />
-                궁금하신 내용을 직접 입력해 주시거나,<br />
-                아래에서 선택해 주세요.
-            `,
+안녕하세요, 고객님.  
+Pobluesky입니다.  
+무엇이 궁금하신가요?  
+궁금하신 내용을 직접 입력해 주시거나,  
+아래에서 선택해 주세요.
+                    `,
                 type: 'bot',
                 time: getCurrentTime(),
                 component: <FAQSection onInquiryClick={handleInquiryClick} ref={chatContentRef} />
@@ -251,10 +255,20 @@ const Chatbot = () => {
         setMessages(prev => [
             ...prev,
             {
-                text: `Inquiry 문의 중 '${inquiryType}' 관련 자주하는 질문 리스트를 보여드릴게요.`,
+                text: inquiryType === '사이트 이용 문의' ?
+                    `**${inquiryType}**의 자주하는 질문을 보여드릴게요.` :
+                    inquiryType === '기타 문의' ?
+                        `**기타 문의**는 VoC 문의하기를 이용해주세요.` :
+                        `Inquiry 문의 중 **${inquiryType}** 관련 자주하는 질문 리스트를 보여드릴게요.`,
                 type: 'bot',
                 time: getCurrentTime(),
-                component: (
+                component: inquiryType === '기타 문의' ? (
+                        <DefaultSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                        />
+                    ) :
+                    (
                     <InquiryQuestionList
                         title={inquiryType}
                         questionsType={inquiryType}
@@ -288,7 +302,11 @@ const Chatbot = () => {
                     text: botResponse,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component: <DefaultSection onFirstComment={handleFirstComment} ref={chatContentRef} />,
+                    component:
+                        <DefaultSection
+                            onFirstComment={handleFirstComment}
+                            ref={chatContentRef}
+                        />,
                 },
             ]);
         } catch (error) {
@@ -314,7 +332,7 @@ const Chatbot = () => {
 
         setMessages(prev => [
             ...prev,
-            { text: messageToSend, type: 'user', time: getCurrentTime() }
+            { text: messageToSend, type: 'user', time: getCurrentTime() },
         ]);
 
         setLoading(true);
@@ -337,7 +355,9 @@ const Chatbot = () => {
             setMessages(prev => [
                 ...prev,
                 {
-                    text: botResponse, type: 'bot', time: getCurrentTime(),
+                    text: botResponse,
+                    type: 'bot',
+                    time: getCurrentTime(),
                     component: <DefaultSection onFirstComment={handleFirstComment} ref={chatContentRef} />,
                 }
             ]);
@@ -369,8 +389,7 @@ const Chatbot = () => {
             <div className={`${chatBox} ${isOpen ? chatBoxOpen : ''}`}>
                 <div className={chatHeader}>
                     <img src={pobluesky} alt="pobluesky" />
-                    <button className={closeButton} onClick={handleClose}>X
-                    </button>
+                    <button className={closeButton} onClick={handleClose}>X</button>
                 </div>
                 <div className={chatContent} ref={chatContentRef}>
                     <div className={dateHeader}>
@@ -400,20 +419,20 @@ const Chatbot = () => {
                                     marginLeft: msg.type === 'user' ? 0 : '6px',
                                     marginRight: msg.type === 'bot' ? 0 : '6px',
                                 }}>
-                                    <div
-                                        dangerouslySetInnerHTML={{ __html: msg.text }} />
+                                    <ReactMarkdown>{msg.text}</ReactMarkdown>
                                 </div>
-                                <div className={time} style={{
-                                    textAlign: msg.type === 'user' ? 'right'
-                                        : 'left',
-                                    position: 'relative',
-                                    marginTop: 'auto',
-                                    marginLeft: msg.type === 'user' ? 0 : '6px',
-                                    marginRight: msg.type === 'bot' ? 0 : '6px',
-                                    bottom: '2px',
-                                    right: msg.type === 'user' ? 0 : 'auto',
-                                    left: msg.type === 'user' ? 'auto' : 0,
-                                }}>
+                                <div className={time}
+                                     style={{
+                                        textAlign: msg.type === 'user' ? 'right'
+                                            : 'left',
+                                        position: 'relative',
+                                        marginTop: 'auto',
+                                        marginLeft: msg.type === 'user' ? 0 : '6px',
+                                        marginRight: msg.type === 'bot' ? 0 : '6px',
+                                        bottom: '2px',
+                                        right: msg.type === 'user' ? 0 : 'auto',
+                                        left: msg.type === 'user' ? 'auto' : 0,
+                                    }}>
                                     {msg.time}
                                 </div>
                             </div>
@@ -434,8 +453,6 @@ const Chatbot = () => {
                             </div>
                         </div>
                     )}
-
-
                 </div>
                 <div className={chatInput}>
                     <input

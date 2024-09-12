@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 export const postChatbot = async (messages) => {
     try {
         const response = await axiosInstance.post(`/chat/send`, messages);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (error) {
         console.log('Error creating Chatbot Response:', error);
