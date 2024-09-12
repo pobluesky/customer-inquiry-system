@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,8 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Transactional
     public ManagerResponseDTO signUp(ManagerCreateRequestDTO signUpDto) {
@@ -90,6 +93,8 @@ public class ManagerService {
             managerUpdateRequestDTO.phone()
         );
 
+        kafkaTemplate.send("user", "manager-update-"+ manager.getName());
+
         return ManagerResponseDTO.from(manager);
     }
 
@@ -108,6 +113,9 @@ public class ManagerService {
 
         if (!userId.equals(targetId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        kafkaTemplate.send("user", "manager-delete-"+ manager.getName());
+
         return manager;
     }
 

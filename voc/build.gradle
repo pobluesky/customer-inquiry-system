@@ -73,6 +73,12 @@ dependencies {
 
     //postgres
     implementation 'org.postgresql:postgresql:42.7.4'
+
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.2.3'
+
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+
 }
 
 tasks.named('test') {

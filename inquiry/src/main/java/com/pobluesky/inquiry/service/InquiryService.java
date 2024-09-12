@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +54,8 @@ public class InquiryService {
     private final UserClient userClient;
 
     private final FileClient fileClient;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
@@ -195,6 +198,8 @@ public class InquiryService {
             dto.lineItemRequestDTOs()
         );
 
+        kafkaTemplate.send("inquiry", "inquiry-create-"+ inquiry.getInquiryId().toString());
+
         return InquiryResponseDTO.of(savedInquiry, lineItems,userClient);
     }
 
@@ -246,6 +251,8 @@ public class InquiryService {
             inquiryUpdateRequestDTO.lineItemRequestDTOs()
         );
 
+        kafkaTemplate.send("inquiry", "inquiry-update-"+ inquiry.getInquiryId().toString());
+
         return InquiryResponseDTO.of(inquiry, lineItemResponseDTOS,userClient);
     }
 
@@ -260,6 +267,8 @@ public class InquiryService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         lineItemService.deleteLineItemsByInquiry(inquiry);
+
+        kafkaTemplate.send("inquiry", "inquiry-delete-"+ inquiry.getInquiryId().toString());
 
         inquiry.deleteInquiry();
     }
@@ -330,6 +339,8 @@ public class InquiryService {
 
         inquiry.updateProgress(newProgress);
 
+        kafkaTemplate.send("inquiry", "inquiry-update-"+ inquiry.getInquiryId().toString());
+
         return InquiryProgressResponseDTO.from(inquiry);
     }
 
@@ -381,6 +392,8 @@ public class InquiryService {
             } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
         }
 
+        kafkaTemplate.send("inquiry", "inquiry-allocate-"+ inquiry.getInquiryId().toString());
+
         return InquiryAllocateResponseDTO.from(inquiry,userClient);
     }
 
@@ -427,6 +440,8 @@ public class InquiryService {
 
         if(!Objects.equals(customer.getUserId(), inquiry.getUserId()))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        kafkaTemplate.send("inquiry", "inquiry-update favorite-"+ inquiry.getInquiryId().toString());
 
         inquiry.updateFavorite();
     }
