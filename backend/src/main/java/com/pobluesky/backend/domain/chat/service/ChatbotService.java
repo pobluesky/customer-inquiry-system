@@ -39,7 +39,7 @@ public class ChatbotService {
     private String openAiModel;
 
     public JsonResult<?> processChatMessage(String token,  String userMessage) {
-        Customer customer = validateCustomer(token);
+        validateCustomer(token);
 
         String content = handleUserInquiry(userMessage);
         return ResponseFactory.getSuccessJsonResult(content);
@@ -53,11 +53,11 @@ public class ChatbotService {
         log.info("Inquiry Sub-Type: {}", inquirySubType);
 
         String response = switch (inquiryType) {
-            case ORDER -> handleOrderInquiry(inquirySubType, userMessage);
-            case PRODUCT -> handleProductInquiry(inquirySubType, userMessage);
-            case REGISTRATION -> handleRegistrationInquiry(inquirySubType, userMessage);
-            case SITE_USAGE -> handleSiteUsageInquiry(inquirySubType, userMessage);
-            case OTHER -> handleOtherInquiry(userMessage);
+            case ORDER -> handleOrderInquiry(inquirySubType);
+            case PRODUCT -> handleProductInquiry(inquirySubType);
+            case REGISTRATION -> handleRegistrationInquiry(inquirySubType);
+            case SITE_USAGE -> handleSiteUsageInquiry(inquirySubType);
+            case OTHER -> handleOtherInquiry();
         };
 
         if (response == null) {
@@ -65,44 +65,44 @@ public class ChatbotService {
         }
         return response;
     }
-    private String handleOrderInquiry(ChatInquirySubType subType, String userMessage) {
+    private String handleOrderInquiry(ChatInquirySubType subType) {
         return switch (subType) {
             case SUBMISSION -> "inquiry 등록일 기준 최소 2주 예상됩니다.";
-            case MODIFICATION -> "주문 변경은 '문의 제출' 단계에서만 가능합니다. 주문 프로세스는 문의 제출 -> 문의 접수 -> 1차검토 완료 -> 품질검토 요청 -> 품질검토 접수 -> 품질검토 완료 -> 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
-            case SHIPPING -> "주문 배송지 변경은 '문의 제출' 단계에서만 가능합니다. 주문 프로세스는 문의 제출 -> 문의 접수 -> 1차검토 완료 -> 품질검토 요청 -> 품질검토 접수 -> 품질검토 완료 -> 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
-            case PROCESS -> "주문 프로세스는 문의 제출 -> 문의 접수 -> 1차검토 완료 -> 품질검토 요청 -> 품질검토 접수 -> 품질검토 완료 -> 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
+            case MODIFICATION -> "주문 변경은 '문의 제출' 단계에서만 가능합니다. 주문 프로세스는 문의 제출 ▸ 문의 접수 ▸ 1차검토 완료 ▸ 품질검토 요청 ▸ 품질검토 접수 ▸ 품질검토 완료 ▸ 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
+            case SHIPPING -> "주문 배송지 변경은 '문의 제출' 단계에서만 가능합니다. 주문 프로세스는 문의 제출 ▸ 문의 접수 ▸ 1차검토 완료 ▸ 품질검토 요청 ▸ 품질검토 접수 ▸ 품질검토 완료 ▸ 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
+            case PROCESS -> "주문 프로세스는 문의 제출 ▸ 문의 접수 ▸ 1차검토 완료 ▸ 품질검토 요청 ▸ 품질검토 접수 ▸ 품질검토 완료 ▸ 최종 검토 순서로 진행됩니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
             default -> null;
         };
     }
 
-    private String handleProductInquiry(ChatInquirySubType subType, String userMessage) {
+    private String handleProductInquiry(ChatInquirySubType subType) {
         return switch (subType) {
-            case LINE_ITEM -> "제품 유형에 따라 등록되어야 할 라인아이템 내역이 달라집니다. 자세한 내용은 inquiry 등록 화면에서 확인 가능합니다.";
-            case FILE_FORMAT -> "현재 라인아이템 등록 간소화 과정은 PDF 파일 형식만 지원 가능합니다. 다른 파일 형식의 업로드를 원하시면 VoC 문의로 남겨주세요.";
-            case ESTIMATE -> "견적 문의는 품질 검토 단계가 필요없는 경우이며, 견적&품질 문의는 품질 담당자에 의한 품질 검토 단계가 필요한 문의 유형입니다. 고객님이 작성하신 inquiry 문의 유형은 담당자의 검토하에 변경될 수 있습니다.";
-            case OFFERSHEET -> "offersheet 내역에 대한 다운로드는 inquiry > inquiry 조회 > 다운로드할 inquiry 선택 > offersheet 내역 > 엑셀로 추출 방법으로 가능합니다.";
+            case LINE_ITEM -> "제품 유형에 따라 등록되어야 할 라인아이템 내역이 달라집니다.\n 제품 유형별 라인아이템 내역은 아래 표를 참고해주세요. \n또한 Inquiry 등록 화면에서도 확인 가능합자다.";
+            case FILE_FORMAT -> "현재 라인아이템 내역 파일 등록 기능은 PDF 파일 확장만 지원 가능합니다. 제품 유형별 라인아이템 내역은 아래 표를 참고해주세요. 다른 파일 형식의 업로드를 원하시면 아래 VoC 문의하기 버튼을 통해 남겨주시면 등록 과정을 상세히 도와드리겠습니다.";
+            case ESTIMATE -> "견적 문의는 품질 검토 단계가 필요없는 문의 유형이며, 견적&품질 문의는 품질 담당자에 의한 품질 검토 단계가 필요한 문의 유형입니다. 고객님이 작성하신 inquiry 문의 유형은 담당자의 검토하에 변경될 수 있습니다.";
+            case OFFERSHEET -> "offersheet 내역에 대한 다운로드는 inquiry > inquiry 조회 > 다운로드할 inquiry 선택 > offersheet 내역 > 엑셀로 추출 방법으로 가능합니다. 다른 문의가 있다면 언제든 말씀해주세요!";
             default -> null;
         };
     }
 
-    private String handleRegistrationInquiry(ChatInquirySubType subType, String userMessage) {
+    private String handleRegistrationInquiry(ChatInquirySubType subType) {
         return switch (subType) {
-            case METHOD -> "localshot:9090/inq-list/customer 접속 후 > 로그인 > inquiry 등록 단계를 통해 제품 유형별 맞춤 주문이 가능합니다.";
-            case MODIFICATION -> "inquiry 수정/삭제는 '문의 제출' 단계에서만 가능합니다. 내 문의 상태 확인은 'inquiry 조회'에서 확인 가능합니다.";
-            case CONTRACT -> "최종검토완료 이후, 고객님께 결과가 회신된 후 계약 협의가 진행됩니다. 이후 절차는 담당자가 추후 메일로 안내드립니다. 자세한 문의는 VoC inquiry 문의로 남겨주세요.";
+            case METHOD -> "www.pobluesky.com 사이트 접속 후 > 로그인 > inquiry 등록 단계를 통해 제품 유형별 맞춤 주문이 가능합니다. 다른 도움이 필요하신가요?";
+            case MODIFICATION -> "inquiry 수정/삭제는 '문의 제출' 단계에서만 가능합니다. 내 문의 상태 확인은 'inquiry 조회'를 통해 확인할 수 있습니다.";
+            case CONTRACT -> "최종검토 완료 이후, 고객님께 결과가 회신되며 계약 협의가 진행됩니다. 이후 절차는 담당자가 추후 메일로 안내드립니다. 자세한 문의는 아래 VoC 문의하기 버튼을 통해 남겨주시면 빠르게 답변해드릴게요!";
             default -> null;
         };
     }
 
-    private String handleSiteUsageInquiry(ChatInquirySubType subType, String userMessage) {
+    private String handleSiteUsageInquiry(ChatInquirySubType subType) {
         if (subType == ChatInquirySubType.ACCOUNT_INFO) {
             return "홈페이지 상단 우측 프로필 선택 > 설정 > 변경하고 싶은 내용 수정 > 수정 완료";
         }
         return null;
     }
 
-    private String handleOtherInquiry(String userMessage) {
-        return "해당 질문은 챗봇 '차니'가 답변을 드릴 수 없으므로 VoC 문의하기를 이용해주세요.";
+    private String handleOtherInquiry() {
+        return "해당 질문은 챗봇 '차니'가 답변 드릴 수 없는 문의입니다. 아래 VoC 문의하기 버튼을 통해 자세한 문의 정보를 남겨주시면 원활한 상담이 가능합니다!";
     }
 
     private ChatInquiryType determineInquiryType(String userMessage) {
@@ -145,7 +145,8 @@ public class ChatbotService {
                     }
                 }
                 if (userMessage.contains("견적")) yield ChatInquirySubType.ESTIMATE;
-                if (userMessage.contains("offersheet")) yield ChatInquirySubType.OFFERSHEET;
+                if (userMessage.contains("offersheet") || userMessage.contains("오퍼시트"))
+                    yield ChatInquirySubType.OFFERSHEET;
                 yield ChatInquirySubType.OTHER;
             }
             case REGISTRATION -> {
@@ -163,12 +164,31 @@ public class ChatbotService {
             default -> ChatInquirySubType.OTHER;
         };
     }
-
     private String getGptResponseForInquiry(String userMessage, ChatInquiryType inquiryType, ChatInquirySubType inquirySubType) {
         List<ChatRequestMsgDto> messages = new ArrayList<>();
 
+        String systemPrompt =
+            "You are a helpful assistant for a Korean company that provides Inquiry and VoC systems. " +
+            "Respond in Korean. Here's important context about our systems:\n\n" +
+            "1. The Inquiry system handles the entire process from inquiry submission to order processing.\n" +
+            "2. Customers can use Inquiry lookup and registration functions.\n" +
+            "3. The Inquiry registration process follows these steps: Submit(제출) → Receipt(접수) → First Review Completed(1차검토완료) → Quality Review Request(품질검토요청) → Quality Review Response(품질검토접수) → Quality Review Completed(품질검토완료) → Final Review Completed(최종검토).\n" +
+            "4. Customers can check their order status through the Inquiry lookup function.\n" +
+            "5. Inquiry registration requires different line items based on product type. Product types are: Car(자동차), Cold Rolled(냉연), Hot Rolled(열연), Thick Plate(후판), and Wire Rod(선재).\n" +
+            "6. When registering an Inquiry, customers choose between 'Quote Inquiry' and 'Quote & Quality Inquiry'.\n" +
+            "7. The VoC system integrates various customer inquiry channels and provides collaboration and professional consulting services.\n" +
+            "8. VoC offers professional consulting and allows easy registration and use of inquiries in a single service.\n" +
+            "9. Both systems provide four core functions.\n" +
+            "10. These functions include user-friendly UI/UX, simplified Inquiry registration, streamlined VoC inquiry processing, and intuitive task handling.\n" +
+            "11. Inquiry registration is simplified using ChatGPT & OCR for efficient inquiry reception and processing.\n" +
+            "12. VoC inquiry simplification includes real-time notification services and an integrated next-generation VoC system.\n\n" +
+            "Please provide accurate and relevant responses based on this information in Korean. " +
+            "If a query is outside the scope of these systems, suggest using the VoC inquiry system for more detailed assistance. " +
+            "Remember, you are a Korean chatbot named '차니', so maintain a friendly and helpful tone appropriate for Korean customer service.";
+
         String inquiryContext = generateInquiryContext(inquiryType, inquirySubType);
 
+        messages.add(new ChatRequestMsgDto("system", systemPrompt));
         messages.add(new ChatRequestMsgDto("system", "You are a helpful assistant. " + inquiryContext));
         messages.add(new ChatRequestMsgDto("user", userMessage));
 
