@@ -312,64 +312,24 @@ const Chatbot = () => {
                         </div>
                     )}
 
-                    {/*/!* (1) API 호출 시 항상 뜨는 faqSection *!/*/}
-                    {/*{!showInitialFAQ && showDefaultSection && !loading && (*/}
-                    {/*    <div className={faqSection}>*/}
-                    {/*        <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>*/}
-                    {/*            <div className={faqBox} onClick={handleClose}>*/}
-                    {/*                직접 VOC 문의하기*/}
-                    {/*            </div>*/}
-                    {/*        </Link>*/}
-                    {/*        <div className={faqBox} onClick={handleGoBack}>*/}
-                    {/*            이전으로 돌아가기*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
 
-                    {/*    /!* (2) 안내 멘트와 함께 뜨는 faqSection *!/*/}
-                    {/*    {showFAQSection && showInitialFAQ && !loading && (*/}
-                    {/*        <div className={faqSection}>*/}
-                    {/*            <div className={faqArticle} style={{ backgroundColor: '#6187E7' }}>*/}
-                    {/*                <div className={faqTitle}>자주 묻는 질문</div>*/}
-                    {/*                <div className={faqDescription}>*/}
-                    {/*                    고객사들이 자주 찾는 질문과<br />*/}
-                    {/*                    답변 리스트를 안내합니다.*/}
-                    {/*                </div>*/}
-                    {/*                <div className={faqPick1}>Inquiry 문의</div>*/}
-                    {/*                <div className={faqPick1}>사이트 이용 문의</div>*/}
-                    {/*                <div className={faqPick1}>기타 문의</div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className={faqArticle} style={{ backgroundColor: '#05ADD3' }}>*/}
-                    {/*                <div className={faqTitle}>직접 질문하기</div>*/}
-                    {/*                <div className={faqDescription}>*/}
-                    {/*                    궁금한 내용을 하단<br />*/}
-                    {/*                    채팅창에 입력해 주세요.*/}
-                    {/*                </div>*/}
-                    {/*                <div className={faqPick2}>새로운 채팅 시작하기</div>*/}
-                    {/*                <div className={faqPick2}>VOC로 1:1 문의하기</div>*/}
-                    {/*                <div className={faqPick2}>채팅 종료하기</div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
-
-                    <div className={chatInput}>
-                        <input
-                            type="text"
-                            value={inputValue}
-                            placeholder={'질문을 입력해 주세요.'}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            ref={inputRef}
-                        />
-                        <button
-                            className={sendButton}
-                            onClick={handleSend}
-                            disabled={loading}
-                        >
-                            전송
-                        </button>
-                    </div>
+                </div>
+                <div className={chatInput}>
+                    <input
+                        type="text"
+                        value={inputValue}
+                        placeholder={'질문을 입력해 주세요.'}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        ref={inputRef}
+                    />
+                    <button
+                        className={sendButton}
+                        onClick={handleSend}
+                        disabled={loading}
+                    >
+                        전송
+                    </button>
                 </div>
             </div>
         </div>
