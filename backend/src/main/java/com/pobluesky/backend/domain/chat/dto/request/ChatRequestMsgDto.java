@@ -1,4 +1,4 @@
-package com.pobluesky.backend.domain.inquiry.dto.request;
+package com.pobluesky.backend.domain.chat.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

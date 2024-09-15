@@ -1,6 +1,6 @@
-package com.pobluesky.backend.domain.inquiry.dto.response;
+package com.pobluesky.backend.domain.chat.dto.response;
 
-import com.pobluesky.backend.domain.inquiry.dto.request.ChatRequestMsgDto;
+import com.pobluesky.backend.domain.chat.dto.request.ChatRequestMsgDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
