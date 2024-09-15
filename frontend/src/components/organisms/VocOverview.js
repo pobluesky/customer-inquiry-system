@@ -21,9 +21,11 @@ function VocOverview({ questionCount, answerCount, colCount }) {
                 <div>
                     <img src={completed} />
                 </div>
-                <div>
-                    <img src={collaboration} />
-                </div>
+                {role !== 'customer' && (
+                    <div>
+                        <img src={collaboration} />
+                    </div>
+                )}
             </div>
             <div>
                 <div>
