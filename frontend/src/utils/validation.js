@@ -93,7 +93,7 @@ export const validateAnswerContents = (answerContents) => {
 /******************************************************************/
 // 질문 제목 길이
 export const validateQuestionTitle = (questionTitle) => {
-    if (questionTitle.length > 21 || questionTitle.length < 1) {
+    if (questionTitle.length < 1) {
         return true;
     }
     return '';

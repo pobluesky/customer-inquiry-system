@@ -194,7 +194,7 @@ const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
                 severity="warning"
                 sx={{ width: '336px' }}
             >
-                제목은 1자 이상 30자 이하로 입력하세요.
+                제목은 1자 이상 입력하세요.
             </Alert>
         </Snackbar>
     );
@@ -260,6 +260,25 @@ const QuestionCompleteAlert = ({ showAlert, onClose }) => {
         >
             <Alert severity="success" sx={{ width: '336px' }}>
                 질문이 등록되었습니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 질문 수정 성공
+const QuestionEditCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                질문이 수정되었습니다.
             </Alert>
         </Snackbar>
     );
@@ -422,6 +441,7 @@ export {
     WrongQuestionContentAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
+    QuestionEditCompleteAlert,
     ColDoneAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,

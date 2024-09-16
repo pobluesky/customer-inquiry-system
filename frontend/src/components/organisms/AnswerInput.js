@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
@@ -13,6 +14,7 @@ import {
     validateAnswerTitle,
     validateAnswerContents,
 } from '../../utils/validation';
+import { deleteQuestionByUserId } from '../../apis/api/question';
 import { postAnswerByQuestionId } from '../../apis/api/answer';
 import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
@@ -22,9 +24,11 @@ export default function AnswerInput({
     answerDetail,
     setAnswerDetail,
 }) {
+    const navigate = useNavigate();
     const sanitizer = dompurify.sanitize;
 
     const role = getCookie('userRole');
+    const userId = getCookie('userId');
 
     const [isAnswering, setAnswering] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
@@ -55,6 +59,15 @@ export default function AnswerInput({
             }, '2000');
         } catch (error) {
             console.log('답변 등록 실패: ', error);
+        }
+    };
+
+    const fetchDeleteQuestionByQuestionId = async (userId, questionId) => {
+        try {
+            await deleteQuestionByUserId(userId, questionId);
+            navigate('voc-question/list')
+        } catch (error) {
+            console.log('질문 삭제 실패: ', error);
         }
     };
 
@@ -188,57 +201,90 @@ export default function AnswerInput({
                 )}
                 <div className={Completed}>
                     {questionDetail.status === 'READY' &&
-                        role !== 'customer' && (
-                            <>
-                                {!isAnswering && (
+                    role !== 'customer' ? (
+                        <>
+                            {!isAnswering && (
+                                <QuestionAnswerButton
+                                    btnName={'답변하기'}
+                                    backgroundColor={'#1748ac'}
+                                    textColor={'#ffffff'}
+                                    onClick={() => {
+                                        setAnswering(true);
+                                    }}
+                                />
+                            )}
+                            {!isAnswering && role === 'sales' && (
+                                <QuestionAnswerButton
+                                    btnName={'협업 요청'}
+                                    backgroundColor={'#1748ac'}
+                                    textColor={'#ffffff'}
+                                    onClick={() => {
+                                        window.open(
+                                            `/voc-form/collaboration?questionId=${questionId}`,
+                                            '_blank',
+                                        );
+                                    }}
+                                />
+                            )}
+                            {isAnswering && (
+                                <>
                                     <QuestionAnswerButton
-                                        btnName={'답변하기'}
+                                        btnName={'작성 취소'}
                                         backgroundColor={'#1748ac'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            setAnswering(true);
+                                            window.confirm(
+                                                '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                            )
+                                                ? setAnswering(false)
+                                                : '';
                                         }}
                                     />
-                                )}
-                                {!isAnswering && role === 'sales' && (
                                     <QuestionAnswerButton
-                                        btnName={'협업 요청'}
+                                        btnName={'답변 등록'}
                                         backgroundColor={'#1748ac'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            window.open(
-                                                `/voc-form/collaboration?questionId=${questionId}`,
-                                                '_blank',
-                                            );
+                                            completedAnswer();
                                         }}
                                     />
-                                )}
-                                {isAnswering && (
-                                    <>
-                                        <QuestionAnswerButton
-                                            btnName={'작성 취소'}
-                                            backgroundColor={'#1748ac'}
-                                            textColor={'#ffffff'}
-                                            onClick={() => {
-                                                window.confirm(
-                                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
-                                                )
-                                                    ? setAnswering(false)
-                                                    : '';
-                                            }}
-                                        />
-                                        <QuestionAnswerButton
-                                            btnName={'답변 등록'}
-                                            backgroundColor={'#1748ac'}
-                                            textColor={'#ffffff'}
-                                            onClick={() => {
-                                                completedAnswer();
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </>
-                        )}
+                                </>
+                            )}
+                        </>
+                    ) : questionDetail.status === 'READY' &&
+                      role === 'customer' ? (
+                        <>
+                            <QuestionAnswerButton
+                                btnName={'질문 삭제'}
+                                backgroundColor={'#1748ac'}
+                                textColor={'#ffffff'}
+                                onClick={() => {
+                                    window.confirm(
+                                        '작성하신 질문이 삭제됩니다. 정말 삭제하시겠습니까?',
+                                    )
+                                        ? fetchDeleteQuestionByQuestionId(
+                                              userId,
+                                              questionId,
+                                          )
+                                        : '';
+                                }}
+                            />
+                            <QuestionAnswerButton
+                                btnName={'질문 수정'}
+                                backgroundColor={'#1748ac'}
+                                textColor={'#ffffff'}
+                                onClick={() => {
+                                    navigate('/voc-form/question', {
+                                        state: {
+                                            questionDetail: questionDetail,
+                                        },
+                                    });
+                                }}
+                            />
+                        </>
+                    ) : (
+                        ''
+                    )}
                 </div>
             </div>
             <WrongAnswerTitleAlert

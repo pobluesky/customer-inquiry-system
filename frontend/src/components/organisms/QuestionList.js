@@ -8,10 +8,7 @@ import {
     Ready,
     Completed,
 } from '../../assets/css/Voc.css';
-import {
-    getAllQuestion,
-    getQuestionByUserId,
-} from '../../apis/api/question';
+import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 
 export default function QuestionList({
     title,
@@ -115,46 +112,50 @@ export default function QuestionList({
 
     return (
         <div className={Question_List_Container}>
-            {questionSummary.map((data, idx) => (
-                <div key={idx}>
-                    {!idx && <hr />}
-                    <div
-                        className={Question_List}
-                        onClick={() => {
-                            navigate('/voc-form/answer', {
-                                state: {
-                                    questionId: data.questionId,
-                                    status: data.status,
-                                },
-                            });
-                        }}
-                    >
-                        <div>
+            {questionSummary
+                .filter((data) => data.isActivated)
+                .map((data, idx) => (
+                    <div key={idx}>
+                        {!idx && <hr />}
+                        <div
+                            className={Question_List}
+                            onClick={() => {
+                                navigate('/voc-form/answer', {
+                                    state: {
+                                        questionId: data.questionId,
+                                        status: data.status,
+                                    },
+                                });
+                            }}
+                        >
                             <div>
-                                {data.type === 'INQ'
-                                    ? 'Inquiry 문의'
-                                    : data.type === 'SITE'
-                                    ? '사이트 문의'
-                                    : '기타 문의'}
+                                <div>
+                                    {data.type === 'INQ'
+                                        ? 'Inquiry 문의'
+                                        : data.type === 'SITE'
+                                        ? '사이트 문의'
+                                        : '기타 문의'}
+                                </div>
+                                {data.status === 'READY' ? (
+                                    <div className={Ready}>답변 대기</div>
+                                ) : (
+                                    <div className={Completed}>답변 완료</div>
+                                )}
+                                <div>{data.title}</div>
                             </div>
-                            {data.status === 'READY' ? (
-                                <div className={Ready}>답변 대기</div>
-                            ) : (
-                                <div className={Completed}>답변 완료</div>
-                            )}
-                            <div>{data.title}</div>
+                            <div style={contentsEllipsis}>
+                                {data.contents.replace(/<\/?[^>]+(>|$)/g, '')}
+                            </div>
+                            <div>
+                                <div>
+                                    {data.questionCreatedAt.substring(0, 10)}
+                                </div>
+                                <div>{data.customerName}</div>
+                            </div>
+                            <hr />
                         </div>
-                        <div style={contentsEllipsis}>
-                            {data.contents.replace(/<\/?[^>]+(>|$)/g, '')}
-                        </div>
-                        <div>
-                            <div>{data.questionCreatedAt.substring(0, 10)}</div>
-                            <div>{data.customerName}</div>
-                        </div>
-                        <hr />
                     </div>
-                </div>
-            ))}
+                ))}
         </div>
     );
 }
