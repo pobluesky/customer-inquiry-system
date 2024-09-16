@@ -29,19 +29,19 @@ function VocOverview({ questionCount, answerCount, colCount }) {
             </div>
             <div>
                 <div>
-                    전체 문의 <span>{questionCount || ''}</span>건
+                    전체 문의 <span>{questionCount || 0}</span>건
                 </div>
                 <div>
                     답변 대기
                     <span>
-                        {questionCount - answerCount < 0
-                            ? ''
-                            : questionCount - answerCount}
+                        {questionCount && answerCount
+                            ? questionCount - answerCount
+                            : 0}
                     </span>
                     건
                 </div>
                 <div>
-                    답변 완료 <span>{answerCount || ''}</span>건
+                    답변 완료 <span>{answerCount || 0}</span>건
                 </div>
                 {role !== 'customer' && (
                     <div>
