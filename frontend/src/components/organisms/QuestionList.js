@@ -11,13 +11,7 @@ import {
 import {
     getAllQuestion,
     getQuestionByUserId,
-    getQuestionByQuestionId,
-    getQuestionByQuestionIdForManager,
 } from '../../apis/api/question';
-import {
-    getAnswerByQuestionId,
-    getAnswerByQuestionIdForManager,
-} from '../../apis/api/answer';
 
 export default function QuestionList({
     title,
@@ -30,12 +24,6 @@ export default function QuestionList({
     typeFilter,
 
     setSearchCount,
-
-    setQuestionDetail,
-    setAnswerDetail,
-    setQuestionId,
-    setStatus,
-    status,
 }) {
     const { userId } = useAuth();
     const role = getCookie('userRole');

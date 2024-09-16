@@ -10,8 +10,6 @@ import { userEmail } from '../../index';
 import {
     validateEmail,
     validatePhoneEdit,
-    validateUserCode,
-    validateCustomerName,
     validatePassword,
     validateMatch,
 } from '../../utils/validation';
@@ -32,12 +30,6 @@ export default function EditingUserInfo({
 
     const [email, setEmail] = useState(userDetail.email);
     const [phone, setPhone] = useState(userDetail.phone);
-    const [customerCode, setCustomerCode] = useState(
-        userDetail.customerCode || '',
-    );
-    const [customerName, setCustomerName] = useState(
-        userDetail.customerName || '',
-    );
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
@@ -65,8 +57,6 @@ export default function EditingUserInfo({
                 if (
                     !validateEmail(email) &&
                     !validatePhoneEdit(phone) &&
-                    !validateUserCode(customerCode) &&
-                    !validateCustomerName(customerName) &&
                     !validatePassword(password) &&
                     !validateMatch(password, passwordCheck)
                 ) {
@@ -85,10 +75,7 @@ export default function EditingUserInfo({
                 }
             }
         }
-    }, [
-        checkValidationTest,
-        tryEdit,
-    ]);
+    }, [checkValidationTest, tryEdit]);
 
     useEffect(() => {
         if (completeEdit) {
@@ -105,8 +92,8 @@ export default function EditingUserInfo({
                     email,
                     password,
                     phone,
-                    customerCode,
-                    customerName,
+                    customerCode: userDetail.customerCode,
+                    customerName: userDetail.customerName,
                 };
             } else {
                 userData = {
@@ -147,8 +134,9 @@ export default function EditingUserInfo({
                             categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
@@ -229,16 +217,13 @@ export default function EditingUserInfo({
                             categoryName={'고객 코드'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
-                            value={customerCode}
-                            onChange={(e) => setCustomerCode(e.target.value)}
-                            warningMsg={
-                                checkValidationTest &&
-                                validateUserCode(customerCode)
-                            }
+                            value={userDetail.customerCode}
+                            readOnly={true}
                         />
                     </div>
                     <div>
@@ -246,16 +231,13 @@ export default function EditingUserInfo({
                             categoryName={'고객사명'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
-                            value={customerName}
-                            onChange={(e) => setCustomerName(e.target.value)}
-                            warningMsg={
-                                checkValidationTest &&
-                                validateCustomerName(customerName)
-                            }
+                            value={userDetail.customerName}
+                            readOnly={true}
                         />
                     </div>
                 </>
@@ -266,8 +248,9 @@ export default function EditingUserInfo({
                             categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}

@@ -7,6 +7,7 @@ import {
     Question_Filter_Input_Container,
     Question_Filter_Input,
 } from '../../assets/css/Voc.css';
+import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterInput({
     title,
@@ -19,7 +20,6 @@ function QuestionFilterInput({
     setQuestionNo,
     setCustomerName,
 
-    searchCount,
     setTimeFilter,
     setStatusFilter,
     setTypeFilter,
@@ -30,6 +30,8 @@ function QuestionFilterInput({
     const [tempStatus, setTempStatus] = useState('TOTAL');
     const [tempType, setTempType] = useState('');
     const [isLatest, setLatest] = useState(true);
+
+    const role = getCookie('userRole');
 
     const enterKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -212,32 +214,51 @@ function QuestionFilterInput({
                     value={tempQuestionNo}
                     onChange={(e) => setTempQuestionNo(e.target.value)}
                 />
-                {/* 문의 제목 검색 */}
-                <Input
-                    type={'text'}
-                    width={'180px'}
-                    height={'32px'}
-                    border={'solid 1px #c1c1c1'}
-                    borderRadius={'8px'}
-                    outline={'none'}
-                    padding={'0 8px 0 8px'}
-                    placeholder={'문의 제목을 검색하세요.'}
-                    value={tempTitle}
-                    onChange={(e) => setTempTitle(e.target.value)}
-                />
-                {/* 고객사명 검색 */}
-                <Input
-                    type={'text'}
-                    width={'180px'}
-                    height={'32px'}
-                    border={'solid 1px #c1c1c1'}
-                    borderRadius={'8px'}
-                    outline={'none'}
-                    padding={'0 8px 0 8px'}
-                    placeholder={'고객사명을 검색하세요.'}
-                    value={tempCustomerName}
-                    onChange={(e) => setTempCustomerName(e.target.value)}
-                />
+                {role !== 'customer' ? (
+                    <>
+                        {/* 문의 제목 검색 */}
+                        <Input
+                            type={'text'}
+                            width={'180px'}
+                            height={'32px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'8px'}
+                            outline={'none'}
+                            padding={'0 8px 0 8px'}
+                            placeholder={'문의 제목을 검색하세요.'}
+                            value={tempTitle}
+                            onChange={(e) => setTempTitle(e.target.value)}
+                        />
+                        {/* 고객사명 검색 */}
+                        <Input
+                            type={'text'}
+                            width={'180px'}
+                            height={'32px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'8px'}
+                            outline={'none'}
+                            padding={'0 8px 0 8px'}
+                            placeholder={'고객사명을 검색하세요.'}
+                            value={tempCustomerName}
+                            onChange={(e) =>
+                                setTempCustomerName(e.target.value)
+                            }
+                        />
+                    </>
+                ) : (
+                    <Input
+                        type={'text'}
+                        width={'384px'}
+                        height={'32px'}
+                        border={'solid 1px #c1c1c1'}
+                        borderRadius={'8px'}
+                        outline={'none'}
+                        padding={'0 8px 0 8px'}
+                        placeholder={'문의 제목을 검색하세요.'}
+                        value={tempTitle}
+                        onChange={(e) => setTempTitle(e.target.value)}
+                    />
+                )}
                 <div>
                     <Input
                         type={'date'}
