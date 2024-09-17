@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 export const getAllQuestion = async (filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/managers?${filterArgs}`,
+            `/questions/managers?page=1&${filterArgs}`,
         );
 
         const json = response.data;
@@ -50,7 +50,7 @@ export const getQuestionByQuestionIdForManager = async (questionId) => {
 export const getQuestionByUserId = async (userId, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/customers/${userId}?${filterArgs}`,
+            `/questions/customers/${userId}?page=3&${filterArgs}`,
         );
 
         const json = response.data;
@@ -254,7 +254,7 @@ export const putQuestionByUserId = async (
     }
 };
 
-// 고객사 질문 삭제
+// 고객사 질문 삭제 (고객사용)
 export const deleteQuestionByUserId = async (userId, questionId) => {
     try {
         const response = await axiosInstance.delete(
@@ -269,7 +269,27 @@ export const deleteQuestionByUserId = async (userId, questionId) => {
 
         return json;
     } catch (error) {
-        console.error('질문 삭제 API ERROR: ', error.message || error);
+        console.error('질문 삭제(고객사용) API ERROR: ', error.message || error);
+        throw error;
+    }
+};
+
+// 고객사 질문 삭제 (담당자용)
+export const deleteQuestionByUserIdForManager = async (questionId) => {
+    try {
+        const response = await axiosInstance.delete(
+            `questions/managers/${questionId}`,
+        );
+
+        const json = response.data;
+
+        if (json.code !== 'SUCCESS') {
+            throw new Error(json.message);
+        }
+
+        return json;
+    } catch (error) {
+        console.error('질문 삭제(담당자용) API ERROR: ', error.message || error);
         throw error;
     }
 };

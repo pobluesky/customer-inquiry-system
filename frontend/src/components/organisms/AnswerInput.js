@@ -9,13 +9,20 @@ import {
     WrongAnswerTitleAlert,
     WrongAnswerContentAlert,
     AnswerCompleteAlert,
+    AnswerEditCompleteAlert,
 } from '../../utils/actions';
 import {
     validateAnswerTitle,
     validateAnswerContents,
 } from '../../utils/validation';
-import { deleteQuestionByUserId } from '../../apis/api/question';
-import { postAnswerByQuestionId } from '../../apis/api/answer';
+import {
+    deleteQuestionByUserId,
+    deleteQuestionByUserIdForManager,
+} from '../../apis/api/question';
+import {
+    postAnswerByQuestionId,
+    putAnswerByQuestionId,
+} from '../../apis/api/answer';
 import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
 export default function AnswerInput({
@@ -31,13 +38,19 @@ export default function AnswerInput({
     const userId = getCookie('userId');
 
     const [isAnswering, setAnswering] = useState(false);
+    const [editAnswer, setEditAnswer] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showSuccessEditAlert, canShowSuccessEditAlert] = useState(false);
 
-    const [title, setTitle] = useState('');
-    const [editorValue, setEditorValue] = useState('');
+    const [title, setTitle] = useState(answerDetail?.title || '');
+    const [editorValue, setEditorValue] = useState(
+        answerDetail?.contents || '',
+    );
     const [file, setFile] = useState('');
+    const [fileName, setFileName] = useState(answerDetail?.fileName || '');
+    const [filePath, setFilePath] = useState(answerDetail?.filePath || '');
 
     const fileInputRef = useRef(null);
 
@@ -62,12 +75,43 @@ export default function AnswerInput({
         }
     };
 
+    const fetchPutAnswerByQuestionId = async (questionId) => {
+        try {
+            const answerData = {
+                title: title,
+                contents: editorValue,
+            };
+            const response = await putAnswerByQuestionId(
+                file,
+                answerData,
+                questionId,
+            );
+            console.log('***************************', response);
+            setAnswerDetail(response.data);
+            canShowSuccessEditAlert(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, '2000');
+        } catch (error) {
+            console.error('답변 수정 실패: ', error);
+        }
+    };
+
     const fetchDeleteQuestionByQuestionId = async (userId, questionId) => {
         try {
             await deleteQuestionByUserId(userId, questionId);
-            navigate('voc-question/list')
+            navigate('/voc-list/question');
         } catch (error) {
-            console.log('질문 삭제 실패: ', error);
+            console.log('질문 삭제(고객사용) 실패: ', error);
+        }
+    };
+
+    const fetchDeleteQuestionByQuestionIdForManager = async (questionId) => {
+        try {
+            await deleteQuestionByUserIdForManager(questionId);
+            navigate('/voc-list/question');
+        } catch (error) {
+            console.log('질문 삭제(담당자용) 실패: ', error);
         }
     };
 
@@ -94,7 +138,11 @@ export default function AnswerInput({
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostAnswerByQuestionId(questionId);
+            if (answerDetail != []) {
+                fetchPutAnswerByQuestionId(questionId);
+            } else {
+                fetchPostAnswerByQuestionId(questionId);
+            }
         }
     };
 
@@ -110,9 +158,7 @@ export default function AnswerInput({
             <div>
                 {!isAnswering && questionDetail.status === 'READY' ? ( // 답변 대기 질문인 경우
                     ''
-                ) : isAnswering &&
-                  questionDetail.status === 'READY' &&
-                  role !== 'customer' ? ( // 답변 입력 중
+                ) : (isAnswering || editAnswer) && role !== 'customer' ? ( // 답변 입력 중
                     <div className={Ready}>
                         {/* 제목 + 첨부파일 그룹 */}
                         <div>
@@ -143,7 +189,10 @@ export default function AnswerInput({
                                         btnName={'파일 삭제'}
                                         backgroundColor={'#ffffff'}
                                         textColor={'#1748ac'}
-                                        onClick={() => setFile(null)}
+                                        onClick={() => {
+                                            setFile(null);
+                                            setFileName(null);
+                                        }}
                                     />
                                 ) : (
                                     <QuestionAnswerButton
@@ -157,9 +206,15 @@ export default function AnswerInput({
                                 )}
                             </div>
                             <div>
-                                {file
-                                    ? `첨부파일: ${file.name}`
-                                    : '파일을 첨부할 수 있습니다.'}
+                                {fileName ? (
+                                    <>
+                                        <a href={filePath}>{fileName}</a>
+                                    </>
+                                ) : file ? (
+                                    file.name
+                                ) : (
+                                    '파일을 첨부할 수 있습니다.'
+                                )}
                             </div>
                         </div>
                         {/* 답변 입력 */}
@@ -200,18 +255,34 @@ export default function AnswerInput({
                     ''
                 )}
                 <div className={Completed}>
-                    {questionDetail.status === 'READY' &&
+                    {(questionDetail.status === 'READY' || editAnswer) &&
                     role !== 'customer' ? (
                         <>
                             {!isAnswering && (
-                                <QuestionAnswerButton
-                                    btnName={'답변하기'}
-                                    backgroundColor={'#1748ac'}
-                                    textColor={'#ffffff'}
-                                    onClick={() => {
-                                        setAnswering(true);
-                                    }}
-                                />
+                                <>
+                                    <QuestionAnswerButton
+                                        btnName={'질문 삭제'}
+                                        backgroundColor={'#1748ac'}
+                                        textColor={'#ffffff'}
+                                        onClick={() => {
+                                            window.confirm(
+                                                '고객사의 질문이 삭제됩니다. 정말 삭제하시겠습니까?',
+                                            )
+                                                ? fetchDeleteQuestionByQuestionIdForManager(
+                                                      questionId,
+                                                  )
+                                                : '';
+                                        }}
+                                    />
+                                    <QuestionAnswerButton
+                                        btnName={'답변하기'}
+                                        backgroundColor={'#1748ac'}
+                                        textColor={'#ffffff'}
+                                        onClick={() => {
+                                            setAnswering(true);
+                                        }}
+                                    />
+                                </>
                             )}
                             {!isAnswering && role === 'sales' && (
                                 <QuestionAnswerButton
@@ -282,6 +353,17 @@ export default function AnswerInput({
                                 }}
                             />
                         </>
+                    ) : !editAnswer ? (
+                        <QuestionAnswerButton
+                            btnName={'답변 수정'}
+                            backgroundColor={'#1748ac'}
+                            textColor={'#ffffff'}
+                            margin={'12px 0 24px 24px'}
+                            onClick={() => {
+                                setEditAnswer(true);
+                                setAnswering(true);
+                            }}
+                        />
                     ) : (
                         ''
                     )}
@@ -305,6 +387,13 @@ export default function AnswerInput({
                 showAlert={showSuccessAlert}
                 onClose={() => {
                     canShowSuccessAlert(false);
+                }}
+                inert
+            />
+            <AnswerEditCompleteAlert
+                showAlert={showSuccessEditAlert}
+                onClose={() => {
+                    canShowSuccessEditAlert(false);
                 }}
                 inert
             />

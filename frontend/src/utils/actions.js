@@ -349,6 +349,25 @@ const AnswerCompleteAlert = ({ showAlert, onClose }) => {
     );
 };
 
+// 답변 수정 성공
+const AnswerEditCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                답변이 수정되었습니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
 const ColDoneAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -437,6 +456,7 @@ export {
     WrongAnswerTitleAlert,
     WrongAnswerContentAlert,
     AnswerCompleteAlert,
+    AnswerEditCompleteAlert,
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
     InquiryIdisNullAlert,

@@ -22,7 +22,7 @@ const FilterButton = ({
     />
 );
 
-const QuestionAnswerButton = ({ btnName, onClick, backgroundColor, textColor }) => (
+const QuestionAnswerButton = ({ btnName, onClick, backgroundColor, textColor, margin }) => (
     <Button
         btnName={btnName}
         onClick={onClick}
@@ -31,6 +31,7 @@ const QuestionAnswerButton = ({ btnName, onClick, backgroundColor, textColor }) 
         backgroundColor={backgroundColor}
         textColor={textColor}
         border={'1px solid #1748ac'}
+        margin={margin}
     />
 );
 
