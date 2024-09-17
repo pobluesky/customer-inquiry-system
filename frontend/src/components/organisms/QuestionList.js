@@ -89,7 +89,7 @@ export default function QuestionList({
                   try {
                       const response = await getQuestionByUserId(
                           getCookie('userId'),
-                          currentPage,
+                          currentPage-1,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);
@@ -102,7 +102,7 @@ export default function QuestionList({
             : async () => {
                   try {
                       const response = await getAllQuestion(
-                          currentPage,
+                          currentPage-1,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);

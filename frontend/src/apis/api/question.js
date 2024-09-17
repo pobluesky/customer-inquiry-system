@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 export const getAllQuestion = async (currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/managers?page=${currentPage-1}&${filterArgs}`,
+            `/questions/managers?page=${currentPage}&${filterArgs}`,
         );
 
         const json = response.data;
@@ -50,7 +50,7 @@ export const getQuestionByQuestionIdForManager = async (questionId) => {
 export const getQuestionByUserId = async (userId, currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/customers/${userId}?page=${currentPage-1}${filterArgs}`,
+            `/questions/customers/${userId}?page=${currentPage}${filterArgs}`,
         );
 
         const json = response.data;

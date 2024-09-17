@@ -20,13 +20,6 @@ export default function QuestionDashboard() {
     const [typeFilter, setTypeFilter] = useState('');
     const [idFilter, setIdFilter] = useState('');
 
-    // 테이블과 모달 간 상호 API 전달
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
-    const [questionId, setQuestionId] = useState('');
-    const [status, setStatus] = useState('READY');
-    const [openModal, setOpenModal] = useState(false);
-
     // 질문 답변 현황
     const userId = getCookie('userId');
     const role = getCookie('userRole');
