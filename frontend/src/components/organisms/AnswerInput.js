@@ -37,7 +37,7 @@ export default function AnswerInput({
     const role = getCookie('userRole');
     const userId = getCookie('userId');
 
-    const [isAnswering, setAnswering] = useState(false);
+    const [writeAnswer, setWriteAnswer] = useState(false);
     const [editAnswer, setEditAnswer] = useState(false);
     const [showTitleAlert, canShowTitleAlert] = useState(false);
     const [showContentAlert, canShowContentAlert] = useState(false);
@@ -86,7 +86,6 @@ export default function AnswerInput({
                 answerData,
                 questionId,
             );
-            console.log('***************************', response);
             setAnswerDetail(response.data);
             canShowSuccessEditAlert(true);
             setTimeout(() => {
@@ -156,9 +155,9 @@ export default function AnswerInput({
     return (
         <div className={Answer_Input}>
             <div>
-                {!isAnswering && questionDetail.status === 'READY' ? ( // 답변 대기 질문인 경우
+                {!writeAnswer && questionDetail.status === 'READY' ? ( // 답변 대기 질문인 경우
                     ''
-                ) : (isAnswering || editAnswer) && role !== 'customer' ? ( // 답변 입력 중
+                ) : (writeAnswer || editAnswer) && role !== 'customer' ? ( // 답변 입력 중
                     <div className={Ready}>
                         {/* 제목 + 첨부파일 그룹 */}
                         <div>
@@ -258,7 +257,7 @@ export default function AnswerInput({
                     {(questionDetail.status === 'READY' || editAnswer) &&
                     role !== 'customer' ? (
                         <>
-                            {!isAnswering && (
+                            {!writeAnswer && (
                                 <>
                                     <QuestionAnswerButton
                                         btnName={'질문 삭제'}
@@ -279,12 +278,12 @@ export default function AnswerInput({
                                         backgroundColor={'#1748ac'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            setAnswering(true);
+                                            setWriteAnswer(true);
                                         }}
                                     />
                                 </>
                             )}
-                            {!isAnswering && role === 'sales' && (
+                            {!writeAnswer && role === 'sales' && (
                                 <QuestionAnswerButton
                                     btnName={'협업 요청'}
                                     backgroundColor={'#1748ac'}
@@ -297,7 +296,7 @@ export default function AnswerInput({
                                     }}
                                 />
                             )}
-                            {isAnswering && (
+                            {writeAnswer && (
                                 <>
                                     <QuestionAnswerButton
                                         btnName={'작성 취소'}
@@ -307,7 +306,7 @@ export default function AnswerInput({
                                             window.confirm(
                                                 '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
                                             )
-                                                ? setAnswering(false)
+                                                ? setWriteAnswer(false)
                                                 : '';
                                         }}
                                     />
@@ -353,7 +352,7 @@ export default function AnswerInput({
                                 }}
                             />
                         </>
-                    ) : !editAnswer ? (
+                    ) : !editAnswer && userId === answerDetail?.managerId ? (
                         <QuestionAnswerButton
                             btnName={'답변 수정'}
                             backgroundColor={'#1748ac'}
@@ -361,7 +360,7 @@ export default function AnswerInput({
                             margin={'12px 0 24px 24px'}
                             onClick={() => {
                                 setEditAnswer(true);
-                                setAnswering(true);
+                                setWriteAnswer(true);
                             }}
                         />
                     ) : (
