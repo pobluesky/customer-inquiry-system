@@ -328,10 +328,6 @@
     width: 108px;
 }
 
-.Question_Filter_Input_Container > div:nth-child(2) > div:nth-last-child(1) {
-    width: 996px;
-}
-
 .Selected hr {
     border: 1px solid #25262b;
     border-radius: 12px;

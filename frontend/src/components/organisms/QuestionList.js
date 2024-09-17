@@ -18,8 +18,8 @@ export default function QuestionList({
     customerName,
     timeFilter,
     statusFilter,
+    idFilter,
     typeFilter,
-
     setSearchCount,
 }) {
     const { userId } = useAuth();
@@ -58,6 +58,9 @@ export default function QuestionList({
         if (statusFilter) {
             args += `${args ? '&' : ''}status=${statusFilter}`;
         }
+        if (idFilter) {
+            args += `${args ? '&' : ''}managerId=${idFilter}`;
+        }
         if (typeFilter) {
             args += `${args ? '&' : ''}type=${typeFilter}`;
         }
@@ -71,8 +74,11 @@ export default function QuestionList({
         customerName,
         timeFilter,
         statusFilter,
+        idFilter,
         typeFilter,
     ]);
+
+    console.log(filterArgs);
 
     // 질문 요약 조회
     const fetchGetQuestions =

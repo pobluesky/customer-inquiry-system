@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dompurify from 'dompurify';
 import Input from '../atoms/Input';
@@ -151,6 +151,13 @@ export default function AnswerInput({
             return `${datePart}${' '}${timePart.substring(0, 5)}`;
         }
     };
+
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [writeAnswer, editAnswer]);
 
     return (
         <div className={Answer_Input}>
