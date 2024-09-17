@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import VocPageButton from './VocPageButton';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
@@ -28,6 +29,9 @@ export default function QuestionList({
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState('');
 
     useEffect(() => {
         let args = '';
@@ -78,8 +82,6 @@ export default function QuestionList({
         typeFilter,
     ]);
 
-    console.log(filterArgs);
-
     // 질문 요약 조회
     const fetchGetQuestions =
         role === 'customer'
@@ -87,9 +89,11 @@ export default function QuestionList({
                   try {
                       const response = await getQuestionByUserId(
                           getCookie('userId'),
+                          currentPage,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
                       setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('고객사 질문 요약 조회 실패: ', error);
@@ -97,8 +101,12 @@ export default function QuestionList({
               }
             : async () => {
                   try {
-                      const response = await getAllQuestion(filterArgs);
+                      const response = await getAllQuestion(
+                          currentPage,
+                          filterArgs,
+                      );
                       setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
                       setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('담당자 질문 요약 조회 실패: ', error);
@@ -107,7 +115,7 @@ export default function QuestionList({
 
     useEffect(() => {
         fetchGetQuestions();
-    }, [userId, filterArgs]);
+    }, [userId, currentPage, filterArgs]);
 
     const contentsEllipsis = {
         maxWidth: '1320px',
@@ -162,6 +170,11 @@ export default function QuestionList({
                         </div>
                     </div>
                 ))}
+            <VocPageButton
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setPage={setCurrentPage}
+            />
         </div>
     );
 }

@@ -1,10 +1,10 @@
 import axiosInstance from '../utils/axiosInstance';
 
 // 담당자용 질문 전체 조회
-export const getAllQuestion = async (filterArgs) => {
+export const getAllQuestion = async (currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/managers?${filterArgs}`,
+            `/questions/managers?page=${currentPage-1}&${filterArgs}`,
         );
 
         const json = response.data;
@@ -47,10 +47,10 @@ export const getQuestionByQuestionIdForManager = async (questionId) => {
 };
 
 // 고객별 질문 전체 조회
-export const getQuestionByUserId = async (userId, filterArgs) => {
+export const getQuestionByUserId = async (userId, currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/customers/${userId}?${filterArgs}`,
+            `/questions/customers/${userId}?page=${currentPage-1}${filterArgs}`,
         );
 
         const json = response.data;

@@ -128,13 +128,6 @@ export default function QuestionDashboard() {
                 typeFilter={typeFilter}
                 idFilter={idFilter}
                 setSearchCount={setSearchCount}
-                setQuestionDetail={setQuestionDetail}
-                setAnswerDetail={setAnswerDetail}
-                setQuestionId={setQuestionId}
-                setStatus={setStatus}
-                status={status}
-                setOpenModal={setOpenModal}
-                openModal={openModal}
             />
         </>
     );
