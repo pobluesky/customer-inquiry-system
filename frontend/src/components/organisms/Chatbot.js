@@ -27,7 +27,7 @@ import {
     loadingDot2,
     loadingDot3,
 } from '../../assets/css/ChatbotIcon.css';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import ChatbotIcon from '../../assets/css/icons/ChatbotIcon.png';
 import Poseokho from '../../assets/css/icons/Poseokho.png';
@@ -36,12 +36,13 @@ import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { productTypes } from '../../utils/inquiry';
 
 const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     let questions = [];
     if(questionsType === '주문 문의') {
         questions = [
-            '주문 언제 접수되나요?',
+            '주문 접수는 언제 되나요?',
             '주문 변경 가능한가요?',
             '주문 배송지 변경 가능한가요?',
             '주문 프로세스가 궁금해요.',
@@ -50,8 +51,8 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
         questions = [
             '제품 유형에 따라 라인아이템 내역도 달라지나요?',
             '라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
-            '견적 문의와 견적+품질 문의 차이가 뭔가요?',
-            'offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
+            '제품 유형이 무엇인가요?',
+            '제품 offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
         ];
     } else if (questionsType === '등록 문의') {
         questions = [
@@ -215,6 +216,100 @@ const FinishSection = ({ onFirstComment, onClose, onRemoveMessage }) => (
         </div>
     </div>
 );
+
+const ProductTypeTable = () => {
+    const [selectedProduct, setSelectedProduct] = useState("CAR");
+
+    const handleProductChange = (productType) => {
+        setSelectedProduct(productType);
+    };
+
+    const productTypeNames = {
+        CAR: '자동차',
+        HOT_ROLLED: '열연',
+        COLD_ROLLED: '냉연',
+        WIRE_ROD: '선재',
+        THICK_PLATE: '후판',
+    };
+
+    return (
+        <div style={{ padding: '20px' }}>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                marginBottom: '20px',
+                borderRadius: '10px',
+            }}>
+                {Object.keys(productTypes).map((productType) => (
+                    <Button
+                        key={productType}
+                        variant={selectedProduct === productType ? 'contained' : 'outlined'}
+                        onClick={() => handleProductChange(productType)}
+                        sx={{
+                            padding: '10px 20px',
+                            fontWeight: 'bold',
+                            fontSize: '15px',
+                            borderRadius: '5px',
+                            margin: '5px',
+                            backgroundColor: selectedProduct === productType? '#6187E7' : '#FFFFFF',
+                            color: selectedProduct === productType? '#FFFFFF' : '#6187E7',
+                            border: selectedProduct === productType? '1px solid #6187E7' : '1px solid #C7C7C7',
+                            boxShadow: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        {productTypeNames[productType]}
+                    </Button>
+                ))}
+            </Box>
+
+            <TableContainer
+                component={Paper}
+                sx={{
+                    borderRadius: '10px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+                    overflowX: 'auto',
+                    width: '100%',
+                }}
+            >
+                <Table sx={{ minWidth: '800px' }}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell
+                                style={{
+                                    textAlign: 'left',
+                                    fontWeight: '800',
+                                    fontSize: '18px',
+                                    whiteSpace: 'nowrap',
+                                }}
+                                colSpan={Object.keys(productTypes[selectedProduct]).length}
+                            >
+                                {productTypeNames[selectedProduct]}
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow>
+                            {Object.keys(productTypes[selectedProduct]).map((fieldKey, index) => (
+                                <TableCell
+                                    key={index}
+                                    style={{
+                                        fontSize: '16px',
+                                        color: '#2F2F2F',
+                                        whiteSpace: 'nowrap',
+                                        fontWeight: '600',
+                                    }}
+                                >
+                                    {productTypes[selectedProduct][fieldKey].label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    );
+};
 
 const Chatbot = () => {
     const { didLogin } = useAuth();
@@ -412,6 +507,8 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
     }
 
     const handleQuestionClick = async (question) => {
+        const isLineItem = question.includes('라인아이템');
+
         setMessages(prev => [
             ...prev,
             { text: question, type: 'user', time: getCurrentTime() },
@@ -434,10 +531,20 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     type: 'bot',
                     time: getCurrentTime(),
                     component:
+                    isLineItem ? (
+                        <>
                         <DefaultSection
-                            onFirstComment={handleFirstComment}
-                            ref={chatContentRef}
-                        />,
+                        onFirstComment={handleFirstComment}
+                        ref={chatContentRef}
+                        />
+                        <ProductTypeTable />
+                        </>
+                    ) : (
+                        <DefaultSection
+                        onFirstComment={handleFirstComment}
+                        ref={chatContentRef}
+                        />
+                    ),
                 },
             ]);
         } catch (error) {
