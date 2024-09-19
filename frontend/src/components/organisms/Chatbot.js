@@ -365,7 +365,6 @@ const ProductTypeTable = ({ onFirstComment, onFinishClick }) => {
 const Chatbot = () => {
     const { didLogin } = useAuth();
     const didLoginRef = useRef(didLogin);
-    const [currentLogin, setCurrentLogin] = useState(didLogin);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -393,7 +392,6 @@ const Chatbot = () => {
 
     useEffect(() => {
         if (messages.length === 0) {
-            // 안내 멘트
             setMessages([
                 {
                     text: `
