@@ -113,7 +113,7 @@ public class ChatbotService {
 
     private ChatInquiryType determineInquiryType(String userMessage) {
         log.info("Received user message: {}", userMessage);
-        if (userMessage.contains("주문")) return ChatInquiryType.ORDER;
+        if (userMessage.contains("주문") || userMessage.contains("문의")) return ChatInquiryType.ORDER;
         if (userMessage.contains("제품") || userMessage.contains("라인아이템")) return ChatInquiryType.PRODUCT;
         if (userMessage.contains("등록")) return ChatInquiryType.REGISTRATION;
         if (userMessage.contains("사이트") || userMessage.contains("마이페이지")) return ChatInquiryType.SITE_USAGE;
