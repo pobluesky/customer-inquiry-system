@@ -26,7 +26,7 @@ function UserInfoModal() {
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#64636a'}
-                    border={'solid #64636a 2px'}
+                    border={'none'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                 />
@@ -41,7 +41,7 @@ function UserInfoModal() {
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#d5dbe2'}
-                    border={'solid #d5dbe2 2px'}
+                    border={'none'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                     float={'right'}
