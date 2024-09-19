@@ -19,7 +19,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 500px;
+  width: 470px;
   height: 0;
   background-color: #F8F8F8;
   border-radius: 8px;
@@ -32,7 +32,7 @@
 }
 
 .chatBoxOpen {
-  height: 800px;
+  height: 700px;
 }
 
 .chatHeader {
@@ -155,11 +155,11 @@
   background-color: #FFFFFF;
   color: #000000;
   border-radius: 25px;
-  padding: 15px;
+  padding: 10px;
   margin-right: 10px;
   flex: 0 0 auto;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid #000000;
 }
 
@@ -235,6 +235,7 @@
   border-radius: 15px;
   border: 1px solid #009DCB;
   background-color: #009DCB;
+  color: #FFFFFF;
 }
 
 .faqPick2:hover {
