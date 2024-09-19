@@ -365,7 +365,6 @@ const ProductTypeTable = ({ onFirstComment, onFinishClick }) => {
 const Chatbot = () => {
     const { didLogin } = useAuth();
     const didLoginRef = useRef(didLogin);
-    const [currentLogin, setCurrentLogin] = useState(didLogin);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -393,7 +392,6 @@ const Chatbot = () => {
 
     useEffect(() => {
         if (messages.length === 0) {
-            // 안내 멘트
             setMessages([
                 {
                     text: `
@@ -664,18 +662,27 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     resolve(response.data);
                 }, 1500));
 
+            const responseComponent = messageToSend.includes('라인아이템') ? (
+                <ProductTypeTable
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            ) : (
+                <DefaultSection
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            );
+
             setMessages(prev => [
                 ...prev,
                 {
                     text: botResponse,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component:
-                        <DefaultSection
-                            onFirstComment={handleFirstComment}
-                            ref={chatContentRef}
-                            onFinishClick={handleFinishClick}
-                        />,
+                    component: responseComponent,
                 }
             ]);
 
