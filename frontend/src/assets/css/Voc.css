@@ -166,7 +166,7 @@
 /******************************************************************/
 /* Inquiry 번호 조회 모달 컴포넌트 **********************************/
 /******************************************************************/
-.Question_Inquiry_Modal_Container {
+.Question_Inquiry_Modal {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -178,7 +178,7 @@
 }
 
 /* Inquiry 조회 그룹 모달 위치 고정 */
-.Question_Inquiry_Modal {
+.Question_Inquiry_Modal > div:nth-child(1) {
     position: fixed;
     left: 50%;
     top: 30%;
@@ -186,7 +186,7 @@
 }
 
 /* Inquiry 조회 그룹 */
-.Question_Inquiry_Modal {
+.Question_Inquiry_Modal > div:nth-child(1) {
     width: 900px;
     height: 600px;
     margin: 0 auto 0 auto;
@@ -195,70 +195,57 @@
     background-color: #ffffff;
 }
 
-/* Inquiry 번호 검색창 그룹 */
-.Question_Inquiry_Modal > div:nth-child(1) {
-    display: grid;
-    height: 48px;
-    margin: 48px 0 24px 84px;
-    grid-template-columns: 120px 244px 336px 64px;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
+/* 검색창, 검색 버튼, 닫기 버튼 */
+.Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(1) {
+    display: flex;
+    width: 840px;
+    margin: 24px auto 0 auto;
 }
 
-/* Inquiry 목록 그룹 */
-.Question_Inquiry_Modal > div:nth-child(2) {
-    width: 792px;
-    max-height: 408px;
-    margin: 0px auto 0px auto;
-    overflow-y: auto;
-}
-
-/* Inquiry 목록 그룹 */
-.Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-}
-
-.Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar-thumb {
-    background-color: #8b8b8b;
-    border-radius: 10px;
-}
-
-/* Inquiry 목록별 속성 */
-.Question_Inquiry_Modal > div:nth-child(2) > div:nth-child(n + 1) {
-    display: grid;
-    grid-template-columns: 1.5fr 2fr 4fr 4fr 2fr 2fr;
-    column-gap: 8px;
-    margin: 0px auto 24px auto;
-    padding: 0px 24px 0px 24px;
-    width: 684px;
-    height: 72px;
-    border: 1px solid #c1c1c1;
-    border-radius: 24px;
-    text-align: center;
-    align-items: center;
+/* 닫기 버튼 */
+.Question_Inquiry_Modal
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div
+    > button:hover {
+    background-color: #c1c1c1 !important;
+    border-radius: 4px !important;
 }
 
 .Question_Inquiry_Modal
-    > div:nth-child(2)
-    > div:nth-child(n)
-    > div:nth-child(n + 2) {
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div:nth-child(4) {
+    margin: 0 0 0 auto;
 }
 
-/* 기존에 작성한 Inquiry가 없을 경우 */
-.Question_Inquiry_Modal .Data_Doesnt_Exist {
-    width: 100%;
-    height: 408px;
-    border: #03507d 1px solid;
+.Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(2) {
+    max-width: 840px;
+    margin: 24px auto 0 auto;
+    overflow-x: auto;
+}
+
+.Question_Inquiry_Modal table {
+    width: 1320px;
+    font-size: 16px;
     text-align: center;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 408px;
+    border-collapse: collapse;
+}
+
+
+.Question_Inquiry_Modal table td,
+.Question_Inquiry_Modal table th {
+    padding: 8px;
+    border: 1px solid #c1c1c1;
+}
+
+.Question_Inquiry_Modal thead {
+    color: #8b8b8b;
+}
+
+.Question_Inquiry_Modal tbody tr:hover {
+    cursor: pointer;
+    background-color: #f3f3f3;
 }
 
 /******************************************************************/
@@ -1114,7 +1101,7 @@
 .Col_Find_Manager_Modal
     > div:nth-child(1)
     > div:nth-child(1)
-    > div:nth-child(3) {
+    > div:nth-child(4) {
     margin: 0 0 0 auto;
 }
 
@@ -1125,7 +1112,7 @@
 }
 
 .Col_Find_Manager_Modal table {
-    width: 100%;
+    width: 1320px;
     font-size: 16px;
     text-align: center;
     border-collapse: collapse;

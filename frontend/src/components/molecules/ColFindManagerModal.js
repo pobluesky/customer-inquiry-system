@@ -16,7 +16,7 @@ export default function ColFindManagerModal({
 }) {
     const { userId } = useAuth();
     const [managerInfo, setManagerInfo] = useState([]);
-    const [searchId, setSearchId] = useState('');
+    const [managerName, setManagerName] = useState('');
     const [filteredManagerInfo, setFilteredManagerInfo] = useState([]);
 
     const enterKeyDown = (e) => {
@@ -39,7 +39,7 @@ export default function ColFindManagerModal({
 
     const managerSearch = () => {
         const filtered = managerInfo.filter((manager) =>
-            manager.name.includes(searchId),
+            manager.name.includes(managerName),
         );
         setFilteredManagerInfo(filtered);
     };
@@ -54,22 +54,32 @@ export default function ColFindManagerModal({
                 <div>
                     <Input
                         type="text"
-                        value={searchId}
+                        value={managerName}
                         width={'196px'}
                         height={'36px'}
                         margin={'0 24px 0 0'}
                         padding={'0px 12px 0px 12px'}
                         border={'1px solid #8b8b8b'}
                         placeholder={'품질담당자 조회'}
-                        onChange={(e) => setSearchId(e.target.value)}
+                        onChange={(e) => setManagerName(e.target.value)}
                         onKeyDown={enterKeyDown}
                     />
                     <QuestionAnswerButton
                         btnName={'검색'}
                         backgroundColor={'#1748ac'}
                         textColor={'#ffffff'}
+                        margin={'0 24px 0 0'}
                         onClick={() => {
                             managerSearch();
+                        }}
+                    />
+                    <QuestionAnswerButton
+                        btnName={'전체 보기'}
+                        backgroundColor={'#ffffff'}
+                        textColor={'#1748ac'}
+                        border={'solid 1px #1748ac'}
+                        onClick={() => {
+                            setFilteredManagerInfo(managerInfo);
                         }}
                     />
                     <div>
