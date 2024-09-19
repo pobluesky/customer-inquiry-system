@@ -124,17 +124,6 @@ public class AnswerController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @DeleteMapping("/managers/{questionId}")
-    @Operation(summary = "답변 삭제(담당자)", description = "답변을 삭제한다.")
-    public ResponseEntity<CommonResult> deleteAnswerByID(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long questionId
-    ) {
-        answerService.deleteAnswerById(token, questionId);
-
-        return ResponseEntity.ok(ResponseFactory.getSuccessResult());
-    }
-
     /* [Start] Dashboard API */
     @GetMapping("/managers/voc/dashboard")
     @Operation(summary = "월별 답변 처리 건수 평균")

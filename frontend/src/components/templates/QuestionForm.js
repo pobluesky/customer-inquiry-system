@@ -3,10 +3,10 @@ import QuestionInput from '../organisms/QuestionInput';
 import QuestionTypeSelector from '../organisms/QuestionTypeSelector';
 import QuestionInquirySearchModal from '../molecules/QuestoinInquirySearchModal';
 
-function QuestionForm() {
+function QuestionForm({ questionDetail }) {
     const [openModal, setOpenModal] = useState(false); // 모달창 상태 관리
-    const [selectedType, setSelectedType] = useState('INQ'); // type 상태 관리
-    const [inquiryId, setInquiryId] = useState(''); // Inquiry Id 상태 관리
+    const [selectedType, setSelectedType] = useState(questionDetail?.type || 'INQ'); // type 상태 관리
+    const [inquiryId, setInquiryId] = useState(questionDetail?.inquiryId || ''); // Inquiry Id 상태 관리
 
     // 고객사 Inquiry 조회 Modal
     if (openModal) {
@@ -23,7 +23,7 @@ function QuestionForm() {
                 setOpenModal={setOpenModal}
                 inquiryId={inquiryId}
             />
-            <QuestionInput selectedType={selectedType} inquiryId={inquiryId} />
+            <QuestionInput selectedType={selectedType} inquiryId={inquiryId} questionDetail={questionDetail} />
             {openModal && (
                 <QuestionInquirySearchModal
                     setInquiryId={setInquiryId}

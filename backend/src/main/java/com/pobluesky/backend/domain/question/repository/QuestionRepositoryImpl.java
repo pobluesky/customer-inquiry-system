@@ -46,6 +46,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Boolean isActivated,
         LocalDate startDate,
         LocalDate endDate,
+        Long managerId,
         String sortBy
     ) {
         List<QuestionSummaryResponseDTO> content = queryFactory
@@ -58,6 +59,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
                 answer.createdDate.as("answerCreatedAt"),
+                answer.manager.userId.as("managerId"),
                 question.isActivated
             ))
             .from(question)
@@ -70,6 +72,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 questionIdEq(questionId),
                 customerNameContains(customerName),
                 isActivatedEq(isActivated),
+                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -78,7 +81,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .fetch();
 
         JPAQuery<Question> countQuery = getCountQueryForManager(
-            status, type, title, questionId, customerName, isActivated, startDate, endDate);
+            status, type, title, questionId, customerName, isActivated, managerId, startDate, endDate);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
@@ -93,6 +96,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Long questionId,
         LocalDate startDate,
         LocalDate endDate,
+        Long managerId,
         String sortBy
     ) {
         List<QuestionSummaryResponseDTO> content = queryFactory
@@ -105,6 +109,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
                 answer.createdDate.as("answerCreatedAt"),
+                answer.manager.userId.as("managerId"),
                 question.isActivated
             ))
             .from(question)
@@ -117,6 +122,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 isActivatedEq(true),
+                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -125,7 +131,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .fetch();
 
         JPAQuery<Question> countQuery = getCountQueryForCustomer(
-            userId, status, type, title, questionId, startDate, endDate);
+            userId, status, type, title, questionId, managerId, startDate, endDate);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
@@ -137,6 +143,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Long questionId,
         String customerName,
         Boolean isActivated,
+        Long managerId,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -149,6 +156,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 questionIdEq(questionId),
                 customerNameContains(customerName),
                 isActivatedEq(isActivated),
+                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             );
     }
@@ -159,6 +167,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         QuestionType type,
         String title,
         Long questionId,
+        Long managerId,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -171,6 +180,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 isActivatedEq(true),
+                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             );
     }
@@ -219,6 +229,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private BooleanExpression isActivatedEq(Boolean isActivated) {
         return isActivated != null ? question.isActivated.eq(isActivated) : null;
+    }
+
+    private BooleanExpression managerIdEq(Long managerId) {
+        return managerId != null ? answer.manager.userId.eq(managerId) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {

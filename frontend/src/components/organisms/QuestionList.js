@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import VocPageButton from './VocPageButton';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
@@ -8,16 +9,7 @@ import {
     Ready,
     Completed,
 } from '../../assets/css/Voc.css';
-import {
-    getAllQuestion,
-    getQuestionByUserId,
-    getQuestionByQuestionId,
-    getQuestionByQuestionIdForManager,
-} from '../../apis/api/question';
-import {
-    getAnswerByQuestionId,
-    getAnswerByQuestionIdForManager,
-} from '../../apis/api/answer';
+import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 
 export default function QuestionList({
     title,
@@ -27,15 +19,9 @@ export default function QuestionList({
     customerName,
     timeFilter,
     statusFilter,
+    idFilter,
     typeFilter,
-
     setSearchCount,
-
-    setQuestionDetail,
-    setAnswerDetail,
-    setQuestionId,
-    setStatus,
-    status,
 }) {
     const { userId } = useAuth();
     const role = getCookie('userRole');
@@ -43,6 +29,9 @@ export default function QuestionList({
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState('');
 
     useEffect(() => {
         let args = '';
@@ -73,6 +62,9 @@ export default function QuestionList({
         if (statusFilter) {
             args += `${args ? '&' : ''}status=${statusFilter}`;
         }
+        if (idFilter) {
+            args += `${args ? '&' : ''}managerId=${idFilter}`;
+        }
         if (typeFilter) {
             args += `${args ? '&' : ''}type=${typeFilter}`;
         }
@@ -86,6 +78,7 @@ export default function QuestionList({
         customerName,
         timeFilter,
         statusFilter,
+        idFilter,
         typeFilter,
     ]);
 
@@ -96,9 +89,11 @@ export default function QuestionList({
                   try {
                       const response = await getQuestionByUserId(
                           getCookie('userId'),
+                          currentPage-1,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
                       setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('고객사 질문 요약 조회 실패: ', error);
@@ -106,8 +101,12 @@ export default function QuestionList({
               }
             : async () => {
                   try {
-                      const response = await getAllQuestion(filterArgs);
+                      const response = await getAllQuestion(
+                          currentPage-1,
+                          filterArgs,
+                      );
                       setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
                       setSearchCount(response.data.totalElements);
                   } catch (error) {
                       console.log('담당자 질문 요약 조회 실패: ', error);
@@ -116,7 +115,7 @@ export default function QuestionList({
 
     useEffect(() => {
         fetchGetQuestions();
-    }, [userId, filterArgs]);
+    }, [userId, currentPage, filterArgs]);
 
     const contentsEllipsis = {
         maxWidth: '1320px',
@@ -127,46 +126,55 @@ export default function QuestionList({
 
     return (
         <div className={Question_List_Container}>
-            {questionSummary.map((data, idx) => (
-                <div key={idx}>
-                    {!idx && <hr />}
-                    <div
-                        className={Question_List}
-                        onClick={() => {
-                            navigate('/voc-form/answer', {
-                                state: {
-                                    questionId: data.questionId,
-                                    status: data.status,
-                                },
-                            });
-                        }}
-                    >
-                        <div>
+            {questionSummary
+                .filter((data) => data.isActivated)
+                .map((data, idx) => (
+                    <div key={idx}>
+                        {!idx && <hr />}
+                        <div
+                            className={Question_List}
+                            onClick={() => {
+                                navigate('/voc-form/answer', {
+                                    state: {
+                                        questionId: data.questionId,
+                                        status: data.status,
+                                    },
+                                });
+                            }}
+                        >
                             <div>
-                                {data.type === 'INQ'
-                                    ? 'Inquiry 문의'
-                                    : data.type === 'SITE'
-                                    ? '사이트 문의'
-                                    : '기타 문의'}
+                                <div>
+                                    {data.type === 'INQ'
+                                        ? 'Inquiry 문의'
+                                        : data.type === 'SITE'
+                                        ? '사이트 문의'
+                                        : '기타 문의'}
+                                </div>
+                                {data.status === 'READY' ? (
+                                    <div className={Ready}>답변 대기</div>
+                                ) : (
+                                    <div className={Completed}>답변 완료</div>
+                                )}
+                                <div>{data.title}</div>
                             </div>
-                            {data.status === 'READY' ? (
-                                <div className={Ready}>답변 대기</div>
-                            ) : (
-                                <div className={Completed}>답변 완료</div>
-                            )}
-                            <div>{data.title}</div>
+                            <div style={contentsEllipsis}>
+                                {data.contents.replace(/<\/?[^>]+(>|$)/g, '')}
+                            </div>
+                            <div>
+                                <div>
+                                    {data.questionCreatedAt.substring(0, 10)}
+                                </div>
+                                <div>{data.customerName}</div>
+                            </div>
+                            <hr />
                         </div>
-                        <div style={contentsEllipsis}>
-                            {data.contents.replace(/<\/?[^>]+(>|$)/g, '')}
-                        </div>
-                        <div>
-                            <div>{data.questionCreatedAt.substring(0, 10)}</div>
-                            <div>{data.customerName}</div>
-                        </div>
-                        <hr />
                     </div>
-                </div>
-            ))}
+                ))}
+            <VocPageButton
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setPage={setCurrentPage}
+            />
         </div>
     );
 }

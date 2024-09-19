@@ -7,29 +7,32 @@ import {
     Question_Filter_Input_Container,
     Question_Filter_Input,
 } from '../../assets/css/Voc.css';
+import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterInput({
     title,
     questionNo,
     customerName,
-
     setTitle,
     setStartDate,
     setEndDate,
     setQuestionNo,
     setCustomerName,
-
-    searchCount,
     setTimeFilter,
     setStatusFilter,
+    setIdFilter,
     setTypeFilter,
 }) {
     const [tempTitle, setTempTitle] = useState(title);
     const [tempQuestionNo, setTempQuestionNo] = useState(questionNo);
     const [tempCustomerName, setTempCustomerName] = useState(customerName);
     const [tempStatus, setTempStatus] = useState('TOTAL');
+    const [tempId, setTempId] = useState('');
     const [tempType, setTempType] = useState('');
     const [isLatest, setLatest] = useState(true);
+
+    const role = getCookie('userRole');
+    const userId = getCookie('userId');
 
     const enterKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -44,12 +47,30 @@ function QuestionFilterInput({
         setCustomerName(tempCustomerName);
     };
 
-    // 전체 문의, 답변 완료, 답변 대기 선택 시 필터링 조건 초기화
+    // [전체 문의/답변 완료/답변 대기] 선택 시 필터링 조건 초기화
     const resetFilter = () => {
         setTitle('');
         setQuestionNo('');
         setCustomerName('');
         setTimeFilter('LATEST');
+        setTypeFilter('');
+        setStartDate('');
+        setEndDate('');
+
+        setTempTitle('');
+        setTempQuestionNo('');
+        setTempCustomerName('');
+        setTempType('');
+        setLatest(true);
+    };
+
+    // [나의 답변] 선택 시 필터링 조건 초기화
+    const resetMyFilter = () => {
+        setTitle('');
+        setQuestionNo('');
+        setCustomerName('');
+        setTimeFilter('LATEST');
+        setStatusFilter('');
         setTypeFilter('');
         setStartDate('');
         setEndDate('');
@@ -71,11 +92,15 @@ function QuestionFilterInput({
                         height={'34px'}
                         border={'none'}
                         fontWeight={'600'}
-                        textColor={tempStatus === '' ? '#25262b' : '#adb0b4'}
+                        textColor={
+                            tempStatus === 'TOTAL' ? '#25262b' : '#adb0b4'
+                        }
                         outline={'none'}
                         backgroundColor={'#ffffff'}
                         onClick={() => {
                             setTempStatus('TOTAL');
+                            setTempId('');
+                            setIdFilter('');
                             resetFilter();
                             setStatusFilter('');
                         }}
@@ -93,6 +118,8 @@ function QuestionFilterInput({
                         backgroundColor={'#ffffff'}
                         onClick={() => {
                             setTempStatus('COMPLETED');
+                            setTempId('');
+                            setIdFilter('');
                             resetFilter();
                             setStatusFilter('COMPLETED');
                         }}
@@ -110,10 +137,32 @@ function QuestionFilterInput({
                         backgroundColor={'#ffffff'}
                         onClick={() => {
                             setTempStatus('READY');
+                            setTempId('');
+                            setIdFilter('');
                             resetFilter();
                             setStatusFilter('READY');
                         }}
                     />
+                    {role !== 'customer' && (
+                        <Button
+                            btnName={'나의 답변'}
+                            width={'108px'}
+                            height={'34px'}
+                            border={'none'}
+                            fontWeight={'600'}
+                            textColor={
+                                tempId === userId ? '#25262b' : '#adb0b4'
+                            }
+                            outline={'none'}
+                            backgroundColor={'#ffffff'}
+                            onClick={() => {
+                                setTempId(userId);
+                                setTempStatus('');
+                                resetMyFilter();
+                                setIdFilter(userId);
+                            }}
+                        />
+                    )}
                 </div>
                 <div>
                     {tempStatus === 'TOTAL' ? (
@@ -143,7 +192,25 @@ function QuestionFilterInput({
                             <hr />
                         </div>
                     )}
-                    <div className={NotSelected}>
+                    {role !== 'customer' ? (
+                        tempId === userId ? (
+                            <div className={Selected}>
+                                <hr />
+                            </div>
+                        ) : (
+                            <div className={NotSelected}>
+                                <hr />
+                            </div>
+                        )
+                    ) : (
+                        ''
+                    )}
+                    <div
+                        className={NotSelected}
+                        style={{
+                            width: role === 'customer' ? '996px' : '888px',
+                        }}
+                    >
                         <hr />
                     </div>
                 </div>
@@ -212,32 +279,51 @@ function QuestionFilterInput({
                     value={tempQuestionNo}
                     onChange={(e) => setTempQuestionNo(e.target.value)}
                 />
-                {/* 문의 제목 검색 */}
-                <Input
-                    type={'text'}
-                    width={'180px'}
-                    height={'32px'}
-                    border={'solid 1px #c1c1c1'}
-                    borderRadius={'8px'}
-                    outline={'none'}
-                    padding={'0 8px 0 8px'}
-                    placeholder={'문의 제목을 검색하세요.'}
-                    value={tempTitle}
-                    onChange={(e) => setTempTitle(e.target.value)}
-                />
-                {/* 고객사명 검색 */}
-                <Input
-                    type={'text'}
-                    width={'180px'}
-                    height={'32px'}
-                    border={'solid 1px #c1c1c1'}
-                    borderRadius={'8px'}
-                    outline={'none'}
-                    padding={'0 8px 0 8px'}
-                    placeholder={'고객사명을 검색하세요.'}
-                    value={tempCustomerName}
-                    onChange={(e) => setTempCustomerName(e.target.value)}
-                />
+                {role !== 'customer' ? (
+                    <>
+                        {/* 문의 제목 검색 */}
+                        <Input
+                            type={'text'}
+                            width={'180px'}
+                            height={'32px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'8px'}
+                            outline={'none'}
+                            padding={'0 8px 0 8px'}
+                            placeholder={'문의 제목을 검색하세요.'}
+                            value={tempTitle}
+                            onChange={(e) => setTempTitle(e.target.value)}
+                        />
+                        {/* 고객사명 검색 */}
+                        <Input
+                            type={'text'}
+                            width={'180px'}
+                            height={'32px'}
+                            border={'solid 1px #c1c1c1'}
+                            borderRadius={'8px'}
+                            outline={'none'}
+                            padding={'0 8px 0 8px'}
+                            placeholder={'고객사명을 검색하세요.'}
+                            value={tempCustomerName}
+                            onChange={(e) =>
+                                setTempCustomerName(e.target.value)
+                            }
+                        />
+                    </>
+                ) : (
+                    <Input
+                        type={'text'}
+                        width={'384px'}
+                        height={'32px'}
+                        border={'solid 1px #c1c1c1'}
+                        borderRadius={'8px'}
+                        outline={'none'}
+                        padding={'0 8px 0 8px'}
+                        placeholder={'문의 제목을 검색하세요.'}
+                        value={tempTitle}
+                        onChange={(e) => setTempTitle(e.target.value)}
+                    />
+                )}
                 <div>
                     <Input
                         type={'date'}

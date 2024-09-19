@@ -46,6 +46,7 @@ public class QuestionController {
         @RequestParam(required = false) Long questionId,
         @RequestParam(required = false) String customerName,
         @RequestParam(required = false) Boolean isActivated,
+        @RequestParam(required = false) Long managerId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -60,6 +61,7 @@ public class QuestionController {
             questionId,
             customerName,
             isActivated,
+            managerId,
             startDate,
             endDate
         );
@@ -102,6 +104,7 @@ public class QuestionController {
         @RequestParam(required = false) QuestionType type,
         @RequestParam(required = false) String title,
         @RequestParam(required = false) Long questionId,
+        @RequestParam(required = false) Long managerId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -115,6 +118,7 @@ public class QuestionController {
             type,
             title,
             questionId,
+            managerId,
             startDate,
             endDate
         );

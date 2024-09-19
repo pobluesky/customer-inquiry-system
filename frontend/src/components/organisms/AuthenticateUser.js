@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import UserInput from '../molecules/JoinInput';
-import { getCookie } from '../../apis/utils/cookies';
 import { LoginFailedAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 

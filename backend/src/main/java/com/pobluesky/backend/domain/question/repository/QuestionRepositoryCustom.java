@@ -20,6 +20,7 @@ public interface QuestionRepositoryCustom {
         Boolean isActivated,
         LocalDate startDate,
         LocalDate endDate,
+        Long managerId,
         String sortBy
     );
 
@@ -32,6 +33,7 @@ public interface QuestionRepositoryCustom {
         Long questionId,
         LocalDate startDate,
         LocalDate endDate,
+        Long managerId,
         String sortBy
     );
 }

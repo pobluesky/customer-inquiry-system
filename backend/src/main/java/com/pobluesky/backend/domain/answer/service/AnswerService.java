@@ -171,21 +171,6 @@ public class AnswerService {
         return AnswerResponseDTO.from(answer);
     }
 
-    // 답변 삭제
-    @Transactional
-    public void deleteAnswerById(
-        String token,
-        Long questionId
-    ) {
-        validateManager(token);
-
-        Answer answer = validateAnswer(questionId);
-
-        validateAnswerActivated(answer);
-
-        answer.deleteAnswer();
-    }
-
     // 월별 담당자별 VoC 답변 건수
     @Transactional(readOnly = true)
     public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {

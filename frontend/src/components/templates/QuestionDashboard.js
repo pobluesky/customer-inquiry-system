@@ -18,13 +18,7 @@ export default function QuestionDashboard() {
     const [timeFilter, setTimeFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
-
-    // 테이블과 모달 간 상호 API 전달
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
-    const [questionId, setQuestionId] = useState('');
-    const [status, setStatus] = useState('READY');
-    const [openModal, setOpenModal] = useState(false);
+    const [idFilter, setIdFilter] = useState('');
 
     // 질문 답변 현황
     const userId = getCookie('userId');
@@ -75,7 +69,7 @@ export default function QuestionDashboard() {
     const fetchGetColCount = async () => {
         try {
             const response = await getAllCollaboration('');
-            setColCount(response.data.length);
+            setColCount(response.data.colListInfo.length);
         } catch (error) {
             console.log('협업 목록 개수 조회 실패: ', error);
         }
@@ -103,10 +97,7 @@ export default function QuestionDashboard() {
                 <div className={Voc_Dashboard}>검색 결과가 없습니다.</div>
             )}
             <QuestionFilterInput
-                searchCount={searchCount}
                 title={title}
-                startDate={startDate}
-                endDate={endDate}
                 questionNo={questionNo}
                 customerName={customerName}
                 setTitle={setTitle}
@@ -115,9 +106,8 @@ export default function QuestionDashboard() {
                 setQuestionNo={setQuestionNo}
                 setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
-                status={status}
                 setStatusFilter={setStatusFilter}
-                questionDetail={questionDetail}
+                setIdFilter={setIdFilter}
                 setTypeFilter={setTypeFilter}
             />
             <QuestionList
@@ -129,14 +119,8 @@ export default function QuestionDashboard() {
                 timeFilter={timeFilter}
                 statusFilter={statusFilter}
                 typeFilter={typeFilter}
+                idFilter={idFilter}
                 setSearchCount={setSearchCount}
-                setQuestionDetail={setQuestionDetail}
-                setAnswerDetail={setAnswerDetail}
-                setQuestionId={setQuestionId}
-                setStatus={setStatus}
-                status={status}
-                setOpenModal={setOpenModal}
-                openModal={openModal}
             />
         </>
     );

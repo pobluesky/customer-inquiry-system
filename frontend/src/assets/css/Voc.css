@@ -328,10 +328,6 @@
     width: 108px;
 }
 
-.Question_Filter_Input_Container > div:nth-child(2) > div:nth-last-child(1) {
-    width: 996px;
-}
-
 .Selected hr {
     border: 1px solid #25262b;
     border-radius: 12px;
@@ -470,6 +466,28 @@
     margin: 0 0 0 24px;
 }
 
+/* 페이지 버튼 */
+.Voc_Page_Button {
+    width: 1320px;
+    height: 24px;
+    margin: 24px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.Voc_Page_Button button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.Voc_Page_Button > div > button {
+   width: max-content;
+   margin: 0 0 0 12px;
+}
 /******************************************************************/
 /* 답변 화면에서 보이는 질문 상세 그룹 *******************************/
 /******************************************************************/

@@ -6,9 +6,6 @@ import { getCookie } from '../../apis/utils/cookies';
 // 답변 게시판에 사용될 질문 뷰어
 export default function QuestionViewer({
     questionDetail,
-    // questionId,
-    // setStatus,
-    // status,
 }) {
     const sanitizer = dompurify.sanitize;
 
@@ -45,8 +42,6 @@ export default function QuestionViewer({
     useEffect(() => {
         questionType();
     }, [role, questionDetail]);
-
-    console.log(questionDetail);
 
     return (
         <div className={Question_Viewer}>
