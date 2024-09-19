@@ -79,6 +79,7 @@ public class ChatbotService {
                             + " 내 문의 진행 상황은 'inquiry 조회'에서 언제든지 확인 가능합니다.";
             case PROCESS -> "주문 프로세스는 문의 제출 ▸ 문의 접수 ▸ 1차검토 완료 ▸ 품질검토 요청 ▸ 품질검토 접수 ▸ 품질검토 완료 ▸ 최종 검토 순서로 진행됩니다. \n\n "
                             + "내 문의 진행 상황은 'inquiry 조회'에서 언제든지 확인 가능합니다.";
+            case CONTRACT -> "최종검토 완료 이후, 고객님께 결과가 회신되며 계약 협의가 진행됩니다. 이후 절차는 담당자가 추후 메일로 안내드립니다. 자세한 문의는 아래 VoC 문의하기 버튼을 통해 남겨주시면 빠르게 답변해드릴게요!";
             default -> null;
         };
     }
@@ -100,7 +101,6 @@ public class ChatbotService {
             case METHOD -> "사이트 접속 후 > 로그인 > inquiry 등록 단계를 통해 제품 유형별 맞춤 주문이 가능합니다. 회원이 아닐 경우 아래 '직접 VoC 문의하기'를 통해 문의를 남겨주세요. \n\n 다른 도움이 필요하신가요?";
             case MODIFICATION -> "inquiry 수정/삭제는 문의 상태에 따라 가능 여부가 달라집니다. 주문 프로세스는 문의 제출 ▸ 문의 접수 ▸ 1차검토 완료 ▸ 품질검토 요청 ▸ 품질검토 접수 ▸ 품질검토 완료 ▸ 최종 검토 순서로 진행되며, inquiry 수정/삭제는 '문의 제출' 단계에서만 가능합니다. \n\n "
                                 + "또한 내 문의 진행 상황은 'inquiry 조회'에서 확인 가능합니다.";
-            case CONTRACT -> "최종검토 완료 이후, 고객님께 결과가 회신되며 계약 협의가 진행됩니다. 이후 절차는 담당자가 추후 메일로 안내드립니다. 자세한 문의는 아래 VoC 문의하기 버튼을 통해 남겨주시면 빠르게 답변해드릴게요!";
             default -> null;
         };
     }
@@ -114,8 +114,8 @@ public class ChatbotService {
 
     private ChatInquiryType determineInquiryType(String userMessage) {
         if (userMessage.contains("주문")) return ChatInquiryType.ORDER;
-        if (userMessage.contains("제품") || userMessage.contains("라인아이템")) return ChatInquiryType.PRODUCT;
-        if (userMessage.contains("등록") || userMessage.contains("inquiry") || userMessage.contains("계약")) return ChatInquiryType.REGISTRATION;
+        if (userMessage.contains("제품")) return ChatInquiryType.PRODUCT;
+        if (userMessage.contains("inquiry")) return ChatInquiryType.REGISTRATION;
         if (userMessage.contains("사이트") || userMessage.contains("마이페이지")) return ChatInquiryType.SITE_USAGE;
         return ChatInquiryType.OTHER;
     }
@@ -125,25 +125,21 @@ public class ChatbotService {
             case ORDER -> {
                 if (userMessage.contains("접수")) yield ChatInquirySubType.SUBMISSION;
                 if (userMessage.contains("주문")) {
-                    if(userMessage.contains("배송지")) yield ChatInquirySubType.SHIPPING;
-                    else if(userMessage.contains("변경") || userMessage.contains("수정")) yield ChatInquirySubType.MODIFICATION;
+                    if (userMessage.contains("배송지")) yield ChatInquirySubType.SHIPPING;
+                    else if (userMessage.contains("변경") || userMessage.contains("수정")) yield ChatInquirySubType.MODIFICATION;
                 }
                 if (userMessage.contains("프로세스") || userMessage.contains("절차")) yield ChatInquirySubType.PROCESS;
+                if (userMessage.contains("결과") || userMessage.contains("계약")) yield ChatInquirySubType.CONTRACT; //주문 -> 협의 || 결과
                 yield ChatInquirySubType.OTHER;
             }
             case PRODUCT -> {
-                // 우선순위가 높은 조건을 먼저 체크
                 if (userMessage.contains("파일 형식") || userMessage.contains("파일") || userMessage.contains("형식") || userMessage.contains("등록 파일")) {
-                    // "파일 형식"과 관련된 키워드가 포함된 경우
                     yield ChatInquirySubType.FILE_FORMAT;
                 }
                 if (userMessage.contains("라인아이템")) {
-                    // "라인아이템"이 포함된 경우는 서브타입 확인
-                    if (userMessage.contains("파일")) {
-                        yield ChatInquirySubType.FILE_FORMAT; // 파일과 관련된 내용이 포함된 경우
-                    } else {
-                        yield ChatInquirySubType.LINE_ITEM; // 단순히 "라인아이템"만 포함된 경우
-                    }
+                    if (userMessage.contains("파일")) yield ChatInquirySubType.FILE_FORMAT;
+
+                    else if (userMessage.contains("내역")) yield ChatInquirySubType.LINE_ITEM;
                 }
                 if (userMessage.contains("유형") || userMessage.contains("견적") || userMessage.contains("품질"))
                     yield ChatInquirySubType.ESTIMATE;
@@ -152,11 +148,10 @@ public class ChatbotService {
                 yield ChatInquirySubType.OTHER;
             }
             case REGISTRATION -> {
-                if (userMessage.contains("방법")) {
-                    if(userMessage.contains("등록")) yield ChatInquirySubType.METHOD;
+                if (userMessage.contains("등록")) {
+                    if(userMessage.contains("방법")) yield ChatInquirySubType.METHOD;
                     else if(userMessage.contains("수정") || userMessage.contains("삭제")) yield ChatInquirySubType.MODIFICATION;
                 }
-                if (userMessage.contains("협의") || userMessage.contains("결과")) yield ChatInquirySubType.CONTRACT;
                 yield ChatInquirySubType.OTHER;
             }
             case SITE_USAGE -> {

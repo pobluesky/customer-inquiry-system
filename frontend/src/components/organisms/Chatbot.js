@@ -27,37 +27,38 @@ import {
     loadingDot2,
     loadingDot3,
 } from '../../assets/css/ChatbotIcon.css';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import ChatbotIcon from '../../assets/css/icons/ChatbotIcon.png';
 import Poseokho from '../../assets/css/icons/Poseokho.png';
 import profile from '../../assets/css/icons/profile.svg';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
-import { Link } from 'react-router-dom';
+import { Link, useNavigation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { productTypes } from '../../utils/inquiry';
 
 const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     let questions = [];
     if(questionsType === '주문 문의') {
         questions = [
-            '주문 언제 접수되나요?',
+            '주문 접수는 언제 되나요?',
             '주문 변경 가능한가요?',
             '주문 배송지 변경 가능한가요?',
             '주문 프로세스가 궁금해요.',
+            '주문 결과 수신 후 계약 협의는 어떻게 하나요?',
         ];
     } else if (questionsType === '제품 통합 문의') {
         questions = [
             '제품 유형에 따라 라인아이템 내역도 달라지나요?',
-            '라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
-            '견적 문의와 견적+품질 문의 차이가 뭔가요?',
-            'offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
+            '제품별 라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
+            '제품 유형이 무엇인가요?',
+            '제품 offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
         ];
     } else if (questionsType === '등록 문의') {
         questions = [
             'inquiry 등록 방법',
             'inquiry 수정 / 삭제 방법',
-            '결과 수신 후 계약 협의는 어떻게 하나요?',
         ]
     } else if (questionsType === '사이트 이용 문의') {
         questions = ['전화번호, 비밀번호, 이메일 변경 방법 (마이페이지)'];
@@ -104,9 +105,10 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     );
 };
 
-const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, onFinishClick }) => {
+const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, onFinishClick, onClose }) => {
     const [inqSection, setInqSection] = useState(false);
     const faqSectionRef = useRef(null);
+    const { role } = useAuth();
 
     useEffect(() => {
         if (inqSection && faqSectionRef.current) {
@@ -116,6 +118,14 @@ const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, 
 
     const toggleInqSection = () => {
         setInqSection(true);
+    };
+
+    const handleVocClick = () => {
+        if (role === 'customer') {
+            onClose();
+        } else {
+            onVocClick();
+        }
     };
 
     return (
@@ -148,7 +158,17 @@ const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, 
                              onNewChatClick();
                              onFocusInput();
                          }}>새로운 채팅 시작하기</div>
-                    <div className={faqPick2} onClick={() => onVocClick()}>VOC로 1:1 문의하기</div>
+                        {role === 'customer' ? (
+                            <Link to={'/voc-form/question'} style={{ textDecoration: 'none'}}>
+                                <div className={faqPick2} onClick={handleVocClick}>
+                                    VOC로 1:1 문의하기
+                                </div>
+                            </Link>
+                        ) : (
+                            <div className={faqPick2} onClick={handleVocClick}>
+                                VOC로 1:1 문의하기
+                            </div>
+                        )}
                     <div className={faqPick2} onClick={() => onFinishClick()}>채팅 종료하기</div>
                 </div>
             </div>
@@ -174,7 +194,7 @@ const FAQSection = ({ onInquiryClick, onFocusInput, onNewChatClick, onVocClick, 
     );
 };
 
-const DefaultSection = ({ onFirstComment }) => (
+const DefaultSection = ({ onFirstComment, onFinishClick }) => (
     <div className={faqSection}>
         <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>
             <div className={faqBox}>
@@ -183,6 +203,13 @@ const DefaultSection = ({ onFirstComment }) => (
         </Link>
         <div className={faqBox} onClick={onFirstComment}>
             이전으로 돌아가기
+        </div>
+        <div
+            className={faqBox}
+            onClick={() => {
+                onFinishClick();
+            }}>
+            채팅 종료하기
         </div>
     </div>
 );
@@ -216,10 +243,128 @@ const FinishSection = ({ onFirstComment, onClose, onRemoveMessage }) => (
     </div>
 );
 
+const ProductTypeTable = ({ onFirstComment, onFinishClick }) => {
+    const [selectedProduct, setSelectedProduct] = useState('CAR');
+
+    const handleProductChange = (productType) => {
+        setSelectedProduct(productType);
+    };
+
+    const productTypeNames = {
+        CAR: '자동차',
+        HOT_ROLLED: '열연',
+        COLD_ROLLED: '냉연',
+        WIRE_ROD: '선재',
+        THICK_PLATE: '후판',
+    };
+
+    return (
+    <div>
+        <div style={{ margin: '10px 10px 10px 52px'}}>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    marginBottom: '15px',
+                    borderRadius: '10px',
+                }}>
+                    {Object.keys(productTypes).map((productType) => (
+                        <Button
+                            key={productType}
+                            variant={selectedProduct === productType ? 'contained'
+                                : 'outlined'}
+                            onClick={() => handleProductChange(productType)}
+                            sx={{
+                                padding: '5px 10px',
+                                fontWeight: 'bold',
+                                fontSize: '12px',
+                                borderRadius: '5px',
+                                margin: '3px',
+                                backgroundColor: selectedProduct === productType
+                                    ? '#6187E7' : '#FFFFFF',
+                                color: selectedProduct === productType ? '#FFFFFF'
+                                    : '#6187E7',
+                                border: selectedProduct === productType
+                                    ? '1px solid #6187E7' : '1px solid #C7C7C7',
+                                boxShadow: 'none',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            {productTypeNames[productType]}
+                        </Button>
+                    ))}
+                </Box>
+
+                <TableContainer
+                    component={Paper}
+                    sx={{
+                        borderRadius: '10px',
+                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+                        overflowX: 'auto',
+                        width: '100%',
+                    }}
+                >
+                    <Table sx={{ minWidth: '800px' }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell
+                                    style={{
+                                        textAlign: 'left',
+                                        fontWeight: '800',
+                                        fontSize: '15px',
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                    colSpan={Object.keys(
+                                        productTypes[selectedProduct]).length}
+                                >
+                                    {productTypeNames[selectedProduct]}
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                {Object.keys(productTypes[selectedProduct]).map(
+                                    (fieldKey, index) => (
+                                        <TableCell
+                                            key={index}
+                                            style={{
+                                                fontSize: '13px',
+                                                color: '#2F2F2F',
+                                                whiteSpace: 'nowrap',
+                                                fontWeight: '500',
+                                            }}
+                                        >
+                                            {productTypes[selectedProduct][fieldKey].label}
+                                        </TableCell>
+                                    ))}
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+        <div className={faqSection} style={{ marginTop: '20px' }}>
+            <Link to={'/voc-form/question'} style={{ textDecoration: 'none' }}>
+                <div className={faqBox}>
+                    직접 VOC 문의하기
+                </div>
+            </Link>
+            <div className={faqBox} onClick={onFirstComment}>
+                이전으로 돌아가기
+            </div>
+            <div
+                className={faqBox}
+                onClick={() => {
+                    onFinishClick();
+                }}>
+                채팅 종료하기
+            </div>
+        </div>
+    </div>
+    );
+};
+
 const Chatbot = () => {
     const { didLogin } = useAuth();
     const didLoginRef = useRef(didLogin);
-    const [currentLogin, setCurrentLogin] = useState(didLogin);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -247,7 +392,6 @@ const Chatbot = () => {
 
     useEffect(() => {
         if (messages.length === 0) {
-            // 안내 멘트
             setMessages([
                 {
                     text: `
@@ -267,6 +411,7 @@ Pobluesky입니다.
                             onFocusInput={focusInput}
                             onVocClick={handleVocClick}
                             onFinishClick={handleFinishClick}
+                            onClose={handleClose}
                         />
                 }
             ]);
@@ -289,10 +434,12 @@ Pobluesky입니다.
                 component:
                     <FAQSection
                         onInquiryClick={handleInquiryClick}
+                        onNewChatClick={handleNewChatClick}
                         ref={chatContentRef}
                         onFocusInput={focusInput}
                         onVocClick={handleVocClick}
                         onFinishClick={handleFinishClick}
+                        onClose={handleClose}
                     />,
             }
         ]);
@@ -315,6 +462,7 @@ Pobluesky입니다.
                         <DefaultSection
                             onFirstComment={handleFirstComment}
                             ref={chatContentRef}
+                            onFinishClick={handleFinishClick}
                         />
                     ) :
                     (
@@ -345,6 +493,7 @@ Pobluesky입니다.
                         <DefaultSection
                             onFirstComment={handleFirstComment}
                             ref={chatContentRef}
+                            onFinishClick={handleFinishClick}
                         />
                     )
                 },
@@ -381,6 +530,7 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                         <DefaultSection
                             onFirstComment={handleFirstComment}
                             ref={chatContentRef}
+                            onFinishClick={handleFinishClick}
                         />
                     )
                 },
@@ -411,6 +561,8 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
     }
 
     const handleQuestionClick = async (question) => {
+        const isLineItem = question.includes('라인아이템');
+
         setMessages(prev => [
             ...prev,
             { text: question, type: 'user', time: getCurrentTime() },
@@ -433,10 +585,20 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     type: 'bot',
                     time: getCurrentTime(),
                     component:
-                        <DefaultSection
+                    isLineItem ? (
+                        <>
+                        <ProductTypeTable
                             onFirstComment={handleFirstComment}
                             ref={chatContentRef}
-                        />,
+                            onFinishClick={handleFinishClick} />
+                        </>
+                    ) : (
+                        <DefaultSection
+                        onFirstComment={handleFirstComment}
+                        ref={chatContentRef}
+                        onFinishClick={handleFinishClick}
+                        />
+                    ),
                 },
             ]);
         } catch (error) {
@@ -500,17 +662,27 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     resolve(response.data);
                 }, 1500));
 
+            const responseComponent = messageToSend.includes('라인아이템') ? (
+                <ProductTypeTable
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            ) : (
+                <DefaultSection
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            );
+
             setMessages(prev => [
                 ...prev,
                 {
                     text: botResponse,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component:
-                        <DefaultSection
-                            onFirstComment={handleFirstComment}
-                            ref={chatContentRef}
-                        />,
+                    component: responseComponent,
                 }
             ]);
 
