@@ -155,11 +155,11 @@
   background-color: #FFFFFF;
   color: #000000;
   border-radius: 25px;
-  padding: 15px;
+  padding: 10px;
   margin-right: 10px;
   flex: 0 0 auto;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid #000000;
 }
 
@@ -233,6 +233,7 @@
   margin-top: 10px;
   border-radius: 15px;
   background-color: #009DCB;
+  color: #FFFFFF;
 }
 
 .faqPick2:hover {
