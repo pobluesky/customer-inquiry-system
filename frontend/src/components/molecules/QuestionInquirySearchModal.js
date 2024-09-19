@@ -366,7 +366,17 @@ export default function QuestionInquirySearchModal({
                                 <TableRow
                                     key={row.inquiryId}
                                     onClick={() => {
+                                        // setInquiryId(row.inquiryId);
+                                        // window.open(
+                                        //     `/inq-list/customer/${row.inquiryId}`,
+                                        //     '_blank',
+                                        // );
+                                        // setOpenModal(false);
                                         setInquiryId(row.inquiryId);
+                                        sessionStorage.setItem(
+                                            'userId',
+                                            userId,
+                                        ); // sessionStorage에 userId 저장
                                         window.open(
                                             `/inq-list/customer/${row.inquiryId}`,
                                             '_blank',

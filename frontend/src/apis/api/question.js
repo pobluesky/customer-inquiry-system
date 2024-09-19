@@ -50,7 +50,7 @@ export const getQuestionByQuestionIdForManager = async (questionId) => {
 export const getQuestionByUserId = async (userId, currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/questions/customers/${userId}?page=${currentPage}${filterArgs}`,
+            `/questions/customers/${userId}?page=${currentPage}&${filterArgs}`,
         );
 
         const json = response.data;

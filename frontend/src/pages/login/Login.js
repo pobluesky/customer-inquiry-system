@@ -58,6 +58,10 @@ function Login() {
         };
     }, [email, password]);
 
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     // 로그인 API
     const GetAuth = async () => {
         try {

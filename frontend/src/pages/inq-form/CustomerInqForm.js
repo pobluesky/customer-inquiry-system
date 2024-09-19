@@ -138,6 +138,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         getUserInfo();
     }, [userId]);
 
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
