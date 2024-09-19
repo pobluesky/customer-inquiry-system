@@ -20,7 +20,8 @@ export const getAllManager = async () => {
     }
 };
 
-// 담당자 전제 초회
+// 담당자 상세 조회
+// 본인이 아닌 타인 검색 불가 (수정 필요)
 export const getManagerByUserId = async (userId) => {
     try {
         const response = await axiosInstance.get(
