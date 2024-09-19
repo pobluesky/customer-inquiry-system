@@ -22,11 +22,11 @@ public record MobileInquiryResponseDTO(
     String  salesPerson,
     ManagerSummaryResponseDTO salesManagerSummaryDto,
     ManagerSummaryResponseDTO qualityManagerSummaryDto,
-    InquiryType inquiryType,
-    Industry industry,
+    String inquiryType,
+    String industry,
     String corporationCode,
-    ProductType productType,
-    Progress progress,
+    String productType,
+    String progress,
     String customerRequestDate,
     String additionalRequests,
     String fileName,
@@ -63,11 +63,11 @@ public record MobileInquiryResponseDTO(
                     inquiry.getQualityManager() != null ? inquiry.getQualityManager() : null
                 )
             )
-            .inquiryType(inquiry.getInquiryType())
-            .industry(inquiry.getIndustry())
+            .inquiryType(inquiry.getInquiryType().getKoreanName())
+            .industry(inquiry.getIndustry().getKoreanName())
             .corporationCode(inquiry.getCorporationCode())
-            .productType(inquiry.getProductType())
-            .progress(inquiry.getProgress())
+            .productType(inquiry.getProductType().getKoreanName())
+            .progress(inquiry.getProgress().getTerm())
             .customerRequestDate(inquiry.getCustomerRequestDate())
             .additionalRequests(inquiry.getAdditionalRequests())
             .fileName(inquiry.getFileName())

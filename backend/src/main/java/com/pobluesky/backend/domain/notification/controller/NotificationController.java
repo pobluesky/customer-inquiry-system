@@ -11,6 +11,8 @@ import com.pobluesky.backend.domain.notification.service.NotificationType;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 import io.swagger.v3.oas.annotations.Operation;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +81,7 @@ public class NotificationController {
     public ResponseEntity<JsonResult> createCustomerNotification(
         @RequestHeader("Authorization") String token,
         @RequestBody CustomerNotificationCreateRequestDTO dto,
-        @PathVariable Long userId) {
+        @PathVariable Long userId) throws IOException {
 
         CustomerNotificationResponseDTO notification =
             (CustomerNotificationResponseDTO) notificationService.createNotification(
@@ -159,7 +161,7 @@ public class NotificationController {
         @RequestHeader("Authorization") String token,
         @RequestBody ManagerNotificationCreateRequestDTO dto,
         @PathVariable Long userId
-    ) {
+    ) throws IOException {
         ManagerNotificationResponseDTO notification =
             (ManagerNotificationResponseDTO) notificationService.createNotification(
                 token,

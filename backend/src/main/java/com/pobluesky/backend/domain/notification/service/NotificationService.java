@@ -6,6 +6,7 @@ import com.pobluesky.backend.domain.notification.dto.request.ManagerNotification
 import com.pobluesky.backend.domain.notification.dto.request.ManagerNotificationUpdateRequestDTO;
 import com.pobluesky.backend.domain.notification.dto.response.CustomerNotificationResponseDTO;
 import com.pobluesky.backend.domain.notification.dto.response.ManagerNotificationResponseDTO;
+import com.pobluesky.backend.domain.notification.dto.response.MobileNotificationResponseDTO;
 import com.pobluesky.backend.domain.notification.entity.CustomerNotification;
 import com.pobluesky.backend.domain.notification.entity.ManagerNotification;
 import com.pobluesky.backend.domain.notification.repository.CustomerNotificationRepository;
@@ -15,12 +16,19 @@ import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
+import com.pobluesky.backend.global.config.FirebaseConfig;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -39,12 +47,19 @@ public class NotificationService {
 
     private final ManagerRepository managerRepository;
 
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
+
+    private final FirebaseConfig firebaseConfig;
+
     public List<?> getNotificationsById(
         String token,
         Long id,
         NotificationType notificationType
     ) {
         Long userId = signService.parseToken(token);
+
+        if(!Objects.equals(userId, id))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:
@@ -55,9 +70,10 @@ public class NotificationService {
                     throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
                 List<CustomerNotification> customerNotifications =
-                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalseOrderByCreatedDateDesc(id);
+                    customerNotificationRepository.findByCustomer_UserIdAndIsReadFalseOrderByCreatedDateDesc(userId);
 
-                Long totalCustomerElements = customerNotificationRepository.countUnreadNotificationsByCustomer_UserId(id);
+                Long totalCustomerElements =
+                        customerNotificationRepository.countUnreadNotificationsByCustomer_UserId(userId);
 
                 return List.of(
                     customerNotifications.stream()
@@ -97,6 +113,9 @@ public class NotificationService {
     ) {
         Long userId = signService.parseToken(token);
 
+        if(!Objects.equals(userId, id))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
         Pageable pageable = PageRequest.of(0, 10);
 
         switch (notificationType) {
@@ -109,7 +128,7 @@ public class NotificationService {
 
                 var customerPage =
                     customerNotificationRepository.findRecentNotificationsByuserIdAndIsRead(
-                        id,
+                            userId,
                         true,
                         pageable
                     );
@@ -127,7 +146,7 @@ public class NotificationService {
 
                 var managerPage =
                     managerNotificationRepository.findRecentNotificationsByuserIdAndIsRead(
-                        id,
+                            userId,
                         true,
                         pageable
                     );
@@ -146,8 +165,11 @@ public class NotificationService {
         Object dto,
         Long id,
         NotificationType notificationType
-    ) {
-//        Long userId = signService.parseToken(token);
+    ) throws IOException {
+        Long userId = signService.parseToken(token);
+
+        if(!Objects.equals(userId, id))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:
@@ -179,6 +201,11 @@ public class NotificationService {
 
                 ManagerNotification savedManagerNotification =
                     managerNotificationRepository.save(managerNotification);
+
+                firebaseCloudMessageService.sendMessageTo(
+                        firebaseConfig.getFcmServerKey(),
+                        managerNotification.getNotificationContents()
+                );
 
                 return ManagerNotificationResponseDTO.from(savedManagerNotification);
 
@@ -238,5 +265,44 @@ public class NotificationService {
             default:
                 throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
+    }
+
+    public List<MobileNotificationResponseDTO> getNotificationsById(Long userId) {
+        Manager manager = managerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(manager.getUserId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<ManagerNotification> managerNotifications =
+                managerNotificationRepository.findByManager_UserIdAndIsReadFalseOrderByCreatedDateDesc(userId);
+
+        return managerNotifications.stream()
+                .map(MobileNotificationResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<MobileNotificationResponseDTO> getRecentNotifications(Long userId) {
+        Manager manager = managerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (!Objects.equals(manager.getUserId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<ManagerNotification> recentNotificationsByuserIdAndIsReadForMobile =
+                managerNotificationRepository.findRecentNotificationsByuserIdAndIsReadForMobile(userId, true);
+
+        return recentNotificationsByuserIdAndIsReadForMobile.stream()
+                .map(MobileNotificationResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateNotificationIsRead(Long notificationId) {
+        ManagerNotification managerNotification =
+                managerNotificationRepository.findById(notificationId)
+                        .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
+
+        managerNotification.updateIsRead(true);
     }
 }
