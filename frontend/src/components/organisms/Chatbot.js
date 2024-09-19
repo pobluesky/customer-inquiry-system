@@ -289,6 +289,7 @@ Pobluesky입니다.
                 component:
                     <FAQSection
                         onInquiryClick={handleInquiryClick}
+                        onNewChatClick={handleNewChatClick}
                         ref={chatContentRef}
                         onFocusInput={focusInput}
                         onVocClick={handleVocClick}
