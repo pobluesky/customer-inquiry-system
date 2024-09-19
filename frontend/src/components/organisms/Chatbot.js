@@ -662,18 +662,27 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     resolve(response.data);
                 }, 1500));
 
+            const responseComponent = messageToSend.includes('라인아이템') ? (
+                <ProductTypeTable
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            ) : (
+                <DefaultSection
+                    onFirstComment={handleFirstComment}
+                    ref={chatContentRef}
+                    onFinishClick={handleFinishClick}
+                />
+            );
+
             setMessages(prev => [
                 ...prev,
                 {
                     text: botResponse,
                     type: 'bot',
                     time: getCurrentTime(),
-                    component:
-                        <DefaultSection
-                            onFirstComment={handleFirstComment}
-                            ref={chatContentRef}
-                            onFinishClick={handleFinishClick}
-                        />,
+                    component: responseComponent,
                 }
             ]);
 
