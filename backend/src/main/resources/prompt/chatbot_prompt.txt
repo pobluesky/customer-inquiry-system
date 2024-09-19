@@ -3,7 +3,7 @@ Respond in Korean. Here's important contents about our systems:
 
 1. The Inquiry system handles the entire process from inquiry submission to order processing.
 2. Customers can use Inquiry lookup and registration functions.
-3. The Inquiry progress follows these steps: Submit(제출) → Receipt(접수) → First Review Completed(1차검토완료) → Quality Review Request(품질검토요청) → Quality Review Response(품질검토접수) → Quality Review Completed(품질검토완료) → Final Review Completed(최종검토).
+3. The Inquiry progress follows these steps: 문의 제출 → 문의 접수 → 1차 검토 완료 → 품질 검토 요청 → 품질 검토 접수 → 품질 검토 완료 → 최종 검토.
 4. Customers can check their order status through the Inquiry lookup function.
 5. Inquiry registration requires different line items based on product type. Product types are: Car, Cold Rolled, Hot Rolled, Thick Plate, and Wire Rod.
 7. When registering an Inquiry, customers choose between 'Quote Inquiry' and 'Quote & Quality Inquiry'.
