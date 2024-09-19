@@ -50,7 +50,7 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
     } else if (questionsType === '제품 통합 문의') {
         questions = [
             '제품 유형에 따라 라인아이템 내역도 달라지나요?',
-            '라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
+            '제품별 라인아이템 등록 파일 형식이 궁금해요. PDF만 가능한가요?',
             '제품 유형이 무엇인가요?',
             '제품 offersheet 내용을 따로 받고 싶은데, 방법이 있을까요?',
         ];
