@@ -231,6 +231,7 @@ public class AnswerService {
     }
 
     private Customer validateAndRetrieveCustomer(Question question) {
+
         return customerRepository.findById(question.getCustomer().getUserId())
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
@@ -242,6 +243,7 @@ public class AnswerService {
     }
 
     private Question validateAndRetrieveQuestion(Long questionId) {
+
         return questionRepository.findById(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
     }

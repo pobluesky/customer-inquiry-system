@@ -23,7 +23,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {
     Question_Inquiry_Modal_Container,
     Question_Inquiry_Modal,
-    Select,
 } from '../../assets/css/Voc.css';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -366,7 +365,6 @@ export default function QuestionInquirySearchModal({
                             ).map((row) => (
                                 <TableRow
                                     key={row.inquiryId}
-                                    className={Select}
                                     onClick={() => {
                                         setInquiryId(row.inquiryId);
                                         window.open(

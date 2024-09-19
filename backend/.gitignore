@@ -53,4 +53,4 @@ src/main/resources/application-local.properties
 /src/main/generated/
 
 ### firebase ###
-/resources/firebase
+src/main/resources/firebase

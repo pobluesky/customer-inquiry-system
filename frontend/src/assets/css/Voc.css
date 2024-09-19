@@ -1,11 +1,11 @@
-.Question_Dashboard {
+.Voc_Dashboard {
     width: 1320px;
-    margin: 0 auto 24px auto;
+    margin: 24px auto 24px auto;
     font-size: 16px;
     color: #25262b;
 }
 
-.Question_Dashboard span {
+.Voc_Dashboard span {
     color: #ff0000;
     font-weight: 600;
 }
@@ -262,36 +262,43 @@
 }
 
 /******************************************************************/
-/* 질문 현황 정보 그룹 *********************************************/
+/* VoC 현황 정보 그룹 **********************************************/
 /******************************************************************/
-.Question_Overview {
+.Voc_Overview {
     width: 1320px;
     border: 1px solid #adb0b4;
     border-radius: 8px;
-    margin: 36px auto 24px auto;
-    padding: 8px 0;
+    margin: 36px auto 0 auto;
+    padding: 16px 0;
 }
 
-.Question_Overview > div:first-child {
-    display: grid;
+.Voc_Overview > div:nth-child(1) {
+    display: flex;
     justify-content: center;
-}
-
-/* 전체 문의 그룹, 답변 대기 그룹, 답변 완료 그룹 */
-.Question_Overview > div:first-child > div {
-    display: grid;
-    grid-template-rows: 42px 42px;
-    font-size: 20px;
-    color: #25262b;
     text-align: center;
-    justify-content: center;
-    align-items: center;
 }
 
-.Question_Overview > div:first-child > div > div:first-child {
-    width: 96px;
-    height: 28px;
-    line-height: 28px;
+.Voc_Overview > div:nth-child(1) img {
+    width: 48px;
+}
+
+.Voc_Overview > div:nth-child(1) > div {
+    width: 100%;
+}
+
+.Voc_Overview > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.Voc_Overview > div:nth-child(2) > div {
+    width: 100%;
+}
+
+.Voc_Overview > div:nth-child(2) > div span {
+    font-size: 24px;
+    color: #25262b;
 }
 
 /******************************************************************/
@@ -716,101 +723,178 @@
 }
 
 /******************************************************************/
-/* 협업 목록 조회 시 사용하는 조건 그룹 ******************************/
+/* 협업 목록 조회 테이블 ********************************************/
 /******************************************************************/
-.Collaboration_Filter_Pannel {
+.Col_Table {
     width: 1320px;
-    height: 288px;
-    margin: 36px auto 0 auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    margin: 24px auto 0 auto;
+    font-size: 16px;
+    text-align: center;
+    border-collapse: collapse;
 }
 
-.Collaboration_Filter_Pannel > div:first-child {
-    display: grid;
-    grid-template-rows: 52px 52px 52px 36px 32px;
-    margin: 36px 0 0 36px;
+.Col_Table th:nth-child(1) {
+    width: 10%;
 }
 
-/* 아이콘 + VoC 협업 조회 */
-.Collaboration_Filter_Pannel > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 48px 156px;
-    align-items: start;
-    font-size: 24px;
+.Col_Table th:nth-child(2) {
+    width: 10%;
+}
+
+.Col_Table th:nth-child(3) {
+    width: 50%;
+}
+
+.Col_Table th:nth-child(4) {
+    width: 15%;
+}
+
+.Col_Table th:nth-child(5) {
+    width: 15%;
+}
+
+.Col_Table td,
+.Col_Table th {
+    padding: 8px;
+    border: 1px solid #c1c1c1;
+}
+
+.Col_Table thead {
+    color: #8b8b8b;
+}
+
+.Col_Table thead th:nth-child(n + 4):hover,
+.Col_Table tbody tr:hover {
+    cursor: pointer;
+    background-color: #f3f3f3;
+}
+
+/* 협업 진행 현황 막대 */
+.Col_Table tbody tr td:nth-child(4) > div {
+    width: 80%;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 100px;
+    margin: 0 auto;
+}
+
+.Col_Status {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 180px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Status > div {
+    width: 144px;
+    line-height: 32px;
+}
+
+.Col_Status > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(2) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(3) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(4) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Status > div:nth-child(1):hover {
+    margin: 12px auto 6px auto;
+    border-radius: 100px;
+    background-color: #dbeddb;
+}
+
+.Col_Status > div:nth-child(2):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #f5e0e9;
+}
+
+.Col_Status > div:nth-child(3):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #d3e5ef;
+}
+
+.Col_Status > div:nth-child(4):hover {
+    margin: 6px auto 12px auto;
+    border-radius: 100px;
+    background-color: #efefee;
+}
+
+/* 협업 시간순 정렬 */
+.Col_Created_Date {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 180px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Created_Date > div {
+    width: 144px;
+    line-height: 32px;
+}
+
+.Col_Created_Date > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(2) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(3) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(4) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Created_Date > div:nth-child(-n + 2):hover {
+    border-radius: 100px;
+    background-color: #e3e2e0;
+}
+
+/******************************************************************/
+/* 협업 번호, 협업 담당자 검색 시 사용하는 검색창 *********************/
+/******************************************************************/
+.Col_Search_Input {
+    width: 1320px;
+    height: max-content;
+    line-height: 28px;
+    color: #25262b;
+    font-size: 20px;
     font-weight: 600;
-    color: #25262b;
+    margin: 24px auto 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-/* 협업 번호 + 협업 담당자 + 조회 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-child(2) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 320px 120px 320px 1fr;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 협업 등록일 */
-.Collaboration_Filter_Pannel > div > div:nth-child(3) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 180px 28px 180px;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 정렬 조건 + 정렬 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(3) {
-    display: grid;
-    grid-template-columns: 120px 96px 96px 96px;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 정렬 조건 + 정렬 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(3) select {
-    width: 96px;
-    height: 28px;
-    background: none;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    -webkit-appearance: none; /* 크롬 화살표 없애기 */
-    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
-    appearance: none; /* 화살표 없애기 */
-}
-
-/* 검색 결과 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(2) {
-    display: grid;
-    grid-template-columns: 30fr 1fr 0.5fr 1fr;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-    text-align: right;
-}
-
-/* 검색 결과 개수 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(2) > div {
-    margin: 0 0 0 12px;
-    font-size: 24px;
-    font-weight: 600;
-    color: red;
+.Col_Search_Input select {
+    width: 144px;
+    height: 38px;
 }
 
 /******************************************************************/
 /* 협업 목록 조회 테이블 ********************************************/
 /******************************************************************/
-.Select {
-    cursor: pointer;
-}
-
-.Select:hover {
-    background-color: #cbefff;
-}
-
 .Col_Res_Modal_Container {
     position: fixed;
     left: 50%;

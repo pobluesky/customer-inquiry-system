@@ -69,12 +69,13 @@ public enum ErrorCode {
 
     // Collaboration
     COLLABORATION_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "C0001", "존재하지 않는 협업입니다."),
-    COLLABORATION_STATUS_INPROGRESS(HttpStatus.INTERNAL_SERVER_ERROR, "C0002", "이미 진행중인 협업입니다."),
-    COLLABORATION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "C0003", "이미 완료된 협업입니다."),
-    COLLABORATION_STATUS_REFUSED(HttpStatus.INTERNAL_SERVER_ERROR, "C0004", "이미 거절된 협업입니다."),
-    COLLABORATION_INFO_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "C0005", "일치하지 않은 협업 정보입니다."),
-    RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0006", "해당 협업의 응답 담당자가 아닙니다."),
-    REQMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0007", "해당 협업의 요청 담당자가 아닙니다."),
+    COLLABORATION_STATUS_READY(HttpStatus.INTERNAL_SERVER_ERROR, "C0002", "협업이 진행 중인 답변으로 수정 및 삭제할 수 없습니다."),
+    COLLABORATION_STATUS_INPROGRESS(HttpStatus.INTERNAL_SERVER_ERROR, "C0003", "이미 진행중인 협업입니다."),
+    COLLABORATION_STATUS_COMPLETED(HttpStatus.INTERNAL_SERVER_ERROR, "C0004", "이미 완료된 협업입니다."),
+    COLLABORATION_STATUS_REFUSED(HttpStatus.INTERNAL_SERVER_ERROR, "C0005", "이미 거절된 협업입니다."),
+    COLLABORATION_INFO_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "C0006", "일치하지 않은 협업 정보입니다."),
+    RESMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0007", "해당 협업의 응답 담당자가 아닙니다."),
+    REQMANAGER_NOT_MACHED(HttpStatus.INTERNAL_SERVER_ERROR, "C0008", "해당 협업의 요청 담당자가 아닙니다."),
 
     // AI
     OCR_PROCESS_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "AI001", "텍스트 추출에 실패했습니다."),

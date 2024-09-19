@@ -20,7 +20,7 @@ public record MobileInquirySummaryResponseDTO (
         return MobileInquirySummaryResponseDTO.builder()
                 .inquiryId(inquiry.getInquiryId())
                 .progress(inquiry.getProgress().getTerm())
-                .inquiryType(inquiry.getInquiryType().getName())
+                .inquiryType(inquiry.getInquiryType().getKoreanName())
                 .customerName(inquiry.getCustomer().getCustomerName())
                 .productType(inquiry.getProductType().toString())
                 .build();
