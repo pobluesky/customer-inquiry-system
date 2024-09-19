@@ -46,7 +46,7 @@ const InquiryQuestionList = ({ title, onQuestionClick, questionsType }) => {
             '주문 변경 가능한가요?',
             '주문 배송지 변경 가능한가요?',
             '주문 프로세스가 궁금해요.',
-            '결과 수신 후 계약 협의는 어떻게 하나요?',
+            '주문 결과 수신 후 계약 협의는 어떻게 하나요?',
         ];
     } else if (questionsType === '제품 통합 문의') {
         questions = [
