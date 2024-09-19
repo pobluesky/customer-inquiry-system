@@ -16,7 +16,6 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Select } from '../../assets/css/Voc.css';
 
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
@@ -413,7 +412,6 @@ export default function QuestionTable({
                     ).map((row) => (
                         <TableRow
                             key={row.questionId}
-                            className={Select}
                             // 마지막 줄 border 제거
                             // sx={{
                             //     '&:last-child td, &:last-child th': {

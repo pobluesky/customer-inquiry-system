@@ -1,5 +1,7 @@
 package com.pobluesky.backend.domain.question.service;
 
+import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
+import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
@@ -49,6 +51,8 @@ public class QuestionService {
     private final CustomerRepository customerRepository;
 
     private final ManagerRepository managerRepository;
+
+    private final CollaborationRepository collaborationRepository;
 
     private final FileService fileService;
 
@@ -223,6 +227,8 @@ public class QuestionService {
 
         validateQuestionStatusAndActivated(question);
 
+        validateQuestionCol(question);
+
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
@@ -264,6 +270,8 @@ public class QuestionService {
 
         validateQuestionStatusAndActivated(question);
 
+        validateQuestionCol(question);
+
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
@@ -303,6 +311,8 @@ public class QuestionService {
 
         validateQuestionStatusAndActivated(question);
 
+        validateQuestionCol(question);
+
         question.deleteQuestion();
     }
 
@@ -317,6 +327,8 @@ public class QuestionService {
         Question question = validateQuestion(questionId);
 
         validateQuestionStatusAndActivated(question);
+
+        validateQuestionCol(question);
 
         question.deleteQuestion();
     }
@@ -388,5 +400,15 @@ public class QuestionService {
 
         if(!question.getIsActivated())
             throw new CommonException(ErrorCode.QUESTION_ALREADY_DELETED);
+    }
+
+    private void validateQuestionCol(Question question) {
+        Collaboration collaboration = collaborationRepository
+            .findByQuestionId(question)
+            .orElse(null);
+
+        if (collaboration != null) {
+            throw new CommonException(ErrorCode.COLLABORATION_STATUS_READY);
+        }
     }
 }

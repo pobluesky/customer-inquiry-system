@@ -23,7 +23,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {
     Col_Find_Manager_Modal_Container,
     Col_Find_Manager_Modal,
-    Select,
 } from '../../assets/css/Voc.css';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -327,7 +326,6 @@ export default function ColFindManagerModal({
                             ).map((row) => (
                                 <TableRow
                                     key={row.userId}
-                                    className={Select}
                                     onClick={() => {
                                         setColResId(row.userId);
                                         setColResManagerName(row.name);
