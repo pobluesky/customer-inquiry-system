@@ -60,7 +60,7 @@ export default function ColFindManagerModal({
                         margin={'0 24px 0 0'}
                         padding={'0px 12px 0px 12px'}
                         border={'1px solid #8b8b8b'}
-                        placeholder={'품질담당자 조회'}
+                        placeholder={'담당자 이름 조회'}
                         onChange={(e) => setManagerName(e.target.value)}
                         onKeyDown={enterKeyDown}
                     />
@@ -99,13 +99,13 @@ export default function ColFindManagerModal({
                     <table>
                         <thead>
                             <tr>
-                                <th>회원번호</th>
-                                <th>이름</th>
-                                <th>부서</th>
-                                <th>사번</th>
-                                <th>권한</th>
-                                <th>이메일</th>
-                                <th>연락처</th>
+                                <th width="10%">회원번호</th>
+                                <th width="10%">이름</th>
+                                <th width="10%">부서</th>
+                                <th width="10%">사번</th>
+                                <th width="10%">권한</th>
+                                <th width="30%">이메일</th>
+                                <th width="20%">연락처</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -187,8 +187,8 @@
 
 /* Inquiry 조회 그룹 */
 .Question_Inquiry_Modal > div:nth-child(1) {
-    width: 900px;
-    height: 600px;
+    width: 65vw;
+    height: 80vh;
     margin: 0 auto 0 auto;
     border: solid 1px #ffffff;
     border-radius: 12px;
@@ -198,8 +198,8 @@
 /* 검색창, 검색 버튼, 닫기 버튼 */
 .Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(1) {
     display: flex;
-    width: 840px;
-    margin: 24px auto 0 auto;
+    width: 60vw;
+    margin: 4vh auto 0 auto;
 }
 
 /* 닫기 버튼 */
@@ -219,19 +219,22 @@
     margin: 0 0 0 auto;
 }
 
+/* 테이블 부모 */
 .Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(2) {
-    max-width: 840px;
-    margin: 24px auto 0 auto;
-    overflow-x: auto;
+    max-width: 60vw;
+    max-height: 62vh;
+    margin: 4vh auto 0 auto;
+    overflow: auto;
 }
 
 .Question_Inquiry_Modal table {
-    width: 1320px;
+    width: 70vw;
+    height: 100%;
     font-size: 16px;
     text-align: center;
     border-collapse: collapse;
+    table-layout: fixed;
 }
-
 
 .Question_Inquiry_Modal table td,
 .Question_Inquiry_Modal table th {
@@ -1073,8 +1076,8 @@
 
 /* Inquiry 조회 그룹 */
 .Col_Find_Manager_Modal > div:nth-child(1) {
-    width: 900px;
-    height: 600px;
+    width: 65vw;
+    height: 80vh;
     margin: 0 auto 0 auto;
     border: solid 1px #ffffff;
     border-radius: 12px;
@@ -1084,8 +1087,8 @@
 /* 검색창, 검색 버튼, 닫기 버튼 */
 .Col_Find_Manager_Modal > div:nth-child(1) > div:nth-child(1) {
     display: flex;
-    width: 840px;
-    margin: 24px auto 0 auto;
+    width: 60vw;
+    margin: 4vh auto 0 auto;
 }
 
 /* 닫기 버튼 */
@@ -1105,17 +1108,21 @@
     margin: 0 0 0 auto;
 }
 
+/* 테이블 부모 */
 .Col_Find_Manager_Modal > div:nth-child(1) > div:nth-child(2) {
-    max-width: 840px;
-    margin: 24px auto 0 auto;
-    overflow-x: auto;
+    max-width: 60vw;
+    max-height: 62vh;
+    margin: 4vh auto 0 auto;
+    overflow: auto;
 }
 
 .Col_Find_Manager_Modal table {
-    width: 1320px;
+    width: 70vw;
+    height: 100%;
     font-size: 16px;
     text-align: center;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .Col_Find_Manager_Modal table td,
