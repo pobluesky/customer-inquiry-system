@@ -23,6 +23,7 @@ const InquiryHistoryForm = ({
     onLineItemsChange,
     onRefLineItems,
     isUpdate,
+    setError,
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
@@ -125,6 +126,7 @@ const InquiryHistoryForm = ({
                 handleLineItemsChangeByOCR={handleLineItemsChangeByOCR}
                 onSelect={handleSelect}
                 isUpdate={isUpdate}
+                setError={setError}
             />
             {isChecked ? (
                 <>

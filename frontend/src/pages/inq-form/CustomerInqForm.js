@@ -11,7 +11,10 @@ import { postInquiry } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { useForm } from 'react-hook-form';
-import { InquiryCompleteAlert } from '../../utils/actions';
+import {
+    InquiryCompleteAlert,
+    InquiryPostErrorAlert,
+} from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
@@ -23,8 +26,25 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const lineItemsRef = useRef(null);
     const fileRef = useRef(null);
     const [isUpdate, setIsUpdate] = useState(true);
-
+    const [error, setError] = useState('');
+    const [isError, setIsError] = useState(false);
+    const [alert, setAlert] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
+
+    useEffect(() => {
+        if (error !== '') {
+            setIsError(true);
+            setAlert(true);
+
+            const timer = setTimeout(() => {
+                setError('');
+            }, 2000);
+            return () => clearTimeout(timer);
+        } else {
+            setIsError(false);
+            setAlert(false);
+        }
+    }, [error]);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -158,6 +178,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 onLineItemsChange={(lineItems) => handleFormDataChange(
                     'lineItemRequestDTOs', lineItems)}
                 isUpdate={isUpdate}
+                setError={setError}
             />
             <AdditionalRequestForm formData={formData}
                                    handleFormDataChange={handleFormDataChange} />
@@ -165,6 +186,11 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                       formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}
                       handleFormDataChange={handleFormDataChange} />
+            <InquiryPostErrorAlert
+                showAlert={isError}
+                onClose={() => {
+                setAlert(false);
+            }} error={error} />
         </div>
     );
 }
