@@ -7,22 +7,15 @@ import {
 } from '../../apis/api/collaboration';
 import { Col_Table } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
-import { getCookie } from '../../apis/utils/cookies';
+import { useNavigate } from 'react-router-dom';
 
 export default function ColTable({
     colNo,
     colManager,
     setSearchCount,
-    setQuestionId,
-    setColId,
-    setStatus,
     status,
-    setAuth,
-    setColDetail,
-    setHeight,
-    setOpenModal,
 }) {
-    const role = getCookie('userRole');
+    const navigate = useNavigate();
     const { userId } = useAuth();
 
     const [filterArgs, setFilterArgs] = useState('');
@@ -34,13 +27,6 @@ export default function ColTable({
     const [progressFilter, setProgressFilter] = useState('');
 
     const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
-
-    // 해당 협업 관련 담당자 여부 확인
-    const isAuthorized = (authorizedId) => {
-        if (role === 'quality' && authorizedId !== userId) {
-            setAuth(false);
-        }
-    };
 
     const fetchGetCol = async (filterArgs) => {
         try {
@@ -55,14 +41,11 @@ export default function ColTable({
     const fetchGetColDetail = async (questionId, colId) => {
         try {
             const response = await getCollaborationDetail(questionId, colId);
-            setColDetail(response.data);
-            isAuthorized(response.data.colManagerToResponseDto.userId);
-            if (response.data && response.data.colStatus === 'READY') {
-                setHeight('55vh');
-            } else if (response.data && response.data.colStatus !== 'READY') {
-                setHeight('85vh');
-            }
-            setOpenModal(true);
+            navigate('/voc-form/collaboration/res', {
+                state: {
+                    colDetail: response.data,
+                },
+            });
         } catch (error) {
             console.error('협업 상세 조회 실패: ', error);
         }
@@ -120,13 +103,6 @@ export default function ColTable({
         }
     };
 
-    const openColDetail = (status, questionId, colId) => {
-        setStatus(status);
-        setQuestionId(questionId);
-        setColId(colId);
-        fetchGetColDetail(questionId, colId);
-    };
-
     useEffect(() => {
         fetchGetCol(filterArgs);
     }, [userId, filterArgs, status]);
@@ -182,11 +158,7 @@ export default function ColTable({
                         <tr
                             key={idx}
                             onClick={() => {
-                                openColDetail(
-                                    col.status,
-                                    col.questionId,
-                                    col.colId,
-                                );
+                                fetchGetColDetail(col.questionId, col.colId);
                             }}
                         >
                             <td>{col.colId}</td>

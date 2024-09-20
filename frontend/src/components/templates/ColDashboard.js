@@ -11,12 +11,6 @@ import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColDashboard() {
     const [status, setStatus] = useState('READY');
-    const [openModal, setOpenModal] = useState(false);
-    const [questionId, setQuestionId] = useState('');
-    const [colId, setColId] = useState('');
-    const [height, setHeight] = useState('');
-    const [auth, setAuth] = useState(true);
-    const [colDetail, setColDetail] = useState([]);
 
     // 질문 답변 현황
     const userId = getCookie('userId');
@@ -103,31 +97,8 @@ export default function ColDashboard() {
                 colNo={colNo}
                 colManager={colManager}
                 setSearchCount={setSearchCount}
-                setQuestionId={setQuestionId}
-                setColId={setColId}
-                setStatus={setStatus}
                 status={status}
-                // 하단 삭제 예정
-                setAuth={setAuth}
-                setColDetail={setColDetail}
-                setHeight={setHeight}
-                setOpenModal={setOpenModal}
-                // 상단 삭제 예정
             />
-            {openModal && (
-                <ColResModal
-                    questionId={questionId}
-                    colId={colId}
-                    setStatus={setStatus}
-                    status={status}
-                    setHeight={setHeight}
-                    height={height}
-                    auth={auth}
-                    colDetail={colDetail}
-                    setOpenModal={setOpenModal}
-                    openModal={openModal}
-                />
-            )}
         </>
     );
 }

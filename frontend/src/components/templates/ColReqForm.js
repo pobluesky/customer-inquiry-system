@@ -5,7 +5,7 @@ import ColFindManagerButton from '../organisms/ColFindManagerButton';
 import ColFindManagerModal from '../molecules/ColFindManagerModal';
 import ColReqInput from '../organisms/ColReqInput';
 
-export default function ColForm() {
+export default function ColReqForm() {
     const location = useLocation();
     const { questionDetail } = location.state;
 

@@ -22,12 +22,11 @@ export default function ColReqInput({ colResId, questionDetail }) {
                 colResId,
                 colContents: editorValue,
             };
-            const response = await postCollaborationBySales(
+            await postCollaborationBySales(
                 null,
                 colData,
                 questionDetail?.questionId,
             );
-            console.log(response.data);
             setOpenBackDrop(true);
             setTimeout(() => {
                 setOpenBackDrop(false);
