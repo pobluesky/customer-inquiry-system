@@ -53,9 +53,11 @@ public class CollaborationService {
         int page,
         int size,
         String sortBy,
+        Long colId,
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        Long colResId,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -71,9 +73,11 @@ public class CollaborationService {
 
         return collaborationRepository.findAllCollaborationsRequest(
             pageable,
+            colId,
             colStatus,
             colReqManager,
             colReqId,
+            colResId,
             startDate,
             endDate,
             sortBy

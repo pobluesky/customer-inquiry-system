@@ -37,7 +37,6 @@ public class Collaboration extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "col_request_id")
     private Manager colRequestManager;
