@@ -5,7 +5,7 @@ import Button from '../atoms/Button';
 import { QuestionAnswerButton } from '../atoms/VocButton';
 import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
-import { getAllInquiries, getInquiryDetail } from '../../apis/api/inquiry';
+import { getAllInquiries } from '../../apis/api/inquiry';
 
 export default function QuestionInquirySearchModal({
     setInquiryId,
@@ -45,8 +45,6 @@ export default function QuestionInquirySearchModal({
     useEffect(() => {
         fetchGetAllInquiry();
     }, [userId, openModal]);
-
-    console.log(filteredInquiryData);
 
     return (
         <div className={Question_Inquiry_Modal}>
@@ -99,45 +97,65 @@ export default function QuestionInquirySearchModal({
                     <table>
                         <thead>
                             <tr>
-                                <th>고유 번호</th>
-                                <th>판매 계약자</th>
-                                <th>문의 유형</th>
-                                <th>제품</th>
-                                <th>고객사</th>
-                                <th>진행 현황</th>
-                                <th>국가</th>
-                                <th>판매 상사</th>
-                                <th>법인 코드</th>
-                                <th>산업 분류</th>
+                                <th width="10%">번호</th>
+                                <th width="10%">제품</th>
+                                <th width="20%">판매 계약자</th>
+                                <th width="20%">문의 유형</th>
+                                <th width="20%">고객사</th>
+                                <th width="20%">진행 현황</th>
+                                <th width="10%">국가</th>
+                                <th width="20%">판매 상사</th>
+                                <th width="20%">법인 코드</th>
+                                <th width="20%">산업 분류</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredInquiryData.map((inq) => (
-                                <tr
-                                    key={inq.inquiryId}
-                                    onClick={() => {
-                                        setInquiryId(inq.inquiryId);
-                                        sessionStorage.setItem(
-                                            'userId',
-                                            userId,
-                                        );
-                                        window.open(
-                                            `/inq-list/customer/${inq.inquiryId}`,
-                                            '_blank',
-                                        );
-                                        setOpenModal(false);
-                                    }}
-                                >
-                                    <td>{inq.inquiryId}</td>
-                                    <td>{inq.salesPerson}</td>
-                                    <td>{inq.inquiryType}</td>
-                                    <td>{inq.productType}</td>
-                                    <td>{inq.customerName}</td>
-                                    <td>{inq.progress}</td>
-                                    <td>{inq.country}</td>
-                                    <td>{inq.corporate}</td>
-                                    <td>{inq.corporationCode}</td>
-                                    <td>{inq.industry}</td>
+                                <>
+                                    <tr
+                                        key={inq.inquiryId}
+                                        onClick={() => {
+                                            setInquiryId(inq.inquiryId);
+                                            sessionStorage.setItem(
+                                                'userId',
+                                                userId,
+                                            );
+                                            window.open(
+                                                `/inq-list/customer/${inq.inquiryId}`,
+                                                '_blank',
+                                            );
+                                            setOpenModal(false);
+                                        }}
+                                    >
+                                        <td>{inq.inquiryId}</td>
+                                        <td>{inq.productType}</td>
+                                        <td>{inq.salesPerson}</td>
+                                        <td>{inq.inquiryType}</td>
+                                        <td>{inq.customerName}</td>
+                                        <td>{inq.progress}</td>
+                                        <td>{inq.country}</td>
+                                        <td>{inq.corporate}</td>
+                                        <td>{inq.corporationCode}</td>
+                                        <td>{inq.industry}</td>
+                                    </tr>
+                                </>
+                            ))}
+                            {/* 테스트용, 미팅 후 삭제 예정 */}
+                            {[
+                                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+                                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+                            ].map((no) => (
+                                <tr key={no}>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
+                                    <td>test</td>
                                 </tr>
                             ))}
                         </tbody>
