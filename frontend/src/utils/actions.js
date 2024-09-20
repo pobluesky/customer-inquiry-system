@@ -386,6 +386,25 @@ const ColDoneAlert = ({ showAlert, onClose, message }) => {
     );
 };
 
+// inquiry 등록 시 에러 Alert
+const InquiryPostErrorAlert = ({ showAlert, onClose, error }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                {error}
+            </Alert>
+        </Snackbar>
+    )
+}
+
 // inquiry 작성 완료
 const InquiryCompleteAlert = () => {
     Swal.fire({
@@ -463,6 +482,7 @@ export {
     QuestionCompleteAlert,
     QuestionEditCompleteAlert,
     ColDoneAlert,
+    InquiryPostErrorAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,
     QualityReviewCompleteAlert,
