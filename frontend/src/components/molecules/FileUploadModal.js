@@ -35,13 +35,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
         }
     }, [uploadPercentage, isUploadComplete]);
 
-    // useEffect(() => {
-    //     if (error) {
-    //         const timer = setTimeout(() => setError(''), 3000);
-    //         return () => clearTimeout(timer);
-    //     }
-    // }, [error]);
-
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -119,11 +112,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
     return (
         <>
             <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
-                {/*{error && (*/}
-                {/*    <Alert severity="error" sx={{ mb: 2 }}>*/}
-                {/*        {error}*/}
-                {/*    </Alert>*/}
-                {/*)}*/}
                 <input
                     type="file"
                     id="file-upload-input"
@@ -143,16 +131,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                 >
                     PDF 업로드
                 </Button>
-
-                {/*{error && isModalOpen && (*/}
-                {/*    <div className={modalOverlay} onClick={closeModal}>*/}
-                {/*        <div className={modalContent} onClick={(e) => e.stopPropagation()}>*/}
-                {/*            <Alert severity="error" sx={{ mb: 2 }}>*/}
-                {/*                {error}*/}
-                {/*            </Alert>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
 
                 {isModalOpen && !isUploadComplete && (
                     <div className={modalOverlay} onClick={closeModal}>
