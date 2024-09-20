@@ -46,6 +46,8 @@ export default function QuestionInquirySearchModal({
         fetchGetAllInquiry();
     }, [userId, openModal]);
 
+    console.log(filteredInquiryData);
+
     return (
         <div className={Question_Inquiry_Modal}>
             <div>
@@ -139,24 +141,6 @@ export default function QuestionInquirySearchModal({
                                         <td>{inq.industry}</td>
                                     </tr>
                                 </>
-                            ))}
-                            {/* 테스트용, 미팅 후 삭제 예정 */}
-                            {[
-                                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-                            ].map((no) => (
-                                <tr key={no}>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                </tr>
                             ))}
                         </tbody>
                     </table>
