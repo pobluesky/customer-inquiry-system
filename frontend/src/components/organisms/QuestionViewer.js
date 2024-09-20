@@ -3,7 +3,7 @@ import dompurify from 'dompurify';
 import { Question_Viewer } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
 
-// 답변 게시판에 사용될 질문 뷰어
+// 질문 뷰어
 export default function QuestionViewer({
     questionDetail,
 }) {

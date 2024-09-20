@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import Button from '../atoms/Button';
+import { QuestionAnswerButton } from '../atoms/VocButton';
 import TextEditor from '../atoms/TextEditor';
 import { postCollaborationBySales } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
-import { useAuth } from '../../hooks/useAuth';
 import { Col_Req_Input } from '../../assets/css/Voc.css';
 
-export default function ColReqInput({ colResId }) {
+export default function ColReqInput({ colResId, questionDetail }) {
     const navigate = useNavigate();
 
-    const [colManager, setColManager] = useState('');
     const [editorValue, setEditorValue] = useState('');
     const [openBackDrop, setOpenBackDrop] = useState(false);
-
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const questionId = queryParams.get('questionId');
-
-    const status = 'READY';
 
     // 질문 등록
     const fetchPostColReq = async () => {
@@ -33,7 +25,7 @@ export default function ColReqInput({ colResId }) {
             const response = await postCollaborationBySales(
                 null,
                 colData,
-                questionId,
+                questionDetail?.questionId,
             );
             console.log(response.data);
             setOpenBackDrop(true);
@@ -54,32 +46,42 @@ export default function ColReqInput({ colResId }) {
     return (
         <div>
             <div className={Col_Req_Input}>
+                <TextEditor
+                    placeholder={'협업 요청 사유를 입력하세요.'}
+                    width={'1320px'}
+                    inputHeight={'240px'}
+                    inputMaxHeight={'240px'}
+                    padding={'0px'}
+                    margin={'0 auto 0 auto'}
+                    value={editorValue}
+                    border={'1px solid #8b8b8b'}
+                    onChange={setEditorValue}
+                />
                 <div>
-                    <div>
-                        <TextEditor
-                            placeholder={'협업 요청 사유를 입력하세요.'}
-                            width={'1144px'}
-                            inputHeight={'336px'}
-                            inputMaxHeight={'336px'}
-                            value={editorValue}
-                            onChange={setEditorValue}
-                        />
-                    </div>
-                    <div>
-                        <Button
-                            btnName={'협업 요청'}
-                            width={'108px'}
-                            height={'48px'}
-                            fontSize={'18px'}
-                            backgroundColor={'#03507d'}
+                    <>
+                        <QuestionAnswerButton
+                            btnName={'요청 등록'}
+                            backgroundColor={'#1748ac'}
                             textColor={'#ffffff'}
-                            border={'none'}
-                            borderRadius={'12px'}
+                            margin={'0 24px 0 0'}
                             onClick={() => {
                                 fetchPostColReq();
                             }}
                         />
-                    </div>
+                        <QuestionAnswerButton
+                            btnName={'요청 취소'}
+                            backgroundColor={'#ffffff'}
+                            border={'1px solid #1748ac'}
+                            textColor={'#1748ac'}
+                            onClick={() => {
+                                window.confirm(
+                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                )
+                                    ? navigate(-1)
+                                    : '';
+                            }}
+                        />
+                    </>
                 </div>
             </div>
             <Backdrop

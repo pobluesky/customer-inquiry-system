@@ -217,6 +217,7 @@
   padding: 14px;
   margin-top: 10px;
   border-radius: 15px;
+  border: 1px solid #4672e3;
   background-color: #4672e3;
 }
 
@@ -232,6 +233,7 @@
   padding: 14px;
   margin-top: 10px;
   border-radius: 15px;
+  border: 1px solid #009DCB;
   background-color: #009DCB;
   color: #FFFFFF;
 }

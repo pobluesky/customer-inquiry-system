@@ -296,10 +296,15 @@ export default function AnswerInput({
                                     backgroundColor={'#1748ac'}
                                     textColor={'#ffffff'}
                                     onClick={() => {
-                                        window.open(
-                                            `/voc-form/collaboration?questionId=${questionId}`,
-                                            '_blank',
-                                        );
+                                        // window.open(
+                                        //     `/voc-form/collaboration?questionId=${questionId}`,
+                                        //     '_blank',
+                                        // );
+                                        navigate('/voc-form/collaboration', {
+                                            state: {
+                                                questionDetail: questionDetail,
+                                            },
+                                        });
                                     }}
                                 />
                             )}

@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import ColReqFilterPannel from '../organisms/ColReqFilterPannel';
-import ColReqInput from '../organisms/ColReqInput';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import QuestionViewer from '../organisms/QuestionViewer';
+import ColFindManagerButton from '../organisms/ColFindManagerButton';
 import ColFindManagerModal from '../molecules/ColFindManagerModal';
+import ColReqInput from '../organisms/ColReqInput';
 
 export default function ColForm() {
+    const location = useLocation();
+    const { questionDetail } = location.state;
+
     const [openModal, setOpenModal] = useState(false);
     const [colResId, setColResId] = useState('');
     const [colResManagerName, setColResManagerName] = useState('');
@@ -15,14 +20,22 @@ export default function ColForm() {
         document.body.style.overflow = 'auto';
     }
 
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
     return (
         <div>
-            <ColReqFilterPannel
+            <QuestionViewer questionDetail={questionDetail} />
+            <ColFindManagerButton
                 setOpenModal={setOpenModal}
                 colResManagerName={colResManagerName}
                 colResManagerDept={colResManagerDept}
             />
-            <ColReqInput colResId={colResId} />
+            <ColReqInput colResId={colResId} questionDetail={questionDetail} />
             {openModal && (
                 <ColFindManagerModal
                     openModal={openModal}
