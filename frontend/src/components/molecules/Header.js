@@ -24,7 +24,6 @@ import {
 export const MenuLink = styled(Link)`
     text-decoration: none;
     color: #25262b;
-    margin: 0 36px 0 0;
 `;
 
 function MyHeader() {

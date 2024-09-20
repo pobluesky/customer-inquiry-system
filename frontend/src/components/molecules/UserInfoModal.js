@@ -21,7 +21,7 @@ function UserInfoModal() {
                     onClick={() => {
                         navigate('/account');
                     }}
-                    btnName={'설정'}
+                    btnName={'회원정보'}
                     width={'fit-content'}
                     height={'40px'}
                     backgroundColor={'#ffffff'}
