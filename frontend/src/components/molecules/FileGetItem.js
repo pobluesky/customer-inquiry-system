@@ -14,7 +14,11 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
         <div className={_FileItem}>
             {(typeof pastFile === 'undefined' || pastFile === null)
             && typeof currentFile === 'undefined' ? (
-                <div>파일 없음</div>
+                <div style={{ display: 'flex', marginLeft: '25px' }}>
+                    <div className={_FileNameColumn}>첨부파일명</div>
+                    |
+                <div style={{ marginLeft: '30px' }}>파일 없음</div>
+                </div>
             ) : (
                 <div style={{ display: 'flex', marginLeft: '25px' }}>
                 <div className={_FileNameColumn}>첨부파일명</div>

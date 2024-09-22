@@ -90,10 +90,6 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                         padding={'10px'}
                                     />
                                 </div>
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
-                                </div>
                                 <FileGetItem
                                     pastFile={currentFileData?.pastFiles}
                                     filePath={currentFileData?.filePath}
@@ -123,10 +119,6 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                         fontWeight={'500'}
                                         padding={'10px'}
                                     />
-                                </div>
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
                                 </div>
                                 <FileItem files={formData.files} />
                             </>

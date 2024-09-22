@@ -95,11 +95,6 @@ const FileForm = ({ fileForm, formData, handleFormDataChange, onRefFile }) => {
                                         padding={'10px'}
                                     />
                                 </div>
-                                {/* 컬럼 라벨 */}
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
-                                </div>
                                 {/* 파일 목록 */}
                                 <FileItem
                                     inquiryId={formData.inquiryId}
@@ -109,10 +104,6 @@ const FileForm = ({ fileForm, formData, handleFormDataChange, onRefFile }) => {
                         ) : (
                             <div>
                                 {/* 첨부파일의 경우 */}
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
-                                </div>
                                 <FileItem
                                     files={files}
                                 />
