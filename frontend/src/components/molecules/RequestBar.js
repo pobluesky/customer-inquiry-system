@@ -9,6 +9,7 @@ import {
 import {
     putProgress,
 } from '../../apis/api/inquiry';
+import { _previewButton } from '../../assets/css/Form.css';
 
 function RequestBar({
     requestBarTitle,
@@ -19,6 +20,7 @@ function RequestBar({
     onQualitySubmit,
     onQualityCompleteSubmit,
     onReset,
+    isPreviewData,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
@@ -103,6 +105,11 @@ function RequestBar({
             >
                 <div style={{ marginLeft: '2vw' }}>{displayName}</div>
                 <div>
+                    {isPreviewData && (
+                        <button
+                            className={_previewButton}
+                        >시연용</button>
+                    )}
                     {Array.isArray(buttons) && buttons.length > 0 ? (
                         buttons.map((btnName, index) => (
                         <Button

@@ -71,6 +71,18 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         lineItemResponseDTOs: [],
     });
 
+    const [previewData, setPreviewData] = useState({
+        // inquiry
+        additionalRequests: '추가사항으로 견적서 요청 드립니다.',
+        corporate: 'GG',
+        country: 'KOREA',
+        customerRequestDate: '2024-10-21',
+        industry: 'ELECTRIC',
+        inquiryType: 'COMMON_INQUIRY',
+        productType: 'WIRE_ROD',
+        salesPerson: 'GEUMGANG',
+    })
+
     const getUserInfo = async () => {
         if (!userId) {
             return;
@@ -167,12 +179,15 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
             <RequestBar requestBarTitle={"Inquiry 등록0"} role={"customer"}
                         onReset={onReset}
-                        onSubmit={handleSubmit(handleInquirySubmit)} />
+                        onSubmit={handleSubmit(handleInquirySubmit)}
+                        isPreviewData={true}
+            />
             <InquiryNewForm
                 title={'기본정보'}
                 register={register}
                 errors={errors}
                 formData={formData}
+                previewData={previewData}
                 handleFormDataChange={handleFormDataChange}
             />
             <InquiryHistoryForm
@@ -184,8 +199,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 isUpdate={isUpdate}
                 setError={setError}
             />
-            <AdditionalRequestForm formData={formData}
-                                   handleFormDataChange={handleFormDataChange} />
+            <AdditionalRequestForm
+                formData={formData}
+                previewData={previewData}
+                handleFormDataChange={handleFormDataChange} />
             <FileForm fileForm={"파일첨부"}
                       formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}

@@ -505,3 +505,22 @@ select {
     display: flex;
     justify-content: left;
 }
+
+/******************************************************************/
+/* 시연용 버튼 ******************************************/
+/******************************************************************/
+._previewButton {
+    margin-right: 30px;
+    background-color: #ffffff;
+    color: #ffffff;
+    font-size: 17px;
+    border-radius: 18px;
+    border: none;
+    padding: 8px;
+}
+
+._previewButton:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #c5c5c5;
+}
