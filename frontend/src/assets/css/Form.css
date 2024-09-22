@@ -431,7 +431,7 @@ select {
 
 ._FileItem {
     display: grid;
-    text-align: center;
+    text-align: left;
     grid-template-columns: 1fr;
     color: #7b7b7b;
     background-color: #ffffff;
@@ -445,8 +445,16 @@ select {
 
 ._FileName {
     color: #007AFF;
+    font-weight: 600;
+    font-size: 16px;
+    margin-left: 30px;
+}
+
+._FileNameColumn {
+    color: #444444;
     font-weight: 800;
     font-size: 16px;
+    margin-right: 30px;
 }
 
 /******************************************************************/
