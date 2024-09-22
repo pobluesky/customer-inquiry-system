@@ -176,6 +176,7 @@ export const processInquiries = (data) => {
             corporate: inquiry.corporate,
             corporationCode: inquiry.corporationCode,
             industry: industryText,
+            createdDate: inquiry.createdDate,
         };
     });
 };

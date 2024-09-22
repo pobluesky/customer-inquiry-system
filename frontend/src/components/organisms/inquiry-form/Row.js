@@ -177,6 +177,7 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
                     className="custom-table-cell"
