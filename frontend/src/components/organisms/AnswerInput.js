@@ -300,7 +300,7 @@ export default function AnswerInput({
                                         //     `/voc-form/collaboration?questionId=${questionId}`,
                                         //     '_blank',
                                         // );
-                                        navigate('/voc-form/collaboration', {
+                                        navigate('/voc-form/collaboration/req', {
                                             state: {
                                                 questionDetail: questionDetail,
                                             },

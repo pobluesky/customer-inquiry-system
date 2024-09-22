@@ -12,10 +12,13 @@ import {
     fileName,
     modalOverlay,
     modalContent,
-    modalContentComplete
+    modalContentComplete,
+    Player_Wrapper,
+    React_Player,
 } from '../../assets/css/FileUpload.css';
 import { postOCR } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
+import ReactPlayer from 'react-player';
 
 const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
     const { userId } = useAuth();
@@ -76,7 +79,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
     const openFileDialog = () => {
         if (productType === '') {
-            setError("제품유형을 선택해 주세요.");
+            setError('제품유형을 선택해 주세요.');
             return;
         }
         if (fileInputRef.current) {
@@ -111,7 +114,10 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
     return (
         <>
-            <div className={fileUploadContainer} style={{ textAlign: 'center' }}>
+            <div
+                className={fileUploadContainer}
+                style={{ textAlign: 'center' }}
+            >
                 <input
                     type="file"
                     id="file-upload-input"
@@ -134,42 +140,64 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
                 {isModalOpen && !isUploadComplete && (
                     <div className={modalOverlay} onClick={closeModal}>
-                        <div className={modalContent} onClick={(e) => e.stopPropagation()}>
-                              {isUploading && !isUploadComplete && (
-                                  <div className={uploadingIndicator}>
-                                      <button
-                                          onClick={closeModal}
-                                          style={{
-                                              position: 'absolute',
-                                              top: '-13px',
-                                              right: '-13px',
-                                              background: 'transparent',
-                                              border: 'none',
-                                              fontSize: '24px',
-                                              cursor: 'pointer',
-                                              color: '#888',
-                                          }}
-                                      >
-                                          &times;
-                                      </button>
-                                      <div
-                                          className={`loaderContainer ${isUploadComplete
-                                              ? 'hidden' : ''}`}>
-                                          <div className={loader}></div>
-                                      </div>
-                                      <p className={fileName}>{file?.name}</p>
-                                      <p className={fileUploadText}>AI 기술을 활용해
-                                          내역을 등록 중입니다.</p>
-                                      <div className={progressBarContainer}>
-                                          <div
-                                              className={progressBar}
-                                              style={{ width: `${uploadPercentage}%` }}
-                                          ></div>
-                                      </div>
-                                      <p className={progressText}>{uploadPercentage}%
-                                          완료</p>
-                                  </div>
-                              )}
+                        <div
+                            className={modalContent}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {isUploading && !isUploadComplete && (
+                                <div className={uploadingIndicator}>
+                                    <button
+                                        onClick={closeModal}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '-13px',
+                                            right: '-13px',
+                                            background: 'transparent',
+                                            border: 'none',
+                                            fontSize: '24px',
+                                            cursor: 'pointer',
+                                            color: '#888',
+                                        }}
+                                    >
+                                        &times;
+                                    </button>
+                                    {/* <div
+                                        className={`loaderContainer ${
+                                            isUploadComplete ? 'hidden' : ''
+                                        }`}
+                                    >
+                                        <div className={loader}></div>
+                                    </div> */}
+                                    {/* 비디오 삽입 */}
+                                    <div className={Player_Wrapper}>
+                                        <ReactPlayer
+                                            url={'/videos/loading.mp4'}
+                                            // width="15vw"
+                                            height="10vh"
+                                            playing={true}
+                                            muted={true}
+                                            controls={false}
+                                            loop={true}
+                                            className={React_Player}
+                                        />
+                                    </div>
+                                    <p className={fileName}>{file?.name}</p>
+                                    <p className={fileUploadText}>
+                                        AI 기술을 활용해 내역을 등록 중입니다.
+                                    </p>
+                                    <div className={progressBarContainer}>
+                                        <div
+                                            className={progressBar}
+                                            style={{
+                                                width: `${uploadPercentage}%`,
+                                            }}
+                                        ></div>
+                                    </div>
+                                    <p className={progressText}>
+                                        {uploadPercentage}% 완료
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
@@ -177,17 +205,23 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
             {isModalOpen && isUploadComplete && (
                 <div className={modalOverlay} onClick={closeModal}>
-                    <div className={modalContentComplete}
-                         onClick={(e) => e.stopPropagation()}>
-                        <CheckCircleIcon style={{
-                            margin: '40px 0 0 0',
-                            fontSize: 60,
-                            color: '#00c6ff',
-                            opacity: isUploadComplete ? 1 : 0,
-                            transition: 'opacity 0.5s ease',
-                        }} />
+                    <div
+                        className={modalContentComplete}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <CheckCircleIcon
+                            style={{
+                                margin: '40px 0 0 0',
+                                fontSize: 60,
+                                color: '#00c6ff',
+                                opacity: isUploadComplete ? 1 : 0,
+                                transition: 'opacity 0.5s ease',
+                            }}
+                        />
                         <div className={fileUploadText}>업로드 완료</div>
-                        <div className={progressText}>업로드된 데이터를 확인해 주세요.</div>
+                        <div className={progressText}>
+                            업로드된 데이터를 확인해 주세요.
+                        </div>
                     </div>
                 </div>
             )}

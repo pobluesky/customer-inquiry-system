@@ -1,134 +1,151 @@
 .modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
 .modalContent {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 400px;
-  height: 238px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    height: 238px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 .modalContentComplete {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 400px;
-  height: 208px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    height: 208px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 .uploadingIndicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .loaderContainer {
-  position: relative;
-  width: 60px;
-  height: 60px;
+    position: relative;
+    width: 60px;
+    height: 60px;
 }
 
 .loader {
-  border: 10px solid #f8f8f7;
-  border-left-color: rgba(0, 198, 255, 1);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin-local 1s linear infinite;
-  margin-bottom: 25px;
-  transition: opacity 0.5s ease;
+    border: 10px solid #f8f8f7;
+    border-left-color: rgba(0, 198, 255, 1);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin-local 1s linear infinite;
+    margin-bottom: 25px;
+    transition: opacity 0.5s ease;
 }
 
 .loader.hidden {
-  opacity: 0;
+    opacity: 0;
 }
 
 @keyframes spin-local {
-  0% {
-    transform: rotate(0deg);
-    border-left-color: rgba(0, 198, 255, 1);
-  }
-  50% {
-    transform: rotate(180deg);
-    border-left-color: rgba(0, 150, 255, 0.3);
-  }
-  100% {
-    transform: rotate(360deg);
-    border-left-color: rgb(185, 232, 255);
-  }
+    0% {
+        transform: rotate(0deg);
+        border-left-color: rgba(0, 198, 255, 1);
+    }
+    50% {
+        transform: rotate(180deg);
+        border-left-color: rgba(0, 150, 255, 0.3);
+    }
+    100% {
+        transform: rotate(360deg);
+        border-left-color: rgb(185, 232, 255);
+    }
 }
 
 .progressBarContainer {
-  width: 100%;
-  height: 15px;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  margin-top: 5px;
+    width: 100%;
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 5px;
 }
 
 .progressBar {
-  height: 100%;
-  background-color: #00c6ff;
-  border-radius: 8px;
-  transition: width 0.5s ease;
+    height: 100%;
+    background-color: #00c6ff;
+    border-radius: 8px;
+    transition: width 0.5s ease;
 }
 
 .progressText {
-  margin-top: 12px;
-  font-size: 17px;
-  color: #868e96;
-  font-weight: 600;
+    margin-top: 12px;
+    font-size: 17px;
+    color: #868e96;
+    font-weight: 600;
 }
 
 .fileName {
-  margin-top: 2px;
-  font-size: 14px;
-  color: #0093ff;
-  font-weight: 600;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #0093ff;
+    font-weight: 600;
 }
 
 .fileUploadContainer {
-  text-align: center;
+    text-align: center;
 }
 
 .fileUploadLabel {
-  cursor: pointer;
-  padding: 10px 20px;
-  background-color: #0072ff;
-  color: white;
-  border-radius: 5px;
-  display: inline-block;
-  transition: background-color 0.3s ease;
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #0072ff;
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
 }
 
 .fileUploadLabel:hover {
-  background-color: #00c6ff;
+    background-color: #00c6ff;
 }
 
 .fileUploadText {
-  margin-top: 10px;
-  font-size: 20px;
-  color: #555;
-  font-weight: 700;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #555;
+    font-weight: 700;
+}
+
+.Player_Wrapper {
+    position: relative;
+    background-color: transparent;
+}
+
+.React_Player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent !important;
+    pointer-events: none;
+}
+
+.React_Player > video {
+    background-color: transparent;
 }

@@ -46,9 +46,11 @@ public class CollaborationController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) Long colId,
         @RequestParam(required = false) ColStatus colStatus,
         @RequestParam(required = false) String colReqManager,
         @RequestParam(required = false) Long colReqId,
+        @RequestParam(required = false) Long colResId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
@@ -57,9 +59,11 @@ public class CollaborationController {
             page,
             size,
             sortBy,
+            colId,
             colStatus,
             colReqManager,
             colReqId,
+            colResId,
             startDate,
             endDate
         );

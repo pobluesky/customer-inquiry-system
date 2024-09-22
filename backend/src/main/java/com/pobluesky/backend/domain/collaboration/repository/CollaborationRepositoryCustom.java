@@ -11,9 +11,11 @@ import org.springframework.data.domain.Pageable;
 public interface CollaborationRepositoryCustom {
     Page<CollaborationSummaryResponseDTO> findAllCollaborationsRequest(
         Pageable pageable,
+        Long colId,
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        Long colResId,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy

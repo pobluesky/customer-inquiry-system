@@ -1139,3 +1139,78 @@
     cursor: pointer;
     background-color: #f3f3f3;
 }
+
+/******************************************************************/
+/* 협업 요청 응답시 확인하는 협업 요청 사유 **************************/
+/******************************************************************/
+.Col_Req_Viewer {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 0 auto;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.Col_Req_Viewer > div:nth-child(-n + 2) {
+    display: flex;
+    width: 1224px;
+    align-items: center;
+}
+
+.Col_Req_Viewer > div:nth-child(3) {
+    width: 1224px;
+    align-items: center;
+}
+
+/* 협업 요청 사유 */
+.Col_Req_Viewer > div:nth-child(1) {
+    margin: 24px auto 0 auto;
+    height: 28px;
+}
+
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(1) {
+    width: 960px;
+    height: 28px;
+    line-height: 28px;
+    color: #25262b;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 첨부파일 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(2) {
+    width: 144px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 0 0 auto;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* 협업 요청 날짜, 요청 담당자 정보 */
+.Col_Req_Viewer > div:nth-child(2) {
+    margin: 12px auto 0 auto;
+    height: 16px;
+    font-size: 12px;
+    color: #64636a;
+}
+
+/* 협업 요청 날짜 */
+.Col_Req_Viewer > div:nth-child(2) > div:nth-child(1) {
+    width: 120px;
+    margin: 0 8px 0 0;
+}
+
+/* 요청 담당자 정보 */
+.Col_Req_Viewer > div:nth-child(2) > div:nth-child(n + 2) {
+    width: fit-content;
+    margin: 0 8px 0 0;
+}
+
+/* 내용 */
+.Col_Req_Viewer > div:nth-child(3) {
+    margin: 12px auto 24px auto;
+    font-size: 16px;
+    color: #25262b;
+}
