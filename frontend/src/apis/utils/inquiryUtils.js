@@ -145,29 +145,26 @@ export const processInquiries = (data) => {
                 industryText = '-';
         }
 
-        let salesManagerNameText;
-        switch (inquiry.salesManagerName) {
-            case null:
-                salesManagerNameText = '-';
-                break;
-            default:
-                salesManagerNameText = inquiry.salesManagerName;
-        }
+        let salesManagerNameText = inquiry.salesManagerName || '-';
+        let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
-        let qualityManagerNameText;
-        switch (inquiry.qualityManagerName) {
-            case null:
-                qualityManagerNameText = '-';
-                break;
-            default:
-                qualityManagerNameText = inquiry.qualityManagerName;
-        }
+        // createdDate에서 날짜 정보 추출
+        const createdDate = new Date(inquiry.createdDate);
+        const year = createdDate.getFullYear();
+        const month = String(createdDate.getMonth() + 1).padStart(2, '0'); // 월을 두 자리로 변환
+        const day = String(createdDate.getDate()).padStart(2, '0'); // 일을 두 자리로 변환
+
+        // InquiryId를 3자리로 변환
+        const inquiryIdPadded = String(inquiry.inquiryId).padStart(3, '0');
+
+        // 날짜 + 3자리 InquiryId로 처리
+        const processedInquiryId = `${year}${month}${day}${inquiryIdPadded}`;
 
         return {
             customerName: inquiry.customerName,
             salesManagerName: salesManagerNameText,
             qualityManagerName: qualityManagerNameText,
-            inquiryId: inquiry.inquiryId,
+            inquiryId: processedInquiryId,
             inquiryType: inquiryTypeText,
             productType: productTypeText,
             progress: progressText,
