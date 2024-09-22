@@ -99,7 +99,7 @@ function Row({ row, role }) {
                         className="custom-table-cell"
                         sx={{ paddingLeft: '70px', width: '50px' }}
                         align="center">
-                    {row.inquiryId}
+                    {row.processedInquiryId}
                 </TableCell>
                 <TableCell className="custom-table-cell" align="center">
                     <InquiryTypeBadge inquiryType={row.inquiryType} />

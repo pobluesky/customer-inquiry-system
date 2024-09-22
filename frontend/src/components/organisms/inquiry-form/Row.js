@@ -164,7 +164,7 @@ function Row({ row, role }, ref) {
                         }}
                     />
                 </TableCell>
-                <TableCell className="custom-table-cell" align="center" sx={{ width: '80px' }}>{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="center" sx={{ width: '80px' }}>{row.processedInquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="center">
                     <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
