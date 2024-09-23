@@ -51,7 +51,7 @@ public class InquiryController {
 
     @GetMapping("/customers/inquiries/{userId}")
     @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByCustomerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesByCustomer(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestParam(defaultValue = "LATEST") String sortBy,
@@ -66,7 +66,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
             token,
             userId,
             sortBy,
@@ -155,7 +155,7 @@ public class InquiryController {
     // 담당자 Inquiry 조회
     @GetMapping("/managers/sales/inquiries")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesBySalesManagerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesBySalesManager(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
@@ -169,7 +169,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesBySalesManagerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesBySalesManager(
             token,
             sortBy,
             progress,
@@ -190,7 +190,7 @@ public class InquiryController {
 
     @GetMapping("/managers/quality/inquiries")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByQualityManagerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesByQualityManager(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
@@ -203,7 +203,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByQualityManagerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByQualityManager(
             token,
             sortBy,
             progress,

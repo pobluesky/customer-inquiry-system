@@ -59,7 +59,7 @@ public class InquiryService {
 
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
-    public List<InquirySummaryResponseDTO> getInquiriesByCustomerWithoutPaging(
+    public List<InquirySummaryResponseDTO> getInquiriesByCustomer(
         String token,
         Long customerId,
         String sortBy,
@@ -79,7 +79,7 @@ public class InquiryService {
         if(!Objects.equals(customer.getUserId(), customerId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        return inquiryRepository.findInquiriesByCustomerWithoutPaging(
+        return inquiryRepository.findInquiriesByCustomer(
             customerId,
             progress,
             productType,
@@ -97,7 +97,7 @@ public class InquiryService {
 
     // Inquiry 전체 조회(판매 담당자) without paging
     @Transactional(readOnly = true)
-    public List<InquirySummaryResponseDTO> getInquiriesBySalesManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> getInquiriesBySalesManager(
         String token,
         String sortBy,
         Progress progress,
@@ -116,7 +116,7 @@ public class InquiryService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return inquiryRepository.findInquiriesBySalesManagerWithoutPaging(
+        return inquiryRepository.findInquiriesBySalesManager(
             progress,
             productType,
             customerName,
@@ -133,7 +133,7 @@ public class InquiryService {
 
     // Inquiry 전체 조회(품질 담당자) without paging
     @Transactional(readOnly = true)
-    public List<InquirySummaryResponseDTO> getInquiriesByQualityManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> getInquiriesByQualityManager(
         String token,
         String sortBy,
         Progress progress,
@@ -151,7 +151,7 @@ public class InquiryService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return inquiryRepository.findInquiriesByQualityManagerWithoutPaging(
+        return inquiryRepository.findInquiriesByQualityManager(
             progress,
             productType,
             customerName,

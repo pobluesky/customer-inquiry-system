@@ -34,7 +34,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     QManager qualityManager = new QManager("qualityManager");
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesByCustomer(
         Long userId,
         Progress progress,
         ProductType productType,
@@ -62,7 +62,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.corporationCode,
                 inquiry.industry,
                 salesManager.name.as("salesManagerName"),
-                qualityManager.name.as("qualityManagerName")
+                qualityManager.name.as("qualityManagerName"),
+                inquiry.createdDate
                 )
             )
             .from(inquiry)
@@ -87,7 +88,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesBySalesManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesBySalesManager(
         Progress progress,
         ProductType productType,
         String customerName,
@@ -113,7 +114,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 inquiry.corporationCode,
                 inquiry.industry,
                 salesManager.name.as("salesManagerName"),
-                qualityManager.name.as("qualityManagerName")
+                qualityManager.name.as("qualityManagerName"),
+                inquiry.createdDate
                 )
             )
             .from(inquiry)
@@ -137,7 +139,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesByQualityManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesByQualityManager(
         Progress progress,
         ProductType productType,
         String customerName,
@@ -163,7 +165,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                     inquiry.corporationCode,
                     inquiry.industry,
                     salesManager.name.as("salesManagerName"),
-                    qualityManager.name.as("qualityManagerName")
+                    qualityManager.name.as("qualityManagerName"),
+                    inquiry.createdDate
                 )
             )
             .from(inquiry)
