@@ -149,10 +149,13 @@ export const processInquiries = (data) => {
         let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
         // createdDate에서 날짜 정보 추출
-        const createdDate = new Date(inquiry.createdDate);
-        const year = createdDate.getFullYear();
-        const month = String(createdDate.getMonth() + 1).padStart(2, '0'); // 월을 두 자리로 변환
-        const day = String(createdDate.getDate()).padStart(2, '0'); // 일을 두 자리로 변환
+        const createdDateString = inquiry.createdDate; // 20240923 형식
+        const year = createdDateString.slice(0, 4); // 연도 추출
+        const month = createdDateString.slice(4, 6); // 월 추출
+        const day = createdDateString.slice(6, 8); // 일 추출
+
+        // Date 객체 생성 (년, 월 - 1, 일)
+        const createdDate = new Date(`${year}-${month}-${day}`);
 
         // InquiryId를 3자리로 변환
         const inquiryIdPadded = String(inquiry.inquiryId).padStart(3, '0');

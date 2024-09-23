@@ -97,8 +97,8 @@ function Row({ row, role }) {
                         component="th"
                         scope="row"
                         className="custom-table-cell"
-                        sx={{ paddingLeft: '70px', width: '50px' }}
-                        align="center">
+                        sx={{ paddingLeft: '50px', width: '50px' }}
+                        align="left">
                     {row.processedInquiryId}
                 </TableCell>
                 <TableCell className="custom-table-cell" align="center">
