@@ -66,9 +66,10 @@
     height: 88vh;
     margin: auto 0;
     grid-template-columns: 36vw 36vw;
-    justify-content: center;
+    justify-content: right;
     align-content: center;
     justify-items: center;
+    background-color: #F4F5FB;
 }
 
 .Dashboard_Item {
