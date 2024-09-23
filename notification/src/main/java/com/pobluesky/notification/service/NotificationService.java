@@ -16,6 +16,7 @@ import com.pobluesky.feign.UserClient;
 import com.pobluesky.notification.repository.CustomerNotificationRepository;
 import com.pobluesky.notification.repository.ManagerNotificationRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -155,8 +156,11 @@ public class NotificationService {
         Object dto,
         Long id,
         NotificationType notificationType
-    ) {
-//        Long userId = signService.parseToken(token);
+    ) throws IOException {
+        Long userId = userClient.parseToken(token);
+
+        if(!Objects.equals(userId, id))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:
