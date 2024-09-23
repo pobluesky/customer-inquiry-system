@@ -34,7 +34,7 @@ import Poseokho from '../../assets/css/icons/Poseokho.png';
 import profile from '../../assets/css/icons/profile.svg';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';
-import { Link, useNavigation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { productTypes } from '../../utils/inquiry';
 
@@ -719,18 +719,70 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
         }
     };
 
+    const [position, setPosition] = useState({ top: window.innerHeight - 120 });
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragStart = (event) => {
+        setIsDragging(true);
+    };
+
+    const handleDrag = (event) => {
+        if (isDragging) {
+            const newY = event.clientY - 50;
+
+            if (newY >= 0 && newY <= window.innerHeight - 100) {
+                setPosition({ top: newY });
+            }
+        }
+    };
+
+    const handleDragEnd = () => {
+        setIsDragging(false);
+    };
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (position.top > window.innerHeight - 100) {
+                setPosition({ top: window.innerHeight - 100 });
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [position]);
+
     return (
         <div>
-            <img
-                src={ChatbotIcon}
-                alt="chatbot"
-                className={chatBotIcon}
-                onClick={handleToggle}
-            />
+            <div
+                draggable="true"
+                onDragStart={handleDragStart}
+                onDrag={handleDrag}
+                onDragEnd={handleDragEnd}
+                style={{
+                    position: 'fixed',
+                    top: `${position.top}px`,
+                    right: '20px',
+                    width: '100px',
+                    height: '100px',
+                    cursor: 'pointer',
+                    zIndex: 1000,
+                }}
+            >
+                <img
+                    src={ChatbotIcon}
+                    alt="chatbot"
+                    style={{ width: '100%', height: '100%' }}
+                    onClick={handleToggle}
+                />
+            </div>
             <div className={`${chatBox} ${isOpen ? chatBoxOpen : ''}`}>
                 <div className={chatHeader}>
                     <img src={pobluesky} alt="pobluesky" />
-                    <button className={closeButton} onClick={handleClose}>X</button>
+                    <button className={closeButton} onClick={handleClose}>X
+                    </button>
                 </div>
                 <div className={chatContent} ref={chatContentRef}>
                     <div className={dateHeader}>
@@ -764,16 +816,20 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                                 </div>
                                 <div className={time}
                                      style={{
-                                        textAlign: msg.type === 'user' ? 'right'
-                                            : 'left',
-                                        position: 'relative',
-                                        marginTop: 'auto',
-                                        marginLeft: msg.type === 'user' ? 0 : '6px',
-                                        marginRight: msg.type === 'bot' ? 0 : '6px',
-                                        bottom: '2px',
-                                        right: msg.type === 'user' ? 0 : 'auto',
-                                        left: msg.type === 'user' ? 'auto' : 0,
-                                    }}>
+                                         textAlign: msg.type === 'user'
+                                             ? 'right'
+                                             : 'left',
+                                         position: 'relative',
+                                         marginTop: 'auto',
+                                         marginLeft: msg.type === 'user' ? 0
+                                             : '6px',
+                                         marginRight: msg.type === 'bot' ? 0
+                                             : '6px',
+                                         bottom: '2px',
+                                         right: msg.type === 'user' ? 0
+                                             : 'auto',
+                                         left: msg.type === 'user' ? 'auto' : 0,
+                                     }}>
                                     {msg.time}
                                 </div>
                             </div>
