@@ -9,7 +9,7 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, isPerform, previewData }) => {
+const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title }) => {
     const {
         customerCode,
         customerName,
@@ -35,6 +35,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                     isChecked={isChecked}
                     setCheck={setCheck}
                     isPreviewButton={true}
+                    isForm={true}
                     progress={'FORM'}
                 />
                 {isChecked ? (
