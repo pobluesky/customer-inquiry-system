@@ -148,7 +148,7 @@ export const processInquiries = (data) => {
         let salesManagerNameText = inquiry.salesManagerName || '-';
         let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
-        // createdDate에서 날짜 정보 추출
+        // processedInquiryId
         const createdDateString = inquiry.createdDate; // 20240923 형식
         const year = createdDateString.slice(0, 4); // 연도 추출
         const month = createdDateString.slice(4, 6); // 월 추출
@@ -162,6 +162,13 @@ export const processInquiries = (data) => {
 
         // 날짜 + 3자리 InquiryId로 처리
         const processedInquiryId = `${year}${month}${day}${inquiryIdPadded}`;
+
+        // createdDate
+        // 월 앞의 '0'을 제거하기 위해 정수로 변환
+        const formattedMonth = parseInt(month, 10);
+        const formattedDay = parseInt(day, 10);
+
+        const formattedDate = `${year}년 ${formattedMonth}월 ${formattedDay}일`;
 
         return {
             customerName: inquiry.customerName,
@@ -177,7 +184,7 @@ export const processInquiries = (data) => {
             corporate: inquiry.corporate,
             corporationCode: inquiry.corporationCode,
             industry: industryText,
-            createdDate: inquiry.createdDate,
+            createdDate: formattedDate,
         };
     });
 };
