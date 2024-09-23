@@ -11,8 +11,8 @@ public record ManagerSummaryResponseDTO(
     Long userId,
     String name,
     String empNo,
+    String email,
     Department department
-
 ) {
 
     public static ManagerSummaryResponseDTO from(Manager manager) {
@@ -22,6 +22,7 @@ public record ManagerSummaryResponseDTO(
                 .userId(manager.getUserId())
                 .name(manager.getName())
                 .empNo(manager.getEmpNo())
+                .empNo(manager.getEmail())
                 .department(manager.getDepartment())
                 .build();
         }
