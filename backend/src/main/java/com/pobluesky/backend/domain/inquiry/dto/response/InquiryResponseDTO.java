@@ -42,7 +42,7 @@ public record InquiryResponseDTO(
     String responseDeadline,
     List<LineItemResponseDTO> lineItemResponseDTOs,
     Boolean isActivated,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     LocalDateTime createdDate
 ) {
 

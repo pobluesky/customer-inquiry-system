@@ -26,7 +26,7 @@ public record InquirySummaryResponseDTO(
     Industry industry,
     String salesManagerName,
     String qualityManagerName,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     LocalDateTime createdDate
 ) {
 
