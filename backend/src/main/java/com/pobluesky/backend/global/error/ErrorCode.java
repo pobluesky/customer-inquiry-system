@@ -38,6 +38,7 @@ public enum ErrorCode {
     INQUIRY_INVALID_PRODUCTTYPE(HttpStatus.INTERNAL_SERVER_ERROR, "I0008", "올바르지 않은 Product Type 요청입니다."),
     INQUIRY_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "I0009", "해당 사용자가 작성한 Inquiry가 아닙니다."),
 
+
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
     REVIEW_ALREADY_EXISTS(HttpStatus.INTERNAL_SERVER_ERROR, "R0002", "해당 Inquiry에는 이미 제출된 검토가 존재합니다."),
