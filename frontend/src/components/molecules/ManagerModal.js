@@ -18,7 +18,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { getAllManager } from '../../apis/api/manager';
 
-const ManagerModal = ({ isOpen, onClose, onSelect }) => {
+const ManagerModal = ({ title, isOpen, onClose, onSelect }) => {
     const [salesManagers, setSalesManagers] = useState([]);
     const [selectedManager, setSelectedManager] = useState(null);
 
@@ -59,7 +59,7 @@ const ManagerModal = ({ isOpen, onClose, onSelect }) => {
             }}
         >
             <DialogTitle sx={{ position: 'relative', fontWeight: '800' }}>
-                담당자 지정
+                {title}
                 <IconButton
                     edge="end"
                     color="inherit"

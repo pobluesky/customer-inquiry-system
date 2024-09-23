@@ -9,7 +9,7 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const ManagerBasicInfoForm = ({ formData }) => {
+const ManagerBasicInfoForm = ({ formData, progress }) => {
     if(!formData) {
         return;
     }
@@ -40,6 +40,7 @@ const ManagerBasicInfoForm = ({ formData }) => {
                     title={'기본정보'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    progress={progress}
                 />
                 {isChecked ? (
                     <div className={Opend}>

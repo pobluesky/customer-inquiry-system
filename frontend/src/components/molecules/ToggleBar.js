@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Toggle from '../atoms/Toggle';
 import { _ToggleOpen, _ToggleClose } from '../../assets/css/Form.css';
-import { Button, Chip, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import ManagerModal from './ManagerModal';
+import { useAuth } from '../../hooks/useAuth';
 
 const ToggleBar = ({ title, isChecked, setCheck, progress }) => {
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
@@ -12,6 +13,7 @@ const ToggleBar = ({ title, isChecked, setCheck, progress }) => {
     const closeModal = () => setIsModalOpen(false);
 
     const [managerInfo, setManagerInfo] = useState([]);
+    const { role } = useAuth();
 
     const handleSelect = (selectedData) => {
         closeModal();
@@ -34,7 +36,9 @@ const ToggleBar = ({ title, isChecked, setCheck, progress }) => {
                     >
                         &nbsp;&nbsp;{title}
                     </span>
-                    {title === '기본정보' && progress === 'FORM' && (
+                    {(role === 'customer' && title === '기본정보' && progress
+                        === 'FORM') || (role === 'sales' && title === '기본정보'
+                        && progress === 'FIRST_REVIEW_COMPLETED') && (
                         <>
                             <Button
                                 style={{
@@ -59,12 +63,22 @@ const ToggleBar = ({ title, isChecked, setCheck, progress }) => {
                         >
                             담당자 지정
                         </Button>
-                        <ManagerModal
-                            isOpen={isModalOpen}
-                            onClose={closeModal}
-                            onSelect={handleSelect}
-                            // setError={setError}
-                        />
+                            {progress === 'FORM' && (
+                                <ManagerModal
+                                    title={'판매 담당자 지정'}
+                                    isOpen={isModalOpen}
+                                    onClose={closeModal}
+                                    onSelect={handleSelect}
+                                />
+                            )}
+                            {progress === 'FIRST_REVIEW_COMPLETED' && (
+                                <ManagerModal
+                                    title={'품질 담당자 지정'}
+                                    isOpen={isModalOpen}
+                                    onClose={closeModal}
+                                    onSelect={handleSelect}
+                                />
+                            )}
                         </>
                     )}
                 </div>

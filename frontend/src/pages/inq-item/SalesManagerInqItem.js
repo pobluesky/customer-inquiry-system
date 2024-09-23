@@ -360,7 +360,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 onQualitySubmit={handleQualitySubmit}
                 onFinalSubmit={handleFinalSubmit} />
 
-            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
+            <ManagerBasicInfoForm formData={inquiriesDataDetail} progress={currentProgress} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
