@@ -1,13 +1,18 @@
 package com.pobluesky.backend.domain.user.dto.response;
 
+import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
 
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import lombok.Builder;
 
 @Builder
 public record ManagerSummaryResponseDTO(
     Long userId,
-    String name
+    String name,
+    String empNo,
+    Department department
+
 ) {
 
     public static ManagerSummaryResponseDTO from(Manager manager) {
@@ -16,6 +21,8 @@ public record ManagerSummaryResponseDTO(
             return ManagerSummaryResponseDTO.builder()
                 .userId(manager.getUserId())
                 .name(manager.getName())
+                .empNo(manager.getEmpNo())
+                .department(manager.getDepartment())
                 .build();
         }
     }
