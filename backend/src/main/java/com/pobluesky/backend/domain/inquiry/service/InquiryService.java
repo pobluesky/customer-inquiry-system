@@ -14,6 +14,7 @@ import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.service.LineItemService;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
@@ -26,10 +27,14 @@ import java.text.DecimalFormat;
 
 import java.time.LocalDate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -187,15 +192,20 @@ public class InquiryService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Manager salesManager = managerRepository.findById(dto.salesManagerId())
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Optional<Manager> salesManager = dto.salesManagerId()
+                .map(id -> managerRepository.findById(id)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)));
 
-        if (salesManager.getRole() != UserRole.SALES) {
+        if (salesManager.isPresent() && salesManager.get().getRole() != UserRole.SALES) {
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
         }
 
         Inquiry inquiry = dto.toInquiryEntity(fileName, filePath, salesManager);
         inquiry.setCustomer(customer);
+
+        if (salesManager.isEmpty()) {
+            allocateSalesManagerAutomatically(inquiry);
+        }
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
@@ -205,6 +215,44 @@ public class InquiryService {
         );
 
         return InquiryResponseDTO.of(savedInquiry, lineItems);
+    }
+    private void allocateSalesManagerAutomatically(Inquiry inquiry) {
+        List<Manager> salesManagers = managerRepository.findByRole(UserRole.SALES);
+
+        if (salesManagers.isEmpty()) {
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Map<Manager, Integer> allocationCounts = new HashMap<>();
+        for (Manager manager : salesManagers) {
+            Integer count = inquiryRepository.countInquiriesBySalesManager(manager);
+            allocationCounts.put(manager, count);
+        }
+
+        Integer minAllocation = Collections.min(allocationCounts.values());
+
+        List<Manager> leastAllocatedManagers = allocationCounts.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(minAllocation))
+            .map(Entry::getKey)
+            .collect(Collectors.toList());
+
+        Manager selectedManager;
+        if (leastAllocatedManagers.size() > 1) {
+            Map<Department, List<Manager>> managersByDepartment = leastAllocatedManagers.stream()
+                .collect(Collectors.groupingBy(Manager::getDepartment));
+
+            Department selectedDepartment = managersByDepartment.keySet().stream()
+                .findAny()
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); //부서 랜덤 선택,
+
+            List<Manager> managersInDepartment = managersByDepartment.get(selectedDepartment);
+
+            selectedManager = managersInDepartment.get(new Random().nextInt(managersInDepartment.size()));
+        } else {
+            selectedManager = leastAllocatedManagers.get(0);
+        }
+
+        inquiry.allocateSalesManager(selectedManager);
     }
 
     @Transactional
@@ -458,8 +506,6 @@ public class InquiryService {
 
         return InquiryFavoriteLineItemResponseDTO.of(inquiry, lineItems);
     }
-
-
 
     private List<Object[]> getManagerSpecificInquiryData(
         Manager manager,
