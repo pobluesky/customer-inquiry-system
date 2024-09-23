@@ -187,7 +187,14 @@ public class InquiryService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
+        Manager salesManager = managerRepository.findById(dto.salesManagerId())
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        if (salesManager.getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
+
+        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath, salesManager);
         inquiry.setCustomer(customer);
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
