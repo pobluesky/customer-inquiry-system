@@ -51,7 +51,7 @@ const BasicInfoForm = ({ formData }) => {
                             </div>
                             <div className={inputWrapper}>
                                 <label>국가</label>
-                                <select className={_Input} value={country} aria-readonly={true}>
+                                <select className={_Input} value={country} aria-readonly={true} disabled style={{ pointerEvents: "none" }}>
                                     <option value="" disabled>
                                         선택
                                     </option>
@@ -87,7 +87,7 @@ const BasicInfoForm = ({ formData }) => {
                             </div>
                             <div className={inputWrapper}>
                                 <label>Inquiry 유형</label>
-                                <select className={_Input} value={inquiryType} aria-readonly={true}>
+                                <select className={_Input} value={inquiryType} aria-readonly={true} disabled style={{ pointerEvents: "none" }}>
                                     <option value="" disabled>
                                         문의유형
                                     </option>
@@ -99,7 +99,7 @@ const BasicInfoForm = ({ formData }) => {
                             </div>
                             <div className={inputWrapper}>
                                 <label>산업분류</label>
-                                <select className={_Input} value={industry} aria-readonly={true}>
+                                <select className={_Input} value={industry} aria-readonly={true} disabled style={{ pointerEvents: "none" }}>
                                     <option value="" disabled>
                                         선택
                                     </option>
@@ -181,7 +181,7 @@ const BasicInfoForm = ({ formData }) => {
                             </div>
                             <div className={inputWrapper}>
                                 <label>제품</label>
-                                <select className={_Input} value={productType} aria-readonly={true}>
+                                <select className={_Input} value={productType} aria-readonly={true} disabled style={{ pointerEvents: "none" }}>
                                     <option value="" disabled>
                                         선택
                                     </option>

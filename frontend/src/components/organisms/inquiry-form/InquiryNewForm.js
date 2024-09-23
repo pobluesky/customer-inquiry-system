@@ -35,6 +35,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                     isChecked={isChecked}
                     setCheck={setCheck}
                     isPreviewButton={true}
+                    progress={'FORM'}
                 />
                 {isChecked ? (
                     <div className={Opend}>

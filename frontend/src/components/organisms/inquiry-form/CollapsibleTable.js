@@ -34,27 +34,27 @@ export default function CollapsibleTable({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', paddingLeft: '40px' }}>
-                                <Button
-                                    onClick={handleButtonClick}
-                                    variant="contained"
-                                    color="secondary"
-                                    sx={{
-                                        backgroundColor: '#ffffff',
-                                        color: '#03507d',
-                                        width: '95px',
-                                        borderRadius: '10px',
-                                        fontWeight: '700',
-                                        '&:hover': {
-                                            backgroundColor: '#03507d',
-                                            color: '#ffffff',
-                                        },
-                                    }}
-                                >
-                                    담당자 배정
-                                </Button>
-                            </TableCell>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의번호</TableCell>
+                            {/*<TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', paddingLeft: '40px' }}>*/}
+                            {/*    <Button*/}
+                            {/*        onClick={handleButtonClick}*/}
+                            {/*        variant="contained"*/}
+                            {/*        color="secondary"*/}
+                            {/*        sx={{*/}
+                            {/*            backgroundColor: '#ffffff',*/}
+                            {/*            color: '#03507d',*/}
+                            {/*            width: '95px',*/}
+                            {/*            borderRadius: '10px',*/}
+                            {/*            fontWeight: '700',*/}
+                            {/*            '&:hover': {*/}
+                            {/*                backgroundColor: '#03507d',*/}
+                            {/*                color: '#ffffff',*/}
+                            {/*            },*/}
+                            {/*        }}*/}
+                            {/*    >*/}
+                            {/*        담당자 배정*/}
+                            {/*    </Button>*/}
+                            {/*</TableCell>*/}
+                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700', paddingLeft: '40px' }}>문의번호</TableCell>
                             <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
