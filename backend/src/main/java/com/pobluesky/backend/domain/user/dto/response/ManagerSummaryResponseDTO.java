@@ -22,7 +22,7 @@ public record ManagerSummaryResponseDTO(
                 .userId(manager.getUserId())
                 .name(manager.getName())
                 .empNo(manager.getEmpNo())
-                .empNo(manager.getEmail())
+                .email(manager.getEmail())
                 .department(manager.getDepartment())
                 .build();
         }
