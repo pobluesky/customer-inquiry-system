@@ -67,19 +67,19 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    //postgres
+//    //postgres
     implementation 'org.postgresql:postgresql:42.7.4'
-
-    //kafka
-    implementation 'org.springframework.kafka:spring-kafka:3.2.3'
-
-    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
-
-    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
-
-    //prometheus
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//
+//    //kafka
+//    implementation 'org.springframework.kafka:spring-kafka:3.2.3'
+//
+//    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+//
+//    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+//
+//    //prometheus
+//    implementation 'io.micrometer:micrometer-registry-prometheus'
+//    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 }
 
