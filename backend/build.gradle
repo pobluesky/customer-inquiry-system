@@ -86,6 +86,10 @@ dependencies {
 	//PDF
 	implementation 'org.apache.pdfbox:pdfbox:2.0.27'
 	implementation 'org.apache.pdfbox:pdfbox-tools:2.0.27'
+
+	// FCM
+	implementation("com.google.firebase:firebase-admin:6.8.1")
+	implementation("com.squareup.okhttp3:okhttp:4.2.2")
 }
 
 tasks.named('test') {

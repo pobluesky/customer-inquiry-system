@@ -31,19 +31,25 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CollaborationSummaryResponseDTO> findAllCollaborationsRequestWithoutPaging(
+    public Page<CollaborationSummaryResponseDTO> findAllCollaborationsRequest(
+        Pageable pageable,
+        Long colId,
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        Long colResId,
         LocalDate startDate,
         LocalDate endDate,
         String sortBy) {
 
-        return queryFactory
+        List<CollaborationSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
                 collaboration.colId,
                 collaboration.question.questionId,
+                manager.userId,
                 manager.name,
+                collaboration.colResponseManager.userId,
+                collaboration.colResponseManager.name,
                 collaboration.colStatus,
                 collaboration.colContents,
                 collaboration.createdDate
@@ -51,13 +57,36 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
             .from(collaboration)
             .join(collaboration.colRequestManager, manager)
             .where(
+                colIdEq(colId),
                 colStatusEq(colStatus),
                 colReqManagerEq(colReqManager),
                 colReqIdEq(colReqId),
+                colResIdEq(colResId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
+
+        JPAQuery<Collaboration> countQuery = getCountQuery(colId, colStatus, colReqManager, colReqId, colResId, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private JPAQuery<Collaboration> getCountQuery(Long colId, ColStatus colStatus, String colReqManagerName, Long colReqId, Long colResId,
+        LocalDate startDate, LocalDate endDate) {
+        return queryFactory
+            .selectFrom(collaboration)
+            .join(collaboration.colRequestManager, manager)
+            .where(
+                colIdEq(colId),
+                colStatusEq(colStatus),
+                colReqManagerEq(colReqManagerName),
+                colReqIdEq(colReqId),
+                colResIdEq(colResId),
+                createdDateBetween(startDate, endDate)
+            );
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
@@ -77,6 +106,10 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         }
     }
 
+    private BooleanExpression colIdEq(Long colId) {
+        return colId != null ? collaboration.colId.eq(colId) : null;
+    }
+
     private BooleanExpression colStatusEq(ColStatus colStatus) {
         return colStatus != null ? collaboration.colStatus.eq(colStatus) : null;
     }
@@ -86,7 +119,11 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
     }
 
     private BooleanExpression colReqIdEq(Long colReqId) {
-        return colReqId != null ? collaboration.colId.eq(colReqId) : null;
+        return colReqId != null ? collaboration.colRequestManager.userId.eq(colReqId) : null;
+    }
+
+    private BooleanExpression colResIdEq(Long colResId) {
+        return colResId != null ? collaboration.colResponseManager.userId.eq(colResId) : null;
     }
 
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
@@ -96,7 +133,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
 
         DateTemplate<LocalDate> dateTemplate = Expressions.dateTemplate(
             LocalDate.class,
-            "CAST({0} AS DATE)",
+            "DATE({0})",
             collaboration.createdDate
         );
 

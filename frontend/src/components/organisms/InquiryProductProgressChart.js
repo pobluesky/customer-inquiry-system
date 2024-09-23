@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GaugeChart from 'react-gauge-chart';
-import { Chart_Container } from '../../assets/css/Chart.css';
+import { Chart_Container, Gauge_Chart } from '../../assets/css/Chart.css';
 
 const productNames = {
     CAR: '자동차',
@@ -60,6 +60,7 @@ function InquiryProductProgressChart({ data }) {
         <div className={Chart_Container}>
             <div>제품별 주문 체결 현황 (전체 대비 나의 성과)</div>
             <GaugeChart
+                className={Gauge_Chart}
                 id="gauge-chart5"
                 arcsLength={[1.428, 1.428, 1.428, 1.428, 1.428, 1.428, 1.432]}
                 colors={['#5BE12C', '#F5CD19', '#EA4228']}

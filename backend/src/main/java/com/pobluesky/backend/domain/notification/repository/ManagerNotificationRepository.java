@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.notification.repository;
 
+import com.pobluesky.backend.domain.notification.dto.response.MobileNotificationResponseDTO;
 import com.pobluesky.backend.domain.notification.entity.ManagerNotification;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,12 @@ public interface ManagerNotificationRepository extends JpaRepository<ManagerNoti
         @Param("userId") Long userId,
         @Param("isRead") Boolean isRead,
         Pageable pageable
+    );
+
+    @Query("SELECT mn FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = :isRead ORDER BY mn.createdDate DESC")
+    List<ManagerNotification> findRecentNotificationsByuserIdAndIsReadForMobile(
+            @Param("userId") Long userId,
+            @Param("isRead") Boolean isRead
     );
 
     @Query("SELECT COUNT(mn) FROM ManagerNotification mn WHERE mn.manager.userId = :userId AND mn.isRead = false")

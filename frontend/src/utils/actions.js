@@ -194,7 +194,7 @@ const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
                 severity="warning"
                 sx={{ width: '336px' }}
             >
-                제목은 1자 이상 30자 이하로 입력하세요.
+                제목은 1자 이상 입력하세요.
             </Alert>
         </Snackbar>
     );
@@ -265,6 +265,25 @@ const QuestionCompleteAlert = ({ showAlert, onClose }) => {
     );
 };
 
+// 질문 수정 성공
+const QuestionEditCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                질문이 수정되었습니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
 // 답변 제목 길이 제한
 const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
     return (
@@ -330,6 +349,25 @@ const AnswerCompleteAlert = ({ showAlert, onClose }) => {
     );
 };
 
+// 답변 수정 성공
+const AnswerEditCompleteAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                답변이 수정되었습니다.
+            </Alert>
+        </Snackbar>
+    );
+};
+
 const ColDoneAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -347,6 +385,25 @@ const ColDoneAlert = ({ showAlert, onClose, message }) => {
         </Snackbar>
     );
 };
+
+// inquiry 등록 시 에러 Alert
+const InquiryPostErrorAlert = ({ showAlert, onClose, error }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="error" sx={{ width: '336px' }}>
+                {error}
+            </Alert>
+        </Snackbar>
+    )
+}
 
 // inquiry 작성 완료
 const InquiryCompleteAlert = () => {
@@ -418,11 +475,14 @@ export {
     WrongAnswerTitleAlert,
     WrongAnswerContentAlert,
     AnswerCompleteAlert,
+    AnswerEditCompleteAlert,
     WrongQuestionTitleAlert,
     WrongQuestionContentAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
+    QuestionEditCompleteAlert,
     ColDoneAlert,
+    InquiryPostErrorAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,
     QualityReviewCompleteAlert,

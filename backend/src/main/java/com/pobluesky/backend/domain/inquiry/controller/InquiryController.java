@@ -13,7 +13,7 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 import com.pobluesky.backend.domain.inquiry.service.InquiryService;
-//import com.pobluesky.backend.domain.inquiry.service.IntegratedOcrGptService;
+import com.pobluesky.backend.domain.chat.service.IntegratedOcrGptService;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
@@ -47,11 +47,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class InquiryController {
 
     private final InquiryService inquiryService;
-//    private final IntegratedOcrGptService integratedOcrGptService;
+    private final IntegratedOcrGptService integratedOcrGptService;
 
     @GetMapping("/customers/inquiries/{userId}")
     @Operation(summary = "Inquiry 조회(고객사)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByCustomerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesByCustomer(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestParam(defaultValue = "LATEST") String sortBy,
@@ -66,7 +66,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByCustomer(
             token,
             userId,
             sortBy,
@@ -155,7 +155,7 @@ public class InquiryController {
     // 담당자 Inquiry 조회
     @GetMapping("/managers/sales/inquiries")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesBySalesManagerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesBySalesManager(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
@@ -169,7 +169,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesBySalesManagerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesBySalesManager(
             token,
             sortBy,
             progress,
@@ -190,7 +190,7 @@ public class InquiryController {
 
     @GetMapping("/managers/quality/inquiries")
     @Operation(summary = "Inquiry 조회(담당자)", description = "등록된 모든 Inquiry를 조건에 맞게 조회한다.")
-    public ResponseEntity<JsonResult> getInquiriesByQualityManagerWithoutPaging(
+    public ResponseEntity<JsonResult> getInquiriesByQualityManager(
         @RequestHeader("Authorization") String token,
         @RequestParam(defaultValue = "LATEST") String sortBy,
         @RequestParam(required = false) Progress progress,
@@ -203,7 +203,7 @@ public class InquiryController {
         @RequestParam(required = false) String salesManagerName,
         @RequestParam(required = false) String qualityManagerName
     ) {
-        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByQualityManagerWithoutPaging(
+        List<InquirySummaryResponseDTO> inquiries = inquiryService.getInquiriesByQualityManager(
             token,
             sortBy,
             progress,
@@ -366,17 +366,17 @@ public class InquiryController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/customers/inquiries/{userId}/optimized")
-//    @Operation(summary = "제품 유형별 라인아이템 등록 최적화")
-//    public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
-//        @RequestHeader("Authorization") String token,
-//        @PathVariable Long userId,
-//        @RequestParam("files") MultipartFile file,
-//        @RequestParam("productType") ProductType productType
-//    ) {
-//        JsonResult<?> response =
-//            integratedOcrGptService.processFileAndStructureData(token, userId, file, productType);
-//
-//        return ResponseEntity.ok(response);
-//    }
+    @PostMapping("/customers/inquiries/{userId}/optimized")
+    @Operation(summary = "제품 유형별 라인아이템 등록 최적화")
+    public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long userId,
+        @RequestParam("files") MultipartFile file,
+        @RequestParam("productType") ProductType productType
+    ) {
+        JsonResult<?> response =
+            integratedOcrGptService.processFileAndStructureData(token, userId, file, productType);
+
+        return ResponseEntity.ok(response);
+    }
 }

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import QuestionOverview from '../organisms/QuestionOverview';
+import QuestionOverview from '../organisms/VocOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
-import { Question_Dashboard } from '../../assets/css/Voc.css';
-import { useAuth } from '../../hooks/useAuth';
+import { Voc_Dashboard } from '../../assets/css/Voc.css';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
@@ -19,16 +18,10 @@ export default function QuestionDashboard() {
     const [timeFilter, setTimeFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
-
-    // 테이블과 모달 간 상호 API 전달
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
-    const [questionId, setQuestionId] = useState('');
-    const [status, setStatus] = useState('READY');
-    const [openModal, setOpenModal] = useState(false);
+    const [idFilter, setIdFilter] = useState('');
 
     // 질문 답변 현황
-    const { userId } = useAuth();
+    const userId = getCookie('userId');
     const role = getCookie('userRole');
     const [questionCount, setQuestionCount] = useState(0);
     const [answerCount, setAnswerCount] = useState(0);
@@ -40,7 +33,7 @@ export default function QuestionDashboard() {
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(userId, '');
-                      setQuestionCount(response.data.length);
+                      setQuestionCount(response.data.totalElements);
                   } catch (error) {
                       console.log('고객사 질문 개수 조회 실패: ', error);
                   }
@@ -48,7 +41,7 @@ export default function QuestionDashboard() {
             : async () => {
                   try {
                       const response = await getAllQuestion('');
-                      setQuestionCount(response.data.length);
+                      setQuestionCount(response.data.totalElements);
                   } catch (error) {
                       console.log('담당자 질문 개수 조회 실패: ', error);
                   }
@@ -76,7 +69,7 @@ export default function QuestionDashboard() {
     const fetchGetColCount = async () => {
         try {
             const response = await getAllCollaboration('');
-            setColCount(response.data.length);
+            setColCount(response.data.colListInfo.length);
         } catch (error) {
             console.log('협업 목록 개수 조회 실패: ', error);
         }
@@ -97,17 +90,14 @@ export default function QuestionDashboard() {
                 colCount={colCount}
             />
             {searchCount ? (
-                <div className={Question_Dashboard}>
+                <div className={Voc_Dashboard}>
                     검색 결과는 총 <span>{searchCount}</span>건입니다.
                 </div>
             ) : (
-                <div className={Question_Dashboard}>검색 결과가 없습니다.</div>
+                <div className={Voc_Dashboard}>검색 결과가 없습니다.</div>
             )}
             <QuestionFilterInput
-                searchCount={searchCount}
                 title={title}
-                startDate={startDate}
-                endDate={endDate}
                 questionNo={questionNo}
                 customerName={customerName}
                 setTitle={setTitle}
@@ -116,9 +106,8 @@ export default function QuestionDashboard() {
                 setQuestionNo={setQuestionNo}
                 setCustomerName={setCustomerName}
                 setTimeFilter={setTimeFilter}
-                status={status}
                 setStatusFilter={setStatusFilter}
-                questionDetail={questionDetail}
+                setIdFilter={setIdFilter}
                 setTypeFilter={setTypeFilter}
             />
             <QuestionList
@@ -130,14 +119,8 @@ export default function QuestionDashboard() {
                 timeFilter={timeFilter}
                 statusFilter={statusFilter}
                 typeFilter={typeFilter}
+                idFilter={idFilter}
                 setSearchCount={setSearchCount}
-                setQuestionDetail={setQuestionDetail}
-                setAnswerDetail={setAnswerDetail}
-                setQuestionId={setQuestionId}
-                setStatus={setStatus}
-                status={status}
-                setOpenModal={setOpenModal}
-                openModal={openModal}
             />
         </>
     );

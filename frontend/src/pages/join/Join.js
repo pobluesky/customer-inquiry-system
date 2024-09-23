@@ -205,6 +205,10 @@ function Join() {
         }
     }, [checkValidationTest]);
 
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
     const saveGlobalInfo = () => {
         setGlobalName(name);

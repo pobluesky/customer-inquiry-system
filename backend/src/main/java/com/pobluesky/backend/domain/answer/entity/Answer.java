@@ -84,6 +84,4 @@ public class Answer extends BaseEntity {
         this.fileName = fileName;
         this.filePath = filePath;
     }
-
-    public void deleteAnswer() { this.isActivated = false; }
 }

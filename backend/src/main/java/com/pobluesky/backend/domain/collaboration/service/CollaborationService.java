@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.collaboration.service;
 
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreateRequestDTO;
+import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationModifyRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationUpdateRequestDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationDetailResponseDTO;
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResponseDTO;
@@ -22,9 +23,11 @@ import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,14 +46,18 @@ public class CollaborationService {
 
     private final FileService fileService;
 
-    // 협업 조회 without paging
+    // 협업 조회
     @Transactional(readOnly = true)
-    public List<CollaborationSummaryResponseDTO> getAllCollaborationsWithoutPaging(
+    public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
         String token,
+        int page,
+        int size,
         String sortBy,
+        Long colId,
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        Long colResId,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -62,10 +69,15 @@ public class CollaborationService {
         if(manager.getRole() == UserRole.CUSTOMER)
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_MANAGER);
 
-        return collaborationRepository.findAllCollaborationsRequestWithoutPaging(
+        Pageable pageable = PageRequest.of(page, size);
+
+        return collaborationRepository.findAllCollaborationsRequest(
+            pageable,
+            colId,
             colStatus,
             colReqManager,
             colReqId,
+            colResId,
             startDate,
             endDate,
             sortBy
@@ -172,16 +184,7 @@ public class CollaborationService {
         collaboration.writeColReply(requestDTO.colReply());
         collaboration.decideCollaboration(requestDTO.isAccepted());
 
-        String fileName = null;
-        String filePath = null;
-
-        if (file != null) {
-            FileInfo fileInfo = fileService.uploadFile(file);
-            fileName = fileInfo.getOriginName();
-            filePath = fileInfo.getStoredFilePath();
-        }
-
-        collaboration.updateFiles(fileName, filePath);
+        updateFile(collaboration, file);
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }
@@ -206,6 +209,33 @@ public class CollaborationService {
         return CollaborationDetailResponseDTO.from(collaboration);
     }
 
+    @Transactional
+    public CollaborationDetailResponseDTO modifyCollaboration(
+        String token,
+        Long collaborationId,
+        MultipartFile file,
+        CollaborationModifyRequestDTO requestDTO
+    ) {
+        Long userId = signService.parseToken(token);
+
+        Collaboration collaboration = validateCollaboration(collaborationId);
+
+        validateRequestManager(collaboration, requestDTO.colReqId(), userId);
+        validateResponseManager(collaboration, requestDTO.colResId(), userId);
+
+        collaboration.modifyCollaborationContents(requestDTO.colContents());
+        updateFile(collaboration, file);
+
+        if (requestDTO.isAccepted() != null) {
+            collaboration.updateCollaborationStatus(requestDTO.isAccepted());
+        }
+        if (requestDTO.colReply() != null) {
+            collaboration.modifyColReply(requestDTO.colReply());
+        }
+
+        return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
     private Collaboration validateCollaboration(Long collaborationId) {
         Collaboration collaboration = collaborationRepository
             .findById(collaborationId)
@@ -213,8 +243,6 @@ public class CollaborationService {
 
         if (collaboration.getColStatus() == ColStatus.COMPLETE) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
-        } else if (collaboration.getColStatus() == ColStatus.REFUSE) {
-            throw new CommonException(ErrorCode.COLLABORATION_STATUS_REFUSED);
         }
 
         Question question = questionRepository.findById(collaboration.getQuestion().getQuestionId())
@@ -225,5 +253,38 @@ public class CollaborationService {
         }
 
         return collaboration;
+    }
+
+    private void updateFile(Collaboration collaboration, MultipartFile file) {
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
+    }
+
+    private void validateRequestManager(Collaboration collaboration, Long reqManagerId, Long userId) {
+        if (collaboration.getColStatus() == ColStatus.READY) {
+            Manager reqManager = managerRepository.findById(reqManagerId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            if (!userId.equals(reqManager.getUserId())) {
+                throw new CommonException(ErrorCode.REQMANAGER_NOT_MACHED);
+            }
+        }
+    }
+
+    private void validateResponseManager(Collaboration collaboration, Long resManagerId, Long userId) {
+        if (collaboration.getColStatus() == ColStatus.INPROGRESS) {
+            Manager resManager = managerRepository.findById(resManagerId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+            if (!userId.equals(resManager.getUserId())) {
+                throw new CommonException(ErrorCode.RESMANAGER_NOT_MACHED);
+            }
+        }
     }
 }

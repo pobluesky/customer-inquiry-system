@@ -5,6 +5,7 @@ import static com.pobluesky.backend.domain.question.entity.QQuestion.question;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
 
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
+import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
@@ -15,6 +16,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDate;
@@ -22,6 +24,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
 
 
@@ -31,55 +36,20 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<QuestionSummaryResponseDTO> findAllQuestionsByCustomerWithoutPaging(
-        Long userId,
-        QuestionStatus status,
-        QuestionType type,
-        String title,
-        Long questionId,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy
-    ) {
-        return queryFactory
-            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
-                question.questionId,
-                question.title,
-                question.status,
-                question.type,
-                question.contents,
-                customer.customerName,
-                question.createdDate.as("questionCreatedAt"),
-                answer.createdDate.as("answerCreatedAt"),
-                question.isActivated
-            ))
-            .from(question)
-            .leftJoin(question.answer, answer)
-            .leftJoin(question.customer, customer)
-            .where(
-                question.customer.userId.eq(userId),
-                statusEq(status),
-                typeEq(type),
-                titleContains(title),
-                questionIdEq(questionId),
-                createdDateBetween(startDate, endDate)
-            )
-            .orderBy(getOrderSpecifier(sortBy))
-            .fetch();
-    }
-
-    @Override
-    public List<QuestionSummaryResponseDTO> findAllQuestionsByManagerWithoutPaging(
+    public Page<QuestionSummaryResponseDTO> findQuestionsByManager(
+        Pageable pageable,
         QuestionStatus status,
         QuestionType type,
         String title,
         Long questionId,
         String customerName,
+        Boolean isActivated,
         LocalDate startDate,
         LocalDate endDate,
+        Long managerId,
         String sortBy
     ) {
-        return queryFactory
+        List<QuestionSummaryResponseDTO> content = queryFactory
             .select(Projections.constructor(QuestionSummaryResponseDTO.class,
                 question.questionId,
                 question.title,
@@ -89,6 +59,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 customer.customerName,
                 question.createdDate.as("questionCreatedAt"),
                 answer.createdDate.as("answerCreatedAt"),
+                answer.manager.userId.as("managerId"),
                 question.isActivated
             ))
             .from(question)
@@ -100,10 +71,118 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 customerNameContains(customerName),
+                isActivatedEq(isActivated),
+                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
+
+        JPAQuery<Question> countQuery = getCountQueryForManager(
+            status, type, title, questionId, customerName, isActivated, managerId, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public Page<QuestionSummaryResponseDTO> findQuestionsByCustomer(
+        Pageable pageable,
+        Long userId,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        LocalDate startDate,
+        LocalDate endDate,
+        Long managerId,
+        String sortBy
+    ) {
+        List<QuestionSummaryResponseDTO> content = queryFactory
+            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
+                question.questionId,
+                question.title,
+                question.status,
+                question.type,
+                question.contents,
+                customer.customerName,
+                question.createdDate.as("questionCreatedAt"),
+                answer.createdDate.as("answerCreatedAt"),
+                answer.manager.userId.as("managerId"),
+                question.isActivated
+            ))
+            .from(question)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
+            .where(
+                question.customer.userId.eq(userId),
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                isActivatedEq(true),
+                managerIdEq(managerId),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Question> countQuery = getCountQueryForCustomer(
+            userId, status, type, title, questionId, managerId, startDate, endDate);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private JPAQuery<Question> getCountQueryForManager(
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        String customerName,
+        Boolean isActivated,
+        Long managerId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        return queryFactory
+            .selectFrom(question)
+            .where(
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                customerNameContains(customerName),
+                isActivatedEq(isActivated),
+                managerIdEq(managerId),
+                createdDateBetween(startDate, endDate)
+            );
+    }
+
+    private JPAQuery<Question> getCountQueryForCustomer(
+        Long userId,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        Long managerId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        return queryFactory
+            .selectFrom(question)
+            .where(
+                question.customer.userId.eq(userId),
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                questionIdEq(questionId),
+                isActivatedEq(true),
+                managerIdEq(managerId),
+                createdDateBetween(startDate, endDate)
+            );
     }
 
     private OrderSpecifier<?>[] getOrderSpecifier(String sortBy) {
@@ -148,6 +227,14 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         return StringUtils.hasText(customerName) ? customer.customerName.contains(customerName) : null;
     }
 
+    private BooleanExpression isActivatedEq(Boolean isActivated) {
+        return isActivated != null ? question.isActivated.eq(isActivated) : null;
+    }
+
+    private BooleanExpression managerIdEq(Long managerId) {
+        return managerId != null ? answer.manager.userId.eq(managerId) : null;
+    }
+
     private BooleanExpression createdDateBetween(LocalDate startDate, LocalDate endDate) {
         if (startDate == null && endDate == null) {
             return null;
@@ -155,7 +242,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
         DateTemplate<LocalDate> dateTemplate = Expressions.dateTemplate(
             LocalDate.class,
-            "CAST({0} AS DATE)",
+            "DATE({0})",
             question.createdDate
         );
 

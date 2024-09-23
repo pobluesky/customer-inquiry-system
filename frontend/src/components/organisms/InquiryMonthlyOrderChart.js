@@ -179,8 +179,8 @@ class InquiryMonthlyOrderChart extends Component {
                     options={this.state.options}
                     series={this.state.series}
                     type="line"
-                    width="450"
-                    height="240"
+                    width="100%"
+                    height="85%"
                 />
             </div>
         );

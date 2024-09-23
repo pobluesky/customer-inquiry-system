@@ -21,7 +21,9 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -51,10 +53,7 @@ public class AnswerService {
 
     // 답변 전체 조회 (담당자)
     public List<AnswerResponseDTO> getAnswers(String token) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        validateManager(token);
 
         List<Answer> answers = answerRepository.findAll();
 
@@ -66,19 +65,11 @@ public class AnswerService {
     // 고객별 답변 전체 조회 (고객사)
     @Transactional(readOnly = true)
     public List<AnswerResponseDTO> getAnswerByUserId(String token, Long customerId) {
-        Long userId = signService.parseToken(token);
+        Customer customer = validateCustomer(token);
 
-        Customer user = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        if (!user.getUserId().equals(customerId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+        validateUserMatch(customer.getUserId(), customerId);
 
         List<Answer> answers = answerRepository.findAllByCustomer_UserId(customerId);
-
-        if (answers.isEmpty()) {
-            throw new CommonException(ErrorCode.ANSWER_NOT_FOUND);
-        }
 
         return answers.stream()
             .map(answer -> AnswerResponseDTO.from(answer))
@@ -88,13 +79,9 @@ public class AnswerService {
     // 질문 번호별 답변 상세 조회 (담당자)
     @Transactional(readOnly = true)
     public AnswerResponseDTO getAnswerByQuestionIdForManager(String token, Long questionId) {
-        Long userId = signService.parseToken(token);
+        validateManager(token);
 
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
         return AnswerResponseDTO.from(answer);
     }
@@ -102,21 +89,13 @@ public class AnswerService {
     // 질문 번호별 답변 상세 조회 (고객사)
     @Transactional(readOnly = true)
     public AnswerResponseDTO getAnswerByQuestionId(String token, Long customerId, Long questionId) {
-        Long userId = signService.parseToken(token);
+        Customer customer = validateCustomer(token);
 
-        Customer customer = customerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
-        if (!Objects.equals(customer.getUserId(), customerId)) {
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
+        validateUserMatch(customer.getUserId(), customerId);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
-
-        if (!Objects.equals(answer.getCustomer().getUserId(), customerId)) {
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-        }
+        validateUserMatch(answer.getCustomer().getUserId(), customerId);
 
         return AnswerResponseDTO.from(answer);
     }
@@ -129,22 +108,15 @@ public class AnswerService {
         MultipartFile file,
         AnswerCreateRequestDTO dto
     ) {
-        Long userId = signService.parseToken(token);
+        Manager manager = validateManager(token);
 
-        Manager manager = managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); // 존재하지 않는 담당자일 경우
-
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND)); // 존재하지 않는 질문인 경우
-
-        if (question.getStatus() == QuestionStatus.COMPLETED) {
-            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED); // 이미 답변된 질문인 경우
-        }
+        Question question = validateAndRetrieveQuestion(questionId);
 
         Inquiry inquiry = validateInquiry(question);
 
-        Customer customer = customerRepository.findById(question.getCustomer().getUserId())
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Customer customer = validateAndRetrieveCustomer(question);
+
+        validateQuestionStatus(question);
 
         String fileName = null;
         String filePath = null;
@@ -172,16 +144,13 @@ public class AnswerService {
         MultipartFile file,
         AnswerUpdateRequestDTO dto
     ) {
-        Long userId = signService.parseToken(token);
+        Manager manager = validateManager(token);
 
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        Answer answer = validateAnswer(questionId);
 
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+        validateAnswerMatch(answer, manager);
 
-        if(!Objects.equals(answer.getManager().getUserId(), userId))
-            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+        validateAnswerActivated(answer);
 
         String fileName = answer.getFileName();
         String filePath = answer.getFilePath();
@@ -202,24 +171,25 @@ public class AnswerService {
         return AnswerResponseDTO.from(answer);
     }
 
-    // 답변 삭제
-    @Transactional
-    public void deleteAnswerById(
-        String token,
-        Long questionId
-    ) {
-        Long userId = signService.parseToken(token);
+    // 월별 담당자별 VoC 답변 건수
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {
+        Manager manager = validateManager(token);
+        Map<String, List<Object[]>> results = new HashMap<>();
 
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+        results.put("total", answerRepository.findAverageCountPerMonth());
+        results.put("manager", answerRepository.findAverageCountPerMonthByManager(manager.getUserId()));
 
+        return results;
+    }
+
+    // 모바일 - 질문 번호별 답변 상세 조회
+    @Transactional(readOnly = true)
+    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-            .orElseThrow(()-> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
-        if(!answer.getIsActivated())
-            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
-
-        answer.deleteAnswer();
+        return MobileAnswerSummaryResponseDTO.from(answer);
     }
 
     private Inquiry validateInquiry(Question question) {
@@ -231,12 +201,56 @@ public class AnswerService {
             .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
     }
 
-    // 모바일 - 질문 번호별 답변 상세 조회
-    @Transactional(readOnly = true)
-    public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
-        Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+    private Manager validateManager(String token) {
+        Long userId = signService.parseToken(token);
 
-        return MobileAnswerSummaryResponseDTO.from(answer);
+        return managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Customer validateCustomer(String token) {
+        Long userId = signService.parseToken(token);
+
+        return customerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Customer validateAndRetrieveCustomer(Question question) {
+
+        return customerRepository.findById(question.getCustomer().getUserId())
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Answer validateAnswer(Long questionId) {
+
+        return answerRepository.findByQuestion_QuestionId(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+    }
+
+    private Question validateAndRetrieveQuestion(Long questionId) {
+
+        return questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+    }
+
+    private void validateUserMatch(Long userId, Long customerId) {
+        if(!Objects.equals(userId, customerId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+    }
+
+    private void validateAnswerMatch(Answer answer, Manager manager) {
+        if(!Objects.equals(answer.getManager().getUserId(), manager.getUserId()))
+            throw new CommonException(ErrorCode.ANSWER_NOT_MATCHED);
+    }
+
+    private void validateAnswerActivated(Answer answer) {
+        if(!answer.getIsActivated())
+            throw new CommonException(ErrorCode.ANSWER_ALREADY_DELETED);
+    }
+
+    private void validateQuestionStatus(Question question) {
+        if (question.getStatus() == QuestionStatus.COMPLETED) {
+            throw new CommonException(ErrorCode.QUESTION_STATUS_COMPLETED);
+        }
     }
 }

@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
         setDidLogin(false);
 
-        console.log('로그아웃!');
+        console.log('로그아웃 완료');
         console.log(getCookie('userRole'));
         console.log(getCookie('userId'));
     };

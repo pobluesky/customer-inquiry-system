@@ -9,6 +9,7 @@ import {
     WrongQuestionContentAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
+    QuestionEditCompleteAlert,
 } from '../../utils/actions';
 import {
     validateQuestionTitle,
@@ -17,16 +18,22 @@ import {
 import {
     postQuestionByUserIdAboutInquiry,
     postQuestionByUserId,
+    putQuestionByUserIdAboutInquiry,
+    putQuestionByUserId,
 } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput({ selectedType, inquiryId }) {
+function QuestionInput({ selectedType, inquiryId, questionDetail }) {
     const { userId } = useAuth();
     const navigate = useNavigate();
 
-    const [editorValue, setEditorValue] = useState('');
-    const [title, setTitle] = useState('');
+    const [editorValue, setEditorValue] = useState(
+        questionDetail?.contents || '',
+    );
+    const [title, setTitle] = useState(questionDetail?.title || '');
     const [file, setFile] = useState('');
+    const [fileName, setFileName] = useState(questionDetail?.fileName || '');
+    const [filePath, setFilePath] = useState(questionDetail?.filePath || '');
 
     const fileInputRef = useRef(null);
 
@@ -36,6 +43,7 @@ function QuestionInput({ selectedType, inquiryId }) {
     const [showContentAlert, canShowContentAlert] = useState(false);
     const [showInquiryIdAlert, canShowInquiryIdAlert] = useState(false);
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showSuccessEditAlert, canShowSuccessEditAlert] = useState(false);
 
     // 질문 등록
     const fetchPostQuestionByUserId = async () => {
@@ -84,6 +92,55 @@ function QuestionInput({ selectedType, inquiryId }) {
         }
     };
 
+    // 질문 수정
+    const fetchPutQuestionByUserId = async () => {
+        try {
+            const questionData = {
+                title,
+                contents: editorValue,
+                type: selectedType,
+                status,
+            };
+
+            if (selectedType === 'INQ') {
+                if (!inquiryId) {
+                    canShowInquiryIdAlert(true);
+                    return;
+                }
+                // 문의 관련 질문인 경우
+                const result = await putQuestionByUserIdAboutInquiry(
+                    file,
+                    questionData,
+                    userId,
+                    inquiryId,
+                    questionDetail?.questionId,
+                );
+                if (result) {
+                    canShowSuccessEditAlert(true);
+                    setTimeout(() => {
+                        navigate('/voc-list/question');
+                    }, '2000');
+                }
+            } else {
+                // 문의와 무관한 질문인 경우
+                const result = await putQuestionByUserId(
+                    file,
+                    questionData,
+                    userId,
+                    questionDetail?.questionId,
+                );
+                if (result) {
+                    canShowSuccessEditAlert(true);
+                    setTimeout(() => {
+                        navigate('/voc-list/question');
+                    }, '2000');
+                }
+            }
+        } catch (error) {
+            console.error('질문 수정 실패: ', error);
+        }
+    };
+
     const titleChange = (e) => {
         const inputTitle = e.target.value;
 
@@ -107,7 +164,11 @@ function QuestionInput({ selectedType, inquiryId }) {
             canShowContentAlert(true);
             return;
         } else {
-            fetchPostQuestionByUserId();
+            if (questionDetail) {
+                fetchPutQuestionByUserId();
+            } else {
+                fetchPostQuestionByUserId();
+            }
         }
     };
 
@@ -138,12 +199,15 @@ function QuestionInput({ selectedType, inquiryId }) {
                             ref={fileInputRef}
                             onChange={attachFile}
                         />
-                        {file ? (
+                        {file || fileName ? (
                             <QuestionAnswerButton
                                 btnName={'파일 삭제'}
                                 backgroundColor={'#ffffff'}
                                 textColor={'#1748ac'}
-                                onClick={() => setFile(null)}
+                                onClick={() => {
+                                    setFile(null);
+                                    setFileName(null);
+                                }}
                             />
                         ) : (
                             <QuestionAnswerButton
@@ -155,9 +219,15 @@ function QuestionInput({ selectedType, inquiryId }) {
                         )}
                     </div>
                     <div>
-                        {file
-                            ? `첨부파일: ${file.name}`
-                            : '파일을 첨부할 수 있습니다.'}
+                        {fileName ? (
+                            <>
+                                <a href={filePath}>{fileName}</a>
+                            </>
+                        ) : file ? (
+                            file.name
+                        ) : (
+                            '파일을 첨부할 수 있습니다.'
+                        )}
                     </div>
                 </div>
                 {/* 질문 입력 */}
@@ -207,6 +277,13 @@ function QuestionInput({ selectedType, inquiryId }) {
                 showAlert={showSuccessAlert}
                 onClose={() => {
                     canShowSuccessAlert(false);
+                }}
+                inert
+            />
+            <QuestionEditCompleteAlert
+                showAlert={showSuccessEditAlert}
+                onClose={() => {
+                    canShowSuccessEditAlert(false);
                 }}
                 inert
             />
