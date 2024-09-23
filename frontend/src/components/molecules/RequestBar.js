@@ -123,7 +123,8 @@ function RequestBar({
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'18px'}
-                                fontSize={'17px'}
+                                fontSize={'15px'}
+                                width={'110px'}
                                 fontWeight={'500'}
                                 padding={'10px'}
                             />
