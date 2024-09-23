@@ -15,6 +15,7 @@ public interface CollaborationRepositoryCustom {
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        String colResManager,
         Long colResId,
         LocalDate startDate,
         LocalDate endDate,
