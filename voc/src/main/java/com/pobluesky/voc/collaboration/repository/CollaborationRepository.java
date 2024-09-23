@@ -13,4 +13,7 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
 
     @Query("SELECT c FROM Collaboration c WHERE c.colId = :collaborationId AND c.question = :question")
     Optional<Collaboration> findByIdAndQuestion(@Param("collaborationId") Long collaborationId, @Param("question") Question question);
+
+    @Query("SELECT c FROM Collaboration c WHERE c.question = :question")
+    Optional<Collaboration> findByQuestionId(@Param("question") Question question);
 }
