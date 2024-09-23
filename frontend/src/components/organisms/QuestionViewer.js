@@ -5,24 +5,16 @@ import { getCookie } from '../../apis/utils/cookies';
 
 // 질문 뷰어
 export default function QuestionViewer({
-    questionDetail,
+    questionDetail: initialQuestionDetail,
+    questionId,
 }) {
     const sanitizer = dompurify.sanitize;
-
     const role = getCookie('userRole');
     const inqRole = role.toLowerCase();
 
-    const [type, setType] = useState('');
-
-    const questionType = () => {
-        if (questionDetail.type === 'INQ') {
-            setType('Inquiry 문의');
-        } else if (questionDetail.type === 'SITE') {
-            setType('사이트 문의');
-        } else if (questionDetail.type === 'ETC') {
-            setType('기타 문의');
-        }
-    };
+    const questionDetail =
+        initialQuestionDetail ||
+        JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
 
     // Voc번호를 생성하는 인코딩 함수: questionId + hour + minute + second
     const calDateNo = (datetime) => {
@@ -39,9 +31,16 @@ export default function QuestionViewer({
         textOverflow: 'ellipsis',
     };
 
-    useEffect(() => {
-        questionType();
-    }, [role, questionDetail]);
+    const getTypeLabel = (type) => {
+        switch (type) {
+            case 'INQ':
+                return 'Inquiry 문의';
+            case 'SITE':
+                return '사이트 문의';
+            case 'ETC':
+                return '기타 문의';
+        }
+    };
 
     return (
         <div className={Question_Viewer}>
@@ -49,31 +48,31 @@ export default function QuestionViewer({
             <div>
                 <div
                     onClick={() => {
-                        questionDetail.type === 'INQ' &&
+                        questionDetail?.type === 'INQ' &&
                             window.open(
-                                `/inq-list/${inqRole}/${questionDetail.inquiryId}`,
+                                `/inq-list/${inqRole}/${questionDetail?.inquiryId}`,
                                 '_blank',
                             );
                     }}
                 >
-                    {type}
+                    {getTypeLabel(questionDetail?.type)}
                 </div>
-                <div>{questionDetail.title || ''}</div>
+                <div>{questionDetail?.title || ''}</div>
                 <div style={filesEllipsis}>
-                    <a href={questionDetail.filePath} download>
-                        {questionDetail.fileName}
+                    <a href={questionDetail?.filePath} download>
+                        {questionDetail?.fileName}
                     </a>
                 </div>
             </div>
             {/* 질문 작성 날짜, 고객사명 */}
             <div>
-                <div>{calDateNo(questionDetail.createdDate)}</div>
-                <div>{questionDetail.customerName}</div>
+                <div>{calDateNo(questionDetail?.createdDate)}</div>
+                <div>{questionDetail?.customerName}</div>
             </div>
             {/* 내용 */}
             <div
                 dangerouslySetInnerHTML={{
-                    __html: sanitizer(`${questionDetail.contents || ''}`),
+                    __html: sanitizer(`${questionDetail?.contents || ''}`),
                 }}
             />
         </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ColStatus from '../molecules/ColStatus';
 import ColCreatedDate from '../molecules/ColCreatedDate';
+import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
 import {
     getAllCollaboration,
     getCollaborationDetail,
@@ -40,14 +41,22 @@ export default function ColTable({
 
     const fetchGetColDetail = async (questionId, colId) => {
         try {
-            const response = await getCollaborationDetail(questionId, colId);
+            const responseC = await getCollaborationDetail(questionId, colId);
+            const responseQ = await getQuestionByQuestionIdForManager(
+                responseC.data?.questionId,
+            );
+            localStorage.setItem(
+                `questionDetail-${questionId}`,
+                JSON.stringify(responseQ.data),
+            );
             navigate('/voc-form/collaboration/res', {
                 state: {
-                    colDetail: response.data,
+                    colDetail: responseC.data,
+                    questionDetail: responseQ.data,
                 },
             });
         } catch (error) {
-            console.error('협업 상세 조회 실패: ', error);
+            console.error('협업 상세 조회 또는 질문 상세 조회 실패: ', error);
         }
     };
 

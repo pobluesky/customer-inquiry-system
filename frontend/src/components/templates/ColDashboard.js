@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import ColOverview from '../organisms/VocOverview';
 import ColSearchInput from '../organisms/ColSearchInput';
 import ColTable from '../organisms/ColTable';
-import ColResModal from '../molecules/ColResModal';
 import { Voc_Dashboard } from '../../assets/css/Voc.css';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';

@@ -7,7 +7,7 @@ import ColReqInput from '../organisms/ColReqInput';
 
 export default function ColReqForm() {
     const location = useLocation();
-    const { questionDetail } = location.state;
+    const { questionDetail, colDetail } = location.state;
 
     const [openModal, setOpenModal] = useState(false);
     const [colResId, setColResId] = useState('');
@@ -25,6 +25,7 @@ export default function ColReqForm() {
             top: document.body.scrollHeight,
             behavior: 'smooth',
         });
+        localStorage.clear();
     }, []);
 
     return (
@@ -34,8 +35,15 @@ export default function ColReqForm() {
                 setOpenModal={setOpenModal}
                 colResManagerName={colResManagerName}
                 colResManagerDept={colResManagerDept}
+                colDetail={colDetail}
             />
-            <ColReqInput colResId={colResId} questionDetail={questionDetail} />
+            <ColReqInput
+                colResId={colResId}
+                colDetail={colDetail}
+                questionDetail={questionDetail}
+                colResManagerName={colResManagerName}
+                colResManagerDept={colResManagerDept}
+            />
             {openModal && (
                 <ColFindManagerModal
                     openModal={openModal}

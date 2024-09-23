@@ -9,7 +9,17 @@ import {
     Ready,
     Completed,
 } from '../../assets/css/Voc.css';
-import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
+import {
+    getAllQuestion,
+    getQuestionByUserId,
+    getQuestionByQuestionId,
+    getQuestionByQuestionIdForManager,
+} from '../../apis/api/question';
+import {
+    getAnswerByQuestionId,
+    getAnswerByQuestionIdForManager,
+} from '../../apis/api/answer';
+import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
 
 export default function QuestionList({
     title,
@@ -23,12 +33,15 @@ export default function QuestionList({
     typeFilter,
     setSearchCount,
 }) {
-    const { userId } = useAuth();
+    const userId = getCookie('userId');
     const role = getCookie('userRole');
     const navigate = useNavigate();
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
+
+    const [questionDetail, setQuestionDetail] = useState([]);
+    const [answerDetail, setAnswerDetail] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
@@ -88,8 +101,8 @@ export default function QuestionList({
             ? async () => {
                   try {
                       const response = await getQuestionByUserId(
-                          getCookie('userId'),
-                          currentPage-1,
+                          userId,
+                          currentPage - 1,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);
@@ -102,7 +115,7 @@ export default function QuestionList({
             : async () => {
                   try {
                       const response = await getAllQuestion(
-                          currentPage-1,
+                          currentPage - 1,
                           filterArgs,
                       );
                       setQuestionSummary(response.data.questionsInfo);
@@ -113,9 +126,122 @@ export default function QuestionList({
                   }
               };
 
+    // 질문 상세 조회
+    const fetchGetQuestionDetail =
+        role === 'customer'
+            ? async (questionId) => {
+                  try {
+                      const response = await getQuestionByQuestionId(
+                          userId,
+                          questionId,
+                      );
+                      setQuestionDetail(response.data);
+                      localStorage.setItem(
+                          `questionDetail-${questionId}`,
+                          JSON.stringify(response.data),
+                      );
+                      if (response.data.status === 'COMPLETED') {
+                          fetchGetAnswerDetail(questionId);
+                      } else {
+                          localStorage.removeItem(`answerDetail-${questionId}`);
+                          fetchGetColDetailStatus(questionId);
+                      }
+                  } catch (error) {
+                      console.log('고객사 질문 상세 조회 실패: ', error);
+                  }
+              }
+            : async (questionId) => {
+                  try {
+                      const response = await getQuestionByQuestionIdForManager(
+                          questionId,
+                      );
+                      localStorage.setItem(
+                          `questionDetail-${questionId}`,
+                          JSON.stringify(response.data),
+                      );
+                      if (response.data.status === 'COMPLETED') {
+                          fetchGetAnswerDetail(questionId);
+                      } else {
+                          localStorage.removeItem(`answerDetail-${questionId}`);
+                          fetchGetColDetailStatus(questionId);
+                      }
+                  } catch (error) {
+                      console.log('담당자 질문 상세 조회 실패: ', error);
+                  }
+              };
+
+    // 답변 상세 조회
+    const fetchGetAnswerDetail =
+        role === 'customer'
+            ? async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionId(
+                          userId,
+                          questionId,
+                      );
+                      localStorage.setItem(
+                          `answerDetail-${questionId}`,
+                          JSON.stringify(response.data),
+                      );
+                      navigate('/voc-form/answer', {
+                          state: {
+                              questionId: questionId,
+                          },
+                      });
+                  } catch (error) {
+                      console.log('고객사 답변 상세 조회 실패: ', error);
+                  }
+              }
+            : async (questionId) => {
+                  try {
+                      const response = await getAnswerByQuestionIdForManager(
+                          questionId,
+                      );
+                      setAnswerDetail(response.data);
+                      localStorage.setItem(
+                          `answerDetail-${questionId}`,
+                          JSON.stringify(response.data),
+                      );
+                      navigate('/voc-form/answer', {
+                          state: {
+                              questionId: questionId,
+                          },
+                      });
+                  } catch (error) {
+                      console.log('담당자 답변 상세 조회 실패: ', error);
+                  }
+              };
+
+    const fetchGetColDetailStatus = async (questionId) => {
+        try {
+            await getCollaborationDetailStatus(questionId);
+            navigate('/voc-form/answer', {
+                state: {
+                    questionId: questionId,
+                    answerDetail: [],
+                    colPossible: false,
+                },
+            });
+        } catch (error) {
+            navigate('/voc-form/answer', {
+                state: {
+                    questionId: questionId,
+                    answerDetail: [],
+                    colPossible: true,
+                },
+            });
+        }
+    };
+
     useEffect(() => {
         fetchGetQuestions();
     }, [userId, currentPage, filterArgs]);
+
+    console.log(
+        JSON.parse(
+            localStorage.getItem(`answerDetail-${questionDetail?.questionId}`),
+        ),
+    );
 
     const contentsEllipsis = {
         maxWidth: '1320px',
@@ -134,12 +260,7 @@ export default function QuestionList({
                         <div
                             className={Question_List}
                             onClick={() => {
-                                navigate('/voc-form/answer', {
-                                    state: {
-                                        questionId: data.questionId,
-                                        status: data.status,
-                                    },
-                                });
+                                fetchGetQuestionDetail(data.questionId);
                             }}
                         >
                             <div>

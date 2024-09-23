@@ -18,7 +18,7 @@ function QuestionForm({ questionDetail }) {
     }
 
     useEffect(() => {
-        localStorage.clear();
+        // localStorage.clear();
     }, []);
     
     return (

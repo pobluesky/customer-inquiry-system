@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import close from '../../assets/css/icons/close.svg';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import { QuestionAnswerButton } from '../atoms/VocButton';
+import { VocButton } from '../atoms/VocButton';
 import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllInquiries } from '../../apis/api/inquiry';
@@ -59,25 +59,24 @@ export default function QuestionInquirySearchModal({
                         height={'36px'}
                         margin={'0 24px 0 0'}
                         padding={'0px 12px 0px 12px'}
-                        border={'1px solid #8b8b8b'}
+                        border={'1px solid #03507d'}
                         placeholder={'Inquiry 번호 조회'}
                         onChange={(e) => setSearchId(e.target.value)}
                         onKeyDown={enterKeyDown}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'검색'}
-                        backgroundColor={'#1748ac'}
+                        backgroundColor={'#03507d'}
                         textColor={'#ffffff'}
                         margin={'0 24px 0 0'}
                         onClick={() => {
                             inqSearch(searchId);
                         }}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'전체 보기'}
                         backgroundColor={'#ffffff'}
-                        textColor={'#1748ac'}
-                        border={'solid 1px #1748ac'}
+                        textColor={'#03507d'}
                         onClick={() => {
                             setFilteredInquiryData(inquiryData);
                         }}
@@ -99,9 +98,9 @@ export default function QuestionInquirySearchModal({
                     <table>
                         <thead>
                             <tr>
-                                <th width="10%">번호</th>
+                                <th width="20%">Inquiry No.</th>
                                 <th width="10%">제품</th>
-                                <th width="20%">판매 계약자</th>
+                                <th width="30%">판매 계약자</th>
                                 <th width="20%">문의 유형</th>
                                 <th width="20%">고객사</th>
                                 <th width="20%">진행 현황</th>
@@ -129,7 +128,8 @@ export default function QuestionInquirySearchModal({
                                             setOpenModal(false);
                                         }}
                                     >
-                                        <td>{inq.inquiryId}</td>
+                                        {/* <td>{inq.inquiryId}</td> */}
+                                        <td>20240909999</td>
                                         <td>{inq.productType}</td>
                                         <td>{inq.salesPerson}</td>
                                         <td>{inq.inquiryType}</td>

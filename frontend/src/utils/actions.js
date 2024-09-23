@@ -368,6 +368,30 @@ const AnswerEditCompleteAlert = ({ showAlert, onClose }) => {
     );
 };
 
+// 협업 요청 내용 길이 제한
+const WrongColContentsAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                요청 사유를 10자 이상 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 협업 요청에 대한 수락/거절 (수정) 성공
 const ColDoneAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
@@ -380,6 +404,94 @@ const ColDoneAlert = ({ showAlert, onClose, message }) => {
             onClose={onClose}
         >
             <Alert severity="success" sx={{ width: '336px' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 협업 요청에 대한 수락/거절 여부 미선택
+const WrongColStatusAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                협업 요청 수락 또는 거절 여부를 선택하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 협업 피드백 내용 길이 제한
+const WrongColReplyAlert = ({ showAlert, onClose }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                피드백을 10자 이상 입력하세요.
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// [공통] 성공 알람
+const CompleteAlert = ({ showAlert, onClose, message }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert severity="success" sx={{ width: '336px' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// [공통] 제한 알람
+const WrongRuleAlert = ({ showAlert, onClose, message }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant="outlined"
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
                 {message}
             </Alert>
         </Snackbar>
@@ -402,8 +514,8 @@ const InquiryPostErrorAlert = ({ showAlert, onClose, error }) => {
                 {error}
             </Alert>
         </Snackbar>
-    )
-}
+    );
+};
 
 // inquiry 작성 완료
 const InquiryCompleteAlert = () => {
@@ -481,7 +593,12 @@ export {
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
     QuestionEditCompleteAlert,
+    WrongColContentsAlert,
     ColDoneAlert,
+    WrongColStatusAlert,
+    WrongColReplyAlert,
+    CompleteAlert, // 공통
+    WrongRuleAlert, // 공통
     InquiryPostErrorAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,

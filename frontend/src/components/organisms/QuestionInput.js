@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
-import { QuestionAnswerButton } from '../atoms/VocButton';
+import { VocButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
 import {
     WrongQuestionTitleAlert,
@@ -23,13 +23,22 @@ import {
 } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput({ selectedType, inquiryId, questionDetail }) {
+function QuestionInput({
+    selectedType,
+    inquiryId,
+    questionDetail: initialQuestionDetail,
+}) {
     const { userId } = useAuth();
     const navigate = useNavigate();
+
+    const questionDetail =
+        initialQuestionDetail ||
+        JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
 
     const [editorValue, setEditorValue] = useState(
         questionDetail?.contents || '',
     );
+
     const [title, setTitle] = useState(questionDetail?.title || '');
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState(questionDetail?.fileName || '');
@@ -54,38 +63,47 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                 type: selectedType,
                 status,
             };
-
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
                     canShowInquiryIdAlert(true);
                     return;
                 }
                 // 문의 관련 질문인 경우
-                const result = await postQuestionByUserIdAboutInquiry(
+                const response = await postQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
                     inquiryId,
                 );
-                if (result) {
-                    canShowSuccessAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                localStorage.removeItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                );
+                localStorage.setItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                    JSON.stringify(response.data),
+                );
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-list/question');
+                }, '2000');
             } else {
                 // 문의와 무관한 질문인 경우
-                const result = await postQuestionByUserId(
+                const response = await postQuestionByUserId(
                     file,
                     questionData,
                     userId,
                 );
-                if (result) {
-                    canShowSuccessAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                localStorage.removeItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                );
+                localStorage.setItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                    JSON.stringify(response.data),
+                );
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-list/question');
+                }, '2000');
             }
         } catch (error) {
             console.error('질문 등록 실패: ', error);
@@ -101,40 +119,57 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                 type: selectedType,
                 status,
             };
-
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
                     canShowInquiryIdAlert(true);
                     return;
                 }
                 // 문의 관련 질문인 경우
-                const result = await putQuestionByUserIdAboutInquiry(
+                const response = await putQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
                     inquiryId,
                     questionDetail?.questionId,
                 );
-                if (result) {
-                    canShowSuccessEditAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                localStorage.removeItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                );
+                localStorage.setItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                    JSON.stringify(response.data),
+                );
+                canShowSuccessEditAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-form/answer', {
+                        state: {
+                            questionId: questionDetail?.questionId,
+                        },
+                    });
+                }, '1000');
             } else {
                 // 문의와 무관한 질문인 경우
-                const result = await putQuestionByUserId(
+                const response = await putQuestionByUserId(
                     file,
                     questionData,
                     userId,
                     questionDetail?.questionId,
                 );
-                if (result) {
-                    canShowSuccessEditAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                localStorage.removeItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                );
+                localStorage.setItem(
+                    `questionDetail-${questionDetail?.questionId}`,
+                    JSON.stringify(response.data),
+                );
+                canShowSuccessEditAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-form/answer', {
+                        state: {
+                            questionId: questionDetail?.questionId,
+                        },
+                    });
+                }, '1000');
             }
         } catch (error) {
             console.error('질문 수정 실패: ', error);
@@ -200,20 +235,20 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                             onChange={attachFile}
                         />
                         {file || fileName ? (
-                            <QuestionAnswerButton
+                            <VocButton
                                 btnName={'파일 삭제'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#1748ac'}
+                                textColor={'#03507d'}
                                 onClick={() => {
                                     setFile(null);
                                     setFileName(null);
                                 }}
                             />
                         ) : (
-                            <QuestionAnswerButton
+                            <VocButton
                                 btnName={'파일 업로드'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#1748ac'}
+                                textColor={'#03507d'}
                                 onClick={() => fileInputRef.current.click()}
                             />
                         )}
@@ -242,9 +277,9 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                     onChange={setEditorValue}
                 />
                 <div>
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'질문 등록'}
-                        backgroundColor={'#1748ac'}
+                        backgroundColor={'#03507d'}
                         textColor={'#ffffff'}
                         onClick={() => {
                             completedQuestion();

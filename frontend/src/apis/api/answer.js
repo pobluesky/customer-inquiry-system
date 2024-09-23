@@ -128,11 +128,7 @@ export const postAnswerByQuestionId = async (file, answerData, questionId) => {
 };
 
 // 답변 수정
-export const putAnswerByQuestionId = async (
-    file,
-    answerData,
-    questionId,
-) => {
+export const putAnswerByQuestionId = async (file, answerData, questionId) => {
     try {
         const formData = new FormData();
         formData.append(

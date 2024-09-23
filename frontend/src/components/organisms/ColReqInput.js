@@ -2,44 +2,110 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { QuestionAnswerButton } from '../atoms/VocButton';
+import { VocButton } from '../atoms/VocButton';
 import TextEditor from '../atoms/TextEditor';
-import { postCollaborationBySales } from '../../apis/api/collaboration';
+import { CompleteAlert, WrongRuleAlert } from '../../utils/actions';
+import { validateLength } from '../../utils/validation';
+import {
+    postCollaborationBySales,
+    putModifyByManager,
+} from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 import { Col_Req_Input } from '../../assets/css/Voc.css';
 
-export default function ColReqInput({ colResId, questionDetail }) {
+export default function ColReqInput({
+    colResId,
+    colDetail,
+    questionDetail,
+    colResManagerName,
+    colResManagerDept,
+}) {
     const navigate = useNavigate();
 
-    const [editorValue, setEditorValue] = useState('');
+    const [editorValue, setEditorValue] = useState(
+        colDetail?.colContents || '',
+    );
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
-    // 질문 등록
-    const fetchPostColReq = async () => {
-        try {
-            const colData = {
-                colReqId: getCookie('userId'),
-                colResId,
-                colContents: editorValue,
-            };
-            await postCollaborationBySales(
-                null,
-                colData,
-                questionDetail?.questionId,
-            );
-            setOpenBackDrop(true);
-            setTimeout(() => {
-                setOpenBackDrop(false);
-                navigate('/voc-list/question');
-            }, '2000');
-            resetForm();
-        } catch (error) {
-            console.error('협업 요청 실패: ', error);
-        }
-    };
+    const [showCompleteAlert, canShowCompleteAlert] = useState(false);
+    const [showWrongRuleAlert, canShowWrongRuleAlert] = useState(false);
+    const [message, setMessage] = useState('');
+
+    // 협업 요청 등록 및 수정
+    const fetchPostColReq = !colDetail
+        ? async () => {
+              try {
+                  const colData = {
+                      colReqId: getCookie('userId'),
+                      colResId,
+                      colContents: editorValue,
+                  };
+                  await postCollaborationBySales(
+                      null,
+                      colData,
+                      questionDetail?.questionId,
+                  );
+                  setOpenBackDrop(true);
+                  setTimeout(() => {
+                      setOpenBackDrop(false);
+                      navigate('/voc-list/question');
+                  }, '2000');
+                  resetForm();
+              } catch (error) {
+                  console.error('협업 요청 실패: ', error);
+              }
+          }
+        : async () => {
+              try {
+                  const colData = {
+                      colReqId: colDetail?.colManagerFromResponseDto.userId,
+                      colResId: colDetail?.colManagerToResponseDto.userId,
+                      colContents: editorValue,
+                      isAccepted: null,
+                      colReply: '',
+                  };
+                  const response = await putModifyByManager(
+                      null,
+                      colDetail?.colId,
+                      colData,
+                  );
+                  setMessage('협업 요청이 수정되었습니다.');
+                  canShowCompleteAlert(true);
+                  setTimeout(() => {
+                      navigate('/voc-form/collaboration/res', {
+                          state: {
+                              questionDetail: questionDetail,
+                              colDetail: response.data,
+                          },
+                      });
+                  }, '1000');
+              } catch (error) {
+                  console.log('협업 요청 수정 실패: ', error);
+              }
+          };
 
     const resetForm = () => {
         setEditorValue('');
+    };
+
+    const checkValidate = () => {
+        if (!colResManagerName) {
+            if (!colDetail?.colManagerToResponseDto.name) {
+                setMessage('희망하는 협업 응답자를 선택하세요.');
+                return canShowWrongRuleAlert(true);
+            }
+        }
+        if (!colResManagerDept) {
+            if (!colDetail?.colManagerToResponseDto.department) {
+                setMessage('희망하는 협업 응답자를 선택하세요.');
+                return canShowWrongRuleAlert(true);
+            }
+        }
+        if (validateLength(editorValue)) {
+            setMessage('요청 사유를 10자 이상 입력하세요.');
+            return canShowLengthAlert(true);
+        }
+        fetchPostColReq();
     };
 
     return (
@@ -58,20 +124,19 @@ export default function ColReqInput({ colResId, questionDetail }) {
                 />
                 <div>
                     <>
-                        <QuestionAnswerButton
+                        <VocButton
                             btnName={'요청 등록'}
-                            backgroundColor={'#1748ac'}
+                            backgroundColor={'#03507d'}
                             textColor={'#ffffff'}
                             margin={'0 24px 0 0'}
                             onClick={() => {
-                                fetchPostColReq();
+                                checkValidate();
                             }}
                         />
-                        <QuestionAnswerButton
+                        <VocButton
                             btnName={'요청 취소'}
-                            backgroundColor={'#ffffff'}
-                            border={'1px solid #1748ac'}
-                            textColor={'#1748ac'}
+                            backgroundColor={'#03507d'}
+                            textColor={'#ffffff'}
                             onClick={() => {
                                 window.confirm(
                                     '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
@@ -83,6 +148,22 @@ export default function ColReqInput({ colResId, questionDetail }) {
                     </>
                 </div>
             </div>
+            <CompleteAlert
+                showAlert={showCompleteAlert}
+                onClose={() => {
+                    canShowCompleteAlert(false);
+                }}
+                message={message}
+                inert
+            />
+            <WrongRuleAlert
+                showAlert={showWrongRuleAlert}
+                onClose={() => {
+                    canShowWrongRuleAlert(false);
+                }}
+                message={message}
+                inert
+            />
             <Backdrop
                 sx={{
                     color: '#fff',

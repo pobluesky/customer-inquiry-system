@@ -106,3 +106,22 @@ export const validateQuestionContents = (questionContents) => {
     }
     return '';
 };
+
+/******************************************************************/
+/* 협업 피드백 *****************************************************/
+/******************************************************************/
+// 협업 피드백 내용 길이
+export const validateColReply = (colReply) => {
+    if (colReply.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
+        return true;
+    }
+    return '';
+};
+
+// [공통] 길이 제한
+export const validateLength = (text) => {
+    if (text.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
+        return true;
+    }
+    return '';
+};
