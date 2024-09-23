@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.kafka.core.KafkaTemplate;
+//import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class CustomerService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+//    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Transactional
     public CustomerResponseDTO signUp(CustomerCreateRequestDTO signUpDto) {
@@ -41,7 +41,7 @@ public class CustomerService {
 
         Customer customer = signUpDto.toCustomerEntity(encodedPassword, "USER");
 
-        kafkaTemplate.send("user", "customer-sign-up");
+//        kafkaTemplate.send("user", "customer-sign-up");
 
         return CustomerResponseDTO.from(customerRepository.save(customer));
     }
@@ -82,7 +82,7 @@ public class CustomerService {
         if (!userId.equals(targetId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        kafkaTemplate.send("user", "customer-update-" + customer.getUsername());
+//        kafkaTemplate.send("user", "customer-update-" + customer.getUsername());
 
         customer.updateCustomer(
             customerUpdateRequestDTO.name(),
@@ -104,7 +104,7 @@ public class CustomerService {
         if (!userId.equals(targetId))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        kafkaTemplate.send("user", "customer-delete-"+ customer.getUsername());
+//        kafkaTemplate.send("user", "customer-delete-"+ customer.getUsername());
 
         customer.deleteUser();
     }
