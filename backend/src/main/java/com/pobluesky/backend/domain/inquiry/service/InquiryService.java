@@ -265,6 +265,56 @@ public class InquiryService {
     }
 
     @Transactional
+    public InquiryAllocateResponseDTO allocateQualityManager(String token, Long inquiryId, Long qualityManagerId) {
+        Manager salesManager = validateManager(token);
+
+        if (salesManager.getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if (inquiry.getProgress() != Progress.FIRST_REVIEW_COMPLETED) {
+            throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+        }
+
+        Manager qualityManager = managerRepository.findById(qualityManagerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_MANAGER_NOT_FOUND));
+
+        if (qualityManager.getRole() != UserRole.QUALITY) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
+        }
+
+        inquiry.allocateQualityManager(qualityManager);
+        inquiry.updateProgress(Progress.QUALITY_REVIEW_REQUEST);
+
+        return InquiryAllocateResponseDTO.from(inquiry);
+    }
+
+//    @Transactional
+//    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
+//        Manager manager = validateManager(token);
+//
+//        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+//            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+//
+//        if (manager.getRole() == UserRole.SALES) {
+//            if (inquiry.getProgress() == Progress.SUBMIT) {
+//                inquiry.allocateSalesManager(manager);
+//                inquiry.updateProgress(Progress.RECEIPT);
+//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+//        } else {
+//            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
+//                inquiry.allocateQualityManager(manager);
+//                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
+//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+//        }
+//
+//        return InquiryAllocateResponseDTO.from(inquiry);
+//    }
+
+    @Transactional
     public InquiryResponseDTO updateInquiryById(
         String token,
         Long inquiryId,
@@ -426,28 +476,6 @@ public class InquiryService {
             default:
                 return false;
         }
-    }
-
-    @Transactional
-    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
-        Manager manager = validateManager(token);
-
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
-        if (manager.getRole() == UserRole.SALES) {
-            if (inquiry.getProgress() == Progress.SUBMIT) {
-                inquiry.allocateSalesManager(manager);
-                inquiry.updateProgress(Progress.RECEIPT);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        } else {
-            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
-                inquiry.allocateQualityManager(manager);
-                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        }
-
-        return InquiryAllocateResponseDTO.from(inquiry);
     }
 
     public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
