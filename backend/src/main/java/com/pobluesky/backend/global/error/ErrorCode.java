@@ -26,7 +26,8 @@ public enum ErrorCode {
     UNAUTHORIZED_USER_QUALITY(HttpStatus.INTERNAL_SERVER_ERROR, "U0009", "품질 담당자가 아닙니다."),
     UNAUTHORIZED_USER_CUSTOMER(HttpStatus.INTERNAL_SERVER_ERROR, "U0010", "고객사가 아닙니다."),
     UNAUTHORIZED_USER_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "U0011", "담당자가 아닙니다."),
-    SALES_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0012", "존재하지 않는 품질 담당자입니다."),
+    SALES_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0012", "존재하지 않는 판매 담당자입니다."),
+    QUALITY_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0013", "존재하지 않는 품질 담당자입니다."),
 
     // Inquiry
     INQUIRY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0001", "존재하지 않는 문의입니다."),
