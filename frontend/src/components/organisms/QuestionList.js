@@ -237,12 +237,6 @@ export default function QuestionList({
         fetchGetQuestions();
     }, [userId, currentPage, filterArgs]);
 
-    console.log(
-        JSON.parse(
-            localStorage.getItem(`answerDetail-${questionDetail?.questionId}`),
-        ),
-    );
-
     const contentsEllipsis = {
         maxWidth: '1320px',
         whiteSpace: 'nowrap',

@@ -46,8 +46,6 @@ export default function QuestionInquirySearchModal({
         fetchGetAllInquiry();
     }, [userId, openModal]);
 
-    console.log(filteredInquiryData);
-
     return (
         <div className={Question_Inquiry_Modal}>
             <div>
@@ -98,16 +96,16 @@ export default function QuestionInquirySearchModal({
                     <table>
                         <thead>
                             <tr>
-                                <th width="20%">Inquiry No.</th>
-                                <th width="10%">제품</th>
+                                <th width="40%">Inquiry No.</th>
+                                <th width="20%">제품</th>
                                 <th width="30%">판매 계약자</th>
-                                <th width="20%">문의 유형</th>
-                                <th width="20%">고객사</th>
-                                <th width="20%">진행 현황</th>
-                                <th width="10%">국가</th>
-                                <th width="20%">판매 상사</th>
-                                <th width="20%">법인 코드</th>
-                                <th width="20%">산업 분류</th>
+                                <th width="40%">문의 유형</th>
+                                <th width="40%">고객사</th>
+                                <th width="40%">진행 현황</th>
+                                <th width="20%">국가</th>
+                                <th width="30%">판매 상사</th>
+                                <th width="30%">법인 코드</th>
+                                <th width="30%">산업 분류</th>
                             </tr>
                         </thead>
                         <tbody>

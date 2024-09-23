@@ -772,14 +772,18 @@
 }
 
 .Col_Table th:nth-child(3) {
-    width: 50%;
+    width: 10%;
 }
 
 .Col_Table th:nth-child(4) {
-    width: 15%;
+    width: 40%;
 }
 
 .Col_Table th:nth-child(5) {
+    width: 15%;
+}
+
+.Col_Table th:nth-child(6) {
     width: 15%;
 }
 
@@ -793,14 +797,16 @@
     color: #8b8b8b;
 }
 
-.Col_Table thead th:nth-child(n + 4):hover,
+.Col_Table thead th:nth-child(2):hover,
+.Col_Table thead th:nth-child(3):hover,
+.Col_Table thead th:nth-child(n + 5):hover,
 .Col_Table tbody tr:hover {
     cursor: pointer;
     background-color: #f3f3f3;
 }
 
 /* 협업 진행 현황 막대 */
-.Col_Table tbody tr td:nth-child(4) > div {
+.Col_Table tbody tr td:nth-child(5) > div {
     width: 80%;
     height: 32px;
     line-height: 32px;
@@ -837,28 +843,38 @@
 }
 
 .Col_Status > div:nth-child(4) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(5) {
     margin: 6px auto 12px auto;
 }
 
 .Col_Status > div:nth-child(1):hover {
     margin: 12px auto 6px auto;
     border-radius: 100px;
-    background-color: #dbeddb;
+    background-color: #f8f8f8;
 }
 
 .Col_Status > div:nth-child(2):hover {
     margin: 6px auto 6px auto;
     border-radius: 100px;
-    background-color: #f5e0e9;
+    background-color: #dbeddb;
 }
 
 .Col_Status > div:nth-child(3):hover {
     margin: 6px auto 6px auto;
     border-radius: 100px;
-    background-color: #d3e5ef;
+    background-color: #f5e0e9;
 }
 
 .Col_Status > div:nth-child(4):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #d3e5ef;
+}
+
+.Col_Status > div:nth-child(5):hover {
     margin: 6px auto 12px auto;
     border-radius: 100px;
     background-color: #efefee;
@@ -900,6 +916,43 @@
 .Col_Created_Date > div:nth-child(-n + 2):hover {
     border-radius: 100px;
     background-color: #e3e2e0;
+}
+
+/* 나의 협업 모아보기 */
+.Col_Manager {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 116px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Manager > div {
+    width: 76px;
+    line-height: 32px;
+}
+
+.Col_Manager > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Manager > div:nth-child(2) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Manager > div:nth-child(1):hover {
+    margin: 12px auto 6px auto;
+    border-radius: 100px;
+    background-color: #f8f8f8;
+}
+
+.Col_Manager > div:nth-child(2):hover {
+    margin: 6px auto 12px auto;
+    border-radius: 100px;
+    background-color: #f8f8f8;
 }
 
 /******************************************************************/

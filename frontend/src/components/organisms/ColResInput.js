@@ -78,7 +78,6 @@ export default function ColResInput({ colDetail, setColDetail }) {
                           colDetail?.colId,
                           colData,
                       );
-                      console.log(response.data);
                       setColDetail(response.data);
                       if (response.data.colStatus === 'REFUSE') {
                           setMessage('협업이 거절되었습니다.');

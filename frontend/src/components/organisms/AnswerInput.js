@@ -44,8 +44,6 @@ export default function AnswerInput({
         initialAnswerDetail ||
         JSON.parse(localStorage.getItem(`answerDetail-${questionId}`));
 
-    console.log(answerDetail);
-
     const role = getCookie('userRole');
     const userId = getCookie('userId');
 

@@ -6,6 +6,13 @@ export default function ColStatus({ setProgressFilter }) {
         <div className={Col_Status}>
             <div
                 onClick={() => {
+                    setProgressFilter('');
+                }}
+            >
+                전체
+            </div>
+            <div
+                onClick={() => {
                     setProgressFilter('COMPLETE');
                 }}
             >

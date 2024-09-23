@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ColReqManager from '../molecules/ColReqManager';
+import ColResManager from '../molecules/ColResManager';
 import ColStatus from '../molecules/ColStatus';
 import ColCreatedDate from '../molecules/ColCreatedDate';
 import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
@@ -6,26 +9,30 @@ import {
     getAllCollaboration,
     getCollaborationDetail,
 } from '../../apis/api/collaboration';
-import { Col_Table } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { Col_Table } from '../../assets/css/Voc.css';
+import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColTable({
     colNo,
-    colManager,
+    colReqManager,
+    colResManager,
     setSearchCount,
     status,
 }) {
     const navigate = useNavigate();
     const { userId } = useAuth();
+    const role = getCookie('userRole');
 
     const [filterArgs, setFilterArgs] = useState('');
     const [collabs, setCollabs] = useState([]);
 
+    const [colReqFilter, setColReqFilter] = useState('');
+    const [colResFilter, setColResFilter] = useState('');
+    const [progressFilter, setProgressFilter] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [timeFilter, setTimeFilter] = useState('');
-    const [progressFilter, setProgressFilter] = useState('');
 
     const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
 
@@ -63,10 +70,19 @@ export default function ColTable({
     useEffect(() => {
         let args = '';
         if (colNo) {
-            args += `${args ? '&' : ''}colReqId=${colNo}`;
+            args += `${args ? '&' : ''}colId=${colNo}`;
         }
-        if (colManager) {
-            args += `${args ? '&' : ''}colReqManager=${colManager}`;
+        if (colReqManager) {
+            args += `${args ? '&' : ''}colReqManager=${colReqManager}`;
+        }
+        if (colResManager) {
+            args += `${args ? '&' : ''}colResManager=${colResManager}`;
+        }
+        if (colReqFilter) {
+            args += `${args ? '&' : ''}colReqId=${colReqFilter}`;
+        }
+        if (colResFilter) {
+            args += `${args ? '&' : ''}colResId=${colResFilter}`;
         }
         if (startDate && endDate) {
             const s = `startDate=${
@@ -84,18 +100,28 @@ export default function ColTable({
             args += `${args ? '&' : ''}colStatus=${progressFilter}`;
         }
         setFilterArgs(args);
-    }, [colNo, colManager, startDate, endDate, timeFilter, progressFilter]);
+    }, [
+        colNo,
+        colReqManager,
+        colResManager,
+        colReqFilter,
+        colResFilter,
+        startDate,
+        endDate,
+        timeFilter,
+        progressFilter,
+    ]);
 
     const progressBackgroundColor = (status) => {
         switch (status) {
             case 'COMPLETE':
-                return '#DBEDDB'; // 협업 완료
+                return '#DBEDDB';
             case 'READY':
-                return '#F5E0E9'; // 협업 대기
+                return '#F5E0E9';
             case 'REFUSE':
-                return '#EFEFEE'; // 협업 거절
+                return '#EFEFEE';
             case 'INPROGRESS':
-                return '#D3E5EF'; // 협업 진행 중
+                return '#D3E5EF';
         }
     };
 
@@ -116,8 +142,18 @@ export default function ColTable({
         fetchGetCol(filterArgs);
     }, [userId, filterArgs, status]);
 
+    const [openColReqManager, setOpenColReqManager] = useState(false);
+    const [openColResManager, setOpenColResManager] = useState(false);
     const [openStatus, setOpenStatus] = useState(false);
     const [openDate, setOpenDate] = useState(false);
+
+    const titleEllipsis = {
+        maxWidth: '360px',
+        margin: '0 auto',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    };
 
     // 협업 번호, 요청 담당자
     return (
@@ -126,7 +162,36 @@ export default function ColTable({
                 <thead>
                     <tr>
                         <th>협업 번호</th>
-                        <th>요청 담당자</th>
+                        <th
+                            onClick={() => {
+                                role === 'sales' &&
+                                    setOpenColReqManager(!openColReqManager);
+                            }}
+                        >
+                            요청 담당자
+                            {role === 'sales' && openColReqManager ? (
+                                <ColReqManager
+                                    setColReqFilter={setColReqFilter}
+                                />
+                            ) : (
+                                ''
+                            )}
+                        </th>
+                        <th
+                            onClick={() => {
+                                role === 'quality' &&
+                                    setOpenColResManager(!openColResManager);
+                            }}
+                        >
+                            응답 담당자
+                            {role === 'quality' && openColResManager ? (
+                                <ColResManager
+                                    setColResFilter={setColResFilter}
+                                />
+                            ) : (
+                                ''
+                            )}
+                        </th>
                         <th>요청 사유</th>
                         <th
                             onClick={() => {
@@ -172,8 +237,14 @@ export default function ColTable({
                         >
                             <td>{col.colId}</td>
                             <td>{col.colReqManager}</td>
+                            <td>{col.colResManager}</td>
                             <td>
-                                {col.colContents.replace(/<\/?[^>]+(>|$)/g, '')}
+                                <div style={titleEllipsis}>
+                                    {col.colContents.replace(
+                                        /<\/?[^>]+(>|$)/g,
+                                        '',
+                                    )}
+                                </div>
                             </td>
                             <td>
                                 <div

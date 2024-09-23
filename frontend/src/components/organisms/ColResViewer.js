@@ -3,11 +3,12 @@ import dompurify from 'dompurify';
 import { VocButton } from '../atoms/VocButton';
 import { putCompleteByQuality } from '../../apis/api/collaboration';
 import { ColDoneAlert } from '../../utils/actions';
+import { getCookie } from '../../apis/utils/cookies';
 import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 
-// 협업 요청 피드백 뷰어
 export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
     const sanitizer = dompurify.sanitize;
+    const role = getCookie('userRole');
 
     const [showDoneAlert, canShowDoneAlert] = useState(false);
     const [message, setMessage] = useState('');
@@ -105,7 +106,8 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
                     />
                 </div>
                 <div>
-                    {colDetail?.colStatus !== 'COMPLETE' ? (
+                    {colDetail?.colStatus !== 'COMPLETE' &&
+                    role === 'quality' ? (
                         <>
                             <VocButton
                                 btnName={'피드백 수정'}
