@@ -194,7 +194,7 @@ public class InquiryService {
 
         Optional<Manager> salesManager = dto.salesManagerId()
                 .map(id -> managerRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)));
+                .orElseThrow(() -> new CommonException(ErrorCode.SALES_MANAGER_NOT_FOUND)));
 
         if (salesManager.isPresent() && salesManager.get().getRole() != UserRole.SALES) {
             throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
@@ -204,7 +204,7 @@ public class InquiryService {
         inquiry.setCustomer(customer);
 
         if (salesManager.isEmpty()) {
-            allocateSalesManagerAutomatically(inquiry);
+            autoAllocateSalesManager(inquiry);
         }
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
@@ -216,43 +216,52 @@ public class InquiryService {
 
         return InquiryResponseDTO.of(savedInquiry, lineItems);
     }
-    private void allocateSalesManagerAutomatically(Inquiry inquiry) {
+
+    private void autoAllocateSalesManager(Inquiry inquiry) {
         List<Manager> salesManagers = managerRepository.findByRole(UserRole.SALES);
-
         if (salesManagers.isEmpty()) {
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+            throw new CommonException(ErrorCode.SALES_MANAGER_NOT_FOUND);
         }
 
-        Map<Manager, Integer> allocationCounts = new HashMap<>();
-        for (Manager manager : salesManagers) {
-            Integer count = inquiryRepository.countInquiriesBySalesManager(manager);
-            allocationCounts.put(manager, count);
-        }
+        Map<Manager, Integer> allocationCounts = getManagerAllocationCounts(salesManagers);
+        List<Manager> leastAllocatedManagers = findLeastAllocatedManagers(allocationCounts);
 
-        Integer minAllocation = Collections.min(allocationCounts.values());
-
-        List<Manager> leastAllocatedManagers = allocationCounts.entrySet().stream()
-            .filter(entry -> entry.getValue().equals(minAllocation))
-            .map(Entry::getKey)
-            .collect(Collectors.toList());
-
-        Manager selectedManager;
-        if (leastAllocatedManagers.size() > 1) {
-            Map<Department, List<Manager>> managersByDepartment = leastAllocatedManagers.stream()
-                .collect(Collectors.groupingBy(Manager::getDepartment));
-
-            Department selectedDepartment = managersByDepartment.keySet().stream()
-                .findAny()
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND)); //부서 랜덤 선택,
-
-            List<Manager> managersInDepartment = managersByDepartment.get(selectedDepartment);
-
-            selectedManager = managersInDepartment.get(new Random().nextInt(managersInDepartment.size()));
-        } else {
-            selectedManager = leastAllocatedManagers.get(0);
-        }
+        Manager selectedManager = leastAllocatedManagers.size() > 1
+            ? selectRandomManagerByDepartment(leastAllocatedManagers)
+            : leastAllocatedManagers.get(0);
 
         inquiry.allocateSalesManager(selectedManager);
+    }
+
+    private Map<Manager, Integer> getManagerAllocationCounts(List<Manager> managers) {
+        return managers.stream()
+            .collect(Collectors.toMap(
+                manager -> manager,
+                inquiryRepository::countInquiriesBySalesManager
+            ));
+    }
+
+    // 최소 할당량 가진 매니저 반환(매니저별 문의 수)
+    private List<Manager> findLeastAllocatedManagers(Map<Manager, Integer> allocationCounts) {
+        Integer minAllocation = Collections.min(allocationCounts.values());
+
+        return allocationCounts.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(minAllocation))
+            .map(Map.Entry::getKey)
+            .toList();
+    }
+
+    // 부서 랜덤 선택 -> 여러명일 경우 해당 부서 내 매니저 랜덤 배정
+    private Manager selectRandomManagerByDepartment(List<Manager> managers) {
+        Map<Department, List<Manager>> managersByDepartment = managers.stream()
+            .collect(Collectors.groupingBy(Manager::getDepartment));
+
+        Department selectedDepartment = managersByDepartment.keySet().stream()
+            .findAny()
+            .orElseThrow(() -> new CommonException(ErrorCode.DEPARTMENT_NOT_FOUND));
+
+        List<Manager> managersInDepartment = managersByDepartment.get(selectedDepartment);
+        return managersInDepartment.get(new Random().nextInt(managersInDepartment.size()));
     }
 
     @Transactional
