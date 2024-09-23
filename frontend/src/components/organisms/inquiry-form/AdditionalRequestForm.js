@@ -7,7 +7,7 @@ import {
     _TextArea,
 } from '../../../assets/css/Form.css';
 
-const AdditionalRequestForm = ({ formData, handleFormDataChange, readOnly, previewData }) => {
+const AdditionalRequestForm = ({ formData, handleFormDataChange, readOnly, isPerform, previewData }) => {
     if(!formData) {
         return;
     }

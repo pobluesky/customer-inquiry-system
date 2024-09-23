@@ -71,18 +71,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         lineItemResponseDTOs: [],
     });
 
-    const [previewData, setPreviewData] = useState({
-        // inquiry
-        additionalRequests: '추가사항으로 견적서 요청 드립니다.',
-        corporate: 'GG',
-        country: 'KOREA',
-        customerRequestDate: '2024-10-21',
-        industry: 'ELECTRIC',
-        inquiryType: 'COMMON_INQUIRY',
-        productType: 'WIRE_ROD',
-        salesPerson: 'GEUMGANG',
-    })
-
     const getUserInfo = async () => {
         if (!userId) {
             return;
@@ -174,6 +162,19 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         localStorage.clear();
     }, []);
 
+    const handlePreviewData = () => {
+        setFormData({
+            additionalRequests: '추가사항으로 견적서 요청 드립니다.',
+            corporate: 'GG',
+            country: 'KOREA',
+            customerRequestDate: '2024-10-21',
+            industry: 'ELECTRIC',
+            inquiryType: 'COMMON_INQUIRY',
+            productType: 'WIRE_ROD',
+            salesPerson: 'GEUMGANG',
+        })
+    }
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
@@ -181,13 +182,13 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                         onReset={onReset}
                         onSubmit={handleSubmit(handleInquirySubmit)}
                         isPreviewData={true}
+                        handleIsPreview={handlePreviewData}
             />
             <InquiryNewForm
                 title={'기본정보'}
                 register={register}
                 errors={errors}
                 formData={formData}
-                previewData={previewData}
                 handleFormDataChange={handleFormDataChange}
             />
             <InquiryHistoryForm
@@ -201,12 +202,13 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             />
             <AdditionalRequestForm
                 formData={formData}
-                previewData={previewData}
-                handleFormDataChange={handleFormDataChange} />
+                handleFormDataChange={handleFormDataChange}
+            />
             <FileForm fileForm={"파일첨부"}
                       formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}
-                      handleFormDataChange={handleFormDataChange} />
+                      handleFormDataChange={handleFormDataChange}
+            />
             <InquiryPostErrorAlert
                 showAlert={isError}
                 onClose={() => {

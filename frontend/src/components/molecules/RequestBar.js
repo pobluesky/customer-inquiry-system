@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,6 +21,7 @@ function RequestBar({
     onQualityCompleteSubmit,
     onReset,
     isPreviewData,
+    handleIsPreview,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
@@ -108,6 +109,7 @@ function RequestBar({
                     {isPreviewData && (
                         <button
                             className={_previewButton}
+                            onClick={handleIsPreview}
                         >시연용</button>
                     )}
                     {Array.isArray(buttons) && buttons.length > 0 ? (

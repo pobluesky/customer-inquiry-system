@@ -9,7 +9,7 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, previewData }) => {
+const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, isPerform, previewData }) => {
     const {
         customerCode,
         customerName,
