@@ -446,35 +446,52 @@ Pobluesky입니다.
     };
 
     const handleInquiryClick = (inquiryType) => {
-        setSelectedInquiryType(inquiryType);
-
-        setMessages(prev => [
-            ...prev,
-            {
-                text: inquiryType === '사이트 이용 문의' ?
-                    `**${inquiryType}**의 자주하는 질문을 보여드릴게요.` :
-                    inquiryType === '기타 문의' ?
-                        `**기타 문의**는 VoC 문의하기를 이용해주세요.` :
-                        `Inquiry 문의 중 **${inquiryType}** 관련 자주하는 질문 리스트를 보여드릴게요.`,
-                type: 'bot',
-                time: getCurrentTime(),
-                component: inquiryType === '기타 문의' ? (
-                        <DefaultSection
+        if(didLoginRef.current) {
+            setSelectedInquiryType(inquiryType);
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: inquiryType === '사이트 이용 문의' ?
+                        `**${inquiryType}**의 자주하는 질문을 보여드릴게요.` :
+                        inquiryType === '기타 문의' ?
+                            `**기타 문의**는 VoC 문의하기를 이용해주세요.` :
+                            `Inquiry 문의 중 **${inquiryType}** 관련 자주하는 질문 리스트를 보여드릴게요.`,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: inquiryType === '기타 문의' ? (
+                            <DefaultSection
+                                onFirstComment={handleFirstComment}
+                                ref={chatContentRef}
+                                onFinishClick={handleFinishClick}
+                            />
+                        ) :
+                        (
+                            <InquiryQuestionList
+                                title={inquiryType}
+                                questionsType={inquiryType}
+                                onQuestionClick={handleQuestionClick}
+                                ref={chatContentRef}
+                            />
+                        ),
+                },
+            ]);
+        } else {
+            setMessages(prev => [
+                ...prev,
+                {
+                    text: `로그인 후, 응답을 확인하실 수 있습니다.`,
+                    type: 'bot',
+                    time: getCurrentTime(),
+                    component: (
+                        <LoginSection
                             onFirstComment={handleFirstComment}
                             ref={chatContentRef}
-                            onFinishClick={handleFinishClick}
+                            onClose={handleClose}
                         />
-                    ) :
-                    (
-                    <InquiryQuestionList
-                        title={inquiryType}
-                        questionsType={inquiryType}
-                        onQuestionClick={handleQuestionClick}
-                        ref={chatContentRef}
-                    />
-                ),
-            },
-        ]);
+                    )
+                },
+            ]);
+        }
     };
 
     useEffect(() => {
