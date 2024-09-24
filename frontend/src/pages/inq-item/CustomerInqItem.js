@@ -294,13 +294,13 @@ function CustomerInqItem() {
             />
             {isUpdate ? (
                 <RequestBar
-                    requestBarTitle={'Inquiry 조회5'}
+                    requestBarTitle={'Inquiry 조회7'}
                     role={'customer'}
                     onUpdate={handleSubmit(handleUpdate)}
                 />
             ) : (
                 <RequestBar
-                    requestBarTitle={'Inquiry 조회6'}
+                    requestBarTitle={'Inquiry 조회8'}
                     role={'customer'}
                     onUpdate={handleSubmit(handleUpdate)}
                 />

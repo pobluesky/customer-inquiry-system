@@ -341,9 +341,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     useEffect(() => {
         if (currentProgress === 'SUBMIT') {
-            setRequestTitle('Inquiry 상세조회6');
-        } else if (currentProgress === 'RECEIPT') {
             setRequestTitle('Inquiry 상세조회 및 영업검토1');
+        } else if (currentProgress === 'RECEIPT') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토2');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'QUOTE_INQUIRY') {
             setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
@@ -351,13 +351,12 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         } else if (currentProgress === 'QUALITY_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
             setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else {
-            setRequestTitle('Inquiry 상세조회6');
+            setRequestTitle('Inquiry 조회8');
         }
     }, [currentProgress, currentInqType]);
 
     const handleManagerSelect = (selectedData) => {
         setSelectedQualityManagerId(selectedData);
-        console.log("selectedData: ", selectedData)
     };
 
     const allocateByQualityManagerId = async () => {
@@ -371,8 +370,12 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
-                            role={'sales'} />
+            <ManagerInqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+                role={'sales'}
+            />
 
             <RequestBar
                 requestBarTitle={requestTitle}

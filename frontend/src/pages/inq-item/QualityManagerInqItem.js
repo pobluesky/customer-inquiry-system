@@ -42,6 +42,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const [userInfo, setUserInfo] = useState(null);
     const [qualityData, setQualityData] = useState(null);
     const [isQualityItem, setIsQualityItem] = useState(false);
+    const [currentProgress, setCurrentProgress] = useState(null);
+    const [requestTitle, setRequestTitle] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -53,6 +55,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
+        qualityManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -88,6 +92,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         try {
             const response = await getInquiryDetailByManagers(id);
             setInquiriesDataDetail(response.data);
+            setCurrentProgress(response.data.progress);
             setFormData(prevData => ({
                 ...prevData,
                 customerId: response.data.customerId,
@@ -137,6 +142,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
+                qualityManagerName: inquiriesDataDetail?.qualityManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -216,19 +223,32 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }));
     };
 
+    useEffect(() => {
+        if (currentProgress === 'QUALITY_REVIEW_REQUEST') {
+            setRequestTitle('Inquiry 상세조회 및 품질검토4');
+        } else if (currentProgress === 'QUALITY_REVIEW_RESPONSE') {
+            setRequestTitle('Inquiry 상세조회 및 품질검토6');
+        } else {
+            setRequestTitle('Inquiry 조회8');
+        }
+    }, [currentProgress]);
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'quality'} />
 
-            {isQualityItem ? (
-                <RequestBar requestBarTitle={'Inquiry 조회6'} />
-            ) : (
-                <RequestBar requestBarTitle={'Inquiry 상세조회 및 품질검토4'}
-                            onQualityCompleteSubmit={handleSubmit} />
-            )}
+            <RequestBar
+                requestBarTitle={requestTitle}
+                onQualityCompleteSubmit={handleSubmit}
+            />
 
-            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
+            <ManagerBasicInfoForm
+                formData={inquiriesDataDetail}
+                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                progress={currentProgress}
+            />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}

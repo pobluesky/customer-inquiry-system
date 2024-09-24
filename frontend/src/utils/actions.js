@@ -446,6 +446,16 @@ const FirstReviewCompleteAlert = () => {
 };
 
 // 품질검토정보 작성 완료
+const QualityResponseAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '품질검토가 접수되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+    });
+};
+
+// 품질검토정보 작성 완료
 const QualityCompleteAlert = () => {
     Swal.fire({
         icon: 'success',
@@ -480,6 +490,7 @@ export {
     WrongQuestionContentAlert,
     InquiryIdisNullAlert,
     QuestionCompleteAlert,
+    QualityResponseAlert,
     QuestionEditCompleteAlert,
     ColDoneAlert,
     InquiryPostErrorAlert,

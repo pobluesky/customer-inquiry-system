@@ -63,7 +63,7 @@ const ToggleBar = ({
                                 }}
                                 disabled
                             >
-                                {managerInfo[0]?.name}
+                                {managerInfo[0]?.name || '-'}
                             </Button>
                         <Button
                             style={{
@@ -144,7 +144,7 @@ const ToggleBar = ({
                                     }}
                                     size="medium"
                                 />
-                                {managerInfo[0]?.name || '---'}
+                                {managerInfo[0]?.name || '-'}
                             </Button>
                             <Button
                                 style={{
