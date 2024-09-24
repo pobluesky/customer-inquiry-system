@@ -8,6 +8,7 @@ import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 
 export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
     const sanitizer = dompurify.sanitize;
+
     const role = getCookie('userRole');
 
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);

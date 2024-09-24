@@ -9,6 +9,7 @@ import { getCookie } from '../../apis/utils/cookies';
 export default function ColReqViewer({ colDetail, questionDetail }) {
     const sanitizer = dompurify.sanitize;
     const navigate = useNavigate();
+
     const role = getCookie('userRole');
 
     return (
