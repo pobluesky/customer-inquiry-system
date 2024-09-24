@@ -94,4 +94,22 @@ public class Collaboration extends BaseEntity {
         this.fileName = fileName;
         this.filePath = filePath;
     }
+
+    public void modifyCollaborationContents(String newContents) {
+        this.colContents = newContents;
+    }
+
+    public void modifyColReply(String newReply) {
+        this.colReply = newReply;
+    }
+
+    public void updateCollaborationStatus(Boolean isAccepted) {
+        if (isAccepted != null) {
+            if (isAccepted) {
+                this.colStatus = ColStatus.INPROGRESS;
+            } else {
+                this.colStatus = ColStatus.REFUSE;
+            }
+        }
+    }
 }
