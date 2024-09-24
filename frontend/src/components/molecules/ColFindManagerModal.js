@@ -44,6 +44,23 @@ export default function ColFindManagerModal({
         setFilteredManagerInfo(filtered);
     };
 
+    const getDeptLabel = (dept) => {
+        switch (dept) {
+            case 'CRM':
+                return '냉연마케팅실';
+            case 'HWM':
+                return '열연선재마케팅실';
+            case 'EM':
+                return '에너지조선마케팅실';
+            case 'CMM':
+                return '자동차소재마케팅실';
+            case 'SFM':
+                return '강건재가전마케팅실';
+            case 'SM':
+                return '스테인리스마케팅실';
+        }
+    };
+
     useEffect(() => {
         fetchGetAllManager();
     }, [userId, openModal]);
@@ -98,13 +115,13 @@ export default function ColFindManagerModal({
                     <table>
                         <thead>
                             <tr>
-                                <th width="10%">회원번호</th>
-                                <th width="20%">이름</th>
-                                <th width="10%">부서</th>
-                                <th width="10%">사번</th>
-                                <th width="10%">권한</th>
-                                <th width="30%">이메일</th>
-                                <th width="20%">연락처</th>
+                                <th>회원번호</th>
+                                <th>이름</th>
+                                <th>부서</th>
+                                <th>사번</th>
+                                <th>권한</th>
+                                <th>이메일</th>
+                                <th>연락처</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,7 +141,9 @@ export default function ColFindManagerModal({
                                     >
                                         <td>{manager.userId}</td>
                                         <td>{manager.name}</td>
-                                        <td>{manager.department}</td>
+                                        <td>
+                                            {getDeptLabel(manager.department)}
+                                        </td>
                                         <td>{manager.empNo}</td>
                                         <td>품질팀</td>
                                         <td>{manager.email}</td>

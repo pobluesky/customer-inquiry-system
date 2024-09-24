@@ -1193,6 +1193,10 @@
     border: 1px solid #c1c1c1;
 }
 
+.Col_Find_Manager_Modal table th:nth-child(n) {
+    width: 196px;
+}
+
 .Col_Find_Manager_Modal thead {
     color: #8b8b8b;
 }
