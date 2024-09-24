@@ -5,7 +5,6 @@ import {
     CheckButton,
     RoleSelectButton,
 } from '../../components/molecules/JoinButton';
-import { SignUp } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {
@@ -19,13 +18,63 @@ import {
 } from '../../utils/validation';
 import { useRecoilState } from 'recoil';
 import { userName, userEmail, userPassword } from '../../index';
-import {
-    SuccessAlert,
-    WarningAlert,
-    FailedAlert,
-} from '../../utils/actions';
+import { SuccessAlert, WarningAlert, FailedAlert } from '../../utils/actions';
+import { SignUp } from '../../assets/css/Auth.css';
 
 function Join() {
+    useEffect(() => {
+        if (getCookie('userId')) {
+            navigate('/');
+        }
+    }, []);
+
+    // 특정 입력 필드에 포커스가 가면 스크롤
+    useEffect(() => {
+        if (checkValidationTest && nameRef.current) {
+            nameRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && userCodeRef.current) {
+            userCodeRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && emailRef.current) {
+            emailRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && phoneRef.current) {
+            phoneRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && customerNameRef.current) {
+            customerNameRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && passwordRef.current) {
+            passwordRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        if (checkValidationTest && passwordCheckRef.current) {
+            passwordCheckRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [checkValidationTest]);
+
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     const navigate = useNavigate();
 
     const [isFirstPage, setFirst] = useState(true);
@@ -49,7 +98,7 @@ function Join() {
     const [userRole, setUserRole] = useState(''); // 화면에 출력할 권한명
     const [role, setRole] = useState(''); // 서버로 전송할 권한명
     const [roleFilter, setRoleFilter] = useState(null);
-    
+
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
     const [showWarningAlert, canShowWarningAlert] = useState(false);
     const [showFailedAlert, canShowFailedAlert] = useState(false);
@@ -154,59 +203,6 @@ function Join() {
             await GetAuth();
         }
     };
-
-    useEffect(() => {
-        if (getCookie('userId')) {
-            navigate('/');
-        }
-    }, []);
-
-    // 특정 입력 필드에 포커스가 가면 스크롤
-    useEffect(() => {
-        if (checkValidationTest && nameRef.current) {
-            nameRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && userCodeRef.current) {
-            userCodeRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && emailRef.current) {
-            emailRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && phoneRef.current) {
-            phoneRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && customerNameRef.current) {
-            customerNameRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && passwordRef.current) {
-            passwordRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        if (checkValidationTest && passwordCheckRef.current) {
-            passwordCheckRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [checkValidationTest]);
-
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
 
     // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
     const saveGlobalInfo = () => {

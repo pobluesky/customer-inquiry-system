@@ -11,6 +11,10 @@ import {
 } from '../../apis/api/auth';
 
 export default function UserAccountOverview() {
+    useEffect(() => {
+        fetchGetUserInfo();
+    }, []);
+
     const userId = getCookie('userId');
     const role = getCookie('userRole');
 
@@ -41,10 +45,6 @@ export default function UserAccountOverview() {
                       console.error('담당자 상세 정보 조회 실패: ', error);
                   }
               };
-
-    useEffect(() => {
-        fetchGetUserInfo();
-    }, []);
 
     return (
         <div className={User_Account_Overview}>

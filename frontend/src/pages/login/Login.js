@@ -13,6 +13,26 @@ import { FailedAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
+    useEffect(() => {
+        const init = async () => {
+            if (didLogin) {
+                navigate('/');
+            }
+        };
+        init();
+    }, [didLogin]);
+
+    useEffect(() => {
+        window.addEventListener('keydown', enterKeyDown);
+        return () => {
+            window.removeEventListener('keydown', enterKeyDown);
+        };
+    }, [email, password]);
+
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     const navigate = useNavigate();
 
     // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
@@ -39,26 +59,6 @@ function Login() {
             await GetAuth();
         }
     };
-
-    useEffect(() => {
-        const init = async () => {
-            if (didLogin) {
-                navigate('/');
-            }
-        };
-        init();
-    }, [didLogin]);
-
-    useEffect(() => {
-        window.addEventListener('keydown', enterKeyDown);
-        return () => {
-            window.removeEventListener('keydown', enterKeyDown);
-        };
-    }, [email, password]);
-
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
 
     // 로그인 API
     const GetAuth = async () => {

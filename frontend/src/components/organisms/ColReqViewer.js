@@ -1,11 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import dompurify from 'dompurify';
 import { VocButton } from '../atoms/VocButton';
-import { Col_Req_Viewer } from '../../assets/css/Voc.css';
-import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../apis/utils/cookies';
+import { Col_Req_Viewer } from '../../assets/css/Voc.css';
 
-// 협업 요청 사유 뷰어
 export default function ColReqViewer({ colDetail, questionDetail }) {
     const sanitizer = dompurify.sanitize;
     const navigate = useNavigate();
@@ -18,7 +17,6 @@ export default function ColReqViewer({ colDetail, questionDetail }) {
                 <div>
                     <div>협업 요청 사유</div>
                 </div>
-                {/* 협업 요청 날짜, 요청 담당자 정보 */}
                 <div>
                     <div>2024-08-26 11:00</div>
                     <div>
@@ -34,7 +32,6 @@ export default function ColReqViewer({ colDetail, questionDetail }) {
                         품질 담당자에게 요청한 협업입니다.
                     </div>
                 </div>
-                {/* 내용 */}
                 <div
                     dangerouslySetInnerHTML={{
                         __html: sanitizer(`${colDetail.colContents || ''}`),

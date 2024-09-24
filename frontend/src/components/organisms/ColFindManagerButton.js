@@ -8,6 +8,15 @@ export default function ColFindManagerButton({
     colResManagerDept,
     colDetail,
 }) {
+    useEffect(() => {
+        if (colResManagerName) {
+            setManagerName(colResManagerName);
+        }
+        if (colResManagerDept) {
+            setManagerDept(colResManagerDept);
+        }
+    }, [colResManagerName, colResManagerDept]);
+
     const [managerName, setManagerName] = useState(
         colDetail?.colManagerToResponseDto.name || '',
     );
@@ -17,15 +26,6 @@ export default function ColFindManagerButton({
     let managerInfo = `${managerDept} 부서 ${managerName} 품질 담당자에게 협업을 요청합니다.`;
     const warningMsg =
         '협업 요청 시 반드시 희망하는 협업 응답자를 선택해야 합니다.';
-
-    useEffect(() => {
-        if (colResManagerName) {
-            setManagerName(colResManagerName);
-        }
-        if (colResManagerDept) {
-            setManagerDept(colResManagerDept);
-        }
-    }, [colResManagerName, colResManagerDept]);
 
     return (
         <div className={Col_Find_Manager_Button}>

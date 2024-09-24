@@ -14,15 +14,9 @@ import {
 } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput({
-    selectedType,
-    inquiryId,
-    questionDetail: initialQuestionDetail,
-}) {
+function QuestionInput({ selectedType, inquiryId, questionDetail }) {
     const { userId } = useAuth();
     const navigate = useNavigate();
-
-    const questionDetail = initialQuestionDetail || '';
 
     const [editorValue, setEditorValue] = useState(
         questionDetail?.contents || '',
@@ -31,7 +25,7 @@ function QuestionInput({
     const [title, setTitle] = useState(questionDetail?.title || '');
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState(questionDetail?.fileName || '');
-    const [filePath, setFilePath] = useState(questionDetail?.filePath || '');
+    const filePath = questionDetail?.filePath || '';
 
     const fileInputRef = useRef(null);
 
@@ -57,18 +51,11 @@ function QuestionInput({
                     return;
                 }
                 // 문의 관련 질문인 경우
-                const response = await postQuestionByUserIdAboutInquiry(
+                await postQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
                     inquiryId,
-                );
-                localStorage.removeItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                );
-                localStorage.setItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                    JSON.stringify(response.data),
                 );
                 setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
@@ -77,18 +64,7 @@ function QuestionInput({
                 }, '2000');
             } else {
                 // 문의와 무관한 질문인 경우
-                const response = await postQuestionByUserId(
-                    file,
-                    questionData,
-                    userId,
-                );
-                localStorage.removeItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                );
-                localStorage.setItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                    JSON.stringify(response.data),
-                );
+                await postQuestionByUserId(file, questionData, userId);
                 setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
                 setTimeout(() => {
@@ -116,19 +92,12 @@ function QuestionInput({
                     return;
                 }
                 // 문의 관련 질문인 경우
-                const response = await putQuestionByUserIdAboutInquiry(
+                await putQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
                     inquiryId,
                     questionDetail?.questionId,
-                );
-                localStorage.removeItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                );
-                localStorage.setItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                    JSON.stringify(response.data),
                 );
                 setMessage('질문이 수정되었습니다.');
                 canShowSuccessAlert(true);
@@ -141,18 +110,11 @@ function QuestionInput({
                 }, '1000');
             } else {
                 // 문의와 무관한 질문인 경우
-                const response = await putQuestionByUserId(
+                await putQuestionByUserId(
                     file,
                     questionData,
                     userId,
                     questionDetail?.questionId,
-                );
-                localStorage.removeItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                );
-                localStorage.setItem(
-                    `questionDetail-${questionDetail?.questionId}`,
-                    JSON.stringify(response.data),
                 );
                 setMessage('질문이 수정되었습니다.');
                 canShowSuccessAlert(true);

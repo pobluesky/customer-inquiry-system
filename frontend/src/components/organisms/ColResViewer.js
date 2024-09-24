@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import dompurify from 'dompurify';
 import { VocButton } from '../atoms/VocButton';
-import { putCompleteByQuality } from '../../apis/api/collaboration';
 import { SuccessAlert } from '../../utils/actions';
 import { getCookie } from '../../apis/utils/cookies';
+import { putCompleteByQuality } from '../../apis/api/collaboration';
 import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 
 export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
@@ -57,7 +57,7 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
             case 'COMPLETE':
                 return '협업 완료';
             case 'INPROGRESS':
-                return '협업 진행 중';
+                return '협업 수락';
         }
     };
 

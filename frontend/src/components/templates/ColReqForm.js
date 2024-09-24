@@ -6,6 +6,13 @@ import ColFindManagerModal from '../molecules/ColFindManagerModal';
 import ColReqInput from '../organisms/ColReqInput';
 
 export default function ColReqForm() {
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
     const location = useLocation();
     const { questionDetail, colDetail } = location.state;
 
@@ -19,14 +26,6 @@ export default function ColReqForm() {
     } else {
         document.body.style.overflow = 'auto';
     }
-
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-        localStorage.clear();
-    }, []);
 
     return (
         <div>

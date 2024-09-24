@@ -12,6 +12,10 @@ export default function QuestionInquirySearchModal({
     openModal,
     setOpenModal,
 }) {
+    useEffect(() => {
+        fetchGetAllInquiry();
+    }, [userId, openModal]);
+
     const { userId } = useAuth();
     const [inquiryData, setInquiries] = useState([]);
     const [searchId, setSearchId] = useState('');
@@ -41,10 +45,6 @@ export default function QuestionInquirySearchModal({
         );
         setFilteredInquiryData(filtered);
     };
-
-    useEffect(() => {
-        fetchGetAllInquiry();
-    }, [userId, openModal]);
 
     return (
         <div className={Question_Inquiry_Modal}>

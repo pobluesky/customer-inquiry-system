@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import { VocButton } from '../atoms/VocButton';
 import TextEditor from '../atoms/TextEditor';
 import { SuccessAlert, WarningAlert } from '../../utils/actions';
@@ -25,7 +23,6 @@ export default function ColReqInput({
     const [editorValue, setEditorValue] = useState(
         colDetail?.colContents || '',
     );
-    const [openBackDrop, setOpenBackDrop] = useState(false);
 
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
     const [showWarningAlert, canShowWarningAlert] = useState(false);
@@ -45,11 +42,16 @@ export default function ColReqInput({
                       colData,
                       questionDetail?.questionId,
                   );
-                  setOpenBackDrop(true);
+                  setMessage('협업이 요청되었습니다.');
+                  canShowSuccessAlert(true);
                   setTimeout(() => {
-                      setOpenBackDrop(false);
-                      navigate('/voc-list/question');
-                  }, '2000');
+                      navigate('/voc-form/collaboration/res', {
+                          state: {
+                              questionDetail: questionDetail,
+                              colDetail: response.data,
+                          },
+                      });
+                  }, '1000');
                   resetForm();
               } catch (error) {
                   console.error('협업 요청 실패: ', error);
@@ -70,7 +72,7 @@ export default function ColReqInput({
                       colData,
                   );
                   setMessage('협업 요청이 수정되었습니다.');
-                  canShowCompleteAlert(true);
+                  canShowSuccessAlert(true);
                   setTimeout(() => {
                       navigate('/voc-form/collaboration/res', {
                           state: {
@@ -164,15 +166,6 @@ export default function ColReqInput({
                 message={message}
                 inert
             />
-            <Backdrop
-                sx={{
-                    color: '#fff',
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={openBackDrop}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </div>
     );
 }

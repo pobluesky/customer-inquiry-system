@@ -3,9 +3,9 @@ import close from '../../assets/css/icons/close.svg';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import { VocButton } from '../atoms/VocButton';
-import { Col_Find_Manager_Modal } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllManager } from '../../apis/api/manager';
+import { Col_Find_Manager_Modal } from '../../assets/css/Voc.css';
 
 export default function ColFindManagerModal({
     openModal,

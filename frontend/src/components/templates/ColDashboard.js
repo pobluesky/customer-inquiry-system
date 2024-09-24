@@ -9,7 +9,14 @@ import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColDashboard() {
-    const [status, setStatus] = useState('READY');
+    useEffect(() => {
+        fetchGetQuestionCount();
+        fetchGetAnswerCount();
+        fetchGetColCount();
+        localStorage.clear();
+    }, [userId]);
+
+    const status = 'READY';
 
     // 질문 답변 현황
     const userId = getCookie('userId');
@@ -70,13 +77,6 @@ export default function ColDashboard() {
             console.log('협업 목록 개수 조회 실패: ', error);
         }
     };
-
-    useEffect(() => {
-        fetchGetQuestionCount();
-        fetchGetAnswerCount();
-        fetchGetColCount();
-        localStorage.clear();
-    }, [userId]);
 
     return (
         <>

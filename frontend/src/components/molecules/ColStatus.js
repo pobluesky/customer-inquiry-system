@@ -30,7 +30,7 @@ export default function ColStatus({ setProgressFilter }) {
                     setProgressFilter('INPROGRESS');
                 }}
             >
-                협업 진행 중
+                협업 수락
             </div>
             <div
                 onClick={() => {

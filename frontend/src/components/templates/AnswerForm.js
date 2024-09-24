@@ -14,6 +14,10 @@ import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function AnswerForm() {
+    useEffect(() => {
+        fetchGetQuestionDetail(questionId);
+    }, [questionId]);
+
     const userId = getCookie('userId');
     const role = getCookie('userRole');
 
@@ -93,10 +97,6 @@ export default function AnswerForm() {
             setColPossible(true);
         }
     };
-
-    useEffect(() => {
-        fetchGetQuestionDetail(questionId);
-    }, [questionId]);
 
     return (
         <div>

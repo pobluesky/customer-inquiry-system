@@ -4,6 +4,7 @@ import ColReqManager from '../molecules/ColReqManager';
 import ColResManager from '../molecules/ColResManager';
 import ColStatus from '../molecules/ColStatus';
 import ColCreatedDate from '../molecules/ColCreatedDate';
+import { getCookie } from '../../apis/utils/cookies';
 import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
 import {
     getAllCollaboration,
@@ -11,7 +12,6 @@ import {
 } from '../../apis/api/collaboration';
 import { useAuth } from '../../hooks/useAuth';
 import { Col_Table } from '../../assets/css/Voc.css';
-import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColTable({
     colNo,
@@ -20,52 +20,9 @@ export default function ColTable({
     setSearchCount,
     status,
 }) {
-    const navigate = useNavigate();
-    const { userId } = useAuth();
-    const role = getCookie('userRole');
-
-    const [filterArgs, setFilterArgs] = useState('');
-    const [collabs, setCollabs] = useState([]);
-
-    const [colReqFilter, setColReqFilter] = useState('');
-    const [colResFilter, setColResFilter] = useState('');
-    const [progressFilter, setProgressFilter] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [timeFilter, setTimeFilter] = useState('');
-
-    const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
-
-    const fetchGetCol = async (filterArgs) => {
-        try {
-            const response = await getAllCollaboration(filterArgs);
-            setCollabs(response.data.colListInfo);
-            setSearchCount(response.data.colListInfo.length);
-        } catch (error) {
-            console.error('협업 요약 조회 실패: ', error);
-        }
-    };
-
-    const fetchGetColDetail = async (questionId, colId) => {
-        try {
-            const responseC = await getCollaborationDetail(questionId, colId);
-            const responseQ = await getQuestionByQuestionIdForManager(
-                responseC.data?.questionId,
-            );
-            localStorage.setItem(
-                `questionDetail-${questionId}`,
-                JSON.stringify(responseQ.data),
-            );
-            navigate('/voc-form/collaboration/res', {
-                state: {
-                    colDetail: responseC.data,
-                    questionDetail: responseQ.data,
-                },
-            });
-        } catch (error) {
-            console.error('협업 상세 조회 또는 질문 상세 조회 실패: ', error);
-        }
-    };
+    useEffect(() => {
+        fetchGetCol(filterArgs);
+    }, [userId, filterArgs, status]);
 
     useEffect(() => {
         let args = '';
@@ -112,6 +69,50 @@ export default function ColTable({
         progressFilter,
     ]);
 
+    const navigate = useNavigate();
+
+    const { userId } = useAuth();
+    const role = getCookie('userRole');
+
+    const [filterArgs, setFilterArgs] = useState('');
+    const [collabs, setCollabs] = useState([]);
+
+    const [colReqFilter, setColReqFilter] = useState('');
+    const [colResFilter, setColResFilter] = useState('');
+    const [progressFilter, setProgressFilter] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [timeFilter, setTimeFilter] = useState('');
+
+    const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
+
+    const fetchGetCol = async (filterArgs) => {
+        try {
+            const response = await getAllCollaboration(filterArgs);
+            setCollabs(response.data.colListInfo);
+            setSearchCount(response.data.colListInfo.length);
+        } catch (error) {
+            console.error('협업 요약 조회 실패: ', error);
+        }
+    };
+
+    const fetchGetColDetail = async (questionId, colId) => {
+        try {
+            const responseC = await getCollaborationDetail(questionId, colId);
+            const responseQ = await getQuestionByQuestionIdForManager(
+                responseC.data?.questionId,
+            );
+            navigate('/voc-form/collaboration/res', {
+                state: {
+                    colDetail: responseC.data,
+                    questionDetail: responseQ.data,
+                },
+            });
+        } catch (error) {
+            console.error('협업 상세 조회 또는 질문 상세 조회 실패: ', error);
+        }
+    };
+
     const progressBackgroundColor = (status) => {
         switch (status) {
             case 'COMPLETE':
@@ -134,13 +135,9 @@ export default function ColTable({
             case 'COMPLETE':
                 return '협업 완료';
             case 'INPROGRESS':
-                return '협업 진행 중';
+                return '협업 수락';
         }
     };
-
-    useEffect(() => {
-        fetchGetCol(filterArgs);
-    }, [userId, filterArgs, status]);
 
     const [openColReqManager, setOpenColReqManager] = useState(false);
     const [openColResManager, setOpenColResManager] = useState(false);
@@ -155,7 +152,6 @@ export default function ColTable({
         textOverflow: 'ellipsis',
     };
 
-    // 협업 번호, 요청 담당자
     return (
         <>
             <table className={Col_Table}>

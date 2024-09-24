@@ -22,7 +22,15 @@ export default function AnswerInput({
     answerDetail,
     colPossible,
 }) {
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [writeAnswer, editAnswer]);
+
     const sanitizer = dompurify.sanitize;
+
     const navigate = useNavigate();
 
     const role = getCookie('userRole');
@@ -130,13 +138,6 @@ export default function AnswerInput({
             return `${datePart}${' '}${timePart.substring(0, 5)}`;
         }
     };
-
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, [writeAnswer, editAnswer]);
 
     return (
         <div className={Answer_Input}>

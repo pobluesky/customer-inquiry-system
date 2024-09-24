@@ -1,6 +1,6 @@
 import React from 'react';
-import { Col_Manager } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
+import { Col_Manager } from '../../assets/css/Voc.css';
 
 export default function ColResManager({ setColResFilter }) {
     const userId = getCookie('userId');

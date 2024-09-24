@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import UserInput from '../molecules/JoinInput';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { User_Account_Editing } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 import { putUserInfo } from '../../apis/api/auth';
 import { useRecoilState } from 'recoil';
@@ -13,6 +12,7 @@ import {
     validatePassword,
     validateMatch,
 } from '../../utils/validation';
+import { User_Account_Editing } from '../../assets/css/Auth.css';
 
 export default function EditingUserInfo({
     userDetail,
@@ -23,26 +23,6 @@ export default function EditingUserInfo({
     tryEdit,
     setTryEdit,
 }) {
-    const navigate = useNavigate();
-    const userId = getCookie('userId');
-    const role = getCookie('userRole');
-    const { logout } = useAuth();
-
-    const [email, setEmail] = useState(userDetail.email);
-    const [phone, setPhone] = useState(userDetail.phone);
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
-
-    const [, setGlobalEmail] = useRecoilState(userEmail); // 로그인 창으로 전달할 이메일 값
-
-    const enterKeyDown = async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setValidationTest(true);
-            setTryEdit(!tryEdit);
-        }
-    };
-
     useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
         return () => {
@@ -83,6 +63,34 @@ export default function EditingUserInfo({
         }
     }, [completeEdit, tryEdit]);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
+    const navigate = useNavigate();
+
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
+    const { logout } = useAuth();
+
+    const [email, setEmail] = useState(userDetail.email);
+    const [phone, setPhone] = useState(userDetail.phone);
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [, setGlobalEmail] = useRecoilState(userEmail); // 로그인 창으로 전달할 이메일 값
+
+    const enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            setTryEdit(!tryEdit);
+        }
+    };
+
     const fetchPutUserInfo = async () => {
         try {
             let userData;
@@ -117,13 +125,6 @@ export default function EditingUserInfo({
             );
         }
     };
-
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, []);
 
     return (
         <div className={User_Account_Editing}>

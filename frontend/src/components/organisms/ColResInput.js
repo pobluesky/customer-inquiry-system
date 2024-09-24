@@ -12,6 +12,13 @@ import { getCookie } from '../../apis/utils/cookies';
 import { Col_Accpted_Selector, Col_Res_Input } from '../../assets/css/Voc.css';
 
 export default function ColResInput({ colDetail, setColDetail }) {
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [selectedType]);
+
     const userId = getCookie('userId');
 
     const [editorValue, setEditorValue] = useState(colDetail?.colReply || '');
@@ -110,15 +117,6 @@ export default function ColResInput({ colDetail, setColDetail }) {
     const optionSelect = (e) => {
         setSelectedType(e.target.value);
     };
-
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, [selectedType]);
-
-    console.log(colDetail?.colManagerToResponseDto.name);
 
     return (
         <>
