@@ -4,6 +4,7 @@ import ColReqManager from '../molecules/ColReqManager';
 import ColResManager from '../molecules/ColResManager';
 import ColStatus from '../molecules/ColStatus';
 import ColCreatedDate from '../molecules/ColCreatedDate';
+import VocPageButton from './VocPageButton';
 import { getCookie } from '../../apis/utils/cookies';
 import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
 import {
@@ -37,10 +38,14 @@ export default function ColTable({
 
     const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState('');
+
     const fetchGetCol = async (filterArgs) => {
         try {
             const response = await getAllCollaboration(filterArgs);
             setCollabs(response.data.colListInfo);
+            setTotalPages(response.data.totalPages);
             setSearchCount(response.data.colListInfo.length);
         } catch (error) {
             console.error('협업 요약 조회 실패: ', error);
@@ -150,7 +155,7 @@ export default function ColTable({
 
     useEffect(() => {
         fetchGetCol(filterArgs);
-    }, [userId, filterArgs, status]);
+    }, [userId, currentPage, filterArgs, status]);
 
     return (
         <>
@@ -259,6 +264,11 @@ export default function ColTable({
                     ))}
                 </tbody>
             </table>
+            <VocPageButton
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setPage={setCurrentPage}
+            />
         </>
     );
 }
