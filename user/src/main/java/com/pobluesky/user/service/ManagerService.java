@@ -4,6 +4,7 @@ import com.pobluesky.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.user.dto.response.ManagerResponseDTO;
 import com.pobluesky.user.dto.response.ManagerSummaryResponseDTO;
+import com.pobluesky.user.dto.response.MobileManagerResponseDTO;
 import com.pobluesky.user.entity.Manager;
 
 import com.pobluesky.global.error.CommonException;
@@ -89,7 +90,7 @@ public class ManagerService {
         manager.updateManager(
             managerUpdateRequestDTO.name(),
             managerUpdateRequestDTO.email(),
-            managerUpdateRequestDTO.password(),
+            passwordEncoder.encode(managerUpdateRequestDTO.password()),
             managerUpdateRequestDTO.phone()
         );
 
@@ -117,6 +118,18 @@ public class ManagerService {
 //        kafkaTemplate.send("user", "manager-delete-"+ manager.getName());
 
         return manager;
+    }
+    @Transactional(readOnly = true)
+    public MobileManagerResponseDTO getManagerByIdForMobile(String token, Long targetId) {
+        Long userId = signService.parseToken(token);
+
+        if (!userId.equals(targetId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        Manager manager = managerRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        return  MobileManagerResponseDTO.from(manager);
     }
 
     public boolean existsById(Long userId) {

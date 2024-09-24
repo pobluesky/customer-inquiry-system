@@ -88,8 +88,10 @@ public class CustomerService {
             customerUpdateRequestDTO.name(),
             customerUpdateRequestDTO.email(),
             passwordEncoder.encode(customerUpdateRequestDTO.password()),
-            customerUpdateRequestDTO.phone()
-        );
+            customerUpdateRequestDTO.phone(),
+            customerUpdateRequestDTO.customerCode(),
+            customerUpdateRequestDTO.customerName()
+            );
 
         return CustomerResponseDTO.from(customer);
     }
