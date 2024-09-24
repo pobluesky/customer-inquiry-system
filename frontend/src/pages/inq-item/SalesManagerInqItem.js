@@ -45,6 +45,7 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { assignQualityManagerByUserId } from '../../apis/api/manager';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -63,6 +64,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [currentProgress, setCurrentProgress] = useState(null);
     const [currentInqType, setCurrentInqType] = useState(null);
     const [requestTitle, setRequestTitle] = useState(null);
+    const [selectedQualityManagerId, setSelectedQualityManagerId] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -353,6 +355,20 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }
     }, [currentProgress, currentInqType]);
 
+    const handleManagerSelect = (selectedData) => {
+        setSelectedQualityManagerId(selectedData);
+        console.log("selectedData: ", selectedData)
+    };
+
+    const allocateByQualityManagerId = async () => {
+        try {
+            await assignQualityManagerByUserId(id, selectedQualityManagerId);
+            console.log('Quality Manager allocated with ID:', selectedQualityManagerId);
+        } catch (error) {
+            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+        }
+    };
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
@@ -362,17 +378,23 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 requestBarTitle={requestTitle}
                 onReviewSubmit={handleReviewSubmit}
                 onQualitySubmit={handleQualitySubmit}
-                onFinalSubmit={handleFinalSubmit} />
+                onFinalSubmit={handleFinalSubmit}
+                onAllocate={allocateByQualityManagerId}
+            />
 
             <ManagerBasicInfoForm
                 formData={inquiriesDataDetail}
                 salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
                 qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
-                progress={currentProgress} />
+                progress={currentProgress}
+                onManagerSelect={handleManagerSelect}
+            />
+
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
             />
+
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             {isReviewItem ? (

@@ -14,7 +14,9 @@ const ToggleBar = ({
     setManagerId,
     salesManagerName,
     qualityManagerName,
+    onManagerSelect,
 }) => {
+
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +29,7 @@ const ToggleBar = ({
     const handleSelect = (selectedData) => {
         closeModal();
         setManagerInfo(selectedData);
+        onManagerSelect(selectedData[0]?.userId);
         if (setManagerId) {
             setManagerId(selectedData[0]?.userId);
         }

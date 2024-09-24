@@ -9,7 +9,13 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const ManagerBasicInfoForm = ({ formData, progress, salesManagerName, qualityManagerName }) => {
+const ManagerBasicInfoForm = ({
+    formData,
+    progress,
+    salesManagerName,
+    qualityManagerName,
+    onManagerSelect,
+}) => {
     if(!formData) {
         return;
     }
@@ -30,7 +36,6 @@ const ManagerBasicInfoForm = ({ formData, progress, salesManagerName, qualityMan
         phone
     } = formData;
 
-
     const [isChecked, setCheck] = useState(true);
 
     return (
@@ -43,6 +48,7 @@ const ManagerBasicInfoForm = ({ formData, progress, salesManagerName, qualityMan
                     progress={progress}
                     salesManagerName={salesManagerName}
                     qualityManagerName={qualityManagerName}
+                    onManagerSelect={onManagerSelect}
                 />
                 {isChecked ? (
                     <div className={Opend}>

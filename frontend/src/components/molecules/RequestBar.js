@@ -22,6 +22,7 @@ function RequestBar({
     onReset,
     isPreviewData,
     handleIsPreview,
+    onAllocate,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
@@ -60,6 +61,7 @@ function RequestBar({
             FirstReviewCompleteAlert();
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();
+            onAllocate();
             updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토완료') {
