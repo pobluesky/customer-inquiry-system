@@ -9,7 +9,13 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const ManagerBasicInfoForm = ({ formData }) => {
+const ManagerBasicInfoForm = ({
+    formData,
+    progress,
+    salesManagerName,
+    qualityManagerName,
+    onManagerSelect,
+}) => {
     if(!formData) {
         return;
     }
@@ -30,7 +36,6 @@ const ManagerBasicInfoForm = ({ formData }) => {
         phone
     } = formData;
 
-
     const [isChecked, setCheck] = useState(true);
 
     return (
@@ -40,6 +45,10 @@ const ManagerBasicInfoForm = ({ formData }) => {
                     title={'기본정보'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    progress={progress}
+                    salesManagerName={salesManagerName}
+                    qualityManagerName={qualityManagerName}
+                    onManagerSelect={onManagerSelect}
                 />
                 {isChecked ? (
                     <div className={Opend}>

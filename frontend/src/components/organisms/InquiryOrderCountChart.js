@@ -88,9 +88,11 @@ class InquiryOrderCountChart extends Component {
     }
 
     render() {
+        const { name } = this.props;
+
         return (
             <div className={Chart_Container}>
-                <div>Inquiry 주문 체결 완료 및 미완료 비중</div>
+                <div>{name}님의 Inquiry 주문 체결 완료 및 미완료 비중</div>
                 <div>
                     <div>
                         <Chart

@@ -18,10 +18,6 @@ const QualityFileFormItem = ({ fileForm, formData }) => {
                 <ToggleBar title={fileForm} isChecked={isChecked} setCheck={setCheck} />
                 {isChecked && (
                     <div className={Opend}>
-                        <div className={FileColumn}>
-                            <div>진행단계</div>
-                            <div>첨부파일명</div>
-                        </div>
                         <FileGetItem pastFile={formData.qualityReviewInfo.fileName} filePath={formData.qualityReviewInfo.filePath} />
                     </div>
                 )}

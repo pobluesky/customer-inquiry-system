@@ -20,9 +20,9 @@ import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
-    const { userId, role, userName } = useAuth();
+    const { userId, role } = useAuth();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const lineItemsRef = useRef(null);
     const fileRef = useRef(null);
     const [isUpdate, setIsUpdate] = useState(true);
@@ -30,6 +30,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const [isError, setIsError] = useState(false);
     const [alert, setAlert] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
+    const [managerId, setManagerId] = useState(null);
 
     useEffect(() => {
         if (error !== '') {
@@ -56,6 +57,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         customerId: userId,
         customerName: '',
         customerRequestDate: '',
+        salesManagerId: null,
         files: [],
         industry: '',
         inquiryId: null,
@@ -96,8 +98,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             event.preventDefault();
         }
         try {
+            console.log("매니저 아이디: ", managerId);
             const inquiryResponse = await postInquiry(userId, {
                 ...formData,
+                salesManagerId: managerId,
                 lineItemRequestDTOs: formData.lineItemRequestDTOs,
             });
             await postNotificationByCustomers(userId, {
@@ -162,18 +166,42 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         localStorage.clear();
     }, []);
 
+    const handlePreviewData = () => {
+        handleFormDataChange('additionalRequests', '추가사항으로 견적서 요청 드립니다.');
+        handleFormDataChange('corporate', 'GG');
+        handleFormDataChange('country', 'KOREA');
+        handleFormDataChange('customerRequestDate', '2024-10-21');
+        handleFormDataChange('industry', 'ELECTRIC');
+        handleFormDataChange('inquiryType', 'COMMON_INQUIRY');
+        handleFormDataChange('productType', 'WIRE_ROD');
+        handleFormDataChange('salesPerson', 'GEUMGANG');
+        setValue('additionalRequests', '추가사항으로 견적서 요청 드립니다.');
+        setValue('corporate', 'GG');
+        setValue('country', 'KOREA');
+        setValue('customerRequestDate', '2024-10-21');
+        setValue('industry', 'ELECTRIC');
+        setValue('inquiryType', 'COMMON_INQUIRY');
+        setValue('productType', 'WIRE_ROD');
+        setValue('salesPerson', 'GEUMGANG');
+    }
+
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
             <RequestBar requestBarTitle={"Inquiry 등록0"} role={"customer"}
                         onReset={onReset}
-                        onSubmit={handleSubmit(handleInquirySubmit)} />
+                        onSubmit={handleSubmit(handleInquirySubmit)}
+                        isPreviewData={true}
+                        handleIsPreview={handlePreviewData}
+            />
             <InquiryNewForm
                 title={'기본정보'}
                 register={register}
                 errors={errors}
                 formData={formData}
                 handleFormDataChange={handleFormDataChange}
+                setManagerId={setManagerId}
             />
             <InquiryHistoryForm
                 onRefLineItems={(func) => (lineItemsRef.current = func)}
@@ -184,12 +212,15 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 isUpdate={isUpdate}
                 setError={setError}
             />
-            <AdditionalRequestForm formData={formData}
-                                   handleFormDataChange={handleFormDataChange} />
+            <AdditionalRequestForm
+                formData={formData}
+                handleFormDataChange={handleFormDataChange}
+            />
             <FileForm fileForm={"파일첨부"}
                       formData={formData}
                       onRefFile={(func) => (fileRef.current = func)}
-                      handleFormDataChange={handleFormDataChange} />
+                      handleFormDataChange={handleFormDataChange}
+            />
             <InquiryPostErrorAlert
                 showAlert={isError}
                 onClose={() => {

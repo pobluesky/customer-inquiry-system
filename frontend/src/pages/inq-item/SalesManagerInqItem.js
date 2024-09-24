@@ -45,6 +45,7 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { assignQualityManagerByUserId } from '../../apis/api/manager';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -63,6 +64,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [currentProgress, setCurrentProgress] = useState(null);
     const [currentInqType, setCurrentInqType] = useState(null);
     const [requestTitle, setRequestTitle] = useState(null);
+    const [selectedQualityManagerId, setSelectedQualityManagerId] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -74,6 +76,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
+        qualityManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -206,6 +210,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
+                qualityManagerName: inquiriesDataDetail?.qualityManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -335,9 +341,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     useEffect(() => {
         if (currentProgress === 'SUBMIT') {
-            setRequestTitle('Inquiry 상세조회6');
-        } else if (currentProgress === 'RECEIPT') {
             setRequestTitle('Inquiry 상세조회 및 영업검토1');
+        } else if (currentProgress === 'RECEIPT') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토2');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'QUOTE_INQUIRY') {
             setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
@@ -345,26 +351,53 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         } else if (currentProgress === 'QUALITY_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
             setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else {
-            setRequestTitle('Inquiry 상세조회6');
+            setRequestTitle('Inquiry 조회8');
         }
     }, [currentProgress, currentInqType]);
 
+    const handleManagerSelect = (selectedData) => {
+        setSelectedQualityManagerId(selectedData);
+    };
+
+    const allocateByQualityManagerId = async () => {
+        try {
+            await assignQualityManagerByUserId(id, selectedQualityManagerId);
+            console.log('Quality Manager allocated with ID:', selectedQualityManagerId);
+        } catch (error) {
+            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+        }
+    };
+
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
-                            role={'sales'} />
+            <ManagerInqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+                role={'sales'}
+            />
 
             <RequestBar
                 requestBarTitle={requestTitle}
                 onReviewSubmit={handleReviewSubmit}
                 onQualitySubmit={handleQualitySubmit}
-                onFinalSubmit={handleFinalSubmit} />
+                onFinalSubmit={handleFinalSubmit}
+                onAllocate={allocateByQualityManagerId}
+            />
 
-            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
+            <ManagerBasicInfoForm
+                formData={inquiriesDataDetail}
+                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                progress={currentProgress}
+                onManagerSelect={handleManagerSelect}
+            />
+
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}
             />
+
             <AdditionalRequestForm formData={inquiriesDataDetail} />
 
             {isReviewItem ? (

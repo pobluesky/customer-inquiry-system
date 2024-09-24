@@ -53,6 +53,7 @@ function CustomerInqItem() {
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -215,6 +216,7 @@ function CustomerInqItem() {
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate:
                     inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -292,13 +294,13 @@ function CustomerInqItem() {
             />
             {isUpdate ? (
                 <RequestBar
-                    requestBarTitle={'Inquiry 조회5'}
+                    requestBarTitle={'Inquiry 조회7'}
                     role={'customer'}
                     onUpdate={handleSubmit(handleUpdate)}
                 />
             ) : (
                 <RequestBar
-                    requestBarTitle={'Inquiry 조회6'}
+                    requestBarTitle={'Inquiry 조회8'}
                     role={'customer'}
                     onUpdate={handleSubmit(handleUpdate)}
                 />

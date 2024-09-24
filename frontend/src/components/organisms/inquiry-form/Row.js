@@ -147,24 +147,7 @@ function Row({ row, role }, ref) {
                 style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 onClick={handleClick}
             >
-                <TableCell
-                    component="th"
-                    scope="row"
-                    className="custom-table-cell"
-                    align="center"
-                    sx={{ paddingLeft: '40px' }}
-                >
-                    <Checkbox
-                        checked={isChecked}
-                        disabled={isDisabled}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={handleCheckboxChange}
-                        sx={{
-                            color: isDisabled ? '#ffffff' : '#03507d',
-                        }}
-                    />
-                </TableCell>
-                <TableCell className="custom-table-cell" align="center" sx={{ width: '80px' }}>{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="left" sx={{ width: '80px', paddingLeft: '40px' }}>{row.processedInquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="center">
                     <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
@@ -177,6 +160,7 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
                     className="custom-table-cell"
