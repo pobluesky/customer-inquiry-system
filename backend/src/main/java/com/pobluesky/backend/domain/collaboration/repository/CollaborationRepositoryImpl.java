@@ -47,8 +47,8 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
                 collaboration.colId,
                 collaboration.question.questionId,
-                manager.userId,
-                manager.name,
+                collaboration.colRequestManager.userId,
+                collaboration.colRequestManager.name,
                 collaboration.colResponseManager.userId,
                 collaboration.colResponseManager.name,
                 collaboration.colStatus,
@@ -118,11 +118,11 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
     }
 
     private BooleanExpression colReqManagerEq(String colReqManager) {
-        return StringUtils.hasText(colReqManager) ? manager.name.eq(colReqManager) : null;
+        return StringUtils.hasText(colReqManager) ? collaboration.colRequestManager.name.eq(colReqManager) : null;
     }
 
     private BooleanExpression colReqIdEq(Long colReqId) {
-        return colReqId != null ? manager.userId.eq(colReqId) : null;
+        return colReqId != null ? collaboration.colRequestManager.userId.eq(colReqId) : null;
     }
 
     private BooleanExpression colResManagerEq(String colResManager) {
