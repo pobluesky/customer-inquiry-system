@@ -168,7 +168,7 @@ export default function CollapsibleTable({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#03507d' }}>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '70px', fontWeight: '700' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff', paddingLeft: '70px', fontWeight: '700' }}>Inquiry No.</TableCell>
                             <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff', fontWeight: '700' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>제품</TableCell>
