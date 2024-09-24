@@ -242,6 +242,10 @@
     border: 1px solid #c1c1c1;
 }
 
+.Question_Inquiry_Modal table th:nth-child(n) {
+    width: 180px;
+}
+
 .Question_Inquiry_Modal thead {
     color: #8b8b8b;
 }

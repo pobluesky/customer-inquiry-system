@@ -3,9 +3,9 @@ import close from '../../assets/css/icons/close.svg';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import { VocButton } from '../atoms/VocButton';
-import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllInquiries } from '../../apis/api/inquiry';
+import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 
 export default function QuestionInquirySearchModal({
     setInquiryId,
@@ -44,6 +44,11 @@ export default function QuestionInquirySearchModal({
             (inq) => String(inq.inquiryId) === String(searchId),
         );
         setFilteredInquiryData(filtered);
+    };
+
+    const formatInquiryId = (date, id) => {
+        const ruleId = id.toString().padStart(3, '0');
+        return `${date}${ruleId}`;
     };
 
     return (
@@ -96,20 +101,20 @@ export default function QuestionInquirySearchModal({
                     <table>
                         <thead>
                             <tr>
-                                <th width="40%">Inquiry No.</th>
-                                <th width="20%">제품</th>
-                                <th width="30%">판매 계약자</th>
-                                <th width="40%">문의 유형</th>
-                                <th width="40%">고객사</th>
-                                <th width="40%">진행 현황</th>
-                                <th width="20%">국가</th>
-                                <th width="30%">판매 상사</th>
-                                <th width="30%">법인 코드</th>
-                                <th width="30%">산업 분류</th>
+                                <th>Inquiry No.</th>
+                                <th>제품</th>
+                                <th>판매 계약자</th>
+                                <th>문의 유형</th>
+                                <th>고객사</th>
+                                <th>진행 현황</th>
+                                <th>국가</th>
+                                <th>판매 상사</th>
+                                <th>법인 코드</th>
+                                <th>산업 분류</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredInquiryData.map((inq) => (
+                            {filteredInquiryData?.map((inq) => (
                                 <>
                                     <tr
                                         key={inq.inquiryId}
@@ -126,8 +131,12 @@ export default function QuestionInquirySearchModal({
                                             setOpenModal(false);
                                         }}
                                     >
-                                        {/* <td>{inq.inquiryId}</td> */}
-                                        <td>20240909999</td>
+                                        <td>
+                                            {formatInquiryId(
+                                                inq.createdDate,
+                                                inq.inquiryId,
+                                            )}
+                                        </td>
                                         <td>{inq.productType}</td>
                                         <td>{inq.salesPerson}</td>
                                         <td>{inq.inquiryType}</td>

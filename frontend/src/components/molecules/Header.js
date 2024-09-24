@@ -15,11 +15,11 @@ import {
 } from '../../apis/api/auth';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { Header_Container } from '../../assets/css/Header.css';
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
 } from '../../apis/api/notification';
-import { Header_Container } from '../../assets/css/Header.css';
 
 export const MenuLink = styled(Link)`
     text-decoration: none;
@@ -27,38 +27,7 @@ export const MenuLink = styled(Link)`
 `;
 
 function MyHeader() {
-    useEffect(() => {
-        const init = async () => {
-            if (didLogin && userId) {
-                await findUserName();
-                await fetchNotificationsCount();
-            }
-        };
-        init();
-    }, [didLogin, userId, role]);
-
-    useEffect(() => {
-        const clickOutside = (event) => {
-            if (modalRef.current && !modalRef.current.contains(event.target)) {
-                setOpenInfoModal(false);
-                setOpenNotifyModal(false);
-            }
-        };
-        window.addEventListener('mouseup', clickOutside);
-        return () => window.removeEventListener('mouseup', clickOutside);
-    }, []);
-
-    useEffect(() => {
-        setOpenInfoModal(false);
-        setOpenNotifyModal(false);
-    }, [location]);
-
-    useEffect(() => {
-        setCurPage(location.pathname.substring(1, 4));
-    }, [location]);
-
     const navigate = useNavigate();
-
     const { didLogin, userId, role } = useAuth();
 
     const url = `/inq-list/${role}`;
@@ -126,6 +95,33 @@ function MyHeader() {
         }
     };
 
+    useEffect(() => {
+        const init = async () => {
+            if (didLogin && userId) {
+                await findUserName();
+                await fetchNotificationsCount();
+            }
+        };
+        init();
+    }, [didLogin, userId, role]);
+
+    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
+    useEffect(() => {
+        const clickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setOpenInfoModal(false);
+                setOpenNotifyModal(false);
+            }
+        };
+        window.addEventListener('mouseup', clickOutside);
+        return () => window.removeEventListener('mouseup', clickOutside);
+    }, []);
+
+    useEffect(() => {
+        setOpenInfoModal(false);
+        setOpenNotifyModal(false);
+    }, [location]);
+
     const InquiryMenu = () => (
         <>
             <div>
@@ -164,6 +160,10 @@ function MyHeader() {
             )}
         </>
     );
+
+    useEffect(() => {
+        setCurPage(location.pathname.substring(1, 4));
+    }, [location]);
 
     return (
         <>

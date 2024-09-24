@@ -176,6 +176,7 @@ export const processInquiries = (data) => {
             corporate: inquiry.corporate,
             corporationCode: inquiry.corporationCode,
             industry: industryText,
+            createdDate: inquiry.createdDate,
         };
     });
 };
@@ -291,7 +292,8 @@ export const processInquiryData = (data) => {
                     transportationDestination: item.transportationDestination,
                     annualCost: item.annualCost,
                     legalRegulatoryReview: item.legalRegulatoryReview,
-                    legalRegulatoryReviewDetail: item.legalRegulatoryReviewDetail,
+                    legalRegulatoryReviewDetail:
+                        item.legalRegulatoryReviewDetail,
                     finalCustomer: item.finalCustomer,
                 })),
             };
