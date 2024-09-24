@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import dompurify from 'dompurify';
-import { Question_Viewer } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
+import { Question_Viewer } from '../../assets/css/Voc.css';
 
-// 질문 뷰어
-export default function QuestionViewer({
-    questionDetail: initialQuestionDetail,
-    questionId,
-}) {
+export default function QuestionViewer({ questionDetail }) {
     const sanitizer = dompurify.sanitize;
+
     const role = getCookie('userRole');
-    const inqRole = role.toLowerCase();
 
-    const questionDetail =
-    initialQuestionDetail ||
-    JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
-    console.log(questionDetail);
-
-    // Voc번호를 생성하는 인코딩 함수: questionId + hour + minute + second
     const calDateNo = (datetime) => {
         if (datetime) {
             const [datePart, timePart] = datetime.split('T');
@@ -50,7 +40,7 @@ export default function QuestionViewer({
                     onClick={() => {
                         questionDetail?.type === 'INQ' &&
                             window.open(
-                                `/inq-list/${inqRole}/${questionDetail?.inquiryId}`,
+                                `/inq-list/${role}/${questionDetail?.inquiryId}`,
                                 '_blank',
                             );
                     }}

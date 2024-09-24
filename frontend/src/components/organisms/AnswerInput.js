@@ -18,31 +18,18 @@ import {
 import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
 export default function AnswerInput({
-    questionId,
+    questionDetail,
+    answerDetail,
     colPossible,
-    questionDetail: initialQuestionDetail,
-    answerDetail: initialAnswerDetail,
 }) {
-    const navigate = useNavigate();
     const sanitizer = dompurify.sanitize;
-
-    const questionDetail =
-        initialQuestionDetail ||
-        JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
-
-    const answerDetail =
-        initialAnswerDetail ||
-        JSON.parse(localStorage.getItem(`answerDetail-${questionId}`));
+    const navigate = useNavigate();
 
     const role = getCookie('userRole');
     const userId = getCookie('userId');
 
     const [writeAnswer, setWriteAnswer] = useState(false);
     const [editAnswer, setEditAnswer] = useState(false);
-
-    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
-    const [showWarningAlert, canShowWarningAlert] = useState(false);
-    const [message, setMessage] = useState('');
 
     const [title, setTitle] = useState(answerDetail?.title || '');
     const [editorValue, setEditorValue] = useState(
@@ -54,6 +41,10 @@ export default function AnswerInput({
 
     const fileInputRef = useRef(null);
 
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
+    const [message, setMessage] = useState('');
+
     const fetchPostAndPutAnswerByQuestionId = answerDetail
         ? async () => {
               try {
@@ -61,16 +52,7 @@ export default function AnswerInput({
                       title: title,
                       contents: editorValue,
                   };
-                  const response = await putAnswerByQuestionId(
-                      file,
-                      answerData,
-                      questionId,
-                  );
-                  localStorage.removeItem(`answerDetail-${questionId}`);
-                  localStorage.setItem(
-                      `answerDetail-${questionId}`,
-                      JSON.stringify(response.data),
-                  );
+                  await putAnswerByQuestionId(file, answerData, questionId);
                   setMessage('답변이 수정되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
@@ -86,16 +68,7 @@ export default function AnswerInput({
                       title: title,
                       contents: editorValue,
                   };
-                  const response = await postAnswerByQuestionId(
-                      file,
-                      answerData,
-                      questionId,
-                  );
-                  localStorage.removeItem(`answerDetail-${questionId}`);
-                  localStorage.setItem(
-                      `answerDetail-${questionId}`,
-                      JSON.stringify(response.data),
-                  );
+                  await postAnswerByQuestionId(file, answerData, questionId);
                   setMessage('답변이 등록되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {

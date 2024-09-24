@@ -18,6 +18,7 @@ import {
     getAnswerByQuestionIdForManager,
 } from '../../apis/api/answer';
 import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
+import { useNavigate } from 'react-router-dom';
 
 export default function QuestionList({
     title,
@@ -33,6 +34,8 @@ export default function QuestionList({
 }) {
     const userId = getCookie('userId');
     const role = getCookie('userRole');
+
+    const navigate = useNavigate();
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
@@ -120,100 +123,100 @@ export default function QuestionList({
                   }
               };
 
-    // 질문 상세 조회
-    const fetchGetQuestionDetail =
-        role === 'customer'
-            ? async (questionId) => {
-                  try {
-                      const response = await getQuestionByQuestionId(
-                          userId,
-                          questionId,
-                      );
-                      localStorage.setItem(
-                          `questionDetail-${questionId}`,
-                          JSON.stringify(response.data),
-                      );
-                      if (response.data.status === 'COMPLETED') {
-                          fetchGetAnswerDetail(questionId);
-                      } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
-                          fetchGetColDetailStatus(questionId);
-                      }
-                  } catch (error) {
-                      console.log('고객사 질문 상세 조회 실패: ', error);
-                  }
-              }
-            : async (questionId) => {
-                  try {
-                      const response = await getQuestionByQuestionIdForManager(
-                          questionId,
-                      );
-                      localStorage.setItem(
-                          `questionDetail-${questionId}`,
-                          JSON.stringify(response.data),
-                      );
-                      if (response.data.status === 'COMPLETED') {
-                          fetchGetAnswerDetail(questionId);
-                      } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
-                          fetchGetColDetailStatus(questionId);
-                      }
-                  } catch (error) {
-                      console.log('담당자 질문 상세 조회 실패: ', error);
-                  }
-              };
+    // // 질문 상세 조회
+    // const fetchGetQuestionDetail =
+    //     role === 'customer'
+    //         ? async (questionId) => {
+    //               try {
+    //                   const response = await getQuestionByQuestionId(
+    //                       userId,
+    //                       questionId,
+    //                   );
+    //                   localStorage.setItem(
+    //                       `questionDetail-${questionId}`,
+    //                       JSON.stringify(response.data),
+    //                   );
+    //                   if (response.data.status === 'COMPLETED') {
+    //                       fetchGetAnswerDetail(questionId);
+    //                   } else {
+    //                       localStorage.removeItem(`answerDetail-${questionId}`);
+    //                       fetchGetColDetailStatus(questionId);
+    //                   }
+    //               } catch (error) {
+    //                   console.log('고객사 질문 상세 조회 실패: ', error);
+    //               }
+    //           }
+    //         : async (questionId) => {
+    //               try {
+    //                   const response = await getQuestionByQuestionIdForManager(
+    //                       questionId,
+    //                   );
+    //                   localStorage.setItem(
+    //                       `questionDetail-${questionId}`,
+    //                       JSON.stringify(response.data),
+    //                   );
+    //                   if (response.data.status === 'COMPLETED') {
+    //                       fetchGetAnswerDetail(questionId);
+    //                   } else {
+    //                       localStorage.removeItem(`answerDetail-${questionId}`);
+    //                       fetchGetColDetailStatus(questionId);
+    //                   }
+    //               } catch (error) {
+    //                   console.log('담당자 질문 상세 조회 실패: ', error);
+    //               }
+    //           };
 
-    // 답변 상세 조회
-    const fetchGetAnswerDetail =
-        role === 'customer'
-            ? async (questionId) => {
-                  try {
-                      const response = await getAnswerByQuestionId(
-                          userId,
-                          questionId,
-                      );
-                      localStorage.setItem(
-                          `answerDetail-${questionId}`,
-                          JSON.stringify(response.data),
-                      );
-                      window.open(`/voc-form/answer/${questionId}`, '_blank');
-                  } catch (error) {
-                      console.log('고객사 답변 상세 조회 실패: ', error);
-                  }
-              }
-            : async (questionId) => {
-                  try {
-                      const response = await getAnswerByQuestionIdForManager(
-                          questionId,
-                      );
-                      localStorage.setItem(
-                          `answerDetail-${questionId}`,
-                          JSON.stringify(response.data),
-                      );
-                      window.open(`/voc-form/answer/${questionId}`, '_blank');
-                  } catch (error) {
-                      console.log('담당자 답변 상세 조회 실패: ', error);
-                  }
-              };
+    // // 답변 상세 조회
+    // const fetchGetAnswerDetail =
+    //     role === 'customer'
+    //         ? async (questionId) => {
+    //               try {
+    //                   const response = await getAnswerByQuestionId(
+    //                       userId,
+    //                       questionId,
+    //                   );
+    //                   localStorage.setItem(
+    //                       `answerDetail-${questionId}`,
+    //                       JSON.stringify(response.data),
+    //                   );
+    //                   window.open(`/voc-form/answer/${questionId}`, '_blank');
+    //               } catch (error) {
+    //                   console.log('고객사 답변 상세 조회 실패: ', error);
+    //               }
+    //           }
+    //         : async (questionId) => {
+    //               try {
+    //                   const response = await getAnswerByQuestionIdForManager(
+    //                       questionId,
+    //                   );
+    //                   localStorage.setItem(
+    //                       `answerDetail-${questionId}`,
+    //                       JSON.stringify(response.data),
+    //                   );
+    //                   window.open(`/voc-form/answer/${questionId}`, '_blank');
+    //               } catch (error) {
+    //                   console.log('담당자 답변 상세 조회 실패: ', error);
+    //               }
+    //           };
 
-    const fetchGetColDetailStatus = async (questionId) => {
-        try {
-            await getCollaborationDetailStatus(questionId);
-            localStorage.setItem(
-                `answerDetail-${questionId}`,
-                JSON.stringify([]),
-            );
-            localStorage.setItem('colPossible', JSON.stringify(false));
-            window.open(`/voc-form/answer/${questionId}`, '_blank');
-        } catch (error) {
-            localStorage.setItem(
-                `answerDetail-${questionId}`,
-                JSON.stringify([]),
-            );
-            localStorage.setItem('colPossible', JSON.stringify(true));
-            window.open(`/voc-form/answer/${questionId}`, '_blank');
-        }
-    };
+    // const fetchGetColDetailStatus = async (questionId) => {
+    //     try {
+    //         await getCollaborationDetailStatus(questionId);
+    //         localStorage.setItem(
+    //             `answerDetail-${questionId}`,
+    //             JSON.stringify([]),
+    //         );
+    //         localStorage.setItem('colPossible', JSON.stringify(false));
+    //         window.open(`/voc-form/answer/${questionId}`, '_blank');
+    //     } catch (error) {
+    //         localStorage.setItem(
+    //             `answerDetail-${questionId}`,
+    //             JSON.stringify([]),
+    //         );
+    //         localStorage.setItem('colPossible', JSON.stringify(true));
+    //         window.open(`/voc-form/answer/${questionId}`, '_blank');
+    //     }
+    // };
 
     useEffect(() => {
         fetchGetQuestions();
@@ -236,7 +239,14 @@ export default function QuestionList({
                         <div
                             className={Question_List}
                             onClick={() => {
-                                fetchGetQuestionDetail(data.questionId);
+                                navigate(
+                                    `/voc-form/answer/${data.questionId}`,
+                                    // {
+                                    //     state: {
+                                    //         questionDetail: questionDetail,
+                                    //     },
+                                    // },
+                                );
                             }}
                         >
                             <div>
