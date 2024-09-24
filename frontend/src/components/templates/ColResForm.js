@@ -54,7 +54,6 @@ export default function ColResForm() {
             ) : (
                 ''
             )}
-            {/* 판매팀은 본인이 작성한 협업 삭제 버튼 추가 필요 */}
         </div>
     );
 }

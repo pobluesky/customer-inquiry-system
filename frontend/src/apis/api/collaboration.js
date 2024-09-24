@@ -1,10 +1,10 @@
 import axiosInstance from '../utils/axiosInstance';
 
 // 협업 목록 요약 조회
-export const getAllCollaboration = async (filterArgs) => {
+export const getAllCollaboration = async (currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
-            `/collaborations?${filterArgs}`,
+            `/collaborations?page=${currentPage}&${filterArgs}`,
         );
 
         const json = response.data;
