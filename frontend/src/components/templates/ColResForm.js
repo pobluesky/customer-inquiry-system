@@ -33,6 +33,11 @@ export default function ColResForm() {
         });
     }, []);
 
+    console.log(colDetail.colStatus);
+    console.log(editMode);
+    console.log(role);
+    console.log(colDetail.colStatus !== 'READY' && !editMode);
+
     return (
         <div>
             <QuestionViewer questionDetail={questionDetail} />

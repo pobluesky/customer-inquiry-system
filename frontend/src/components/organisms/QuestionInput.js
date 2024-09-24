@@ -4,17 +4,8 @@ import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
 import { VocButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
-import {
-    WrongQuestionTitleAlert,
-    WrongQuestionContentAlert,
-    InquiryIdisNullAlert,
-    QuestionCompleteAlert,
-    QuestionEditCompleteAlert,
-} from '../../utils/actions';
-import {
-    validateQuestionTitle,
-    validateQuestionContents,
-} from '../../utils/validation';
+import { SuccessAlert, WarningAlert } from '../../utils/actions';
+import { validateQuestionTitle, validateLength } from '../../utils/validation';
 import {
     postQuestionByUserIdAboutInquiry,
     postQuestionByUserId,
@@ -31,9 +22,7 @@ function QuestionInput({
     const { userId } = useAuth();
     const navigate = useNavigate();
 
-    const questionDetail =
-        initialQuestionDetail ||
-        JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
+    const questionDetail = initialQuestionDetail || '';
 
     const [editorValue, setEditorValue] = useState(
         questionDetail?.contents || '',
@@ -48,11 +37,9 @@ function QuestionInput({
 
     const status = 'READY';
 
-    const [showTitleAlert, canShowTitleAlert] = useState(false);
-    const [showContentAlert, canShowContentAlert] = useState(false);
-    const [showInquiryIdAlert, canShowInquiryIdAlert] = useState(false);
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
-    const [showSuccessEditAlert, canShowSuccessEditAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
+    const [message, setMessage] = useState('');
 
     // 질문 등록
     const fetchPostQuestionByUserId = async () => {
@@ -65,7 +52,8 @@ function QuestionInput({
             };
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
-                    canShowInquiryIdAlert(true);
+                    setMessage('Inquiry 번호를 선택하세요.');
+                    canShowWarningAlert(true);
                     return;
                 }
                 // 문의 관련 질문인 경우
@@ -82,6 +70,7 @@ function QuestionInput({
                     `questionDetail-${questionDetail?.questionId}`,
                     JSON.stringify(response.data),
                 );
+                setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
                 setTimeout(() => {
                     navigate('/voc-list/question');
@@ -100,6 +89,7 @@ function QuestionInput({
                     `questionDetail-${questionDetail?.questionId}`,
                     JSON.stringify(response.data),
                 );
+                setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
                 setTimeout(() => {
                     navigate('/voc-list/question');
@@ -121,7 +111,8 @@ function QuestionInput({
             };
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
-                    canShowInquiryIdAlert(true);
+                    setMessage('Inquiry 번호를 선택하세요.');
+                    canShowWarningAlert(true);
                     return;
                 }
                 // 문의 관련 질문인 경우
@@ -139,9 +130,10 @@ function QuestionInput({
                     `questionDetail-${questionDetail?.questionId}`,
                     JSON.stringify(response.data),
                 );
-                canShowSuccessEditAlert(true);
+                setMessage('질문이 수정되었습니다.');
+                canShowSuccessAlert(true);
                 setTimeout(() => {
-                    navigate('/voc-form/answer', {
+                    navigate(`/voc-form/answer/${questionDetail?.questionId}`, {
                         state: {
                             questionId: questionDetail?.questionId,
                         },
@@ -162,9 +154,10 @@ function QuestionInput({
                     `questionDetail-${questionDetail?.questionId}`,
                     JSON.stringify(response.data),
                 );
-                canShowSuccessEditAlert(true);
+                setMessage('질문이 수정되었습니다.');
+                canShowSuccessAlert(true);
                 setTimeout(() => {
-                    navigate('/voc-form/answer', {
+                    navigate(`/voc-form/answer/${questionDetail?.questionId}`, {
                         state: {
                             questionId: questionDetail?.questionId,
                         },
@@ -193,11 +186,11 @@ function QuestionInput({
 
     const completedQuestion = () => {
         if (validateQuestionTitle(title)) {
-            canShowTitleAlert(true);
-            return;
-        } else if (validateQuestionContents(editorValue)) {
-            canShowContentAlert(true);
-            return;
+            setMessage('제목은 1자 이상 입력하세요.');
+            return canShowWarningAlert(true);
+        } else if (validateLength(editorValue)) {
+            setMessage('질문을 10자 이상 입력하세요.');
+            return canShowWarningAlert(true);
         } else {
             if (questionDetail) {
                 fetchPutQuestionByUserId();
@@ -210,9 +203,7 @@ function QuestionInput({
     return (
         <>
             <div className={Question_Input}>
-                {/* 제목 + 첨부파일 그룹 */}
                 <div>
-                    {/* 질문 제목 */}
                     <Input
                         value={title}
                         onChange={titleChange}
@@ -223,10 +214,8 @@ function QuestionInput({
                         border={'1px solid #8b8b8b'}
                         placeholder={'제목을 입력하세요. (30자)'}
                     />
-                    {/* 질문 제목 길이 */}
                     <div>{title.length}</div>
                     <div>/30</div>
-                    {/* 파일 업로드 버튼 */}
                     <div>
                         <Input
                             type="file"
@@ -265,7 +254,6 @@ function QuestionInput({
                         )}
                     </div>
                 </div>
-                {/* 질문 입력 */}
                 <TextEditor
                     placeholder={'질문을 입력하세요.'}
                     width={'1320px'}
@@ -287,39 +275,20 @@ function QuestionInput({
                     />
                 </div>
             </div>
-            <WrongQuestionTitleAlert
-                showAlert={showTitleAlert}
-                onClose={() => {
-                    canShowTitleAlert(false);
-                }}
-                inert
-            />
-            <WrongQuestionContentAlert
-                showAlert={showContentAlert}
-                onClose={() => {
-                    canShowContentAlert(false);
-                }}
-                inert
-            />
-            <InquiryIdisNullAlert
-                showAlert={showInquiryIdAlert}
-                onClose={() => {
-                    canShowInquiryIdAlert(false);
-                }}
-                inert
-            />
-            <QuestionCompleteAlert
+            <SuccessAlert
                 showAlert={showSuccessAlert}
                 onClose={() => {
                     canShowSuccessAlert(false);
                 }}
+                message={message}
                 inert
             />
-            <QuestionEditCompleteAlert
-                showAlert={showSuccessEditAlert}
+            <WarningAlert
+                showAlert={showWarningAlert}
                 onClose={() => {
-                    canShowSuccessEditAlert(false);
+                    canShowWarningAlert(false);
                 }}
+                message={message}
                 inert
             />
         </>

@@ -4,7 +4,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { VocButton } from '../atoms/VocButton';
 import TextEditor from '../atoms/TextEditor';
-import { CompleteAlert, WrongRuleAlert } from '../../utils/actions';
+import { SuccessAlert, WarningAlert } from '../../utils/actions';
 import { validateLength } from '../../utils/validation';
 import {
     postCollaborationBySales,
@@ -27,8 +27,8 @@ export default function ColReqInput({
     );
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
-    const [showCompleteAlert, canShowCompleteAlert] = useState(false);
-    const [showWrongRuleAlert, canShowWrongRuleAlert] = useState(false);
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
     const [message, setMessage] = useState('');
 
     // 협업 요청 등록 및 수정
@@ -92,18 +92,18 @@ export default function ColReqInput({
         if (!colResManagerName) {
             if (!colDetail?.colManagerToResponseDto.name) {
                 setMessage('희망하는 협업 응답자를 선택하세요.');
-                return canShowWrongRuleAlert(true);
+                return canShowWarningAlert(true);
             }
         }
         if (!colResManagerDept) {
             if (!colDetail?.colManagerToResponseDto.department) {
                 setMessage('희망하는 협업 응답자를 선택하세요.');
-                return canShowWrongRuleAlert(true);
+                return canShowWarningAlert(true);
             }
         }
         if (validateLength(editorValue)) {
             setMessage('요청 사유를 10자 이상 입력하세요.');
-            return canShowLengthAlert(true);
+            return canShowWarningAlert(true);
         }
         fetchPostColReq();
     };
@@ -148,18 +148,18 @@ export default function ColReqInput({
                     </>
                 </div>
             </div>
-            <CompleteAlert
-                showAlert={showCompleteAlert}
+            <SuccessAlert
+                showAlert={showSuccessAlert}
                 onClose={() => {
-                    canShowCompleteAlert(false);
+                    canShowSuccessAlert(false);
                 }}
                 message={message}
                 inert
             />
-            <WrongRuleAlert
-                showAlert={showWrongRuleAlert}
+            <WarningAlert
+                showAlert={showWarningAlert}
                 onClose={() => {
-                    canShowWrongRuleAlert(false);
+                    canShowWarningAlert(false);
                 }}
                 message={message}
                 inert

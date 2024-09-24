@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import VocPageButton from './VocPageButton';
-import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
+import VocPageButton from './VocPageButton';
 import {
     Question_List_Container,
     Question_List,
@@ -35,13 +33,9 @@ export default function QuestionList({
 }) {
     const userId = getCookie('userId');
     const role = getCookie('userRole');
-    const navigate = useNavigate();
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
-
-    const [questionDetail, setQuestionDetail] = useState([]);
-    const [answerDetail, setAnswerDetail] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
@@ -135,7 +129,6 @@ export default function QuestionList({
                           userId,
                           questionId,
                       );
-                      setQuestionDetail(response.data);
                       localStorage.setItem(
                           `questionDetail-${questionId}`,
                           JSON.stringify(response.data),
@@ -183,11 +176,7 @@ export default function QuestionList({
                           `answerDetail-${questionId}`,
                           JSON.stringify(response.data),
                       );
-                      navigate('/voc-form/answer', {
-                          state: {
-                              questionId: questionId,
-                          },
-                      });
+                      window.open(`/voc-form/answer/${questionId}`, '_blank');
                   } catch (error) {
                       console.log('고객사 답변 상세 조회 실패: ', error);
                   }
@@ -197,16 +186,11 @@ export default function QuestionList({
                       const response = await getAnswerByQuestionIdForManager(
                           questionId,
                       );
-                      setAnswerDetail(response.data);
                       localStorage.setItem(
                           `answerDetail-${questionId}`,
                           JSON.stringify(response.data),
                       );
-                      navigate('/voc-form/answer', {
-                          state: {
-                              questionId: questionId,
-                          },
-                      });
+                      window.open(`/voc-form/answer/${questionId}`, '_blank');
                   } catch (error) {
                       console.log('담당자 답변 상세 조회 실패: ', error);
                   }
@@ -215,21 +199,19 @@ export default function QuestionList({
     const fetchGetColDetailStatus = async (questionId) => {
         try {
             await getCollaborationDetailStatus(questionId);
-            navigate('/voc-form/answer', {
-                state: {
-                    questionId: questionId,
-                    answerDetail: [],
-                    colPossible: false,
-                },
-            });
+            localStorage.setItem(
+                `answerDetail-${questionId}`,
+                JSON.stringify([]),
+            );
+            localStorage.setItem('colPossible', JSON.stringify(false));
+            window.open(`/voc-form/answer/${questionId}`, '_blank');
         } catch (error) {
-            navigate('/voc-form/answer', {
-                state: {
-                    questionId: questionId,
-                    answerDetail: [],
-                    colPossible: true,
-                },
-            });
+            localStorage.setItem(
+                `answerDetail-${questionId}`,
+                JSON.stringify([]),
+            );
+            localStorage.setItem('colPossible', JSON.stringify(true));
+            window.open(`/voc-form/answer/${questionId}`, '_blank');
         }
     };
 

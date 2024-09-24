@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import dompurify from 'dompurify';
 import { VocButton } from '../atoms/VocButton';
 import { putCompleteByQuality } from '../../apis/api/collaboration';
-import { ColDoneAlert } from '../../utils/actions';
+import { SuccessAlert } from '../../utils/actions';
 import { getCookie } from '../../apis/utils/cookies';
 import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 
@@ -10,7 +10,7 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
     const sanitizer = dompurify.sanitize;
     const role = getCookie('userRole');
 
-    const [showDoneAlert, canShowDoneAlert] = useState(false);
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
     const [message, setMessage] = useState('');
 
     const fetchPutCompleteCol = async () => {
@@ -18,7 +18,7 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
             const response = await putCompleteByQuality(colDetail?.colId);
             setColDetail(response.data);
             setMessage('협업이 완료되었습니다.');
-            canShowDoneAlert(true);
+            canShowSuccessAlert(true);
             setTimeout(() => {
                 window.location.reload();
             }, '1000');
@@ -81,7 +81,6 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
                             </a>
                         </div>
                     </div>
-                    {/* 협업 요청 날짜, 요청 담당자 정보 */}
                     <div>
                         <div>2024-08-26 11:00</div>
                         <div>
@@ -136,10 +135,10 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
                     )}
                 </div>
             </div>
-            <ColDoneAlert
-                showAlert={showDoneAlert}
+            <SuccessAlert
+                showAlert={showSuccessAlert}
                 onClose={() => {
-                    canShowDoneAlert(false);
+                    canShowSuccessAlert(false);
                 }}
                 message={message}
                 inert

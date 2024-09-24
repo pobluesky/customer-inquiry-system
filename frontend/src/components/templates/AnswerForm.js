@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import QuestionViewer from '../organisms/QuestionViewer';
 import AnswerInput from '../organisms/AnswerInput';
 
 export default function AnswerForm() {
-    const location = useLocation();
-    const { questionId, colPossible } = location.state;
+    const { questionId } = useParams();
+    const colPossible = JSON.parse(localStorage.getItem('colPossible'));
 
     return (
         <div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UserInput from '../molecules/JoinInput';
-import { LoginFailedAlert } from '../../utils/actions';
+import { FailedAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 export default function AuthenticateUser({
@@ -9,8 +9,9 @@ export default function AuthenticateUser({
     checkUser,
 }) {
     const [password, setPassword] = useState('');
+
     const [showFailedAlert, canShowFailedAlert] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
+    const [message, setMessage] = useState('');
 
     const enterKeyDown = async (e) => {
         if (e.key === 'Enter') {
@@ -31,7 +32,7 @@ export default function AuthenticateUser({
             await signInApiByUsers(userDetail.email, password);
             setAuthenticated(true);
         } catch (error) {
-            setErrorMsg(error.response.data.message);
+            setMessage(error.response.data.message);
             canShowFailedAlert(true);
             console.error('회원 인증 실패: ', error.response.data.message);
         }
@@ -59,12 +60,12 @@ export default function AuthenticateUser({
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <LoginFailedAlert
+            <FailedAlert
                 showAlert={showFailedAlert}
                 onClose={() => {
                     canShowFailedAlert(false);
                 }}
-                message={errorMsg}
+                message={message}
                 inert
             />
         </>

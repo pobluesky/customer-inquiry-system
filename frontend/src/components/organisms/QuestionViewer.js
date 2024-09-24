@@ -13,8 +13,9 @@ export default function QuestionViewer({
     const inqRole = role.toLowerCase();
 
     const questionDetail =
-        initialQuestionDetail ||
-        JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
+    initialQuestionDetail ||
+    JSON.parse(localStorage.getItem(`questionDetail-${questionId}`));
+    console.log(questionDetail);
 
     // Voc번호를 생성하는 인코딩 함수: questionId + hour + minute + second
     const calDateNo = (datetime) => {
@@ -44,7 +45,6 @@ export default function QuestionViewer({
 
     return (
         <div className={Question_Viewer}>
-            {/* 문의 유형, 제목, 첨부파일 */}
             <div>
                 <div
                     onClick={() => {
@@ -64,12 +64,10 @@ export default function QuestionViewer({
                     </a>
                 </div>
             </div>
-            {/* 질문 작성 날짜, 고객사명 */}
             <div>
                 <div>{calDateNo(questionDetail?.createdDate)}</div>
                 <div>{questionDetail?.customerName}</div>
             </div>
-            {/* 내용 */}
             <div
                 dangerouslySetInnerHTML={{
                     __html: sanitizer(`${questionDetail?.contents || ''}`),

@@ -5,16 +5,8 @@ import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
 import { VocButton } from '../atoms/VocButton';
 import { getCookie } from '../../apis/utils/cookies';
-import {
-    WrongAnswerTitleAlert,
-    WrongAnswerContentAlert,
-    AnswerCompleteAlert,
-    AnswerEditCompleteAlert,
-} from '../../utils/actions';
-import {
-    validateAnswerTitle,
-    validateAnswerContents,
-} from '../../utils/validation';
+import { SuccessAlert, WarningAlert } from '../../utils/actions';
+import { validateAnswerTitle, validateLength } from '../../utils/validation';
 import {
     deleteQuestionByUserId,
     deleteQuestionByUserIdForManager,
@@ -27,11 +19,9 @@ import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
 export default function AnswerInput({
     questionId,
-    update,
     colPossible,
     questionDetail: initialQuestionDetail,
     answerDetail: initialAnswerDetail,
-    // setAnswerDetail,
 }) {
     const navigate = useNavigate();
     const sanitizer = dompurify.sanitize;
@@ -49,10 +39,10 @@ export default function AnswerInput({
 
     const [writeAnswer, setWriteAnswer] = useState(false);
     const [editAnswer, setEditAnswer] = useState(false);
-    const [showTitleAlert, canShowTitleAlert] = useState(false);
-    const [showContentAlert, canShowContentAlert] = useState(false);
+
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
-    const [showSuccessEditAlert, canShowSuccessEditAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [title, setTitle] = useState(answerDetail?.title || '');
     const [editorValue, setEditorValue] = useState(
@@ -81,7 +71,8 @@ export default function AnswerInput({
                       `answerDetail-${questionId}`,
                       JSON.stringify(response.data),
                   );
-                  canShowSuccessEditAlert(true);
+                  setMessage('답변이 수정되었습니다.');
+                  canShowSuccessAlert(true);
                   setTimeout(() => {
                       window.location.reload();
                   }, '1000');
@@ -105,6 +96,7 @@ export default function AnswerInput({
                       `answerDetail-${questionId}`,
                       JSON.stringify(response.data),
                   );
+                  setMessage('답변이 등록되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
                       window.location.reload();
@@ -149,11 +141,11 @@ export default function AnswerInput({
 
     const completedAnswer = () => {
         if (validateAnswerTitle(title)) {
-            canShowTitleAlert(true);
-            return;
-        } else if (validateAnswerContents(editorValue)) {
-            canShowContentAlert(true);
-            return;
+            setMessage('제목은 1자 이상 20자 이하로 입력하세요.');
+            return canShowWarningAlert(true);
+        } else if (validateLength(editorValue)) {
+            setMessage('답변을 10자 이상 입력하세요.');
+            return canShowWarningAlert(true);
         } else {
             fetchPostAndPutAnswerByQuestionId();
         }
@@ -180,9 +172,7 @@ export default function AnswerInput({
                     ''
                 ) : (writeAnswer || editAnswer) && role !== 'customer' ? ( // 답변 입력 중
                     <div className={Ready}>
-                        {/* 제목 + 첨부파일 그룹 */}
                         <div>
-                            {/* 답변 제목 */}
                             <Input
                                 value={title}
                                 onChange={titleChange}
@@ -193,10 +183,8 @@ export default function AnswerInput({
                                 border={'1px solid #8b8b8b'}
                                 placeholder={'제목을 입력하세요. (30자)'}
                             />
-                            {/* 답변 제목 길이 */}
                             <div>{title.length}</div>
                             <div>/30</div>
-                            {/* 파일 업로드 버튼 */}
                             <div>
                                 <Input
                                     type="file"
@@ -395,32 +383,20 @@ export default function AnswerInput({
                     )}
                 </div>
             </div>
-            <WrongAnswerTitleAlert
-                showAlert={showTitleAlert}
+            <WarningAlert
+                showAlert={showWarningAlert}
                 onClose={() => {
-                    canShowTitleAlert(false);
+                    canShowWarningAlert(false);
                 }}
+                message={message}
                 inert
             />
-            <WrongAnswerContentAlert
-                showAlert={showContentAlert}
-                onClose={() => {
-                    canShowContentAlert(false);
-                }}
-                inert
-            />
-            <AnswerCompleteAlert
+            <SuccessAlert
                 showAlert={showSuccessAlert}
                 onClose={() => {
                     canShowSuccessAlert(false);
                 }}
-                inert
-            />
-            <AnswerEditCompleteAlert
-                showAlert={showSuccessEditAlert}
-                onClose={() => {
-                    canShowSuccessEditAlert(false);
-                }}
+                message={message}
                 inert
             />
         </div>

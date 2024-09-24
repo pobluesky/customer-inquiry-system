@@ -55,10 +55,7 @@ export const getCollaborationDetailStatus = async (questionId) => {
 
         return json;
     } catch (error) {
-        console.error(
-            '협업 상태 상세 조회 API ERROR: ',
-            error.message || error,
-        );
+        console.log('협업 요청 진행 중');
         throw error;
     }
 };
