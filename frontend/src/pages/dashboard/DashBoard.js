@@ -22,6 +22,10 @@ import { getUserInfoByManagers } from '../../apis/api/auth';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function DashBoard() {
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const [isLoading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
     const [activeTab, setActiveTab] = useState('Dashboard');

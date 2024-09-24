@@ -4,7 +4,6 @@ import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { User_Modal_Container } from '../../assets/css/Header.css';
 
-// 로그아웃 버튼, 회원 정보 탐색 기능
 function UserInfoModal() {
     const navigate = useNavigate();
     const { logout } = useAuth();

@@ -57,6 +57,7 @@ public class CollaborationService {
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        String colResManager,
         Long colResId,
         LocalDate startDate,
         LocalDate endDate
@@ -77,6 +78,7 @@ public class CollaborationService {
             colStatus,
             colReqManager,
             colReqId,
+            colResManager,
             colResId,
             startDate,
             endDate,
@@ -102,6 +104,26 @@ public class CollaborationService {
                 collaborationId,
                 question
             ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
+
+        return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
+    @Transactional(readOnly = true)
+    public CollaborationDetailResponseDTO getCollaborationByIdForStatus(
+        String token,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        Collaboration collaboration = collaborationRepository.findByQuestionId(
+            question
+        ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }

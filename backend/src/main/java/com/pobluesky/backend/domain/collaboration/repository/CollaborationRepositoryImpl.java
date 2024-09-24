@@ -37,6 +37,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         ColStatus colStatus,
         String colReqManager,
         Long colReqId,
+        String colResManager,
         Long colResId,
         LocalDate startDate,
         LocalDate endDate,
@@ -46,8 +47,8 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
             .select(Projections.constructor(CollaborationSummaryResponseDTO.class,
                 collaboration.colId,
                 collaboration.question.questionId,
-                manager.userId,
-                manager.name,
+                collaboration.colRequestManager.userId,
+                collaboration.colRequestManager.name,
                 collaboration.colResponseManager.userId,
                 collaboration.colResponseManager.name,
                 collaboration.colStatus,
@@ -61,6 +62,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
                 colStatusEq(colStatus),
                 colReqManagerEq(colReqManager),
                 colReqIdEq(colReqId),
+                colResManagerEq(colResManager),
                 colResIdEq(colResId),
                 createdDateBetween(startDate, endDate)
             )
@@ -69,12 +71,12 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
             .limit(pageable.getPageSize())
             .fetch();
 
-        JPAQuery<Collaboration> countQuery = getCountQuery(colId, colStatus, colReqManager, colReqId, colResId, startDate, endDate);
+        JPAQuery<Collaboration> countQuery = getCountQuery(colId, colStatus, colReqManager, colReqId, colResManager, colResId, startDate, endDate);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
-    private JPAQuery<Collaboration> getCountQuery(Long colId, ColStatus colStatus, String colReqManagerName, Long colReqId, Long colResId,
+    private JPAQuery<Collaboration> getCountQuery(Long colId, ColStatus colStatus, String colReqManagerName, Long colReqId, String colResManagerName, Long colResId,
         LocalDate startDate, LocalDate endDate) {
         return queryFactory
             .selectFrom(collaboration)
@@ -84,6 +86,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
                 colStatusEq(colStatus),
                 colReqManagerEq(colReqManagerName),
                 colReqIdEq(colReqId),
+                colResManagerEq(colResManagerName),
                 colResIdEq(colResId),
                 createdDateBetween(startDate, endDate)
             );
@@ -115,11 +118,15 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
     }
 
     private BooleanExpression colReqManagerEq(String colReqManager) {
-        return StringUtils.hasText(colReqManager) ? manager.name.eq(colReqManager) : null;
+        return StringUtils.hasText(colReqManager) ? collaboration.colRequestManager.name.eq(colReqManager) : null;
     }
 
     private BooleanExpression colReqIdEq(Long colReqId) {
         return colReqId != null ? collaboration.colRequestManager.userId.eq(colReqId) : null;
+    }
+
+    private BooleanExpression colResManagerEq(String colResManager) {
+        return StringUtils.hasText(colResManager) ? collaboration.colResponseManager.name.eq(colResManager) : null;
     }
 
     private BooleanExpression colResIdEq(Long colResId) {

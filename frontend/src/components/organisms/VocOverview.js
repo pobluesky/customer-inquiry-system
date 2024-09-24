@@ -3,8 +3,8 @@ import total from '../../assets/css/icons/count-total.svg';
 import ready from '../../assets/css/icons/count-ready.svg';
 import completed from '../../assets/css/icons/count-completed.svg';
 import collaboration from '../../assets/css/icons/count-collaboration.svg';
-import { Voc_Overview } from '../../assets/css/Voc.css';
 import { getCookie } from '../../apis/utils/cookies';
+import { Voc_Overview } from '../../assets/css/Voc.css';
 
 function VocOverview({ questionCount, answerCount, colCount }) {
     const role = getCookie('userRole');

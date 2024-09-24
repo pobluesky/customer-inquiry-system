@@ -377,6 +377,7 @@ public class InquiryController {
 
         return ResponseEntity.ok(response);
     }
+    /* [End] Dashboard API */
 
     @PostMapping("/customers/inquiries/{userId}/optimized")
     @Operation(summary = "제품 유형별 라인아이템 등록 최적화")

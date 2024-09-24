@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import ColOverview from '../organisms/VocOverview';
 import ColSearchInput from '../organisms/ColSearchInput';
 import ColTable from '../organisms/ColTable';
-import ColResModal from '../molecules/ColResModal';
 import { Voc_Dashboard } from '../../assets/css/Voc.css';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
@@ -10,7 +9,15 @@ import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColDashboard() {
-    const [status, setStatus] = useState('READY');
+    useEffect(() => {
+        fetchGetQuestionCount();
+        fetchGetAnswerCount();
+        fetchGetColCount();
+        localStorage.clear();
+        sessionStorage.clear();
+    }, [userId]);
+
+    const status = 'READY';
 
     // 질문 답변 현황
     const userId = getCookie('userId');
@@ -22,7 +29,8 @@ export default function ColDashboard() {
 
     // 협업 번호, 협업 담당자 검색
     const [colNo, setColNo] = useState('');
-    const [colManager, setColManager] = useState('');
+    const [colReqManager, setColReqManager] = useState('');
+    const [colResManager, setColResManager] = useState('');
 
     const fetchGetQuestionCount =
         role === 'customer'
@@ -71,13 +79,6 @@ export default function ColDashboard() {
         }
     };
 
-    useEffect(() => {
-        fetchGetQuestionCount();
-        fetchGetAnswerCount();
-        fetchGetColCount();
-        localStorage.clear();
-    }, [userId]);
-
     return (
         <>
             <ColOverview
@@ -85,7 +86,11 @@ export default function ColDashboard() {
                 answerCount={answerCount}
                 colCount={colCount}
             />
-            <ColSearchInput setColNo={setColNo} setColManager={setColManager} />
+            <ColSearchInput
+                setColNo={setColNo}
+                setColReqManager={setColReqManager}
+                setColResManager={setColResManager}
+            />
             {searchCount ? (
                 <div className={Voc_Dashboard}>
                     검색 결과는 총 <span>{searchCount}</span>건입니다.
@@ -95,7 +100,8 @@ export default function ColDashboard() {
             )}
             <ColTable
                 colNo={colNo}
-                colManager={colManager}
+                colReqManager={colReqManager}
+                colResManager={colResManager}
                 setSearchCount={setSearchCount}
                 status={status}
             />
