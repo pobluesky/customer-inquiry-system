@@ -11,7 +11,6 @@ public enum UserRole {
     SALES("ROLE_SALES", "판매 담당자"),
     QUALITY("ROLE_QUALITY", "품질 담당자");
 
-
     private final String role;
     private final String name;
 }
