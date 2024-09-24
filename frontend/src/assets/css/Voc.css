@@ -242,6 +242,11 @@
     border: 1px solid #c1c1c1;
 }
 
+.Question_Inquiry_Modal table td:nth-child(1):hover {
+    color: blue;
+    font-weight: 600;
+}
+
 .Question_Inquiry_Modal table th:nth-child(n) {
     width: 180px;
 }
@@ -252,7 +257,7 @@
 
 .Question_Inquiry_Modal tbody tr:hover {
     cursor: pointer;
-    background-color: #f3f3f3;
+    background-color: #f8f8f8;
 }
 
 /******************************************************************/
