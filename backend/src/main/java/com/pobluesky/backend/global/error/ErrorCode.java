@@ -26,6 +26,8 @@ public enum ErrorCode {
     UNAUTHORIZED_USER_QUALITY(HttpStatus.INTERNAL_SERVER_ERROR, "U0009", "품질 담당자가 아닙니다."),
     UNAUTHORIZED_USER_CUSTOMER(HttpStatus.INTERNAL_SERVER_ERROR, "U0010", "고객사가 아닙니다."),
     UNAUTHORIZED_USER_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "U0011", "담당자가 아닙니다."),
+    SALES_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0012", "존재하지 않는 판매 담당자입니다."),
+    QUALITY_MANAGER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "U0013", "존재하지 않는 품질 담당자입니다."),
 
     // Inquiry
     INQUIRY_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0001", "존재하지 않는 문의입니다."),
@@ -37,6 +39,7 @@ public enum ErrorCode {
     INQUIRY_LIST_EMPTY(HttpStatus.NO_CONTENT, "I0007", "해당 제품 유형에 대한 문의가 없습니다."),
     INQUIRY_INVALID_PRODUCTTYPE(HttpStatus.INTERNAL_SERVER_ERROR, "I0008", "올바르지 않은 Product Type 요청입니다."),
     INQUIRY_NOT_MATCHED(HttpStatus.INTERNAL_SERVER_ERROR, "I0009", "해당 사용자가 작성한 Inquiry가 아닙니다."),
+    DEPARTMENT_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "I0010", "존재하지 않는 부서입니다."),
 
     // Review
     REVIEW_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "R0001", "존재하지 않는 검토입니다."),
