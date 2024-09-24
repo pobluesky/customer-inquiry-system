@@ -74,6 +74,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
+        qualityManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -206,6 +208,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
+                qualityManagerName: inquiriesDataDetail?.qualityManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -360,7 +364,11 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 onQualitySubmit={handleQualitySubmit}
                 onFinalSubmit={handleFinalSubmit} />
 
-            <ManagerBasicInfoForm formData={inquiriesDataDetail} progress={currentProgress} />
+            <ManagerBasicInfoForm
+                formData={inquiriesDataDetail}
+                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                progress={currentProgress} />
             <InquiryHistoryFormItem
                 productType={inquiriesDataDetail?.productType}
                 lineItemData={formData.lineItemResponseDTOs}

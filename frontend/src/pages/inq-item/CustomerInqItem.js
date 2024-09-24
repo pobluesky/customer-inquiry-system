@@ -53,6 +53,7 @@ function CustomerInqItem() {
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -215,6 +216,7 @@ function CustomerInqItem() {
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate:
                     inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,

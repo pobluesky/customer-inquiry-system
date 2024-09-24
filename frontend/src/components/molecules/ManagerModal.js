@@ -16,31 +16,38 @@ import {
     Button
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { getAllManager } from '../../apis/api/manager';
+import { getAllSalesManager, getAllQualityManager } from '../../apis/api/manager';
+import { useAuth } from '../../hooks/useAuth';
 
 const ManagerModal = ({ title, isOpen, onClose, onSelect }) => {
-    const [salesManagers, setSalesManagers] = useState([]);
+    const [managers, setManagers] = useState([]);
     const [selectedManager, setSelectedManager] = useState(null);
+    const { role } = useAuth();
 
     useEffect(() => {
-        const fetchSalesManagers = async () => {
+        const fetchManagers = async () => {
             try {
-                const response = await getAllManager();
-                setSalesManagers(Array.isArray(response.data) ? response.data : []);
+                if (role === 'customer') {
+                    const response = await getAllSalesManager();
+                    setManagers(Array.isArray(response.data) ? response.data : []);
+                } else if (role === 'sales'){
+                    const response = await getAllQualityManager();
+                    setManagers(Array.isArray(response.data) ? response.data : []);
+                }
             } catch (error) {
-                console.error('Error fetching salesManagers:', error);
-                setSalesManagers([]);
+                console.error('Error fetching Managers:', error);
+                setManagers([]);
             }
         };
 
         if (isOpen) {
-            fetchSalesManagers();
+            fetchManagers();
         }
     }, [isOpen]);
 
     const handleSelect = () => {
         if (selectedManager) {
-            const selectedData = salesManagers.find(salesManagers => salesManagers.userId === selectedManager);
+            const selectedData = managers.find(managers => managers.userId === selectedManager);
             onSelect([selectedData]);
             onClose();
             return [selectedData];
@@ -94,7 +101,7 @@ const ManagerModal = ({ title, isOpen, onClose, onSelect }) => {
                         <div style={{ flex: '1 1 auto', overflow: 'auto' }}>
                             <Table style={{ tableLayout: 'fixed' }}>
                                 <TableBody>
-                                    {salesManagers?.map((manager) => {
+                                    {managers?.map((manager) => {
                                         return (
                                             <React.Fragment
                                                 key={manager.userId}>

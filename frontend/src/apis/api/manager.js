@@ -1,6 +1,6 @@
 import axiosInstance from '../utils/axiosInstance';
 
-// 담당자 전제 초회
+// 담당자 전제 조회
 export const getAllManager = async () => {
     try {
         const response = await axiosInstance.get(
@@ -37,6 +37,46 @@ export const getManagerByUserId = async (userId) => {
         return json;
     } catch (error) {
         console.error('담당자 상세 조회 API ERROR: ', error.message || error);
+        throw error;
+    }
+};
+
+// 판매 담당자 전체 조회
+export const getAllSalesManager = async () => {
+    try {
+        const response = await axiosInstance.get(
+            '/managers/sales',
+        );
+
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
+        }
+
+        return json;
+    } catch (error) {
+        console.error('판매 담당자 전제 조회 API ERROR: ', error.message || error);
+        throw error;
+    }
+};
+
+// 품질 담당자 전체 조회
+export const getAllQualityManager = async () => {
+    try {
+        const response = await axiosInstance.get(
+            '/managers/quality',
+        );
+
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
+        }
+
+        return json;
+    } catch (error) {
+        console.error('품질 담당자 전제 조회 API ERROR: ', error.message || error);
         throw error;
     }
 };

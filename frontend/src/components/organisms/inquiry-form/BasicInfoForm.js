@@ -17,6 +17,7 @@ const BasicInfoForm = ({ formData }) => {
         customerCode,
         customerName,
         customerRequestDate,
+        salesManagerName,
         industry,
         inquiryType,
         name,
@@ -26,7 +27,7 @@ const BasicInfoForm = ({ formData }) => {
         salesPerson,
     } = formData;
 
-    const [isChecked, setCheck] = React.useState(true);
+    const [isChecked, setCheck] = useState(true);
 
     return (
         <div className={Container} style={{ marginTop: '2vh' }}>
@@ -35,6 +36,7 @@ const BasicInfoForm = ({ formData }) => {
                     title={'기본정보'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    salesManagerName={salesManagerName}
                 />
                 {isChecked ? (
                     <div className={Opend}>
