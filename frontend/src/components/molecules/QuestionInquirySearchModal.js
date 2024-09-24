@@ -116,22 +116,21 @@ export default function QuestionInquirySearchModal({
                         <tbody>
                             {filteredInquiryData?.map((inq) => (
                                 <>
-                                    <tr
-                                        key={inq.inquiryId}
-                                        onClick={() => {
-                                            setInquiryId(inq.inquiryId);
-                                            sessionStorage.setItem(
-                                                'userId',
-                                                userId,
-                                            );
-                                            window.open(
-                                                `/inq-list/customer/${inq.inquiryId}`,
-                                                '_blank',
-                                            );
-                                            setOpenModal(false);
-                                        }}
-                                    >
-                                        <td>
+                                    <tr key={inq.inquiryId}>
+                                        <td
+                                            onClick={() => {
+                                                setInquiryId(inq.inquiryId);
+                                                sessionStorage.setItem(
+                                                    'userId',
+                                                    userId,
+                                                );
+                                                window.open(
+                                                    `/inq-list/customer/${inq.inquiryId}`,
+                                                    '_blank',
+                                                );
+                                                setOpenModal(false);
+                                            }}
+                                        >
                                             {formatInquiryId(
                                                 inq.createdDate,
                                                 inq.inquiryId,

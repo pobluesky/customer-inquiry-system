@@ -28,7 +28,6 @@ function Join() {
         }
     }, []);
 
-    // 특정 입력 필드에 포커스가 가면 스크롤
     useEffect(() => {
         if (checkValidationTest && nameRef.current) {
             nameRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -108,7 +107,7 @@ function Join() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [customerName, setCustomerName] = useState('');
-    const [department, setDept] = useState('IT');
+    const [department, setDept] = useState('CRM');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
@@ -212,7 +211,7 @@ function Join() {
         setGlobalPassword(password);
     };
 
-    // 고객사 회원가입 API
+    // 고객사 회원가입
     const GetCustomerAuth = async () => {
         try {
             const response = await signUpApiByCustomers(
@@ -237,7 +236,7 @@ function Join() {
         }
     };
 
-    // 담당자 회원가입 API
+    // 담당자 회원가입
     const GetManagerAuth = async () => {
         try {
             const response = await signUpApiByManagers(
@@ -300,7 +299,6 @@ function Join() {
                     {isFirstPage ? (
                         <>
                             <div>회원가입</div>
-                            {/* 이름 & 고객사코드 & 고객사명 입력 창 */}
                             <div onKeyDown={_enterKeyDown}>
                                 {JoinInput({
                                     margin: '0 0 24px 0',
@@ -367,7 +365,6 @@ function Join() {
                                 )}
                             </div>
                             <div onKeyDown={enterKeyDown}>
-                                {/* 권한 조회 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
                                 {!isManager &&
                                     CheckButton({
                                         btnName: '권한 조회',
@@ -376,7 +373,6 @@ function Join() {
                                             setAuth();
                                         },
                                     })}
-                                {/* 권한 부여 버튼, 해당 컴포넌트에서 '권한'은 Token에 의한 권한이 아닌 Role에 의한 권한입니다. */}
                                 {isManager &&
                                     CheckButton({
                                         btnName: '권한 부여',
@@ -397,12 +393,11 @@ function Join() {
                     ) : (
                         <>
                             <div>회원가입</div>
-                            {/* 이메일 & 전화번호 & 비밀번호 입력 창 */}
                             <div>
                                 {JoinInput({
                                     margin: '0 0 24px 0',
                                     value: userRole || '',
-                                    onChange: () => {}, // 권한은 변경 불가, 빈 함수 전달
+                                    onChange: () => {},
                                     onKeyDown: __enterKeyDown,
                                     type: 'text',
                                     placeholder: '',
@@ -458,11 +453,23 @@ function Join() {
                                             id="dept"
                                             onChange={deptChange}
                                         >
-                                            <option value="IT">IT</option>
-                                            <option value="HR">인사</option>
-                                            <option value="SALES">판매</option>
-                                            <option value="FINANCE">
-                                                재무
+                                            <option value="CRM">
+                                                냉연마케팅실
+                                            </option>
+                                            <option value="HWM">
+                                                열연선재마케팅실
+                                            </option>
+                                            <option value="EM">
+                                                에너지조선마케팅실
+                                            </option>
+                                            <option value="CMM">
+                                                자동차소재마케팅실
+                                            </option>
+                                            <option value="SFM">
+                                                강건재가전마케팅실
+                                            </option>
+                                            <option value="SM">
+                                                스테인리스마케팅실
                                             </option>
                                         </select>
                                     </>
