@@ -3,8 +3,10 @@ package com.pobluesky.backend.domain.user.service;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.backend.domain.user.dto.response.ManagerSummaryResponseDTO;
 import com.pobluesky.backend.domain.user.dto.response.MobileManagerResponseDTO;
 import com.pobluesky.backend.domain.user.entity.Manager;
+import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
@@ -49,6 +51,24 @@ public class ManagerService {
 
         return managers.stream()
             .map(ManagerResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ManagerSummaryResponseDTO> getSaleManagers() {
+        List<Manager> managers = managerRepository.findByRole(UserRole.SALES);
+
+        return managers.stream()
+            .map(ManagerSummaryResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ManagerSummaryResponseDTO> getQualityManagers() {
+        List<Manager> managers = managerRepository.findByRole(UserRole.QUALITY);
+
+        return managers.stream()
+            .map(ManagerSummaryResponseDTO::from)
             .collect(Collectors.toList());
     }
 

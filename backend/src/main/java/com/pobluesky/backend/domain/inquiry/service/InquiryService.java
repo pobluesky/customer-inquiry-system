@@ -14,6 +14,7 @@ import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.service.LineItemService;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.user.entity.Department;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.entity.UserRole;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
@@ -26,10 +27,14 @@ import java.text.DecimalFormat;
 
 import java.time.LocalDate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -187,8 +192,20 @@ public class InquiryService {
             filePath = fileInfo.getStoredFilePath();
         }
 
-        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath);
+        Optional<Manager> salesManager = dto.salesManagerId()
+                .map(id -> managerRepository.findById(id)
+                .orElseThrow(() -> new CommonException(ErrorCode.SALES_MANAGER_NOT_FOUND)));
+
+        if (salesManager.isPresent() && salesManager.get().getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
+
+        Inquiry inquiry = dto.toInquiryEntity(fileName, filePath, salesManager);
         inquiry.setCustomer(customer);
+
+        if (salesManager.isEmpty()) {
+            autoAllocateSalesManager(inquiry);
+        }
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
@@ -199,6 +216,103 @@ public class InquiryService {
 
         return InquiryResponseDTO.of(savedInquiry, lineItems);
     }
+
+    private void autoAllocateSalesManager(Inquiry inquiry) {
+        List<Manager> salesManagers = managerRepository.findByRole(UserRole.SALES);
+        if (salesManagers.isEmpty()) {
+            throw new CommonException(ErrorCode.SALES_MANAGER_NOT_FOUND);
+        }
+
+        Map<Manager, Integer> allocationCounts = getManagerAllocationCounts(salesManagers);
+        List<Manager> leastAllocatedManagers = findLeastAllocatedManagers(allocationCounts);
+
+        Manager selectedManager = leastAllocatedManagers.size() > 1
+            ? selectRandomManagerByDepartment(leastAllocatedManagers)
+            : leastAllocatedManagers.get(0);
+
+        inquiry.allocateSalesManager(selectedManager);
+    }
+
+    private Map<Manager, Integer> getManagerAllocationCounts(List<Manager> managers) {
+        return managers.stream()
+            .collect(Collectors.toMap(
+                manager -> manager,
+                inquiryRepository::countInquiriesBySalesManager
+            ));
+    }
+
+    // 최소 할당량 가진 매니저 반환(매니저별 문의 수)
+    private List<Manager> findLeastAllocatedManagers(Map<Manager, Integer> allocationCounts) {
+        Integer minAllocation = Collections.min(allocationCounts.values());
+
+        return allocationCounts.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(minAllocation))
+            .map(Map.Entry::getKey)
+            .toList();
+    }
+
+    // 부서 랜덤 선택 -> 여러명일 경우 해당 부서 내 매니저 랜덤 배정
+    private Manager selectRandomManagerByDepartment(List<Manager> managers) {
+        Map<Department, List<Manager>> managersByDepartment = managers.stream()
+            .collect(Collectors.groupingBy(Manager::getDepartment));
+
+        Department selectedDepartment = managersByDepartment.keySet().stream()
+            .findAny()
+            .orElseThrow(() -> new CommonException(ErrorCode.DEPARTMENT_NOT_FOUND));
+
+        List<Manager> managersInDepartment = managersByDepartment.get(selectedDepartment);
+        return managersInDepartment.get(new Random().nextInt(managersInDepartment.size()));
+    }
+
+    @Transactional
+    public InquiryAllocateResponseDTO allocateQualityManager(String token, Long inquiryId, Long qualityManagerId) {
+        Manager salesManager = validateManager(token);
+
+        if (salesManager.getRole() != UserRole.SALES) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_SALES);
+        }
+
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        if (inquiry.getProgress() != Progress.FIRST_REVIEW_COMPLETED) {
+            throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+        }
+
+        Manager qualityManager = managerRepository.findById(qualityManagerId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUALITY_MANAGER_NOT_FOUND));
+
+        if (qualityManager.getRole() != UserRole.QUALITY) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED_USER_QUALITY);
+        }
+
+        inquiry.allocateQualityManager(qualityManager);
+        inquiry.updateProgress(Progress.QUALITY_REVIEW_REQUEST);
+
+        return InquiryAllocateResponseDTO.from(inquiry);
+    }
+
+//    @Transactional
+//    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
+//        Manager manager = validateManager(token);
+//
+//        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+//            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+//
+//        if (manager.getRole() == UserRole.SALES) {
+//            if (inquiry.getProgress() == Progress.SUBMIT) {
+//                inquiry.allocateSalesManager(manager);
+//                inquiry.updateProgress(Progress.RECEIPT);
+//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+//        } else {
+//            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
+//                inquiry.allocateQualityManager(manager);
+//                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
+//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
+//        }
+//
+//        return InquiryAllocateResponseDTO.from(inquiry);
+//    }
 
     @Transactional
     public InquiryResponseDTO updateInquiryById(
@@ -364,28 +478,6 @@ public class InquiryService {
         }
     }
 
-    @Transactional
-    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
-        Manager manager = validateManager(token);
-
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
-        if (manager.getRole() == UserRole.SALES) {
-            if (inquiry.getProgress() == Progress.SUBMIT) {
-                inquiry.allocateSalesManager(manager);
-                inquiry.updateProgress(Progress.RECEIPT);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        } else {
-            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
-                inquiry.allocateQualityManager(manager);
-                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        }
-
-        return InquiryAllocateResponseDTO.from(inquiry);
-    }
-
     public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
         String token,
         Long customerId,
@@ -451,8 +543,6 @@ public class InquiryService {
 
         return InquiryFavoriteLineItemResponseDTO.of(inquiry, lineItems);
     }
-
-
 
     private List<Object[]> getManagerSpecificInquiryData(
         Manager manager,
