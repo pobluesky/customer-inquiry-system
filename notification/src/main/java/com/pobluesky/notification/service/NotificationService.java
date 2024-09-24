@@ -10,12 +10,14 @@ import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.notification.dto.response.CustomerNotificationResponseDTO;
 import com.pobluesky.notification.dto.response.ManagerNotificationResponseDTO;
+import com.pobluesky.notification.dto.response.MobileNotificationResponseDTO;
 import com.pobluesky.notification.entity.CustomerNotification;
 import com.pobluesky.notification.entity.ManagerNotification;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.notification.repository.CustomerNotificationRepository;
 import com.pobluesky.notification.repository.ManagerNotificationRepository;
 
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -264,4 +266,53 @@ public class NotificationService {
                 throw new CommonException(ErrorCode.USER_NOT_FOUND);
         }
     }
+
+    public List<MobileNotificationResponseDTO> getNotificationsById(Long userId) {
+        Manager manager = validateManager(userId);
+
+        if (!Objects.equals(manager.getUserId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<ManagerNotification> managerNotifications =
+            managerNotificationRepository.findByUserIdAndIsReadFalseOrderByCreatedDateDesc(userId);
+
+        return managerNotifications.stream()
+            .map(MobileNotificationResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    public List<MobileNotificationResponseDTO> getRecentNotifications(Long userId) {
+        Manager manager = validateManager(userId);
+
+        if (!Objects.equals(manager.getUserId(), userId))
+            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
+
+        List<ManagerNotification> recentNotificationsByuserIdAndIsReadForMobile =
+            managerNotificationRepository.findRecentNotificationsByuserIdAndIsReadForMobile(userId, true);
+
+        return recentNotificationsByuserIdAndIsReadForMobile.stream()
+            .map(MobileNotificationResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateNotificationIsRead(Long notificationId) {
+        ManagerNotification managerNotification =
+            managerNotificationRepository.findById(notificationId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOTIFICATION_NOT_FOUND));
+
+        managerNotification.updateIsRead(true);
+    }
+
+    private Manager validateManager(Long userId) {
+
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
+        if(manager == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return manager;
+    }
+
+
 }
