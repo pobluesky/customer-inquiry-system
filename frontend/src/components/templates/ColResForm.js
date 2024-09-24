@@ -1,49 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import QuestionViewer from '../organisms/QuestionViewer';
 import ColReqViewer from '../organisms/ColReqViewer';
 import ColResInput from '../organisms/ColResInput';
-import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
+import ColResViewer from '../organisms/ColResViewer';
+import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColResForm() {
+    const role = getCookie('userRole');
+
     const location = useLocation();
-    const { colDetail } = location.state;
+    const { questionDetail } = location.state;
+    const initialColDetail = location.state?.colDetail;
+
+    const [colDetail, setColDetail] = useState(() => {
+        const savedColDetail = localStorage.getItem('colDetail');
+        return savedColDetail ? JSON.parse(savedColDetail) : initialColDetail;
+    });
+
+    const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth',
         });
-        fetchGetQuestionDetail();
     }, []);
 
-    const [questionDetail, setQuestionDetail] = useState(
-        JSON.parse(
-            localStorage.getItem(`questionDetail-${colDetail?.questionId}`),
-        ) || [],
-    );
-
-    // 질문 상세 조회
-    const fetchGetQuestionDetail = async () => {
-        try {
-            const response = await getQuestionByQuestionIdForManager(
-                colDetail?.questionId,
-            );
-            setQuestionDetail(response.data);
-            localStorage.setItem(
-                `questionDetail-${questionId}`,
-                JSON.stringify(response.data),
-            );
-        } catch (error) {
-            console.log('담당자 질문 상세 조회 실패: ', error);
+    useEffect(() => {
+        if (colDetail) {
+            localStorage.setItem('colDetail', JSON.stringify(colDetail));
         }
-    };
+    }, [colDetail]);
 
     return (
         <div>
             <QuestionViewer questionDetail={questionDetail} />
-            <ColReqViewer colDetail={colDetail} />
-            <ColResInput colDetail={colDetail} />
+            <ColReqViewer
+                colDetail={colDetail}
+                questionDetail={questionDetail}
+            />
+            {colDetail.colStatus !== 'READY' && !editMode ? (
+                <ColResViewer
+                    colDetail={colDetail}
+                    setEditMode={setEditMode}
+                    setColDetail={setColDetail}
+                />
+            ) : role === 'quality' ? (
+                <ColResInput
+                    colDetail={colDetail}
+                    setColDetail={setColDetail}
+                />
+            ) : (
+                ''
+            )}
+            {/* 판매팀은 본인이 작성한 협업 삭제 버튼 추가 필요 */}
         </div>
     );
 }

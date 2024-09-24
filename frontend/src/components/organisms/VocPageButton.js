@@ -72,18 +72,15 @@ export default function VocPageButton({ totalPages, currentPage, setPage }) {
 
     return (
         <div className={Voc_Page_Button}>
-            {/* 첫 페이지 버튼 */}
             <button onClick={goToFirst} disabled={currentPage === 1}>
                 <FirstPageIcon />
             </button>
 
-            {/* 이전 페이지 버튼 */}
             <button onClick={goToPrevious} disabled={currentPage === 1}>
                 <KeyboardArrowLeftOutlinedIcon />
             </button>
 
             <div>
-                {/* 페이지 번호 버튼들 */}
                 {getPageNumbers().map((page, index) => (
                     <button
                         key={index}
@@ -101,12 +98,10 @@ export default function VocPageButton({ totalPages, currentPage, setPage }) {
                 ))}
             </div>
 
-            {/* 다음 페이지 버튼 */}
             <button onClick={goToNext} disabled={currentPage === totalPages}>
                 <KeyboardArrowRightOutlinedIcon />
             </button>
 
-            {/* 마지막 페이지 버튼 */}
             <button onClick={goToLast} disabled={currentPage === totalPages}>
                 <LastPageIcon />
             </button>

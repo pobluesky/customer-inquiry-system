@@ -6,8 +6,15 @@ import ColFindManagerModal from '../molecules/ColFindManagerModal';
 import ColReqInput from '../organisms/ColReqInput';
 
 export default function ColReqForm() {
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
     const location = useLocation();
-    const { questionDetail } = location.state;
+    const { questionDetail, colDetail } = location.state;
 
     const [openModal, setOpenModal] = useState(false);
     const [colResId, setColResId] = useState('');
@@ -20,13 +27,6 @@ export default function ColReqForm() {
         document.body.style.overflow = 'auto';
     }
 
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, []);
-
     return (
         <div>
             <QuestionViewer questionDetail={questionDetail} />
@@ -34,8 +34,15 @@ export default function ColReqForm() {
                 setOpenModal={setOpenModal}
                 colResManagerName={colResManagerName}
                 colResManagerDept={colResManagerDept}
+                colDetail={colDetail}
             />
-            <ColReqInput colResId={colResId} questionDetail={questionDetail} />
+            <ColReqInput
+                colResId={colResId}
+                colDetail={colDetail}
+                questionDetail={questionDetail}
+                colResManagerName={colResManagerName}
+                colResManagerDept={colResManagerDept}
+            />
             {openModal && (
                 <ColFindManagerModal
                     openModal={openModal}

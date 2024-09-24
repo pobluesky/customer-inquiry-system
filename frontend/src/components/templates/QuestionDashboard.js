@@ -2,14 +2,22 @@ import React, { useEffect, useState } from 'react';
 import QuestionOverview from '../organisms/VocOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
-import { Voc_Dashboard } from '../../assets/css/Voc.css';
 import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
+import { Voc_Dashboard } from '../../assets/css/Voc.css';
 
 export default function QuestionDashboard() {
-    // 검색 기능
+    useEffect(() => {
+        fetchGetQuestionCount();
+        fetchGetAnswerCount();
+        fetchGetColCount();
+    }, [userId]);
+
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
+
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -20,9 +28,6 @@ export default function QuestionDashboard() {
     const [typeFilter, setTypeFilter] = useState('');
     const [idFilter, setIdFilter] = useState('');
 
-    // 질문 답변 현황
-    const userId = getCookie('userId');
-    const role = getCookie('userRole');
     const [questionCount, setQuestionCount] = useState(0);
     const [answerCount, setAnswerCount] = useState(0);
     const [colCount, setColCount] = useState(0);
@@ -74,13 +79,6 @@ export default function QuestionDashboard() {
             console.log('협업 목록 개수 조회 실패: ', error);
         }
     };
-
-    useEffect(() => {
-        fetchGetQuestionCount();
-        fetchGetAnswerCount();
-        fetchGetColCount();
-        localStorage.clear();
-    }, [userId]);
 
     return (
         <>

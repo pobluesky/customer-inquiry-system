@@ -8,15 +8,12 @@ import { SignIn } from '../../assets/css/Auth.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import { useRecoilValue } from 'recoil';
-import { getUserName, getUserEmail, getUserPassword } from '../../index';
-import { LoginFailedAlert } from '../../utils/actions';
+import { getUserEmail, getUserPassword } from '../../index';
+import { FailedAlert } from '../../utils/actions';
 import { signInApiByUsers } from '../../apis/api/auth';
 
 function Login() {
     const navigate = useNavigate();
-
-    // 로그인을 통해 유입된 사용자 정보: 로그인 단계에서 저장
-    const currentUserName = useRecoilValue(getUserName);
 
     // 회원가입을 통해 유입된 사용자 정보: 회원가입 단계에서 저장
     const currentUserEmail = useRecoilValue(getUserEmail);
@@ -29,38 +26,18 @@ function Login() {
     const passwordChange = (e) => setPassword(e.target.value);
 
     const [showFailedAlert, canShowFailedAlert] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
+    const [message, setMessage] = useState('');
+
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
     const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
 
-    // 엔터 키 기능 (로그인 버튼 클릭)
     const enterKeyDown = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             await GetAuth();
         }
     };
-
-    useEffect(() => {
-        const init = async () => {
-            if (didLogin) {
-                navigate('/');
-            }
-        };
-        init();
-    }, [didLogin]);
-
-    useEffect(() => {
-        window.addEventListener('keydown', enterKeyDown);
-        return () => {
-            window.removeEventListener('keydown', enterKeyDown);
-        };
-    }, [email, password]);
-
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
 
     // 로그인 API
     const GetAuth = async () => {
@@ -75,11 +52,32 @@ function Login() {
                 navigate('/');
             }, '2000');
         } catch (error) {
-            setErrorMsg(error.response.data.message);
+            setMessage(error.response.data.message);
             canShowFailedAlert(true);
             console.error('로그인 실패: ', error.response.data.message);
         }
     };
+
+    useEffect(() => {
+        window.addEventListener('keydown', enterKeyDown);
+        return () => {
+            window.removeEventListener('keydown', enterKeyDown);
+        };
+    }, [email, password]);
+
+    useEffect(() => {
+        const init = async () => {
+            if (didLogin) {
+                navigate('/');
+            }
+        };
+        init();
+    }, [didLogin]);
+
+    useEffect(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+    }, []);
 
     return (
         <div>
@@ -87,7 +85,6 @@ function Login() {
                 <div>
                     <div>로그인</div>
                     <div>이메일과 비밀번호를 입력해주세요.</div>
-                    {/* 이메일 & 비밀번호 입력 창 */}
                     <div>
                         <LoginInput
                             value={email}
@@ -106,7 +103,6 @@ function Login() {
                             categoryName={'비밀번호'}
                         />
                     </div>
-                    {/* 로그인 완료 버튼 */}
                     <div>
                         <Button
                             btnName={'로그인'}
@@ -123,14 +119,13 @@ function Login() {
                             }}
                         />
                     </div>
-                    {/* 회원가입 링크 */}
                     <div>
-                        <LoginFailedAlert
+                        <FailedAlert
                             showAlert={showFailedAlert}
                             onClose={() => {
                                 canShowFailedAlert(false);
                             }}
-                            message={errorMsg}
+                            message={message}
                             inert
                         />
                         <a href="/join">회원이 아니신가요?</a>

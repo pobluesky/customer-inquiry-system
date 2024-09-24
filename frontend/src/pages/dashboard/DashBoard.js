@@ -12,9 +12,16 @@ import {
     getPercentageCompletedOrNot,
     getCountByProductType,
 } from '../../apis/api/chart';
-import { Dashboard_Container, Dashboard_Item } from '../../assets/css/Chart.css';
+import {
+    Dashboard_Container,
+    Dashboard_Item,
+} from '../../assets/css/Chart.css';
 
 export default function DashBoard() {
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const [isLoading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
 
@@ -29,10 +36,22 @@ export default function DashBoard() {
                 ]);
 
             setItems([
-                { id: '1', content: <InquiryMonthlyOrderChart data={monthlyOrder} /> },
-                { id: '2', content: <InquiryProgressCountChart data={progressCount} /> },
-                { id: '3', content: <InquiryOrderCountChart data={orderCount} /> },
-                { id: '4', content: <InquiryProductProgressChart data={productType} /> },
+                {
+                    id: '1',
+                    content: <InquiryMonthlyOrderChart data={monthlyOrder} />,
+                },
+                {
+                    id: '2',
+                    content: <InquiryProgressCountChart data={progressCount} />,
+                },
+                {
+                    id: '3',
+                    content: <InquiryOrderCountChart data={orderCount} />,
+                },
+                {
+                    id: '4',
+                    content: <InquiryProductProgressChart data={productType} />,
+                },
             ]);
         } catch (error) {
             console.error('대시보드 데이터 조회 실패: ', error);
@@ -40,10 +59,6 @@ export default function DashBoard() {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     const handleOnDragEnd = (result) => {
         if (!result.destination) return;
@@ -79,7 +94,11 @@ export default function DashBoard() {
                                 className={Dashboard_Container}
                             >
                                 {items.map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    <Draggable
+                                        key={item.id}
+                                        draggableId={item.id}
+                                        index={index}
+                                    >
                                         {(provided) => (
                                             <div
                                                 ref={provided.innerRef}

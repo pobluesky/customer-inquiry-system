@@ -1,6 +1,3 @@
-/******************************************************************/
-/* 회원가입 ********************************************************/
-/******************************************************************/
 // 이름
 export const validateName = (name) => {
     if (name.trim() === '') {
@@ -69,28 +66,6 @@ export const validateCustomerName = (customerName) => {
     return '';
 };
 
-/******************************************************************/
-/* 답변 ***********************************************************/
-/******************************************************************/
-// 답변 제목 길이
-export const validateAnswerTitle = (answerTitle) => {
-    if (answerTitle.length > 31 || answerTitle.length < 1) {
-        return true;
-    }
-    return '';
-};
-
-// 답변 내용 길이
-export const validateAnswerContents = (answerContents) => {
-    if (answerContents.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
-        return true;
-    }
-    return '';
-};
-
-/******************************************************************/
-/* 질문 ***********************************************************/
-/******************************************************************/
 // 질문 제목 길이
 export const validateQuestionTitle = (questionTitle) => {
     if (questionTitle.length < 1) {
@@ -99,9 +74,17 @@ export const validateQuestionTitle = (questionTitle) => {
     return '';
 };
 
-// 질문 내용 길이
-export const validateQuestionContents = (questionContents) => {
-    if (questionContents.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
+// 답변 제목 길이
+export const validateAnswerTitle = (answerTitle) => {
+    if (answerTitle.length > 31 || answerTitle.length < 1) {
+        return true;
+    }
+    return '';
+};
+
+// VoC 내용 길이 제한
+export const validateLength = (text) => {
+    if (text.replace(/<\/?[^>]+(>|$)/g, '').length < 10) {
         return true;
     }
     return '';

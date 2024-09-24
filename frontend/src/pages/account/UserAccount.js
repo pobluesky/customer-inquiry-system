@@ -5,6 +5,7 @@ import { User_Account } from '../../assets/css/Auth.css';
 export default function UserAccount() {
     useEffect(() => {
         localStorage.clear();
+        sessionStorage.clear();
     }, []);
 
     return (

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import close from '../../assets/css/icons/close.svg';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import { QuestionAnswerButton } from '../atoms/VocButton';
-import { Col_Find_Manager_Modal } from '../../assets/css/Voc.css';
+import { VocButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllManager } from '../../apis/api/manager';
+import { Col_Find_Manager_Modal } from '../../assets/css/Voc.css';
 
 export default function ColFindManagerModal({
     openModal,
@@ -64,20 +64,19 @@ export default function ColFindManagerModal({
                         onChange={(e) => setManagerName(e.target.value)}
                         onKeyDown={enterKeyDown}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'검색'}
-                        backgroundColor={'#1748ac'}
+                        backgroundColor={'#03507d'}
                         textColor={'#ffffff'}
                         margin={'0 24px 0 0'}
                         onClick={() => {
                             managerSearch();
                         }}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'전체 보기'}
                         backgroundColor={'#ffffff'}
-                        textColor={'#1748ac'}
-                        border={'solid 1px #1748ac'}
+                        textColor={'#03507d'}
                         onClick={() => {
                             setFilteredManagerInfo(managerInfo);
                         }}
@@ -100,7 +99,7 @@ export default function ColFindManagerModal({
                         <thead>
                             <tr>
                                 <th width="10%">회원번호</th>
-                                <th width="10%">이름</th>
+                                <th width="20%">이름</th>
                                 <th width="10%">부서</th>
                                 <th width="10%">사번</th>
                                 <th width="10%">권한</th>

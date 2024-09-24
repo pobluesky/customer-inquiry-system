@@ -64,9 +64,11 @@ function QuestionTypeSelector({
                                     btnName={'Inquiry 조회'}
                                     width={'96px'}
                                     height={'28px'}
-                                    backgroundColor={'#ffffff'}
-                                    textColor={'#1748ac'}
-                                    border={'1px solid #1748ac'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#ffffff'}
+                                    fontFamily={'Pretendard-Regular'}
+                                    borderRadius={'4px'}
+                                    border={'1px solid #03507d'}
                                     onClick={() => {
                                         setOpenModal(true);
                                     }}

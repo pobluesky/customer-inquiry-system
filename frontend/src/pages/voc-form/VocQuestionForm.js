@@ -6,9 +6,11 @@ import QuestionForm from '../../components/templates/QuestionForm';
 
 export default function VocQuestionForm() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { questionDetail } = location.state || {};
+
     const role = getCookie('userRole');
+
+    const location = useLocation();
+    const { questionDetail } = location.state || '';
 
     // 고객사만 질문 등록 가능
     useEffect(() => {

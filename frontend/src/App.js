@@ -93,7 +93,7 @@ function App() {
                                 element={<VocQuestionForm />}
                             />
                             <Route
-                                path="voc-form/answer"
+                                path="voc-form/answer/:questionId"
                                 element={<VocAnswerForm />}
                             />
                             <Route

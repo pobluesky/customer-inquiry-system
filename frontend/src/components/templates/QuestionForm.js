@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import QuestionInput from '../organisms/QuestionInput';
 import QuestionTypeSelector from '../organisms/QuestionTypeSelector';
 import QuestionInquirySearchModal from '../molecules/QuestionInquirySearchModal';
 
 function QuestionForm({ questionDetail }) {
-    const [openModal, setOpenModal] = useState(false); // 모달창 상태 관리
+    const [openModal, setOpenModal] = useState(false);
     const [selectedType, setSelectedType] = useState(
         questionDetail?.type || 'INQ',
-    ); // type 상태 관리
-    const [inquiryId, setInquiryId] = useState(questionDetail?.inquiryId || ''); // Inquiry Id 상태 관리
+    );
+    const [inquiryId, setInquiryId] = useState(questionDetail?.inquiryId || '');
 
-    // 고객사 Inquiry 조회 Modal
     if (openModal) {
         document.body.style.overflow = 'hidden';
     } else {
         document.body.style.overflow = 'auto';
     }
 
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
-    
     return (
         <div>
             <QuestionTypeSelector

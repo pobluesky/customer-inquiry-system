@@ -5,7 +5,6 @@ import {
     CheckButton,
     RoleSelectButton,
 } from '../../components/molecules/JoinButton';
-import { SignUp } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {
@@ -19,143 +18,10 @@ import {
 } from '../../utils/validation';
 import { useRecoilState } from 'recoil';
 import { userName, userEmail, userPassword } from '../../index';
-import {
-    JoinCompleteAlert,
-    JoinFailedAlert,
-    InvalidCustomerNameAlert,
-    InvalidCustomerCodeAlert,
-    ManagerRoleIsNullAlert,
-} from '../../utils/actions';
+import { SuccessAlert, WarningAlert, FailedAlert } from '../../utils/actions';
+import { SignUp } from '../../assets/css/Auth.css';
 
 function Join() {
-    const navigate = useNavigate();
-
-    const [isFirstPage, setFirst] = useState(true);
-    const [isCustomer, setCustomer] = useState(true);
-    const [isManager, setManager] = useState(false);
-
-    // 각 인풋 필드에 대한 ref 생성
-    const nameRef = useRef(null);
-    const userCodeRef = useRef(null);
-    const emailRef = useRef(null);
-    const phoneRef = useRef(null);
-    const customerNameRef = useRef(null);
-    const passwordRef = useRef(null);
-    const passwordCheckRef = useRef(null);
-
-    const [name, setName] = useState('');
-    const [userCode, setUserCode] = useState('');
-    const [customerCode, setCustomerCode] = useState(''); // 고객사 고유 코드 저장
-    const [empNo, setEmpNo] = useState(''); // 담당자 고유 코드, 담당자 권한 저장
-
-    const [userRole, setUserRole] = useState(''); // 화면에 출력할 권한명
-    const [role, setRole] = useState(''); // 서버로 전송할 권한명
-    const [roleFilter, setRoleFilter] = useState(null);
-
-    const [showNameAlert, canShowNameAlert] = useState(false); // 이름 입력 경고
-    const [showCodeAlert, canShowCodeAlert] = useState(false); // 코드 입력 경고
-    const [showRoleAlert, canShowRoleAlert] = useState(false); // 역할 선택 경고
-    const [showFailedAlert, canShowFailedAlert] = useState(false); // 회원가입 실패 알림
-    const [showCompleteAlert, canShowCompleteAlert] = useState(false); // 회원가입 성공 알림
-    const [errorMsg, setErrorMsg] = useState('');
-
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [customerName, setCustomerName] = useState('');
-    const [department, setDept] = useState('IT');
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
-
-    const [checkValidationTest, setValidationTest] = useState(false);
-
-    const [, setGlobalName] = useRecoilState(userName);
-    const [, setGlobalEmail] = useRecoilState(userEmail);
-    const [, setGlobalPassword] = useRecoilState(userPassword);
-
-    const nameChange = (e) => setName(e.target.value);
-    const userCodeChange = (e) => setUserCode(e.target.value);
-    const customerNameChange = (e) => setCustomerName(e.target.value);
-    const deptChange = (e) => setDept(e.target.value);
-    const emailChange = (e) => setEmail(e.target.value);
-    const phoneChange = (e) => setPhone(e.target.value);
-    const passwordChange = (e) => setPassword(e.target.value);
-    const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
-
-    const selectRoleFilter = (filter) => {
-        setRoleFilter(filter);
-    };
-
-    const openNextStep = () => {
-        nameRef.current.value = '';
-        userCodeRef.current.value = '';
-        setValidationTest(false);
-        setFirst(false);
-    };
-
-    const setAuth = () => {
-        // 담당자
-        if (role) {
-            if (!name) {
-                canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
-                return;
-            } else if (userCode.substring(0, 3) !== 'EMP') {
-                canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
-                return;
-            } else {
-                openNextStep();
-                return;
-            }
-        }
-
-        if (isManager) {
-            canShowRoleAlert(true);
-            return;
-        }
-
-        // 고객사
-        if (!role && !isManager) {
-            if (!name) {
-                canShowNameAlert(true); // Bad User: 작성 중 이름 삭제한 경우
-            } else if (!userCode) {
-                canShowCodeAlert(true); // Bad User: 작성 중 코드 삭제한 경우
-            } else if (userCode.substring(0, 3) === 'EMP') {
-                setEmpNo(userCode);
-                setManager(true);
-                setCustomer(false);
-            } else {
-                setCustomerCode(userCode);
-                setUserRole('고객사');
-                openNextStep();
-            }
-        }
-    };
-
-    // 엔터 키 기능 (권한 조회 버튼 클릭)
-    const enterKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setValidationTest(true);
-            setAuth();
-        }
-    };
-
-    // 엔터 키 기능 (권한 부여 버튼 클릭)
-    const _enterKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setAuth();
-        }
-    };
-
-    // 엔터 키 기능 (회원가입 버튼 클릭)
-    const __enterKeyDown = async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setValidationTest(true);
-            await GetAuth();
-        }
-    };
-
     useEffect(() => {
         if (getCookie('userId')) {
             navigate('/');
@@ -207,7 +73,137 @@ function Join() {
 
     useEffect(() => {
         localStorage.clear();
+        sessionStorage.clear();
     }, []);
+
+    const navigate = useNavigate();
+
+    const [isFirstPage, setFirst] = useState(true);
+    const [isCustomer, setCustomer] = useState(true);
+    const [isManager, setManager] = useState(false);
+
+    // 각 인풋 필드에 대한 ref 생성
+    const nameRef = useRef(null);
+    const userCodeRef = useRef(null);
+    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
+    const customerNameRef = useRef(null);
+    const passwordRef = useRef(null);
+    const passwordCheckRef = useRef(null);
+
+    const [name, setName] = useState('');
+    const [userCode, setUserCode] = useState('');
+    const [customerCode, setCustomerCode] = useState(''); // 고객사 고유 코드 저장
+    const [empNo, setEmpNo] = useState(''); // 담당자 고유 코드, 담당자 권한 저장
+
+    const [userRole, setUserRole] = useState(''); // 화면에 출력할 권한명
+    const [role, setRole] = useState(''); // 서버로 전송할 권한명
+    const [roleFilter, setRoleFilter] = useState(null);
+
+    const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
+    const [showFailedAlert, canShowFailedAlert] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [department, setDept] = useState('IT');
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [checkValidationTest, setValidationTest] = useState(false);
+
+    const [, setGlobalName] = useRecoilState(userName);
+    const [, setGlobalEmail] = useRecoilState(userEmail);
+    const [, setGlobalPassword] = useRecoilState(userPassword);
+
+    const nameChange = (e) => setName(e.target.value);
+    const userCodeChange = (e) => setUserCode(e.target.value);
+    const customerNameChange = (e) => setCustomerName(e.target.value);
+    const deptChange = (e) => setDept(e.target.value);
+    const emailChange = (e) => setEmail(e.target.value);
+    const phoneChange = (e) => setPhone(e.target.value);
+    const passwordChange = (e) => setPassword(e.target.value);
+    const passwordCheckChange = (e) => setPasswordCheck(e.target.value);
+
+    const selectRoleFilter = (filter) => {
+        setRoleFilter(filter);
+    };
+
+    const openNextStep = () => {
+        nameRef.current.value = '';
+        userCodeRef.current.value = '';
+        setValidationTest(false);
+        setFirst(false);
+    };
+
+    const setAuth = () => {
+        // 담당자
+        if (role) {
+            if (!name) {
+                setMessage('이름을 입력하세요.');
+                return canShowWarningAlert(true); // 작성 중 이름 삭제한 경우
+            } else if (userCode.substring(0, 3) !== 'EMP') {
+                setMessage('유효하지 않은 코드입니다.');
+                return canShowWarningAlert(true); // 작성 중 코드 삭제한 경우
+            } else {
+                openNextStep();
+                return;
+            }
+        }
+
+        if (isManager) {
+            setMessage('권한을 선택하세요.');
+            canShowWarningAlert(true);
+            return;
+        }
+
+        // 고객사
+        if (!role && !isManager) {
+            if (!name) {
+                setMessage('이름을 입력하세요.');
+                return canShowWarningAlert(true); // 작성 중 이름 삭제한 경우
+            } else if (!userCode) {
+                setMessage('유효하지 않은 코드입니다.');
+                return canShowWarningAlert(true); // 작성 중 코드 삭제한 경우
+            } else if (userCode.substring(0, 3) === 'EMP') {
+                setEmpNo(userCode);
+                setManager(true);
+                setCustomer(false);
+            } else {
+                setCustomerCode(userCode);
+                setUserRole('고객사');
+                openNextStep();
+            }
+        }
+    };
+
+    // 엔터 키 기능 (권한 조회 버튼 클릭)
+    const enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            setAuth();
+        }
+    };
+
+    // 엔터 키 기능 (권한 부여 버튼 클릭)
+    const _enterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setAuth();
+        }
+    };
+
+    // 엔터 키 기능 (회원가입 버튼 클릭)
+    const __enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            await GetAuth();
+        }
+    };
 
     // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
     const saveGlobalInfo = () => {
@@ -229,12 +225,13 @@ function Join() {
             );
             console.log('고객사 회원가입 성공: ', response.data);
             saveGlobalInfo();
-            canShowCompleteAlert(true);
+            setMessage('회원가입이 완료되었습니다.');
+            canShowSuccessAlert(true);
             setTimeout(() => {
                 navigate('/login');
             }, '2000');
         } catch (error) {
-            setErrorMsg(error.response.data.message);
+            setMessage(error.response.data.message);
             canShowFailedAlert(true);
             console.log('고객사 회원가입 실패: ', error.response.data.message);
         }
@@ -254,12 +251,13 @@ function Join() {
             );
             console.log('담당자 회원가입 성공: ', response.data);
             saveGlobalInfo();
-            canShowCompleteAlert(true);
+            setMessage('회원가입이 완료되었습니다.');
+            canShowSuccessAlert(true);
             setTimeout(() => {
                 navigate('/login');
             }, '2000');
         } catch (error) {
-            setErrorMsg(error.response.data.message);
+            setMessage(error.response.data.message);
             canShowFailedAlert(true);
             console.log('담당자 회원가입 실패: ', error.response.data.message);
         }
@@ -387,23 +385,13 @@ function Join() {
                                         },
                                     })}
                             </div>
-                            <InvalidCustomerNameAlert
-                                showAlert={showNameAlert}
+                            <WarningAlert
+                                showAlert={showWarningAlert}
                                 onClose={() => {
-                                    canShowNameAlert(false);
+                                    canShowWarningAlert(false);
                                 }}
-                            />
-                            <InvalidCustomerCodeAlert
-                                showAlert={showCodeAlert}
-                                onClose={() => {
-                                    canShowCodeAlert(false);
-                                }}
-                            />
-                            <ManagerRoleIsNullAlert
-                                showAlert={showRoleAlert}
-                                onClose={() => {
-                                    canShowRoleAlert(false);
-                                }}
+                                message={message}
+                                inert
                             />
                         </>
                     ) : (
@@ -515,19 +503,28 @@ function Join() {
                                     },
                                 })}
                             </div>
-                            <JoinCompleteAlert
-                                showAlert={showCompleteAlert}
+                            <SuccessAlert
+                                showAlert={showSuccessAlert}
                                 onClose={() => {
-                                    canShowCompleteAlert(false);
+                                    canShowSuccessAlert(false);
                                 }}
+                                message={message}
                                 inert
                             />
-                            <JoinFailedAlert
+                            <WarningAlert
+                                showAlert={showWarningAlert}
+                                onClose={() => {
+                                    canShowWarningAlert(false);
+                                }}
+                                message={message}
+                                inert
+                            />
+                            <FailedAlert
                                 showAlert={showFailedAlert}
                                 onClose={() => {
                                     canShowFailedAlert(false);
                                 }}
-                                message={errorMsg}
+                                message={message}
                                 inert
                             />
                         </>
