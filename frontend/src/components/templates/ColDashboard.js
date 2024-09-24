@@ -14,6 +14,7 @@ export default function ColDashboard() {
         fetchGetAnswerCount();
         fetchGetColCount();
         localStorage.clear();
+        sessionStorage.clear();
     }, [userId]);
 
     const status = 'READY';

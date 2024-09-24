@@ -11,10 +11,6 @@ import {
 } from '../../apis/api/auth';
 
 export default function UserAccountOverview() {
-    useEffect(() => {
-        fetchGetUserInfo();
-    }, []);
-
     const userId = getCookie('userId');
     const role = getCookie('userRole');
 
@@ -46,6 +42,10 @@ export default function UserAccountOverview() {
                   }
               };
 
+    useEffect(() => {
+        fetchGetUserInfo();
+    }, []);
+    
     return (
         <div className={User_Account_Overview}>
             {!isAuthenticated ? (

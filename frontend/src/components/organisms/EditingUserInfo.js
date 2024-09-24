@@ -68,14 +68,14 @@ export default function EditingUserInfo({
             top: document.body.scrollHeight,
             behavior: 'smooth',
         });
-    }, []);
+    }, [])
 
     const navigate = useNavigate();
 
     const userId = getCookie('userId');
     const role = getCookie('userRole');
     const { logout } = useAuth();
-
+    
     const [email, setEmail] = useState(userDetail.email);
     const [phone, setPhone] = useState(userDetail.phone);
     const [password, setPassword] = useState('');
@@ -90,6 +90,7 @@ export default function EditingUserInfo({
             setTryEdit(!tryEdit);
         }
     };
+
 
     const fetchPutUserInfo = async () => {
         try {

@@ -12,13 +12,6 @@ import { getCookie } from '../../apis/utils/cookies';
 import { Col_Accpted_Selector, Col_Res_Input } from '../../assets/css/Voc.css';
 
 export default function ColResInput({ colDetail, setColDetail }) {
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, [selectedType]);
-
     const userId = getCookie('userId');
 
     const [editorValue, setEditorValue] = useState(colDetail?.colReply || '');
@@ -52,12 +45,12 @@ export default function ColResInput({ colDetail, setColDetail }) {
                           colDetail?.colId,
                           colData,
                       );
+                      setColDetail(response.data);
                       if (response.data.colStatus === 'REFUSE') {
                           setMessage('협업이 거절되었습니다.');
                       } else {
                           setMessage('협업이 수락되었습니다.');
                       }
-                      setColDetail(response.data);
                       canShowSuccessAlert(true);
                       setTimeout(() => {
                           window.location.reload();
@@ -117,6 +110,13 @@ export default function ColResInput({ colDetail, setColDetail }) {
     const optionSelect = (e) => {
         setSelectedType(e.target.value);
     };
+
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [selectedType]);
 
     return (
         <>

@@ -73,6 +73,7 @@ function Join() {
 
     useEffect(() => {
         localStorage.clear();
+        sessionStorage.clear();
     }, []);
 
     const navigate = useNavigate();

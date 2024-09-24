@@ -33,6 +33,55 @@ export default function QuestionList({
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
 
+    // 질문 요약 조회
+    const fetchGetQuestions =
+        role === 'customer'
+            ? async () => {
+                  try {
+                      const response = await getQuestionByUserId(
+                          userId,
+                          currentPage - 1,
+                          filterArgs,
+                      );
+                      setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
+                      setSearchCount(response.data.totalElements);
+                  } catch (error) {
+                      console.log('고객사 질문 요약 조회 실패: ', error);
+                  }
+              }
+            : async () => {
+                  try {
+                      const response = await getAllQuestion(
+                          currentPage - 1,
+                          filterArgs,
+                      );
+                      setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
+                      setSearchCount(response.data.totalElements);
+                  } catch (error) {
+                      console.log('담당자 질문 요약 조회 실패: ', error);
+                  }
+              };
+
+    const contentsEllipsis = {
+        maxWidth: '1320px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    };
+
+    const getTypeLabel = (type) => {
+        switch (type) {
+            case 'INQ':
+                return 'Inquiry 문의';
+            case 'SITE':
+                return '사이트 문의';
+            case 'ETC':
+                return '기타 문의';
+        }
+    };
+
     useEffect(() => {
         let args = '';
         if (title) {
@@ -82,58 +131,13 @@ export default function QuestionList({
         typeFilter,
     ]);
 
-    // 질문 요약 조회
-    const fetchGetQuestions =
-        role === 'customer'
-            ? async () => {
-                  try {
-                      const response = await getQuestionByUserId(
-                          userId,
-                          currentPage - 1,
-                          filterArgs,
-                      );
-                      setQuestionSummary(response.data.questionsInfo);
-                      setTotalPages(response.data.totalPages);
-                      setSearchCount(response.data.totalElements);
-                  } catch (error) {
-                      console.log('고객사 질문 요약 조회 실패: ', error);
-                  }
-              }
-            : async () => {
-                  try {
-                      const response = await getAllQuestion(
-                          currentPage - 1,
-                          filterArgs,
-                      );
-                      setQuestionSummary(response.data.questionsInfo);
-                      setTotalPages(response.data.totalPages);
-                      setSearchCount(response.data.totalElements);
-                  } catch (error) {
-                      console.log('담당자 질문 요약 조회 실패: ', error);
-                  }
-              };
-
     useEffect(() => {
         fetchGetQuestions();
     }, [userId, currentPage, filterArgs]);
 
-    const contentsEllipsis = {
-        maxWidth: '1320px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-    };
-
-    const getTypeLabel = (type) => {
-        switch (type) {
-            case 'INQ':
-                return 'Inquiry 문의';
-            case 'SITE':
-                return '사이트 문의';
-            case 'ETC':
-                return '기타 문의';
-        }
-    };
+    useEffect(() => {
+        sessionStorage.clear();
+    }, []);
 
     return (
         <div className={Question_List_Container}>

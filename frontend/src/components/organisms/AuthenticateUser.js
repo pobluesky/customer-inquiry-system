@@ -8,19 +8,6 @@ export default function AuthenticateUser({
     setAuthenticated,
     checkUser,
 }) {
-    useEffect(() => {
-        window.addEventListener('keydown', enterKeyDown);
-        return () => {
-            window.removeEventListener('keydown', enterKeyDown);
-        };
-    }, [password]);
-
-    useEffect(() => {
-        if (checkUser) {
-            GetAuth();
-        }
-    }, [checkUser]);
-
     const [password, setPassword] = useState('');
 
     const [showFailedAlert, canShowFailedAlert] = useState(false);
@@ -43,6 +30,19 @@ export default function AuthenticateUser({
             console.error('회원 인증 실패: ', error.response.data.message);
         }
     };
+
+    useEffect(() => {
+        window.addEventListener('keydown', enterKeyDown);
+        return () => {
+            window.removeEventListener('keydown', enterKeyDown);
+        };
+    }, [password]);
+
+    useEffect(() => {
+        if (checkUser) {
+            GetAuth();
+        }
+    }, [checkUser]);
 
     return (
         <>

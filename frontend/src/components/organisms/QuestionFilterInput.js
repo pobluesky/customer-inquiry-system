@@ -63,21 +63,8 @@ function QuestionFilterInput({
         setLatest(true);
     };
 
-    const resetMyFilter = () => {
-        setTitle('');
-        setQuestionNo('');
-        setCustomerName('');
-        setTimeFilter('LATEST');
+    const resetStatusFilter = () => {
         setStatusFilter('');
-        setTypeFilter('');
-        setStartDate('');
-        setEndDate('');
-
-        setTempTitle('');
-        setTempQuestionNo('');
-        setTempCustomerName('');
-        setTempType('');
-        setLatest(true);
     };
 
     return (
@@ -156,7 +143,8 @@ function QuestionFilterInput({
                             onClick={() => {
                                 setTempId(userId);
                                 setTempStatus('');
-                                resetMyFilter();
+                                resetFilter();
+                                resetStatusFilter();
                                 setIdFilter(userId);
                             }}
                         />

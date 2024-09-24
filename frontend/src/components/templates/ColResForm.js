@@ -7,19 +7,6 @@ import ColResViewer from '../organisms/ColResViewer';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function ColResForm() {
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, []);
-
-    useEffect(() => {
-        if (colDetail) {
-            localStorage.setItem('colDetail', JSON.stringify(colDetail));
-        }
-    }, [colDetail]);
-
     const role = getCookie('userRole');
 
     const location = useLocation();
@@ -32,6 +19,19 @@ export default function ColResForm() {
     });
 
     const [editMode, setEditMode] = useState(false);
+
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, []);
+
+    useEffect(() => {
+        if (colDetail) {
+            localStorage.setItem('colDetail', JSON.stringify(colDetail));
+        }
+    }, [colDetail]);
 
     return (
         <div>

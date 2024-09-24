@@ -76,6 +76,7 @@ function Login() {
 
     useEffect(() => {
         localStorage.clear();
+        sessionStorage.clear();
     }, []);
 
     return (

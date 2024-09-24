@@ -20,55 +20,6 @@ export default function ColTable({
     setSearchCount,
     status,
 }) {
-    useEffect(() => {
-        fetchGetCol(filterArgs);
-    }, [userId, filterArgs, status]);
-
-    useEffect(() => {
-        let args = '';
-        if (colNo) {
-            args += `${args ? '&' : ''}colId=${colNo}`;
-        }
-        if (colReqManager) {
-            args += `${args ? '&' : ''}colReqManager=${colReqManager}`;
-        }
-        if (colResManager) {
-            args += `${args ? '&' : ''}colResManager=${colResManager}`;
-        }
-        if (colReqFilter) {
-            args += `${args ? '&' : ''}colReqId=${colReqFilter}`;
-        }
-        if (colResFilter) {
-            args += `${args ? '&' : ''}colResId=${colResFilter}`;
-        }
-        if (startDate && endDate) {
-            const s = `startDate=${
-                new Date(startDate).toISOString().split('T')[0]
-            }`;
-            const e = `endDate=${
-                new Date(endDate).toISOString().split('T')[0]
-            }`;
-            args += `${args ? '&' : ''}${s}&${e}`;
-        }
-        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
-            args += `${args ? '&' : ''}sortBy=${timeFilter}`;
-        }
-        if (validStatuses.includes(progressFilter)) {
-            args += `${args ? '&' : ''}colStatus=${progressFilter}`;
-        }
-        setFilterArgs(args);
-    }, [
-        colNo,
-        colReqManager,
-        colResManager,
-        colReqFilter,
-        colResFilter,
-        startDate,
-        endDate,
-        timeFilter,
-        progressFilter,
-    ]);
-
     const navigate = useNavigate();
 
     const { userId } = useAuth();
@@ -151,6 +102,55 @@ export default function ColTable({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     };
+
+    useEffect(() => {
+        let args = '';
+        if (colNo) {
+            args += `${args ? '&' : ''}colId=${colNo}`;
+        }
+        if (colReqManager) {
+            args += `${args ? '&' : ''}colReqManager=${colReqManager}`;
+        }
+        if (colResManager) {
+            args += `${args ? '&' : ''}colResManager=${colResManager}`;
+        }
+        if (colReqFilter) {
+            args += `${args ? '&' : ''}colReqId=${colReqFilter}`;
+        }
+        if (colResFilter) {
+            args += `${args ? '&' : ''}colResId=${colResFilter}`;
+        }
+        if (startDate && endDate) {
+            const s = `startDate=${
+                new Date(startDate).toISOString().split('T')[0]
+            }`;
+            const e = `endDate=${
+                new Date(endDate).toISOString().split('T')[0]
+            }`;
+            args += `${args ? '&' : ''}${s}&${e}`;
+        }
+        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
+            args += `${args ? '&' : ''}sortBy=${timeFilter}`;
+        }
+        if (validStatuses.includes(progressFilter)) {
+            args += `${args ? '&' : ''}colStatus=${progressFilter}`;
+        }
+        setFilterArgs(args);
+    }, [
+        colNo,
+        colReqManager,
+        colResManager,
+        colReqFilter,
+        colResFilter,
+        startDate,
+        endDate,
+        timeFilter,
+        progressFilter,
+    ]);
+
+    useEffect(() => {
+        fetchGetCol(filterArgs);
+    }, [userId, filterArgs, status]);
 
     return (
         <>
