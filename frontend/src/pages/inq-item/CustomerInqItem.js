@@ -314,6 +314,8 @@ function CustomerInqItem() {
                         register={register}
                         errors={errors}
                         formData={formData}
+                        isUpdate={true}
+                        isForm={false}
                         handleFormDataChange={handleFormDataChange}
                     />
                     <InquiryHistoryForm

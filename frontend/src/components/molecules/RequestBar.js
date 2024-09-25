@@ -81,11 +81,7 @@ function RequestBar({
             FinalReviewCompleteAlert();
         } else if (btnName === '초기화') {
             onReset();
-        } else {
-            console.log(`Action for ${btnName} is not implemented`);
-        }
-
-        if (btnName === '닫기') {
+        } else if (btnName === '닫기') {
             navigate(`/inq-list/${role}`);
         }
     };

@@ -98,7 +98,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             event.preventDefault();
         }
         try {
-            console.log("매니저 아이디: ", managerId);
             const inquiryResponse = await postInquiry(userId, {
                 ...formData,
                 salesManagerId: managerId,
@@ -185,7 +184,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         setValue('salesPerson', 'GEUMGANG');
     }
 
-
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
@@ -200,6 +198,8 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 register={register}
                 errors={errors}
                 formData={formData}
+                isUpdate={false}
+                isForm={true}
                 handleFormDataChange={handleFormDataChange}
                 setManagerId={setManagerId}
             />

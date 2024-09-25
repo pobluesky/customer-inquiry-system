@@ -9,10 +9,11 @@ import {
     inputWrapper,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, setManagerId }) => {
+const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, setManagerId, isForm, isUpdate }) => {
     const {
         customerCode,
         customerName,
+        salesManagerName,
         name,
         email,
         phone,
@@ -30,15 +31,28 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
     return (
         <div className={Container}>
             <div className={Sheet}>
-                <ToggleBar
-                    title={title}
-                    isChecked={isChecked}
-                    setCheck={setCheck}
-                    isPreviewButton={true}
-                    isForm={true}
-                    progress={'FORM'}
-                    setManagerId={setManagerId}
-                />
+                {isUpdate && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                        salesManagerName={salesManagerName}
+                    />
+                )}
+                {isForm && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        isForm={isForm}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                    />
+                )}
                 {isChecked ? (
                     <div className={Opend}>
                         <div className={Wrapper}>

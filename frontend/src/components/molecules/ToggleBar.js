@@ -10,11 +10,11 @@ const ToggleBar = ({
     isChecked,
     setCheck,
     isForm,
+    isUpdate,
     progress,
     setManagerId,
     salesManagerName,
     qualityManagerName,
-    onManagerSelect,
 }) => {
 
     const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
@@ -29,7 +29,6 @@ const ToggleBar = ({
     const handleSelect = (selectedData) => {
         closeModal();
         setManagerInfo(selectedData);
-        onManagerSelect(selectedData[0]?.userId);
         if (setManagerId) {
             setManagerId(selectedData[0]?.userId);
         }
@@ -51,7 +50,7 @@ const ToggleBar = ({
                     >
                         &nbsp;&nbsp;{title}
                     </span>
-                    {(role === 'customer' && title === '기본정보' && isForm) && (
+                    {(role === 'customer' && title === '기본정보' && isForm && !isUpdate) && (
                         <>
                             <Button
                                 style={{
@@ -92,6 +91,23 @@ const ToggleBar = ({
                                     onSelect={handleSelect}
                                 />
                             )}
+                        </>
+                    )}
+
+                    {(role === 'customer' && title === '기본정보' && !isForm && isUpdate) && (
+                        <>
+                            <Button
+                                style={{
+                                    marginLeft: 'auto',
+                                    color: '#ffffff',
+                                    backgroundColor: '#03507D',
+                                    fontSize: '15px',
+                                    fontWeight: '800',
+                                }}
+                                disabled
+                            >
+                                {salesManagerName}
+                            </Button>
                         </>
                     )}
 
@@ -176,7 +192,7 @@ const ToggleBar = ({
                         </>
                     )}
 
-                    {(title === '기본정보' && !isForm && role === 'customer') && (
+                    {(title === '기본정보' && !isForm && role === 'customer' && !isUpdate) && (
                         <Button
                             style={{
                                 marginLeft: 'auto',
