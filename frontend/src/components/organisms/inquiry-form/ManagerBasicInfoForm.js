@@ -7,6 +7,7 @@ import {
     Wrapper,
     _Input,
     inputWrapper,
+    Form_Label,
 } from '../../../assets/css/Form.css';
 
 const ManagerBasicInfoForm = ({
@@ -55,7 +56,7 @@ const ManagerBasicInfoForm = ({
                         <div className={Wrapper}>
                             {/* 1행 */}
                             <div className={inputWrapper}>
-                                <label>고객사명</label> {/* customerName */}
+                                <label className={Form_Label}>고객사명</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -79,7 +80,7 @@ const ManagerBasicInfoForm = ({
                                 </select>
                             </div>
                             <div className={inputWrapper}>
-                                <label>판매상사</label>
+                                <label className={Form_Label}>판매상사</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -91,7 +92,7 @@ const ManagerBasicInfoForm = ({
 
                             {/* 2행 */}
                             <div className={inputWrapper}>
-                                <label>판매계약자</label>
+                                <label className={Form_Label}>판매계약자</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -100,7 +101,7 @@ const ManagerBasicInfoForm = ({
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>Inquiry 유형</label>
+                                <label className={Form_Label}>Inquiry 유형</label>
                                 <select className={_Input} value={inquiryType} aria-readonly={true}>
                                     <option value="" disabled>
                                         문의유형
@@ -112,7 +113,7 @@ const ManagerBasicInfoForm = ({
                                 </select>
                             </div>
                             <div className={inputWrapper}>
-                                <label>산업분류</label>
+                                <label className={Form_Label}>산업분류</label>
                                 <select className={_Input} value={industry} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
@@ -155,7 +156,7 @@ const ManagerBasicInfoForm = ({
 
                             {/* 3행 */}
                             <div className={inputWrapper}>
-                                <label>의뢰인명</label>
+                                <label className={Form_Label}>의뢰인명</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -164,7 +165,7 @@ const ManagerBasicInfoForm = ({
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>의뢰인 E-mail</label>
+                                <label className={Form_Label}>의뢰인 E-mail</label>
                                 <input
                                     type="email"
                                     className={_Input}
@@ -173,7 +174,7 @@ const ManagerBasicInfoForm = ({
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>의뢰인 연락처</label>
+                                <label className={Form_Label}>의뢰인 연락처</label>
                                 <input
                                     type="tel"
                                     className={_Input}
@@ -184,7 +185,7 @@ const ManagerBasicInfoForm = ({
 
                             {/* 4행 */}
                             <div className={inputWrapper}>
-                                <label>법인코드</label>
+                                <label className={Form_Label}>법인코드</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -194,7 +195,7 @@ const ManagerBasicInfoForm = ({
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>제품</label>
+                                <label className={Form_Label}>제품</label>
                                 <select className={_Input} value={productType} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
@@ -207,7 +208,7 @@ const ManagerBasicInfoForm = ({
                                 </select>
                             </div>
                             <div className={inputWrapper}>
-                                <label>고객요청일자</label>
+                                <label className={Form_Label}>고객요청일자</label>
                                 <input
                                     type="date"
                                     className={_Input}
