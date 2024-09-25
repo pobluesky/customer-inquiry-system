@@ -46,11 +46,6 @@ export default function QuestionInquirySearchModal({
         setFilteredInquiryData(filtered);
     };
 
-    const formatInquiryId = (date, id) => {
-        const ruleId = id.toString().padStart(3, '0');
-        return `${date}${ruleId}`;
-    };
-
     return (
         <div className={Question_Inquiry_Modal}>
             <div>
@@ -102,15 +97,16 @@ export default function QuestionInquirySearchModal({
                         <thead>
                             <tr>
                                 <th>Inquiry No.</th>
+                                <th>문의유형</th>
+                                <th>판매계약자</th>
                                 <th>제품</th>
-                                <th>판매 계약자</th>
-                                <th>문의 유형</th>
                                 <th>고객사</th>
-                                <th>진행 현황</th>
                                 <th>국가</th>
-                                <th>판매 상사</th>
-                                <th>법인 코드</th>
-                                <th>산업 분류</th>
+                                <th>판매상사</th>
+                                <th>법인코드</th>
+                                <th>산업분류</th>
+                                <th>문의일자</th>
+                                <th>진행현황</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -131,20 +127,18 @@ export default function QuestionInquirySearchModal({
                                                 setOpenModal(false);
                                             }}
                                         >
-                                            {formatInquiryId(
-                                                inq.createdDate,
-                                                inq.inquiryId,
-                                            )}
+                                            {inq.processedInquiryId}
                                         </td>
-                                        <td>{inq.productType}</td>
-                                        <td>{inq.salesPerson}</td>
                                         <td>{inq.inquiryType}</td>
+                                        <td>{inq.salesPerson}</td>
+                                        <td>{inq.productType}</td>
                                         <td>{inq.customerName}</td>
-                                        <td>{inq.progress}</td>
                                         <td>{inq.country}</td>
                                         <td>{inq.corporate}</td>
                                         <td>{inq.corporationCode}</td>
                                         <td>{inq.industry}</td>
+                                        <td>{inq.createdDate}</td>
+                                        <td>{inq.progress}</td>
                                     </tr>
                                 </>
                             ))}
