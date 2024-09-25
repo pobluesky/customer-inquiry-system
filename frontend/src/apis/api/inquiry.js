@@ -1,7 +1,10 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
-    createFormInquiryData, createFormOCRData, processHistoryData,
-    processInquiries, processInquiryData,
+    createFormInquiryData,
+    createFormOCRData,
+    processHistoryData,
+    processInquiries,
+    processInquiryData,
 } from '../utils/inquiryUtils';
 
 // 고객사 inquiry list 가져오기 (summary)
@@ -25,7 +28,9 @@ export const getInquiry = async (userId, page = 0) => {
 // 고객사 inquiry list 가져오기 (all)
 export const getAllInquiries = async (userId) => {
     try {
-        const response = await axiosInstance.get(`/inquiries/customers/inquiries/${userId}`);
+        const response = await axiosInstance.get(
+            `/inquiries/customers/inquiries/${userId}`,
+        );
         console.log(response.data);
 
         const inquiryInfo = response?.data?.data;
@@ -35,9 +40,8 @@ export const getAllInquiries = async (userId) => {
             return { inquiryInfo: [] };
         }
         return {
-            inquiryInfo: processInquiries(inquiryInfo)
+            inquiryInfo: processInquiries(inquiryInfo),
         };
-
     } catch (error) {
         throw error;
     }
@@ -121,9 +125,7 @@ export const getInquiryByManagers = async (page = 0) => {
 // 담당자 inquiry list 가져오기 (all)
 export const getAllInquiriesByManagers = async () => {
     try {
-        const response = await axiosInstance.get(
-            `/inquiries/managers/inquiries`,
-        );
+        const response = await axiosInstance.get(`/inquiries/managers/inquiries`);
         console.log(response.data);
 
         const inquiryInfo = response?.data?.data;
@@ -133,9 +135,8 @@ export const getAllInquiriesByManagers = async () => {
             return { inquiryInfo: [] };
         }
         return {
-            inquiryInfo: processInquiries(inquiryInfo)
+            inquiryInfo: processInquiries(inquiryInfo),
         };
-
     } catch (error) {
         throw error;
     }
@@ -166,7 +167,7 @@ export const putManagerAllocate = async (inquiryId) => {
         console.log('Error putting manager allocate:', error);
         throw error;
     }
-}
+};
 
 // Progress Update
 export const putProgress = async (inquiryId, progress) => {
@@ -180,7 +181,7 @@ export const putProgress = async (inquiryId, progress) => {
         console.log('Error putting progress update:', error);
         throw error;
     }
-}
+};
 
 // 제품 유형에 따른 고객 전체 Inquiry 목록 조회
 export const getInquiriesByProductType = async (userId, productType) => {
@@ -193,20 +194,23 @@ export const getInquiriesByProductType = async (userId, productType) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 // 제품 유형에 따른 고객 즐겨찾기 Inquiry 목록 조회
-export const getFavoriteInquiriesByProductType = async (userId, productType) => {
+export const getFavoriteInquiriesByProductType = async (
+    userId,
+    productType,
+) => {
     try {
         const response = await axiosInstance.get(
             `/inquiries/customers/inquiries/${userId}/${productType}/favorite`,
         );
         console.log(response.data);
-        return  processHistoryData(response.data.data);
+        return processHistoryData(response.data.data);
     } catch (error) {
         throw error;
     }
-}
+};
 
 // 특정 Inquiry 즐겨찾기 설정
 export const putFavoriteInquiry = async (inquiryId) => {
@@ -220,7 +224,7 @@ export const putFavoriteInquiry = async (inquiryId) => {
         console.log('Error putting favorite inquiry:', error);
         throw error;
     }
-}
+};
 
 // inquiry 라인아이템 optimizer (OCR API)
 export const postOCR = async (userId, file, productType) => {

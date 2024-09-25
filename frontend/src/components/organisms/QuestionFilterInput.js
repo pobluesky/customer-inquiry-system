@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
+import { getCookie } from '../../apis/utils/cookies';
 import {
     Selected,
     NotSelected,
     Question_Filter_Input_Container,
     Question_Filter_Input,
 } from '../../assets/css/Voc.css';
-import { getCookie } from '../../apis/utils/cookies';
 
 function QuestionFilterInput({
     title,
@@ -47,7 +47,6 @@ function QuestionFilterInput({
         setCustomerName(tempCustomerName);
     };
 
-    // [전체 문의/답변 완료/답변 대기] 선택 시 필터링 조건 초기화
     const resetFilter = () => {
         setTitle('');
         setQuestionNo('');
@@ -64,22 +63,8 @@ function QuestionFilterInput({
         setLatest(true);
     };
 
-    // [나의 답변] 선택 시 필터링 조건 초기화
-    const resetMyFilter = () => {
-        setTitle('');
-        setQuestionNo('');
-        setCustomerName('');
-        setTimeFilter('LATEST');
+    const resetStatusFilter = () => {
         setStatusFilter('');
-        setTypeFilter('');
-        setStartDate('');
-        setEndDate('');
-
-        setTempTitle('');
-        setTempQuestionNo('');
-        setTempCustomerName('');
-        setTempType('');
-        setLatest(true);
     };
 
     return (
@@ -158,7 +143,8 @@ function QuestionFilterInput({
                             onClick={() => {
                                 setTempId(userId);
                                 setTempStatus('');
-                                resetMyFilter();
+                                resetFilter();
+                                resetStatusFilter();
                                 setIdFilter(userId);
                             }}
                         />
@@ -249,7 +235,6 @@ function QuestionFilterInput({
                         }}
                     />
                 )}
-                {/* 문의 유형 검색 */}
                 <select
                     name="type"
                     id="type"
@@ -266,7 +251,6 @@ function QuestionFilterInput({
                     <option value="SITE">사이트</option>
                     <option value="ETC">기타</option>
                 </select>
-                {/* 문의 번호 검색 */}
                 <Input
                     type={'text'}
                     width={'84px'}
@@ -281,7 +265,6 @@ function QuestionFilterInput({
                 />
                 {role !== 'customer' ? (
                     <>
-                        {/* 문의 제목 검색 */}
                         <Input
                             type={'text'}
                             width={'180px'}
@@ -294,7 +277,6 @@ function QuestionFilterInput({
                             value={tempTitle}
                             onChange={(e) => setTempTitle(e.target.value)}
                         />
-                        {/* 고객사명 검색 */}
                         <Input
                             type={'text'}
                             width={'180px'}

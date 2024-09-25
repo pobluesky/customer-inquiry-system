@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import close from '../../assets/css/icons/close.svg';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import { QuestionAnswerButton } from '../atoms/VocButton';
-import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
+import { VocButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllInquiries } from '../../apis/api/inquiry';
+import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 
 export default function QuestionInquirySearchModal({
     setInquiryId,
     openModal,
     setOpenModal,
 }) {
+    useEffect(() => {
+        fetchGetAllInquiry();
+    }, [userId, openModal]);
+
     const { userId } = useAuth();
     const [inquiryData, setInquiries] = useState([]);
     const [searchId, setSearchId] = useState('');
@@ -42,11 +46,10 @@ export default function QuestionInquirySearchModal({
         setFilteredInquiryData(filtered);
     };
 
-    useEffect(() => {
-        fetchGetAllInquiry();
-    }, [userId, openModal]);
-
-    console.log(filteredInquiryData);
+    const formatInquiryId = (date, id) => {
+        const ruleId = id.toString().padStart(3, '0');
+        return `${date}${ruleId}`;
+    };
 
     return (
         <div className={Question_Inquiry_Modal}>
@@ -59,25 +62,24 @@ export default function QuestionInquirySearchModal({
                         height={'36px'}
                         margin={'0 24px 0 0'}
                         padding={'0px 12px 0px 12px'}
-                        border={'1px solid #8b8b8b'}
+                        border={'1px solid #03507d'}
                         placeholder={'Inquiry 번호 조회'}
                         onChange={(e) => setSearchId(e.target.value)}
                         onKeyDown={enterKeyDown}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'검색'}
-                        backgroundColor={'#1748ac'}
+                        backgroundColor={'#03507d'}
                         textColor={'#ffffff'}
                         margin={'0 24px 0 0'}
                         onClick={() => {
                             inqSearch(searchId);
                         }}
                     />
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'전체 보기'}
                         backgroundColor={'#ffffff'}
-                        textColor={'#1748ac'}
-                        border={'solid 1px #1748ac'}
+                        textColor={'#03507d'}
                         onClick={() => {
                             setFilteredInquiryData(inquiryData);
                         }}
@@ -99,37 +101,41 @@ export default function QuestionInquirySearchModal({
                     <table>
                         <thead>
                             <tr>
-                                <th width="10%">번호</th>
-                                <th width="10%">제품</th>
-                                <th width="20%">판매 계약자</th>
-                                <th width="20%">문의 유형</th>
-                                <th width="20%">고객사</th>
-                                <th width="20%">진행 현황</th>
-                                <th width="10%">국가</th>
-                                <th width="20%">판매 상사</th>
-                                <th width="20%">법인 코드</th>
-                                <th width="20%">산업 분류</th>
+                                <th>Inquiry No.</th>
+                                <th>제품</th>
+                                <th>판매 계약자</th>
+                                <th>문의 유형</th>
+                                <th>고객사</th>
+                                <th>진행 현황</th>
+                                <th>국가</th>
+                                <th>판매 상사</th>
+                                <th>법인 코드</th>
+                                <th>산업 분류</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredInquiryData.map((inq) => (
+                            {filteredInquiryData?.map((inq) => (
                                 <>
-                                    <tr
-                                        key={inq.inquiryId}
-                                        onClick={() => {
-                                            setInquiryId(inq.inquiryId);
-                                            sessionStorage.setItem(
-                                                'userId',
-                                                userId,
-                                            );
-                                            window.open(
-                                                `/inq-list/customer/${inq.inquiryId}`,
-                                                '_blank',
-                                            );
-                                            setOpenModal(false);
-                                        }}
-                                    >
-                                        <td>{inq.inquiryId}</td>
+                                    <tr key={inq.inquiryId}>
+                                        <td
+                                            onClick={() => {
+                                                setInquiryId(inq.inquiryId);
+                                                sessionStorage.setItem(
+                                                    'userId',
+                                                    userId,
+                                                );
+                                                window.open(
+                                                    `/inq-list/customer/${inq.inquiryId}`,
+                                                    '_blank',
+                                                );
+                                                setOpenModal(false);
+                                            }}
+                                        >
+                                            {formatInquiryId(
+                                                inq.createdDate,
+                                                inq.inquiryId,
+                                            )}
+                                        </td>
                                         <td>{inq.productType}</td>
                                         <td>{inq.salesPerson}</td>
                                         <td>{inq.inquiryType}</td>

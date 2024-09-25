@@ -146,7 +146,7 @@ export default function CollapsibleTable({
                                     }}>담당자 배정
                                 </Button>
                             </TableCell>
-                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>문의번호</TableCell>
+                            <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>Inquiry No.</TableCell>
                             <TableCell className="custom-table-cell" sx={{ color: '#ffffff' }}>판매계약자</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>문의유형</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff' }}>제품</TableCell>

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VocPageButton from './VocPageButton';
-import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
+import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 import {
     Question_List_Container,
     Question_List,
     Ready,
     Completed,
 } from '../../assets/css/Voc.css';
-import { getAllQuestion, getQuestionByUserId } from '../../apis/api/question';
 
 export default function QuestionList({
     title,
@@ -23,15 +22,65 @@ export default function QuestionList({
     typeFilter,
     setSearchCount,
 }) {
-    const { userId } = useAuth();
-    const role = getCookie('userRole');
     const navigate = useNavigate();
+
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
 
     const [filterArgs, setFilterArgs] = useState('');
     const [questionSummary, setQuestionSummary] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
+
+    // 질문 요약 조회
+    const fetchGetQuestions =
+        role === 'customer'
+            ? async () => {
+                  try {
+                      const response = await getQuestionByUserId(
+                          userId,
+                          currentPage - 1,
+                          filterArgs,
+                      );
+                      setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
+                      setSearchCount(response.data.totalElements);
+                  } catch (error) {
+                      console.log('고객사 질문 요약 조회 실패: ', error);
+                  }
+              }
+            : async () => {
+                  try {
+                      const response = await getAllQuestion(
+                          currentPage - 1,
+                          filterArgs,
+                      );
+                      setQuestionSummary(response.data.questionsInfo);
+                      setTotalPages(response.data.totalPages);
+                      setSearchCount(response.data.totalElements);
+                  } catch (error) {
+                      console.log('담당자 질문 요약 조회 실패: ', error);
+                  }
+              };
+
+    const contentsEllipsis = {
+        maxWidth: '1320px',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    };
+
+    const getTypeLabel = (type) => {
+        switch (type) {
+            case 'INQ':
+                return 'Inquiry 문의';
+            case 'SITE':
+                return '사이트 문의';
+            case 'ETC':
+                return '기타 문의';
+        }
+    };
 
     useEffect(() => {
         let args = '';
@@ -82,47 +131,13 @@ export default function QuestionList({
         typeFilter,
     ]);
 
-    // 질문 요약 조회
-    const fetchGetQuestions =
-        role === 'customer'
-            ? async () => {
-                  try {
-                      const response = await getQuestionByUserId(
-                          getCookie('userId'),
-                          currentPage-1,
-                          filterArgs,
-                      );
-                      setQuestionSummary(response.data.questionsInfo);
-                      setTotalPages(response.data.totalPages);
-                      setSearchCount(response.data.totalElements);
-                  } catch (error) {
-                      console.log('고객사 질문 요약 조회 실패: ', error);
-                  }
-              }
-            : async () => {
-                  try {
-                      const response = await getAllQuestion(
-                          currentPage-1,
-                          filterArgs,
-                      );
-                      setQuestionSummary(response.data.questionsInfo);
-                      setTotalPages(response.data.totalPages);
-                      setSearchCount(response.data.totalElements);
-                  } catch (error) {
-                      console.log('담당자 질문 요약 조회 실패: ', error);
-                  }
-              };
-
     useEffect(() => {
         fetchGetQuestions();
     }, [userId, currentPage, filterArgs]);
 
-    const contentsEllipsis = {
-        maxWidth: '1320px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-    };
+    useEffect(() => {
+        sessionStorage.clear();
+    }, []);
 
     return (
         <div className={Question_List_Container}>
@@ -134,22 +149,11 @@ export default function QuestionList({
                         <div
                             className={Question_List}
                             onClick={() => {
-                                navigate('/voc-form/answer', {
-                                    state: {
-                                        questionId: data.questionId,
-                                        status: data.status,
-                                    },
-                                });
+                                navigate(`/voc-form/answer/${data.questionId}`);
                             }}
                         >
                             <div>
-                                <div>
-                                    {data.type === 'INQ'
-                                        ? 'Inquiry 문의'
-                                        : data.type === 'SITE'
-                                        ? '사이트 문의'
-                                        : '기타 문의'}
-                                </div>
+                                <div>{getTypeLabel(data?.type)}</div>
                                 {data.status === 'READY' ? (
                                     <div className={Ready}>답변 대기</div>
                                 ) : (

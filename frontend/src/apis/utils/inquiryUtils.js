@@ -145,28 +145,36 @@ export const processInquiries = (data) => {
                 industryText = '-';
         }
 
-        let salesManagerNameText;
-        switch (inquiry.salesManagerName) {
-            case null:
-                salesManagerNameText = '-';
-                break;
-            default:
-                salesManagerNameText = inquiry.salesManagerName;
-        }
+        let salesManagerNameText = inquiry.salesManagerName || '-';
+        let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
-        let qualityManagerNameText;
-        switch (inquiry.qualityManagerName) {
-            case null:
-                qualityManagerNameText = '-';
-                break;
-            default:
-                qualityManagerNameText = inquiry.qualityManagerName;
-        }
+        // processedInquiryId
+        const createdDateString = inquiry.createdDate; // 20240923 형식
+        const year = createdDateString.slice(0, 4); // 연도 추출
+        const month = createdDateString.slice(4, 6); // 월 추출
+        const day = createdDateString.slice(6, 8); // 일 추출
+
+        // Date 객체 생성 (년, 월 - 1, 일)
+        const createdDate = new Date(`${year}-${month}-${day}`);
+
+        // InquiryId를 3자리로 변환
+        const inquiryIdPadded = String(inquiry.inquiryId).padStart(3, '0');
+
+        // 날짜 + 3자리 InquiryId로 처리
+        const processedInquiryId = `${year}${month}${day}${inquiryIdPadded}`;
+
+        // createdDate
+        // 월 앞의 '0'을 제거하기 위해 정수로 변환
+        const formattedMonth = parseInt(month, 10);
+        const formattedDay = parseInt(day, 10);
+
+        const formattedDate = `${year}년 ${formattedMonth}월 ${formattedDay}일`;
 
         return {
             customerName: inquiry.customerName,
             salesManagerName: salesManagerNameText,
             qualityManagerName: qualityManagerNameText,
+            processedInquiryId: processedInquiryId,
             inquiryId: inquiry.inquiryId,
             inquiryType: inquiryTypeText,
             productType: productTypeText,
@@ -176,6 +184,7 @@ export const processInquiries = (data) => {
             corporate: inquiry.corporate,
             corporationCode: inquiry.corporationCode,
             industry: industryText,
+            createdDate: formattedDate,
         };
     });
 };
@@ -291,7 +300,8 @@ export const processInquiryData = (data) => {
                     transportationDestination: item.transportationDestination,
                     annualCost: item.annualCost,
                     legalRegulatoryReview: item.legalRegulatoryReview,
-                    legalRegulatoryReviewDetail: item.legalRegulatoryReviewDetail,
+                    legalRegulatoryReviewDetail:
+                        item.legalRegulatoryReviewDetail,
                     finalCustomer: item.finalCustomer,
                 })),
             };

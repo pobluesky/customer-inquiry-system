@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
+import com.pobluesky.backend.domain.user.dto.response.ManagerSummaryResponseDTO;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.service.ManagerService;
@@ -49,6 +50,24 @@ public class ManagerController {
     public ResponseEntity<JsonResult> getManagers() {
         List<ManagerResponseDTO> response = managerService.getManagers();
         
+        return ResponseEntity.status(HttpStatus.OK)
+            . body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/sales")
+    @Operation(summary = "판매 담당자 조회")
+    public ResponseEntity<JsonResult> getSaleManagers() {
+        List<ManagerSummaryResponseDTO> response = managerService.getSaleManagers();
+
+        return ResponseEntity.status(HttpStatus.OK)
+            . body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
+    @GetMapping("/quality")
+    @Operation(summary = "품질 담당자 조회")
+    public ResponseEntity<JsonResult> getQualityManagers() {
+        List<ManagerSummaryResponseDTO> response = managerService.getQualityManagers();
+
         return ResponseEntity.status(HttpStatus.OK)
             . body(ResponseFactory.getSuccessJsonResult(response));
     }

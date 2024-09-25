@@ -6,6 +6,13 @@ export default function ColStatus({ setProgressFilter }) {
         <div className={Col_Status}>
             <div
                 onClick={() => {
+                    setProgressFilter('');
+                }}
+            >
+                전체
+            </div>
+            <div
+                onClick={() => {
                     setProgressFilter('COMPLETE');
                 }}
             >
@@ -23,7 +30,7 @@ export default function ColStatus({ setProgressFilter }) {
                     setProgressFilter('INPROGRESS');
                 }}
             >
-                협업 진행 중
+                협업 수락
             </div>
             <div
                 onClick={() => {

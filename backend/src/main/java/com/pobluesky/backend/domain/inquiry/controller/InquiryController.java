@@ -253,16 +253,28 @@ public class InquiryController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/managers/inquiries/{inquiryId}/allocate")
-    @Operation(summary = "담당자 Inquiry 할당")
-    public ResponseEntity<InquiryAllocateResponseDTO> allocateManager(
+    @PutMapping("/managers/inquiries/{inquiryId}/allocate/{qualityManagerId}")
+    @Operation(summary = "Quality Manager Inquiry 배정", description = "품질+견적 유형에 대한 Inquiry 품질 담당자를 판매 담당자가 배정한다.")
+    public ResponseEntity <InquiryAllocateResponseDTO> allocateQualityManager(
         @RequestHeader("Authorization") String token,
-        @PathVariable Long inquiryId
+        @PathVariable Long inquiryId,
+        @PathVariable Long qualityManagerId
     ) {
-        InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
+        InquiryAllocateResponseDTO response = inquiryService.allocateQualityManager(token, inquiryId, qualityManagerId);
 
         return ResponseEntity.ok(response);
     }
+
+//    @PutMapping("/managers/inquiries/{inquiryId}/allocate")
+//    @Operation(summary = "담당자 Inquiry 할당")
+//    public ResponseEntity<InquiryAllocateResponseDTO> allocateManager(
+//        @RequestHeader("Authorization") String token,
+//        @PathVariable Long inquiryId
+//    ) {
+//        InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
+//
+//        return ResponseEntity.ok(response);
+//    }
 
     @GetMapping("customers/inquiries/{userId}/{productType}/all")
     @Operation(summary = "제품 유형에 따른 고객의 전체 Inquiry 목록 조회")
@@ -365,6 +377,7 @@ public class InquiryController {
 
         return ResponseEntity.ok(response);
     }
+    /* [End] Dashboard API */
 
     @PostMapping("/customers/inquiries/{userId}/optimized")
     @Operation(summary = "제품 유형별 라인아이템 등록 최적화")

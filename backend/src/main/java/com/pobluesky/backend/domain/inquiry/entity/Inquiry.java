@@ -83,6 +83,7 @@ public class Inquiry extends BaseEntity {
     @Builder
     private Inquiry(
         Customer customer,
+        Manager salesManager,
         Country country,
         String corporate,
         String  salesPerson,
@@ -96,7 +97,7 @@ public class Inquiry extends BaseEntity {
         String filePath,
         String responseDeadline
     ){
-        this.salesManager = null;
+        this.salesManager = salesManager;
         this.qualityManager = null;
         this.customer = customer;
         this.country = country;

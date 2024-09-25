@@ -58,16 +58,6 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
         }
     };
 
-    useEffect(() => {
-        fetchNotifications();
-    }, [userId]);
-
-    useEffect(() => {
-        if (activeTab === 'read') {
-            fetchReadNotifications();
-        }
-    }, [activeTab, userId]);
-
     const handleNotificationClick = async (notificationId) => {
         try {
             if (role === 'customer') {
@@ -86,6 +76,16 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        fetchNotifications();
+    }, [userId]);
+
+    useEffect(() => {
+        if (activeTab === 'read') {
+            fetchReadNotifications();
+        }
+    }, [activeTab, userId]);
 
     return (
         <div className={Notify_Modal_Container}>
