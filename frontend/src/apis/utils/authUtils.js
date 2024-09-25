@@ -24,6 +24,7 @@ const signInApi = async (endpoint, credentials) => {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60,
             });
+
             setCookie('userId', userId, {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60,

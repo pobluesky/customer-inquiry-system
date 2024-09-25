@@ -6,15 +6,10 @@ import pobluesky from '../../assets/css/icons/pobluesky.png';
 import profile from '../../assets/css/icons/profile.svg';
 import UserInfoModal from './UserInfoModal';
 import NotificationModal from '../molecules/NotificationModal';
-import { getUserName, userName } from '../../index';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAuth } from '../../hooks/useAuth';
-import {
-    getUserInfoByCustomers,
-    getUserInfoByManagers,
-} from '../../apis/api/auth';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { getCookie } from '../../apis/utils/cookies';
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
@@ -29,16 +24,20 @@ export const MenuLink = styled(Link)`
 function MyHeader() {
     const navigate = useNavigate();
 
-    const { didLogin, userId, role } = useAuth();
+    const name = getCookie('userName');
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
 
+    const { didLogin } = useAuth();
+
+    const location = useLocation();
+    const isMainPage = location.pathname === '/';
+    const isLoginPage = location.pathname === '/login';
+    const isJoinPage = location.pathname === '/join';
+    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
     const url = `/inq-list/${role}`;
 
-    const [name, setName] = useState(null);
-    const [, setGlobalName] = useRecoilState(userName);
-    const currentUserName = useRecoilValue(getUserName);
-
     const [totalElements, setTotalElements] = useState(0);
-
     const [openNotifyModal, setOpenNotifyModal] = useState(false);
     const [openInfoModal, setOpenInfoModal] = useState(false);
     const notificationButtonRef = useRef(null);
@@ -59,33 +58,11 @@ function MyHeader() {
         setOpenInfoModal(!openInfoModal);
     };
 
-    const location = useLocation();
-    const isMainPage = location.pathname === '/';
-    const isLoginPage = location.pathname === '/login';
-    const isJoinPage = location.pathname === '/join';
-    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
-
-    const findUserName = async () => {
-        try {
-            if (role === 'customer') {
-                const customer = await getUserInfoByCustomers(userId);
-                setName(customer.data.data.name);
-                setGlobalName(customer.data.data.name);
-            } else {
-                const manager = await getUserInfoByManagers(userId);
-                setName(manager.data.data.name);
-                setGlobalName(manager.data.data.name);
-            }
-            return name;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const fetchNotificationsCount = async () => {
         try {
             if (role === 'customer') {
                 const response = await getNotificationByCustomers(userId);
+                console.log(response.totalElements);
                 setTotalElements(response.totalElements);
             } else if (role === 'quality' || role === 'sales') {
                 const response = await getNotificationByManagers(userId);
@@ -95,33 +72,6 @@ function MyHeader() {
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        const init = async () => {
-            if (didLogin && userId) {
-                await findUserName();
-                await fetchNotificationsCount();
-            }
-        };
-        init();
-    }, [didLogin, userId, role]);
-
-    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
-    useEffect(() => {
-        const clickOutside = (event) => {
-            if (modalRef.current && !modalRef.current.contains(event.target)) {
-                setOpenInfoModal(false);
-                setOpenNotifyModal(false);
-            }
-        };
-        window.addEventListener('mouseup', clickOutside);
-        return () => window.removeEventListener('mouseup', clickOutside);
-    }, []);
-
-    useEffect(() => {
-        setOpenInfoModal(false);
-        setOpenNotifyModal(false);
-    }, [location]);
 
     const InquiryMenu = () => (
         <>
@@ -163,8 +113,32 @@ function MyHeader() {
     );
 
     useEffect(() => {
+        setOpenInfoModal(false);
+        setOpenNotifyModal(false);
+    }, [location]);
+
+    useEffect(() => {
         setCurPage(location.pathname.substring(1, 4));
     }, [location]);
+
+    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
+    useEffect(() => {
+        const clickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setOpenInfoModal(false);
+                setOpenNotifyModal(false);
+            }
+        };
+        window.addEventListener('mouseup', clickOutside);
+        return () => window.removeEventListener('mouseup', clickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (userId && role && name) {
+            return;
+        }
+        navigate('/');
+    }, [userId, role, name]);
 
     return (
         <>
@@ -251,7 +225,7 @@ function MyHeader() {
                                             <img src={profile} />
                                         </button>
                                     </div>
-                                    <div>{currentUserName}</div>
+                                    <div>{name}</div>
                                     <div>
                                         <button
                                             ref={notificationButtonRef}

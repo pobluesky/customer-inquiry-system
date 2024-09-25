@@ -4,13 +4,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/atoms/Button';
 import LoginInput from '../../components/molecules/LoginInput';
-import { SignIn } from '../../assets/css/Auth.css';
 import { useAuth } from '../../hooks/useAuth';
-import { getCookie } from '../../apis/utils/cookies';
+import { getCookie, setCookie } from '../../apis/utils/cookies';
 import { useRecoilValue } from 'recoil';
 import { getUserEmail, getUserPassword } from '../../index';
 import { FailedAlert } from '../../utils/actions';
-import { signInApiByUsers } from '../../apis/api/auth';
+import {
+    signInApiByUsers,
+    getUserInfoByCustomers,
+    getUserInfoByManagers,
+} from '../../apis/api/auth';
+import { SignIn } from '../../assets/css/Auth.css';
 
 function Login() {
     const navigate = useNavigate();
@@ -30,7 +34,7 @@ function Login() {
 
     const [openBackDrop, setOpenBackDrop] = useState(false);
 
-    const { didLogin, setDidLogin, setRole, setUserId } = useAuth();
+    const { setDidLogin, setRole, setUserId } = useAuth();
 
     const enterKeyDown = async (e) => {
         if (e.key === 'Enter') {
@@ -43,11 +47,31 @@ function Login() {
     const GetAuth = async () => {
         try {
             await signInApiByUsers(email, password);
+            if (getCookie('userRole') === 'customer') {
+                const response = await getUserInfoByCustomers(
+                    getCookie('userId'),
+                );
+                setCookie('userName', response.data.data.name, {
+                    path: '/',
+                    maxAge: 7 * 24 * 60 * 60,
+                });
+            } else if (
+                getCookie('userRole') === 'quality' ||
+                getCookie('userRole') === 'sales'
+            ) {
+                const response = await getUserInfoByManagers(
+                    getCookie('userId'),
+                );
+                setCookie('userName', response.data.data.name, {
+                    path: '/',
+                    maxAge: 7 * 24 * 60 * 60,
+                });
+            }
             setOpenBackDrop(true);
             setTimeout(() => {
-                setDidLogin(true); // 로그인 상태 변화
-                setUserId(getCookie('userId')); // 전역 userId 저장
-                setRole(getCookie('userRole')); // 전역 역할 저장
+                setDidLogin(true);
+                setUserId(getCookie('userId'));
+                setRole(getCookie('userRole'));
                 setOpenBackDrop(false);
                 navigate('/');
             }, '2000');
@@ -66,17 +90,13 @@ function Login() {
     }, [email, password]);
 
     useEffect(() => {
-        const init = async () => {
-            if (didLogin) {
-                navigate('/');
-            }
-        };
-        init();
-    }, [didLogin]);
-
-    useEffect(() => {
-        localStorage.clear();
-        sessionStorage.clear();
+        if (
+            getCookie('userName') &&
+            getCookie('userRole') &&
+            getCookie('userId')
+        ) {
+            navigate('/');
+        }
     }, []);
 
     return (

@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress, Drawer, List, ListItem, ListItemText, Avatar, Typography } from '@mui/material';
+import {
+    Box,
+    CircularProgress,
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    Avatar,
+    Typography,
+} from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonIcon from '@mui/icons-material/Person';
@@ -14,26 +23,21 @@ import {
     getPercentageCompletedOrNot,
     getCountByProductType,
 } from '../../apis/api/chart';
-import { Dashboard_Container, Dashboard_Item } from '../../assets/css/Chart.css';
 import profile from '../../assets/css/icons/profile.svg';
-import { userName, getUserName } from '../../index';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { getUserInfoByManagers } from '../../apis/api/auth';
 import { useAuth } from '../../hooks/useAuth';
+import { getCookie } from '../../apis/utils/cookies';
+import {
+    Dashboard_Container,
+    Dashboard_Item,
+} from '../../assets/css/Chart.css';
 
 export default function DashBoard() {
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const { userId } = useAuth();
+    const name = getCookie('userName');
 
     const [isLoading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
     const [activeTab, setActiveTab] = useState('Dashboard');
-
-    const { userId } = useAuth();
-    const [name, setName] = useState(null);
-    const [, setGlobalName] = useRecoilState(userName);
-    const currentUserName = useRecoilValue(getUserName);
 
     const fetchData = async () => {
         try {
@@ -48,19 +52,36 @@ export default function DashBoard() {
             setItems([
                 {
                     id: '1',
-                    content: <InquiryMonthlyOrderChart data={monthlyOrder} name={currentUserName} />
+                    content: (
+                        <InquiryMonthlyOrderChart
+                            data={monthlyOrder}
+                            name={name}
+                        />
+                    ),
                 },
                 {
                     id: '2',
-                    content: <InquiryProgressCountChart data={progressCount} name={currentUserName} />
+                    content: (
+                        <InquiryProgressCountChart
+                            data={progressCount}
+                            name={name}
+                        />
+                    ),
                 },
                 {
                     id: '3',
-                    content: <InquiryOrderCountChart data={orderCount} name={currentUserName} />
+                    content: (
+                        <InquiryOrderCountChart data={orderCount} name={name} />
+                    ),
                 },
                 {
                     id: '4',
-                    content: <InquiryProductProgressChart data={productType} name={currentUserName} />
+                    content: (
+                        <InquiryProductProgressChart
+                            data={productType}
+                            name={name}
+                        />
+                    ),
                 },
             ]);
         } catch (error) {
@@ -69,22 +90,6 @@ export default function DashBoard() {
             setLoading(false);
         }
     };
-
-    const findUserName = async () => {
-        try {
-                const manager = await getUserInfoByManagers(userId);
-                setName(manager.data.data.name);
-                setGlobalName(manager.data.data.name);
-            return name;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-        findUserName();
-    }, [userId]);
 
     const handleOnDragEnd = (result) => {
         if (!result.destination) return;
@@ -100,119 +105,144 @@ export default function DashBoard() {
         setActiveTab(tab);
     };
 
-        const renderContent = () => {
-            if (activeTab === 'Dashboard') {
-                return (
-                    <>
-                        {isLoading ? (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                }}
-                                width={'100%'}
-                                height={'85vh'}
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                            >
-                                <CircularProgress />
-                            </Box>
-                        ) : (
-                            <DragDropContext onDragEnd={handleOnDragEnd}>
-                                <Droppable droppableId="droppable"
-                                           direction="vertical">
-                                    {(provided) => (
-                                        <div
-                                            {...provided.droppableProps}
-                                            ref={provided.innerRef}
-                                            className={Dashboard_Container}
-                                        >
-                                            {items.map((item, index) => (
-                                                <Draggable key={item.id}
-                                                           draggableId={item.id}
-                                                           index={index}>
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className={Dashboard_Item}
-                                                        >
-                                                            {item.content}
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                        )}
-                    </>
-                );
-            } else if (activeTab === 'Inquiry Log') {
-                return <div>Inquiry Log 페이지</div>;
-            } else if (activeTab === 'User Info') {
-                return <div>User Info 페이지</div>;
-            }
-        };
+    useEffect(() => {
+        fetchData();
+    }, [userId]);
 
-        return (
-            <Box sx={{ display: 'flex' }}>
-                <Box sx={{
+    const renderContent = () => {
+        if (activeTab === 'Dashboard') {
+            return (
+                <>
+                    {isLoading ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                            }}
+                            width={'100%'}
+                            height={'85vh'}
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                        >
+                            <CircularProgress />
+                        </Box>
+                    ) : (
+                        <DragDropContext onDragEnd={handleOnDragEnd}>
+                            <Droppable
+                                droppableId="droppable"
+                                direction="vertical"
+                            >
+                                {(provided) => (
+                                    <div
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                        className={Dashboard_Container}
+                                    >
+                                        {items.map((item, index) => (
+                                            <Draggable
+                                                key={item.id}
+                                                draggableId={item.id}
+                                                index={index}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className={
+                                                            Dashboard_Item
+                                                        }
+                                                    >
+                                                        {item.content}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    )}
+                </>
+            );
+        } else if (activeTab === 'Inquiry Log') {
+            return <div>Inquiry Log 페이지</div>;
+        } else if (activeTab === 'User Info') {
+            return <div>User Info 페이지</div>;
+        }
+    };
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <Box
+                sx={{
                     width: 240,
                     backgroundColor: '#2A3F54',
                     color: '#fff',
-                    padding: '16px'
-                }}>
-                    <Box sx={{
+                    padding: '16px',
+                }}
+            >
+                <Box
+                    sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        marginBottom: '16px'
-                    }}>
-                        <Avatar
-                            alt={'profile'}
-                            src={profile}
-                            sx={{
-                                width: 120,
-                                height: 120,
-                                marginBottom: '8px',
-                                marginTop: '40px'
-                            }}
-                        />
-                        <Typography variant="h5" sx={{ fontWeight: '700' }}>{currentUserName}</Typography>
-                    </Box>
-                    <List>
-                        {[
-                            { text: 'Dashboard', icon: <DashboardIcon /> },
-                            { text: 'Inquiry Log', icon: <ReceiptIcon /> },
-                            { text: 'User Info', icon: <PersonIcon /> },
-                        ].map(({ text, icon }) => (
-                            <ListItem
-                                button
-                                key={text}
-                                onClick={() => handleTabChange(text)}
-                                sx={{
-                                    textAlign: 'center',
-                                    '&:hover': { backgroundColor: '#1A2837' },
-                                    backgroundColor: activeTab === text ? '#1A2837' : 'transparent',
-                                }}
-                            >
-                                {icon} {/* 아이콘 추가 */}
-                                <ListItemText primary={text} sx={{ marginLeft: '8px' }} />
-                            </ListItem>
-                        ))}
-                    </List>
+                        marginBottom: '16px',
+                    }}
+                >
+                    <Avatar
+                        alt={'profile'}
+                        src={profile}
+                        sx={{
+                            width: 120,
+                            height: 120,
+                            marginBottom: '8px',
+                            marginTop: '40px',
+                        }}
+                    />
+                    <Typography variant="h5" sx={{ fontWeight: '700' }}>
+                        {name}
+                    </Typography>
                 </Box>
-                <Box component="main" sx={{
+                <List>
+                    {[
+                        { text: 'Dashboard', icon: <DashboardIcon /> },
+                        { text: 'Inquiry Log', icon: <ReceiptIcon /> },
+                        { text: 'User Info', icon: <PersonIcon /> },
+                    ].map(({ text, icon }) => (
+                        <ListItem
+                            button
+                            key={text}
+                            onClick={() => handleTabChange(text)}
+                            sx={{
+                                textAlign: 'center',
+                                '&:hover': { backgroundColor: '#1A2837' },
+                                backgroundColor:
+                                    activeTab === text
+                                        ? '#1A2837'
+                                        : 'transparent',
+                            }}
+                        >
+                            {icon} {/* 아이콘 추가 */}
+                            <ListItemText
+                                primary={text}
+                                sx={{ marginLeft: '8px' }}
+                            />
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+            <Box
+                component="main"
+                sx={{
                     flexGrow: 1,
                     p: 3,
                     backgroundColor: '#F4F5FB',
-                    height: '100vh'
-                }}>
-                    {renderContent()}
-                </Box>
+                    height: '100vh',
+                }}
+            >
+                {renderContent()}
             </Box>
-        );
-    }
+        </Box>
+    );
+}

@@ -49,7 +49,7 @@ export default function QuestionViewer({ questionDetail }) {
                         );
                     }}
                 >
-                    # Inquiry 상세 조회
+                    {questionDetail?.type === 'INQ' && '# Inquiry 상세 조회'}
                 </div>
                 <div style={filesEllipsis}>
                     <a href={questionDetail?.filePath} download>

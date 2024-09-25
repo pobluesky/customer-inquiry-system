@@ -9,6 +9,7 @@ import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
     const sanitizer = dompurify.sanitize;
 
+    const userId = getCookie('userId');
     const role = getCookie('userRole');
 
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
@@ -106,8 +107,9 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail }) {
                     />
                 </div>
                 <div>
-                    {colDetail?.colStatus !== 'COMPLETE' &&
-                    role === 'quality' ? (
+                    {role === 'quality' &&
+                    colDetail?.colStatus !== 'COMPLETE' &&
+                    colDetail?.colManagerToResponseDto.userId === userId ? (
                         <>
                             <VocButton
                                 btnName={'피드백 수정'}
