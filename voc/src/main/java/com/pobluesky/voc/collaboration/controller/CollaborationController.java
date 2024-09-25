@@ -61,6 +61,7 @@ public class CollaborationController {
             colStatus,
             colReqManager,
             colReqId,
+            colReqManager,
             colResId,
             startDate,
             endDate
