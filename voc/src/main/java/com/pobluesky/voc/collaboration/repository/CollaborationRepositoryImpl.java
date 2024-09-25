@@ -38,6 +38,7 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
         ColStatus colStatus,
         String colReqManager,  // 필터링할 manager 이름
         Long colReqId,
+        String colResManager,
         Long colResId,
         LocalDate startDate,
         LocalDate endDate,
@@ -94,6 +95,9 @@ public class CollaborationRepositoryImpl implements CollaborationRepositoryCusto
             .filter(dto -> {
                 if (StringUtils.hasText(colReqManager)) {
                     return dto.colReqManager() != null && dto.colReqManager().equalsIgnoreCase(colReqManager);
+                }
+                if (StringUtils.hasText(colResManager)) {
+                    return dto.colResManager() != null && dto.colResManager().equalsIgnoreCase(colResManager);
                 }
                 return true; // colReqManager가 없으면 필터링하지 않음
             })
