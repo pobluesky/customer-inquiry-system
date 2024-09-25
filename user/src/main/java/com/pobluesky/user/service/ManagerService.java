@@ -1,5 +1,6 @@
 package com.pobluesky.user.service;
 
+import com.pobluesky.global.security.UserRole;
 import com.pobluesky.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.user.dto.request.ManagerUpdateRequestDTO;
 import com.pobluesky.user.dto.response.ManagerResponseDTO;
@@ -54,6 +55,24 @@ public class ManagerService {
 
         return managers.stream()
             .map(ManagerResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ManagerSummaryResponseDTO> getSaleManagers() {
+        List<Manager> managers = managerRepository.findByRole(UserRole.SALES);
+
+        return managers.stream()
+            .map(ManagerSummaryResponseDTO::from)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ManagerSummaryResponseDTO> getQualityManagers() {
+        List<Manager> managers = managerRepository.findByRole(UserRole.QUALITY);
+
+        return managers.stream()
+            .map(ManagerSummaryResponseDTO::from)
             .collect(Collectors.toList());
     }
 
