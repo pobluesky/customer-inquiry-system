@@ -10,6 +10,7 @@ const ToggleBar = ({
     isChecked,
     setCheck,
     isForm,
+    isUpdate,
     progress,
     setManagerId,
     salesManagerName,
@@ -51,7 +52,7 @@ const ToggleBar = ({
                     >
                         &nbsp;&nbsp;{title}
                     </span>
-                    {(role === 'customer' && title === '기본정보' && isForm) && (
+                    {(role === 'customer' && title === '기본정보' && isForm && !isUpdate) && (
                         <>
                             <Button
                                 style={{
@@ -92,6 +93,23 @@ const ToggleBar = ({
                                     onSelect={handleSelect}
                                 />
                             )}
+                        </>
+                    )}
+
+                    {(role === 'customer' && title === '기본정보' && !isForm && isUpdate) && (
+                        <>
+                            <Button
+                                style={{
+                                    marginLeft: 'auto',
+                                    color: '#ffffff',
+                                    backgroundColor: '#03507D',
+                                    fontSize: '15px',
+                                    fontWeight: '800',
+                                }}
+                                disabled
+                            >
+                                {salesManagerName}
+                            </Button>
                         </>
                     )}
 
@@ -176,7 +194,7 @@ const ToggleBar = ({
                         </>
                     )}
 
-                    {(title === '기본정보' && !isForm && role === 'customer') && (
+                    {(title === '기본정보' && !isForm && role === 'customer' && !isUpdate) && (
                         <Button
                             style={{
                                 marginLeft: 'auto',

@@ -72,22 +72,20 @@
   padding: 7px;
   text-align: center;
   color: #888886;
-  margin-bottom: 10px;
   width: 165px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0 auto 10px;
 }
 
 .messageBoxWrapper {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
 
 .messageBox {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
   position: relative;
 }
 
@@ -111,8 +109,7 @@
   background-color: #FFFFFF;
   border-radius: 15px;
   max-width: 70%;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 0 12px;
   word-break: break-word;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   animation: smoothAppear 0.2s;
@@ -131,12 +128,12 @@
 
 .message.user {
   background-color: #FFEE96;
-  margin-left: 10px;
+  margin: 0 0 0 10px;
 }
 
 .message.bot {
   background-color: #FFFFFF;
-  margin-right: 10px;
+  margin: 0 10px 0 0;
 }
 
 .time {
@@ -147,8 +144,7 @@
 .faqSection {
   display: flex;
   overflow-x: auto;
-  margin-bottom: 10px;
-  margin-left: 52px;
+  margin: 0 0 10px 52px;
 }
 
 .faqBox {
@@ -156,7 +152,7 @@
   color: #000000;
   border-radius: 25px;
   padding: 10px;
-  margin-right: 10px;
+  margin: 0 10px 0 0;
   flex: 0 0 auto;
   cursor: pointer;
   font-size: 13px;
@@ -173,41 +169,40 @@
   color: #FFFFFF;
   border-radius: 15px;
   padding: 25px;
-  margin-right: 10px;
+  margin: 0 10px 0 0;
   flex: 0 0 auto;
   cursor: pointer;
 }
 
 .faqTitle {
   font-size: 26px;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
   font-weight: 900;
 }
 
 .faqDescription {
   font-size: 16px;
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin: 15px 0 20px 0;
 }
 
 .faqContent {
   background-color: #FFFFFF;
   border-radius: 15px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
 .faqContent .question {
   border-bottom: 1px solid #000000;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
 }
 
 .faqContent .answer {
   padding: 10px;
   background-color: #FFEE96;
   border-radius: 15px;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
 .faqPick1 {
@@ -215,7 +210,7 @@
   font-weight: 800;
   cursor: pointer;
   padding: 14px;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   border-radius: 15px;
   border: 1px solid #4672e3;
   background-color: #4672e3;
@@ -231,7 +226,7 @@
   font-weight: 800;
   cursor: pointer;
   padding: 14px;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   border-radius: 15px;
   border: 1px solid #009DCB;
   background-color: #009DCB;
@@ -249,8 +244,7 @@
   font-weight: 800;
   cursor: pointer;
   padding: 14px;
-  margin-top: 10px;
-  margin-right: 10px;
+  margin: 10px 10px 0 0;
   border-radius: 15px;
   flex: 0 0 auto;
   color: #FFFFFF;
@@ -273,7 +267,7 @@
   border: none;
   border-radius: 4px;
   padding: 8px;
-  margin-right: 10px;
+  margin: 0 10px 0 0;
   font-size: 16px;
 }
 
@@ -300,7 +294,7 @@
   height: 20px;
   padding: 10px;
   border-radius: 30px;
-  margin-left: 6px;
+  margin: 0 6px 0 0;
   background-color: #F0F0F0;
 }
 
@@ -313,7 +307,7 @@
   padding: 10px;
   border-radius: 30px;
   background-color: #F0F0F0;
-  margin-right: 6px;
+  margin: 0 6px 0 0;
 }
 
 .loadingDot {
