@@ -10,7 +10,17 @@ import {
     Form_Label,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, setManagerId, isForm, isUpdate }) => {
+const InquiryNewForm = ({
+    formData,
+    handleFormDataChange,
+    register,
+    errors,
+    title,
+    setManagerId,
+    isForm,
+    isUpdate,
+    onManagerSelect,
+}) => {
     const {
         customerCode,
         customerName,
@@ -41,6 +51,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                         progress={'FORM'}
                         setManagerId={setManagerId}
                         salesManagerName={salesManagerName}
+                        onManagerSelect={onManagerSelect}
                     />
                 )}
                 {isForm && (
@@ -52,6 +63,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                         isForm={isForm}
                         progress={'FORM'}
                         setManagerId={setManagerId}
+                        onManagerSelect={onManagerSelect}
                     />
                 )}
                 {isChecked ? (

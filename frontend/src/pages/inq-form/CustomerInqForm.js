@@ -31,6 +31,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const [alert, setAlert] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [managerId, setManagerId] = useState(null);
+    const [selectedSalesManagerId, setSelectedSalesManagerId] = useState(null);
 
     useEffect(() => {
         if (error !== '') {
@@ -184,6 +185,10 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         setValue('salesPerson', 'GEUMGANG');
     }
 
+    const handleManagerSelect = (selectedData) => {
+        setSelectedSalesManagerId(selectedData);
+    };
+
     return (
         <div className={InqTableContainer}>
             <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 등록'} />
@@ -202,6 +207,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 isForm={true}
                 handleFormDataChange={handleFormDataChange}
                 setManagerId={setManagerId}
+                onManagerSelect={handleManagerSelect}
             />
             <InquiryHistoryForm
                 onRefLineItems={(func) => (lineItemsRef.current = func)}
