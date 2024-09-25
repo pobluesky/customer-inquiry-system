@@ -15,11 +15,11 @@ import {
 } from '../../apis/api/auth';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { Header_Container } from '../../assets/css/Header.css';
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
 } from '../../apis/api/notification';
+import { Header_Container } from '../../assets/css/Header.css';
 
 export const MenuLink = styled(Link)`
     text-decoration: none;
@@ -28,6 +28,7 @@ export const MenuLink = styled(Link)`
 
 function MyHeader() {
     const navigate = useNavigate();
+
     const { didLogin, userId, role } = useAuth();
 
     const url = `/inq-list/${role}`;

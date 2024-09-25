@@ -9,6 +9,7 @@ import { Question_Inquiry_Modal } from '../../assets/css/Voc.css';
 
 export default function QuestionInquirySearchModal({
     setInquiryId,
+    setFormattedId,
     openModal,
     setOpenModal,
 }) {
@@ -17,6 +18,7 @@ export default function QuestionInquirySearchModal({
     }, [userId, openModal]);
 
     const { userId } = useAuth();
+
     const [inquiryData, setInquiries] = useState([]);
     const [searchId, setSearchId] = useState('');
     const [filteredInquiryData, setFilteredInquiryData] = useState([]);
@@ -116,6 +118,9 @@ export default function QuestionInquirySearchModal({
                                         <td
                                             onClick={() => {
                                                 setInquiryId(inq.inquiryId);
+                                                setFormattedId(
+                                                    inq.processedInquiryId,
+                                                );
                                                 sessionStorage.setItem(
                                                     'userId',
                                                     userId,

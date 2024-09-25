@@ -6,6 +6,7 @@ import { Question_Viewer } from '../../assets/css/Voc.css';
 export default function QuestionViewer({ questionDetail }) {
     const sanitizer = dompurify.sanitize;
 
+    const userId = getCookie('userId');
     const role = getCookie('userRole');
 
     const calDateNo = (datetime) => {
@@ -36,18 +37,20 @@ export default function QuestionViewer({ questionDetail }) {
     return (
         <div className={Question_Viewer}>
             <div>
+                <div>{getTypeLabel(questionDetail?.type)}</div>
+                <div>{questionDetail?.title || ''}</div>
                 <div
                     onClick={() => {
                         questionDetail?.type === 'INQ' &&
-                            window.open(
-                                `/inq-list/${role}/${questionDetail?.inquiryId}`,
-                                '_blank',
-                            );
+                            sessionStorage.setItem('userId', userId);
+                        window.open(
+                            `/inq-list/${role}/${questionDetail?.inquiryId}`,
+                            '_blank',
+                        );
                     }}
                 >
-                    {getTypeLabel(questionDetail?.type)}
+                    # Inquiry 상세 조회
                 </div>
-                <div>{questionDetail?.title || ''}</div>
                 <div style={filesEllipsis}>
                     <a href={questionDetail?.filePath} download>
                         {questionDetail?.fileName}

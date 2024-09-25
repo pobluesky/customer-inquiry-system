@@ -531,21 +531,39 @@
     background-color: #03507d;
     border-radius: 100px;
     text-align: center;
-    cursor: pointer;
 }
 
 /* 제목 */
 .Question_Viewer > div:nth-child(1) > div:nth-child(2) {
-    width: 960px;
+    width: max-content;
     height: 28px;
+    margin: 0 8px 0 0;
     line-height: 28px;
     color: #25262b;
     font-size: 20px;
     font-weight: 600;
 }
 
-/* 첨부파일 */
+/* Inquiry 링크 */
 .Question_Viewer > div:nth-child(1) > div:nth-child(3) {
+    width: max-content;
+    height: 28px;
+    padding: 0 8px;
+    line-height: 28px;
+    color: blue;
+    font-weight: 500;
+    text-align: left;  
+    cursor: pointer;
+}
+
+.Question_Viewer > div:nth-child(1) > div:nth-child(3):hover {
+    color: #25262b;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+}
+
+/* 첨부파일 */
+.Question_Viewer > div:nth-child(1) > div:nth-child(4) {
     width: 144px;
     height: 28px;
     line-height: 28px;
@@ -811,7 +829,7 @@
 .Col_Table thead th:nth-child(n + 5):hover,
 .Col_Table tbody tr:hover {
     cursor: pointer;
-    background-color: #f3f3f3;
+    background-color: #f8f8f8;
 }
 
 /* 협업 진행 현황 막대 */
@@ -1097,7 +1115,7 @@
 }
 
 /******************************************************************/
-/* 협업 요청 시 사용하는 품질 담당자 조회 버튼 ****************************/
+/* 협업 요청 시 사용하는 품질 담당자 조회 버튼 ***********************/
 /******************************************************************/
 .Col_Find_Manager_Button {
     width: 1320px;
