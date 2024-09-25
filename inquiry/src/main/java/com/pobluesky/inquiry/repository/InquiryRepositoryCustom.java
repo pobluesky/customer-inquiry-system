@@ -11,23 +11,8 @@ import java.util.List;
 
 public interface InquiryRepositoryCustom {
 
-    List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
+    List<InquirySummaryResponseDTO> findInquiriesByCustomer(
         Long userId,
-        Progress progress,
-        ProductType productType,
-        String customerName,
-        InquiryType inquiryType,
-        String salesPerson,
-        Industry industry,
-        LocalDate startDate,
-        LocalDate endDate,
-        String sortBy,
-        String salesManagerName,
-        String qualityManagerName,
-        Customer customer
-    );
-
-    List<InquirySummaryResponseDTO> findInquiriesBySalesManagerWithoutPaging(
         Progress progress,
         ProductType productType,
         String customerName,
@@ -41,7 +26,21 @@ public interface InquiryRepositoryCustom {
         String qualityManagerName
     );
 
-    List<InquirySummaryResponseDTO> findInquiriesByQualityManagerWithoutPaging(
+    List<InquirySummaryResponseDTO> findInquiriesBySalesManager(
+        Progress progress,
+        ProductType productType,
+        String customerName,
+        InquiryType inquiryType,
+        String salesPerson,
+        Industry industry,
+        LocalDate startDate,
+        LocalDate endDate,
+        String sortBy,
+        String salesManagerName,
+        String qualityManagerName
+    );
+
+    List<InquirySummaryResponseDTO> findInquiriesByQualityManager(
         Progress progress,
         ProductType productType,
         String customerName,

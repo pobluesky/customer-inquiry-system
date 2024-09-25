@@ -4,11 +4,8 @@ import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
 import com.pobluesky.inquiry.entity.Country;
-import com.pobluesky.inquiry.entity.Industry;
 import com.pobluesky.inquiry.entity.Inquiry;
-import com.pobluesky.inquiry.entity.InquiryType;
-import com.pobluesky.inquiry.entity.ProductType;
-import com.pobluesky.inquiry.entity.Progress;
+
 import com.pobluesky.lineitem.dto.response.LineItemResponseDTO;
 import java.util.List;
 import lombok.Builder;
@@ -27,11 +24,11 @@ public record MobileInquiryResponseDTO(
     String  salesPerson,
     Manager salesManagerSummaryDto,
     Manager qualityManagerSummaryDto,
-    InquiryType inquiryType,
-    Industry industry,
+    String inquiryType,
+    String industry,
     String corporationCode,
-    ProductType productType,
-    Progress progress,
+    String productType,
+    String progress,
     String customerRequestDate,
     String additionalRequests,
     String fileName,
@@ -75,11 +72,11 @@ public record MobileInquiryResponseDTO(
             .qualityManagerSummaryDto(
                 qualityManager
             )
-            .inquiryType(inquiry.getInquiryType())
-            .industry(inquiry.getIndustry())
+            .inquiryType(inquiry.getInquiryType().getKoreanName())
+            .industry(inquiry.getIndustry().getKoreanName())
             .corporationCode(inquiry.getCorporationCode())
-            .productType(inquiry.getProductType())
-            .progress(inquiry.getProgress())
+            .productType(inquiry.getProductType().getKoreanName())
+            .progress(inquiry.getProgress().getTerm())
             .customerRequestDate(inquiry.getCustomerRequestDate())
             .additionalRequests(inquiry.getAdditionalRequests())
             .fileName(inquiry.getFileName())

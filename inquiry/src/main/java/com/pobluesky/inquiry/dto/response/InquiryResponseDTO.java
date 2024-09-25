@@ -1,5 +1,6 @@
 package com.pobluesky.inquiry.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
@@ -10,6 +11,7 @@ import com.pobluesky.inquiry.entity.InquiryType;
 import com.pobluesky.inquiry.entity.ProductType;
 import com.pobluesky.inquiry.entity.Progress;
 import com.pobluesky.lineitem.dto.response.LineItemResponseDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
@@ -38,7 +40,9 @@ public record InquiryResponseDTO(
     String filePath,
     String responseDeadline,
     List<LineItemResponseDTO> lineItemResponseDTOs,
-    Boolean isActivated
+    Boolean isActivated,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
+    LocalDateTime createdDate
 ) {
 
     public static InquiryResponseDTO of(
@@ -83,6 +87,7 @@ public record InquiryResponseDTO(
             .responseDeadline(inquiry.getResponseDeadline())
             .lineItemResponseDTOs(lineItemResponseDTOs)
             .isActivated(inquiry.getIsActivated())
+            .createdDate(inquiry.getCreatedDate())
             .build();
     }
 }

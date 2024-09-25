@@ -1,7 +1,9 @@
 package com.pobluesky.feign;
 
+import com.pobluesky.global.security.UserRole;
 import com.pobluesky.global.util.model.JsonResult;
 
+import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,9 @@ public interface UserClient {
 
     @GetMapping("/api/managers/{userId}")
     JsonResult<Manager> getManagerById(@RequestHeader("Authorization") String token,@PathVariable("userId") Long userId);
+
+    @GetMapping("/api/managers/role")
+    JsonResult<List<Manager>> findByRole(@RequestParam("role") UserRole userRole);
 
 //    @GetMapping("/api/managers/summary/{userId}")
 //    JsonResult<ManagerSummaryResponseDTO> getManagerSummaryById(@RequestHeader("Authorization") String token,@PathVariable("userId") Long userId);
@@ -38,5 +43,6 @@ public interface UserClient {
 
     @GetMapping("/api/customers/exists")
     Boolean customerExists(@RequestParam("userId") Long userId);
+
 
 }

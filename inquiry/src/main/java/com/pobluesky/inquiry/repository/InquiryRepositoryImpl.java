@@ -33,7 +33,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     private final UserClient userClient;
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesByCustomerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesByCustomer(
         Long userId,
         Progress progress,
         ProductType productType,
@@ -45,8 +45,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
         LocalDate endDate,
         String sortBy,
         String salesManagerName,
-        String qualityManagerName,
-        Customer customer
+        String qualityManagerName
     ) {
 
         // 기본적으로 Inquiry 정보를 조회
@@ -88,7 +87,6 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 .progress(inq.getProgress())
                 .productType(inq.getProductType())
                 .inquiryType(inq.getInquiryType())
-                .customerName(customer.getCustomerName())
                 .country(inq.getCountry())
                 .corporate(inq.getCorporate())
                 .corporationCode(inq.getCorporationCode())
@@ -100,7 +98,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesBySalesManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesBySalesManager(
         Progress progress,
         ProductType productType,
         String customerName,
@@ -164,7 +162,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
     }
 
     @Override
-    public List<InquirySummaryResponseDTO> findInquiriesByQualityManagerWithoutPaging(
+    public List<InquirySummaryResponseDTO> findInquiriesByQualityManager(
         Progress progress,
         ProductType productType,
         String customerName,
