@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-    FinalReviewCompleteAlert, FirstReviewCompleteAlert,
-    QualityCompleteAlert, QualityResponseAlert, QualityReviewCompleteAlert,
+    FinalReviewCompleteAlert,
+    FirstReviewCompleteAlert,
+    QualityCompleteAlert,
+    QualityResponseAlert,
+    QualityReviewCompleteAlert,
+    SalesManagerCheckAlert,
 } from '../../utils/actions';
 import {
     putProgress,
@@ -59,6 +63,10 @@ function RequestBar({
             onSubmit();
         } else if (btnName === '판매 담당자 확인') {
             updateProgress('RECEIPT');
+            SalesManagerCheckAlert();
+            setTimeout(() => {
+                navigate(`/inq-list/${role}`);
+            }, '2000');
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
             updateProgress("FIRST_REVIEW_COMPLETED");
@@ -71,6 +79,9 @@ function RequestBar({
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');
             QualityResponseAlert();
+            setTimeout(() => {
+                navigate(`/inq-list/${role}`);
+            }, '2000');
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
             updateProgress("QUALITY_REVIEW_COMPLETED");
@@ -128,10 +139,10 @@ function RequestBar({
                                 textColor={'#ffffff'}
                                 border={'none'}
                                 borderRadius={'18px'}
-                                fontSize={'15px'}
-                                width={'115px'}
-                                fontWeight={'500'}
-                                padding={'7px'}
+                                fontSize={'14px'}
+                                width={'125px'}
+                                fontWeight={'700'}
+                                padding={'12px'}
                             />
                         ))
                     ) : (
