@@ -161,4 +161,11 @@ public class ManagerService {
             .map(ManagerResponseDTO::from)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
     }
+
+    public List<ManagerResponseDTO> getManagersByRole(UserRole role) {
+        List<Manager> managers = managerRepository.findByRole(role);
+        return managers.stream()
+            .map(ManagerResponseDTO::from)
+            .collect(Collectors.toList());
+    }
 }
