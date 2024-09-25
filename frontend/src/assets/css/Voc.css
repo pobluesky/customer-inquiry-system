@@ -195,14 +195,14 @@
     background-color: #ffffff;
 }
 
-/* 검색창, 검색 버튼, 닫기 버튼 */
+/* 검색창, Inquiry 선택, 검색 버튼, 닫기 버튼 */
 .Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(1) {
     display: flex;
     width: 60vw;
     margin: 4vh auto 0 auto;
 }
 
-/* 닫기 버튼 */
+/* 닫기 버튼 호버 */
 .Question_Inquiry_Modal
     > div:nth-child(1)
     > div:nth-child(1)
@@ -212,10 +212,11 @@
     border-radius: 4px !important;
 }
 
+/* 닫기 버튼 */
 .Question_Inquiry_Modal
     > div:nth-child(1)
     > div:nth-child(1)
-    > div:nth-child(4) {
+    > div:nth-child(5) {
     margin: 0 0 0 auto;
 }
 
@@ -257,7 +258,7 @@
 
 .Question_Inquiry_Modal tbody tr:hover {
     cursor: pointer;
-    background-color: #f8f8f8;
+    background-color: #f8f8f8 !important;
 }
 
 /******************************************************************/

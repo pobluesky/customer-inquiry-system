@@ -71,7 +71,7 @@ const SuccessAlert = ({ showAlert, onClose, message }) => {
 };
 
 // 경고 알람
-const WarningAlert = ({ showAlert, onClose, message }) => {
+const WarningAlert = ({ showAlert, onClose, message, color }) => {
     return (
         <Snackbar
             autoHideDuration={2000}
@@ -83,7 +83,7 @@ const WarningAlert = ({ showAlert, onClose, message }) => {
             onClose={onClose}
         >
             <Alert
-                variant="outlined"
+                variant={color || "outlined"}
                 severity="warning"
                 sx={{ width: '336px' }}
             >
