@@ -112,7 +112,7 @@ public class NotificationService {
         if(!Objects.equals(userId, id))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 6);
 
         switch (notificationType) {
             case CUSTOMER:
