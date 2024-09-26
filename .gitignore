@@ -65,3 +65,5 @@ out/
 
 ### querydsl ###
 /src/main/generated/
+
+.pem

@@ -11,12 +11,20 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 
+import java.nio.file.Paths;
+import java.security.PrivateKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.cloudfront.CloudFrontUtilities;
+import software.amazon.awssdk.services.cloudfront.model.CannedSignerRequest;
+import software.amazon.awssdk.services.cloudfront.url.SignedUrl;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +96,31 @@ public class FileService {
             throw new FileUploadException();
         }
 
-        return amazonS3.getUrl(bucketName, changedName).toString();
+        // CloudFront 서명된 URL 생성
+        String cloudFrontDomainName = "https://daxu35mjvuuix.cloudfront.net";
+        String keyPairId = "K20A2Q5KKP96ID";
+        String privateKeyFilePath = "/path/to/private_key.pem";
+
+        CloudFrontUtilities cloudFrontUtilities = CloudFrontUtilities.create();
+
+        Instant expirationDate = Instant.now().plus(70000, ChronoUnit.DAYS);
+        String resourceUrl = cloudFrontDomainName + "/" + changedName;
+
+        CannedSignerRequest cannedSignerRequest = null;
+        try {
+            cannedSignerRequest = CannedSignerRequest.builder()
+                .resourceUrl(resourceUrl)
+                .privateKey(Paths.get(privateKeyFilePath))
+                .keyPairId(keyPairId)
+                .expirationDate(expirationDate)
+                .build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        SignedUrl signedUrl = cloudFrontUtilities.getSignedUrlWithCannedPolicy(cannedSignerRequest);
+
+        return signedUrl.url();
     }
 
     private String changedFileName(String originName) {
