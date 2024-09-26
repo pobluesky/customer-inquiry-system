@@ -211,8 +211,9 @@ const InquirySearchBox = ({ onSearch, title }) => {
 
             <Grid container item spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12}>
-                    <Grid container alignItems="center">
-                        <Grid item>
+                    <Grid container alignItems="center" justifyContent="space-between">
+                        {/* sort와 progress를 왼쪽에 정렬 */}
+                        <Grid item xs={10} style={{ display: 'flex', alignItems: 'center' }}>
                             <ToggleButtonGroup
                                 exclusive
                                 value={searchParams.sortBy}
@@ -225,12 +226,11 @@ const InquirySearchBox = ({ onSearch, title }) => {
                                     </ToggleButton>
                                 ))}
                             </ToggleButtonGroup>
-                        </Grid>
 
-                        <Grid item style={{ marginLeft: '20px' }}>
                             <div style={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
+                                marginLeft: '20px', // 정렬을 맞추기 위한 여백 추가
                             }}>
                                 {progressOptions.map((option) => (
                                     <Chip
@@ -247,25 +247,25 @@ const InquirySearchBox = ({ onSearch, title }) => {
                                 ))}
                             </div>
                         </Grid>
+
+                        {/* 조회 버튼을 오른쪽에 정렬 */}
+                        <Grid item xs={2} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSearch}
+                                style={{
+                                    fontWeight: 'bold',
+                                    borderRadius: '17px',
+                                    width: '100px',
+                                    height: '35px',
+                                }}
+                            >
+                                조회
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-
-            <Grid item xs={12} display="flex" justifyContent="flex-end"
-                  paddingTop={2}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSearch}
-                    style={{
-                        fontWeight: 'bold',
-                        borderRadius: '17px',
-                        width: '100px',
-                        height: '35px',
-                    }}
-                >
-                    조회
-                </Button>
             </Grid>
         </Grid>
     );
