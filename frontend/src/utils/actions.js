@@ -151,6 +151,17 @@ const InquiryUpdateAlert = () => {
     });
 };
 
+// 판매 담당자 확인 및 문의 접수
+const SalesManagerCheckAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '판매 담당자 확인 및 문의가 접수되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+        width: 600,
+    });
+}
+
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
     Swal.fire({
@@ -198,6 +209,7 @@ const FinalReviewCompleteAlert = () => {
         title: '최종 검토와 오퍼시트 내용이 전송되었습니다.',
         showConfirmButton: false,
         timer: 2000,
+        width: 600,
     });
 };
 
@@ -208,9 +220,10 @@ export {
     InquiryPostErrorAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,
-    QualityReviewCompleteAlert,
+    SalesManagerCheckAlert,
     FirstReviewCompleteAlert,
     QualityResponseAlert,
+    QualityReviewCompleteAlert,
     QualityCompleteAlert,
     FinalReviewCompleteAlert,
 };

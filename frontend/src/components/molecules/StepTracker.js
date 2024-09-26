@@ -96,8 +96,7 @@ const Circle = styled.div`
 const Text = styled.div`
   font-size: 9px;
   color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
-  margin-top: 8px;
-  margin-left: -2px;
+  margin: 8px 0 0 -2px;
   font-weight: 600;
 `;
 
