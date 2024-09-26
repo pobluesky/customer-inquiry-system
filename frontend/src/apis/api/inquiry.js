@@ -105,22 +105,22 @@ export const putInquiry = async (inquiryId, inquiryData) => {
 };
 
 // 담당자 inquiry list 가져오기 (summary)
-// export const getInquiryByManagers = async (page = 0) => {
-//     try {
-//         const response = await axiosInstance.get(
-//             `/managers/inquiries/all?page=${page}`,
-//         );
-//         console.log(response.data);
-//         const { inquiryInfo, totalPages, totalElements } = response.data.data;
-//         return {
-//             inquiryInfo: processInquiries(inquiryInfo),
-//             totalPages,
-//             totalElements,
-//         };
-//     } catch (error) {
-//         throw error;
-//     }
-// };
+export const getInquiryByManagers = async (page = 0) => {
+    try {
+        const response = await axiosInstance.get(
+            `/managers/inquiries/all?page=${page}`,
+        );
+        console.log(response.data);
+        const { inquiryInfo, totalPages, totalElements } = response.data.data;
+        return {
+            inquiryInfo: processInquiries(inquiryInfo),
+            totalPages,
+            totalElements,
+        };
+    } catch (error) {
+        throw error;
+    }
+};
 
 // 담당자 inquiry list 가져오기 (all)
 export const getAllInquiriesByManagers = async (role) => {
