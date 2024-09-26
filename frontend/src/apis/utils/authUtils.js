@@ -73,7 +73,7 @@ const getUserInfoApi = async (endpoint) => {
             return { success: false, message: 'Get user info failed' };
         }
     } catch (error) {
-        // console.log('Get user info error:', error);
+        console.log('사용자 정보 조회 API ERROR: ', error);
         return { success: false, message: error.toString() };
     }
 };

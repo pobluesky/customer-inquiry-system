@@ -62,7 +62,6 @@ function MyHeader() {
         try {
             if (role === 'customer') {
                 const response = await getNotificationByCustomers(userId);
-                console.log(response.totalElements);
                 setTotalElements(response.totalElements);
             } else if (role === 'quality' || role === 'sales') {
                 const response = await getNotificationByManagers(userId);
