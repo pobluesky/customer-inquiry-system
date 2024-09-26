@@ -1,25 +1,11 @@
 import React, { useState } from 'react';
 import {
-    _InquirySearch,
-    _InquirySearchBox,
-    _Text,
-    _SearchBox,
-    _Title,
-    _Input,
-    _Date
-} from '../../../assets/css/Inquiry.css';
-import SelectBox from '../../atoms/SelectBox';
-import {
     Grid,
     TextField,
     Button,
-    Select,
-    MenuItem,
     ToggleButtonGroup,
     ToggleButton,
     Typography,
-    InputLabel,
-    FormControl,
     Chip,
     Autocomplete
 } from '@mui/material';
@@ -42,13 +28,6 @@ const InquirySearchBox = ({ onSearch, title }) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setSearchParams((prevParams) => ({
-            ...prevParams,
-            [name]: value,
-        }));
-    };
-
-    const handleSelectChange = (name, value) => {
         setSearchParams((prevParams) => ({
             ...prevParams,
             [name]: value,
@@ -89,9 +68,10 @@ const InquirySearchBox = ({ onSearch, title }) => {
                         options={productTypeOptions}
                         getOptionLabel={(option) => option.label}
                         onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
                             setSearchParams((prevParams) => ({
                                 ...prevParams,
-                                productType: newValue,
+                                productType: selectedValues,
                             }));
                         }}
                         renderInput={(params) => (
@@ -106,9 +86,10 @@ const InquirySearchBox = ({ onSearch, title }) => {
                         options={inquiryTypeOptions}
                         getOptionLabel={(option) => option.label}
                         onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
                             setSearchParams((prevParams) => ({
                                 ...prevParams,
-                                inquiryType: newValue,
+                                inquiryType: selectedValues,
                             }));
                         }}
                         renderInput={(params) => (
@@ -166,9 +147,10 @@ const InquirySearchBox = ({ onSearch, title }) => {
                         options={IndustryOptions}
                         getOptionLabel={(option) => option.label}
                         onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
                             setSearchParams((prevParams) => ({
                                 ...prevParams,
-                                industry: newValue,
+                                industry: selectedValues,
                             }));
                         }}
                         renderInput={(params) => (
