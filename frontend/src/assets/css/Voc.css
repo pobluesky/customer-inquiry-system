@@ -349,6 +349,7 @@
 }
 
 .Question_Filter_Input select {
+    text-align: center;
     width: 84px;
     height: 34px;
     border: solid 1px #c1c1c1;
