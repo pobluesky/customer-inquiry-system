@@ -121,7 +121,7 @@ function RequestBar({
                 }}
             >
                 <div style={{ marginLeft: '2vw' }}>{displayName}</div>
-                <div>
+                <div style={{ paddingRight: '15px' }}>
                     {isPreviewData && (
                         <button
                             className={_previewButton}
