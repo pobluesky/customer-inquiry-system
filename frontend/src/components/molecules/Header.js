@@ -9,7 +9,7 @@ import NotificationModal from '../molecules/NotificationModal';
 import { useAuth } from '../../hooks/useAuth';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { getCookie, removeCookie } from '../../apis/utils/cookies';
+import { getCookie } from '../../apis/utils/cookies';
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
@@ -134,12 +134,9 @@ function MyHeader() {
     }, []);
 
     useEffect(() => {
-        if (didLogin) {
+        if (userId && role && name) {
             return;
         }
-        removeCookie('userName');
-        removeCookie('userRole');
-        removeCookie('userId');
         navigate('/');
     }, [userId, role, name]);
 

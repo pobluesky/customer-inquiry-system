@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect } from 'react';
 import { getCookie, removeCookie } from '../../apis/utils/cookies';
 import { useRecoilState } from 'recoil';
 import { userEmail, userPassword } from '../../index';
-// import { getUserInfoByCustomers } from '../../apis/api/auth';
 
 export const AuthContext = createContext();
 
@@ -11,12 +10,12 @@ export const AuthProvider = ({ children }) => {
     const [role, setRole] = useState(null);
     const [, setToken] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [isInitiated, setIsInitiated] = useState(false);
 
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
 
     useEffect(() => {
-        // 페이지 새로고침 시 쿠키에서 토큰을 가져와 로그인 상태를 설정
         const token = getCookie('accessToken');
         const currentUserRole = getCookie('userRole');
         const currentUserId = getCookie('userId');
@@ -26,11 +25,20 @@ export const AuthProvider = ({ children }) => {
             setDidLogin(true);
             setRole(currentUserRole);
             setUserId(currentUserId);
+            setIsInitiated(true);
             return;
         }
+
     }, []);
 
-    // 로그아웃 함수
+    useEffect(() => {
+        if (isInitiated && !didLogin) {
+            removeCookie('userName');
+            removeCookie('userRole');
+            removeCookie('userId');
+        }
+    }, [didLogin, isInitiated]);
+
     const logout = () => {
         removeCookie('accessToken', { path: '/' });
         removeCookie('refreshToken', { path: '/' });
@@ -49,10 +57,6 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.clear();
         sessionStorage.clear();
-
-        console.log('로그아웃 완료');
-        console.log(getCookie('userRole'));
-        console.log(getCookie('userId'));
     };
 
     return (
