@@ -210,8 +210,8 @@ body {
     text-align: center;
     grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
@@ -225,7 +225,7 @@ body {
     text-align: center;
     grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
+    color: #7b7b7b;
     background-color: #ffffff;
     font-weight: 800;
     border: 1px solid #c1c1c1;
@@ -254,8 +254,8 @@ body {
     text-align: center;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
@@ -359,8 +359,8 @@ body {
     text-align: center;
     grid-template-columns: repeat(10, minmax(0, 1fr));
     gap: 0;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
@@ -378,7 +378,7 @@ body {
     text-align: center;
     grid-template-columns: repeat(10, minmax(0, 1fr));
     gap: 0;
-    color: #7B7B7B;
+    color: #7b7b7b;
     background-color: #ffffff;
     font-weight: 800;
     border: 1px solid #c1c1c1;
@@ -439,7 +439,7 @@ body {
 }
 
 ._FileName {
-    color: #007AFF;
+    color: #007aff;
     font-weight: 600;
     font-size: 16px;
     margin: 0 0 0 30px;
@@ -449,7 +449,7 @@ body {
     color: #444444;
     font-weight: 800;
     font-size: 16px;
-    margin-right: 30px;
+    margin: 0 30px 0 0;
 }
 
 /******************************************************************/
