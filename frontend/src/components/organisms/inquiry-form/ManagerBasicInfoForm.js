@@ -65,7 +65,7 @@ const ManagerBasicInfoForm = ({
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>국가</label>
+                                <label className={Form_Label}>국가</label>
                                 <select className={_Input} value={country} aria-readonly={true}>
                                     <option value="" disabled>
                                         선택
