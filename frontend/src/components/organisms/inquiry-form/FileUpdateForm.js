@@ -7,7 +7,7 @@ import FileGetItem from '../../molecules/FileGetItem';
 
 const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) => {
     const [isChecked, setCheck] = useState(true);
-    const [files, setFiles] = useState(formData.files);
+    const [files, setFiles] = useState(formData?.files || []);
     const [currentFileData, setCurrentFileData] = useState(fileData);
     const [inputKey, setInputKey] = useState(Date.now());
 
