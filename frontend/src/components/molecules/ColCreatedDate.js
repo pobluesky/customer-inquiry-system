@@ -14,6 +14,15 @@ export default function ColCreatedDate({
             <div
                 onClick={() => {
                     setTimeFilter('LATEST');
+                    setStartDate('');
+                    setEndDate('');
+                }}
+            >
+                전체
+            </div>
+            <div
+                onClick={() => {
+                    setTimeFilter('LATEST');
                 }}
             >
                 최신순 ▲

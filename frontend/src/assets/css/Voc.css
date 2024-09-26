@@ -554,7 +554,7 @@
     line-height: 28px;
     color: blue;
     font-weight: 500;
-    text-align: left;  
+    text-align: left;
     cursor: pointer;
 }
 
@@ -939,12 +939,21 @@
 }
 
 .Col_Created_Date > div:nth-child(4) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(5) {
     margin: 6px auto 12px auto;
 }
 
 .Col_Created_Date > div:nth-child(-n + 2):hover {
     border-radius: 100px;
     background-color: #e3e2e0;
+}
+
+.Col_Created_Date > div:nth-child(1):hover {
+    border-radius: 100px;
+    background-color: #f8f8f8;
 }
 
 /* 나의 협업 모아보기 */

@@ -107,13 +107,19 @@ export default function ColDashboard() {
 
     useEffect(() => {
         let args = '';
-        if (colNo) {
+        if (!colNo || colNo === 'all') {
+            args += `${args ? '&' : ''}colId=`;
+        } else {
             args += `${args ? '&' : ''}colId=${colNo}`;
         }
-        if (colReqManager) {
+        if (!colReqManager || colReqManager === 'all') {
+            args += `${args ? '&' : ''}colReqManager=`;
+        } else {
             args += `${args ? '&' : ''}colReqManager=${colReqManager}`;
         }
-        if (colResManager) {
+        if (!colResManager || colResManager === 'all') {
+            args += `${args ? '&' : ''}colResManager=`;
+        } else {
             args += `${args ? '&' : ''}colResManager=${colResManager}`;
         }
         if (colReqFilter) {
@@ -138,7 +144,6 @@ export default function ColDashboard() {
             args += `${args ? '&' : ''}colStatus=${progressFilter}`;
         }
         setFilterArgs(args);
-        console.log(args);
     }, [
         colNo,
         colReqManager,
@@ -211,13 +216,9 @@ export default function ColDashboard() {
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
-                        setColReqFilte={setColReqFilter}
+                        setColReqFilter={setColReqFilter}
                         setColResFilter={setColResFilter}
                         setProgressFilter={setProgressFilter}
-                        // colNo={colNo}
-                        // colReqManager={colReqManager}
-                        // colResManager={colResManager}
-                        // setSearchCount={setSearchCount}
                     />
                 </>
             )}
