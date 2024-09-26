@@ -114,7 +114,7 @@ function RequestBar({
                     alignItems: 'center',
                     backgroundColor: '#ffffff',
                     border: 'solid #c1c1c1 1px',
-                    borderRadius: '20px',
+                    borderRadius: '7px',
                     fontSize: '24px',
                     fontWeight: '800',
                     color: '#49454F',

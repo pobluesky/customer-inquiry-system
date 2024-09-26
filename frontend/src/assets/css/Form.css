@@ -457,7 +457,7 @@ body {
 .Sheet {
     width: 100vw;
     border: solid #c1c1c1 1px;
-    border-radius: 20px;
+    border-radius: 7px;
     margin: 0 0 6vh 0;
 }
 
