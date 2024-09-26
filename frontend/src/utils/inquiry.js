@@ -87,6 +87,7 @@ export const productTypes = {
 };
 
 export const progressOptions = [
+    { label: '전체', value: '' },
     { label: '문의제출', value: 'SUBMIT' },
     { label: '문의접수', value: 'RECEIPT' },
     { label: '1차검토완료', value: 'FIRST_REVIEW_COMPLETED' },
