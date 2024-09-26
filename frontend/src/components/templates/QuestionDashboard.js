@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { VocButton } from '../atoms/VocButton';
 import QuestionOverview from '../organisms/VocOverview';
@@ -9,7 +10,6 @@ import { getAllAnswer, getAnswerByUserId } from '../../apis/api/answer';
 import { getAllCollaboration } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 import { Voc_Dashboard } from '../../assets/css/Voc.css';
-import { useNavigate } from 'react-router-dom';
 
 export default function QuestionDashboard() {
     const navigate = useNavigate();
