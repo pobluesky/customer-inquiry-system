@@ -361,16 +361,11 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const allocateByQualityManagerId = async () => {
         try {
-            console.log("selectedQualityManagerId 2", selectedQualityManagerId);
             await assignQualityManagerByUserId(id, selectedQualityManagerId);
-            console.log('Quality Manager allocated with ID:', selectedQualityManagerId);
         } catch (error) {
             console.error('Inquiry 품질 담당자 배정 실패: ', error);
         }
     };
-
-    console.log("selectedQualityManagerId 1", selectedQualityManagerId);
-    console.log( typeof  selectedQualityManagerId)
 
     return (
         <div className={InqTableContainer}>

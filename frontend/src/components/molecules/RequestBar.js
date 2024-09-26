@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../atoms/Button';
+import Button from '@mui/material/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -130,20 +130,22 @@ function RequestBar({
                     )}
                     {Array.isArray(buttons) && buttons.length > 0 ? (
                         buttons.map((btnName, index) => (
-                        <Button
+                            <Button
                                 key={index}
                                 onClick={() => handleButtonClick(btnName)}
-                                btnName={btnName}
-                                margin={'0 1.5vw 0 0'}
-                                backgroundColor={'#03507d'}
-                                textColor={'#ffffff'}
-                                border={'none'}
-                                borderRadius={'18px'}
-                                fontSize={'14px'}
-                                width={'125px'}
-                                fontWeight={'700'}
-                                padding={'12px'}
-                            />
+                                variant="outlined"
+                                style={{
+                                    margin: '0 10px',
+                                    borderRadius: '10px',
+                                    color: '#03507d',
+                                    padding: '10px 20px',
+                                    fontWeight: '900',
+                                    fontSize: '14px',
+                                    border: '1px solid #03507d',
+                                }}
+                            >
+                                {btnName}
+                            </Button>
                         ))
                     ) : (
                         ''
