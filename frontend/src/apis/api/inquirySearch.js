@@ -26,7 +26,9 @@ export const getSalesManagerInquiriesByParameter = async (queryParams) => {
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
-            `/inquiries/managers/sales/inquiries?${query}`
+            `/inquiries/managers/sales/inquiries?${query}`, {
+                timeout: 10000,
+            }
         );
         console.log("getManagerInquiriesByParameter: ", response.data.data);
         return processInquiries(response.data.data);

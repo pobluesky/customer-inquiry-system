@@ -61,6 +61,7 @@ public record InquirySummaryResponseDTO(
             .industry(inquiry.getIndustry())
             .salesManagerName(salesManagerName)
             .qualityManagerName(qualityManagerName)
+            .createdDate(inquiry.getCreatedDate())
             .build();
     }
 }

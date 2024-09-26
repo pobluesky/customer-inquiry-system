@@ -12,6 +12,7 @@ export const getInquiry = async (userId, page = 0) => {
     try {
         const response = await axiosInstance.get(
             `/inquiries/customers/inquiries/${userId}/all?page=${page}`,
+            
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
@@ -109,6 +110,9 @@ export const getInquiryByManagers = async (page = 0) => {
     try {
         const response = await axiosInstance.get(
             `/inquiries/managers/inquiries/all?page=${page}`,
+            {
+                timeout: 10000, 
+            }
         );
         console.log(response.data);
         const { inquiryInfo, totalPages, totalElements } = response.data.data;
@@ -234,7 +238,7 @@ export const postOCR = async (userId, file, productType) => {
         formData.append('productType', productType);
 
         const response = await axiosInstance.post(
-            `/customers/inquiries/${userId}/optimized`,
+            `/inquiries/customers/inquiries/${userId}/optimized`,
             formData,
             {
                 headers: {

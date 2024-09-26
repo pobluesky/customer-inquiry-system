@@ -43,7 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/inquiries")
 public class InquiryController {
 
     private final InquiryService inquiryService;

@@ -93,6 +93,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                 .industry(inq.getIndustry())
                 .salesManagerName(salesManager != null ? salesManager.getName() : null)
                 .qualityManagerName(qualityManager != null ? qualityManager.getName() : null)
+                .createdDate(inq.getCreatedDate())
                 .build();
         }).collect(Collectors.toList());
     }
@@ -154,6 +155,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                     .industry(inq.getIndustry())
                     .salesManagerName(salesManager != null ? salesManager.getName() : null)
                     .qualityManagerName(qualityManager != null ? qualityManager.getName() : null)
+                    .createdDate(inq.getCreatedDate())
                     .build();
             })
             // customerName이 존재하면 필터링
@@ -224,6 +226,7 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                     .industry(inq.getIndustry())
                     .salesManagerName(salesManager != null ? salesManager.getName() : null) // Sales Manager 정보
                     .qualityManagerName(qualityManager != null ? qualityManager.getName() : null) // Quality Manager 정보
+                    .createdDate(inq.getCreatedDate())
                     .build();
 
                 return dto;
