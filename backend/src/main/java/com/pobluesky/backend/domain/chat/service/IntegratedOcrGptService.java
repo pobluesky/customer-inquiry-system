@@ -88,23 +88,20 @@ public class IntegratedOcrGptService {
     }
 
     private String preparePromptByProductType(List<String> textResults, ProductType productType) {
-        StringBuilder promptBuilder = new StringBuilder();
-        promptBuilder.append("Convert the following text data into a structured JSON format for ").append(productType);
+        String promptTemplate = loadPromptFromFile(productType.name().toLowerCase());
 
+        StringBuilder promptBuilder = new StringBuilder(promptTemplate);
         for (String text : textResults) {
             promptBuilder.append(text).append("\n");
         }
-
-        String productTypePrompt = loadPromptFromFile(productType.name().toLowerCase());
-        promptBuilder.append(productTypePrompt);
 
         return promptBuilder.toString();
     }
 
     private String loadPromptFromFile(String productType) {
         try {
-            String prompt = promptFilePathPrefix + productType + promptFilePathSuffix;
-            Resource resource = resourceLoader.getResource(prompt);
+            String fileName = promptFilePathPrefix + productType + promptFilePathSuffix;
+            Resource resource = resourceLoader.getResource(fileName);
             return Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new CommonException(ErrorCode.SYSTEM_PROMPT_FILE_READ_ERROR);

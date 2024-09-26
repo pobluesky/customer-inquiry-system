@@ -16,10 +16,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +79,29 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
+
+    @GetMapping("/managers/jpql")
+    public ResponseEntity<Page<QuestionSummaryResponseDTO>> getQuestionsByManagerWithJpa(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "LATEST") String sortBy,
+        @RequestParam(required = false) QuestionStatus status,
+        @RequestParam(required = false) QuestionType type,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) Long questionId,
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) Boolean isActivated,
+        @RequestParam(required = false) Long managerId,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        Page<QuestionSummaryResponseDTO> result = questionService.getQuestionsByManagerWithJpa(
+            token, page, size, sortBy, status, type, title, questionId, customerName, isActivated, managerId, startDate, endDate
+        );
+        return ResponseEntity.ok(result);
+    }
+
 
     @GetMapping("/managers/{questionId}")
     @Operation(summary = "질문별 상세 조회(담당자)", description = "등록된 질문을 질문 번호로 조회한다.")

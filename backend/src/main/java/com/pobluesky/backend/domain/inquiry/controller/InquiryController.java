@@ -383,7 +383,7 @@ public class InquiryController {
     public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestParam("files") MultipartFile file,
+        @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestParam("productType") ProductType productType
     ) {
         JsonResult<?> response =

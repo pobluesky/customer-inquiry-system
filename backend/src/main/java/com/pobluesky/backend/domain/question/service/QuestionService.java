@@ -12,6 +12,7 @@ import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
+import com.pobluesky.backend.domain.question.repository.QuestionQueryRepository;
 import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.repository.CustomerRepository;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +57,8 @@ public class QuestionService {
     private final CollaborationRepository collaborationRepository;
 
     private final FileService fileService;
+
+    private final QuestionQueryRepository questionQueryRepository;
 
     // 질문 전체 조회 (담당자)
     @Transactional(readOnly = true)
@@ -89,6 +93,46 @@ public class QuestionService {
             endDate,
             managerId,
             sortBy);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<QuestionSummaryResponseDTO> getQuestionsByManagerWithJpa(
+        String token,
+        int page,
+        int size,
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        Long questionId,
+        String customerName,
+        Boolean isActivated,
+        Long managerId,
+        LocalDate startDate,
+        LocalDate endDate) {
+
+        // 매니저 권한을 검증하는 로직
+        validateManager(token);
+
+        Pageable pageable = PageRequest.of(page, size, getSort(sortBy));
+
+        // JPA 메서드를 사용하여 조회
+        return questionRepository.findQuestionsByManagerWithJpa(
+            pageable, status, type, title, questionId, customerName, isActivated, managerId, startDate, endDate
+        );
+    }
+
+    private Sort getSort(String sortBy) {
+        switch (sortBy) {
+            case "LATEST":
+                return Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("questionId"));
+            case "OLDEST":
+                return Sort.by(Sort.Order.asc("createdDate"), Sort.Order.asc("questionId"));
+            case "TYPE":
+                return Sort.by(Sort.Order.asc("type"), Sort.Order.desc("createdDate"));
+            default:
+                throw new CommonException(ErrorCode.INVALID_ORDER_CONDITION);
+        }
     }
 
     // 질문 전체 조회 (고객사)
