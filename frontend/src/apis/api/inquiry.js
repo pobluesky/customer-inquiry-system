@@ -123,9 +123,9 @@ export const getInquiryByManagers = async (page = 0) => {
 };
 
 // 담당자 inquiry list 가져오기 (all)
-export const getAllInquiriesByManagers = async () => {
+export const getAllInquiriesByManagers = async (role) => {
     try {
-        const response = await axiosInstance.get(`/managers/inquiries`);
+        const response = await axiosInstance.get(`/managers/${role}/inquiries`);
         console.log(response.data);
 
         const inquiryInfo = response?.data?.data;

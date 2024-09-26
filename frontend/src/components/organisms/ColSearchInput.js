@@ -29,16 +29,22 @@ export default function ColSearchInput({
     useEffect(() => {
         if (keyword === 'no') {
             setTempColNo('');
-            setColReqManager('');
-            setColResManager('');
+            setColReqManager('all');
+            setTempColReqManager('');
+            setColResManager('all');
+            setTempColResManager('');
         } else if (keyword === 'reqManager') {
             setTempColReqManager('');
-            setColNo('');
-            setColResManager('');
+            setColNo('all');
+            setTempColNo('');
+            setColResManager('all');
+            setTempColResManager('');
         } else if (keyword === 'resManager') {
             setTempColResManager('');
-            setColNo('');
-            setColReqManager('');
+            setColNo('all');
+            setTempColNo('');
+            setColReqManager('all');
+            setTempColReqManager('');
         }
     }, [keyword]);
 

@@ -7,6 +7,7 @@ function QuestionTypeSelector({
     setSelectedType,
     setOpenModal,
     inquiryId,
+    formattedId,
 }) {
     const optionSelect = (e) => {
         setSelectedType(e.target.value);
@@ -15,9 +16,7 @@ function QuestionTypeSelector({
     return (
         <div className={Question_Type_Selector}>
             <div>
-                {/* 1 */}
                 <div>문의 유형을 선택하세요</div>
-                {/* 2 */}
                 <div>
                     <div>
                         <label>
@@ -74,7 +73,7 @@ function QuestionTypeSelector({
                                     }}
                                 />
                             </div>
-                            <div>{inquiryId && `No. ${inquiryId}`}</div>
+                            <div>{inquiryId && `No. ${formattedId}`}</div>
                         </>
                     )}
                 </div>
