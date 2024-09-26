@@ -47,7 +47,7 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { assignQualityManagerByUserId } from '../../apis/api/manager';
 
-function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
+function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
     const navigate = useNavigate();

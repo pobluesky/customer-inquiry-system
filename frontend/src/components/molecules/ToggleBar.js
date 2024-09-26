@@ -208,7 +208,7 @@ const ToggleBar = ({
                             disabled
                         >
                             <Chip
-                                label="판매담당자"
+                                label="담당자"
                                 style={{
                                     marginRight: '10px',
                                     backgroundColor: '#007FFF',
