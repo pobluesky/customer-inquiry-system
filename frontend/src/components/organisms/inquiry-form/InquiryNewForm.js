@@ -7,12 +7,24 @@ import {
     Wrapper,
     _Input,
     inputWrapper,
+    Form_Label,
 } from '../../../assets/css/Form.css';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title, setManagerId }) => {
+const InquiryNewForm = ({
+    formData,
+    handleFormDataChange,
+    register,
+    errors,
+    title,
+    setManagerId,
+    isForm,
+    isUpdate,
+    onManagerSelect,
+}) => {
     const {
         customerCode,
         customerName,
+        salesManagerName,
         name,
         email,
         phone,
@@ -30,21 +42,36 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
     return (
         <div className={Container}>
             <div className={Sheet}>
-                <ToggleBar
-                    title={title}
-                    isChecked={isChecked}
-                    setCheck={setCheck}
-                    isPreviewButton={true}
-                    isForm={true}
-                    progress={'FORM'}
-                    setManagerId={setManagerId}
-                />
+                {isUpdate && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                        salesManagerName={salesManagerName}
+                        onManagerSelect={onManagerSelect}
+                    />
+                )}
+                {isForm && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        isForm={isForm}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                        onManagerSelect={onManagerSelect}
+                    />
+                )}
                 {isChecked ? (
                     <div className={Opend}>
                         <div className={Wrapper}>
                             {/* 1행 */}
                             <div className={inputWrapper}>
-                                <label>고객사명</label> {/* customerName */}
+                                <label className={Form_Label}>고객사명</label> {/* customerName */}
                                 <input
                                     type="text"
                                     className={_Input}
@@ -56,7 +83,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.country ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>국가</label>
+                                <label className={Form_Label}>국가</label>
                                 <select
                                     {...register('country', { required: '국가를 선택해 주세요.' })}
                                     className={_Input}
@@ -84,7 +111,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.corporate ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>판매상사</label>
+                                <label className={Form_Label}>판매상사</label>
                                 <input
                                     {...register('corporate', { required: '판매상사를 입력해 주세요.' })}
                                     type="text"
@@ -104,7 +131,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.salesPerson ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>판매계약자</label>
+                                <label className={Form_Label}>판매계약자</label>
                                 <input
                                     {...register('salesPerson', { required: '판매계약자를 입력해 주세요.' })}
                                     type="text"
@@ -122,7 +149,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.inquiryType ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>Inquiry 유형</label>
+                                <label className={Form_Label}>Inquiry 유형</label>
                                 <select
                                     {...register('inquiryType', { required: '문의유형을 선택해 주세요.' })}
                                     className={_Input}
@@ -147,7 +174,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.industry ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>산업분류</label>
+                                <label className={Form_Label}>산업분류</label>
                                 <select
                                     {...register('industry', { required: '산업분류를 선택해 주세요.' })}
                                     className={_Input}
@@ -200,7 +227,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
 
                             {/* 3행 */}
                             <div className={inputWrapper}>
-                                <label>의뢰인명</label>
+                                <label className={Form_Label}>의뢰인명</label>
                                 <input
                                     type="text"
                                     className={_Input}
@@ -208,7 +235,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>의뢰인 E-mail</label>
+                                <label className={Form_Label}>의뢰인 E-mail</label>
                                 <input
                                     type="email"
                                     className={_Input}
@@ -216,7 +243,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                 />
                             </div>
                             <div className={inputWrapper}>
-                                <label>의뢰인 연락처</label>
+                                <label className={Form_Label}>의뢰인 연락처</label>
                                 <input
                                     type="tel"
                                     className={_Input}
@@ -229,7 +256,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.corporationCode ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>법인코드</label>
+                                <label className={Form_Label}>법인코드</label>
                                 <input
                                     {...register('corporationCode', { required: '법인코드를 입력해 주세요.' })}
                                     type="text"
@@ -247,7 +274,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.productType ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>제품유형</label>
+                                <label className={Form_Label}>제품유형</label>
                                 <select
                                     {...register('productType', { required: '제품유형을 선택해 주세요.' })}
                                     className={_Input}
@@ -273,7 +300,7 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
                                  style={{
                                      border: errors.customerRequestDate ? '1px solid #F02323' : '1px solid #c1c1c1',
                                  }}>
-                                <label>고객요청일자</label>
+                                <label className={Form_Label}>고객요청일자</label>
                                 <input
                                     {...register('customerRequestDate', { required: '고객요청일자를 선택해 주세요.' })}
                                     type="date"

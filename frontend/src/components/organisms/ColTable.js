@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ColReqManager from '../molecules/ColReqManager';
 import ColResManager from '../molecules/ColResManager';
@@ -7,50 +7,26 @@ import ColCreatedDate from '../molecules/ColCreatedDate';
 import VocPageButton from './VocPageButton';
 import { getCookie } from '../../apis/utils/cookies';
 import { getQuestionByQuestionIdForManager } from '../../apis/api/question';
-import {
-    getAllCollaboration,
-    getCollaborationDetail,
-} from '../../apis/api/collaboration';
-import { useAuth } from '../../hooks/useAuth';
+import { getCollaborationDetail } from '../../apis/api/collaboration';
 import { Col_Table } from '../../assets/css/Voc.css';
 
 export default function ColTable({
-    colNo,
-    colReqManager,
-    colResManager,
-    setSearchCount,
-    status,
+    collabs,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    setTimeFilter,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    setColReqFilter,
+    setColResFilter,
+    setProgressFilter,
 }) {
     const navigate = useNavigate();
 
-    const { userId } = useAuth();
     const role = getCookie('userRole');
-
-    const [filterArgs, setFilterArgs] = useState('');
-    const [collabs, setCollabs] = useState([]);
-
-    const [colReqFilter, setColReqFilter] = useState('');
-    const [colResFilter, setColResFilter] = useState('');
-    const [progressFilter, setProgressFilter] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [timeFilter, setTimeFilter] = useState('');
-
-    const validStatuses = ['READY', 'COMPLETE', 'INPROGRESS', 'REFUSE'];
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState('');
-
-    const fetchGetCol = async (filterArgs) => {
-        try {
-            const response = await getAllCollaboration(filterArgs);
-            setCollabs(response.data.colListInfo);
-            setTotalPages(response.data.totalPages);
-            setSearchCount(response.data.colListInfo.length);
-        } catch (error) {
-            console.error('협업 요약 조회 실패: ', error);
-        }
-    };
 
     const fetchGetColDetail = async (questionId, colId) => {
         try {
@@ -107,55 +83,6 @@ export default function ColTable({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     };
-
-    useEffect(() => {
-        let args = '';
-        if (colNo) {
-            args += `${args ? '&' : ''}colId=${colNo}`;
-        }
-        if (colReqManager) {
-            args += `${args ? '&' : ''}colReqManager=${colReqManager}`;
-        }
-        if (colResManager) {
-            args += `${args ? '&' : ''}colResManager=${colResManager}`;
-        }
-        if (colReqFilter) {
-            args += `${args ? '&' : ''}colReqId=${colReqFilter}`;
-        }
-        if (colResFilter) {
-            args += `${args ? '&' : ''}colResId=${colResFilter}`;
-        }
-        if (startDate && endDate) {
-            const s = `startDate=${
-                new Date(startDate).toISOString().split('T')[0]
-            }`;
-            const e = `endDate=${
-                new Date(endDate).toISOString().split('T')[0]
-            }`;
-            args += `${args ? '&' : ''}${s}&${e}`;
-        }
-        if (timeFilter == 'LATEST' || timeFilter == 'OLDEST') {
-            args += `${args ? '&' : ''}sortBy=${timeFilter}`;
-        }
-        if (validStatuses.includes(progressFilter)) {
-            args += `${args ? '&' : ''}colStatus=${progressFilter}`;
-        }
-        setFilterArgs(args);
-    }, [
-        colNo,
-        colReqManager,
-        colResManager,
-        colReqFilter,
-        colResFilter,
-        startDate,
-        endDate,
-        timeFilter,
-        progressFilter,
-    ]);
-
-    useEffect(() => {
-        fetchGetCol(filterArgs);
-    }, [userId, currentPage, filterArgs, status]);
 
     return (
         <>

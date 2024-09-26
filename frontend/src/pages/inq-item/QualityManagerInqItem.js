@@ -209,7 +209,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 console.log('Quality posted successfully:', qualityResponse);
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
-                }, '2000');
+                }, '1500');
             } catch (error) {
                 console.log('Error posting quality:', error);
             }

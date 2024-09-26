@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Box, CircularProgress } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import QuestionViewer from '../organisms/QuestionViewer';
 import AnswerInput from '../organisms/AnswerInput';
@@ -22,11 +23,14 @@ export default function AnswerForm() {
     const role = getCookie('userRole');
 
     const { questionId } = useParams();
+
     const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
     const [colPossible, setColPossible] = useState(false);
 
-    // 질문 상세 조회
+    const [isQuestionLoading, setQuestionLoading] = useState(true);
+    const [isAnswerOrColLoading, setAnswerOrColLoading] = useState(true);
+
     const fetchGetQuestionDetail =
         role === 'customer'
             ? async (questionId) => {
@@ -40,10 +44,12 @@ export default function AnswerForm() {
                           fetchGetAnswerDetail(questionId);
                       } else {
                           localStorage.removeItem(`answerDetail-${questionId}`);
-                          fetchGetColDetailStatus(questionId);
+                          setAnswerOrColLoading(false);
                       }
                   } catch (error) {
                       console.log('고객사 질문 상세 조회 실패: ', error);
+                  } finally {
+                      setQuestionLoading(false);
                   }
               }
             : async (questionId) => {
@@ -60,10 +66,11 @@ export default function AnswerForm() {
                       }
                   } catch (error) {
                       console.log('담당자 질문 상세 조회 실패: ', error);
+                  } finally {
+                      setQuestionLoading(false);
                   }
               };
 
-    // 답변 상세 조회
     const fetchGetAnswerDetail =
         role === 'customer'
             ? async (questionId) => {
@@ -75,6 +82,8 @@ export default function AnswerForm() {
                       setAnswerDetail(response.data);
                   } catch (error) {
                       console.log('고객사 답변 상세 조회 실패: ', error);
+                  } finally {
+                      setAnswerOrColLoading(false);
                   }
               }
             : async (questionId) => {
@@ -85,6 +94,8 @@ export default function AnswerForm() {
                       setAnswerDetail(response.data);
                   } catch (error) {
                       console.log('담당자 답변 상세 조회 실패: ', error);
+                  } finally {
+                      setAnswerOrColLoading(false);
                   }
               };
 
@@ -93,19 +104,37 @@ export default function AnswerForm() {
         try {
             await getCollaborationDetailStatus(questionId);
             setColPossible(false);
+            setAnswerOrColLoading(false);
         } catch (error) {
             setColPossible(true);
+            setAnswerOrColLoading(false);
         }
     };
 
     return (
-        <div>
-            <QuestionViewer questionDetail={questionDetail} />
-            <AnswerInput
-                questionDetail={questionDetail}
-                answerDetail={answerDetail}
-                colPossible={colPossible}
-            />
-        </div>
+        <>
+            {isQuestionLoading || isAnswerOrColLoading ? (
+                <Box
+                    sx={{
+                        display: 'flex',
+                    }}
+                    width={'100%'}
+                    height={'65vh'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                >
+                    <CircularProgress />
+                </Box>
+            ) : (
+                <div>
+                    <QuestionViewer questionDetail={questionDetail} />
+                    <AnswerInput
+                        questionDetail={questionDetail}
+                        answerDetail={answerDetail}
+                        colPossible={colPossible}
+                    />
+                </div>
+            )}
+        </>
     );
 }

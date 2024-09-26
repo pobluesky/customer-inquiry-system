@@ -15,8 +15,9 @@ import {
 import { Question_Input } from '../../assets/css/Voc.css';
 
 function QuestionInput({ selectedType, inquiryId, questionDetail }) {
-    const { userId } = useAuth();
     const navigate = useNavigate();
+
+    const { userId } = useAuth();
 
     const [editorValue, setEditorValue] = useState(
         questionDetail?.contents || '',

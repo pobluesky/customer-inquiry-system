@@ -31,6 +31,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const [alert, setAlert] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [managerId, setManagerId] = useState(null);
+    const [selectedSalesManagerId, setSelectedSalesManagerId] = useState(null);
 
     useEffect(() => {
         if (error !== '') {
@@ -98,7 +99,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             event.preventDefault();
         }
         try {
-            console.log("매니저 아이디: ", managerId);
             const inquiryResponse = await postInquiry(userId, {
                 ...formData,
                 salesManagerId: managerId,
@@ -185,6 +185,9 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         setValue('salesPerson', 'GEUMGANG');
     }
 
+    const handleManagerSelect = (selectedData) => {
+        setSelectedSalesManagerId(selectedData);
+    };
 
     return (
         <div className={InqTableContainer}>
@@ -200,8 +203,11 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
                 register={register}
                 errors={errors}
                 formData={formData}
+                isUpdate={false}
+                isForm={true}
                 handleFormDataChange={handleFormDataChange}
                 setManagerId={setManagerId}
+                onManagerSelect={handleManagerSelect}
             />
             <InquiryHistoryForm
                 onRefLineItems={(func) => (lineItemsRef.current = func)}

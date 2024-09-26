@@ -19,16 +19,12 @@ import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.config.FirebaseConfig;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
-
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -116,7 +112,7 @@ public class NotificationService {
         if(!Objects.equals(userId, id))
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 6);
 
         switch (notificationType) {
             case CUSTOMER:
@@ -166,10 +162,6 @@ public class NotificationService {
         Long id,
         NotificationType notificationType
     ) throws IOException {
-        Long userId = signService.parseToken(token);
-
-        if(!Objects.equals(userId, id))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
 
         switch (notificationType) {
             case CUSTOMER:

@@ -768,7 +768,7 @@ VOC 페이지에서 직접 문의사항을 작성해 주세요.`,
                     width: '100px',
                     height: '100px',
                     cursor: 'pointer',
-                    zIndex: 1000,
+                    zIndex: 1,
                 }}
             >
                 <img

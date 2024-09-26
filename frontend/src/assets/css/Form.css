@@ -142,7 +142,7 @@ body {
 }
 
 /******************************************************************/
-/* InquiryNewForm, BasicInfoForm ******************************************/
+/* InquiryNewForm, BasicInfoForm **********************************/
 /******************************************************************/
 .Wrapper {
     display: grid;
@@ -164,11 +164,11 @@ body {
     width: 100%;
 }
 
-label {
-    color: #49454f;
-    font-weight: 400;
-    font-size: 20px;
-    margin-left: 20px;
+.Form_Label {
+    color: #000000;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 0 20px;
 }
 
 ._Input {
@@ -176,15 +176,11 @@ label {
     background-color: #ffffff;
     text-align: right;
     font-size: 20px;
-    color: #49454f;
+    color: #000000;
     font-weight: bolder;
-    margin-right: 20px;
+    margin: 0 20px 0 0;
     width: 60%;
     outline: none;
-}
-
-select {
-    text-align: center;
 }
 
 ._TextArea {
@@ -203,12 +199,11 @@ select {
 .buttonWrapper {
     display: flex;
     justify-content: flex-end;
-    margin-right: 20px;
-    margin-bottom: 15px;
+    margin: 0 20px 15px 0;
 }
 
 /******************************************************************/
-/* InquiryHistoryForm, LineItem ******************************************/
+/* InquiryHistoryForm, LineItem ***********************************/
 /******************************************************************/
 .LineItemColumn {
     display: grid;
@@ -317,7 +312,7 @@ select {
 }
 
 /******************************************************************/
-/* SalesInfoForm ******************************************/
+/* SalesInfoForm **************************************************/
 /******************************************************************/
 .SalesInfoItem {
     display: grid;
@@ -412,7 +407,7 @@ select {
 }
 
 /******************************************************************/
-/* FileForm, FileFormItem, FileGetItem, FileItem ******************************************/
+/* FileForm, FileFormItem, FileGetItem, FileItem ******************/
 /******************************************************************/
 .FileColumn {
     display: grid;
@@ -447,18 +442,18 @@ select {
     color: #007AFF;
     font-weight: 600;
     font-size: 16px;
-    margin-left: 30px;
+    margin: 0 0 0 30px;
 }
 
 ._FileNameColumn {
     color: #444444;
     font-weight: 800;
     font-size: 16px;
-    margin-right: 30px;
+    margin: 30px 0 0 0;
 }
 
 /******************************************************************/
-/* Header, organisms/inquiry-form 폴더의 컴포넌트 ******************************************/
+/* Header, organisms/inquiry-form 폴더의 컴포넌트 ******************/
 /******************************************************************/
 .Container {
     display: flex;
@@ -507,10 +502,10 @@ select {
 }
 
 /******************************************************************/
-/* 시연용 버튼 ******************************************/
+/* 시연용 버튼 *****************************************************/
 /******************************************************************/
 ._previewButton {
-    margin-right: 30px;
+    margin: 0 30px 0 0;
     background-color: #ffffff;
     color: #ffffff;
     font-size: 17px;

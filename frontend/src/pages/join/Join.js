@@ -5,7 +5,7 @@ import {
     CheckButton,
     RoleSelectButton,
 } from '../../components/molecules/JoinButton';
-import { getCookie } from '../../apis/utils/cookies';
+import { getCookie, setCookie } from '../../apis/utils/cookies';
 import { signUpApiByCustomers, signUpApiByManagers } from '../../apis/api/auth';
 import {
     validateName,
@@ -17,13 +17,17 @@ import {
     validateMatch,
 } from '../../utils/validation';
 import { useRecoilState } from 'recoil';
-import { userName, userEmail, userPassword } from '../../index';
+import { userEmail, userPassword } from '../../index';
 import { SuccessAlert, WarningAlert, FailedAlert } from '../../utils/actions';
 import { SignUp } from '../../assets/css/Auth.css';
 
 function Join() {
     useEffect(() => {
-        if (getCookie('userId')) {
+        if (
+            getCookie('userName') &&
+            getCookie('userRole') &&
+            getCookie('userId')
+        ) {
             navigate('/');
         }
     }, []);
@@ -70,11 +74,6 @@ function Join() {
         }
     }, [checkValidationTest]);
 
-    useEffect(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-    }, []);
-
     const navigate = useNavigate();
 
     const [isFirstPage, setFirst] = useState(true);
@@ -113,7 +112,6 @@ function Join() {
 
     const [checkValidationTest, setValidationTest] = useState(false);
 
-    const [, setGlobalName] = useRecoilState(userName);
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
 
@@ -204,13 +202,6 @@ function Join() {
         }
     };
 
-    // 회원가입 성공: 이름, 이메일, 비밀번호 atom에 저장
-    const saveGlobalInfo = () => {
-        setGlobalName(name);
-        setGlobalEmail(email);
-        setGlobalPassword(password);
-    };
-
     // 고객사 회원가입
     const GetCustomerAuth = async () => {
         try {
@@ -222,8 +213,12 @@ function Join() {
                 customerCode,
                 customerName,
             );
-            console.log('고객사 회원가입 성공: ', response.data);
-            saveGlobalInfo();
+            setCookie('userName', response.data.data.name, {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60,
+            });
+            setGlobalEmail(email);
+            setGlobalPassword(password);
             setMessage('회원가입이 완료되었습니다.');
             canShowSuccessAlert(true);
             setTimeout(() => {
@@ -248,8 +243,12 @@ function Join() {
                 role,
                 department,
             );
-            console.log('담당자 회원가입 성공: ', response.data);
-            saveGlobalInfo();
+            setCookie('userName', response.data.data.name, {
+                path: '/',
+                maxAge: 7 * 24 * 60 * 60,
+            });
+            setGlobalEmail(email);
+            setGlobalPassword(password);
             setMessage('회원가입이 완료되었습니다.');
             canShowSuccessAlert(true);
             setTimeout(() => {

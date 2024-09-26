@@ -27,7 +27,6 @@ const InquiryHistoryForm = ({
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
-    const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
 
     const fields = productTypes[productType] || productTypes['CAR'];
 
@@ -132,7 +131,7 @@ const InquiryHistoryForm = ({
                 <>
                     <TableContainer>
                         <Table style={{ backgroundColor: '#ffffff' }}>
-                            <TableHead style={{ backgroundColor: '#d8e1e9' }}>
+                            <TableHead style={{ backgroundColor: '#f3f4ff' }}>
                                 <TableRow>
                                     <TableCell
                                         style={{ minWidth: 100 }}
@@ -145,7 +144,7 @@ const InquiryHistoryForm = ({
                                                     minWidth: 200,
                                                     fontSize: '20px',
                                                     fontWeight: '800',
-                                                    color: '#49454F',
+                                                    color: '#000000',
                                                     textAlign: 'center',
                                                 }}
                                             >
