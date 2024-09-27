@@ -111,7 +111,7 @@ const InquiryHistoryForm = ({
                 overflowX: 'scroll',
                 width: '95vw',
                 margin: '0 auto',
-                borderRadius: '20px',
+                borderRadius: '7px',
                 marginBottom: '100px',
                 backgroundColor: '#ffffff',
             }}

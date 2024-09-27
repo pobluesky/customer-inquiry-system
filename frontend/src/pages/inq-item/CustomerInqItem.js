@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/molecules/RequestBar';
-import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
     BasicInfoForm,
@@ -11,18 +12,17 @@ import {
     InquiryNewForm,
     InquiryHistoryForm,
 } from '../../components/organisms/inquiry-form';
-import { useAuth } from '../../hooks/useAuth';
-import { getInquiryDetail, putInquiry } from '../../apis/api/inquiry';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getUserInfoByCustomers } from '../../apis/api/auth';
-import { getOfferSheets, getReviews } from '../../apis/api/review';
+import FileUpdateForm from '../../components/organisms/inquiry-form/FileUpdateForm';
 import ReviewTextFormItem from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
 import FinalReviewTextFormItem from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
-import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import { useAuth } from '../../hooks/useAuth';
+import { getInquiryDetail, putInquiry } from '../../apis/api/inquiry';
+import { getUserInfoByCustomers } from '../../apis/api/auth';
+import { getOfferSheets, getReviews } from '../../apis/api/review';
 import { postNotificationByCustomers } from '../../apis/api/notification';
 import { InquiryUpdateAlert } from '../../utils/actions';
-import { useForm } from 'react-hook-form';
-import FileUpdateForm from '../../components/organisms/inquiry-form/FileUpdateForm';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import '../../assets/css/Form.css';
 
 function CustomerInqItem() {
     // 고객사 Inquiry 조회 페이지
@@ -33,6 +33,7 @@ function CustomerInqItem() {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm();
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -147,8 +148,10 @@ function CustomerInqItem() {
             const response = await getInquiryDetail(userId, id);
             if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
+                localStorage.setItem('isUpdate', true);
             } else {
                 setIsUpdate(false);
+                localStorage.removeItem('isUpdate');
             }
         } catch (error) {
             console.log('Error fetching Progress:', error);
@@ -160,6 +163,7 @@ function CustomerInqItem() {
             ...prevData,
             [field]: value,
         }));
+        setValue(field, value);
     };
 
     const handleUpdate = async (event) => {
@@ -216,7 +220,8 @@ function CustomerInqItem() {
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate:
                     inquiriesDataDetail.customerRequestDate || '',
-                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto.name || '',
+                salesManagerName:
+                    inquiriesDataDetail?.salesManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -270,6 +275,9 @@ function CustomerInqItem() {
         const storedUserInfo = localStorage.getItem('userInfo');
         const storedReviewData = localStorage.getItem('reviewData');
         const storedOfferSheetData = localStorage.getItem('offerSheetData');
+        const storedIsReviewItem = localStorage.getItem('isReviewItem');
+        const storedIsOfferSheetItem = localStorage.getItem('isOfferSheetItem');
+        const storedIsUpdate = localStorage.getItem('isUpdate');
 
         if (storedInquiryData) {
             setInquiriesDataDetail(JSON.parse(storedInquiryData));
@@ -282,6 +290,15 @@ function CustomerInqItem() {
         }
         if (storedOfferSheetData) {
             setOfferSheetData(JSON.parse(storedOfferSheetData));
+        }
+        if (storedIsReviewItem) {
+            setIsReviewItem(JSON.parse(storedIsReviewItem));
+        }
+        if (storedIsOfferSheetItem) {
+            setIsOfferSheetItem(JSON.parse(storedIsOfferSheetItem));
+        }
+        if (storedIsUpdate) {
+            setIsUpdate(JSON.parse(storedIsUpdate));
         }
     }, []);
 
