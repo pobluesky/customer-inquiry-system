@@ -27,7 +27,6 @@ export default function ColResForm() {
     const fetchSecretFile = async (data, setPathFunction) => {
         if (data?.filePath != null) {
             const response = await getFileDownloadUrl(data.filePath);
-            console.log("res **************** ", response);
             setPathFunction(response);
         }
     }
