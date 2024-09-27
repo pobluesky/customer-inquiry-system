@@ -134,6 +134,7 @@ function MyHeader() {
 
     useEffect(() => {
         if (userId && role && name) {
+            fetchNotificationsCount();
             return;
         }
         navigate('/');
