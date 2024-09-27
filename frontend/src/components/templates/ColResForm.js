@@ -21,20 +21,20 @@ export default function ColResForm() {
 
     const [editMode, setEditMode] = useState(false);
 
-    const [secretPathQuestion, setSecretPathQuestion] = useState("");
-    const [secretPathCol, setSecretPathCol] = useState("");
+    const [secretPathQuestion, setSecretPathQuestion] = useState('');
+    const [secretPathCol, setSecretPathCol] = useState('');
 
     const fetchSecretFile = async (data, setPathFunction) => {
         if (data?.filePath != null) {
             const response = await getFileDownloadUrl(data.filePath);
             setPathFunction(response);
         }
-    }
-    
+    };
+
     useEffect(() => {
         fetchSecretFile(questionDetail, setSecretPathQuestion);
     }, [questionDetail]);
-    
+
     useEffect(() => {
         fetchSecretFile(colDetail, setSecretPathCol);
     }, [colDetail]);
@@ -54,7 +54,10 @@ export default function ColResForm() {
 
     return (
         <div>
-            <QuestionViewer questionDetail={questionDetail} secretPath={secretPathQuestion}/>
+            <QuestionViewer
+                questionDetail={questionDetail}
+                secretPath={secretPathQuestion}
+            />
             <ColReqViewer
                 colDetail={colDetail}
                 questionDetail={questionDetail}
