@@ -19,12 +19,11 @@ public class OcrService {
     @Value("${cloud.gcp.storage.bucket.filePath}")
     private String bucketFilePath;
 
-    private final PdfConversionService pdfConversionService;
+    private final FileConversionService fileConversionService;
 
-    public List<String> processPdfAndDetectText(MultipartFile pdfFile) {
+    public List<String> processFileAndDetectText(MultipartFile file) {
         try {
-            String uniqueId = generateUniqueId();
-            List<String> gcsPaths = pdfConversionService.convertPdfToImages(pdfFile.getInputStream(), uniqueId);
+            List<String> gcsPaths = fileConversionService.convertFileToImages(file);
 
             List<String> textResults = new ArrayList<>();
 
