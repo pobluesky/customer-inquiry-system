@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { _FileItem, _FileName, _FileNameColumn } from "../../assets/css/Form.css";
+import { getFileDownloadUrl } from "../../apis/api/file"
 
 const FileGetItem = ({ pastFile, filePath, currentFile }) => {
     const [isFileUpdate, setIsFileUpdate] = useState(false);
+
+    const [secretPath, setSecretPath] = useState("");
+
+    const fetchSecretFile = async () => {
+        if (filePath != null) {
+            const response = await getFileDownloadUrl(filePath);
+            setSecretPath(response);
+        }
+    }
+
+    useEffect(() => {fetchSecretFile();}, [filePath]);
 
     useEffect(() => {
         if (typeof currentFile !== 'undefined') {
@@ -24,7 +36,7 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
                 <div className={_FileNameColumn}>첨부파일명</div>
                     |
                 <a
-                    href={filePath}
+                    href={secretPath}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={_FileName}

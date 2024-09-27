@@ -61,7 +61,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                         type="file"
                                         onChange={handleFileUpload}
                                         style={{ display: 'none' }}
-                                        id="fileUpdateInput"
+                                        id="fileUploadInput"
                                     />
                                     <Button
                                         variant="outlined"

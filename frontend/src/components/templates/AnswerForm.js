@@ -13,6 +13,7 @@ import {
 } from '../../apis/api/answer';
 import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
+import { getFileDownloadUrl } from '../../apis/api/file';
 
 export default function AnswerForm() {
     useEffect(() => {
@@ -31,6 +32,8 @@ export default function AnswerForm() {
     const [isQuestionLoading, setQuestionLoading] = useState(true);
     const [isAnswerOrColLoading, setAnswerOrColLoading] = useState(true);
 
+    const [secretPath, setSecretPath] = useState("");
+
     const fetchGetQuestionDetail =
         role === 'customer'
             ? async (questionId) => {
@@ -40,6 +43,11 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      if (response.data.filePath != null){  
+                        const url = await getFileDownloadUrl(response.data.filePath);
+                        setSecretPath(url);
+                      }
+                      
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
@@ -57,6 +65,13 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      if(response.data.filePath!=null){
+                        
+                        const url = await getFileDownloadUrl(response.data.filePath);
+                        setSecretPath(url);
+
+                      }
+
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
@@ -125,7 +140,7 @@ export default function AnswerForm() {
                 </Box>
             ) : (
                 <div>
-                    <QuestionViewer questionDetail={questionDetail} />
+                    <QuestionViewer questionDetail={questionDetail} secretPath={secretPath}/>
                     <AnswerInput
                         questionDetail={questionDetail}
                         answerDetail={answerDetail}

@@ -3,7 +3,7 @@ import dompurify from 'dompurify';
 import { getCookie } from '../../apis/utils/cookies';
 import { Question_Viewer } from '../../assets/css/Voc.css';
 
-export default function QuestionViewer({ questionDetail }) {
+export default function QuestionViewer({ questionDetail, secretPath }) {
     const sanitizer = dompurify.sanitize;
 
     const userId = getCookie('userId');
@@ -52,7 +52,7 @@ export default function QuestionViewer({ questionDetail }) {
                     {questionDetail?.type === 'INQ' && '# Inquiry 상세 조회'}
                 </div>
                 <div style={filesEllipsis}>
-                    <a href={questionDetail?.filePath} download>
+                    <a href={secretPath} download>
                         {questionDetail?.fileName}
                     </a>
                 </div>

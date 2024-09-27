@@ -33,6 +33,7 @@ function CustomerInqItem() {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm();
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -162,6 +163,7 @@ function CustomerInqItem() {
             ...prevData,
             [field]: value,
         }));
+        setValue(field, value);
     };
 
     const handleUpdate = async (event) => {
