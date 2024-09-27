@@ -4,7 +4,14 @@ import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryCreateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
-import com.pobluesky.backend.domain.inquiry.dto.response.*;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquiryResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
@@ -22,25 +29,19 @@ import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
-
 import java.text.DecimalFormat;
-
 import java.time.LocalDate;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -644,6 +645,32 @@ public class InquiryService {
         ));
 
         return results;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getInquiryCountsByDepartment(String token, String date) {
+        validateManager(token);
+
+        LocalDate currentDate = LocalDate.now();
+        int year;
+        int month;
+
+        if (date != null && !date.isEmpty()) {
+            String[] dateParts = date.split("-");
+            year = Integer.parseInt(dateParts[0]);
+            month = Integer.parseInt(dateParts[1]);
+        } else {
+            year = currentDate.getYear();
+            month = currentDate.getMonthValue() == 1 ? 12 : currentDate.getMonthValue() - 1;
+            if (month == 12) {
+                year--;
+            }
+        }
+
+        Map<String, List<Object[]>> result = new HashMap<>();
+        result.put("total", inquiryRepository.countInquiriesByDepartmentAndMonth(month, year));
+
+        return result;
     }
 
     private List<InquiryFavoriteResponseDTO> convertToResponseDTO(List<Inquiry> inquiries) {
