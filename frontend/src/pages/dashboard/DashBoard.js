@@ -30,6 +30,7 @@ import {
     Dashboard_Container,
     Dashboard_Item,
 } from '../../assets/css/Chart.css';
+import DepartmentByMonth from './DepartmentByMonth';
 
 export default function DashBoard() {
     const { userId } = useAuth();
@@ -126,6 +127,8 @@ export default function DashBoard() {
                             <CircularProgress />
                         </Box>
                     ) : (
+                        <>
+                        <DepartmentByMonth />
                         <DragDropContext onDragEnd={handleOnDragEnd}>
                             <Droppable
                                 droppableId="droppable"
@@ -162,6 +165,7 @@ export default function DashBoard() {
                                 )}
                             </Droppable>
                         </DragDropContext>
+                      </>
                     )}
                 </>
             );
