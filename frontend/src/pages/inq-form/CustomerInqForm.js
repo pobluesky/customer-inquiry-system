@@ -131,6 +131,11 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             productType: '',
             salesPerson: '',
             lineItemResponseDTOs: [],
+            customerCode: userInfo.data.customerCode,
+            customerName: userInfo.data.customerName,
+            name: userInfo.data.name,
+            email: userInfo.data.email,
+            phone: userInfo.data.phone,
         })
 
         if (lineItemsRef.current) {
