@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
@@ -192,4 +193,16 @@ public class CollaborationController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
+
+    /* [Start] Dashboard API */
+    @GetMapping("/managers/col/dashboard")
+    @Operation(summary = "월별 협업 처리 건수 평균")
+    public ResponseEntity<Map<String, List<Object[]>>> averageMonthlyCol(
+        @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = collaborationService.getAverageCountPerMonth(token);
+
+        return ResponseEntity.ok(response);
+    }
+    /* [End] Dashboard API */
 }

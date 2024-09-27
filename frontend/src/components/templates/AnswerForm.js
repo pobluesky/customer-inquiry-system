@@ -11,6 +11,7 @@ import {
     getAnswerByQuestionId,
     getAnswerByQuestionIdForManager,
 } from '../../apis/api/answer';
+import { getFileDownloadUrl } from '../../apis/api/file';
 import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
@@ -31,6 +32,8 @@ export default function AnswerForm() {
     const [isQuestionLoading, setQuestionLoading] = useState(true);
     const [isAnswerOrColLoading, setAnswerOrColLoading] = useState(true);
 
+    const [secretPath, setSecretPath] = useState('');
+
     const fetchGetQuestionDetail =
         role === 'customer'
             ? async (questionId) => {
@@ -40,10 +43,16 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      if (response.data.filePath != null) {
+                          const url = await getFileDownloadUrl(
+                              response.data.filePath,
+                          );
+                          setSecretPath(url);
+                      }
+
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
                           setAnswerOrColLoading(false);
                       }
                   } catch (error) {
@@ -58,10 +67,16 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      if (response.data.filePath != null) {
+                          const url = await getFileDownloadUrl(
+                              response.data.filePath,
+                          );
+                          setSecretPath(url);
+                      }
+
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
                           fetchGetColDetailStatus(questionId);
                       }
                   } catch (error) {
@@ -127,7 +142,10 @@ export default function AnswerForm() {
                 </Box>
             ) : (
                 <div>
-                    <QuestionViewer questionDetail={questionDetail} />
+                    <QuestionViewer
+                        questionDetail={questionDetail}
+                        secretPath={secretPath}
+                    />
                     <AnswerInput
                         questionDetail={questionDetail}
                         answerDetail={answerDetail}

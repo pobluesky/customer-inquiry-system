@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
+import { VocButton } from '../atoms/VocButton';
 import QuestionOverview from '../organisms/VocOverview';
 import QuestionFilterInput from '../organisms/QuestionFilterInput';
 import QuestionList from '../organisms/QuestionList';
@@ -10,6 +12,8 @@ import { getCookie } from '../../apis/utils/cookies';
 import { Voc_Dashboard } from '../../assets/css/Voc.css';
 
 export default function QuestionDashboard() {
+    const navigate = useNavigate();
+
     const userId = getCookie('userId');
     const role = getCookie('userRole');
 
@@ -208,11 +212,32 @@ export default function QuestionDashboard() {
                     />
                     {searchCount ? (
                         <div className={Voc_Dashboard}>
-                            검색 결과는 총 <span>{searchCount}</span>건입니다.
+                            검색 결과는 총 <span>{searchCount}</span>
+                            건입니다.
+                            {role === 'customer' && (
+                                <VocButton
+                                    btnName={'문의 등록'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#ffffff'}
+                                    onClick={() => {
+                                        navigate('/voc-form/question');
+                                    }}
+                                />
+                            )}
                         </div>
                     ) : (
                         <div className={Voc_Dashboard}>
                             검색 결과가 없습니다.
+                            {role === 'customer' && (
+                                <VocButton
+                                    btnName={'문의 등록'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#ffffff'}
+                                    onClick={() => {
+                                        navigate('/voc-form/question');
+                                    }}
+                                />
+                            )}
                         </div>
                     )}
                     <QuestionFilterInput
