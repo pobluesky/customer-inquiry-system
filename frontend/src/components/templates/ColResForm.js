@@ -5,6 +5,7 @@ import ColReqViewer from '../organisms/ColReqViewer';
 import ColResInput from '../organisms/ColResInput';
 import ColResViewer from '../organisms/ColResViewer';
 import { getCookie } from '../../apis/utils/cookies';
+import { getFileDownloadUrl } from '../../apis/api/file';
 
 export default function ColResForm() {
     const role = getCookie('userRole');
@@ -19,6 +20,25 @@ export default function ColResForm() {
     });
 
     const [editMode, setEditMode] = useState(false);
+
+    const [secretPathQuestion, setSecretPathQuestion] = useState("");
+    const [secretPathCol, setSecretPathCol] = useState("");
+
+    const fetchSecretFile = async (data, setPathFunction) => {
+        if (data?.filePath != null) {
+            const response = await getFileDownloadUrl(data.filePath);
+            console.log("res **************** ", response);
+            setPathFunction(response);
+        }
+    }
+    
+    useEffect(() => {
+        fetchSecretFile(questionDetail, setSecretPathQuestion);
+    }, [questionDetail]);
+    
+    useEffect(() => {
+        fetchSecretFile(colDetail, setSecretPathCol);
+    }, [colDetail]);
 
     useEffect(() => {
         window.scrollTo({
@@ -35,7 +55,7 @@ export default function ColResForm() {
 
     return (
         <div>
-            <QuestionViewer questionDetail={questionDetail} />
+            <QuestionViewer questionDetail={questionDetail} secretPath={secretPathQuestion}/>
             <ColReqViewer
                 colDetail={colDetail}
                 questionDetail={questionDetail}
@@ -45,11 +65,13 @@ export default function ColResForm() {
                     colDetail={colDetail}
                     setEditMode={setEditMode}
                     setColDetail={setColDetail}
+                    secretPathCol={secretPathCol}
                 />
             ) : role === 'quality' ? (
                 <ColResInput
                     colDetail={colDetail}
                     setColDetail={setColDetail}
+                    secretPathCol={secretPathCol}
                 />
             ) : (
                 ''

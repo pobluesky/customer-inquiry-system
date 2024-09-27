@@ -43,8 +43,7 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
-                      if(response.data.filePath!=null){
-                        
+                      if (response.data.filePath != null){  
                         const url = await getFileDownloadUrl(response.data.filePath);
                         setSecretPath(url);
                       }
