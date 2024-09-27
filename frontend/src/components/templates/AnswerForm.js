@@ -43,7 +43,6 @@ export default function AnswerForm() {
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
                           setAnswerOrColLoading(false);
                       }
                   } catch (error) {
@@ -61,7 +60,6 @@ export default function AnswerForm() {
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          localStorage.removeItem(`answerDetail-${questionId}`);
                           fetchGetColDetailStatus(questionId);
                       }
                   } catch (error) {
