@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,12 @@ public class FileUploadController {
     public FileInfo uploadFile(@RequestPart("file") MultipartFile file) {
         log.debug("파일 업로드 시작 controller");
         return fileService.uploadFile(file);
+    }
+
+    @GetMapping("/download")
+    @Operation(summary = "파일 다운로드 URL 생성")
+    public ResponseEntity<String> generateDownloadUrl(@RequestParam("objectKey") String objectKey) {
+        String signedUrl = fileService.generateSignedUrl(objectKey);
+        return ResponseEntity.ok(signedUrl);
     }
 }
