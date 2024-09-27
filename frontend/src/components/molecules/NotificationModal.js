@@ -23,6 +23,7 @@ import {
     Typography,
     Badge,
     IconButton,
+    CircularProgress,
 } from '@mui/material';
 
 const NotificationModal = ({ onUpdateNotificationsCount }) => {
@@ -32,6 +33,7 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
     const [readNotificationList, setReadNotificationList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [notificationsPerPage] = useState(6);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
     const switchTab = (event, newValue) => {
         setActiveTab(newValue);
@@ -39,6 +41,7 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
     };
 
     const fetchNotifications = async () => {
+        setLoading(true); // 로딩 시작
         try {
             if (role === 'customer') {
                 const response = await getNotificationByCustomers(userId);
@@ -49,10 +52,13 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
     const fetchReadNotifications = async () => {
+        setLoading(true); // 로딩 시작
         try {
             let readNotificationData;
             if (role === 'customer') {
@@ -63,6 +69,8 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
             setReadNotificationList(readNotificationData);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
@@ -119,7 +127,11 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
                 </Tabs>
 
                 <div>
-                    {activeTab === 'new' ? (
+                    {loading ? ( // 로딩 상태에 따라 로딩 스피너 표시
+                        <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                            <CircularProgress />
+                        </Grid>
+                    ) : activeTab === 'new' ? (
                         <div>
                             {newNotificationList.length > 0 ? (
                                 currentNotifications.map((notification) => (

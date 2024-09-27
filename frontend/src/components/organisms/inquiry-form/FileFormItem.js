@@ -17,7 +17,7 @@ const FileFormItem = ({ fileForm, formData }) => {
             <div className={Sheet}>
                 <ToggleBar title={fileForm} isChecked={isChecked} setCheck={setCheck} />
                 {isChecked && (
-                    <div className={Opend}>
+                    <div className={Opend} style={{ padding: '3vh'}}>
                         <FileGetItem
                             pastFile={formData.fileName}
                             filePath={formData.filePath}

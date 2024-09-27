@@ -147,8 +147,10 @@ function CustomerInqItem() {
             const response = await getInquiryDetail(userId, id);
             if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
+                localStorage.setItem('isUpdate', true);
             } else {
                 setIsUpdate(false);
+                localStorage.removeItem('isUpdate');
             }
         } catch (error) {
             console.log('Error fetching Progress:', error);
@@ -270,6 +272,9 @@ function CustomerInqItem() {
         const storedUserInfo = localStorage.getItem('userInfo');
         const storedReviewData = localStorage.getItem('reviewData');
         const storedOfferSheetData = localStorage.getItem('offerSheetData');
+        const storedIsReviewItem = localStorage.getItem('isReviewItem');
+        const storedIsOfferSheetItem = localStorage.getItem('isOfferSheetItem');
+        const storedIsUpdate = localStorage.getItem('isUpdate');
 
         if (storedInquiryData) {
             setInquiriesDataDetail(JSON.parse(storedInquiryData));
@@ -282,6 +287,15 @@ function CustomerInqItem() {
         }
         if (storedOfferSheetData) {
             setOfferSheetData(JSON.parse(storedOfferSheetData));
+        }
+        if (storedIsReviewItem) {
+            setIsReviewItem(JSON.parse(storedIsReviewItem));
+        }
+        if (storedIsOfferSheetItem) {
+            setIsOfferSheetItem(JSON.parse(storedIsOfferSheetItem));
+        }
+        if (storedIsUpdate) {
+            setIsUpdate(JSON.parse(storedIsUpdate));
         }
     }, []);
 
