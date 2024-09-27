@@ -51,7 +51,7 @@ public class IntegratedOcrGptService {
             throw new CommonException(ErrorCode.USER_NOT_MATCHED);
         }
 
-        List<String> textResults = ocrService.processPdfAndDetectText(file);
+        List<String> textResults = ocrService.processFileAndDetectText(file);
 
         Map<String, Object> structuredData = getStructuredDataFromGPT(textResults, productType);
 

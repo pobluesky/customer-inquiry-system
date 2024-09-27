@@ -1,72 +1,75 @@
 package com.pobluesky.backend.domain.chat.service;
 
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import org.apache.poi.ss.usermodel.*;
 import java.awt.Font;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 @Service
-public class ExcelToImageService {
+public class ExcelConversionService {
 
-    public String convertExcelToImages(MultipartFile excelFile) {
-        try (InputStream is = excelFile.getInputStream();
-            Workbook workbook = new XSSFWorkbook(is)) {
+    private final Storage storage;
 
-            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트부터 처리 필요
-            int rowCount = sheet.getPhysicalNumberOfRows();
-            int columnCount = sheet.getRow(0).getPhysicalNumberOfCells();
+    @Value("${cloud.gcp.storage.bucket.name}")
+    private String bucketName;
 
-            int cellWidth = 200;
-            int cellHeight = 30;
-            // 이미지 크기를 설정
-            int imageWidth = columnCount * cellWidth;
-            int imageHeight = rowCount * cellHeight;
+    public ExcelConversionService() {
+        this.storage = StorageOptions.getDefaultInstance().getService();
+    }
 
-            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = image.createGraphics();
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(0, 0, imageWidth, imageHeight);
+    public String convertExcelToImage(InputStream inputStream, String uniqueId) throws Exception {
+        try (Workbook workbook = new XSSFWorkbook(inputStream)) {
+            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트만 처리
+            BufferedImage image = convertSheetToImage(sheet);
+            return uploadToGcs(image, uniqueId);
+        }
+    }
 
-            // 엑셀의 각 셀 내용을 이미지에 그리기
-            g2d.setColor(Color.BLACK);
-            Font font = new Font("Arial", Font.PLAIN, 14);
-            g2d.setFont(font);
+    private BufferedImage convertSheetToImage(Sheet sheet) {
+        int rowCount = sheet.getPhysicalNumberOfRows();
+        int columnCount = sheet.getRow(0).getPhysicalNumberOfCells();
 
-            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                Row row = sheet.getRow(rowIndex);
-                if (row != null) {
-                    for (int colIndex = 0; colIndex < columnCount; colIndex++) {
-                        Cell cell = row.getCell(colIndex);
-                        String cellValue = getCellValueAsString(cell);
-                        g2d.drawString(cellValue, colIndex * cellWidth + 10, rowIndex * cellHeight + 20);
-                    }
+        int cellWidth = 200;
+        int cellHeight = 30;
+        int imageWidth = columnCount * cellWidth;
+        int imageHeight = rowCount * cellHeight;
+
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, imageWidth, imageHeight);
+
+        g2d.setColor(Color.BLACK);
+        Font font = new Font("Arial", Font.PLAIN, 14);
+        g2d.setFont(font);
+
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+            Row row = sheet.getRow(rowIndex);
+            if (row != null) {
+                for (int colIndex = 0; colIndex < columnCount; colIndex++) {
+                    Cell cell = row.getCell(colIndex);
+                    String cellValue = getCellValueAsString(cell);
+                    g2d.drawString(cellValue, colIndex * cellWidth + 10, rowIndex * cellHeight + 20);
                 }
             }
-
-            g2d.dispose();
-
-            // 이미지 to 파일로 저장
-            String outputPath = "output_image.png";
-            File outputFile = new File(outputPath);
-            ImageIO.write(image, "png", outputFile);
-
-            return outputPath; // 저장된 이미지 경로 반환
-
-        } catch (IOException e) {
-            throw new RuntimeException("엑셀 파일 변환 중 오류 발생", e);
         }
+
+        g2d.dispose();
+        return image;
     }
 
     private String getCellValueAsString(Cell cell) {
@@ -110,5 +113,17 @@ public class ExcelToImageService {
             return value == Math.floor(value) ? String.format("%.0f", value)
                 : String.valueOf(value);
         }
+    }
+
+    private String uploadToGcs(BufferedImage image, String uniqueId) throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", os);
+        byte[] imageBytes = os.toByteArray();
+
+        String gcsPath = String.format("excel_images/%s/excel.png", uniqueId);
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, gcsPath).setContentType("image/png").build();
+        storage.create(blobInfo, imageBytes);
+
+        return String.format("gs://%s/%s", bucketName, gcsPath);
     }
 }
