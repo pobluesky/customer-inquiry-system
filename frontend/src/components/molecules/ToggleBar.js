@@ -18,7 +18,7 @@ const ToggleBar = ({
     onManagerSelect,
 }) => {
 
-    const borderRadius = isChecked ? '20px 20px 0 0' : '20px 20px 20px 20px';
+    const borderRadius = isChecked ? '7px 7px 0 0' : '7px 7px 7px 7px';
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
@@ -208,7 +208,7 @@ const ToggleBar = ({
                             disabled
                         >
                             <Chip
-                                label="판매담당자"
+                                label="담당자"
                                 style={{
                                     marginRight: '10px',
                                     backgroundColor: '#007FFF',

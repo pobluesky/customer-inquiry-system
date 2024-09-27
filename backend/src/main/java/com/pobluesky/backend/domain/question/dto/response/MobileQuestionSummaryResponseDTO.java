@@ -1,10 +1,16 @@
 package com.pobluesky.backend.domain.question.dto.response;
 
+import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
 import com.pobluesky.backend.domain.question.entity.Question;
+
 import lombok.Builder;
+
+import java.util.Optional;
 
 @Builder
 public record MobileQuestionSummaryResponseDTO (
+
+        Optional<Long> inquiryId,
 
         Long questionId,
 
@@ -21,6 +27,8 @@ public record MobileQuestionSummaryResponseDTO (
     public static MobileQuestionSummaryResponseDTO from(Question question) {
 
         return MobileQuestionSummaryResponseDTO.builder()
+                .inquiryId(Optional.ofNullable(question.getInquiry())
+                        .map(Inquiry::getInquiryId))
                 .questionId(question.getQuestionId())
                 .customer(question.getCustomer().getCustomerName())
                 .title(question.getTitle())

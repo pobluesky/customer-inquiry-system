@@ -27,11 +27,8 @@ const QualityReviewTextForm = ({ formData, handleFormDataChange }) => { // 품�
                     isChecked={true}
                     setCheck={() => {}}
                 />
-                <div className={Opend}>
+                <div className={Opend} style={{ padding: '3vh' }}>
                     <QualityText
-                        title={'품질검토내용'}
-                        width="115px"
-                        height="100px"
                         formData={formData}
                         handleFormDataChange={handleFormDataChange}
                     />

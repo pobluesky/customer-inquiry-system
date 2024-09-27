@@ -37,7 +37,7 @@ export default function ColReqInput({
                       colResId,
                       colContents: editorValue,
                   };
-                  await postCollaborationBySales(
+                  const response = await postCollaborationBySales(
                       null,
                       colData,
                       questionDetail?.questionId,

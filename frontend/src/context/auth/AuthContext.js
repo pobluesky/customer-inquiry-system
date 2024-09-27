@@ -15,6 +15,12 @@ export const AuthProvider = ({ children }) => {
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
 
+    const removeUserInfo = () => {
+        removeCookie('userName', { path: '/' });
+        removeCookie('userRole', { path: '/' });
+        removeCookie('userId', { path: '/' });
+    };
+
     useEffect(() => {
         const token = getCookie('accessToken');
         const currentUserRole = getCookie('userRole');
@@ -29,22 +35,20 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
+        removeUserInfo();
     }, []);
 
     useEffect(() => {
         if (isInitiated && !didLogin) {
-            removeCookie('userName');
-            removeCookie('userRole');
-            removeCookie('userId');
+            removeUserInfo();
         }
     }, [didLogin, isInitiated]);
 
     const logout = () => {
         removeCookie('accessToken', { path: '/' });
         removeCookie('refreshToken', { path: '/' });
-        removeCookie('userName', { path: '/' });
-        removeCookie('userRole', { path: '/' });
-        removeCookie('userId', { path: '/' });
+
+        removeUserInfo();
 
         setRole(null);
         setToken(null);
