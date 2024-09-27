@@ -80,24 +80,43 @@ const DepartmentByMonth = () => {
             <Grid container spacing={2} justifyContent="flex-end">
                 <Grid item xs={4} sm={2} sx={{ marginBottom: 2 }}>
                     <FormControl fullWidth sx={{ zIndex: 0 }}>
-                        <InputLabel id="year-select-label">연도 선택</InputLabel>
+                        <InputLabel
+                            id="year-select-label"
+                            shrink={selectedYear !== ""}
+                        >
+                            연도 선택
+                        </InputLabel>
                         <Select
                             labelId="year-select-label"
                             value={selectedYear}
                             onChange={handleYearChange}
+                            label="연도 선택"
+                            sx={{
+                                backgroundColor: 'white',
+                            }}
                         >
                             <MenuItem value="2023">2023년</MenuItem>
                             <MenuItem value="2024">2024년</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
+
                 <Grid item xs={4} sm={2} sx={{ marginBottom: 2 }}>
                     <FormControl fullWidth sx={{ zIndex: 0 }}>
-                        <InputLabel id="month-select-label">월 선택</InputLabel>
+                        <InputLabel
+                            id="month-select-label"
+                            shrink={selectedMonth !== ""}
+                        >
+                            월 선택
+                        </InputLabel>
                         <Select
                             labelId="month-select-label"
                             value={selectedMonth}
                             onChange={handleMonthChange}
+                            label="월 선택"
+                            sx={{
+                                backgroundColor: 'white',
+                            }}
                         >
                             <MenuItem value="01">1월</MenuItem>
                             <MenuItem value="02">2월</MenuItem>
@@ -114,6 +133,7 @@ const DepartmentByMonth = () => {
                         </Select>
                     </FormControl>
                 </Grid>
+
             </Grid>
             <Grid container spacing={2}>
                 {departmentsData.map((department, index) => (
