@@ -4,6 +4,7 @@ import QuestionViewer from '../organisms/QuestionViewer';
 import ColFindManagerButton from '../organisms/ColFindManagerButton';
 import ColFindManagerModal from '../molecules/ColFindManagerModal';
 import ColReqInput from '../organisms/ColReqInput';
+import { getFileDownloadUrl } from '../../apis/api/file';
 
 export default function ColReqForm() {
     useEffect(() => {
@@ -21,15 +22,31 @@ export default function ColReqForm() {
     const [colResManagerName, setColResManagerName] = useState('');
     const [colResManagerDept, setColResManagerDept] = useState('');
 
+    const [secretPath, setSecretPath] = useState('');
+
     if (openModal) {
         document.body.style.overflow = 'hidden';
     } else {
         document.body.style.overflow = 'auto';
     }
 
+    const fetchSecretFile = async () => {
+        if (questionDetail?.filePath != null) {
+            const response = await getFileDownloadUrl(questionDetail.filePath);
+            setSecretPath(response);
+        }
+    };
+
+    useEffect(() => {
+        fetchSecretFile();
+    }, [questionDetail]);
+
     return (
         <div>
-            <QuestionViewer questionDetail={questionDetail} />
+            <QuestionViewer
+                questionDetail={questionDetail}
+                secretPath={secretPath}
+            />
             <ColFindManagerButton
                 setOpenModal={setOpenModal}
                 colResManagerName={colResManagerName}

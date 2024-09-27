@@ -166,9 +166,9 @@ public class ChatbotService {
     private String getGptResponseForInquiry(String userMessage, ChatInquiryType inquiryType, ChatInquirySubType inquirySubType) {
         List<ChatRequestMsgDto> messages = new ArrayList<>();
 
-        String systemPrompt = loadSystemPromptFromFile();
+        String systemPrompt = loadPromptFromFile();
 
-        String inquiryContext = "Provide a helpful response based on the customer's " + inquiryType + " inquiry, specifically about " + inquirySubType + ".";
+        String inquiryContext = "Provide a helpful response based on the customer's " + inquiryType + " inquiry, specifically about " + inquirySubType;
 
         messages.add(new ChatRequestMsgDto("system", systemPrompt));
         messages.add(new ChatRequestMsgDto("system", "You are a helpful assistant. " + inquiryContext));
@@ -179,7 +179,7 @@ public class ChatbotService {
         return extractContentFromGptResponse(gptPromptService.prompt(chatCompletionDto));
     }
 
-    private String loadSystemPromptFromFile() {
+    private String loadPromptFromFile() {
         try {
             Resource resource = resourceLoader.getResource(systemPrompt);
             return Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
