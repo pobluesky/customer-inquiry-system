@@ -79,7 +79,7 @@ const DepartmentByMonth = () => {
         <Box sx={{ flexGrow: 1, padding: 2 }}>
             <Grid container spacing={2} justifyContent="flex-end">
                 <Grid item xs={4} sm={2} sx={{ marginBottom: 2 }}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{ zIndex: 0 }}>
                         <InputLabel id="year-select-label">연도 선택</InputLabel>
                         <Select
                             labelId="year-select-label"
@@ -92,7 +92,7 @@ const DepartmentByMonth = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={4} sm={2} sx={{ marginBottom: 2 }}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{ zIndex: 0 }}>
                         <InputLabel id="month-select-label">월 선택</InputLabel>
                         <Select
                             labelId="month-select-label"
