@@ -377,6 +377,20 @@ public class InquiryController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/managers/inquiries/dashboard/counts-by-department")
+    @Operation(summary = "부서별 월별 총 문의 건수")
+    public ResponseEntity<Map<String, List<Object[]>>> getInquiryCountsByDepartment(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(value = "date") String date
+    ) {
+        String[] dateParts = date.split("-");
+        int year = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+
+        Map<String, List<Object[]>> response = inquiryService.getInquiryCountsByDepartment(token, date);
+        return ResponseEntity.ok(response);
+    }
     /* [End] Dashboard API */
 
     @PostMapping("/customers/inquiries/{userId}/optimized")
