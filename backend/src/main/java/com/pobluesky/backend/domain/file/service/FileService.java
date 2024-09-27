@@ -37,6 +37,14 @@ public class FileService {
     // private final String bucketName = System.getenv("S3_BUCKET_NAME");
     private final String bucketName = dotenv.get("S3_BUCKET_NAME");
 
+    private final String cloudFrontDomainName = dotenv.get("CLOUDFRONT_NAME");
+
+    private final String keyPairId = dotenv.get("CLOUDFRONT_KEYPAIRID");
+
+    private final String privateKeyFilePath = dotenv.get("CLOUDFRONT_KEYPATH");
+
+
+
     public FileInfo uploadFile(MultipartFile file) {
         String originName = file.getOriginalFilename();
 
@@ -96,15 +104,21 @@ public class FileService {
             throw new FileUploadException();
         }
 
-        // CloudFront 서명된 URL 생성
-        String cloudFrontDomainName = "https://daxu35mjvuuix.cloudfront.net";
-        String keyPairId = "K20A2Q5KKP96ID";
-        String privateKeyFilePath = "/path/to/private_key.pem";
+        return changedName;
+    }
+
+    private String changedFileName(String originName) {
+        String random = UUID.randomUUID().toString();
+
+        return random + originName;
+    }
+
+    public String generateSignedUrl(String objectKey) {
 
         CloudFrontUtilities cloudFrontUtilities = CloudFrontUtilities.create();
 
         Instant expirationDate = Instant.now().plus(70000, ChronoUnit.DAYS);
-        String resourceUrl = cloudFrontDomainName + "/" + changedName;
+        String resourceUrl = cloudFrontDomainName + "/" + objectKey;
 
         CannedSignerRequest cannedSignerRequest = null;
         try {
@@ -121,11 +135,5 @@ public class FileService {
         SignedUrl signedUrl = cloudFrontUtilities.getSignedUrlWithCannedPolicy(cannedSignerRequest);
 
         return signedUrl.url();
-    }
-
-    private String changedFileName(String originName) {
-        String random = UUID.randomUUID().toString();
-
-        return random + originName;
     }
 }
