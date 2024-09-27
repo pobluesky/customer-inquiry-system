@@ -782,6 +782,7 @@
 }
 
 .Col_Search_Input select {
+    text-align: center;
     width: 144px;
     height: 38px;
 }
