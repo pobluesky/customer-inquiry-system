@@ -22,6 +22,9 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 
@@ -256,6 +259,22 @@ public class CollaborationService {
         }
 
         return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
+    // 월별 담당자별 협업 처리 건수
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {
+        Long userId = signService.parseToken(token);
+
+        Manager manager = managerRepository.findById(userId)
+            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
+
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", collaborationRepository.findAverageCountPerMonth());
+        results.put("manager", collaborationRepository.findAverageCountPerMonthByManager(manager.getUserId()));
+
+        return results;
     }
 
     private Collaboration validateCollaboration(Long collaborationId) {
