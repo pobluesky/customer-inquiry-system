@@ -6,7 +6,12 @@ import { getCookie } from '../../apis/utils/cookies';
 import { putCompleteByQuality } from '../../apis/api/collaboration';
 import { Col_Res_Viewer } from '../../assets/css/Voc.css';
 
-export default function ColResViewer({ colDetail, setEditMode, setColDetail, secretPathCol}) {
+export default function ColResViewer({
+    colDetail,
+    setEditMode,
+    setColDetail,
+    secretPathCol,
+}) {
     const sanitizer = dompurify.sanitize;
 
     const userId = getCookie('userId');
@@ -99,7 +104,6 @@ export default function ColResViewer({ colDetail, setEditMode, setColDetail, sec
                             판매 담당자에게 작성한 피드백입니다.
                         </div>
                     </div>
-                    {/* 내용 */}
                     <div
                         dangerouslySetInnerHTML={{
                             __html: sanitizer(`${colDetail.colReply || ''}`),

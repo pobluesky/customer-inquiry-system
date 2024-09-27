@@ -22,7 +22,7 @@ export default function ColReqForm() {
     const [colResManagerName, setColResManagerName] = useState('');
     const [colResManagerDept, setColResManagerDept] = useState('');
 
-    const [secretPath, setSecretPath] = useState("");
+    const [secretPath, setSecretPath] = useState('');
 
     if (openModal) {
         document.body.style.overflow = 'hidden';
@@ -35,13 +35,18 @@ export default function ColReqForm() {
             const response = await getFileDownloadUrl(questionDetail.filePath);
             setSecretPath(response);
         }
-    }
+    };
 
-    useEffect(() => {fetchSecretFile();}, [questionDetail])
+    useEffect(() => {
+        fetchSecretFile();
+    }, [questionDetail]);
 
     return (
         <div>
-            <QuestionViewer questionDetail={questionDetail} secretPath={secretPath}/>
+            <QuestionViewer
+                questionDetail={questionDetail}
+                secretPath={secretPath}
+            />
             <ColFindManagerButton
                 setOpenModal={setOpenModal}
                 colResManagerName={colResManagerName}

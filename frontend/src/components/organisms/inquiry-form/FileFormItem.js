@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../assets/css/Form.css";
 import ToggleBar from "../../molecules/ToggleBar";
 import FileGetItem from '../../molecules/FileGetItem';
-import { getFileDownloadUrl } from '../../../apis/api/file';
+import { Container, Sheet, Opend } from "../../../assets/css/Form.css";
 
 const FileFormItem = ({ fileForm, formData }) => {
     if(!formData) {
@@ -10,8 +9,6 @@ const FileFormItem = ({ fileForm, formData }) => {
     }
 
     const [isChecked, setCheck] = useState(true);
-
-    const isUploadSection = fileForm === "첨부파일";
 
     return (
         <div className={Container} style={{ marginTop: "-2vh" }}>
