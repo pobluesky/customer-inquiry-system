@@ -317,6 +317,12 @@ export default function AnswerInput({
                                 backgroundColor={'#ffffff'}
                                 textColor={'#03507d'}
                                 onClick={() => {
+                                    if (!colPossible) {
+                                        window.alert(
+                                            '현재 헙업 진행 중인 질문으로, 삭제가 불가합니다.',
+                                        );
+                                        return;
+                                    }
                                     window.confirm(
                                         '작성하신 질문이 삭제됩니다. 정말 삭제하시겠습니까?',
                                     )
@@ -331,6 +337,12 @@ export default function AnswerInput({
                                 backgroundColor={'#03507d'}
                                 textColor={'#ffffff'}
                                 onClick={() => {
+                                    if (!colPossible) {
+                                        window.alert(
+                                            '현재 헙업 진행 중인 질문으로, 수정이 불가합니다.',
+                                        );
+                                        return;
+                                    }
                                     navigate('/voc-form/question', {
                                         state: {
                                             questionDetail: questionDetail,

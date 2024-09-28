@@ -34,6 +34,7 @@ function MyHeader() {
     const isMainPage = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const isJoinPage = location.pathname === '/join';
+    const isFormPage = location.pathname === '/voc-form/question';
     const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
     const url = `/inq-list/${role}`;
 
@@ -105,7 +106,18 @@ function MyHeader() {
                 </div>
             ) : (
                 <div>
-                    <MenuLink to="/voc-form/question">문의 등록</MenuLink>
+                    <MenuLink
+                        to="/voc-form/question"
+                        onClick={() => {
+                            if (isFormPage) {
+                                window.confirm('수정 중인 질문이 삭제됩니다. 정말 새로고침 하시겠습니까?')
+                                    ? window.location.reload()
+                                    : '';
+                            }
+                        }}
+                    >
+                        문의 등록
+                    </MenuLink>
                 </div>
             )}
         </>
