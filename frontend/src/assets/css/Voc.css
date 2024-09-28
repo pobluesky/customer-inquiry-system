@@ -1,17 +1,36 @@
 .Voc_Dashboard {
+    display: flex;
     width: 1320px;
+    height: 36px;
+    align-items: center;
     margin: 24px auto 24px auto;
     font-size: 16px;
     color: #25262b;
 }
 
+.Voc_Dashboard > div:nth-child(n + 2) {
+    width: max-content;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 0 0 8px;
+    padding: 0 12px;
+    background-color: #efefee;
+    border: solid 1px #c1c1c1;
+    border-radius: 100px;
+}
+
 .Voc_Dashboard span {
+    margin: 0 0 0 4px;
     color: #ff0000;
     font-weight: 600;
 }
 
 .Voc_Dashboard button {
-    float: right;
+    margin: 0 0 0 auto;
+}
+
+.Voc_Dashboard button:hover {
+    background-color: #f3f3f3 !important;
 }
 
 /******************************************************************/
@@ -146,6 +165,10 @@
 /* 파일 업로드 버튼 */
 .Question_Input > div:nth-child(1) > :nth-child(4) {
     margin: 0 12px;
+}
+
+.Question_Input > div:nth-child(1) > :nth-child(4) button:hover {
+    background-color: #f3f3f3 !important;
 }
 
 /* 첨부파일명 길이 제한 */
@@ -351,6 +374,13 @@
     width: 1320px;
     margin: 0 auto 24px auto;
     justify-content: space-around;
+}
+
+.Question_Filter_Input > button:hover,
+.Question_Filter_Input > select:hover,
+.Question_Filter_Input > div:hover {
+    outline: solid 1px #64636a !important;
+    border-radius: 8px !important;
 }
 
 .Question_Filter_Input select {
@@ -649,6 +679,10 @@
     margin: 0 12px;
 }
 
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(4) button:hover {
+    background-color: #f3f3f3 !important;
+}
+
 /* 첨부파일명 길이 제한 */
 .Answer_Input .Ready > div:nth-child(1) > :nth-child(5) {
     width: 180px;
@@ -786,6 +820,7 @@
     text-align: center;
     width: 144px;
     height: 38px;
+    cursor: pointer;
 }
 
 /******************************************************************/
@@ -953,11 +988,7 @@
     margin: 6px auto 12px auto;
 }
 
-.Col_Created_Date > div:nth-child(-n + 2):hover {
-    border-radius: 100px;
-    background-color: #e3e2e0;
-}
-
+.Col_Created_Date > div:nth-child(-n + 3):hover,
 .Col_Created_Date > div:nth-child(1):hover {
     border-radius: 100px;
     background-color: #f8f8f8;
