@@ -1,5 +1,6 @@
 package com.pobluesky.backend.domain.question.dto.response;
 
+import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
@@ -34,6 +35,8 @@ public record QuestionResponseDTO(
 
     LocalDateTime createdDate,
 
+    Optional<ColStatus> colStatus,
+
     Boolean isActivated
 ) {
     public static QuestionResponseDTO from(Question question) {
@@ -51,6 +54,8 @@ public record QuestionResponseDTO(
             .status(question.getStatus())
             .type(question.getType())
             .createdDate(question.getCreatedDate())
+            .colStatus(Optional.ofNullable(question.getCollaboration())
+                .map(collaboration -> collaboration.getColStatus()))
             .isActivated(question.getIsActivated())
             .build();
     }
