@@ -118,10 +118,10 @@ export default function AnswerForm() {
     const fetchGetColDetailStatus = async (questionId) => {
         try {
             await getCollaborationDetailStatus(questionId);
-            setColPossible(false);
+            setColPossible(false); // 진행 중인 협업 존재
             setAnswerOrColLoading(false);
         } catch (error) {
-            setColPossible(true);
+            setColPossible(true); // 진행 중인 협업 없음
             setAnswerOrColLoading(false);
         }
     };

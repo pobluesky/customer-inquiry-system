@@ -110,7 +110,7 @@ function MyHeader() {
                         to="/voc-form/question"
                         onClick={() => {
                             if (isFormPage) {
-                                window.confirm('수정 중인 질문이 삭제됩니다. 정말 새로고침 하시겠습니까?')
+                                window.confirm('작성 중인 질문이 삭제됩니다. 정말 새로고침 하시겠습니까?')
                                     ? window.location.reload()
                                     : '';
                             }
