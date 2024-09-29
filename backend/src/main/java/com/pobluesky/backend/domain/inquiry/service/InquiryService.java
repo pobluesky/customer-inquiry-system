@@ -31,6 +31,8 @@ import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -659,17 +661,44 @@ public class InquiryService {
             String[] dateParts = date.split("-");
             year = Integer.parseInt(dateParts[0]);
             month = Integer.parseInt(dateParts[1]);
+
+            if (year > currentDate.getYear() || (year == currentDate.getYear() && month > currentDate.getMonthValue())) {
+                List<Department> departments = Arrays.asList(Department.values());
+                List<Object[]> totals = new ArrayList<>();
+
+                for (Department department : departments) {
+                    totals.add(new Object[]{department.getCode(), 0});
+                }
+
+                Map<String, List<Object[]>> result = new HashMap<>();
+                result.put("total", totals);
+                return result;
+            }
         } else {
-            year = currentDate.getYear();
             month = currentDate.getMonthValue() == 1 ? 12 : currentDate.getMonthValue() - 1;
-            if (month == 12) {
-                year--;
+            year = (month == 12) ? currentDate.getYear() - 1 : currentDate.getYear();
+        }
+
+        List<Department> departments = Arrays.asList(Department.values());
+        List<Object[]> currentCounts = inquiryRepository.countInquiriesByDepartmentAndMonth(month, year);
+
+        Map<String, Integer> inquiryMap = new HashMap<>();
+        for (Object[] result : currentCounts) {
+            if (result != null && result.length > 1 && result[0] != null) {
+                String departmentCode = result[0].toString();
+                Integer inquiryCount = ((Number) result[1]).intValue();
+                inquiryMap.put(departmentCode, inquiryCount);
             }
         }
 
-        Map<String, List<Object[]>> result = new HashMap<>();
-        result.put("total", inquiryRepository.countInquiriesByDepartmentAndMonth(month, year));
+        List<Object[]> totals = new ArrayList<>();
+        for (Department department : departments) {
+            int inquiryCount = inquiryMap.getOrDefault(department.getCode(), 0);
+            totals.add(new Object[]{department.getCode(), inquiryCount});
+        }
 
+        Map<String, List<Object[]>> result = new HashMap<>();
+        result.put("total", totals);
         return result;
     }
 
