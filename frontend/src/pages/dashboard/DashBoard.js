@@ -30,7 +30,7 @@ import {
     Dashboard_Container,
     Dashboard_Item,
 } from '../../assets/css/Chart.css';
-import DepartmentByMonth from './DepartmentByMonth';
+import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
 
 export default function DashBoard() {
     const { userId } = useAuth();
