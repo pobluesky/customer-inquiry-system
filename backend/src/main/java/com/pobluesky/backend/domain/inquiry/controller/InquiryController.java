@@ -382,7 +382,7 @@ public class InquiryController {
     @Operation(summary = "부서별 월별 총 문의 건수")
     public ResponseEntity<Map<String, List<Object[]>>> getInquiryCountsByDepartment(
         @RequestHeader("Authorization") String token,
-        @RequestParam(value = "date") String date
+        @RequestParam(value = "date", required = false) String date
     ) {
         Map<String, List<Object[]>> response = inquiryService.getInquiryCountsByDepartment(token, date);
         return ResponseEntity.ok(response);
