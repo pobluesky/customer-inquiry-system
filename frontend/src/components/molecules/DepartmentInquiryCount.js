@@ -4,10 +4,9 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 
-const DepartmentInquiryCount = ({ departmentName, inquiryCount, changeRate, previousCount }) => {
-    const isIncrease = changeRate > 0;
-    const isDecrease = changeRate < 0;
-    const isNoChange = changeRate === 0 && inquiryCount === previousCount;
+const DepartmentInquiryCount = ({ departmentName, inquiryCount, changeRate, previousCount, inquiryDifference }) => {
+    const isIncrease = inquiryDifference > 0;
+    const isNoChange = inquiryDifference === 0;
 
     const changeRateFormatted = changeRate === 0.0 && previousCount === 0
         ? '+0.0%'
@@ -22,22 +21,23 @@ const DepartmentInquiryCount = ({ departmentName, inquiryCount, changeRate, prev
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: 3,
+                padding: 2.7,
                 border: '1px solid #e0e0e0',
-                borderRadius: '12px',
+                borderRadius: '10px',
                 backgroundColor: '#ffffff',
                 boxShadow: 2,
                 marginBottom: 2,
+                height: '75px',
             }}
         >
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography variant="h8" sx={{ fontWeight: 'bold', color: '#333' }}>
                 {departmentName}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#007bff' }}>
+                <Typography variant="h7" sx={{ fontWeight: 'bold', color: '#007bff' }}>
                     {inquiryCount}
                 </Typography>
-                <Typography variant="h6" sx={{ margin: '0 15px', color: '#555' }}>
+                <Typography variant="h8" sx={{ margin: '0 15px', color: '#555' }}>
                     {changeRateFormatted}
                 </Typography>
                 {isNoChange ? (

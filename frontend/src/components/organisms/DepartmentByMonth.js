@@ -5,48 +5,58 @@ import { getMonthlyDepartmentCounts } from '../../apis/api/chart';
 import { Departments } from '../../utils/inquiry';
 
 const processCountInquiries = (totalCounts, previousCounts) => {
-    const previousCountsMap = Object.fromEntries(previousCounts.map(([departmentName, inquiryCount]) => [departmentName, inquiryCount]));
+    return Object.entries(Departments).map(([key, koreanDepartmentName]) => {
+        const totalCount = totalCounts.find(([departmentName]) => departmentName === key);
+        const inquiryCount = totalCount ? totalCount[1] : 0;
 
-    return totalCounts.map(([departmentName, inquiryCount]) => {
-        if (!departmentName) return null;
+        const previousCount = previousCounts.find(([departmentName]) => departmentName === key);
+        const previousInquiryCount = previousCount ? previousCount[1] : 0;
 
-        const koreanDepartmentName = Departments[departmentName] || departmentName;
+        const changeRate = calculateChangeRate(inquiryCount, previousInquiryCount);
 
-        const previousCount = previousCountsMap[departmentName] !== undefined ? previousCountsMap[departmentName] : 0;
-        const changeRate = calculateChangeRate(inquiryCount, previousCount);
+        const inquiryDifference = inquiryCount - previousInquiryCount;
 
         return {
             departmentName: koreanDepartmentName,
             inquiryCount,
             changeRate,
-            previousCount,
+            previousCount: Math.abs(inquiryDifference),
+            inquiryDifference,
+            isNoInquiry: inquiryCount === 0,
         };
-    }).filter(Boolean);
+    });
 };
 
-const calculateChangeRate = (currentCount, previousCount) => {
-    if (previousCount === 0) {
-        return currentCount > 0 ? 100 : 0;
+const calculateChangeRate = (inquiryCount, previousInquiryCount) => {
+    if (previousInquiryCount === 0) {
+        return inquiryCount === 0 ? 0 : 100;
     }
-    return ((currentCount - previousCount) / previousCount) * 100;
+
+    const changeRate = ((inquiryCount - previousInquiryCount) / previousInquiryCount) * 100;
+    return changeRate;
 };
 
 const DepartmentByMonth = () => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const year = currentMonth === 1 ? currentYear - 1 : currentYear;
+
     const [departmentsData, setDepartmentsData] = useState([]);
-    const [previousDepartmentsData, setPreviousDepartmentsData] = useState([]);
-    const [selectedYear, setSelectedYear] = useState('2024');
-    const [selectedMonth, setSelectedMonth] = useState('09');
+    const [selectedYear, setSelectedYear] = useState(year.toString());
+    const [selectedMonth, setSelectedMonth] = useState(previousMonth.toString().padStart(2, '0'));
 
     const fetchCountByDepartment = async (year, month) => {
         const date = `${year}-${month}`;
-        const previousMonth = (parseInt(month, 10) === 1)
-            ? { year: year - 1, month: 12 }
-            : { year, month: String(parseInt(month, 10) - 1).padStart(2, '0') };
 
         try {
             const currentResponse = await getMonthlyDepartmentCounts(date);
-            const previousDate = `${previousMonth.year}-${previousMonth.month}`;
-            const previousResponse = await getMonthlyDepartmentCounts(previousDate);
+            const previousResponse = await getMonthlyDepartmentCounts(
+                `${year}-${
+                    month === '01' ? '12' : (parseInt(month, 10) - 1).toString().padStart(2, '0')
+                }`
+            );
 
             const totalCounts = currentResponse.total || [];
             const previousCounts = previousResponse.total || [];
@@ -133,16 +143,17 @@ const DepartmentByMonth = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-
             </Grid>
+
             <Grid container spacing={2}>
                 {departmentsData.map((department, index) => (
-                    <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
+                    <Grid item xs={2} sm={2} md={2} lg={2} key={index}>
                         <DepartmentInquiryCount
                             departmentName={department.departmentName}
-                            inquiryCount={department.inquiryCount}
+                            inquiryCount={department.inquiryCount || 0}
                             changeRate={department.changeRate}
                             previousCount={department.previousCount}
+                            inquiryDifference={department.inquiryDifference}
                         />
                     </Grid>
                 ))}
