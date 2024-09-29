@@ -699,6 +699,7 @@ public class InquiryService {
 
         Map<String, List<Object[]>> result = new HashMap<>();
         result.put("total", totals);
+
         return result;
     }
 
