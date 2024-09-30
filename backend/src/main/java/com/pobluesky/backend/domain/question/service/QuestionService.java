@@ -236,13 +236,15 @@ public class QuestionService {
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = dto.isFileDeleted() != null && dto.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
-        }else {
-            fileName = null;
-            filePath = null;
         }
 
         question.updateQuestion(
@@ -282,13 +284,15 @@ public class QuestionService {
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = dto.isFileDeleted() != null && dto.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
-        }else {
-            fileName = null;
-            filePath = null;
         }
 
         question.updateQuestion(
