@@ -56,6 +56,7 @@ export default function AnswerInput({
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState(answerDetail?.fileName || '');
     const [filePath, setFilePath] = useState(answerDetail?.filePath || '');
+    const [isFileDeleted, setFileDeleted] = useState(false);
 
     const fileInputRef = useRef(null);
 
@@ -69,6 +70,7 @@ export default function AnswerInput({
                   const answerData = {
                       title: title,
                       contents: editorValue,
+                      isFileDeleted,
                   };
                   await putAnswerByQuestionId(
                       file,
@@ -201,6 +203,7 @@ export default function AnswerInput({
                                         onClick={() => {
                                             setFile(null);
                                             setFileName(null);
+                                            setFileDeleted(true);
                                         }}
                                     />
                                 ) : (
@@ -208,9 +211,10 @@ export default function AnswerInput({
                                         btnName={'파일 업로드'}
                                         backgroundColor={'#ffffff'}
                                         textColor={'#03507d'}
-                                        onClick={() =>
-                                            fileInputRef.current.click()
-                                        }
+                                        onClick={() => {
+                                            fileInputRef.current.click();
+                                            setFileDeleted(false);
+                                        }}
                                     />
                                 )}
                             </div>

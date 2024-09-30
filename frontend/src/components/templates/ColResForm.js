@@ -55,6 +55,15 @@ export default function ColResForm() {
         }
     }, [colDetail]);
 
+    useEffect(() => {
+        if (location.state?.questionDetail) {
+            sessionStorage.setItem(
+                'questionDetail',
+                JSON.stringify(location.state.questionDetail),
+            );
+        }
+    }, [location.state]);
+
     return (
         <div>
             <QuestionViewer

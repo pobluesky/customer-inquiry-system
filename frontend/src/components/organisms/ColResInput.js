@@ -18,6 +18,7 @@ export default function ColResInput({ colDetail, setColDetail }) {
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState(colDetail?.fileName || '');
     const [filePath, setFilePath] = useState(colDetail?.filePath || '');
+    const [isFileDeleted, setFileDeleted] = useState(false);
 
     const [selectedType, setSelectedType] = useState(
         colDetail?.colStatus || '',
@@ -66,6 +67,7 @@ export default function ColResInput({ colDetail, setColDetail }) {
                           colContents: colDetail?.colContents,
                           isAccepted: isAccepted,
                           colReply: editorValue,
+                          isFileDeleted,
                       };
                       const response = await putModifyByManager(
                           file,
@@ -179,6 +181,7 @@ export default function ColResInput({ colDetail, setColDetail }) {
                                             onClick={() => {
                                                 setFile(null);
                                                 setFileName(null);
+                                                setFileDeleted(true);
                                             }}
                                         />
                                     ) : (
@@ -186,9 +189,10 @@ export default function ColResInput({ colDetail, setColDetail }) {
                                             btnName={'파일 업로드'}
                                             backgroundColor={'#ffffff'}
                                             textColor={'#03507d'}
-                                            onClick={() =>
-                                                fileInputRef.current.click()
-                                            }
+                                            onClick={() => {
+                                                fileInputRef.current.click();
+                                                setFileDeleted(false);
+                                            }}
                                         />
                                     )}
                                     <div>
