@@ -40,26 +40,6 @@ export const getCollaborationDetail = async (questionId, colId) => {
     }
 };
 
-// 협업 상태 상세 조회
-export const getCollaborationDetailStatus = async (questionId) => {
-    try {
-        const response = await axiosInstance.get(
-            `/collaborations/${questionId}`,
-        );
-
-        const json = response.data;
-
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
-
-        return json;
-    } catch (error) {
-        console.log('협업 요청 진행 중');
-        throw error;
-    }
-};
-
 // 협업 요청 (판매 담당자)
 export const postCollaborationBySales = async (file, colData, questionId) => {
     try {

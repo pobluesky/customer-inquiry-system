@@ -7,6 +7,12 @@ export default function ColSearchInput({
     setColNo,
     setColReqManager,
     setColResManager,
+    setColReqFilter,
+    setColResFilter,
+    setProgressFilter,
+    setTimeFilte,
+    setStartDate,
+    setEndDate,
 }) {
     const [tempColNo, setTempColNo] = useState('');
     const [tempColReqManager, setTempColReqManager] = useState('');
@@ -33,18 +39,20 @@ export default function ColSearchInput({
             setTempColReqManager('');
             setColResManager('all');
             setTempColResManager('');
+            setColReqFilter('');
+            setColResFilter('');
+            setProgressFilter('');
+            setTimeFilte('');
+            setStartDate('');
+            setEndDate('');
         } else if (keyword === 'reqManager') {
             setTempColReqManager('');
             setColNo('all');
             setTempColNo('');
-            setColResManager('all');
-            setTempColResManager('');
         } else if (keyword === 'resManager') {
             setTempColResManager('');
             setColNo('all');
             setTempColNo('');
-            setColReqManager('all');
-            setTempColReqManager('');
         }
     }, [keyword]);
 

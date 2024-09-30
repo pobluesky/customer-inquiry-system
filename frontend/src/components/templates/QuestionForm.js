@@ -8,7 +8,7 @@ import {
     getInquiryDetailByManagers,
 } from '../../apis/api/inquiry';
 
-function QuestionForm({ questionDetail }) {
+export default function QuestionForm({ questionDetail }) {
     const userId = getCookie('userId');
     const role = getCookie('userRole');
 
@@ -80,5 +80,3 @@ function QuestionForm({ questionDetail }) {
         </div>
     );
 }
-
-export default QuestionForm;
