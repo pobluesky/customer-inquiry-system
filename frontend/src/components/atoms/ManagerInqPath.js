@@ -22,9 +22,7 @@ function ManagerInqPath({ largeCategory, mediumCategory, smallCategory, role }) 
                 <span>{mediumCategory}</span>
             </Link>
             <img src={arrow} alt="arrow" />
-            <Link to={smallUrl} className={_Link}>
-                <span>{smallCategory}</span>
-            </Link>
+            <span>{smallCategory}</span>
         </div>
     );
 }
