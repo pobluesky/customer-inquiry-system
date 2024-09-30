@@ -8,6 +8,8 @@ import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
 
+import com.pobluesky.backend.domain.user.entity.Department;
+import com.pobluesky.backend.domain.user.entity.Manager;
 import java.time.LocalDateTime;
 
 import lombok.Builder;
@@ -26,6 +28,9 @@ public record InquirySummaryResponseDTO(
     Industry industry,
     String salesManagerName,
     String qualityManagerName,
+    Department salesManagerDepartment,
+    Department qualityManagerDepartment,
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     LocalDateTime createdDate
 ) {
@@ -43,13 +48,19 @@ public record InquirySummaryResponseDTO(
             .corporate(inquiry.getCorporate())
             .corporationCode(inquiry.getCorporationCode())
             .industry(inquiry.getIndustry())
-            .salesManagerName(
-                inquiry.getSalesManager() != null ? inquiry.getSalesManager().getName() : null
-            )
-            .qualityManagerName(
-                inquiry.getQualityManager() != null ? inquiry.getQualityManager().getName() : null
-            )
+            .salesManagerName(getManagerName(inquiry.getSalesManager()))
+            .qualityManagerName(getManagerName(inquiry.getQualityManager()))
+            .salesManagerDepartment(getManagerDepartment(inquiry.getSalesManager()))
+            .qualityManagerDepartment(getManagerDepartment(inquiry.getQualityManager()))
             .createdDate(inquiry.getCreatedDate())
             .build();
+    }
+
+    private static String getManagerName(Manager manager) {
+        return manager != null ? manager.getName() : null;
+    }
+
+    private static Department getManagerDepartment(Manager manager) {
+        return manager != null ? manager.getDepartment() : null;
     }
 }

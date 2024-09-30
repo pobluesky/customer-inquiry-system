@@ -3,6 +3,7 @@ package com.pobluesky.backend.domain.question.repository;
 import static com.pobluesky.backend.domain.answer.entity.QAnswer.answer;
 import static com.pobluesky.backend.domain.question.entity.QQuestion.question;
 import static com.pobluesky.backend.domain.user.entity.QCustomer.customer;
+import static com.pobluesky.backend.domain.collaboration.entity.QCollaboration.collaboration;
 
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.entity.Question;
@@ -22,6 +23,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -65,6 +67,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .from(question)
             .leftJoin(question.answer, answer)
             .leftJoin(question.customer, customer)
+            .leftJoin(question.collaboration, collaboration)
             .where(
                 statusEq(status),
                 typeEq(type),
@@ -96,7 +99,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Long questionId,
         LocalDate startDate,
         LocalDate endDate,
-        Long managerId,
         String sortBy
     ) {
         List<QuestionSummaryResponseDTO> content = queryFactory
@@ -115,6 +117,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .from(question)
             .leftJoin(question.answer, answer)
             .leftJoin(question.customer, customer)
+            .leftJoin(question.collaboration, collaboration)
             .where(
                 question.customer.userId.eq(userId),
                 statusEq(status),
@@ -122,7 +125,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 isActivatedEq(true),
-                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
@@ -131,7 +133,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .fetch();
 
         JPAQuery<Question> countQuery = getCountQueryForCustomer(
-            userId, status, type, title, questionId, managerId, startDate, endDate);
+            userId, status, type, title, questionId, startDate, endDate);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
@@ -167,7 +169,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         QuestionType type,
         String title,
         Long questionId,
-        Long managerId,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -180,7 +181,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 isActivatedEq(true),
-                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             );
     }

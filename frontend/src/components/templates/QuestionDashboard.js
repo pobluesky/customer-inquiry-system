@@ -22,6 +22,9 @@ export default function QuestionDashboard() {
     const [colCount, setColCount] = useState(0);
     const [searchCount, setSearchCount] = useState(0);
 
+    const [filterArgs, setFilterArgs] = useState('');
+    const [questionSummary, setQuestionSummary] = useState([]);
+
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -31,9 +34,6 @@ export default function QuestionDashboard() {
     const [statusFilter, setStatusFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
     const [idFilter, setIdFilter] = useState('');
-
-    const [filterArgs, setFilterArgs] = useState('');
-    const [questionSummary, setQuestionSummary] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
@@ -186,6 +186,7 @@ export default function QuestionDashboard() {
     ]);
 
     useEffect(() => {
+        localStorage.clear();
         sessionStorage.clear();
     }, []);
 
@@ -217,8 +218,8 @@ export default function QuestionDashboard() {
                             {role === 'customer' && (
                                 <VocButton
                                     btnName={'문의 등록'}
-                                    backgroundColor={'#03507d'}
-                                    textColor={'#ffffff'}
+                                    backgroundColor={'#ffffff'}
+                                    textColor={'#03507d'}
                                     onClick={() => {
                                         navigate('/voc-form/question');
                                     }}
@@ -231,8 +232,8 @@ export default function QuestionDashboard() {
                             {role === 'customer' && (
                                 <VocButton
                                     btnName={'문의 등록'}
-                                    backgroundColor={'#03507d'}
-                                    textColor={'#ffffff'}
+                                    backgroundColor={'#ffffff'}
+                                    textColor={'#03507d'}
                                     onClick={() => {
                                         navigate('/voc-form/question');
                                     }}
@@ -244,6 +245,8 @@ export default function QuestionDashboard() {
                         title={title}
                         questionNo={questionNo}
                         customerName={customerName}
+                        startDate={startDate}
+                        endDate={endDate}
                         setTitle={setTitle}
                         setStartDate={setStartDate}
                         setEndDate={setEndDate}
