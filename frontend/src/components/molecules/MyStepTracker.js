@@ -1,39 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import '../../assets/css/animations.css';
-import {
-    MailOutline as MailOutlineIcon,
-    Inbox as InboxIcon,
-    CheckBox as CheckBoxIcon,
-    HighQuality as HighQualityIcon,
-    Description as DescriptionIcon,
-    FactCheck as FactCheckIcon,
-    LibraryAddCheck as LibraryAddCheckIcon,
-} from '@mui/icons-material';
+import { quoteSteps, commonSteps } from './StepTracker';
 
-export const commonSteps = [
-    { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
-    { id: 2, label: '문의접수', icon: <InboxIcon /> },
-    { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },
-    { id: 4, label: '품질검토요청', icon: <HighQualityIcon /> },
-    { id: 5, label: '품질검토접수', icon: <DescriptionIcon /> },
-    { id: 6, label: '품질검토완료', icon: <FactCheckIcon /> },
-    { id: 7, label: '최종검토완료', icon: <LibraryAddCheckIcon /> }
-];
-
-export const quoteSteps = [
-    { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
-    { id: 2, label: '문의접수', icon: <InboxIcon /> },
-    { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },
-    { id: 4, label: '최종검토완료', icon: <LibraryAddCheckIcon /> }
-];
-
-const StepTracker = ({ currentStep, inquiryType }) => {
+const MyStepTracker = ({ currentStep, inquiryType }) => {
     const [steps, setSteps] = useState([]);
 
     useEffect(() => {
-        setSteps(inquiryType === '견적 문의'? quoteSteps : commonSteps);
+        setSteps(inquiryType === '견적 문의' ? quoteSteps : commonSteps);
     }, [inquiryType]);
+
+    const iconSize = 50;
 
     return (
         <Container>
@@ -47,17 +23,22 @@ const StepTracker = ({ currentStep, inquiryType }) => {
                         {index < steps.length - 1 && (
                             <Line
                                 completed={step.id < currentStep}
-                                isLast={index === steps.length - 2}
+                                iconSize={iconSize}
+                                previousStepIndex={index}
+                                nextStepIndex={index + 1}
+                                steps={steps}
+                                isSecondLast={index === steps.length - 2}
                             />
                         )}
                     </Step>
                 </React.Fragment>
             ))}
+            <Line completed={currentStep === steps.length} iconSize={iconSize} isLast />
         </Container>
     );
 };
 
-export default StepTracker;
+export default MyStepTracker;
 
 const Container = styled.div`
   display: flex;
@@ -75,12 +56,12 @@ const Step = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding-right: 30px
+  padding-right: 30px;
 `;
 
 const Circle = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
   color: #fff;
@@ -90,11 +71,10 @@ const Circle = styled.div`
   font-weight: bold;
   padding: 5px;
   transition: background-color 0.3s ease;
-  z-index: 1;
 `;
 
 const Text = styled.div`
-  font-size: 9px;
+  font-size: 14px;
   color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
   margin: 8px 0 0 -2px;
   font-weight: 600;
@@ -102,13 +82,14 @@ const Text = styled.div`
 
 const Line = styled.div`
   position: absolute;
-  top: 30%;
-  left: 53%;
-  width: 135px;
-  height: 2px;
+  top: 35%;
+  left: 58%;
+  width: ${props => props.isSecondLast ? '97%' : '100%'};
+  height: 3px;
   background-color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
   transform: translateY(-50%);
   z-index: 0;
+  transition: background-color 0.3s ease;
 
   ${({ isLast }) => isLast && `
     width: 0;

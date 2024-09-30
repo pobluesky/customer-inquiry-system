@@ -31,6 +31,7 @@ import {
     Dashboard_Item,
 } from '../../assets/css/Chart.css';
 import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
+import MyInquiryList from '../../components/molecules/MyInquiryList';
 
 export default function DashBoard() {
     const { userId } = useAuth();
@@ -129,6 +130,7 @@ export default function DashBoard() {
                     ) : (
                         <>
                         <DepartmentByMonth />
+                        <MyInquiryList />
                         <DragDropContext onDragEnd={handleOnDragEnd}>
                             <Droppable
                                 droppableId="droppable"
