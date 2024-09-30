@@ -335,13 +335,15 @@ public class InquiryService {
         String fileName = inquiry.getFileName();
         String filePath = inquiry.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = inquiryUpdateRequestDTO.isFileDeleted() != null && inquiryUpdateRequestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
-        }else {
-            fileName = null;
-            filePath = null;
         }
 
         lineItemService.deleteLineItemsByInquiry(inquiry);
