@@ -18,19 +18,19 @@ function Row({ row, role, onCheckboxChange, salesAllocate, qualityAllocate, ref 
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/inq-list/${role}/${row.inquiryId}`);
+        navigate(`/inq-list/${role}/${row.processedInquiryId}`);
     };
 
     const handleCheckboxChange = (e) => {
         setIsChecked(e.target.checked);
-        onCheckboxChange(e.target.checked, row.inquiryId);
+        onCheckboxChange(e.target.checked, row.processedInquiryId);
     };
 
     const handleSubmit = async () => {
         try {
             if (salesAllocate) {
-                await putManagerAllocate(row.inquiryId);
-                console.log('Manager Allocation Success:', row.inquiryId);
+                await putManagerAllocate(row.processedInquiryId);
+                console.log('Manager Allocation Success:', row.processedInquiryId);
             } else {
                 return;
             }
@@ -62,7 +62,7 @@ function Row({ row, role, onCheckboxChange, salesAllocate, qualityAllocate, ref 
                         onChange={handleCheckboxChange}
                     />
                 </TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.processedInquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.salesPerson}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.inquiryType}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.productType}</TableCell>
@@ -162,7 +162,7 @@ export default function CollapsibleTable({
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <Row key={row.inquiryId} row={row} role={role}
+                            <Row key={row.processedInquiryId} row={row} role={role}
                                  onCheckboxChange={handleCheckboxChange} salesAllocate={salesAllocate} qualityAllocate={qualityAllocate}/>
                         ))}
                     </TableBody>

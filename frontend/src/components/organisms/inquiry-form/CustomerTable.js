@@ -82,7 +82,7 @@ function Row({ row, role }) {
     const currentStep = calculateStep();
 
     const handleClick = () => {
-        navigate(`/inq-list/${role}/${row.inquiryId}`);
+        navigate(`/inq-list/${role}/${row.processedInquiryId}`);
     };
 
     return (
@@ -186,7 +186,7 @@ export default function CollapsibleTable({
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <Row key={row.inquiryId} row={row} role={role} />
+                            <Row key={row.processedInquiryId} row={row} role={role} />
                         ))}
                     </TableBody>
                 </Table>
