@@ -3,7 +3,7 @@ package com.pobluesky.backend.domain.chat.service;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
 import java.util.Collections;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,13 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FileConversionService {
 
-    @Autowired
-    private PdfConversionService pdfConversionService;
+    private final PdfConversionService pdfConversionService;
 
-    @Autowired
-    private ExcelConversionService excelConversionService;
+    private final ExcelConversionService excelConversionService;
 
     public List<String> convertFileToImages(MultipartFile file) {
         try {
