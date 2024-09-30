@@ -39,7 +39,10 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (isInitiated && !didLogin) {
+        if (
+            typeof getCookie('accessToken') === 'undefined' ||
+            (isInitiated && !didLogin)
+        ) {
             removeUserInfo();
         }
     }, [didLogin, isInitiated]);
