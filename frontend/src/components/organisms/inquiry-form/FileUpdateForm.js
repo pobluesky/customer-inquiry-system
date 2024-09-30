@@ -34,6 +34,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
     const handleFileDelete = () => {
         setCurrentFileData([]);
         handleFormDataChange('files',null);
+        handleFormDataChange('isFileDeleted', true);
         setInputKey(Date.now());
     };
 
