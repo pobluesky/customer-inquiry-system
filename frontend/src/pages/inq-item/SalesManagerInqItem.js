@@ -46,12 +46,14 @@ import {
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
 import { assignQualityManagerByUserId } from '../../apis/api/manager';
+import { CircularProgress, Grid } from '@mui/material';
 
 function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
@@ -125,7 +127,8 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const response = await getInquiryDetailByManagers(id);
+            const realId = id.slice(-2);
+            const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
             setCurrentInqType(response.data.inquiryType);
@@ -191,11 +194,19 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
     }
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-        getQuality();
-        getOfferSheet();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getReview(),
+                getQuality(),
+                getOfferSheet(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -384,73 +395,81 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
                 onAllocate={allocateByQualityManagerId}
             />
 
-            <ManagerBasicInfoForm
-                formData={inquiriesDataDetail}
-                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
-                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
-                progress={currentProgress}
-                onManagerSelect={handleManagerSelect}
-            />
-
-            <InquiryHistoryFormItem
-                productType={inquiriesDataDetail?.productType}
-                lineItemData={formData.lineItemResponseDTOs}
-            />
-
-            <AdditionalRequestForm formData={inquiriesDataDetail} />
-
-            {isReviewItem ? (
-                <>
-                    <SalesInfoFormItem formData={reviewData} />
-                    <ReviewTextFormItem formData={reviewData} />
-                </>
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
             ) : (
                 <>
-                    <SalesInfoForm formData={formData}
-                                   handleFormDataChange={handleFormDataChange} />
-                    <ReviewTextForm formData={formData}
-                                    handleFormDataChange={handleFormDataChange} />
+                    <ManagerBasicInfoForm
+                        formData={inquiriesDataDetail}
+                        salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                        qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                        progress={currentProgress}
+                        onManagerSelect={handleManagerSelect}
+                    />
+
+                    <InquiryHistoryFormItem
+                        productType={inquiriesDataDetail?.productType}
+                        lineItemData={formData.lineItemResponseDTOs}
+                    />
+
+                    <AdditionalRequestForm formData={inquiriesDataDetail} />
+
+                    {isReviewItem ? (
+                        <>
+                            <SalesInfoFormItem formData={reviewData} />
+                            <ReviewTextFormItem formData={reviewData} />
+                        </>
+                    ) : (
+                        <>
+                            <SalesInfoForm formData={formData}
+                                           handleFormDataChange={handleFormDataChange} />
+                            <ReviewTextForm formData={formData}
+                                            handleFormDataChange={handleFormDataChange} />
+                        </>
+                    )}
+
+                    {isFinalReview ? (
+                        <FinalReviewTextFormItem formData={reviewData} />
+                    ) : (
+                        <FinalReviewTextForm formData={formData}
+                                             handleFormDataChange={handleFormDataChange} />
+                    )}
+
+                    {isQualityItem ? (
+                        <>
+                            <QualityReviewTextFormItem formData={qualityData} />
+                            <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                                 formData={qualityData} />
+                        </>
+                    ) : (
+                        ''
+                    )}
+
+                    {isOfferSheetItem ? (
+                        <Offersheet
+                            formData={offerSheetData}
+                            inquiryData={inquiriesDataDetail}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
+                        />
+                    ) : (
+                        <Offersheet formData={formData}
+                                    inquiryData={inquiriesDataDetail}
+                                    lineItemData={formData.receipts}
+                                    handleFormDataChange={handleFormDataChange}
+                                    onLineItemsChange={(newLineItems) => setFormData(
+                                        prev => ({
+                                            ...prev,
+                                            receipts: newLineItems,
+                                        }))}
+                        />
+                    )}
+
+                    <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
                 </>
             )}
-
-            {isFinalReview ? (
-                <FinalReviewTextFormItem formData={reviewData} />
-            ) : (
-                <FinalReviewTextForm formData={formData}
-                                     handleFormDataChange={handleFormDataChange} />
-            )}
-
-            {isQualityItem ? (
-                <>
-                    <QualityReviewTextFormItem formData={qualityData} />
-                    <QualityFileFormItem fileForm={'품질검토 첨부파일'}
-                                         formData={qualityData} />
-                </>
-            ) : (
-                ''
-            )}
-
-            {isOfferSheetItem ? (
-                <Offersheet
-                        formData={offerSheetData}
-                        inquiryData={inquiriesDataDetail}
-                        lineItemData={offerSheetData.receipts}
-                        isOfferSheetItem={isOfferSheetItem}
-                />
-            ) : (
-                <Offersheet formData={formData}
-                                  inquiryData={inquiriesDataDetail}
-                                  lineItemData={formData.receipts}
-                                  handleFormDataChange={handleFormDataChange}
-                                  onLineItemsChange={(newLineItems) => setFormData(
-                                prev => ({
-                                    ...prev,
-                                    receipts: newLineItems,
-                                }))}
-                />
-            )}
-
-            <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
         </div>
     )
 }

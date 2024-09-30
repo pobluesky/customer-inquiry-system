@@ -21,6 +21,7 @@ const SalesManagerInqTableList = () => {
             const response = await getSalesManagerInquiriesByParameter(queryParams);
             setRows(response);
             setCurrentPage(0);
+
             if (contentRef.current) {
                 contentRef.current.scrollIntoView({ behavior: 'smooth' });
             }

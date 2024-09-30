@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; // 둥글둥글한 아이콘 추가
 import { quoteSteps, commonSteps } from './StepTracker';
 
 const MyStepTracker = ({ currentStep, inquiryType }) => {
@@ -10,6 +11,7 @@ const MyStepTracker = ({ currentStep, inquiryType }) => {
     }, [inquiryType]);
 
     const iconSize = 50;
+    const progressColor = '#628db7';
 
     return (
         <Container>
@@ -21,19 +23,18 @@ const MyStepTracker = ({ currentStep, inquiryType }) => {
                             <Text completed={step.id <= currentStep}>{step.label}</Text>
                         </div>
                         {index < steps.length - 1 && (
-                            <Line
-                                completed={step.id < currentStep}
-                                iconSize={iconSize}
-                                previousStepIndex={index}
-                                nextStepIndex={index + 1}
-                                steps={steps}
-                                isSecondLast={index === steps.length - 2}
-                            />
+                            <ArrowWrapper inquiryType={inquiryType}>
+                                <ArrowForwardIosIcon
+                                    style={{
+                                        fontSize: iconSize - 15,
+                                        color: steps[index].id < currentStep ? '#1a90ff' : '#cccccc',
+                                    }}
+                                />
+                            </ArrowWrapper>
                         )}
                     </Step>
                 </React.Fragment>
             ))}
-            <Line completed={currentStep === steps.length} iconSize={iconSize} isLast />
         </Container>
     );
 };
@@ -45,8 +46,8 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 100%;
-  padding: 20px;
-  margin: 0 30px 0 0;
+  padding: 2vh;
+  margin: 1vh 3vw 1vh 0;
 `;
 
 const Step = styled.div`
@@ -56,42 +57,35 @@ const Step = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding-right: 30px;
+  padding-right: 3vw;
 `;
 
 const Circle = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 2.6vw;
+  height: 2.6vw;
   border-radius: 50%;
-  background-color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
+  background-color: ${props => (props.completed ? '#1a90ff' : '#cccccc')};
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  padding: 5px;
+  padding: 0.5vh;
   transition: background-color 0.3s ease;
 `;
 
 const Text = styled.div`
-  font-size: 14px;
-  color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
-  margin: 8px 0 0 -2px;
+  font-size: 1.6vh;
+  color: ${props => (props.completed ? '#1a90ff' : '#cccccc')};
+  margin: 0.8vh 0 0 -0.35vw;
   font-weight: 600;
 `;
 
-const Line = styled.div`
+const ArrowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: 35%;
-  left: 58%;
-  width: ${props => props.isSecondLast ? '97%' : '100%'};
-  height: 3px;
-  background-color: ${props => (props.completed ? '#1990ff' : '#cccccc')};
-  transform: translateY(-50%);
-  z-index: 0;
-  transition: background-color 0.3s ease;
-
-  ${({ isLast }) => isLast && `
-    width: 0;
-  `}
+  top: 15%;
+  left: ${(props) => (props.inquiryType === '품질+견적 문의' ? '75%' : '85%')};
 `;

@@ -1,4 +1,6 @@
 // inquiry summary 데이터 가공
+import { Departments } from '../../utils/inquiry';
+
 export const processInquiries = (data) => {
     return data.map((inquiry) => {
         let progressText;
@@ -148,6 +150,9 @@ export const processInquiries = (data) => {
         let salesManagerNameText = inquiry.salesManagerName || '-';
         let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
+        const salesManagerDepartmentText = Departments[inquiry.salesManagerDepartment] || '-';
+        const qualityManagerDepartmentText = Departments[inquiry.qualityManagerDepartment] || salesManagerDepartmentText;
+
         // processedInquiryId
         const createdDateString = inquiry.createdDate; // 20240923 형식
         const year = createdDateString.slice(0, 4); // 연도 추출
@@ -174,6 +179,8 @@ export const processInquiries = (data) => {
             customerName: inquiry.customerName,
             salesManagerName: salesManagerNameText,
             qualityManagerName: qualityManagerNameText,
+            salesManagerDepartment: salesManagerDepartmentText,
+            qualityManagerDepartment: qualityManagerDepartmentText,
             processedInquiryId: processedInquiryId,
             inquiryId: inquiry.inquiryId,
             inquiryType: inquiryTypeText,

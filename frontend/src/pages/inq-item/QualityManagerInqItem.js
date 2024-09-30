@@ -32,12 +32,14 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { CircularProgress, Grid } from '@mui/material';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [qualityData, setQualityData] = useState(null);
@@ -90,7 +92,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const response = await getInquiryDetailByManagers(id);
+            const realId = id.slice(-2);
+            const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
             setFormData(prevData => ({
@@ -125,9 +128,17 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     }
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getQuality();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getQuality(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -243,37 +254,45 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 onQualityCompleteSubmit={handleSubmit}
             />
 
-            <ManagerBasicInfoForm
-                formData={inquiriesDataDetail}
-                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
-                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
-                progress={currentProgress}
-            />
-            <InquiryHistoryFormItem
-                productType={inquiriesDataDetail?.productType}
-                lineItemData={formData.lineItemResponseDTOs}
-            />
-            <AdditionalRequestForm formData={inquiriesDataDetail} />
-
-            {isQualityItem ? (
-                <QualityReviewTextFormItem formData={qualityData} />
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
             ) : (
-                <QualityReviewTextForm formData={formData}
-                                       handleFormDataChange={handleFormDataChange} />
-            )}
+                <>
+                    <ManagerBasicInfoForm
+                        formData={inquiriesDataDetail}
+                        salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                        qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                        progress={currentProgress}
+                    />
+                    <InquiryHistoryFormItem
+                        productType={inquiriesDataDetail?.productType}
+                        lineItemData={formData.lineItemResponseDTOs}
+                    />
+                    <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            {isQualityItem ? (
-                <QualityFileFormItem fileForm={'품질검토 첨부파일'}
-                                     formData={qualityData} />
-            ) : (
-                <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
-                                 handleFormDataChange={handleFormDataChange} />
-            )}
+                    {isQualityItem ? (
+                        <QualityReviewTextFormItem formData={qualityData} />
+                    ) : (
+                        <QualityReviewTextForm formData={formData}
+                                               handleFormDataChange={handleFormDataChange} />
+                    )}
 
-            <FileFormItem
-                          fileForm={'첨부파일'}
-                          formData={inquiriesDataDetail}
-            />
+                    {isQualityItem ? (
+                        <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                             formData={qualityData} />
+                    ) : (
+                        <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
+                                         handleFormDataChange={handleFormDataChange} />
+                    )}
+
+                    <FileFormItem
+                        fileForm={'첨부파일'}
+                        formData={inquiriesDataDetail}
+                    />
+                </>
+            )}
         </div>
     )
 }

@@ -15,14 +15,18 @@ import {
 import { styled } from '@mui/material/styles';
 import MyStepTracker from './MyStepTracker';
 import ProfileCircle from '../atoms/ProfileCircle';
-import { getSalesManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
+import {
+    getQualityManagerInquiriesByParameter,
+    getSalesManagerInquiriesByParameter,
+} from '../../apis/api/inquirySearch';
 import { BorderLinearProgress } from './BorderLinearProgress';
 import { getUserInfoByManagers } from '../../apis/api/auth';
 import { useAuth } from '../../hooks/useAuth';
-import { Departments } from '../../utils/inquiry';
+import { useNavigate } from 'react-router-dom';
 
 const MyInquiryList = () => {
     const { userId, role } = useAuth();
+    const navigate = useNavigate();
     const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -50,12 +54,21 @@ const MyInquiryList = () => {
     const fetchInquiries = async () => {
         if (!userInfo) return;
         try {
-            const params = {
-                salesManagerName: userInfo.name,
-                inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
-            };
-            const data = await getSalesManagerInquiriesByParameter(params);
-            setInquiries(data);
+            if (role === 'sales') {
+                const params = {
+                    salesManagerName: userInfo.name,
+                    inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
+                };
+                const data = await getSalesManagerInquiriesByParameter(params);
+                setInquiries(data);
+            } else if (role === 'quality') {
+                const params = {
+                    qualityManagerName: userInfo.name,
+                    inquiryType: inquiryType === 'COMMON_INQUIRY',
+                };
+                const data = await getQualityManagerInquiriesByParameter(params);
+                setInquiries(data);
+            }
         } catch (error) {
             console.error('Error fetching inquiries:', error);
         } finally {
@@ -126,8 +139,21 @@ const MyInquiryList = () => {
     };
 
     const handleRowClick = (row) => {
-        setSelectedRow(row.inquiryId);
+        setSelectedRow(row.processedInquiryId);
         updateStepTracker(row);
+        navigate(`/inq-list/${role}/${row.processedInquiryId}`);
+    };
+
+    const handleRowMouseEnter = (row) => {
+        const step = calculateStep(row.progress);
+        setCurrentStep(step);
+    };
+
+    const handleRowMouseLeave = () => {
+        if (inquiries.length > 0) {
+            const initialRow = inquiries[0];
+            updateStepTracker(initialRow);
+        }
     };
 
     const toggleInquiryType = (event, newType) => {
@@ -137,68 +163,70 @@ const MyInquiryList = () => {
     };
 
     return (
-        <Container>
-            <Header>
-                <Typography variant="h6" fontWeight="bold">
-                    내 Inquiry 목록
-                </Typography>
-                <ToggleButtonGroup
-                    value={inquiryType}
-                    exclusive
-                    onChange={toggleInquiryType}
-                    aria-label="문의 유형 선택"
-                >
-                    <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의">
-                        품질+견적 문의
-                    </ToggleButton>
-                    <ToggleButton value="견적 문의" aria-label="견적 문의">
-                        견적 문의
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            </Header>
+        <Box>
+            {role === 'sales' && (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                    <ToggleButtonGroup
+                        value={inquiryType}
+                        exclusive
+                        onChange={toggleInquiryType}
+                        aria-label="문의 유형 선택"
+                    >
+                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }}>
+                            품질+견적 문의
+                        </ToggleButton>
+                        <ToggleButton value="견적 문의" aria-label="견적 문의" sx={{ fontWeight: '600' }}>
+                            견적 문의
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Box>
+            )}
+        <Container sx={{ boxShadow: 2 }}>
             <MyStepTracker currentStep={currentStep} inquiryType={inquiryType} />
             <InquiryTableContainer>
-                <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e0e0e0' }}>
+                <TableContainer component={Paper} elevation={0}>
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>담당자</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>부서</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>진행 상태</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>문의 일자</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>고객 이름</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>영업 담당자</TableCell>
-                                <TableCell align="center" sx={{ backgroundColor: '#E8F5E9', border: 'none', fontWeight: '700' }}>진행률</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '3vh' }}>프로필</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>담당자</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>진행 상태</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>문의 일자</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객 이름</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>영업 담당자</TableCell>
+                                <TableCell align="center" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '8vh' }}>진행률</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {inquiries.map((row) => (
                                 <StyledTableRow
-                                    key={row.inquiryId}
-                                    selected={selectedRow === row.inquiryId}
+                                    key={row.processedInquiryId}
+                                    selected={selectedRow === row.processedInquiryId}
                                     onClick={() => handleRowClick(row)}
+                                    onMouseEnter={() => handleRowMouseEnter(row)}
+                                    onMouseLeave={handleRowMouseLeave}
                                 >
-                                    <TableCell align="left">
+                                    <TableCell align="left" sx={{ width: '3vh' }}>
                                         <ProfileCircle
                                             name={row.qualityManagerName === '-' ? row.salesManagerName : row.qualityManagerName}
                                             backgroundColor={row.qualityManagerName !== '-' ? '#ADE8FF' : null}
                                         />
                                     </TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="left" sx={{ width: '6vh' }}>
                                         <InquiryDetails>
                                             <Typography variant="body1" fontWeight="bold">
                                                 {row.qualityManagerName === '-' ? row.salesManagerName : row.qualityManagerName}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                {Departments[userInfo.department]}
+                                                {row.qualityManagerName === '-' ? row.salesManagerDepartment : row.qualityManagerDepartment}
                                             </Typography>
                                         </InquiryDetails>
                                     </TableCell>
-                                    <TableCell align="left">{row.progress}</TableCell>
-                                    <TableCell align="left">{row.createdDate}</TableCell>
-                                    <TableCell align="left">{row.customerName}</TableCell>
-                                    <TableCell align="left">{row.salesPerson}</TableCell>
-                                    <TableCell align="center">
+                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.progress}</TableCell>
+                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.createdDate}</TableCell>
+                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.customerName}</TableCell>
+                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.salesPerson}</TableCell>
+                                    <TableCell align="center" sx={{ width: '8vh' }}>
                                         <BorderLinearProgress
                                             variant="determinate"
                                             value={calculatePercentage(row.progress, inquiryType)}
@@ -211,37 +239,34 @@ const MyInquiryList = () => {
                 </TableContainer>
             </InquiryTableContainer>
         </Container>
+        </Box>
     );
 };
 
 const Container = styled(Box)`
   background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  box-shadow: 2;
-  padding: 20px;
+  border: 0.1vw solid #e0e0e0;
+  border-radius: 1vh;
+  padding: 2vh;
   overflow: hidden;
-  height: 550px;
+  height: 55vh;
   z-index: 0;
-`;
-
-const Header = styled(Box)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin: 1.4vh;
 `;
 
 const InquiryTableContainer = styled(TableContainer)({
-    maxHeight: '400px',
+    maxHeight: '40vh',
     overflowY: 'auto',
-    overflowX: 'auto',
-    border: '1px solid #e0e0e0',
+    border: '0.1vw solid #e0e0e0',
 });
 
 const StyledTableRow = styled(TableRow)(({ selected }) => ({
     cursor: 'pointer',
-    backgroundColor: selected ? '#d2faff' : 'inherit', // 선택된 행의 배경색
-    border: selected ? '2px solid #1990ff' : 'none', // 선택된 경우의 border
+    backgroundColor: selected ? '#d2faff' : 'inherit',
+    border: selected ? '0.2vh solid #1990ff' : 'none',
+    '&:hover': {
+        backgroundColor: '#eeeeee',
+    },
 }));
 
 const InquiryDetails = styled('div')`

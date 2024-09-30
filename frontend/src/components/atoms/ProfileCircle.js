@@ -10,7 +10,7 @@ const Circle = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #333;
+  color: #484848;
   font-size: 16px;
   border: 2px solid #ccc;
 `;

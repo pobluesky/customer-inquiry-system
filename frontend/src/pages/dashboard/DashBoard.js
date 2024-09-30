@@ -182,10 +182,10 @@ export default function DashBoard() {
         <Box sx={{ display: 'flex' }}>
             <Box
                 sx={{
-                    width: 240,
+                    width: '18vw',
                     backgroundColor: '#2A3F54',
                     color: '#fff',
-                    padding: '16px',
+                    padding: '2vh',
                 }}
             >
                 <Box
@@ -193,17 +193,17 @@ export default function DashBoard() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        marginBottom: '16px',
+                        marginBottom: '2vh',
                     }}
                 >
                     <Avatar
                         alt={'profile'}
                         src={profile}
                         sx={{
-                            width: 120,
-                            height: 120,
-                            marginBottom: '8px',
-                            marginTop: '40px',
+                            width: '9vw',
+                            height: '9vw',
+                            marginBottom: '0.8vh',
+                            marginTop: '4vh',
                         }}
                     />
                     <Typography variant="h5" sx={{ fontWeight: '700' }}>
