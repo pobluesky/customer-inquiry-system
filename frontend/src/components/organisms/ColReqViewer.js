@@ -18,8 +18,6 @@ export default function ColReqViewer({
     const colDetail =
         initialColDetail || JSON.parse(sessionStorage.getItem('colDetail'));
 
-    console.log(colDetail);
-
     const getDeptLabel = (department) => {
         switch (department) {
             case 'CRM':
