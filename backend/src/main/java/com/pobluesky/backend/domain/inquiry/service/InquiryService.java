@@ -339,6 +339,9 @@ public class InquiryService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        }else {
+            fileName = null;
+            filePath = null;
         }
 
         lineItemService.deleteLineItemsByInquiry(inquiry);

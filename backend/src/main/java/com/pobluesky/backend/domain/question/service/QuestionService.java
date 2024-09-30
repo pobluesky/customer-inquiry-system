@@ -240,6 +240,9 @@ public class QuestionService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        }else {
+            fileName = null;
+            filePath = null;
         }
 
         question.updateQuestion(
@@ -283,6 +286,9 @@ public class QuestionService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        }else {
+            fileName = null;
+            filePath = null;
         }
 
         question.updateQuestion(

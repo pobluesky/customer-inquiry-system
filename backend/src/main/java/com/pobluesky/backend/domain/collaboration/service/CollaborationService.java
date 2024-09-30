@@ -304,6 +304,9 @@ public class CollaborationService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        }else {
+            fileName = null;
+            filePath = null;
         }
 
         collaboration.updateFiles(fileName, filePath);

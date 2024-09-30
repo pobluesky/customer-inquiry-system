@@ -159,6 +159,9 @@ public class AnswerService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        } else {
+            fileName = null;
+            filePath = null;
         }
 
         answer.updateAnswer(
