@@ -11,9 +11,12 @@ export default function ColResForm() {
     const role = getCookie('userRole');
 
     const location = useLocation();
-    const { questionDetail } = location.state;
-    const initialColDetail = location.state?.colDetail;
-
+    const questionDetail =
+        location.state?.questionDetail ||
+        JSON.parse(sessionStorage.getItem('questionDetail'));
+    const initialColDetail =
+        location.state?.colDetail ||
+        JSON.parse(sessionStorage.getItem('colDetail'));
     const [colDetail, setColDetail] = useState(() => {
         const savedColDetail = localStorage.getItem('colDetail');
         return savedColDetail ? JSON.parse(savedColDetail) : initialColDetail;

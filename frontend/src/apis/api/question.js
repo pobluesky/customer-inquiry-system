@@ -269,7 +269,10 @@ export const deleteQuestionByUserId = async (userId, questionId) => {
 
         return json;
     } catch (error) {
-        console.error('질문 삭제(고객사용) API ERROR: ', error.message || error);
+        console.error(
+            '질문 삭제(고객사용) API ERROR: ',
+            error.message || error,
+        );
         throw error;
     }
 };
@@ -289,7 +292,10 @@ export const deleteQuestionByUserIdForManager = async (questionId) => {
 
         return json;
     } catch (error) {
-        console.error('질문 삭제(담당자용) API ERROR: ', error.message || error);
+        console.error(
+            '질문 삭제(담당자용) API ERROR: ',
+            error.message || error,
+        );
         throw error;
     }
 };
