@@ -33,16 +33,18 @@ const MyInquiryList = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [inquiryType, setInquiryType] = useState('품질+견적 문의');
     const [userInfo, setUserInfo] = useState(null);
+    const [commonCount, setCommonCount] = useState(null);
+    const [quoteCount, setQuoteCount] = useState(null);
+
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
 
     useEffect(() => {
         if (userInfo) {
             fetchInquiries();
         }
     }, [inquiryType, userInfo, role]);
-
-    useEffect(() => {
-        fetchUserInfo();
-    }, []);
 
     useEffect(() => {
         if (inquiries.length > 0) {
@@ -54,21 +56,40 @@ const MyInquiryList = () => {
     const fetchInquiries = async () => {
         if (!userInfo) return;
         try {
-            if (role === 'sales') {
-                const params = {
-                    salesManagerName: userInfo.name,
-                    inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
-                };
-                const data = await getSalesManagerInquiriesByParameter(params);
-                setInquiries(data);
-            } else if (role === 'quality') {
-                const params = {
-                    qualityManagerName: userInfo.name,
-                    inquiryType: inquiryType === 'COMMON_INQUIRY',
-                };
-                const data = await getQualityManagerInquiriesByParameter(params);
-                setInquiries(data);
+            let data, quoteCount, commonCount;
+
+            const params = {
+                inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
+            };
+            const quoteParams = {
+                inquiryType: 'QUOTE_INQUIRY',
+                salesManagerName: userInfo.name,
             }
+            const commonParams = {
+                inquiryType: 'COMMON_INQUIRY',
+            }
+
+            if (role === 'sales') {
+                params.salesManagerName = userInfo.name;
+                commonParams.salesManagerName = userInfo.name;
+                data = await getSalesManagerInquiriesByParameter(params);
+
+                quoteCount = await getSalesManagerInquiriesByParameter(quoteParams);
+                setQuoteCount(quoteCount.length);
+
+                commonCount = await getSalesManagerInquiriesByParameter(commonParams);
+                setCommonCount(commonCount.length);
+            } else if (role === 'quality') {
+                params.qualityManagerName = userInfo.name;
+                commonParams.qualityManagerName = userInfo.name;
+
+                data = await getQualityManagerInquiriesByParameter(params);
+                commonCount = await getQualityManagerInquiriesByParameter(commonParams);
+                setCommonCount(commonCount.length);
+            }
+
+            setInquiries(data);
+
         } catch (error) {
             console.error('Error fetching inquiries:', error);
         } finally {
@@ -173,10 +194,23 @@ const MyInquiryList = () => {
                         aria-label="문의 유형 선택"
                     >
                         <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }}>
-                            품질+견적 문의
+                            품질+견적 문의 {commonCount} 건
                         </ToggleButton>
                         <ToggleButton value="견적 문의" aria-label="견적 문의" sx={{ fontWeight: '600' }}>
-                            견적 문의
+                            견적 문의 {quoteCount} 건
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Box>
+            )}
+            {role === 'quality' && (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                    <ToggleButtonGroup
+                        value={inquiryType}
+                        exclusive
+                        aria-label="문의 유형 선택"
+                    >
+                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }} disabled>
+                            품질+견적 문의 {commonCount} 건
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
