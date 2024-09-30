@@ -47,11 +47,17 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { assignQualityManagerByUserId } from '../../apis/api/manager';
 import { CircularProgress, Grid } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
     const navigate = useNavigate();
+
+    const {
+        formState: { errors },
+        setValue,
+    } = useForm();
 
     const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
@@ -348,6 +354,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
             ...prevData,
             [field]: value
         }));
+        setValue(field, value);
     };
 
     useEffect(() => {

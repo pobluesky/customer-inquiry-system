@@ -92,6 +92,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             ...prevData,
             [field]: value
         }));
+        setValue(field, value);
     };
 
     const handleInquirySubmit = async (event) => {
@@ -180,14 +181,6 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         handleFormDataChange('inquiryType', 'COMMON_INQUIRY');
         handleFormDataChange('productType', 'WIRE_ROD');
         handleFormDataChange('salesPerson', 'GEUMGANG');
-        setValue('additionalRequests', '추가사항으로 견적서 요청 드립니다.');
-        setValue('corporate', 'GG');
-        setValue('country', 'KOREA');
-        setValue('customerRequestDate', '2024-10-21');
-        setValue('industry', 'ELECTRIC');
-        setValue('inquiryType', 'COMMON_INQUIRY');
-        setValue('productType', 'WIRE_ROD');
-        setValue('salesPerson', 'GEUMGANG');
     }
 
     const handleManagerSelect = (selectedData) => {

@@ -33,11 +33,17 @@ import {
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
 import { CircularProgress, Grid } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
     const navigate = useNavigate();
+
+    const {
+        formState: { errors },
+        setValue,
+    } = useForm();
 
     const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
@@ -232,6 +238,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             ...prevData,
             [field]: value
         }));
+        setValue(field, value);
     };
 
     useEffect(() => {
