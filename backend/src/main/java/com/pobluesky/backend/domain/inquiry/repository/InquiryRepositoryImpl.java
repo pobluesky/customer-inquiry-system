@@ -170,6 +170,8 @@ public class InquiryRepositoryImpl implements InquiryRepositoryCustom {
                     inquiry.industry,
                     salesManager.name.as("salesManagerName"),
                     qualityManager.name.as("qualityManagerName"),
+                    salesManager.department.as("salesManagerDepartment"),
+                    qualityManager.department.as("qualityManagerDepartment"),
                     inquiry.createdDate
                 )
             )
