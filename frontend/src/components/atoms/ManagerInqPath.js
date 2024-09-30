@@ -5,7 +5,6 @@ import { _Link } from '../../assets/css/Inquiry.css';
 
 function ManagerInqPath({ largeCategory, mediumCategory, smallCategory, role }) {
     const mediumUrl = `/inq-list/${role}`;
-    const smallUrl = `/inq-list/${role}/:id`;
 
     return (
         <div
@@ -21,7 +20,9 @@ function ManagerInqPath({ largeCategory, mediumCategory, smallCategory, role }) 
             <Link to={mediumUrl} className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
-            <img src={arrow} alt="arrow" />
+            {smallCategory && (
+                <img src={arrow} alt="arrow" />
+            )}
             <span>{smallCategory}</span>
         </div>
     );
