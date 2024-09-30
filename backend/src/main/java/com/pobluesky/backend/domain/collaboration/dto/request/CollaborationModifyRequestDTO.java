@@ -5,6 +5,7 @@ public record CollaborationModifyRequestDTO(
     Long colResId,
     String colContents,
     Boolean isAccepted,
-    String colReply
+    String colReply,
+    Boolean isFileDeleted
 ) {
 }

@@ -249,7 +249,21 @@ public class CollaborationService {
         validateResponseManager(collaboration, requestDTO.colResId(), userId);
 
         collaboration.modifyCollaborationContents(requestDTO.colContents());
-        updateFile(collaboration, file);
+
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        boolean isFileDeleted = requestDTO.isFileDeleted() != null && requestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+        collaboration.updateFiles(fileName, filePath);
 
         if (requestDTO.isAccepted() != null) {
             collaboration.updateCollaborationStatus(requestDTO.isAccepted());
@@ -304,9 +318,6 @@ public class CollaborationService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
-        }else {
-            fileName = null;
-            filePath = null;
         }
 
         collaboration.updateFiles(fileName, filePath);
