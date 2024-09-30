@@ -67,8 +67,4 @@ public class OcrService {
             return detectedText.toString();
         }
     }
-
-    private String generateUniqueId() {
-        return java.util.UUID.randomUUID().toString();
-    }
 }
