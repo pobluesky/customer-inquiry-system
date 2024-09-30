@@ -11,7 +11,7 @@ import {
     LibraryAddCheck as LibraryAddCheckIcon,
 } from '@mui/icons-material';
 
-const commonSteps = [
+export const commonSteps = [
     { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
     { id: 2, label: '문의접수', icon: <InboxIcon /> },
     { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },
@@ -21,7 +21,7 @@ const commonSteps = [
     { id: 7, label: '최종검토완료', icon: <LibraryAddCheckIcon /> }
 ];
 
-const quoteSteps = [
+export const quoteSteps = [
     { id: 1, label: '문의제출', icon: <MailOutlineIcon /> },
     { id: 2, label: '문의접수', icon: <InboxIcon /> },
     { id: 3, label: '1차검토완료', icon: <CheckBoxIcon /> },

@@ -137,3 +137,12 @@ export const IndustryOptions = [
     { label: 'Vessel', value: 'VESSEL' },
     { label: 'Beam', value: 'BEAM' },
 ];
+
+export const Departments = {
+    CRM: "냉연마케팅실",
+    HWM: "열연선재마케팅실",
+    EM: "에너지조선마케팅실",
+    CMM: "자동차소재마케팅실",
+    SFM: "강건재가전마케팅실",
+    SM: "스테인리스마케팅실",
+};
