@@ -34,7 +34,6 @@ public class OcrService {
 
             return textResults;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CommonException(ErrorCode.EXTERNAL_SERVER_ERROR);
         }
     }
@@ -56,7 +55,6 @@ public class OcrService {
 
             for (AnnotateImageResponse res : responses) {
                 if (res.hasError()) {
-                    System.out.format("Error: %s%n", res.getError().getMessage());
                     throw new CommonException(ErrorCode.OCR_PROCESS_FAIL);
                 }
 
