@@ -38,16 +38,6 @@ public class ChatController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/upload-excel")
-//    public ResponseEntity<JsonResult> processExcel(
-//        @RequestParam("file") MultipartFile file
-//    ) {
-//        //String imagePath = excelToImageService.convertExcelToImage(file);
-//
-//        return ResponseEntity.status(HttpStatus.OK)
-//            .body(ResponseFactory.getSuccessJsonResult(imagePath));
-//    }
-
     @PostMapping("/detect-text")
     public ResponseEntity<JsonResult> processPdf(
         @RequestParam("file") MultipartFile file
