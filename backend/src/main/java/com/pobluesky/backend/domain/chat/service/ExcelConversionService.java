@@ -38,7 +38,7 @@ public class ExcelConversionService {
 
     public String convertExcelToImage(InputStream inputStream, String uniqueId) throws Exception {
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
-            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트만 처리
+            Sheet sheet = workbook.getSheetAt(0);
             BufferedImage image = convertSheetToImage(sheet);
             return uploadToGcs(image, uniqueId);
         }
@@ -59,7 +59,7 @@ public class ExcelConversionService {
         g2d.fillRect(0, 0, imageWidth, imageHeight);
 
         g2d.setColor(Color.BLACK);
-        Font font = new Font("Arial", Font.PLAIN, 14);
+        Font font = new Font("Arial", Font.PLAIN, 15);
         g2d.setFont(font);
 
         for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
@@ -72,7 +72,6 @@ public class ExcelConversionService {
                 }
             }
         }
-
         g2d.dispose();
         return image;
     }
@@ -105,13 +104,11 @@ public class ExcelConversionService {
         double value = cell.getNumericCellValue();
 
         if (formatString.contains("$") || formatString.contains("￦")) {
-            // 통화 형식
             DecimalFormat df = new DecimalFormat("#,##0");
             String formattedValue = df.format(value);
             String currencySymbol = formatString.contains("￦") ? "￦" : "$";
             return currencySymbol + formattedValue;
         } else if(formatString.contains("%")) {
-            // 백분율 형식 (= 열연 타입)
             DecimalFormat df = new DecimalFormat("#0.##");
             return df.format(value * 100) + "%";
         } else {
@@ -123,7 +120,7 @@ public class ExcelConversionService {
     private String uploadToGcs(BufferedImage image, String uniqueId) throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ImageIO.write(image, "jpg", os);
+        ImageIO.write(image, "png", os);
         byte[] imageBytes = os.toByteArray();
 
         String blobName = uniqueId + ".png";

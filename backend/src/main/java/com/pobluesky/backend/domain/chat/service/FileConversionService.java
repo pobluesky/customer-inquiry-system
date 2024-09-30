@@ -34,7 +34,6 @@ public class FileConversionService {
                     throw new CommonException(ErrorCode.UNSUPPORTED_FILE_TYPE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CommonException(ErrorCode.FILE_CONVERSION_ERROR);
         }
     }
@@ -45,11 +44,11 @@ public class FileConversionService {
 
     private String getFileExtension(String fileName) {
         if (fileName == null) {
-            throw new CommonException(ErrorCode.UNSUPPORTED_FILE_TYPE);
+            throw new CommonException(ErrorCode.INVALID_FILE_NAME);
         }
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            throw new CommonException(ErrorCode.UNSUPPORTED_FILE_TYPE);
+            throw new CommonException(ErrorCode.INVALID_FILE_NAME);
         }
         return fileName.substring(lastIndexOf + 1);
     }
