@@ -3,12 +3,16 @@ package com.pobluesky.backend.domain.chat.service;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.pobluesky.backend.global.error.CommonException;
+import com.pobluesky.backend.global.error.ErrorCode;
 import java.awt.Color;
+import java.awt.Font;
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import java.awt.Font;
+
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 @Service
+@RequiredArgsConstructor
 public class ExcelConversionService {
 
     private final Storage storage;
@@ -117,13 +122,25 @@ public class ExcelConversionService {
 
     private String uploadToGcs(BufferedImage image, String uniqueId) throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", os);
+
+        ImageIO.write(image, "jpg", os);
         byte[] imageBytes = os.toByteArray();
 
-        String gcsPath = String.format("excel_images/%s/excel.png", uniqueId);
-        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, gcsPath).setContentType("image/png").build();
-        storage.create(blobInfo, imageBytes);
+        String blobName = uniqueId + ".png";
+        String gcsPath = "gs://" + bucketName + "/" + blobName;
 
-        return String.format("gs://%s/%s", bucketName, gcsPath);
+        try {
+            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName)
+                .setContentType("image/png")
+                .build();
+
+            storage.create(blobInfo, imageBytes);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommonException(ErrorCode.UPLOAD_FAIL_TO_GOOGLE);
+        }
+        return gcsPath;
     }
 }
