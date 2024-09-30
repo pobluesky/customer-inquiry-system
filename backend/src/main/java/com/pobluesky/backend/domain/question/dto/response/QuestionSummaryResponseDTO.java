@@ -1,12 +1,10 @@
 package com.pobluesky.backend.domain.question.dto.response;
 
-import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.question.entity.Question;
 import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import lombok.Builder;
 
@@ -31,8 +29,6 @@ public record QuestionSummaryResponseDTO(
 
     Long managerId,
 
-    Optional<ColStatus> colStatus,
-
     Boolean isActivated
 ) {
     public static QuestionSummaryResponseDTO from(Question question) {
@@ -47,8 +43,6 @@ public record QuestionSummaryResponseDTO(
             .questionCreatedAt(question.getCreatedDate())
             .answerCreatedAt(question.getAnswer() != null ? question.getAnswer().getCreatedDate() : null)
             .managerId(question.getAnswer() != null ? question.getAnswer().getManager().getUserId() : null)
-            .colStatus(Optional.ofNullable(question.getCollaboration())
-                .map(collaboration -> collaboration.getColStatus()))
             .isActivated(question.getIsActivated())
             .build();
     }

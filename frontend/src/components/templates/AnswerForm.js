@@ -12,7 +12,6 @@ import {
     getAnswerByQuestionIdForManager,
 } from '../../apis/api/answer';
 import { getFileDownloadUrl } from '../../apis/api/file';
-import { getCollaborationDetailStatus } from '../../apis/api/collaboration';
 import { getCookie } from '../../apis/utils/cookies';
 
 export default function AnswerForm() {
@@ -27,10 +26,10 @@ export default function AnswerForm() {
 
     const [questionDetail, setQuestionDetail] = useState([]);
     const [answerDetail, setAnswerDetail] = useState([]);
-    const [colPossible, setColPossible] = useState(false);
+    const [colPossible, setColPossible] = useState(true);
 
     const [isQuestionLoading, setQuestionLoading] = useState(true);
-    const [isAnswerOrColLoading, setAnswerOrColLoading] = useState(true);
+    const [isAnswerLoading, setAnswerLoading] = useState(true);
 
     const [secretPath, setSecretPath] = useState('');
 
@@ -49,11 +48,13 @@ export default function AnswerForm() {
                           );
                           setSecretPath(url);
                       }
-
+                      if (response.data.colStatus != null) {
+                          setColPossible(false);
+                      }
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          setAnswerOrColLoading(false);
+                          setAnswerLoading(false);
                       }
                   } catch (error) {
                       console.log('고객사 질문 상세 조회 실패: ', error);
@@ -73,11 +74,13 @@ export default function AnswerForm() {
                           );
                           setSecretPath(url);
                       }
-
+                      if (response.data.colStatus != null) {
+                          setColPossible(false);
+                      }
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
                       } else {
-                          fetchGetColDetailStatus(questionId);
+                          setAnswerLoading(false);
                       }
                   } catch (error) {
                       console.log('담당자 질문 상세 조회 실패: ', error);
@@ -98,7 +101,7 @@ export default function AnswerForm() {
                   } catch (error) {
                       console.log('고객사 답변 상세 조회 실패: ', error);
                   } finally {
-                      setAnswerOrColLoading(false);
+                      setAnswerLoading(false);
                   }
               }
             : async (questionId) => {
@@ -110,25 +113,13 @@ export default function AnswerForm() {
                   } catch (error) {
                       console.log('담당자 답변 상세 조회 실패: ', error);
                   } finally {
-                      setAnswerOrColLoading(false);
+                      setAnswerLoading(false);
                   }
               };
 
-    // 협업 상태 상세 조회
-    const fetchGetColDetailStatus = async (questionId) => {
-        try {
-            await getCollaborationDetailStatus(questionId);
-            setColPossible(false); // 진행 중인 협업 존재
-            setAnswerOrColLoading(false);
-        } catch (error) {
-            setColPossible(true); // 진행 중인 협업 없음
-            setAnswerOrColLoading(false);
-        }
-    };
-
     return (
         <>
-            {isQuestionLoading || isAnswerOrColLoading ? (
+            {isQuestionLoading || isAnswerLoading ? (
                 <Box
                     sx={{
                         display: 'flex',

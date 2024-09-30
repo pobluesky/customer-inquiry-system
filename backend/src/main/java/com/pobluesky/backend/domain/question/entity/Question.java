@@ -2,8 +2,8 @@ package com.pobluesky.backend.domain.question.entity;
 
 import com.pobluesky.backend.domain.answer.entity.Answer;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.user.entity.Customer;
+import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.global.BaseEntity;
 
 import jakarta.persistence.*;
@@ -30,10 +30,6 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Customer customer; // 고객사 번호
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "col_id")
-    private Collaboration collaboration; // 협업 번호
-
     private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -55,13 +51,17 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Answer answer;
 
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "col_id")
+    private Collaboration collaboration; // 협업 번호
+
     private Boolean isActivated;
 
     @Builder
     private Question(
         Inquiry inquiry,
-        Collaboration collaboration,
         Customer customer,
+        Collaboration collaboration,
         String title,
         String contents,
         String fileName,
@@ -70,8 +70,8 @@ public class Question extends BaseEntity {
         QuestionType type
     ) {
         this.inquiry = inquiry;
-        this.collaboration = collaboration;
         this.customer = customer;
+        this.collaboration = collaboration;
         this.title = title;
         this.contents = contents;
         this.fileName = fileName;
