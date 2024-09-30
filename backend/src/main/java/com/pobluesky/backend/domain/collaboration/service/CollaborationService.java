@@ -111,26 +111,6 @@ public class CollaborationService {
         return CollaborationDetailResponseDTO.from(collaboration);
     }
 
-    @Transactional(readOnly = true)
-    public CollaborationDetailResponseDTO getCollaborationByIdForStatus(
-        String token,
-        Long questionId
-    ) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
-
-        Collaboration collaboration = collaborationRepository.findByQuestionId(
-            question
-        ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
-
-        return CollaborationDetailResponseDTO.from(collaboration);
-    }
-
     @Transactional
     public CollaborationResponseDTO createCollaboration(
         String token,
