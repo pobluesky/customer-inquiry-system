@@ -1,20 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Alert, Button } from '@mui/material';
+import { Alert, Button, Chip, Modal, Box, Fade } from '@mui/material';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
     fileUploadContainer,
     fileUploadText,
     uploadingIndicator,
-    loader,
     progressBarContainer,
     progressBar,
     progressText,
-    fileName,
-    modalOverlay,
-    modalContent,
-    modalContentComplete,
     Player_Wrapper,
     React_Player,
+    gradientText,
 } from '../../assets/css/FileUpload.css';
 import { postOCR } from '../../apis/api/inquiry';
 import { useAuth } from '../../hooks/useAuth';
@@ -138,11 +135,28 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                     파일 업로드
                 </Button>
 
-                {isModalOpen && !isUploadComplete && (
-                    <div className={modalOverlay} onClick={closeModal}>
-                        <div
-                            className={modalContent}
+                <Modal
+                    open={isModalOpen && !isUploadComplete}
+                    onClose={closeModal}
+                    aria-labelledby="uploading-modal-title"
+                    aria-describedby="uploading-modal-description"
+                    closeAfterTransition
+                >
+                    <Fade in={isModalOpen && !isUploadComplete}>
+                        <Box
                             onClick={(e) => e.stopPropagation()}
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                bgcolor: 'background.paper',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: '15px',
+                                textAlign: 'center',
+                                width: '400px',
+                            }}
                         >
                             {isUploading && !isUploadComplete && (
                                 <div className={uploadingIndicator}>
@@ -161,14 +175,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                     >
                                         &times;
                                     </button>
-                                    {/* 기존 로딩바 */}
-                                    {/* <div
-                                        className={`loaderContainer ${
-                                            isUploadComplete ? 'hidden' : ''
-                                        }`}
-                                    >
-                                        <div className={loader}></div>
-                                    </div> */}
                                     {/* 로딩 비디오 */}
                                     <div className={Player_Wrapper}>
                                         <ReactPlayer
@@ -183,15 +189,30 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                             className={React_Player}
                                         />
                                     </div>
-                                    <p className={fileName}>{file?.name}</p>
-                                    <p className={fileUploadText}>
+                                    <Chip
+                                        icon={<InsertDriveFileIcon sx={{ color: '#03507D !important' }} />}
+                                        label={file?.name}
+                                        variant="outlined"
+                                        sx={{
+                                            margin: '25px 0 20px 0',
+                                            color: '#03507D',
+                                            borderColor: '#03507D',
+                                            backgroundColor: '#f3f3f3',
+                                            fontSize: '14px',
+                                            fontWeight: '700',
+                                            padding: '20px 10px 20px 10px',
+                                            borderRadius: '15px',
+                                        }}
+                                    />
+                                    <p className={gradientText}>
                                         AI 기술을 활용해 내역을 등록 중입니다.
                                     </p>
                                     <div className={progressBarContainer}>
-                                        <div
+                                    <div
                                             className={progressBar}
                                             style={{
                                                 width: `${uploadPercentage}%`,
+                                                transition: 'width 0.3s ease, height 0.3s ease',
                                             }}
                                         ></div>
                                     </div>
@@ -200,32 +221,66 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                     </p>
                                 </div>
                             )}
-                        </div>
-                    </div>
-                )}
+                        </Box>
+                    </Fade>
+                </Modal>
             </div>
 
             {isModalOpen && isUploadComplete && (
-                <div className={modalOverlay} onClick={closeModal}>
-                    <div
-                        className={modalContentComplete}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <CheckCircleIcon
-                            style={{
-                                margin: '40px 0 0 0',
-                                fontSize: 60,
-                                color: '#00c6ff',
-                                opacity: isUploadComplete ? 1 : 0,
-                                transition: 'opacity 0.5s ease',
+                <Modal
+                    open={isUploadComplete}
+                    onClose={closeModal}
+                    aria-labelledby="upload-complete-modal-title"
+                    aria-describedby="upload-complete-modal-description"
+                    closeAfterTransition
+                >
+                    <Fade in={isUploadComplete}>
+                        <Box
+                            onClick={(e) => e.stopPropagation()}
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                bgcolor: 'background.paper',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: '15px',
+                                textAlign: 'center',
+                                width: '300px',
+                                padding: '35px 25px 35px 25px',
                             }}
-                        />
-                        <div className={fileUploadText}>업로드 완료</div>
-                        <div className={progressText}>
-                            업로드된 데이터를 확인해 주세요.
-                        </div>
-                    </div>
-                </div>
+                        >
+                            <CheckCircleIcon
+                                style={{
+                                    fontSize: 60,
+                                    color: '#00c6ff',
+                                    opacity: isUploadComplete ? 1 : 0,
+                                }}
+                            />
+                            <div className={fileUploadText}>업로드 완료</div>
+                            <div className={progressText}>
+                                업로드된 데이터를
+                                확인해 주세요.
+                            </div>
+                            <Chip
+                                icon={<InsertDriveFileIcon sx={{ color: '#03507D !important' }} />}
+                                label={file?.name}
+                                variant="outlined"
+                                sx={{
+                                    margin: '25px 0 0 0',
+                                    color: '#03507D',
+                                    borderColor: '#03507D',
+                                    backgroundColor: '#f3f3f3',
+                                    fontSize: '14px',
+                                    fontWeight: '700',
+                                    padding: '20px 10px 20px 10px',
+                                    borderRadius: '15px',
+                                }}
+                            />
+                        </Box>
+                    </Fade>
+                </Modal>
             )}
         </>
     );
