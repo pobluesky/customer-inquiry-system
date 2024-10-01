@@ -32,7 +32,7 @@ function RequestBar({
     const navigate = useNavigate();
     const { role } = useAuth();
     const { id } = useParams();
-    const realId = id.slice(-2);
+    const realId = id ? id.slice(-2) : '';
 
     const buttonConfig = {
         'Inquiry 등록0': ['초기화', '검토의뢰'],
@@ -53,7 +53,7 @@ function RequestBar({
         buttons = buttonConfig[requestBarTitle];
     }
 
-    const displayName = requestBarTitle?.slice(0, -1);
+    const displayName = requestBarTitle ? requestBarTitle.slice(0, -1) : '';
 
     const updateProgress = async (nextProgress) => {
         try {
