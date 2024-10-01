@@ -1,6 +1,6 @@
 package com.pobluesky.chat.dto.response;
 
-import com.pobluesky.chat.type.ChatInquirySubType;
+import com.pobluesky.chat.entity.type.ChatInquirySubType;
 
 public enum ProductInquiryResponse {
     LINE_ITEM("제품 유형에 따라 등록되어야 할 라인아이템 내역이 달라집니다. 자세한 내용은 inquiry 등록 화면에서 확인 가능합니다."),

@@ -1,6 +1,6 @@
 package com.pobluesky.chat.dto.response;
 
-import com.pobluesky.chat.type.ChatInquirySubType;
+import com.pobluesky.chat.entity.type.ChatInquirySubType;
 
 public enum RegistrationInquiryResponse {
     METHOD("localshot:9090/inq-list/customer 접속 후 > 로그인 > inquiry 등록 단계를 통해 제품 유형별 맞춤 주문이 가능합니다."),

@@ -1,6 +1,6 @@
 package com.pobluesky.chat.dto.response;
 
-import com.pobluesky.chat.type.ChatInquirySubType;
+import com.pobluesky.chat.entity.type.ChatInquirySubType;
 
 public enum OrderInquiryResponse {
     SUBMISSION("inquiry 등록일 기준 최소 2주 예상됩니다."),

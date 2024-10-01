@@ -1,4 +1,4 @@
-package com.pobluesky.chat.type;
+package com.pobluesky.chat.entity.type;
 
 public enum ChatInquiryType {
     ORDER("Order", "주문 문의"),
