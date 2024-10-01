@@ -27,6 +27,7 @@ function RequestBar({
     isPreviewData,
     handleIsPreview,
     onAllocate,
+    isUpdate,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
@@ -44,7 +45,13 @@ function RequestBar({
         'Inquiry 조회8': ['닫기'],
     };
 
-    const buttons = buttonConfig[requestBarTitle];
+    let buttons;
+    if (requestBarTitle === 'Inquiry 조회0') {
+        buttons = isUpdate ? buttonConfig['Inquiry 조회7'] : buttonConfig['Inquiry 조회8'];
+    } else {
+        buttons = buttonConfig[requestBarTitle];
+    }
+
     const displayName = requestBarTitle?.slice(0, -1);
 
     const updateProgress = async (nextProgress) => {
