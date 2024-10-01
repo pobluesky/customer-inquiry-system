@@ -146,7 +146,12 @@ public class AnswerService {
         String fileName = answer.getFileName();
         String filePath = answer.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = dto.isFileDeleted() != null && dto.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -178,7 +183,7 @@ public class AnswerService {
     @Transactional(readOnly = true)
     public MobileAnswerSummaryResponseDTO getAnswerByQuestionId(Long questionId) {
         Answer answer = answerRepository.findByQuestion_QuestionId(questionId)
-                .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ErrorCode.ANSWER_NOT_FOUND));
 
         return MobileAnswerSummaryResponseDTO.from(answer);
     }
