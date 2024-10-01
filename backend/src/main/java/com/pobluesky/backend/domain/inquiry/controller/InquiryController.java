@@ -265,17 +265,6 @@ public class InquiryController {
         return ResponseEntity.ok(response);
     }
 
-//    @PutMapping("/managers/inquiries/{inquiryId}/allocate")
-//    @Operation(summary = "담당자 Inquiry 할당")
-//    public ResponseEntity<InquiryAllocateResponseDTO> allocateManager(
-//        @RequestHeader("Authorization") String token,
-//        @PathVariable Long inquiryId
-//    ) {
-//        InquiryAllocateResponseDTO response = inquiryService.allocateManager(token, inquiryId);
-//
-//        return ResponseEntity.ok(response);
-//    }
-
     @GetMapping("customers/inquiries/{userId}/{productType}/all")
     @Operation(summary = "제품 유형에 따른 고객의 전체 Inquiry 목록 조회")
     public ResponseEntity<JsonResult> getAllInquiriesByProductType(

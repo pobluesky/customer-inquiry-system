@@ -29,6 +29,7 @@ import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,8 +43,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -294,28 +297,6 @@ public class InquiryService {
 
         return InquiryAllocateResponseDTO.from(inquiry);
     }
-
-//    @Transactional
-//    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
-//        Manager manager = validateManager(token);
-//
-//        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-//            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-//
-//        if (manager.getRole() == UserRole.SALES) {
-//            if (inquiry.getProgress() == Progress.SUBMIT) {
-//                inquiry.allocateSalesManager(manager);
-//                inquiry.updateProgress(Progress.RECEIPT);
-//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-//        } else {
-//            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
-//                inquiry.allocateQualityManager(manager);
-//                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
-//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-//        }
-//
-//        return InquiryAllocateResponseDTO.from(inquiry);
-//    }
 
     @Transactional
     public InquiryResponseDTO updateInquiryById(
