@@ -103,7 +103,6 @@ public class QuestionService {
         QuestionType type,
         String title,
         Long questionId,
-        Long managerId,
         LocalDate startDate,
         LocalDate endDate) {
 
@@ -122,7 +121,6 @@ public class QuestionService {
             questionId,
             startDate,
             endDate,
-            managerId,
             sortBy);
     }
 

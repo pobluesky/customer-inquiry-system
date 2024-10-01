@@ -35,6 +35,7 @@ public class FileService {
     Dotenv dotenv = Dotenv.load();
 
     // private final String bucketName = System.getenv("S3_BUCKET_NAME");
+
     private final String bucketName = dotenv.get("S3_BUCKET_NAME");
 
     private final String cloudFrontDomainName = dotenv.get("CLOUDFRONT_NAME");
@@ -42,8 +43,6 @@ public class FileService {
     private final String keyPairId = dotenv.get("CLOUDFRONT_KEYPAIRID");
 
     private final String privateKeyFilePath = dotenv.get("CLOUDFRONT_KEYPATH");
-
-
 
     public FileInfo uploadFile(MultipartFile file) {
         String originName = file.getOriginalFilename();

@@ -52,7 +52,6 @@ export default function ColReqInput({
                           },
                       });
                   }, '1000');
-                  resetForm();
               } catch (error) {
                   console.error('협업 요청 실패: ', error);
               }
@@ -85,10 +84,6 @@ export default function ColReqInput({
                   console.log('협업 요청 수정 실패: ', error);
               }
           };
-
-    const resetForm = () => {
-        setEditorValue('');
-    };
 
     const checkValidate = () => {
         if (!colResManagerName) {

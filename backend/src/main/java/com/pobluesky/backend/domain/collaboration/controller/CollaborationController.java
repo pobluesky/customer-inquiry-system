@@ -117,21 +117,6 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
-    @GetMapping("/{questionId}")
-    @Operation(summary = "협업 진행 중임을 확인하기 위한 협업 단건 조회")
-    public ResponseEntity<JsonResult> getCollaborationForStatus(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long questionId
-    ) {
-        CollaborationDetailResponseDTO response = collaborationService.getCollaborationByIdForStatus(
-            token,
-            questionId
-        );
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
     @Operation(
         summary = "collaborationId 별 협업 수락/거절 결정",
         description = "협업 요청을 받은 담당자만 수정 가능"

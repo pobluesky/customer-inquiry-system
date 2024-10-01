@@ -11,11 +11,11 @@ VALUES
 -- MANAGERS
 INSERT INTO managers (name, email, password, phone, is_activated, emp_no, role, department, created_date, modified_date, security_role)
 VALUES
-    ('박수아', 'alice@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-2222-3333', true, 'EMP001', 'SALES', 'SALES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
-    ('이현우', 'bob@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-5555-6666', true, 'EMP002', 'QUALITY', 'IT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
-    ('김우진', 'charlie@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
-    ('신보나', 'bona@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'QUALITY', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
-    ('최민기', 'danny@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'HR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER');
+    ('박수아', 'alice@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-2222-3333', true, 'EMP001', 'SALES', 'CRM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('이현우', 'bob@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-5555-6666', true, 'EMP002', 'QUALITY', 'HWM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('김우진', 'charlie@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'CMM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('신보나', 'bona@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'QUALITY', 'CMM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER'),
+    ('최민기', 'danny@company.com', '{bcrypt}$2a$12$makTqSpEOhAFXB.dGnR3zOuF.9z9U0TyItX/b4hqcYzd4zk/egTMS', '010-0888-9999', true, 'EMP003', 'SALES', 'CMM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'USER');
 
 -- INQUIRY
 INSERT INTO inquiry (user_id, sales_manager_id, quality_manager_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, is_favorite, created_date, modified_date)
@@ -36,7 +36,7 @@ VALUES
     (4, 3, 4,'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, false, '2023-08-29 14:22:37.123456+00', '2023-09-18 14:22:37.123456+00'),
     (5, 3, null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, true, '2023-09-29 14:22:37.123456+00', '2023-10-20 14:22:37.123456+00');
 
--- INSERT INTO car_line_items
+-- CAR_LINE_ITEMS
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, order_edge, tolerance, annual_cost, is_activated, created_date, modified_date)
 VALUES
     (1, 'GWANGYANG', 'SEDAN', 'ASTM',  'Hyundai Sonata', '엔진 컨트롤 유닛', 'DASH_PANEL', '2mm', '1500mm', 100, '2023-09-01', '서울', 'Mill Edge', '±0.1mm', '$10,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -68,7 +68,7 @@ VALUES
     (11, 'POHANG', 'TRUCK', 'ANSI',  'Mercedes Actros', '리어 서스펜션', 'DASH_PANEL', '5mm', '2250mm', 230, '2024-05-10', '춘천', 'Slit Edge', '±0.2mm', '$32,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (11, 'GWANGYANG', 'SEDAN', 'ASTM',  'Honda Accord', '전자 제어 유닛', 'FLOOR_PANEL', '2.4mm', '1750mm', 120, '2024-06-01', '서울', 'Mill Edge', '±0.15mm', '$14,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- INSERT INTO coldrolled_line_items
+-- COLDROLLED_LINE_ITEMS
 INSERT INTO coldrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, quantity, expected_deadline, order_edge, in_diameter, out_diameter, sleeve_thickness, tensile_strength, elongation_ratio, hardness, is_activated, created_date, modified_date)
 VALUES
     (4, 'CR', 'JS_SI123', '파이프 소재', '1.5mm', '1200mm', 500, '2024-09-15', 'Mill Edge', '500mm', '600mm', '2mm', '240MPa',  '15%', '180HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -117,7 +117,7 @@ VALUES
     (14, 'CRC', 'JS_SI123', '차량용 프레임', '1.7mm', '1200mm', 600, '2026-01-25', 'Slit Edge', '960mm', '1060mm', '2.2mm', '230MPa', '22%', '170HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (14, 'CRCA', 'JS_SI789', '중장비 커버', '2.8mm', '1750mm', 450, '2026-02-05', 'Mill Edge', '980mm', '1080mm', '2.9mm', '265MPa', '19%', '190HV', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- INSERT INTO hotrolled_line_items
+-- HOTROLLED_LINE_ITEMS
 INSERT INTO hotrolled_line_items (inquiry_id, kind, inq_name, order_category, thickness, width, hardness, flatness, order_edge, quantity, yielding_point, tensile_strength, elongation_ratio, camber, annual_cost, is_activated, created_date, modified_date)
 VALUES
     (2, 'HR', 'JS_SI123', '압력용기', '2mm', '1500mm', '270HV', '15', 'Mill Edge', 300, '250MPa', '400MPa', '20%', '0.3mm', '$10,000', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -157,7 +157,7 @@ VALUES
     (12, 'HRC', 'JS_SI654', '차체 부품', '2.2mm', '1550mm', '300HV', '19', 'Mill Edge', 340, '280MPa', '435MPa', '18%', '0.5mm', '$12,700', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (12, 'HRPO', 'JS_SI987', '파이프라인 구조물', '3.8mm', '1950mm', '355HV', '11', 'Slit Edge', 470, '350MPa', '480MPa', '21%', '0.3mm', '$18,500', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- INSERT INTO wirerod_line_items
+-- WIREROD_LINE_ITEMS
 INSERT INTO wirerod_line_items (inquiry_id, kind, inq_name, order_category, diameter, quantity, expected_deadline, initial_quantity, customer_processing, final_use, transportation_destination, annual_cost, legal_regulatory_review, legal_regulatory_review_detail, final_customer, is_activated, created_date, modified_date)
 VALUES
     (3, 'SWRH', 'JS_SI123', '와이어로프', '8.0mm', 500, '2024-09-15', 100, '냉간 인발', '엘레베이터 와이어로프', '부산', '$15,000', 'approved', 'All checks passed', '(주)현대건설', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -193,7 +193,7 @@ VALUES
     (13, 'SWRH', 'JS_SI123', '스프링', '10.0mm', 600, '2025-10-20', 200, '표면 처리', '자동차 스프링', '인천', '$20,000', 'approved', 'All checks passed', '(주)현대건설', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (13, 'SWRM', 'JS_SI456', '와이어로프', '9.5mm', 500, '2025-11-01', 150, '냉간 인발', '엘레베이터 와이어로프', '광주', '$15,000', 'approved', 'All checks passed', '(주)현대건설', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- INSERT INTO thickplate_line_items
+-- THICKPLATE_LINE_ITEMS
 INSERT INTO thickplate_line_items (inquiry_id, order_purpose, order_info, ladle_ingredient, product_ingredient, seal, grain_size_analysis, show, extra_show, aging_show, curve, additional_requests, hardness, drop_weight_test, ultrasonic_transducer, is_activated, created_date, modified_date)
 VALUES
     (5, '교량용', 'TP001', '마그네시아', 'Carbon', '450 MPa ~ 630 MPa', true, '27 J @ -20°C', '40 J @ -30°C', '35 J @ -40°C', '500 MPa', '최대한 빠른 납부 바람', '200HV', true, false, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -358,57 +358,58 @@ VALUES
     (TRUE, '2024-08-23 10:30:00', 5, '2024-08-23 10:30:00', '협업 요청이 수락되었습니다.');
 
 ALTER TABLE question ALTER COLUMN inquiry_id DROP NOT NULL;
+ALTER TABLE question ALTER COLUMN col_id DROP NOT NULL;
 ALTER TABLE answer ALTER COLUMN inquiry_id DROP NOT NULL;
 
 -- QUESTION
-INSERT INTO question (created_date, inquiry_id, user_id, title, contents, file_name, file_path, type, status, is_activated)
+INSERT INTO question (created_date, inquiry_id, user_id, col_id, title, contents, file_name, file_path, type, status, is_activated)
 VALUES
-    ('2024-08-01 10:00:00', null, 1, '귀사의 고객 서비스 문의 소요 기간에 대한 자세한 정보 요청', '귀사의 서비스를 이용함에 있어, 문의 사항이 발생할 경우 평균적으로 처리되는 소요 기간이 궁금하여 메일을 드립니다. 문의에 대한 답변을 제공해주시는 데 걸리는 평균적인 시간을 알려주시면 감사하겠습니다.', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED', true),
-    ('2024-08-02 11:15:00', null, 2, '귀사의 제품 문의 방법 및 절차에 대한 구체적인 가이드라인 요청', '제품에 대해 문의를 드리고자 하는데, 제품 관련 문의를 진행하는 방법이나 절차에 대해 안내해 주실 수 있을지 궁금합니다. 문의를 위해 참고할 수 있는 웹사이트 링크나 연락처가 있다면 알려주시면 감사하겠습니다.', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'READY', true),
-    ('2024-08-03 14:30:00', 12, 2, '24일에 문의드린 내용에 대해 아직 답변을 받지 못하였습니다.', '며칠 전에 귀사에 선재 제품 관련하여 메일을 드렸으나, 아직 답변을 받지 못하여 다시 한번 문의드립니다. 바쁘신 와중에도 문의에 대해 답변을 주시면 정말 감사하겠습니다. 가능하시다면 답변 예상 시간을 알려주시면 더욱 감사하겠습니다.', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'COMPLETED', true),
-    ('2024-08-03 14:30:00', 14, 4, '귀사의 열연 제품에 대한 품질 관련 상세 가이드라인 요청', '귀사의 선재 제품에 대해 관심이 있어, 이에 대한 자세한 정보를 요청드리고자 메일을 드립니다. 특히, 선재 제품의 규격에 대해 상세한 자료나 카탈로그가 있다면 공유해주시면 감사하겠습니다.', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY', true),
-    ('2024-08-03 14:30:00', 8, 3, '귀사의 후판 제품에 대한 가격 명세 및 최신 가격표 요청', '귀사의 후판 제품에 대해 관심이 있어, 해당 제품의 가격 명세를 요청드리고자 메일을 드립니다. 특정 후판 제품의 가격 정보와 더불어, 제공해주실 수 있는 최신 가격표나 관련 자료가 있다면 함께 전달해주시면 감사하겠습니다.', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'COMPLETED', true),
-    ('2024-08-04 09:00:00', 1, 1, '냉연 제품 주문 후 예상 배송 기간 및 추적 방법에 대한 문의', '최근에 귀사에서 제품을 주문하였는데 현재 배송 상태가 궁금하여 문의드립니다. 제품이 언제쯤 도착할지 예상되는 날짜를 알려주시면 감사하겠습니다. 또한, 배송 관련 추가 정보나 추적 방법이 있다면 함께 안내해 주시면 좋겠습니다.', 'voc_report6.pdf', 'https://cdn.example.com/image1.jpg', 'INQ', 'READY', true),
-    ('2024-08-05 10:00:00', null, 2, '회원 가입 과정에서 발생하는 지속적인 오류 문제 해결 요청', '귀사 웹사이트에서 회원 가입을 진행하던 중, 문제가 발생하여 가입을 완료할 수 없었습니다. 특히, 가입 양식을 제출할 때 오류 메시지가 표시되는 문제가 발생했습니다. 이 문제를 해결하기 위해 어떻게 해야 하는지 안내해 주시면 감사하겠습니다.', 'voc_report7.pdf', 'https://cdn.example.com/image2.jpg', 'SITE', 'COMPLETED', true),
-    ('2024-08-06 11:00:00', 2, 2, '결제 과정에서 발생하는 지속적인 오류 문제 해결 요청', '귀사 웹사이트에서 결제를 진행하던 중, 오류가 발생하여 결제가 완료되지 않았습니다. 특히, 결제 정보 입력 후 결제 실패 메시지가 표시되었습니다. 이 문제를 해결하기 위한 방법을 안내해 주시면 감사하겠습니다.', 'voc_report8.pdf', 'https://cdn.example.com/image3.jpg', 'INQ', 'READY', true),
-    ('2024-08-07 12:00:00', null, 4, '직원의 실수로 계정 삭제 및 복구 가능 여부 문의', '최근에 제 계정에 접근할 수 없는 문제가 발생하여 계정 복구를 요청드립니다. 계정에 로그인하려고 시도하였으나 계정이 잠긴 것 같습니다.', 'voc_report9.pdf', 'https://cdn.example.com/image4.jpg', 'SITE', 'COMPLETED', true),
-    ('2024-08-08 13:00:00', null, 5, '최첨단 기술 지원 요청: "오류 503: 서비스 이용 불가" 문제', '프로그램 실행 중 "서비스 이용 불가"라는 메시지가 나타나며, 이후 소프트웨어가 강제 종료됩니다. 이로 인해 작업이 중단되고 있습니다. 최대한 빠른 해결 부탁드립니다.', 'voc_report10.pdf', 'https://cdn.example.com/image5.jpg', 'ETC', 'READY', true),
-    ('2024-08-09 14:00:00', 5, 5, '선재 제품의 결함으로 인한 환불 요청', '최근에 귀사에서 제품을 구매하였으나, 제품에 결함이 있고 기대했던 성능과 상이하여 환불을 요청드리는 바입니다.', 'voc_report11.pdf', 'https://cdn.example.com/image6.jpg', 'INQ', 'COMPLETED', true),
-    ('2024-08-10 15:00:00', null, 2, '제품 재고 현황 및 수량에 대한 정보 요청', '귀사에서 제공하는 제품의 현재 재고 상태를 확인하고자 메일을 드립니다. 특히, 제품의 현재 재고 수량과 재고 상황에 대한 정보를 제공해주시면 감사하겠습니다.', 'voc_report12.pdf', 'https://cdn.example.com/image7.jpg', 'SITE', 'READY', true),
-    ('2024-08-11 16:00:00', null, 3, '서비스 품질 향상을 위한 개선 요청 및 피드백 제출', '제품 배송 날짜를 함께 공지하는 것에 대해 제안드립니다. 제 피드백이 귀사에 유익하게 사용되기를 바라며, 추가적인 정보나 논의가 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report13.pdf', 'https://cdn.example.com/image8.jpg', 'ETC', 'COMPLETED', true),
-    ('2024-08-12 17:00:00', 8, 3, '후판 제품 배송 주소 변경 요청', '최근 기업이 판교로 이사를 하여, 변경된 주소로 배송이 이루어질 수 있도록 조치해 주시면 감사하겠습니다. 주소 변경이 가능한지, 그리고 추가로 필요한 절차가 있는지 안내해 주시면 좋겠습니다.', 'voc_report14.pdf', 'https://cdn.example.com/image9.jpg', 'INQ', 'READY', true),
-    ('2024-08-13 18:00:00', null, 5, '현재 진행 중인 이벤트 관련 정보 및 참여 방법 문의', '귀사에서 현재 진행 중인 이벤트에 대해 문의드리고자 메일을 작성하였습니다. 이벤트에 참여하기 위한 조건이나 요구 사항이 있다면 안내해 주시면 감사하겠습니다. 이벤트에 참가하기 위한 등록 방법이나 절차에 대한 정보도 부탁드립니다.', 'voc_report15.pdf', 'https://cdn.example.com/image10.jpg', 'SITE', 'COMPLETED', true),
-    ('2024-08-14 09:00:00', null, 1, '회원 탈퇴 요청 및 필요한 절차 안내 문의', '귀사에서 제공하는 서비스의 회원으로 가입되어 있으나, 개인적인 사정으로 인해 회원 탈퇴를 요청드리고자 메일을 작성하였습니다. 탈퇴를 진행하기 위해 필요한 절차나 추가 정보가 있다면 안내해 주시면 감사하겠습니다.', 'voc_report16.pdf', 'https://cdn.example.com/image11.jpg', 'ETC', 'READY', true),
-    ('2024-08-15 10:00:00', 11, 1, '로그인 문제 해결을 위한 지원 요청', '현재 귀사 웹사이트에서 로그인 시 문제가 발생하여 도움을 요청드리고자 메일을 드립니다. 이 문제를 해결하기 위해 어떤 조치를 취해야 하는지 안내해 주시면 감사하겠습니다. 또한, 필요하신 추가 정보가 있다면 언제든지 연락 주시기 바랍니다.', 'voc_report17.pdf', 'https://cdn.example.com/image12.jpg', 'INQ', 'COMPLETED', true),
-    ('2024-08-16 11:00:00', null, 3, '주문 내역 확인 및 현재 상태 안내 요청', '해당 주문의 현재 상태와 상세 내역을 확인할 수 있도록 안내해 주시면 감사하겠습니다. 또한, 주문 관련 추가 정보나 진행 상황에 대해서도 알려주시면 좋겠습니다.', 'voc_report18.pdf', 'https://cdn.example.com/image13.jpg', 'SITE', 'READY', true),
-    ('2024-08-17 12:00:00', 12, 2, '구매한 제품 사용법 및 주요 기능, 안전 주의사항에 대한 설명서 요청', '최근에 귀사에서 구매한 제품의 사용법에 대해 문의드리고자 메일을 작성하였습니다. 제품 사용법, 주요 기능 및 특징, 안전 주의사항, 문제 해결 방법 등등 제품 사용을 원활히 하기 위해 필요한 설명서나 매뉴얼이 있다면 함께 제공해 주시면 감사하겠습니다.', 'voc_report19.pdf', 'https://cdn.example.com/image14.jpg', 'INQ', 'COMPLETED', true),
-    ('2024-08-18 13:00:00', null, 5, '기타 문의 사항에 대한 정보 제공 및 필요한 절차 안내 요청', '이와 관련하여 필요한 정보나 문서가 있다면 제공해 주시면 감사하겠습니다. 또한, 해당 사항에 대한 답변을 받기 위해 특별히 필요한 절차가 있다면 안내해 주시면 좋겠습니다.', 'voc_report20.pdf', 'https://cdn.example.com/image15.jpg', 'ETC', 'READY', true),
-    ('2024-08-19 14:00:00', null, 1, '최근 구매한 제품에 대한 확인서 요청', '최근에 귀사에서 제품을 구매하였으며, 해당 구매에 대한 확인서를 요청드리고자 메일을 드립니다. 구매 확인서는 다음과 같은 정보를 포함해야 합니다: 구매 일자, 주문 번호, 구매한 제품명 및 수량, 구매 금액 등 해당 정보를 포함한 확인서를 이메일로 보내주시면 감사하겠습니다.', 'voc_report21.pdf', 'https://cdn.example.com/image16.jpg', 'SITE', 'COMPLETED', true),
-    ('2024-08-20 15:00:00', 13, 3, '프로그램 실행 중 "오류 503 서비스 이용 불가" 메시지 발생 문제 해결 요청', '프로그램 실행 중 "서비스 이용 불가"라는 메시지가 나타나며, 이후 소프트웨어가 강제 종료됩니다. 이로 인해 작업이 중단되고 있습니다.', 'voc_report22.pdf', 'https://cdn.example.com/image17.jpg', 'INQ', 'READY', true),
-    ('2024-08-21 16:00:00', null, 3, '결제 과정에서 발생한 오류 문제 해결을 위한 도움 요청', '귀사 웹사이트에서 결제를 진행하던 중, 오류가 발생하여 결제가 완료되지 않았습니다. 결제 정보 입력 후 결제 실패 메시지가 표시되었습니다. 이 문제를 해결하기 위한 방법을 안내해 주시면 감사하겠습니다.', 'voc_report23.pdf', 'https://cdn.example.com/image18.jpg', 'ETC', 'COMPLETED', true),
-    ('2024-08-22 17:00:00', null, 4, '서비스에 신규 기능 추가 요청 및 검토 부탁드립니다.', '이와 같은 기능이 추가되면 서비스의 사용 편의성과 효율성이 크게 향상될 것으로 기대됩니다. 기능 추가에 대한 검토를 부탁드리며, 추가적인 정보가 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report24.pdf', 'https://cdn.example.com/image19.jpg', 'SITE', 'READY', true),
-    ('2024-08-23 18:00:00', 14, 4, '서비스 관련 질문 및 추가 정보 요청', '귀사의 서비스를 이용하면서 몇 가지 질문이 있어 메일을 드립니다. 이와 관련하여 필요한 추가 정보나 문서가 있다면 제공해 주시면 감사하겠습니다. 또한, 질문에 대한 답변이 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report25.pdf', 'https://cdn.example.com/image20.jpg', 'INQ', 'COMPLETED', true),
-    ('2024-08-24 09:00:00', null, 1, '귀사 웹사이트 로그인 문제 해결을 위한 도움 요청', '현재 귀사 웹사이트에서 로그인 시 문제가 발생하여 도움을 요청드리고자 메일을 드립니다. 이 문제를 해결하기 위해 어떤 조치를 취해야 하는지 안내해 주시면 감사하겠습니다. 또한, 필요하신 추가 정보가 있다면 언제든지 연락 주시기 바랍니다.', 'voc_report26.pdf', 'https://cdn.example.com/image21.jpg', 'ETC', 'READY', true),
-    ('2024-08-25 10:00:00', null, 2, '할인 코드와 관련된 정보 및 추가 설명 요청', '최근에 귀사에서 제공하는 제품을 구매하거나 이용하고자 하는데, 할인 코드와 관련된 몇 가지 질문이 있어 메일을 드립니다. 이와 관련하여 필요한 정보나 추가적인 설명이 있다면 제공해 주시면 감사하겠습니다. 답변을 기다리며, 추가적인 문의 사항이 있으면 언제든지 연락 주시기 바랍니다.', 'voc_report27.pdf', 'https://cdn.example.com/image22.jpg', 'SITE', 'COMPLETED', true),
-    ('2024-08-26 11:00:00', 15, 5, '계정 권한과 관련된 문제 해결을 위한 지원 요청', '현재 귀사의 시스템에서 계정 권한과 관련된 문제가 발생하여 도움을 요청드리고자 메일을 작성하였습니다. 이 문제를 해결하기 위해 필요한 조치를 안내해 주시면 감사하겠습니다. 또한, 문제 해결을 위한 추가적인 정보가 필요하다면 언제든지 연락 주시기 바랍니다.', 'voc_report28.pdf', 'https://cdn.example.com/image23.jpg', 'INQ', 'READY', true),
-    ('2024-08-27 12:00:00', null, 4, '회원 등급 변경 요청 및 필요한 절차 안내', '현재 귀사의 웹사이트에서 00으로 가입되어 있으며, 00으로 변경을 요청드리고자 메일을 드립니다. 회원 등급 변경을 위해 필요한 절차나 추가로 제공해야 할 정보가 있다면 안내해 주시면 감사하겠습니다. 또한, 등급 변경이 완료된 후 확인 이메일을 보내주시면 좋겠습니다.', 'voc_report29.pdf', 'https://cdn.example.com/image24.jpg', 'ETC', 'COMPLETED', true),
-    ('2024-08-28 13:00:00', null, 5, '최근 구매 기록 조회를 위한 정보 요청', '귀사에서 제공하는 서비스를 이용하며, 최근의 구매 기록을 조회하고자 합니다. 구매 기록을 이메일로 제공해 주시면 감사하겠습니다. 또한, 구매 기록 확인을 위한 추가 절차가 있다면 안내해 주시기 바랍니다.', 'voc_report30.pdf', 'https://cdn.example.com/image25.jpg', 'SITE', 'READY', true);
+    ('2024-08-01 10:00:00', null, 1, null, '귀사의 고객 서비스 문의 소요 기간에 대한 자세한 정보 요청', '귀사의 서비스를 이용함에 있어, 문의 사항이 발생할 경우 평균적으로 처리되는 소요 기간이 궁금하여 메일을 드립니다. 문의에 대한 답변을 제공해주시는 데 걸리는 평균적인 시간을 알려주시면 감사하겠습니다.', 'voc_report1.pdf', 'https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg', 'ETC', 'COMPLETED', true),
+    ('2024-08-02 11:15:00', null, 2, null, '귀사의 제품 문의 방법 및 절차에 대한 구체적인 가이드라인 요청', '제품에 대해 문의를 드리고자 하는데, 제품 관련 문의를 진행하는 방법이나 절차에 대해 안내해 주실 수 있을지 궁금합니다. 문의를 위해 참고할 수 있는 웹사이트 링크나 연락처가 있다면 알려주시면 감사하겠습니다.', 'voc_report2.pdf', 'https://i.namu.wiki/i/slmFMXb1Fchs2zN0ZGOzqfuPDvhRS-H9eBp7Gp613-DNKi6i6Ct7eFkTUpauqv5HAYR97mrNqrvvcCDEyBdL_g.webp', 'ETC', 'READY', true),
+    ('2024-08-03 14:30:00', 12, 2, null, '24일에 문의드린 내용에 대해 아직 답변을 받지 못하였습니다.', '며칠 전에 귀사에 선재 제품 관련하여 메일을 드렸으나, 아직 답변을 받지 못하여 다시 한번 문의드립니다. 바쁘신 와중에도 문의에 대해 답변을 주시면 정말 감사하겠습니다. 가능하시다면 답변 예상 시간을 알려주시면 더욱 감사하겠습니다.', 'voc_report3.pdf', 'https://pimg.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1070042_16367508634846809.jpeg', 'INQ', 'COMPLETED', true),
+    ('2024-08-03 14:30:00', 14, 4, null, '귀사의 열연 제품에 대한 품질 관련 상세 가이드라인 요청', '귀사의 선재 제품에 대해 관심이 있어, 이에 대한 자세한 정보를 요청드리고자 메일을 드립니다. 특히, 선재 제품의 규격에 대해 상세한 자료나 카탈로그가 있다면 공유해주시면 감사하겠습니다.', 'voc_report4.pdf', 'https://image.msscdn.net/images/goods_img/20231006/3610548/3610548_17017424897248_500.jpg', 'INQ', 'READY', true),
+    ('2024-08-03 14:30:00', 8, 3, null, '귀사의 후판 제품에 대한 가격 명세 및 최신 가격표 요청', '귀사의 후판 제품에 대해 관심이 있어, 해당 제품의 가격 명세를 요청드리고자 메일을 드립니다. 특정 후판 제품의 가격 정보와 더불어, 제공해주실 수 있는 최신 가격표나 관련 자료가 있다면 함께 전달해주시면 감사하겠습니다.', 'voc_report5.pdf', 'https://img.kbs.co.kr/kbs/620/news.kbs.co.kr/data/fckeditor/new/image/2024/01/19/291341705630335148.jpg', 'INQ', 'COMPLETED', true),
+    ('2024-08-04 09:00:00', 1, 1, null, '냉연 제품 주문 후 예상 배송 기간 및 추적 방법에 대한 문의', '최근에 귀사에서 제품을 주문하였는데 현재 배송 상태가 궁금하여 문의드립니다. 제품이 언제쯤 도착할지 예상되는 날짜를 알려주시면 감사하겠습니다. 또한, 배송 관련 추가 정보나 추적 방법이 있다면 함께 안내해 주시면 좋겠습니다.', 'voc_report6.pdf', 'https://cdn.example.com/image1.jpg', 'INQ', 'READY', true),
+    ('2024-08-05 10:00:00', null, 2, null, '회원 가입 과정에서 발생하는 지속적인 오류 문제 해결 요청', '귀사 웹사이트에서 회원 가입을 진행하던 중, 문제가 발생하여 가입을 완료할 수 없었습니다. 특히, 가입 양식을 제출할 때 오류 메시지가 표시되는 문제가 발생했습니다. 이 문제를 해결하기 위해 어떻게 해야 하는지 안내해 주시면 감사하겠습니다.', 'voc_report7.pdf', 'https://cdn.example.com/image2.jpg', 'SITE', 'COMPLETED', true),
+    ('2024-08-06 11:00:00', 2, 2, null, '결제 과정에서 발생하는 지속적인 오류 문제 해결 요청', '귀사 웹사이트에서 결제를 진행하던 중, 오류가 발생하여 결제가 완료되지 않았습니다. 특히, 결제 정보 입력 후 결제 실패 메시지가 표시되었습니다. 이 문제를 해결하기 위한 방법을 안내해 주시면 감사하겠습니다.', 'voc_report8.pdf', 'https://cdn.example.com/image3.jpg', 'INQ', 'READY', true),
+    ('2024-08-07 12:00:00', null, 4, null, '직원의 실수로 계정 삭제 및 복구 가능 여부 문의', '최근에 제 계정에 접근할 수 없는 문제가 발생하여 계정 복구를 요청드립니다. 계정에 로그인하려고 시도하였으나 계정이 잠긴 것 같습니다.', 'voc_report9.pdf', 'https://cdn.example.com/image4.jpg', 'SITE', 'COMPLETED', true),
+    ('2024-08-08 13:00:00', null, 5, null, '최첨단 기술 지원 요청: "오류 503: 서비스 이용 불가" 문제', '프로그램 실행 중 "서비스 이용 불가"라는 메시지가 나타나며, 이후 소프트웨어가 강제 종료됩니다. 이로 인해 작업이 중단되고 있습니다. 최대한 빠른 해결 부탁드립니다.', 'voc_report10.pdf', 'https://cdn.example.com/image5.jpg', 'ETC', 'READY', true),
+    ('2024-08-09 14:00:00', 5, 5, null, '선재 제품의 결함으로 인한 환불 요청', '최근에 귀사에서 제품을 구매하였으나, 제품에 결함이 있고 기대했던 성능과 상이하여 환불을 요청드리는 바입니다.', 'voc_report11.pdf', 'https://cdn.example.com/image6.jpg', 'INQ', 'COMPLETED', true),
+    ('2024-08-10 15:00:00', null, 2, null, '제품 재고 현황 및 수량에 대한 정보 요청', '귀사에서 제공하는 제품의 현재 재고 상태를 확인하고자 메일을 드립니다. 특히, 제품의 현재 재고 수량과 재고 상황에 대한 정보를 제공해주시면 감사하겠습니다.', 'voc_report12.pdf', 'https://cdn.example.com/image7.jpg', 'SITE', 'READY', true),
+    ('2024-08-11 16:00:00', null, 3, null, '서비스 품질 향상을 위한 개선 요청 및 피드백 제출', '제품 배송 날짜를 함께 공지하는 것에 대해 제안드립니다. 제 피드백이 귀사에 유익하게 사용되기를 바라며, 추가적인 정보나 논의가 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report13.pdf', 'https://cdn.example.com/image8.jpg', 'ETC', 'COMPLETED', true),
+    ('2024-08-12 17:00:00', 8, 3, null, '후판 제품 배송 주소 변경 요청', '최근 기업이 판교로 이사를 하여, 변경된 주소로 배송이 이루어질 수 있도록 조치해 주시면 감사하겠습니다. 주소 변경이 가능한지, 그리고 추가로 필요한 절차가 있는지 안내해 주시면 좋겠습니다.', 'voc_report14.pdf', 'https://cdn.example.com/image9.jpg', 'INQ', 'READY', true),
+    ('2024-08-13 18:00:00', null, 5, null, '현재 진행 중인 이벤트 관련 정보 및 참여 방법 문의', '귀사에서 현재 진행 중인 이벤트에 대해 문의드리고자 메일을 작성하였습니다. 이벤트에 참여하기 위한 조건이나 요구 사항이 있다면 안내해 주시면 감사하겠습니다. 이벤트에 참가하기 위한 등록 방법이나 절차에 대한 정보도 부탁드립니다.', 'voc_report15.pdf', 'https://cdn.example.com/image10.jpg', 'SITE', 'COMPLETED', true),
+    ('2024-08-14 09:00:00', null, 1, null, '회원 탈퇴 요청 및 필요한 절차 안내 문의', '귀사에서 제공하는 서비스의 회원으로 가입되어 있으나, 개인적인 사정으로 인해 회원 탈퇴를 요청드리고자 메일을 작성하였습니다. 탈퇴를 진행하기 위해 필요한 절차나 추가 정보가 있다면 안내해 주시면 감사하겠습니다.', 'voc_report16.pdf', 'https://cdn.example.com/image11.jpg', 'ETC', 'READY', true),
+    ('2024-08-15 10:00:00', 11, 1, null, '로그인 문제 해결을 위한 지원 요청', '현재 귀사 웹사이트에서 로그인 시 문제가 발생하여 도움을 요청드리고자 메일을 드립니다. 이 문제를 해결하기 위해 어떤 조치를 취해야 하는지 안내해 주시면 감사하겠습니다. 또한, 필요하신 추가 정보가 있다면 언제든지 연락 주시기 바랍니다.', 'voc_report17.pdf', 'https://cdn.example.com/image12.jpg', 'INQ', 'COMPLETED', true),
+    ('2024-08-16 11:00:00', null, 3, null, '주문 내역 확인 및 현재 상태 안내 요청', '해당 주문의 현재 상태와 상세 내역을 확인할 수 있도록 안내해 주시면 감사하겠습니다. 또한, 주문 관련 추가 정보나 진행 상황에 대해서도 알려주시면 좋겠습니다.', 'voc_report18.pdf', 'https://cdn.example.com/image13.jpg', 'SITE', 'READY', true),
+    ('2024-08-17 12:00:00', 12, 2, null, '구매한 제품 사용법 및 주요 기능, 안전 주의사항에 대한 설명서 요청', '최근에 귀사에서 구매한 제품의 사용법에 대해 문의드리고자 메일을 작성하였습니다. 제품 사용법, 주요 기능 및 특징, 안전 주의사항, 문제 해결 방법 등등 제품 사용을 원활히 하기 위해 필요한 설명서나 매뉴얼이 있다면 함께 제공해 주시면 감사하겠습니다.', 'voc_report19.pdf', 'https://cdn.example.com/image14.jpg', 'INQ', 'COMPLETED', true),
+    ('2024-08-18 13:00:00', null, 5, null, '기타 문의 사항에 대한 정보 제공 및 필요한 절차 안내 요청', '이와 관련하여 필요한 정보나 문서가 있다면 제공해 주시면 감사하겠습니다. 또한, 해당 사항에 대한 답변을 받기 위해 특별히 필요한 절차가 있다면 안내해 주시면 좋겠습니다.', 'voc_report20.pdf', 'https://cdn.example.com/image15.jpg', 'ETC', 'READY', true),
+    ('2024-08-19 14:00:00', null, 1, null, '최근 구매한 제품에 대한 확인서 요청', '최근에 귀사에서 제품을 구매하였으며, 해당 구매에 대한 확인서를 요청드리고자 메일을 드립니다. 구매 확인서는 다음과 같은 정보를 포함해야 합니다: 구매 일자, 주문 번호, 구매한 제품명 및 수량, 구매 금액 등 해당 정보를 포함한 확인서를 이메일로 보내주시면 감사하겠습니다.', 'voc_report21.pdf', 'https://cdn.example.com/image16.jpg', 'SITE', 'COMPLETED', true),
+    ('2024-08-20 15:00:00', 13, 3, null, '프로그램 실행 중 "오류 503 서비스 이용 불가" 메시지 발생 문제 해결 요청', '프로그램 실행 중 "서비스 이용 불가"라는 메시지가 나타나며, 이후 소프트웨어가 강제 종료됩니다. 이로 인해 작업이 중단되고 있습니다.', 'voc_report22.pdf', 'https://cdn.example.com/image17.jpg', 'INQ', 'READY', true),
+    ('2024-08-21 16:00:00', null, 3, null, '결제 과정에서 발생한 오류 문제 해결을 위한 도움 요청', '귀사 웹사이트에서 결제를 진행하던 중, 오류가 발생하여 결제가 완료되지 않았습니다. 결제 정보 입력 후 결제 실패 메시지가 표시되었습니다. 이 문제를 해결하기 위한 방법을 안내해 주시면 감사하겠습니다.', 'voc_report23.pdf', 'https://cdn.example.com/image18.jpg', 'ETC', 'COMPLETED', true),
+    ('2024-08-22 17:00:00', null, 4, null, '서비스에 신규 기능 추가 요청 및 검토 부탁드립니다.', '이와 같은 기능이 추가되면 서비스의 사용 편의성과 효율성이 크게 향상될 것으로 기대됩니다. 기능 추가에 대한 검토를 부탁드리며, 추가적인 정보가 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report24.pdf', 'https://cdn.example.com/image19.jpg', 'SITE', 'READY', true),
+    ('2024-08-23 18:00:00', 14, 4, null, '서비스 관련 질문 및 추가 정보 요청', '귀사의 서비스를 이용하면서 몇 가지 질문이 있어 메일을 드립니다. 이와 관련하여 필요한 추가 정보나 문서가 있다면 제공해 주시면 감사하겠습니다. 또한, 질문에 대한 답변이 필요하시면 언제든지 연락 주시기 바랍니다.', 'voc_report25.pdf', 'https://cdn.example.com/image20.jpg', 'INQ', 'COMPLETED', true),
+    ('2024-08-24 09:00:00', null, 1, null, '귀사 웹사이트 로그인 문제 해결을 위한 도움 요청', '현재 귀사 웹사이트에서 로그인 시 문제가 발생하여 도움을 요청드리고자 메일을 드립니다. 이 문제를 해결하기 위해 어떤 조치를 취해야 하는지 안내해 주시면 감사하겠습니다. 또한, 필요하신 추가 정보가 있다면 언제든지 연락 주시기 바랍니다.', 'voc_report26.pdf', 'https://cdn.example.com/image21.jpg', 'ETC', 'READY', true),
+    ('2024-08-25 10:00:00', null, 2, null, '할인 코드와 관련된 정보 및 추가 설명 요청', '최근에 귀사에서 제공하는 제품을 구매하거나 이용하고자 하는데, 할인 코드와 관련된 몇 가지 질문이 있어 메일을 드립니다. 이와 관련하여 필요한 정보나 추가적인 설명이 있다면 제공해 주시면 감사하겠습니다. 답변을 기다리며, 추가적인 문의 사항이 있으면 언제든지 연락 주시기 바랍니다.', 'voc_report27.pdf', 'https://cdn.example.com/image22.jpg', 'SITE', 'COMPLETED', true),
+    ('2024-08-26 11:00:00', 15, 5, null, '계정 권한과 관련된 문제 해결을 위한 지원 요청', '현재 귀사의 시스템에서 계정 권한과 관련된 문제가 발생하여 도움을 요청드리고자 메일을 작성하였습니다. 이 문제를 해결하기 위해 필요한 조치를 안내해 주시면 감사하겠습니다. 또한, 문제 해결을 위한 추가적인 정보가 필요하다면 언제든지 연락 주시기 바랍니다.', 'voc_report28.pdf', 'https://cdn.example.com/image23.jpg', 'INQ', 'READY', true),
+    ('2024-08-27 12:00:00', null, 4, null, '회원 등급 변경 요청 및 필요한 절차 안내', '현재 귀사의 웹사이트에서 00으로 가입되어 있으며, 00으로 변경을 요청드리고자 메일을 드립니다. 회원 등급 변경을 위해 필요한 절차나 추가로 제공해야 할 정보가 있다면 안내해 주시면 감사하겠습니다. 또한, 등급 변경이 완료된 후 확인 이메일을 보내주시면 좋겠습니다.', 'voc_report29.pdf', 'https://cdn.example.com/image24.jpg', 'ETC', 'COMPLETED', true),
+    ('2024-08-28 13:00:00', null, 5, null, '최근 구매 기록 조회를 위한 정보 요청', '귀사에서 제공하는 서비스를 이용하며, 최근의 구매 기록을 조회하고자 합니다. 구매 기록을 이메일로 제공해 주시면 감사하겠습니다. 또한, 구매 기록 확인을 위한 추가 절차가 있다면 안내해 주시기 바랍니다.', 'voc_report30.pdf', 'https://cdn.example.com/image25.jpg', 'SITE', 'READY', true);
 
 -- ANSWER
 INSERT INTO answer (created_date, inquiry_id, customer_id, question_id, manager_id, title, contents, file_name, file_path, is_activated)
 VALUES
-    (CURRENT_TIMESTAMP, null, 1, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
-    (CURRENT_TIMESTAMP, 12, 2, 3, 2, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
-    (CURRENT_TIMESTAMP, 8, 3, 5, 3, '문의해주셔서 감사합니다', '문제가 발생한 경우, 가능한 상세한 정보를 제공해주시면 더욱 신속하게 문제를 해결할 수 있습니다', 'voc_answer3.pdf', 'https://example.com/image3.jpg', true),
-    (CURRENT_TIMESTAMP, null, 2, 7, 4, '문의해주셔서 감사합니다', '제품 사용 중 불편사항이 있을 경우 언제든지 문의해주시기 바랍니다', 'voc_answer5.pdf', 'https://example.com/image5.jpg', true),
-    (CURRENT_TIMESTAMP, null, 4, 9, 5, '문의해주셔서 감사합니다', '자주 묻는 질문을 먼저 확인해보세요. 도움이 될 수 있습니다', 'voc_answer7.pdf', 'https://example.com/image7.jpg', true),
-    (CURRENT_TIMESTAMP, 5, 5, 11, 1, '문의해주셔서 감사합니다', '모든 문의는 신속하게 처리되도록 하겠습니다', 'voc_answer9.pdf', 'https://example.com/image9.jpg', true),
-    (CURRENT_TIMESTAMP, null, 3, 13, 2, '문의해주셔서 감사합니다', '문의하신 내용은 검토 후 답변을 드리겠습니다', 'voc_answer11.pdf', 'https://example.com/image11.jpg', true),
-    (CURRENT_TIMESTAMP, null, 5, 15, 3, '문의해주셔서 감사합니다', '문의 내용에 대한 정확한 답변을 제공하겠습니다', 'voc_answer13.pdf', 'https://example.com/image13.jpg', true),
-    (CURRENT_TIMESTAMP, 11, 1, 17, 4, '문의해주셔서 감사합니다', '제품 관련 문의는 이곳에 남겨주시면 됩니다', 'voc_answer15.pdf', 'https://example.com/image15.jpg', true),
-    (CURRENT_TIMESTAMP, 12, 2, 19, 5, '문의해주셔서 감사합니다', '저희가 최대한 신속히 답변을 드리겠습니다', 'voc_answer17.pdf', 'https://example.com/image17.jpg', true),
-    (CURRENT_TIMESTAMP, null, 1, 21, 1, '문의해주셔서 감사합니다', '문의사항은 최선을 다해 답변 드리겠습니다', 'voc_answer19.pdf', 'https://example.com/image19.jpg', true),
-    (CURRENT_TIMESTAMP, null, 3, 23, 2, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 답변까지 시간이 걸릴 수 있습니다', 'voc_answer21.pdf', 'https://example.com/image21.jpg', true),
-    (CURRENT_TIMESTAMP, 14, 4, 25, 3, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 최대한 빠르게 처리하겠습니다', 'voc_answer23.pdf', 'https://example.com/image23.jpg', true),
-    (CURRENT_TIMESTAMP, null, 2, 27, 4, '문의해주셔서 감사합니다', '문의하신 내용에 대해 최대한 빠른 답변을 드리겠습니다', 'voc_answer25.pdf', 'https://example.com/image25.jpg', true),
-    (CURRENT_TIMESTAMP, null, 4, 29, 5, '문의해주셔서 감사합니다', '자세한 정보를 제공해 주시면 빠르게 처리하겠습니다', 'voc_answer27.pdf', 'https://example.com/image27.jpg', true);
+    (CURRENT_TIMESTAMP, null, 1, 1, 1, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다.', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
+    (CURRENT_TIMESTAMP, 12, 2, 3, 2, '문의해주셔서 감사합니다', '평균 문의 소요 기간은 3일이며 최대한 신속하고 정확한 답변을 드리도록 노력하겠습니다.', 'voc_answer1.pdf', 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99B0B04C5B1E03660A', true),
+    (CURRENT_TIMESTAMP, 8, 3, 5, 3, '문의해주셔서 감사합니다', '문제가 발생한 경우, 가능한 상세한 정보를 제공해주시면 더욱 신속하게 문제를 해결할 수 있습니다.', 'voc_answer3.pdf', 'https://example.com/image3.jpg', true),
+    (CURRENT_TIMESTAMP, null, 2, 7, 4, '문의해주셔서 감사합니다', '제품 사용 중 불편사항이 있을 경우 언제든지 문의해주시기 바랍니다.', 'voc_answer5.pdf', 'https://example.com/image5.jpg', true),
+    (CURRENT_TIMESTAMP, null, 4, 9, 5, '문의해주셔서 감사합니다', '자주 묻는 질문을 먼저 확인해보세요. 도움이 될 수 있습니다.', 'voc_answer7.pdf', 'https://example.com/image7.jpg', true),
+    (CURRENT_TIMESTAMP, 5, 5, 11, 1, '문의해주셔서 감사합니다', '모든 문의는 신속하게 처리되도록 하겠습니다.', 'voc_answer9.pdf', 'https://example.com/image9.jpg', true),
+    (CURRENT_TIMESTAMP, null, 3, 13, 2, '문의해주셔서 감사합니다', '문의하신 내용은 검토 후 답변을 드리겠습니다.', 'voc_answer11.pdf', 'https://example.com/image11.jpg', true),
+    (CURRENT_TIMESTAMP, null, 5, 15, 3, '문의해주셔서 감사합니다', '문의 내용에 대한 정확한 답변을 제공하겠습니다.', 'voc_answer13.pdf', 'https://example.com/image13.jpg', true),
+    (CURRENT_TIMESTAMP, 11, 1, 17, 4, '문의해주셔서 감사합니다', '제품 관련 문의는 이곳에 남겨주시면 됩니다.', 'voc_answer15.pdf', 'https://example.com/image15.jpg', true),
+    (CURRENT_TIMESTAMP, 12, 2, 19, 5, '문의해주셔서 감사합니다', '저희가 최대한 신속히 답변을 드리겠습니다.', 'voc_answer17.pdf', 'https://example.com/image17.jpg', true),
+    (CURRENT_TIMESTAMP, null, 1, 21, 1, '문의해주셔서 감사합니다', '문의사항은 최선을 다해 답변 드리겠습니다.', 'voc_answer19.pdf', 'https://example.com/image19.jpg', true),
+    (CURRENT_TIMESTAMP, null, 3, 23, 2, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 답변까지 시간이 걸릴 수 있습니다.', 'voc_answer21.pdf', 'https://example.com/image21.jpg', true),
+    (CURRENT_TIMESTAMP, 14, 4, 25, 3, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 최대한 빠르게 처리하겠습니다.', 'voc_answer23.pdf', 'https://example.com/image23.jpg', true),
+    (CURRENT_TIMESTAMP, null, 2, 27, 4, '문의해주셔서 감사합니다', '문의하신 내용에 대해 최대한 빠른 답변을 드리겠습니다.', 'voc_answer25.pdf', 'https://example.com/image25.jpg', true),
+    (CURRENT_TIMESTAMP, null, 4, 29, 5, '문의해주셔서 감사합니다', '자세한 정보를 제공해 주시면 빠르게 처리하겠습니다.', 'voc_answer27.pdf', 'https://example.com/image27.jpg', true);

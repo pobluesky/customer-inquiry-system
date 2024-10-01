@@ -66,13 +66,7 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                     />
                                     <Button
                                         variant="outlined"
-                                        onClick={() =>
-                                            document
-                                            .getElementById(
-                                                'fileUploadInput',
-                                            )
-                                            .click()
-                                        }
+                                        onClick={() => document.getElementById('fileUploadInput').click()}
                                         sx={{
                                             margin: '-0.5vw 0 0 1vw',
                                             backgroundColor: '#FFFFFF',
