@@ -95,7 +95,6 @@ public class QuestionService {
         QuestionType type,
         String title,
         Long questionId,
-        Long managerId,
         LocalDate startDate,
         LocalDate endDate) {
 
@@ -114,7 +113,6 @@ public class QuestionService {
             questionId,
             startDate,
             endDate,
-            managerId,
             sortBy);
     }
 
@@ -193,6 +191,9 @@ public class QuestionService {
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        } else {
+            fileName = null;
+            filePath = null;
         }
 
         Question question = dto.toQuestionEntity(null, customerId, fileName, filePath);
@@ -228,7 +229,12 @@ public class QuestionService {
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = dto.isFileDeleted() != null && dto.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -258,7 +264,6 @@ public class QuestionService {
     ) {
         Customer customer = validateCustomer(token);
 
-
         Question question = validateQuestion(questionId);
 
         validateUserMatch(customer.getUserId(), customerId);
@@ -272,7 +277,12 @@ public class QuestionService {
         String fileName = question.getFileName();
         String filePath = question.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = dto.isFileDeleted() != null && dto.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -334,7 +344,7 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public List<MobileQuestionSummaryResponseDTO> getAllQuestions() {
         return questionRepository.findActiveQuestions().stream()
-            .map(question -> MobileQuestionSummaryResponseDTO.from(question, userClient)) // 람다식을 사용하여 userClient 전달
+            .map(question -> MobileQuestionSummaryResponseDTO.from(question, userClient,inquiryClient)) // 람다식을 사용하여 userClient 전달
             .collect(Collectors.toList());
     }
 
@@ -344,7 +354,7 @@ public class QuestionService {
         Question question = questionRepository.findActiveQuestionByQuestionId(questionId)
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
-        return MobileQuestionSummaryResponseDTO.from(question,userClient);
+        return MobileQuestionSummaryResponseDTO.from(question,userClient,inquiryClient);
     }
 
     private Inquiry validateInquiry(Long inquiryId) {

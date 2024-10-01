@@ -32,7 +32,6 @@ public interface QuestionRepositoryCustom {
         Long questionId,
         LocalDate startDate,
         LocalDate endDate,
-        Long managerId,
         String sortBy
     );
 }

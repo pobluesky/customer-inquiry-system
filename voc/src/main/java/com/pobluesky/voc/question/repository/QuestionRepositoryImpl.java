@@ -136,7 +136,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         Long questionId,
         LocalDate startDate,
         LocalDate endDate,
-        Long managerId,
         String sortBy
     ) {
         // 1. Question 목록 조회
@@ -150,7 +149,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 titleContains(title),
                 questionIdEq(questionId),
                 isActivatedEq(true),
-                managerIdEq(managerId),
                 createdDateBetween(startDate, endDate)
             )
             .orderBy(getOrderSpecifier(sortBy))
