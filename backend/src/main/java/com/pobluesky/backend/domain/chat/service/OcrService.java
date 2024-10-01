@@ -19,12 +19,11 @@ public class OcrService {
     @Value("${cloud.gcp.storage.bucket.filePath}")
     private String bucketFilePath;
 
-    private final PdfConversionService pdfConversionService;
+    private final FileConversionService fileConversionService;
 
-    public List<String> processPdfAndDetectText(MultipartFile pdfFile) {
+    public List<String> processFileAndDetectText(MultipartFile file) {
         try {
-            String uniqueId = generateUniqueId();
-            List<String> gcsPaths = pdfConversionService.convertPdfToImages(pdfFile.getInputStream(), uniqueId);
+            List<String> gcsPaths = fileConversionService.convertFileToImages(file);
 
             List<String> textResults = new ArrayList<>();
 
@@ -35,7 +34,6 @@ public class OcrService {
 
             return textResults;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CommonException(ErrorCode.EXTERNAL_SERVER_ERROR);
         }
     }
@@ -57,7 +55,6 @@ public class OcrService {
 
             for (AnnotateImageResponse res : responses) {
                 if (res.hasError()) {
-                    System.out.format("Error: %s%n", res.getError().getMessage());
                     throw new CommonException(ErrorCode.OCR_PROCESS_FAIL);
                 }
 
@@ -67,9 +64,5 @@ public class OcrService {
             }
             return detectedText.toString();
         }
-    }
-
-    private String generateUniqueId() {
-        return java.util.UUID.randomUUID().toString();
     }
 }
