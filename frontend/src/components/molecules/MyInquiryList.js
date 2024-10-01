@@ -228,8 +228,8 @@ const MyInquiryList = () => {
                                 </TableCell>
                                 <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>진행 상태</TableCell>
                                 <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>문의 일자</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객 이름</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>영업 담당자</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>판매계약자</TableCell>
                                 <TableCell align="center" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '8vh' }}>진행률</TableCell>
                             </TableRow>
                         </TableHead>
