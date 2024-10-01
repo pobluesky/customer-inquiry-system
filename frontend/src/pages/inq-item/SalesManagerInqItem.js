@@ -394,20 +394,19 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
                 role={'sales'}
             />
 
-            <RequestBar
-                requestBarTitle={requestTitle}
-                onReviewSubmit={handleReviewSubmit}
-                onQualitySubmit={handleQualitySubmit}
-                onFinalSubmit={handleFinalSubmit}
-                onAllocate={allocateByQualityManagerId}
-            />
-
             {loading ? (
                 <Grid container justifyContent="center" alignItems="center">
                     <CircularProgress />
                 </Grid>
             ) : (
                 <>
+                    <RequestBar
+                        requestBarTitle={requestTitle}
+                        onReviewSubmit={handleReviewSubmit}
+                        onQualitySubmit={handleQualitySubmit}
+                        onFinalSubmit={handleFinalSubmit}
+                        onAllocate={allocateByQualityManagerId}
+                    />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}

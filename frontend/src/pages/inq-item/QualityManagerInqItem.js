@@ -256,17 +256,16 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
                             role={'quality'} />
 
-            <RequestBar
-                requestBarTitle={requestTitle}
-                onQualityCompleteSubmit={handleSubmit}
-            />
-
             {loading ? (
                 <Grid container justifyContent="center" alignItems="center">
                     <CircularProgress />
                 </Grid>
             ) : (
                 <>
+                    <RequestBar
+                        requestBarTitle={requestTitle}
+                        onQualityCompleteSubmit={handleSubmit}
+                    />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
