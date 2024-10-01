@@ -199,6 +199,9 @@ public class QuestionService {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
+        } else {
+            fileName = null;
+            filePath = null;
         }
 
         Question question = dto.toQuestionEntity(null, customer, fileName, filePath);

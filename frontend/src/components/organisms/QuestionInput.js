@@ -27,6 +27,7 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
     const [file, setFile] = useState('');
     const [fileName, setFileName] = useState(questionDetail?.fileName || '');
     const filePath = questionDetail?.filePath || '';
+    const [isFileDeleted, setFileDeleted] = useState(false);
 
     const fileInputRef = useRef(null);
 
@@ -85,6 +86,7 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                 contents: editorValue,
                 type: selectedType,
                 status,
+                isFileDeleted,
             };
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
@@ -194,6 +196,7 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                                 onClick={() => {
                                     setFile(null);
                                     setFileName(null);
+                                    setFileDeleted(true);
                                 }}
                             />
                         ) : (
@@ -201,7 +204,10 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                                 btnName={'파일 업로드'}
                                 backgroundColor={'#ffffff'}
                                 textColor={'#03507d'}
-                                onClick={() => fileInputRef.current.click()}
+                                onClick={() => {
+                                    fileInputRef.current.click();
+                                    setFileDeleted(false);
+                                }}
                             />
                         )}
                     </div>

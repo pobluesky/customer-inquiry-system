@@ -101,7 +101,7 @@ function App() {
                                 element={<VocColReqForm />}
                             />
                             <Route
-                                path="voc-form/collaboration/res"
+                                path="voc-form/collaboration/res/:id/:id"
                                 element={<VocColResForm />}
                             />
                             <Route

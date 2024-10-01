@@ -243,6 +243,7 @@ public class CollaborationService {
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
         }
+
         collaboration.updateFiles(fileName, filePath);
 
         if (requestDTO.isAccepted() != null) {

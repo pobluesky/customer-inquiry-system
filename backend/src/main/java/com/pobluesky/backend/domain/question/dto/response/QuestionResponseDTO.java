@@ -35,6 +35,8 @@ public record QuestionResponseDTO(
 
     LocalDateTime createdDate,
 
+    Long colId,
+
     ColStatus colStatus,
 
     Boolean isActivated
@@ -54,6 +56,7 @@ public record QuestionResponseDTO(
             .status(question.getStatus())
             .type(question.getType())
             .createdDate(question.getCreatedDate())
+            .colId(question.getCollaboration() != null ? question.getCollaboration().getColId() : null)
             .colStatus(question.getCollaboration() != null ? question.getCollaboration().getColStatus() : null)
             .isActivated(question.getIsActivated())
             .build();
