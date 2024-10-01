@@ -32,6 +32,7 @@ function RequestBar({
     const navigate = useNavigate();
     const { role } = useAuth();
     const { id } = useParams();
+    const realId = id.slice(-2);
 
     const buttonConfig = {
         'Inquiry 등록0': ['초기화', '검토의뢰'],
@@ -56,7 +57,7 @@ function RequestBar({
 
     const updateProgress = async (nextProgress) => {
         try {
-            const response = await putProgress(id, nextProgress);
+            const response = await putProgress(realId, nextProgress);
             console.log('Progress updated successfully:', response);
         } catch (error) {
             console.log('Error updating progress:', error);

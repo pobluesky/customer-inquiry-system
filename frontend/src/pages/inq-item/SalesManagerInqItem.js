@@ -52,6 +52,7 @@ import { useForm } from 'react-hook-form';
 function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
 
     const {
@@ -150,7 +151,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const getUserInfo = async () => {
         try {
-            const response = await getUserInfoByCustomers(id); // 수정 필요
+            const response = await getUserInfoByCustomers(realId);
             setUserInfo(response.data.data);
             return response.data.data;
         } catch (error) {
@@ -160,7 +161,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const getReview = async () => {
         try {
-            const response = await getReviews(id);
+            const response = await getReviews(realId);
             setReviewData(response.data);
             setIsReviewItem(true);
             if (response.data.finalReviewText === null) {
@@ -176,7 +177,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const getQuality = async () => {
         try {
-            const response = await getQualities(id);
+            const response = await getQualities(realId);
             setQualityData(response.data);
             setIsQualityItem(true);
             return response.data;
@@ -187,7 +188,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const getOfferSheet = async () => {
         try {
-            const response = await getOfferSheets(id);
+            const response = await getOfferSheets(realId);
             setOfferSheetData(response.data);
             setIsOfferSheetItem(true);
             setFormData(prevData => ({
@@ -275,7 +276,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const reviewResponse = await postReview(id, {
+                const reviewResponse = await postReview(realId, {
                     salesInfo: {
                         contract: formData.contract,
                         thicknessNotify: formData.thicknessNotify,
@@ -321,10 +322,10 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const reviewResponse = await putReview(id, {
+                const reviewResponse = await putReview(realId, {
                     finalReviewText: formData.finalReviewText,
                 })
-                const offerSheetResponse = await postOfferSheet(id, {
+                const offerSheetResponse = await postOfferSheet(realId, {
                     ...formData,
                     receipts: formData.receipts,
                 });
@@ -335,7 +336,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
                 if (inquiriesDataDetail.qualityManagerSummaryDto !== null) {
                     await postNotificationByManagers(inquiriesDataDetail.qualityManagerSummaryDto.userId, {
                         notificationContents:
-                            `Inquiry ${id}번 최종 검토가 완료되었습니다.`,
+                            `Inquiry ${realId}번 최종 검토가 완료되었습니다.`,
                     })
                 }
                 console.log('Final Review updated successfully:', reviewResponse);
@@ -379,7 +380,7 @@ function SalesManagerInqItem() { // 800자 Inquiry 조회 페이지
 
     const allocateByQualityManagerId = async () => {
         try {
-            await assignQualityManagerByUserId(id, selectedQualityManagerId);
+            await assignQualityManagerByUserId(realId, selectedQualityManagerId);
         } catch (error) {
             console.error('Inquiry 품질 담당자 배정 실패: ', error);
         }
