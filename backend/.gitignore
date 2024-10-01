@@ -54,3 +54,8 @@ src/main/resources/application-local.properties
 
 ### firebase ###
 src/main/resources/firebase
+
+### ai prompt ###
+src/main/resources/prompt
+
+src/main/resources/key.json

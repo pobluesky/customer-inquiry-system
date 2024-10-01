@@ -20,15 +20,15 @@ public class Question extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionId; // 질문 번호
+    private Long questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
-    private Inquiry inquiry; // 문의 번호
+    private Inquiry inquiry;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Customer customer; // 고객사 번호
+    private Customer customer;
 
     private String title;
 
@@ -48,12 +48,12 @@ public class Question extends BaseEntity {
     private QuestionType type;
 
     @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
+    @JoinColumn(name = "col_id")
+    private Collaboration collaboration;
+
+    @OneToOne(mappedBy = "question")
     @JoinColumn(name = "question_id")
     private Answer answer;
-
-    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
-    @JoinColumn(name = "col_id")
-    private Collaboration collaboration; // 협업 번호
 
     private Boolean isActivated;
 

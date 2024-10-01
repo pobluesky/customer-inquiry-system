@@ -19,23 +19,23 @@ public class Answer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long answerId; // 답변 번호
+    private Long answerId;
 
     @OneToOne
     @JoinColumn(name = "question_id")
-    private Question question; // 질문 번호
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
-    private Inquiry inquiry; // 문의 번호
+    private Inquiry inquiry;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    private Customer customer; // 고객사 번호
+    private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private Manager manager; // 답변을 입력한 담당자 번호
+    private Manager manager;
 
     @Column(columnDefinition = "TEXT")
     private String title;
