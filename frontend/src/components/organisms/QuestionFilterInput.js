@@ -13,6 +13,8 @@ function QuestionFilterInput({
     title,
     questionNo,
     customerName,
+    startDate,
+    endDate,
     setTitle,
     setStartDate,
     setEndDate,
@@ -315,6 +317,7 @@ function QuestionFilterInput({
                         borderRadius={'8px'}
                         outline={'none'}
                         padding={'0 8px 0 8px'}
+                        value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                     <Input
@@ -325,6 +328,7 @@ function QuestionFilterInput({
                         borderRadius={'8px'}
                         outline={'none'}
                         padding={'0 8px 0 8px'}
+                        value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>

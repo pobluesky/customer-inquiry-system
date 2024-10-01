@@ -45,7 +45,6 @@ export default function ColResInput({ colDetail, setColDetail }) {
                           colDetail?.colId,
                           colData,
                       );
-                      setColDetail(response.data);
                       if (response.data.colStatus === 'REFUSE') {
                           setMessage('협업이 거절되었습니다.');
                       } else {
@@ -53,7 +52,7 @@ export default function ColResInput({ colDetail, setColDetail }) {
                       }
                       canShowSuccessAlert(true);
                       setTimeout(() => {
-                          window.location.reload();
+                          setColDetail(response.data);
                       }, '1000');
                   } catch (error) {
                       console.error('협업 수락/거절 실패: ', error);
@@ -73,7 +72,6 @@ export default function ColResInput({ colDetail, setColDetail }) {
                           colDetail?.colId,
                           colData,
                       );
-                      setColDetail(response.data);
                       if (response.data.colStatus === 'REFUSE') {
                           setMessage('협업이 거절되었습니다.');
                       } else {
@@ -81,6 +79,7 @@ export default function ColResInput({ colDetail, setColDetail }) {
                       }
                       canShowSuccessAlert(true);
                       setTimeout(() => {
+                          setColDetail(response.data);
                           window.location.reload();
                       }, '1000');
                   } catch (error) {

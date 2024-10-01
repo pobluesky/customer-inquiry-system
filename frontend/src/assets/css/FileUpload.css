@@ -15,8 +15,8 @@
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    width: 400px;
-    height: 238px;
+    width: 480px;
+    height: 360px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -27,8 +27,8 @@
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    width: 400px;
-    height: 208px;
+    width: 480px;
+    height: 360px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -135,15 +135,9 @@
 
 .Player_Wrapper {
     position: relative;
-    background-color: transparent;
 }
 
 .React_Player {
     margin: 10px 0 0 0;
-    background-color: transparent !important;
     pointer-events: none;
-}
-
-.React_Player > video {
-    background-color: transparent;
 }

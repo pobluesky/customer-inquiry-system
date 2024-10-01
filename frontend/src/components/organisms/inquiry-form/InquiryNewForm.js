@@ -235,11 +235,21 @@ const InquiryNewForm = ({
                             <Grid item xs={12} sm={3}>
                                 <TextField
                                     {...register('customerRequestDate', { required: true })}
-                                    label="고객요청일"
+                                    label="고객요청일자"
+                                    type="date"
                                     onChange={(e) => handleFormDataChange('customerRequestDate', e.target.value)}
                                     {...inputStyle}
                                     value={customerRequestDate}
                                     error={!!errors.customerRequestDate}
+                                    InputLabelProps={{
+                                        shrink: false,
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: customerRequestDate ? 'black' : 'transparent',
+                                            textAlign: 'center'
+                                        }
+                                    }}
                                 />
                             </Grid>
                         </Grid>

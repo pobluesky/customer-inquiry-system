@@ -88,7 +88,7 @@ function Row({ row, role }, ref) {
     const currentStep = calculateStep();
 
     const handleClick = () => {
-        navigate(`/inq-list/${role}/${row.inquiryId}`);
+        navigate(`/inq-list/${role}/${row.processedInquiryId}`);
     };
 
     const handleCheckboxChange = (e) => {
@@ -99,24 +99,22 @@ function Row({ row, role }, ref) {
     const handleSubmit = async () => {
         try {
             if (isChecked && !isDisabled) {
-                const response = await putManagerAllocate(row.inquiryId);
+                const response = await putManagerAllocate(row.processedInquiryId);
                 setIsDisabled(true);
-                console.log("Manager Allocated Success: ", response);
 
-                const inquiryInfo = await getInquiryDetailByManagers(row.inquiryId);
+                const inquiryInfo = await getInquiryDetailByManagers(row.processedInquiryId);
                 if (role === 'sales') {
                     await postNotificationByCustomers(
                         inquiryInfo.data.customerId, {
-                            notificationContents: `${inquiryInfo.data.name}님의 Inquiry ${row.inquiryId}번 담당자가 배정되었습니다.`,
+                            notificationContents: `${inquiryInfo.data.name}님의 Inquiry ${row.processedInquiryId}번 담당자가 배정되었습니다.`,
                         })
                 } else if (role === 'quality') {
                     await postNotificationByManagers(inquiryInfo.data.salesManagerSummaryDto.userId, {
                         notificationContents:
-                            `Inquiry ${row.inquiryId}번 문의의 품질 담당자가 배정되었습니다.`,
+                            `Inquiry ${row.processedInquiryId}번 문의의 품질 담당자가 배정되었습니다.`,
                     })
                 } else {
                 }
-
             }
         } catch (error) {
             console.log('Error putting Manager Allocation:', error);

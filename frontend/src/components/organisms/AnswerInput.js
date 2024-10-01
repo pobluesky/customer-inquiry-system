@@ -60,7 +60,11 @@ export default function AnswerInput({
                       title: title,
                       contents: editorValue,
                   };
-                  await putAnswerByQuestionId(file, answerData, questionId);
+                  await putAnswerByQuestionId(
+                      file,
+                      answerData,
+                      answerDetail?.questionId,
+                  );
                   setMessage('답변이 수정되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
@@ -76,7 +80,11 @@ export default function AnswerInput({
                       title: title,
                       contents: editorValue,
                   };
-                  await postAnswerByQuestionId(file, answerData, questionId);
+                  await postAnswerByQuestionId(
+                      file,
+                      answerData,
+                      answerDetail?.questionId,
+                  );
                   setMessage('답변이 등록되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
@@ -247,6 +255,12 @@ export default function AnswerInput({
                                         backgroundColor={'#ffffff'}
                                         textColor={'#03507d'}
                                         onClick={() => {
+                                            if (!colPossible) {
+                                                window.alert(
+                                                    '현재 협업 진행 중인 질문으로, 삭제가 불가합니다.',
+                                                );
+                                                return;
+                                            }
                                             window.confirm(
                                                 '고객사의 질문이 삭제됩니다. 정말 삭제하시겠습니까?',
                                             )
@@ -259,6 +273,11 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
+                                            if (!colPossible) {
+                                                window.alert(
+                                                    '협업이 진행되었습니다. 협업 조회 페이지를 참고하세요.',
+                                                );
+                                            }
                                             setWriteAnswer(true);
                                         }}
                                     />
@@ -272,6 +291,12 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
+                                            if (!colPossible) {
+                                                window.alert(
+                                                    '현재 협업 진행 중인 질문입니다.',
+                                                );
+                                                return;
+                                            }
                                             navigate(
                                                 '/voc-form/collaboration/req',
                                                 {
@@ -317,6 +342,12 @@ export default function AnswerInput({
                                 backgroundColor={'#ffffff'}
                                 textColor={'#03507d'}
                                 onClick={() => {
+                                    if (!colPossible) {
+                                        window.alert(
+                                            '현재 협업 진행 중인 질문으로, 삭제가 불가합니다.',
+                                        );
+                                        return;
+                                    }
                                     window.confirm(
                                         '작성하신 질문이 삭제됩니다. 정말 삭제하시겠습니까?',
                                     )
@@ -331,6 +362,12 @@ export default function AnswerInput({
                                 backgroundColor={'#03507d'}
                                 textColor={'#ffffff'}
                                 onClick={() => {
+                                    if (!colPossible) {
+                                        window.alert(
+                                            '현재 협업 진행 중인 질문으로, 수정이 불가합니다.',
+                                        );
+                                        return;
+                                    }
                                     navigate('/voc-form/question', {
                                         state: {
                                             questionDetail: questionDetail,
@@ -348,6 +385,11 @@ export default function AnswerInput({
                             textColor={'#ffffff'}
                             margin={'12px 0 24px 24px'}
                             onClick={() => {
+                                if (!colPossible) {
+                                    window.alert(
+                                        '협업이 진행되었습니다. 협업 조회 페이지를 참고하세요.',
+                                    );
+                                }
                                 setEditAnswer(true);
                                 setWriteAnswer(true);
                             }}
