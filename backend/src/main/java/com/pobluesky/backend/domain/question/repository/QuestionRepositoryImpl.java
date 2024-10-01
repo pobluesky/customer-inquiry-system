@@ -67,7 +67,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .from(question)
             .leftJoin(question.answer, answer)
             .leftJoin(question.customer, customer)
-            .leftJoin(question.collaboration, collaboration)
             .where(
                 statusEq(status),
                 typeEq(type),
@@ -117,7 +116,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             .from(question)
             .leftJoin(question.answer, answer)
             .leftJoin(question.customer, customer)
-            .leftJoin(question.collaboration, collaboration)
             .where(
                 question.customer.userId.eq(userId),
                 statusEq(status),
