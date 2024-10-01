@@ -38,6 +38,7 @@ import { useForm } from 'react-hook-form';
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
 
     const {
@@ -98,7 +99,6 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const realId = id.slice(-2);
             const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
@@ -124,7 +124,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getQuality = async () => {
         try {
-            const response = await getQualities(id);
+            const response = await getQualities(realId);
             setQualityData(response.data);
             setIsQualityItem(true);
             return response.data;
@@ -198,7 +198,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const qualityResponse = await postQuality(id, {
+                const qualityResponse = await postQuality(realId, {
                     ...formData,
                     qualityReviewInfo: {
                         finalResult: formData.finalResult,
@@ -218,10 +218,10 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     notificationContents:
                         `${inquiriesDataDetail.name}님의 Inquiry 문의 품질 검토가 완료되었습니다.`,
                 })
-                const response = await getInquiryDetailByManagers(id);
+                const response = await getInquiryDetailByManagers(realId);
                 await postNotificationByManagers(response.data.salesManagerSummaryDto.userId, {
                     notificationContents:
-                        `Inquiry ${id}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
+                        `Inquiry ${realId}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
                 })
                 console.log('Quality posted successfully:', qualityResponse);
                 setTimeout(() => {
@@ -253,12 +253,11 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
-                            role={'quality'} />
-
-            <RequestBar
-                requestBarTitle={requestTitle}
-                onQualityCompleteSubmit={handleSubmit}
+            <ManagerInqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+                role={'quality'}
             />
 
             {loading ? (
@@ -267,6 +266,10 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 </Grid>
             ) : (
                 <>
+                    <RequestBar
+                        requestBarTitle={requestTitle}
+                        onQualityCompleteSubmit={handleSubmit}
+                    />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
