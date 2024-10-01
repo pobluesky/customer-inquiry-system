@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLogResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -14,9 +15,11 @@ import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquiryResponseDT
 import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.InquiryLog;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.inquiry.repository.InquiryLogRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.service.LineItemService;
@@ -67,6 +70,8 @@ public class InquiryService {
     private final FileService fileService;
 
     private final ManagerRepository managerRepository;
+
+    private final InquiryLogRepository inquiryLogRepository;
 
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
@@ -214,6 +219,9 @@ public class InquiryService {
         }
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
+
+        // InquiryLog 생성
+        createInquiryLog(savedInquiry, savedInquiry.getProgress());
 
         List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
             inquiry,
@@ -434,6 +442,9 @@ public class InquiryService {
         )) throw new CommonException(ErrorCode.INVALID_PROGRESS_UPDATE);
 
         inquiry.updateProgress(newProgress);
+
+        // InquiryLog 생성
+        createInquiryLog(inquiry, newProgress);
 
         return InquiryProgressResponseDTO.from(inquiry);
     }
@@ -736,5 +747,25 @@ public class InquiryService {
                 lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
+    }
+
+    public InquiryLogResponseDTO getInquiryLogs(String token, Long inquiryId) {
+        validateManager(token);
+
+        inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        List<InquiryLog> logs = inquiryLogRepository.findByInquiryInquiryIdOrderByCreatedDateAsc(inquiryId);
+
+        return InquiryLogResponseDTO.from(inquiryId, logs);
+    }
+
+    private void createInquiryLog(Inquiry inquiry, Progress progress) {
+        InquiryLog log = InquiryLog.builder()
+            .inquiry(inquiry)
+            .progress(progress)
+            .build();
+
+        inquiryLogRepository.save(log);
     }
 }
