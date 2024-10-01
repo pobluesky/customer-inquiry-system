@@ -34,12 +34,15 @@ export default function ColTable({
             const responseQ = await getQuestionByQuestionIdForManager(
                 responseC.data?.questionId,
             );
-            navigate('/voc-form/collaboration/res', {
-                state: {
-                    colDetail: responseC.data,
-                    questionDetail: responseQ.data,
+            navigate(
+                `/voc-form/collaboration/res/${responseC.data.colId}/${responseC.data.questionId}`,
+                {
+                    state: {
+                        colDetail: responseC.data,
+                        questionDetail: responseQ.data,
+                    },
                 },
-            });
+            );
         } catch (error) {
             console.error('협업 상세 조회 또는 질문 상세 조회 실패: ', error);
         }
