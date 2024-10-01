@@ -67,3 +67,5 @@ out/
 /src/main/generated/
 
 *.pem
+
+key.json
