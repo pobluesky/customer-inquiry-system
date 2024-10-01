@@ -33,6 +33,8 @@ import com.pobluesky.lineitem.service.LineItemService;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -345,7 +347,12 @@ public class InquiryService {
         String fileName = inquiry.getFileName();
         String filePath = inquiry.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = inquiryUpdateRequestDTO.isFileDeleted() != null && inquiryUpdateRequestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileClient.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -492,30 +499,6 @@ public class InquiryService {
             default:
                 return false;
         }
-    }
-
-    @Transactional
-    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
-        Manager manager = validateManager(token);
-
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-
-        if (manager.getRole() == UserRole.SALES) {
-            if (inquiry.getProgress() == Progress.SUBMIT) {
-                inquiry.allocateSalesManager(manager.getUserId());
-                inquiry.updateProgress(Progress.RECEIPT);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        } else {
-            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
-                inquiry.allocateQualityManager(manager.getUserId());
-                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
-            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-        }
-
-//        kafkaTemplate.send("inquiry", "inquiry-allocate-"+ inquiry.getInquiryId().toString());
-
-        return InquiryAllocateResponseDTO.from(inquiry,userClient);
     }
 
     public List<InquiryFavoriteResponseDTO> getAllInquiriesByProductType(
@@ -688,6 +671,72 @@ public class InquiryService {
         ));
 
         return results;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getInquiryCountsByDepartment(String token, String date) {
+        validateManager(token);
+
+        LocalDate currentDate = LocalDate.now();
+        int year;
+        int month;
+
+        if (date != null && !date.isEmpty()) {
+            String[] dateParts = date.split("-");
+            year = Integer.parseInt(dateParts[0]);
+            month = Integer.parseInt(dateParts[1]);
+
+            if (year > currentDate.getYear() || (year == currentDate.getYear() && month > currentDate.getMonthValue())) {
+                List<Department> departments = Arrays.asList(Department.values());
+                List<Object[]> totals = new ArrayList<>();
+
+                for (Department department : departments) {
+                    totals.add(new Object[]{department.getCode(), 0});
+                }
+
+                Map<String, List<Object[]>> result = new HashMap<>();
+                result.put("total", totals);
+                return result;
+            }
+        } else {
+            month = currentDate.getMonthValue() == 1 ? 12 : currentDate.getMonthValue() - 1;
+            year = (month == 12) ? currentDate.getYear() - 1 : currentDate.getYear();
+        }
+
+        // SALES와 QUALITY 역할에 해당하는 매니저 정보 가져오기
+        List<Manager> salesManagers = userClient.findByRole(UserRole.SALES).getData();
+        List<Manager> qualityManagers = userClient.findByRole(UserRole.QUALITY).getData();
+
+        // 매니저의 ID와 부서를 매핑하는 Map 생성
+        Map<Long, Department> departmentMap = new HashMap<>();
+        salesManagers.forEach(manager -> departmentMap.put(manager.getUserId(), manager.getDepartment()));
+        qualityManagers.forEach(manager -> departmentMap.put(manager.getUserId(), manager.getDepartment()));
+
+        // Inquiry 데이터 조회
+        List<Object[]> currentCounts = inquiryRepository.countInquiriesByMonth(month, year);
+
+        // 부서별로 Inquiry 수 집계
+        Map<Department, Integer> inquiryMap = new HashMap<>();
+        for (Object[] result : currentCounts) {
+            if (result != null && result.length > 1 && result[0] != null) {
+                Long managerId = (Long) result[0];
+                Integer inquiryCount = ((Number) result[1]).intValue();
+                Department department = departmentMap.get(managerId);
+                inquiryMap.put(department, inquiryCount);
+            }
+        }
+
+        // 각 부서별로 총 Inquiry 수 리스트 작성
+        List<Object[]> totals = new ArrayList<>();
+        for (Department department : Department.values()) {
+            int inquiryCount = inquiryMap.getOrDefault(department.getCode(), 0);
+            totals.add(new Object[]{department.getCode(), inquiryCount});
+        }
+
+        // 결과 반환
+        Map<String, List<Object[]>> result = new HashMap<>();
+        result.put("total", totals);
+        return result;
     }
 
     private List<InquiryFavoriteResponseDTO> convertToResponseDTO(List<Inquiry> inquiries) {

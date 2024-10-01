@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pobluesky.feign.Customer;
 import com.pobluesky.feign.Manager;
 import com.pobluesky.feign.UserClient;
+import com.pobluesky.global.entity.Department;
 import com.pobluesky.inquiry.entity.Country;
 import com.pobluesky.inquiry.entity.Industry;
 import com.pobluesky.inquiry.entity.Inquiry;
@@ -28,6 +29,9 @@ public record InquirySummaryResponseDTO(
     Industry industry,
     String salesManagerName,
     String qualityManagerName,
+    Department salesManagerDepartment,
+    Department qualityManagerDepartment,
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     LocalDateTime createdDate
 ) {
@@ -38,14 +42,18 @@ public record InquirySummaryResponseDTO(
         Manager qualityManager = null;
         String salesManagerName = null;
         String qualityManagerName = null;
+        Department salesManagerDepartment = null;
+        Department qualityManagerDepartment = null;
 
         if(inquiry.getSalesManagerId()!=null){
             salesManager = userClient.getManagerByIdWithoutToken(inquiry.getSalesManagerId()).getData();
             salesManagerName=salesManager.getName();
+            salesManagerDepartment=salesManager.getDepartment();
         }
         if(inquiry.getQualityManagerId()!=null){
             qualityManager = userClient.getManagerByIdWithoutToken(inquiry.getQualityManagerId()).getData();
             qualityManagerName=qualityManager.getName();
+            qualityManagerDepartment=qualityManager.getDepartment();
         }
 
         return InquirySummaryResponseDTO.builder()
@@ -61,6 +69,8 @@ public record InquirySummaryResponseDTO(
             .industry(inquiry.getIndustry())
             .salesManagerName(salesManagerName)
             .qualityManagerName(qualityManagerName)
+            .salesManagerDepartment(salesManagerDepartment)
+            .qualityManagerDepartment(qualityManagerDepartment)
             .createdDate(inquiry.getCreatedDate())
             .build();
     }

@@ -2,6 +2,7 @@ package com.pobluesky.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -85,7 +86,10 @@ public enum ErrorCode {
     PDF_CONVERSION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI003", "PDF를 통한 이미지 변환에 실패했습니다."),
     PDF_CONVERSION_NO_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, "AI004", "변환된 이미지가 존재하지 않습니다."),
     UNEXPECTED_GPT_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "AI005", "GPT응답이 올바르지 않습니다."),
-    SYSTEM_PROMPT_FILE_READ_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AI006", "챗봇용 프롬프트 파일을 불러오지 못했습니다.");
+    SYSTEM_PROMPT_FILE_READ_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AI006", "챗봇용 프롬프트 파일을 불러오지 못했습니다."),
+    UNSUPPORTED_FILE_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "AI007", "지원하지 않는 파일 형식입니다."),
+    FILE_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AI008", "파일을 통한 이미지 변환에 실패했습니다."),
+    INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "AI009", "유효하지 않은 파일 이름입니다.");
 
     private HttpStatus status;
     private String code;
