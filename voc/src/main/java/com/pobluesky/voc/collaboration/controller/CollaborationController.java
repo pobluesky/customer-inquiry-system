@@ -48,6 +48,7 @@ public class CollaborationController {
         @RequestParam(required = false) ColStatus colStatus,
         @RequestParam(required = false) String colReqManager,
         @RequestParam(required = false) Long colReqId,
+        @RequestParam(required = false) String colResManager,
         @RequestParam(required = false) Long colResId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
@@ -61,7 +62,7 @@ public class CollaborationController {
             colStatus,
             colReqManager,
             colReqId,
-            colReqManager,
+            colResManager,
             colResId,
             startDate,
             endDate
@@ -107,21 +108,6 @@ public class CollaborationController {
             token,
             questionId,
             collaborationId
-        );
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ResponseFactory.getSuccessJsonResult(response));
-    }
-
-    @GetMapping("/{questionId}")
-    @Operation(summary = "협업 진행 중임을 확인하기 위한 협업 단건 조회")
-    public ResponseEntity<JsonResult> getCollaborationForStatus(
-        @RequestHeader("Authorization") String token,
-        @PathVariable Long questionId
-    ) {
-        CollaborationDetailResponseDTO response = collaborationService.getCollaborationByIdForStatus(
-            token,
-            questionId
         );
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -189,4 +175,16 @@ public class CollaborationController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
+
+    /* [Start] Dashboard API */
+    @GetMapping("/managers/col/dashboard")
+    @Operation(summary = "월별 협업 처리 건수 평균")
+    public ResponseEntity<Map<String, List<Object[]>>> averageMonthlyCol(
+        @RequestHeader("Authorization") String token
+    ) {
+        Map<String, List<Object[]>> response = collaborationService.getAverageCountPerMonth(token);
+
+        return ResponseEntity.ok(response);
+    }
+    /* [End] Dashboard API */
 }

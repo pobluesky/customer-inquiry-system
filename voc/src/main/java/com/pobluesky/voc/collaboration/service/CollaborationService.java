@@ -20,7 +20,9 @@ import com.pobluesky.voc.question.entity.Question;
 import com.pobluesky.voc.question.entity.QuestionStatus;
 import com.pobluesky.voc.question.repository.QuestionRepository;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -104,28 +106,6 @@ public class CollaborationService {
                 collaborationId,
                 question
             ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
-
-        return CollaborationDetailResponseDTO.from(collaboration,userClient);
-    }
-
-    @Transactional(readOnly = true)
-    public CollaborationDetailResponseDTO getCollaborationByIdForStatus(
-        String token,
-        Long questionId
-    ) {
-        Long userId = userClient.parseToken(token);
-
-        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
-        if(manager == null) {
-            throw new CommonException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
-
-        Collaboration collaboration = collaborationRepository.findByQuestionId(
-            question
-        ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
         return CollaborationDetailResponseDTO.from(collaboration,userClient);
     }
@@ -268,7 +248,22 @@ public class CollaborationService {
         validateResponseManager(collaboration, requestDTO.colResId(), userId);
 
         collaboration.modifyCollaborationContents(requestDTO.colContents());
-        updateFile(collaboration, file);
+
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        boolean isFileDeleted = requestDTO.isFileDeleted() != null && requestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
+            FileInfo fileInfo = fileClient.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
 
         if (requestDTO.isAccepted() != null) {
             collaboration.updateCollaborationStatus(requestDTO.isAccepted());
@@ -277,7 +272,25 @@ public class CollaborationService {
             collaboration.modifyColReply(requestDTO.colReply());
         }
 
-        return CollaborationDetailResponseDTO.from(collaboration,userClient);
+        return CollaborationDetailResponseDTO.from(collaboration, userClient);
+    }
+
+    // 월별 담당자별 협업 처리 건수
+    @Transactional(readOnly = true)
+    public Map<String, List<Object[]>> getAverageCountPerMonth(String token) {
+        Long userId = userClient.parseToken(token);
+
+        Manager manager = userClient.getManagerByIdWithoutToken(userId).getData();
+        if(manager == null){
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Map<String, List<Object[]>> results = new HashMap<>();
+
+        results.put("total", collaborationRepository.findAverageCountPerMonth());
+        results.put("manager", collaborationRepository.findAverageCountPerMonthByManager(manager.getUserId()));
+
+        return results;
     }
 
     private Collaboration validateCollaboration(Long collaborationId) {
@@ -287,8 +300,6 @@ public class CollaborationService {
 
         if (collaboration.getColStatus() == ColStatus.COMPLETE) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_COMPLETED);
-        } else if (collaboration.getColStatus() == ColStatus.REFUSE) {
-            throw new CommonException(ErrorCode.COLLABORATION_STATUS_REFUSED);
         }
 
         Question question = questionRepository.findById(collaboration.getQuestion().getQuestionId())
