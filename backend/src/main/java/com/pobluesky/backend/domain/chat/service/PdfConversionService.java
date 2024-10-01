@@ -5,6 +5,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PdfConversionService {
 
     private final Storage storage;
@@ -40,16 +42,15 @@ public class PdfConversionService {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(i, 300, ImageType.RGB);
 
                 try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                    ImageIO.write(bim, "jpg", os);
+                    ImageIO.write(bim, "png", os);
                     byte[] imageBytes = os.toByteArray();
 
-                    String blobName = uniqueId + "/page_" + (i + 1) + ".jpg";
+                    String blobName = uniqueId + "/page_" + (i + 1) + ".png";
                     storage.create(
                         BlobInfo.newBuilder(bucketName, blobName).build(),
                         imageBytes
                     );
 
-                    // Save the GCS URI
                     String gcsPath = "gs://" + bucketName + "/" + blobName;
                     savedImgUrls.add(gcsPath);
                 }
