@@ -6,14 +6,13 @@ import com.pobluesky.backend.domain.question.entity.QuestionType;
 import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import lombok.Builder;
 
 @Builder
 public record QuestionResponseDTO(
 
-    Optional<Long> inquiryId,
+    Long inquiryId,
 
     Long userId,
 
@@ -44,8 +43,7 @@ public record QuestionResponseDTO(
     public static QuestionResponseDTO from(Question question) {
 
         return QuestionResponseDTO.builder()
-            .inquiryId(Optional.ofNullable(question.getInquiry())
-                .map(inquiry -> inquiry.getInquiryId()))
+            .inquiryId(question.getInquiry() != null ? question.getInquiry().getInquiryId() : null)
             .userId(question.getCustomer().getUserId())
             .questionId(question.getQuestionId())
             .customerName(question.getCustomer().getCustomerName())
