@@ -251,6 +251,20 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
     }, [currentProgress]);
 
+    const handlePreviewReviewData = () => {
+        handleFormDataChange('finalResult', 'Ready for review.');
+        handleFormDataChange('finalResultDetails', 'Final inspection completed.');
+        handleFormDataChange('standard', 'ISO 9001');
+        handleFormDataChange('orderCategory', 'Steel Products');
+        handleFormDataChange('coatingMetalQuantity', '200 kg');
+        handleFormDataChange('coatingOilQuantity', '25 liters');
+        handleFormDataChange('thicknessTolerance', '±0.3 mm');
+        handleFormDataChange('orderEdge', 'Beveled');
+        handleFormDataChange('customerQReq', 'High Durability');
+        handleFormDataChange('availableLab', 'Testing Lab B');
+        handleFormDataChange('qualityComments', '제품은 모든 품질 기준을 충족하며 결함이 발견되지 않았습니다.');
+    }
+
     return (
         <div className={InqTableContainer}>
             <ManagerInqPath
@@ -286,15 +300,20 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                         <QualityReviewTextFormItem formData={qualityData} />
                     ) : (
                         <QualityReviewTextForm formData={formData}
-                                               handleFormDataChange={handleFormDataChange} />
+                                               handleFormDataChange={handleFormDataChange}
+                                               isPreviewData={true}
+                                               handleIsPreview={handlePreviewReviewData}
+                        />
                     )}
 
                     {isQualityItem ? (
                         <QualityFileFormItem fileForm={'품질검토 첨부파일'}
                                              formData={qualityData} />
                     ) : (
-                        <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
-                                         handleFormDataChange={handleFormDataChange} />
+                        <QualityFileForm fileForm={'품질검토 파일첨부'}
+                                         formData={formData}
+                                         handleFormDataChange={handleFormDataChange}
+                        />
                     )}
 
                     <FileFormItem
