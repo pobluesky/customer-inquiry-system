@@ -16,7 +16,7 @@
     padding: 30px;
     border-radius: 10px;
     width: 480px;
-    height: 360px;
+    height: 405px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -25,13 +25,11 @@
 
 .modalContentComplete {
     background-color: white;
-    padding: 30px;
+    padding: 60px;
     border-radius: 10px;
-    width: 480px;
-    height: 360px;
     text-align: center;
     justify-content: center;
-    align-items: center;
+    align-content: center;
     z-index: 10000;
 }
 
@@ -84,7 +82,7 @@
     height: 15px;
     background-color: #e0e0e0;
     border-radius: 5px;
-    margin: 7px 0 5px 0;
+    margin: 5px 0 5px 0;
 }
 
 .progressBar {
@@ -95,7 +93,7 @@
 }
 
 .progressText {
-    margin: 12px 0 0 0;
+    margin: 20px 0 0 0;
     font-size: 17px;
     color: #868e96;
     font-weight: 600;
@@ -140,4 +138,21 @@
 .React_Player {
     margin: 10px 0 0 0;
     pointer-events: none;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.gradientText {
+    background: linear-gradient(270deg, #ff0080, #ff8c00, #00bfff, #8000ff, #ff0080);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 5s ease infinite;
+    margin: 7px 0 13px 0;
+    font-size: 22px;
+    font-weight: 900;
 }

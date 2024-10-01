@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-const QualityText = ({ formData, title, width, height, handleFormDataChange }) => { // 품질검토정보 작성
+const QualityText = ({ formData, handleFormDataChange, handleIsPreview, isPreviewData }) => { // 품질검토정보 작성
     if(!formData) {
         return;
     }

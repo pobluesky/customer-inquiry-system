@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ToggleBar from '../../molecules/ToggleBar';
 import { Button } from '@mui/material';
 import TextEditor from '../../atoms/TextEditor';
@@ -10,7 +10,16 @@ import OfferTableItem from '../../organisms/inquiry-form/OffertableItem';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
-function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, handleFormDataChange, isOfferSheetItem }) {
+function Offersheet({
+    formData,
+    inquiryData,
+    onLineItemsChange,
+    lineItemData,
+    handleFormDataChange,
+    isOfferSheetItem,
+    isPreviewData,
+    receipts,
+}) {
     if(!formData || !inquiryData) {
         return;
     }
@@ -25,6 +34,16 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
     ]);
 
     const [selectedRows, setSelectedRows] = useState([]);
+
+    useEffect(() => {
+        if (receipts && receipts.length > 0) {
+            const newRows = receipts.map((receipt, index) => ({
+                id: Date.now() + index,
+                items: Array(8).fill(''),
+            }));
+            setRows(newRows);
+        }
+    }, [receipts]);
 
     const addRow = () => {
         const newRow = { id: Date.now(), items: Array(8).fill('') };
@@ -344,7 +363,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
             <div>
                 {/* 토글 바 */}
                 <ToggleBar
-                    title={'Offersheet'}
+                    title={'OfferSheet'}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />
@@ -468,6 +487,8 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
                                     onRowSelect={handleRowSelect}
                                     onInputChange={handleInputChange}
                                     selectedRows={selectedRows}
+                                    receipts={receipts}
+                                    isPreviewData={isPreviewData}
                                 />
                             )}
                         </div>

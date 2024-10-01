@@ -38,6 +38,7 @@ const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
                             <Grid item xs={3}>
                                 <Select
                                     value={formData.salesInfo.contract}
+                                    placeholder={formData.salesInfo.contract}
                                     fullWidth
                                     inputProps={{
                                         style: { color: '#000000', fontWeight: '700' },
@@ -55,7 +56,7 @@ const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
                                     variant="outlined"
                                     fullWidth
                                     inputProps={{
-                                        style: { color: '#000000', fontWeight: '700' },
+                                        style: { color: '#000000', fontWeight: '500' },
                                         readOnly: true,
                                     }}
                                 />
