@@ -29,6 +29,7 @@ function CustomerInqItem() {
     // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
     const { id } = useParams();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
     const {
         register,
@@ -90,8 +91,6 @@ function CustomerInqItem() {
 
         if (!activeUserId) return;
 
-        const realId = id.slice(-2);
-
         try {
             const response = await getInquiryDetail(activeUserId, realId);
             setInquiriesDataDetail(response.data);
@@ -124,7 +123,7 @@ function CustomerInqItem() {
             return;
         }
         try {
-            const response = await getReviews(id);
+            const response = await getReviews(realId);
             setReviewData(response.data);
             setIsReviewItem(true);
             return response.data;
@@ -135,7 +134,7 @@ function CustomerInqItem() {
 
     const getOfferSheet = async () => {
         try {
-            const response = await getOfferSheets(id);
+            const response = await getOfferSheets(realId);
             setOfferSheetData(response.data);
             setIsOfferSheetItem(true);
             setFormData((prevData) => ({
@@ -150,7 +149,7 @@ function CustomerInqItem() {
 
     const getProgress = async () => {
         try {
-            const response = await getInquiryDetail(userId, id);
+            const response = await getInquiryDetail(userId, realId);
             if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
                 localStorage.setItem('isUpdate', true);
@@ -181,7 +180,7 @@ function CustomerInqItem() {
             lineItemResponseDTOs: formData.lineItemResponseDTOs || [],
         };
         try {
-            const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
+            const inquiryUpdateResponse = await putInquiry(realId, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(
                 userId,
                 {
@@ -322,19 +321,6 @@ function CustomerInqItem() {
                 mediumCategory={'Inquiry 조회'}
                 smallCategory={id}
             />
-            {isUpdate ? (
-                <RequestBar
-                    requestBarTitle={'Inquiry 조회7'}
-                    role={'customer'}
-                    onUpdate={handleSubmit(handleUpdate)}
-                />
-            ) : (
-                <RequestBar
-                    requestBarTitle={'Inquiry 조회8'}
-                    role={'customer'}
-                    onUpdate={handleSubmit(handleUpdate)}
-                />
-            )}
 
             {loading ? (
                 <Grid container justifyContent="center" alignItems="center">
@@ -342,6 +328,12 @@ function CustomerInqItem() {
                 </Grid>
             ) : (
                 <>
+                    <RequestBar
+                        requestBarTitle={'Inquiry 조회0'}
+                        role={'customer'}
+                        isUpdate={isUpdate}
+                        onUpdate={handleSubmit(handleUpdate)}
+                    />
                     {isUpdate ? (
                         <>
                             {/* 신규작성 및 수정 때 */}
