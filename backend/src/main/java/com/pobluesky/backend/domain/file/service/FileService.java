@@ -11,6 +11,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.time.Instant;
@@ -103,7 +105,12 @@ public class FileService {
             throw new FileUploadException();
         }
 
-        return changedName;
+        return encodeFileName(changedName);
+    }
+
+    private String encodeFileName(String fileName) {
+        // 파일명을 UTF-8로 인코딩하여 반환
+        return URLEncoder.encode(fileName, StandardCharsets.UTF_8);
     }
 
     private String changedFileName(String originName) {
