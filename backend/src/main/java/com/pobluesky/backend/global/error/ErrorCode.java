@@ -91,8 +91,6 @@ public enum ErrorCode {
     FILE_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AI008", "파일을 통한 이미지 변환에 실패했습니다."),
     INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "AI009", "유효하지 않은 파일 이름입니다.");
 
-
-
     private HttpStatus status;
     private String code;
     private String message;
