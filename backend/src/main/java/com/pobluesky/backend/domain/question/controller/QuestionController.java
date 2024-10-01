@@ -17,6 +17,7 @@ import java.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -104,7 +105,6 @@ public class QuestionController {
         @RequestParam(required = false) QuestionType type,
         @RequestParam(required = false) String title,
         @RequestParam(required = false) Long questionId,
-        @RequestParam(required = false) Long managerId,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -118,7 +118,6 @@ public class QuestionController {
             type,
             title,
             questionId,
-            managerId,
             startDate,
             endDate
         );

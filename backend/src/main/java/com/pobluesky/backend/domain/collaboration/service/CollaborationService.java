@@ -111,26 +111,6 @@ public class CollaborationService {
         return CollaborationDetailResponseDTO.from(collaboration);
     }
 
-    @Transactional(readOnly = true)
-    public CollaborationDetailResponseDTO getCollaborationByIdForStatus(
-        String token,
-        Long questionId
-    ) {
-        Long userId = signService.parseToken(token);
-
-        managerRepository.findById(userId)
-            .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
-
-        Question question = questionRepository.findById(questionId)
-            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
-
-        Collaboration collaboration = collaborationRepository.findByQuestionId(
-            question
-        ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
-
-        return CollaborationDetailResponseDTO.from(collaboration);
-    }
-
     @Transactional
     public CollaborationResponseDTO createCollaboration(
         String token,
@@ -249,7 +229,22 @@ public class CollaborationService {
         validateResponseManager(collaboration, requestDTO.colResId(), userId);
 
         collaboration.modifyCollaborationContents(requestDTO.colContents());
-        updateFile(collaboration, file);
+
+        String fileName = collaboration.getFileName();
+        String filePath = collaboration.getFilePath();
+
+        boolean isFileDeleted = requestDTO.isFileDeleted() != null && requestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
+            FileInfo fileInfo = fileService.uploadFile(file);
+            fileName = fileInfo.getOriginName();
+            filePath = fileInfo.getStoredFilePath();
+        }
+
+        collaboration.updateFiles(fileName, filePath);
 
         if (requestDTO.isAccepted() != null) {
             collaboration.updateCollaborationStatus(requestDTO.isAccepted());

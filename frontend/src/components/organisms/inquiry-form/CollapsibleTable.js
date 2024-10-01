@@ -14,13 +14,6 @@ export default function CollapsibleTable({
 }) {
     const rowRefs = useRef([]);
 
-    const handleButtonClick = async () => {
-        const promises = rowRefs.current.map((ref) => ref && ref.handleSubmit());
-        await Promise.all(promises);
-
-        updateData();
-    };
-
     return (
         <Paper>
             <TableContainer
@@ -53,7 +46,7 @@ export default function CollapsibleTable({
                     <TableBody>
                         {rows.map((row, index) => (
                             <ForwardedRow
-                                key={row.inquiryId}
+                                key={row.processedInquiryId}
                                 row={row}
                                 role={role}
                                 ref={(el) => rowRefs.current[index] = el}

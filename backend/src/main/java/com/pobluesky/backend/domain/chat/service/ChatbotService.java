@@ -42,8 +42,11 @@ public class ChatbotService {
     @Value("${openai.model}")
     private String openAiModel;
 
-    @Value("${system.prompt.file.path}")
-    private String systemPrompt;
+    @Value("${system.prompt.file.path.prefix}")
+    private String promptFilePathPrefix;
+
+    @Value("${system.prompt.file.path.suffix}")
+    private String promptFilePathSuffix;
 
     public JsonResult<?> processChatMessage(String token,  String userMessage) {
         validateCustomer(token);
@@ -129,7 +132,7 @@ public class ChatbotService {
                     else if (userMessage.contains("변경") || userMessage.contains("수정")) yield ChatInquirySubType.MODIFICATION;
                 }
                 if (userMessage.contains("프로세스") || userMessage.contains("절차")) yield ChatInquirySubType.PROCESS;
-                if (userMessage.contains("결과") || userMessage.contains("계약")) yield ChatInquirySubType.CONTRACT; //주문 -> 협의 || 결과
+                if (userMessage.contains("결과") || userMessage.contains("계약")) yield ChatInquirySubType.CONTRACT;
                 yield ChatInquirySubType.OTHER;
             }
             case PRODUCT -> {
@@ -166,9 +169,9 @@ public class ChatbotService {
     private String getGptResponseForInquiry(String userMessage, ChatInquiryType inquiryType, ChatInquirySubType inquirySubType) {
         List<ChatRequestMsgDto> messages = new ArrayList<>();
 
-        String systemPrompt = loadSystemPromptFromFile();
+        String systemPrompt = loadPromptFromFile();
 
-        String inquiryContext = "Provide a helpful response based on the customer's " + inquiryType + " inquiry, specifically about " + inquirySubType + ".";
+        String inquiryContext = "Provide a helpful response based on the customer's " + inquiryType + " inquiry, specifically about " + inquirySubType;
 
         messages.add(new ChatRequestMsgDto("system", systemPrompt));
         messages.add(new ChatRequestMsgDto("system", "You are a helpful assistant. " + inquiryContext));
@@ -179,9 +182,12 @@ public class ChatbotService {
         return extractContentFromGptResponse(gptPromptService.prompt(chatCompletionDto));
     }
 
-    private String loadSystemPromptFromFile() {
+    private String loadPromptFromFile() {
+        String promptFileName = "chatbot" + promptFilePathSuffix;
+        String fullPromptPath = promptFilePathPrefix + promptFileName;
+
         try {
-            Resource resource = resourceLoader.getResource(systemPrompt);
+            Resource resource = resourceLoader.getResource(fullPromptPath);
             return Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new CommonException(ErrorCode.SYSTEM_PROMPT_FILE_READ_ERROR);

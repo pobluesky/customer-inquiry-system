@@ -32,12 +32,21 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { CircularProgress, Grid } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
 
+    const {
+        formState: { errors },
+        setValue,
+    } = useForm();
+
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [qualityData, setQualityData] = useState(null);
@@ -90,7 +99,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const response = await getInquiryDetailByManagers(id);
+            const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
             setFormData(prevData => ({
@@ -115,7 +124,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     const getQuality = async () => {
         try {
-            const response = await getQualities(id);
+            const response = await getQualities(realId);
             setQualityData(response.data);
             setIsQualityItem(true);
             return response.data;
@@ -125,9 +134,17 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     }
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getQuality();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getQuality(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -181,7 +198,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const qualityResponse = await postQuality(id, {
+                const qualityResponse = await postQuality(realId, {
                     ...formData,
                     qualityReviewInfo: {
                         finalResult: formData.finalResult,
@@ -201,10 +218,10 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     notificationContents:
                         `${inquiriesDataDetail.name}님의 Inquiry 문의 품질 검토가 완료되었습니다.`,
                 })
-                const response = await getInquiryDetailByManagers(id);
+                const response = await getInquiryDetailByManagers(realId);
                 await postNotificationByManagers(response.data.salesManagerSummaryDto.userId, {
                     notificationContents:
-                        `Inquiry ${id}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
+                        `Inquiry ${realId}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
                 })
                 console.log('Quality posted successfully:', qualityResponse);
                 setTimeout(() => {
@@ -221,6 +238,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
             ...prevData,
             [field]: value
         }));
+        setValue(field, value);
     };
 
     useEffect(() => {
@@ -235,45 +253,56 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
 
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
-                            role={'quality'} />
-
-            <RequestBar
-                requestBarTitle={requestTitle}
-                onQualityCompleteSubmit={handleSubmit}
+            <ManagerInqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+                role={'quality'}
             />
 
-            <ManagerBasicInfoForm
-                formData={inquiriesDataDetail}
-                salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
-                qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
-                progress={currentProgress}
-            />
-            <InquiryHistoryFormItem
-                productType={inquiriesDataDetail?.productType}
-                lineItemData={formData.lineItemResponseDTOs}
-            />
-            <AdditionalRequestForm formData={inquiriesDataDetail} />
-
-            {isQualityItem ? (
-                <QualityReviewTextFormItem formData={qualityData} />
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
             ) : (
-                <QualityReviewTextForm formData={formData}
-                                       handleFormDataChange={handleFormDataChange} />
-            )}
+                <>
+                    <RequestBar
+                        requestBarTitle={requestTitle}
+                        onQualityCompleteSubmit={handleSubmit}
+                    />
+                    <ManagerBasicInfoForm
+                        formData={inquiriesDataDetail}
+                        salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                        qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                        progress={currentProgress}
+                    />
+                    <InquiryHistoryFormItem
+                        productType={inquiriesDataDetail?.productType}
+                        lineItemData={formData.lineItemResponseDTOs}
+                    />
+                    <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            {isQualityItem ? (
-                <QualityFileFormItem fileForm={'품질검토 첨부파일'}
-                                     formData={qualityData} />
-            ) : (
-                <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
-                                 handleFormDataChange={handleFormDataChange} />
-            )}
+                    {isQualityItem ? (
+                        <QualityReviewTextFormItem formData={qualityData} />
+                    ) : (
+                        <QualityReviewTextForm formData={formData}
+                                               handleFormDataChange={handleFormDataChange} />
+                    )}
 
-            <FileFormItem
-                          fileForm={'첨부파일'}
-                          formData={inquiriesDataDetail}
-            />
+                    {isQualityItem ? (
+                        <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                             formData={qualityData} />
+                    ) : (
+                        <QualityFileForm fileForm={'품질검토 파일첨부'} formData={formData}
+                                         handleFormDataChange={handleFormDataChange} />
+                    )}
+
+                    <FileFormItem
+                        fileForm={'첨부파일'}
+                        formData={inquiriesDataDetail}
+                    />
+                </>
+            )}
         </div>
     )
 }

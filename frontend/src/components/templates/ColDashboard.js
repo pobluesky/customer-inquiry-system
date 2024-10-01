@@ -12,18 +12,19 @@ import { Voc_Dashboard } from '../../assets/css/Voc.css';
 export default function ColDashboard() {
     const userId = getCookie('userId');
     const role = getCookie('userRole');
+    const name = getCookie('userName');
 
     const [questionCount, setQuestionCount] = useState(0);
     const [answerCount, setAnswerCount] = useState(0);
     const [colCount, setColCount] = useState(0);
     const [searchCount, setSearchCount] = useState(0);
 
+    const [filterArgs, setFilterArgs] = useState('');
+    const [collabs, setCollabs] = useState([]);
+
     const [colNo, setColNo] = useState('');
     const [colReqManager, setColReqManager] = useState('');
     const [colResManager, setColResManager] = useState('');
-
-    const [filterArgs, setFilterArgs] = useState('');
-    const [collabs, setCollabs] = useState([]);
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -103,6 +104,71 @@ export default function ColDashboard() {
         } finally {
             setListLoading(false);
         }
+    };
+
+    const myColResult = () => {
+        if (colReqFilter || colResFilter) {
+            return `${name}님이 담당 중인 협업`;
+        }
+    };
+
+    const bySelectedTimeResult = () => {
+        let dateFilter = '';
+        if (startDate) {
+            dateFilter += `시작: ${startDate}`;
+        }
+        if (endDate) {
+            dateFilter += ` ~ 종료: ${endDate}`;
+        }
+        return dateFilter;
+    };
+
+    const byTimeResult = () => {
+        if (timeFilter === 'OLDEST') {
+            return '과거순';
+        }
+    };
+
+    const byReqManagerResult = () => {
+        if (colReqManager && colReqManager !== 'all') {
+            return `요청: ${colReqManager}`;
+        }
+    };
+
+    const byResManagerResult = () => {
+        if (colResManager && colResManager !== 'all') {
+            return `응답: ${colResManager}`;
+        }
+    };
+
+    const byProgressResult = () => {
+        switch (progressFilter) {
+            case 'COMPLETE':
+                return '협업 완료';
+            case 'READY':
+                return '협업 대기';
+            case 'INPROGRESS':
+                return '협업 수락';
+            case 'REFUSE':
+                return '협업 거절';
+        }
+    };
+
+    const filteringTag = () => {
+        return (
+            <>
+                {(colReqFilter || colResFilter) && <div>{myColResult()}</div>}
+                {(startDate || endDate) && <div>{bySelectedTimeResult()}</div>}
+                {timeFilter === 'OLDEST' && <div>{byTimeResult()}</div>}
+                {colReqManager && colReqManager !== 'all' && (
+                    <div>{byReqManagerResult()}</div>
+                )}
+                {colResManager && colResManager !== 'all' && (
+                    <div>{byResManagerResult()}</div>
+                )}
+                {progressFilter && <div>{byProgressResult()}</div>}
+            </>
+        );
     };
 
     useEffect(() => {
@@ -194,16 +260,28 @@ export default function ColDashboard() {
                     />
                     <ColSearchInput
                         setColNo={setColNo}
+                        colReqFilter={colReqFilter}
                         setColReqManager={setColReqManager}
                         setColResManager={setColResManager}
+                        setColReqFilter={setColReqFilter}
+                        setColResFilter={setColResFilter}
+                        setProgressFilter={setProgressFilter}
+                        setTimeFilte={setTimeFilter}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
                     />
                     {searchCount ? (
                         <div className={Voc_Dashboard}>
-                            검색 결과는 총 <span>{searchCount}</span>건입니다.
+                            <div>
+                                검색 결과는 총 <span>{searchCount}</span>
+                                건입니다.
+                            </div>
+                            {filteringTag()}
                         </div>
                     ) : (
                         <div className={Voc_Dashboard}>
-                            검색 결과가 없습니다.
+                            <div>검색 결과가 없습니다.</div>
+                            {filteringTag()}
                         </div>
                     )}
                     <ColTable

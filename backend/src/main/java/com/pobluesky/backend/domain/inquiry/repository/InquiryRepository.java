@@ -1,12 +1,10 @@
 package com.pobluesky.backend.domain.inquiry.repository;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
-
-import java.util.List;
-import java.util.Optional;
-
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.user.entity.Manager;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -134,4 +132,15 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, Inquiry
         "WHERE i.qualityManager = :manager " +
         "GROUP BY i.productType")
     List<Object[]> countInquiriesByProductTypeAndQualityManager(@Param("manager") Manager manager);
+
+    @Query("SELECT COALESCE(sm.department, qm.department) AS department, " +
+        "       COUNT(i.inquiryId) AS inquiryCount " +
+        "FROM Inquiry i " +
+        "LEFT JOIN i.salesManager sm " +
+        "LEFT JOIN i.qualityManager qm " +
+        "WHERE EXTRACT(MONTH FROM i.createdDate) = :month " +
+        "AND EXTRACT(YEAR FROM i.createdDate) = :year " +
+        "GROUP BY COALESCE(sm.department, qm.department) " +
+        "ORDER BY department")
+    List<Object[]> countInquiriesByDepartmentAndMonth(@Param("month") int month, @Param("year") int year);
 }

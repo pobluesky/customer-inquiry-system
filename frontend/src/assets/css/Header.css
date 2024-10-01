@@ -133,7 +133,6 @@
 }
 
 .User_Modal_Container > div Button:hover {
-    /* border: 2px solid #25262b !important; */
     color: #25262b !important;
     background-color: #f8f8f8 !important;
     font-weight: 500;
@@ -148,17 +147,21 @@
     top: 5px;
     left: 50%;
     transform: translate(-50%);
-    z-index: 10;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .Notify_Modal_Container > div {
+    position: relative;
     width: 300px;
+    height: fit-content;
     float: right;
     padding: 20px;
     border: 1px solid #d5dbe2;
     border-radius: 10px;
     background: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
 }
 
 /* 새 알림, 읽은 알림 */

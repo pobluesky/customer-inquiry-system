@@ -5,11 +5,35 @@ import { VocButton } from '../atoms/VocButton';
 import { getCookie } from '../../apis/utils/cookies';
 import { Col_Req_Viewer } from '../../assets/css/Voc.css';
 
-export default function ColReqViewer({ colDetail, questionDetail }) {
+export default function ColReqViewer({
+    colDetail: initialColDetail,
+    questionDetail,
+}) {
     const sanitizer = dompurify.sanitize;
+
     const navigate = useNavigate();
 
     const role = getCookie('userRole');
+
+    const colDetail =
+        initialColDetail || JSON.parse(sessionStorage.getItem('colDetail'));
+
+    const getDeptLabel = (department) => {
+        switch (department) {
+            case 'CRM':
+                return '냉연마케팅실';
+            case 'HWM':
+                return '열연선재마케팅실';
+            case 'EM':
+                return '에너지조선마케팅실';
+            case 'CMM':
+                return '자동차소재마케팅실';
+            case 'SFM':
+                return '강건재가전마케팅실';
+            case 'SM':
+                return '스테인리스마케팅실';
+        }
+    };
 
     return (
         <div className={Col_Req_Viewer}>
@@ -20,12 +44,18 @@ export default function ColReqViewer({ colDetail, questionDetail }) {
                 <div>
                     <div>2024-08-26 11:00</div>
                     <div>
-                        {colDetail?.colManagerFromResponseDto.department} 부서{' '}
+                        {getDeptLabel(
+                            colDetail?.colManagerFromResponseDto.department,
+                        )}{' '}
+                        부서{' '}
                         <strong>
                             {colDetail?.colManagerFromResponseDto.name}
                         </strong>{' '}
                         판매 담당자가{' '}
-                        {colDetail?.colManagerToResponseDto.department} 부서{' '}
+                        {getDeptLabel(
+                            colDetail?.colManagerToResponseDto.department,
+                        )}{' '}
+                        부서{' '}
                         <strong>
                             {colDetail?.colManagerToResponseDto.name}
                         </strong>{' '}

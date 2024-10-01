@@ -23,11 +23,13 @@ import { postNotificationByCustomers } from '../../apis/api/notification';
 import { InquiryUpdateAlert } from '../../utils/actions';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import '../../assets/css/Form.css';
+import { CircularProgress, Grid } from '@mui/material';
 
 function CustomerInqItem() {
     // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
     const { id } = useParams();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
     const {
         register,
@@ -35,6 +37,8 @@ function CustomerInqItem() {
         formState: { errors },
         setValue,
     } = useForm();
+
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
@@ -88,7 +92,7 @@ function CustomerInqItem() {
         if (!activeUserId) return;
 
         try {
-            const response = await getInquiryDetail(activeUserId, id);
+            const response = await getInquiryDetail(activeUserId, realId);
             setInquiriesDataDetail(response.data);
             setFormData((prevData) => ({
                 ...prevData,
@@ -119,7 +123,7 @@ function CustomerInqItem() {
             return;
         }
         try {
-            const response = await getReviews(id);
+            const response = await getReviews(realId);
             setReviewData(response.data);
             setIsReviewItem(true);
             return response.data;
@@ -130,7 +134,7 @@ function CustomerInqItem() {
 
     const getOfferSheet = async () => {
         try {
-            const response = await getOfferSheets(id);
+            const response = await getOfferSheets(realId);
             setOfferSheetData(response.data);
             setIsOfferSheetItem(true);
             setFormData((prevData) => ({
@@ -145,7 +149,7 @@ function CustomerInqItem() {
 
     const getProgress = async () => {
         try {
-            const response = await getInquiryDetail(userId, id);
+            const response = await getInquiryDetail(userId, realId);
             if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
                 localStorage.setItem('isUpdate', true);
@@ -176,7 +180,7 @@ function CustomerInqItem() {
             lineItemResponseDTOs: formData.lineItemResponseDTOs || [],
         };
         try {
-            const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
+            const inquiryUpdateResponse = await putInquiry(realId, updatedFormData);
             const notificationResponse = await postNotificationByCustomers(
                 userId,
                 {
@@ -199,11 +203,19 @@ function CustomerInqItem() {
     };
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-        getOfferSheet();
-        getProgress();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getReview(),
+                getOfferSheet(),
+                getProgress(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -309,91 +321,92 @@ function CustomerInqItem() {
                 mediumCategory={'Inquiry 조회'}
                 smallCategory={id}
             />
-            {isUpdate ? (
-                <RequestBar
-                    requestBarTitle={'Inquiry 조회7'}
-                    role={'customer'}
-                    onUpdate={handleSubmit(handleUpdate)}
-                />
-            ) : (
-                <RequestBar
-                    requestBarTitle={'Inquiry 조회8'}
-                    role={'customer'}
-                    onUpdate={handleSubmit(handleUpdate)}
-                />
-            )}
 
-            {isUpdate ? (
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
+            ) : (
                 <>
-                    {/* 신규작성 및 수정 때 */}
-                    <InquiryNewForm
-                        title={'기본정보'}
-                        register={register}
-                        errors={errors}
-                        formData={formData}
-                        isUpdate={true}
-                        isForm={false}
-                        handleFormDataChange={handleFormDataChange}
-                    />
-                    <InquiryHistoryForm
-                        productType={formData.productType}
-                        lineItemData={formData.lineItemResponseDTOs}
-                        onLineItemsChange={(lineItems) =>
-                            handleFormDataChange(
-                                'lineItemRequestDTOs',
-                                lineItems,
-                            )
-                        }
+                    <RequestBar
+                        requestBarTitle={'Inquiry 조회0'}
+                        role={'customer'}
                         isUpdate={isUpdate}
+                        onUpdate={handleSubmit(handleUpdate)}
                     />
-                    <AdditionalRequestForm
-                        formData={formData}
-                        handleFormDataChange={handleFormDataChange}
-                    />
-                    <FileUpdateForm
-                        fileForm={'파일수정'}
-                        formData={formData}
-                        fileData={inquiriesDataDetail}
-                        handleFormDataChange={handleFormDataChange}
-                    />
-                </>
-            ) : (
-                <>
-                    {/* 단순 조회할 때 */}
-                    <BasicInfoForm formData={formData} />
-                    <InquiryHistoryFormItem
-                        productType={inquiriesDataDetail?.productType}
-                        lineItemData={formData.lineItemResponseDTOs}
-                    />
-                    <AdditionalRequestForm
-                        formData={formData}
-                        readOnly={true}
-                    />
-                    <FileFormItem
-                        fileForm={'첨부파일'}
-                        formData={inquiriesDataDetail}
-                    />
-                </>
-            )}
+                    {isUpdate ? (
+                        <>
+                            {/* 신규작성 및 수정 때 */}
+                            <InquiryNewForm
+                                title={'기본정보'}
+                                register={register}
+                                errors={errors}
+                                formData={formData}
+                                isUpdate={true}
+                                isForm={false}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                            <InquiryHistoryForm
+                                productType={formData.productType}
+                                lineItemData={formData.lineItemResponseDTOs}
+                                onLineItemsChange={(lineItems) =>
+                                    handleFormDataChange(
+                                        'lineItemRequestDTOs',
+                                        lineItems,
+                                    )
+                                }
+                                isUpdate={isUpdate}
+                            />
+                            <AdditionalRequestForm
+                                formData={formData}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                            <FileUpdateForm
+                                fileForm={'파일수정'}
+                                formData={formData}
+                                fileData={inquiriesDataDetail}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {/* 단순 조회할 때 */}
+                            <BasicInfoForm formData={formData} />
+                            <InquiryHistoryFormItem
+                                productType={inquiriesDataDetail?.productType}
+                                lineItemData={formData.lineItemResponseDTOs}
+                            />
+                            <AdditionalRequestForm
+                                formData={formData}
+                                readOnly={true}
+                            />
+                            <FileFormItem
+                                fileForm={'첨부파일'}
+                                formData={inquiriesDataDetail}
+                            />
+                        </>
+                    )}
 
-            {isReviewItem ? (
-                <>
-                    <ReviewTextFormItem formData={reviewData} />
-                    <FinalReviewTextFormItem formData={reviewData} />
-                </>
-            ) : (
-                ''
-            )}
+                    {isReviewItem ? (
+                        <>
+                            <ReviewTextFormItem formData={reviewData} />
+                            <FinalReviewTextFormItem formData={reviewData} />
+                        </>
+                    ) : (
+                        ''
+                    )}
 
-            {isOfferSheetItem ? (
-                <Offersheet
-                    formData={offerSheetData}
-                    inquiryData={inquiriesDataDetail}
-                    lineItemData={offerSheetData.receipts}
-                    isOfferSheetItem={isOfferSheetItem}
-                />
-            ) : (
-                ''
+                    {isOfferSheetItem ? (
+                        <Offersheet
+                            formData={offerSheetData}
+                            inquiryData={inquiriesDataDetail}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
+                        />
+                    ) : (
+                        ''
+                    )}
+                </>
             )}
         </div>
     );

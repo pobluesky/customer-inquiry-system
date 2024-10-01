@@ -135,7 +135,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                     }}
                     onClick={openFileDialog}
                 >
-                    PDF 업로드
+                    파일 업로드
                 </Button>
 
                 {isModalOpen && !isUploadComplete && (
@@ -161,6 +161,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                     >
                                         &times;
                                     </button>
+                                    {/* 기존 로딩바 */}
                                     {/* <div
                                         className={`loaderContainer ${
                                             isUploadComplete ? 'hidden' : ''
@@ -168,16 +169,17 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                     >
                                         <div className={loader}></div>
                                     </div> */}
-                                    {/* 비디오 삽입 */}
+                                    {/* 로딩 비디오 */}
                                     <div className={Player_Wrapper}>
                                         <ReactPlayer
-                                            url={'/videos/loading.mp4'}
-                                            // width="15vw"
-                                            height="10vh"
+                                            url={'/videos/loading-ocr.mp4'}
+                                            width={'200px'}
+                                            height={'200px'}
                                             playing={true}
                                             muted={true}
                                             controls={false}
                                             loop={true}
+                                            playbackRate={'7.0'}
                                             className={React_Player}
                                         />
                                     </div>

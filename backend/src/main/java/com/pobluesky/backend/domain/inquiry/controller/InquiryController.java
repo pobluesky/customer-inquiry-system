@@ -377,6 +377,16 @@ public class InquiryController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/managers/inquiries/dashboard/counts-by-department")
+    @Operation(summary = "부서별 월별 총 문의 건수")
+    public ResponseEntity<Map<String, List<Object[]>>> getInquiryCountsByDepartment(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(value = "date", required = false) String date
+    ) {
+        Map<String, List<Object[]>> response = inquiryService.getInquiryCountsByDepartment(token, date);
+        return ResponseEntity.ok(response);
+    }
     /* [End] Dashboard API */
 
     @PostMapping("/customers/inquiries/{userId}/optimized")
@@ -384,7 +394,7 @@ public class InquiryController {
     public ResponseEntity<JsonResult<?>> processOcrAndChatGpt(
         @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
-        @RequestParam("files") MultipartFile file,
+        @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestParam("productType") ProductType productType
     ) {
         JsonResult<?> response =

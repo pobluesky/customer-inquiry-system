@@ -194,7 +194,6 @@ const InquirySearchBox = ({ onSearch, title }) => {
             <Grid container item spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12}>
                     <Grid container alignItems="center" justifyContent="space-between">
-                        {/* sort와 progress를 왼쪽에 정렬 */}
                         <Grid item xs={10} style={{ display: 'flex', alignItems: 'center' }}>
                             <ToggleButtonGroup
                                 exclusive
@@ -212,7 +211,7 @@ const InquirySearchBox = ({ onSearch, title }) => {
                             <div style={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
-                                marginLeft: '20px', // 정렬을 맞추기 위한 여백 추가
+                                marginLeft: '20px',
                             }}>
                                 {progressOptions.map((option) => (
                                     <Chip
@@ -230,7 +229,6 @@ const InquirySearchBox = ({ onSearch, title }) => {
                             </div>
                         </Grid>
 
-                        {/* 조회 버튼을 오른쪽에 정렬 */}
                         <Grid item xs={2} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button
                                 variant="contained"
