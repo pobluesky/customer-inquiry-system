@@ -17,9 +17,8 @@ public enum QuestionType {
 
     public static QuestionType fromString(String type) {
         for (QuestionType questionType : QuestionType.values()) {
-            if (questionType.getType().equals(type)) {
+            if (questionType.getType().equals(type))
                 return questionType;
-            }
         }
 
         throw new IllegalArgumentException("Unknown type: " + type);

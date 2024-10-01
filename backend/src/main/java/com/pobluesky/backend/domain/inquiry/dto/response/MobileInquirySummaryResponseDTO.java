@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.dto.response;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+
 import lombok.Builder;
 
 @Builder
@@ -27,6 +28,7 @@ public record MobileInquirySummaryResponseDTO (
     }
 
     public static MobileInquirySummaryResponseDTO toMobileResponseDTO(InquirySummaryResponseDTO inquirySummary) {
+
         return MobileInquirySummaryResponseDTO.builder()
                 .inquiryId(inquirySummary.inquiryId())
                 .progress(inquirySummary.progress().getKoreanName())
