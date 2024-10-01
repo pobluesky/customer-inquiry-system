@@ -150,8 +150,8 @@ export const processInquiries = (data) => {
         let salesManagerNameText = inquiry.salesManagerName || '-';
         let qualityManagerNameText = inquiry.qualityManagerName || '-';
 
-        const salesManagerDepartmentText = Departments[inquiry.salesManagerDepartment] || '-';
-        const qualityManagerDepartmentText = Departments[inquiry.qualityManagerDepartment] || salesManagerDepartmentText;
+        const salesManagerDepartmentText = Departments[inquiry.salesManagerDepartment] || '';
+        const qualityManagerDepartmentText = Departments[inquiry.qualityManagerDepartment] || '';
 
         // processedInquiryId
         const createdDateString = inquiry.createdDate; // 20240923 형식
