@@ -54,3 +54,5 @@ src/main/resources/application-local.properties
 
 ### firebase ###
 src/main/resources/firebase
+
+src/main/resources/key.json
