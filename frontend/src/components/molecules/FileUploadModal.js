@@ -135,7 +135,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                     }}
                     onClick={openFileDialog}
                 >
-                    PDF 업로드
+                    파일 업로드
                 </Button>
 
                 {isModalOpen && !isUploadComplete && (
