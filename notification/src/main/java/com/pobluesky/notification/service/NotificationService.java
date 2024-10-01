@@ -1,5 +1,6 @@
 package com.pobluesky.notification.service;
 
+import com.pobluesky.global.config.FirebaseConfig;
 import com.pobluesky.global.error.CommonException;
 import com.pobluesky.global.error.ErrorCode;
 import com.pobluesky.notification.dto.request.CustomerNotificationCreateRequestDTO;
@@ -38,6 +39,10 @@ public class NotificationService {
     private final ManagerNotificationRepository managerNotificationRepository;
 
     private final UserClient userClient;
+
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
+
+    private final FirebaseConfig firebaseConfig;
 
     public List<?> getNotificationsById(
         String token,
@@ -103,7 +108,7 @@ public class NotificationService {
     ) {
         Long userId = userClient.parseToken(token);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 6);
 
         switch (notificationType) {
             case CUSTOMER:
@@ -200,6 +205,11 @@ public class NotificationService {
 
                 ManagerNotification savedManagerNotification =
                     managerNotificationRepository.save(managerNotification);
+
+                firebaseCloudMessageService.sendMessageTo(
+                        firebaseConfig.getFcmServerKey(),
+                        managerNotification.getNotificationContents()
+                );
 
                 return ManagerNotificationResponseDTO.from(savedManagerNotification);
 
