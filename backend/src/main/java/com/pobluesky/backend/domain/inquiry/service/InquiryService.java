@@ -335,7 +335,10 @@ public class InquiryService {
         String fileName = inquiry.getFileName();
         String filePath = inquiry.getFilePath();
 
-        if (file != null) {
+        if (inquiryUpdateRequestDTO.isFileDeleted()) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
