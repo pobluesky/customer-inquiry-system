@@ -767,6 +767,7 @@ public class InquiryService {
             .build();
 
         inquiryLogRepository.save(log);
+    }
 
     @Transactional(readOnly = true)
     public List<MobileInquirySummaryResponseDTO> getInquiriesBySearch(
@@ -782,8 +783,6 @@ public class InquiryService {
             String salesManagerName,
             String qualityManagerName
     ) {
-
-
         List<InquirySummaryResponseDTO> inquiries = inquiryRepository.findInquiriesBySalesManager(
                 progress,
                 productType,
