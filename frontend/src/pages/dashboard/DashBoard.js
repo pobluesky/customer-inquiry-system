@@ -13,10 +13,18 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonIcon from '@mui/icons-material/Person';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+
 import InquiryMonthlyOrderChart from '../../components/organisms/InquiryMonthlyOrderChart';
 import InquiryProgressCountChart from '../../components/organisms/InquiryProgressCountChart';
-import InquiryOrderCountChart from '../../components/organisms/InquiryOrderCountChart';
 import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart';
+
+import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
+import MyInquiryList from '../../components/molecules/MyInquiryList';
+
+import { InquiryProgressCountTotalChart } from '../../components/organisms/InquiryProgressCountTotalChart';
+import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
+import { InquiryOrderCountManagerChart } from '../../components/organisms/InquiryOrderCountManagerChart';
+
 import {
     getAverageMonthly,
     getCountsByProgress,
@@ -30,8 +38,6 @@ import {
     Dashboard_Container,
     Dashboard_Item,
 } from '../../assets/css/Chart.css';
-import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
-import MyInquiryList from '../../components/molecules/MyInquiryList';
 
 export default function DashBoard() {
     const { userId } = useAuth();
@@ -55,8 +61,8 @@ export default function DashBoard() {
                 {
                     id: '1',
                     content: (
-                        <InquiryMonthlyOrderChart
-                            data={monthlyOrder}
+                        <InquiryOrderCountTotalChart
+                            orderCount={orderCount}
                             name={name}
                         />
                     ),
@@ -73,7 +79,10 @@ export default function DashBoard() {
                 {
                     id: '3',
                     content: (
-                        <InquiryOrderCountChart data={orderCount} name={name} />
+                        <InquiryOrderCountManagerChart
+                            orderCount={orderCount}
+                            name={name}
+                        />
                     ),
                 },
                 {
@@ -81,6 +90,15 @@ export default function DashBoard() {
                     content: (
                         <InquiryProductProgressChart
                             data={productType}
+                            name={name}
+                        />
+                    ),
+                },
+                {
+                    id: '5',
+                    content: (
+                        <InquiryProgressCountTotalChart
+                            progressCount={progressCount}
                             name={name}
                         />
                     ),
@@ -129,45 +147,51 @@ export default function DashBoard() {
                         </Box>
                     ) : (
                         <>
-                        <DepartmentByMonth />
-                        <MyInquiryList />
-                        <DragDropContext onDragEnd={handleOnDragEnd}>
-                            <Droppable
-                                droppableId="droppable"
-                                direction="vertical"
-                            >
-                                {(provided) => (
-                                    <div
-                                        {...provided.droppableProps}
-                                        ref={provided.innerRef}
-                                        className={Dashboard_Container}
-                                    >
-                                        {items.map((item, index) => (
-                                            <Draggable
-                                                key={item.id}
-                                                draggableId={item.id}
-                                                index={index}
-                                            >
-                                                {(provided) => (
-                                                    <div
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        className={
-                                                            Dashboard_Item
-                                                        }
-                                                    >
-                                                        {item.content}
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                      </>
+                            {/* <InquiryIsCompletedOrderCountChart
+                                data={orderCount}
+                                name={name}
+                            /> */}
+                            <DepartmentByMonth />
+                            <MyInquiryList />
+                            <DragDropContext onDragEnd={handleOnDragEnd}>
+                                <Droppable
+                                    droppableId="droppable"
+                                    direction="vertical"
+                                >
+                                    {(provided) => (
+                                        <div
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            className={Dashboard_Container}
+                                        >
+                                            {items.map((item, index) => (
+                                                <Draggable
+                                                    key={item.id}
+                                                    draggableId={item.id}
+                                                    index={index}
+                                                >
+                                                    {(provided) => (
+                                                        <div
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            className={
+                                                                Dashboard_Item
+                                                            }
+                                                        >
+                                                            {item.content}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        </>
                     )}
                 </>
             );
