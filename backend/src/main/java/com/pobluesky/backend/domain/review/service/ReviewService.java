@@ -104,4 +104,16 @@ public class ReviewService {
 
         return ReviewResponseDTO.from(review);
     }
+
+    // 모바일 검토 조회
+    @Transactional(readOnly = true)
+    public ReviewResponseDTO getReviewByInquiry(Long inquiryId){
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+                .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        Review review = reviewRepository.findByInquiry(inquiry)
+                .orElseThrow(() -> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
+
+        return ReviewResponseDTO.from(review);
+    }
 }

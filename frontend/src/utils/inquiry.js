@@ -146,3 +146,105 @@ export const Departments = {
     SFM: "강건재가전마케팅실",
     SM: "스테인리스마케팅실",
 };
+
+// 오퍼시트 시연용 데이터
+export const OfferSheetReceipts = [
+    {
+        "product": "선재",
+        "specification": "ASTM A510",
+        "surfaceFinish": "Cold Drawn",
+        "usage": "Automotive",
+        "thickness": "2mm",
+        "diameter": "6mm",
+        "width": "10mm",
+        "quantity": "1500",
+        "price": "500",
+        "unitMinWeight": "300",
+        "unitMaxWeight": "350",
+        "edge": "Smooth Edge"
+    },
+    {
+        "product": "선재",
+        "specification": "EN 10270",
+        "surfaceFinish": "Galvanized",
+        "usage": "Construction",
+        "thickness": "5mm",
+        "diameter": "8mm",
+        "width": "15mm",
+        "quantity": "2000",
+        "price": "700",
+        "unitMinWeight": "600",
+        "unitMaxWeight": "650",
+        "edge": "Clean Cut"
+    },
+    {
+        "product": "선재",
+        "specification": "JIS G3505",
+        "surfaceFinish": "Hot Rolled",
+        "usage": "Spring",
+        "thickness": "3mm",
+        "diameter": "5mm",
+        "width": "20mm",
+        "quantity": "1000",
+        "price": "800",
+        "unitMinWeight": "400",
+        "unitMaxWeight": "450",
+        "edge": "Rounded Edge"
+    },
+    {
+        "product": "선재",
+        "specification": "ISO 16120",
+        "surfaceFinish": "Pickled",
+        "usage": "Wire Rope",
+        "thickness": "4mm",
+        "diameter": "7mm",
+        "width": "25mm",
+        "quantity": "1200",
+        "price": "600",
+        "unitMinWeight": "350",
+        "unitMaxWeight": "400",
+        "edge": "Mill Edge"
+    },
+    {
+        "product": "선재",
+        "specification": "ASTM A228",
+        "surfaceFinish": "Cold Drawn",
+        "usage": "Mechanical Springs",
+        "thickness": "1mm",
+        "diameter": "3mm",
+        "width": "5mm",
+        "quantity": "800",
+        "price": "1000",
+        "unitMinWeight": "250",
+        "unitMaxWeight": "300",
+        "edge": "Square Edge"
+    },
+    {
+        "product": "선재",
+        "specification": "EN 10016-2",
+        "surfaceFinish": "Bright",
+        "usage": "Welding Wire",
+        "thickness": "2.5mm",
+        "diameter": "1.5mm",
+        "width": "3mm",
+        "quantity": "500",
+        "price": "900",
+        "unitMinWeight": "150",
+        "unitMaxWeight": "200",
+        "edge": "Flat Edge"
+    },
+    {
+        "product": "선재",
+        "specification": "GB/T 3429",
+        "surfaceFinish": "Annealed",
+        "usage": "Piano Wire",
+        "thickness": "1.5mm",
+        "diameter": "4mm",
+        "width": "6mm",
+        "quantity": "600",
+        "price": "1100",
+        "unitMinWeight": "100",
+        "unitMaxWeight": "150",
+        "edge": "Tapered Edge"
+    }
+]

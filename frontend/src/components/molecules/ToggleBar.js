@@ -4,6 +4,7 @@ import { _ToggleOpen, _ToggleClose } from '../../assets/css/Form.css';
 import { Button, Chip } from '@mui/material';
 import ManagerModal from './ManagerModal';
 import { useAuth } from '../../hooks/useAuth';
+import { _reviewButton } from '../../assets/css/Form.css';
 
 const ToggleBar = ({
     title,
@@ -16,6 +17,8 @@ const ToggleBar = ({
     salesManagerName,
     qualityManagerName,
     onManagerSelect,
+    handleIsPreview,
+    isPreviewData,
 }) => {
 
     const borderRadius = isChecked ? '7px 7px 0 0' : '7px 7px 7px 7px';
@@ -273,6 +276,12 @@ const ToggleBar = ({
                             {qualityManagerName}
                         </Button>
                         </>
+                    )}
+                    {isPreviewData && (
+                        <button
+                            className={_reviewButton}
+                            onClick={handleIsPreview}
+                        >시연용</button>
                     )}
                 </div>
             ) : (

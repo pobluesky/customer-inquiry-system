@@ -10,7 +10,6 @@ export default function CollapsibleTable({
     handlePageChange,
     handleRowsPerPageChange,
     role,
-    updateData,
 }) {
     const rowRefs = useRef([]);
 

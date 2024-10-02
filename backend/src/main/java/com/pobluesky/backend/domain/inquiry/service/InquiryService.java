@@ -758,4 +758,39 @@ public class InquiryService {
 
         return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
     }
+
+    @Transactional(readOnly = true)
+    public List<MobileInquirySummaryResponseDTO> getInquiriesBySearch(
+            String sortBy,
+            Progress progress,
+            ProductType productType,
+            String customerName,
+            InquiryType inquiryType,
+            String salesPerson,
+            Industry industry,
+            LocalDate startDate,
+            LocalDate endDate,
+            String salesManagerName,
+            String qualityManagerName
+    ) {
+
+
+        List<InquirySummaryResponseDTO> inquiries = inquiryRepository.findInquiriesBySalesManager(
+                progress,
+                productType,
+                customerName,
+                inquiryType,
+                salesPerson,
+                industry,
+                startDate,
+                endDate,
+                sortBy,
+                salesManagerName,
+                qualityManagerName
+        );
+
+        return inquiries.stream()
+                .map(MobileInquirySummaryResponseDTO::toMobileResponseDTO)
+                .toList();
+    }
 }

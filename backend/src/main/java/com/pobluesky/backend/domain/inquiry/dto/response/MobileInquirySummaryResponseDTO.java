@@ -1,6 +1,7 @@
 package com.pobluesky.backend.domain.inquiry.dto.response;
 
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+
 import lombok.Builder;
 
 @Builder
@@ -19,10 +20,21 @@ public record MobileInquirySummaryResponseDTO (
 
         return MobileInquirySummaryResponseDTO.builder()
                 .inquiryId(inquiry.getInquiryId())
-                .progress(inquiry.getProgress().getTerm())
+                .progress(inquiry.getProgress().getKoreanName())
                 .inquiryType(inquiry.getInquiryType().getKoreanName())
                 .customerName(inquiry.getCustomer().getCustomerName())
                 .productType(inquiry.getProductType().toString())
+                .build();
+    }
+
+    public static MobileInquirySummaryResponseDTO toMobileResponseDTO(InquirySummaryResponseDTO inquirySummary) {
+
+        return MobileInquirySummaryResponseDTO.builder()
+                .inquiryId(inquirySummary.inquiryId())
+                .progress(inquirySummary.progress().getKoreanName())
+                .inquiryType(inquirySummary.inquiryType().getKoreanName())
+                .customerName(inquirySummary.customerName())
+                .productType(inquirySummary.productType().toString())
                 .build();
     }
 }

@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Sheet, Opend, QualityItemColumn } from '../../../../assets/css/Form.css';
 import ToggleBar from '../../../molecules/ToggleBar';
 import QualityText from '../quality-form/QualityText';
 import QualityForm from '../quality-form/QualityForm';
 
-const QualityReviewTextForm = ({ formData, handleFormDataChange }) => { // 품질검토 작성
+const QualityReviewTextForm = ({
+    formData,
+    handleFormDataChange,
+    handleIsPreview,
+    isPreviewData,
+}) => { // 품질검토 작성
 
     const lineItems = {
         '종합결과': '',
@@ -19,13 +24,17 @@ const QualityReviewTextForm = ({ formData, handleFormDataChange }) => { // 품�
         '생산가능소구분': '',
     };
 
+    const [isChecked, setCheck] = useState(true);
+
     return (
         <div className={Container} style={{ marginTop: '-2vh' }}>
             <div className={Sheet}>
                 <ToggleBar
                     title={'품질검토정보'}
                     isChecked={true}
-                    setCheck={() => {}}
+                    setCheck={setCheck}
+                    handleIsPreview={handleIsPreview}
+                    isPreviewData={isPreviewData}
                 />
                 <div className={Opend} style={{ padding: '3vh' }}>
                     <QualityText
@@ -41,7 +50,9 @@ const QualityReviewTextForm = ({ formData, handleFormDataChange }) => { // 품�
                             </div>
                         ))}
                     </div>
-                    <QualityForm formData={formData} handleFormDataChange={handleFormDataChange} />
+                    <QualityForm formData={formData}
+                                 handleFormDataChange={handleFormDataChange}
+                    />
                 </div>
             </div>
         </div>

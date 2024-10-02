@@ -12,8 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { _Table } from '../../../assets/css/Inquiry.css';
 import { BorderLinearProgress } from '../../molecules/BorderLinearProgress';
 import InquiryTypeBadge from '../../atoms/Chip';
-import { Popover } from '@mui/material';
+import { Popover, Typography } from '@mui/material';
 import StepTracker from '../../molecules/StepTracker';
+import { styled } from '@mui/material/styles';
 
 function Row({ row, role }) {
     const [percentage, setPercentage] = useState(0);
@@ -111,7 +112,16 @@ function Row({ row, role }) {
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="center">{row.industry}</TableCell>
-                <TableCell className="custom-table-cell" align="center">{row.salesManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <InquiryDetails>
+                        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
+                            {row.salesManagerName}
+                        </Typography>
+                        <Typography variant="body3" color="text.secondary" fontWeight="thin" sx={{ fontSize: '12px' }}>
+                            {row.salesManagerDepartment}
+                        </Typography>
+                    </InquiryDetails>
+                </TableCell>
                 <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
@@ -147,6 +157,12 @@ function Row({ row, role }) {
     );
 }
 
+const InquiryDetails = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 export default function CollapsibleTable({
     rows,
     currentPage,
@@ -177,10 +193,10 @@ export default function CollapsibleTable({
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>국가</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>판매상사</TableCell>
                             <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>법인코드</TableCell>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>산업분류</TableCell>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>담당자</TableCell>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>문의일자</TableCell>
-                            <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>진행현황</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>산업분류</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>담당자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>문의일자</TableCell>
+                            <TableCell className="custom-table-cell" align="left" sx={{ color: '#ffffff', fontWeight: '700' }}>진행현황</TableCell>
                             <TableCell className="custom-table-cell" align="center" sx={{ color: '#ffffff', fontWeight: '700' }}>Inquiry 진행률</TableCell>
                         </TableRow>
                     </TableHead>
