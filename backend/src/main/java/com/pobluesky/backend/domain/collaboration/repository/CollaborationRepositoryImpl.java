@@ -6,7 +6,6 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-
 import static com.pobluesky.backend.domain.collaboration.entity.QCollaboration.collaboration;
 import static com.pobluesky.backend.domain.user.entity.QManager.manager;
 

@@ -6,19 +6,29 @@ import lombok.Builder;
 
 @Builder
 public record CollaborationDetailResponseDTO(
+
     Long colId,
+
     Long questionId,
+
     ManagerResponseDTO colManagerFromResponseDto,
+
     ManagerResponseDTO colManagerToResponseDto,
+
     ColStatus colStatus,
+
     String colContents,
+
     String colReply,
+
     String fileName,
+
     String filePath,
+
     String vocFileName,
+
     String vocFilePath
 ) {
-
     public static CollaborationDetailResponseDTO from(Collaboration collaboration) {
         ManagerResponseDTO managerFromResponseDTO =
             ManagerResponseDTO.from(collaboration.getColRequestManager());
