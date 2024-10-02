@@ -44,4 +44,17 @@ public record MobileQuestionSummaryResponseDTO (
                 .contents(question.getContents())
                 .build();
     }
+
+    public static MobileQuestionSummaryResponseDTO toMobileResponseDTO(QuestionSummaryResponseDTO questionSummary) {
+
+        return MobileQuestionSummaryResponseDTO.builder()
+                .inquiryId(Optional.ofNullable(questionSummary.managerId()))
+                .questionId(questionSummary.questionId())
+                .customer(questionSummary.customerName())
+                .title(questionSummary.title())
+                .status(questionSummary.status().getStatus())
+                .type(questionSummary.type().getType())
+                .contents(questionSummary.contents())
+                .build();
+    }
 }

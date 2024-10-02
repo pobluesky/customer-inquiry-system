@@ -34,4 +34,14 @@ public interface QuestionRepositoryCustom {
         LocalDate endDate,
         String sortBy
     );
+
+    List<QuestionSummaryResponseDTO> findQuestionsBySearch(
+            String sortBy,
+            QuestionStatus status,
+            QuestionType type,
+            String title,
+            String customerName,
+            LocalDate startDate,
+            LocalDate endDate
+    );
 }

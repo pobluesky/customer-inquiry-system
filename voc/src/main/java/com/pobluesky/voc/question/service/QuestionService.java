@@ -430,4 +430,31 @@ public class QuestionService {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_READY);
         }
     }
+
+    // 모바일 문의 답변 검색
+    @Transactional(readOnly = true)
+    public List<MobileQuestionSummaryResponseDTO> getQuestionsBySearch(
+            String sortBy,
+            QuestionStatus status,
+            QuestionType type,
+            String title,
+            String customerName,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+
+        List<QuestionSummaryResponseDTO> questions = questionRepository.findQuestionsBySearch(
+                sortBy,
+                status,
+                type,
+                title,
+                customerName,
+                startDate,
+                endDate
+        );
+
+        return questions.stream()
+                .map(MobileQuestionSummaryResponseDTO::toMobileResponseDTO)
+                .toList();
+    }
 }

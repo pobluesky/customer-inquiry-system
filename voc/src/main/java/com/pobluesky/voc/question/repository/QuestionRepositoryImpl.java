@@ -199,6 +199,78 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         return new PageImpl<>(content, pageable, content.size());
     }
 
+    @Override
+    public List<QuestionSummaryResponseDTO> findQuestionsBySearch(
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        String customerName,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        // 1. 필요한 필드만 가져오기 (customerId와 managerId만 가져옴)
+        List<Question> questions = queryFactory
+            .selectFrom(question)
+            .leftJoin(question.answer, answer)
+            .where(
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
+
+        // 2. FeignClient를 통해 Customer 및 Manager 정보 가져오기
+        List<QuestionSummaryResponseDTO> content = questions.stream()
+            .map(q -> {
+                // FeignClient를 통해 Customer 정보 가져오기
+                Customer customer = null;
+                if (q.getUserId() != null) {
+                    try {
+                        customer = userClient.getCustomerByIdWithoutToken(q.getUserId()).getData();
+                    } catch (Exception e) {
+                        // 예외 처리 로직 (예: 로그 남기기)
+                    }
+                }
+
+                // FeignClient를 통해 Manager 정보 가져오기
+                Manager manager = null;
+                if (q.getAnswer() != null && q.getAnswer().getManagerId() != null) {
+                    try {
+                        manager = userClient.getManagerByIdWithoutToken(q.getAnswer().getManagerId()).getData();
+                    } catch (Exception e) {
+                        // 예외 처리 로직 (예: 로그 남기기)
+                    }
+                }
+
+                // DTO로 변환하여 리스트에 추가
+                return QuestionSummaryResponseDTO.builder()
+                    .questionId(q.getQuestionId())
+                    .title(q.getTitle())
+                    .status(q.getStatus())
+                    .type(q.getType())
+                    .contents(q.getContents())
+                    .customerName(customer != null ? customer.getCustomerName() : null)
+                    .questionCreatedAt(q.getCreatedDate())
+                    .answerCreatedAt(q.getAnswer() != null ? q.getAnswer().getCreatedDate() : null)
+                    .managerId(manager != null ? manager.getUserId() : null)
+                    .isActivated(q.getIsActivated())
+                    .build();
+            })
+            // 3. customerName 필터링
+            .filter(dto -> {
+                if (StringUtils.hasText(customerName)) {
+                    return dto.customerName() != null && dto.customerName().contains(customerName);
+                }
+                return true; // 필터링 조건이 없으면 모든 항목 유지
+            })
+            .collect(Collectors.toList());
+
+        return content;
+    }
+
     private JPAQuery<Question> getCountQueryForManager(
         QuestionStatus status,
         QuestionType type,
