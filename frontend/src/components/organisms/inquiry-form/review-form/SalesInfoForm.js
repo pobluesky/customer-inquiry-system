@@ -7,7 +7,12 @@ import {
 import ToggleBar from '../../../molecules/ToggleBar';
 import { Select, MenuItem, TextField, Grid } from '@mui/material';
 
-const SalesInfoForm = ({ formData, handleFormDataChange }) => {
+const SalesInfoForm = ({
+    formData,
+    handleFormDataChange,
+    handleIsPreview,
+    isPreviewData,
+}) => {
     if(!formData) {
         return;
     }
@@ -17,7 +22,6 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
         thicknessNotify,
     } = formData;
 
-    // 최종 검토 내용
     const [isChecked, setCheck] = useState(true);
 
     const items = ['수주배경', '두께특이사항'];
@@ -29,6 +33,8 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
                     title={'영업검토정보'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    handleIsPreview={handleIsPreview}
+                    isPreviewData={isPreviewData}
                 />
                 {isChecked ? (
                     <div className={Opend} style={{ padding: '3vh' }}>
@@ -70,7 +76,7 @@ const SalesInfoForm = ({ formData, handleFormDataChange }) => {
                                     placeholder="내용을 입력하세요."
                                     fullWidth
                                     inputProps={{
-                                        style: { color: '#000000', fontWeight: '700' },
+                                        style: { color: '#000000', fontWeight: '500' },
                                     }}
                                 />
                             </Grid>

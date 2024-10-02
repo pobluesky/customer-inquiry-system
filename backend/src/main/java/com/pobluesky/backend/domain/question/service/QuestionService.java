@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
+import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.MobileQuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
@@ -425,5 +426,32 @@ public class QuestionService {
         if (collaboration != null) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_READY);
         }
+    }
+
+    // 모바일 문의 답변 검색
+    @Transactional(readOnly = true)
+    public List<MobileQuestionSummaryResponseDTO> getQuestionsBySearch(
+            String sortBy,
+            QuestionStatus status,
+            QuestionType type,
+            String title,
+            String customerName,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+
+        List<QuestionSummaryResponseDTO> questions = questionRepository.findQuestionsBySearch(
+                sortBy,
+                status,
+                type,
+                title,
+                customerName,
+                startDate,
+                endDate
+        );
+
+        return questions.stream()
+                .map(MobileQuestionSummaryResponseDTO::toMobileResponseDTO)
+                .toList();
     }
 }

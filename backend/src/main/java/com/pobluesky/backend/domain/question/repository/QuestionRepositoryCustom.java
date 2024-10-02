@@ -5,6 +5,7 @@ import com.pobluesky.backend.domain.question.entity.QuestionStatus;
 
 import com.pobluesky.backend.domain.question.entity.QuestionType;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +35,15 @@ public interface QuestionRepositoryCustom {
         LocalDate startDate,
         LocalDate endDate,
         String sortBy
+    );
+
+    List<QuestionSummaryResponseDTO> findQuestionsBySearch(
+            String sortBy,
+            QuestionStatus status,
+            QuestionType type,
+            String title,
+            String customerName,
+            LocalDate startDate,
+            LocalDate endDate
     );
 }

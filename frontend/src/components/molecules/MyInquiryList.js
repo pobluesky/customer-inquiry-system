@@ -223,11 +223,13 @@ const MyInquiryList = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '3vh' }}>프로필</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>담당자</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>
+                                    {role === 'sales' ? "품질 담당자" : "판매 담당자"}
+                                </TableCell>
                                 <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>진행 상태</TableCell>
                                 <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>문의 일자</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객 이름</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>영업 담당자</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객</TableCell>
+                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>판매계약자</TableCell>
                                 <TableCell align="center" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '8vh' }}>진행률</TableCell>
                             </TableRow>
                         </TableHead>
@@ -242,17 +244,16 @@ const MyInquiryList = () => {
                                 >
                                     <TableCell align="left" sx={{ width: '3vh' }}>
                                         <ProfileCircle
-                                            name={row.qualityManagerName === '-' ? row.salesManagerName : row.qualityManagerName}
-                                            backgroundColor={row.qualityManagerName !== '-' ? '#ADE8FF' : null}
+                                            name={role === 'sales' ? row.qualityManagerName : row.salesManagerName}
                                         />
                                     </TableCell>
                                     <TableCell align="left" sx={{ width: '6vh' }}>
                                         <InquiryDetails>
                                             <Typography variant="body1" fontWeight="bold">
-                                                {row.qualityManagerName === '-' ? row.salesManagerName : row.qualityManagerName}
+                                                {role === 'sales' ? row.qualityManagerName : row.salesManagerName}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                {row.qualityManagerName === '-' ? row.salesManagerDepartment : row.qualityManagerDepartment}
+                                                {role === 'sales' ? row.qualityManagerDepartment : row.salesManagerDepartment}
                                             </Typography>
                                         </InquiryDetails>
                                     </TableCell>
