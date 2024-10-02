@@ -31,7 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
 
-
 @RequiredArgsConstructor
 public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
