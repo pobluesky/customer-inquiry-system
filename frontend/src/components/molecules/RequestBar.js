@@ -27,10 +27,12 @@ function RequestBar({
     isPreviewData,
     handleIsPreview,
     onAllocate,
+    isUpdate,
 }) {
     const navigate = useNavigate();
     const { role } = useAuth();
     const { id } = useParams();
+    const realId = id ? id.slice(-2) : '';
 
     const buttonConfig = {
         'Inquiry 등록0': ['초기화', '검토의뢰'],
@@ -44,12 +46,18 @@ function RequestBar({
         'Inquiry 조회8': ['닫기'],
     };
 
-    const buttons = buttonConfig[requestBarTitle];
-    const displayName = requestBarTitle?.slice(0, -1);
+    let buttons;
+    if (requestBarTitle === 'Inquiry 조회0') {
+        buttons = isUpdate ? buttonConfig['Inquiry 조회7'] : buttonConfig['Inquiry 조회8'];
+    } else {
+        buttons = buttonConfig[requestBarTitle];
+    }
+
+    const displayName = requestBarTitle ? requestBarTitle.slice(0, -1) : '';
 
     const updateProgress = async (nextProgress) => {
         try {
-            const response = await putProgress(id, nextProgress);
+            const response = await putProgress(realId, nextProgress);
             console.log('Progress updated successfully:', response);
         } catch (error) {
             console.log('Error updating progress:', error);

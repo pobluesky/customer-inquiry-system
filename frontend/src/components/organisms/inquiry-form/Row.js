@@ -5,7 +5,13 @@ import React, {
     useEffect,
     useRef,
 } from 'react';
-import { TableRow, TableCell, Checkbox, Popover } from '@mui/material';
+import {
+    TableRow,
+    TableCell,
+    Checkbox,
+    Popover,
+    Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
     getInquiryDetailByManagers,
@@ -19,6 +25,7 @@ import {
     postNotificationByCustomers,
     postNotificationByManagers,
 } from '../../../apis/api/notification';
+import { styled } from '@mui/material/styles';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
@@ -156,9 +163,26 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
-                <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <InquiryDetails>
+                        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
+                            {row.salesManagerName}
+                        </Typography>
+                        <Typography variant="body3" color="text.secondary" fontWeight="thin" sx={{ fontSize: '12px' }}>
+                            {row.salesManagerDepartment}
+                        </Typography>
+                    </InquiryDetails>
+                </TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <InquiryDetails>
+                        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
+                            {row.qualityManagerName}
+                        </Typography>
+                        <Typography variant="body3" color="text.secondary" fontWeight="thin" sx={{ fontSize: '12px' }}>
+                            {row.qualityManagerDepartment}
+                        </Typography>
+                    </InquiryDetails>
+                </TableCell>                <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
                     className="custom-table-cell"
@@ -194,5 +218,11 @@ function Row({ row, role }, ref) {
 }
 
 const ForwardedRow = forwardRef(Row);
+
+const InquiryDetails = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default ForwardedRow;

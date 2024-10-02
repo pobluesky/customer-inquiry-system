@@ -338,7 +338,12 @@ public class InquiryService {
         String fileName = inquiry.getFileName();
         String filePath = inquiry.getFilePath();
 
-        if (file != null) {
+        boolean isFileDeleted = inquiryUpdateRequestDTO.isFileDeleted() != null && inquiryUpdateRequestDTO.isFileDeleted();
+
+        if (isFileDeleted) {
+            fileName = null;
+            filePath = null;
+        } else if (file != null) {
             FileInfo fileInfo = fileService.uploadFile(file);
             fileName = fileInfo.getOriginName();
             filePath = fileInfo.getStoredFilePath();
@@ -750,5 +755,40 @@ public class InquiryService {
                 lineItemService.getFullLineItemsByInquiry(inquiryId);
 
         return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MobileInquirySummaryResponseDTO> getInquiriesBySearch(
+            String sortBy,
+            Progress progress,
+            ProductType productType,
+            String customerName,
+            InquiryType inquiryType,
+            String salesPerson,
+            Industry industry,
+            LocalDate startDate,
+            LocalDate endDate,
+            String salesManagerName,
+            String qualityManagerName
+    ) {
+
+
+        List<InquirySummaryResponseDTO> inquiries = inquiryRepository.findInquiriesBySalesManager(
+                progress,
+                productType,
+                customerName,
+                inquiryType,
+                salesPerson,
+                industry,
+                startDate,
+                endDate,
+                sortBy,
+                salesManagerName,
+                qualityManagerName
+        );
+
+        return inquiries.stream()
+                .map(MobileInquirySummaryResponseDTO::toMobileResponseDTO)
+                .toList();
     }
 }
