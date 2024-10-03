@@ -22,10 +22,9 @@ export const InquiryOrderCountTotalChart = ({ orderCount }) => {
         <ResponsivePie
             data={data}
             theme={{
-                background: 'skyblue',
                 legends: { text: { fontSize: 16 } },
             }}
-            margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+            margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
             innerRadius={0.6}
             padAngle={3}
             activeOuterRadiusOffset={8}

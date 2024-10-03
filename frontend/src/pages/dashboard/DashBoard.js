@@ -14,16 +14,16 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonIcon from '@mui/icons-material/Person';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
-import InquiryMonthlyOrderChart from '../../components/organisms/InquiryMonthlyOrderChart';
-import InquiryProgressCountChart from '../../components/organisms/InquiryProgressCountChart';
-import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart';
-
 import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
 import MyInquiryList from '../../components/molecules/MyInquiryList';
 
-import { InquiryProgressCountTotalChart } from '../../components/organisms/InquiryProgressCountTotalChart';
 import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
 import { InquiryOrderCountManagerChart } from '../../components/organisms/InquiryOrderCountManagerChart';
+import { InquiryProgressCountTotalChart } from '../../components/organisms/InquiryProgressCountTotalChart';
+import { InquiryProgressCountManagerChart } from '../../components/organisms/InquiryProgressCountManagerChart';
+import { InquiryOrderPeriodChart } from '../../components/organisms/InquiryOrderPeriodChart';
+
+import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart';
 
 import {
     getAverageMonthly,
@@ -35,7 +35,7 @@ import profile from '../../assets/css/icons/profile.svg';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
 import {
-    Dashboard_Container,
+    // Dashboard_Container,
     Dashboard_Item,
 } from '../../assets/css/Chart.css';
 
@@ -49,7 +49,7 @@ export default function DashBoard() {
 
     const fetchData = async () => {
         try {
-            const [monthlyOrder, progressCount, orderCount, productType] =
+            const [orderPeriod, progressCount, orderCount, productType] =
                 await Promise.all([
                     getAverageMonthly(), // 월별 Inquiry 접수건 주문 체결 소요일 평균
                     getCountsByProgress(), // 전체 Inquiry 검토 현황별 건수
@@ -70,15 +70,6 @@ export default function DashBoard() {
                 {
                     id: '2',
                     content: (
-                        <InquiryProgressCountChart
-                            data={progressCount}
-                            name={name}
-                        />
-                    ),
-                },
-                {
-                    id: '3',
-                    content: (
                         <InquiryOrderCountManagerChart
                             orderCount={orderCount}
                             name={name}
@@ -86,10 +77,19 @@ export default function DashBoard() {
                     ),
                 },
                 {
+                    id: '3',
+                    content: (
+                        <InquiryProgressCountTotalChart
+                            progressCount={progressCount}
+                            name={name}
+                        />
+                    ),
+                },
+                {
                     id: '4',
                     content: (
-                        <InquiryProductProgressChart
-                            data={productType}
+                        <InquiryProgressCountManagerChart
+                            progressCount={progressCount}
                             name={name}
                         />
                     ),
@@ -97,8 +97,17 @@ export default function DashBoard() {
                 {
                     id: '5',
                     content: (
-                        <InquiryProgressCountTotalChart
-                            progressCount={progressCount}
+                        <InquiryOrderPeriodChart
+                            orderPeriod={orderPeriod}
+                            name={name}
+                        />
+                    ),
+                },
+                {
+                    id: '6',
+                    content: (
+                        <InquiryProductProgressChart
+                            data={productType}
                             name={name}
                         />
                     ),
@@ -162,7 +171,7 @@ export default function DashBoard() {
                                         <div
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
-                                            className={Dashboard_Container}
+                                            // className={Dashboard_Container}
                                         >
                                             {items.map((item, index) => (
                                                 <Draggable

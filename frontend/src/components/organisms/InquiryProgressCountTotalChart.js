@@ -76,11 +76,12 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
     return (
         <ResponsiveBar
             data={data}
-            margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+            margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
             padding={0.3}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            colors={{ scheme: 'nivo' }}
+            colors={['#1A91FF']}
+            colorBy="index"
             borderRadius={15}
             borderColor="#000000"
             axisTop={null}
@@ -89,20 +90,8 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
                 tickSize: 9,
                 tickPadding: 8,
                 tickRotation: 0,
-                legend: 'country',
-                legendPosition: 'middle',
-                legendOffset: 60,
-                truncateTickAt: 0,
             }}
-            axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'food',
-                legendPosition: 'middle',
-                legendOffset: -40,
-                truncateTickAt: 0,
-            }}
+            axisLeft={null}
             enableGridX={true}
             enableLabel={false}
             enableTotals={true}
@@ -112,9 +101,6 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
                 from: 'color',
                 modifiers: [['darker', '1.6']],
             }}
-            // legends={[]}
-            // role="application"
-            // ariaLabel="Nivo bar chart demo"
         />
     );
 };

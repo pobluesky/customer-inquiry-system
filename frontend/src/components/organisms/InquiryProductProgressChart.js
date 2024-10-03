@@ -58,7 +58,7 @@ function InquiryProductProgressChart({ data, name }) {
 
     return (
         <div className={Chart_Container}>
-            <div>{name}님의 제품별 주문 체결 현황 (전체 대비 나의 성과)</div>
+            <div>{name}님의 제품별 주문 체결 현황</div>
             <GaugeChart
                 className={Gauge_Chart}
                 id="gauge-chart5"
