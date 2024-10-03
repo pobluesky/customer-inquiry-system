@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
+import { Dashboard_Item } from '../../assets/css/Chart.css';
 
 export const InquiryProgressCountManagerChart = ({ progressCount }) => {
     let submit = 0;
@@ -73,39 +74,44 @@ export const InquiryProgressCountManagerChart = ({ progressCount }) => {
     ];
 
     return (
-        <ResponsiveLine
-            data={data}
-            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
-            colors={['#FF0160']}
-            colorBy="index"
-            xScale={{ type: 'point' }}
-            yScale={{
-                type: 'linear',
-                min: 'auto',
-                max: 'auto',
-                stacked: true,
-                reverse: false,
-            }}
-            yFormat=" >-.2f"
-            axisTop={null}
-            axisRight={null}
-            axisBottom={{
-                tickSize: 9,
-                tickPadding: 8,
-                tickRotation: 0,
-            }}
-            axisLeft={null}
-            enableGridY={false}
-            lineWidth={5}
-            pointSize={5}
-            pointBorderWidth={5}
-            pointBorderColor={{ from: 'serieColor', modifiers: [] }}
-            pointLabel="data.yFormatted"
-            pointLabelYOffset={-12}
-            enableArea={false}
-            enableTouchCrosshair={true}
-            useMesh={true}
-            legends={[]}
-        />
+        <div
+            className={Dashboard_Item}
+            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+        >
+            <ResponsiveLine
+                data={data}
+                margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+                colors={['#FF0160']}
+                colorBy="index"
+                xScale={{ type: 'point' }}
+                yScale={{
+                    type: 'linear',
+                    min: 'auto',
+                    max: 'auto',
+                    stacked: true,
+                    reverse: false,
+                }}
+                yFormat=" >-.2f"
+                axisTop={null}
+                axisRight={null}
+                axisBottom={{
+                    tickSize: 9,
+                    tickPadding: 8,
+                    tickRotation: 0,
+                }}
+                axisLeft={null}
+                enableGridY={false}
+                lineWidth={5}
+                pointSize={5}
+                pointBorderWidth={5}
+                pointBorderColor={{ from: 'serieColor', modifiers: [] }}
+                pointLabel="data.yFormatted"
+                pointLabelYOffset={-12}
+                enableArea={false}
+                enableTouchCrosshair={true}
+                useMesh={true}
+                legends={[]}
+            />
+        </div>
     );
 };

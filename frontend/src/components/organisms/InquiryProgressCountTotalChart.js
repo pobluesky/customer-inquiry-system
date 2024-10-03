@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
+import { Dashboard_Item } from '../../assets/css/Chart.css';
 
 export const InquiryProgressCountTotalChart = ({ progressCount }) => {
     let submit = 0;
@@ -74,33 +75,38 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
     ];
 
     return (
-        <ResponsiveBar
-            data={data}
-            margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
-            padding={0.3}
-            valueScale={{ type: 'linear' }}
-            indexScale={{ type: 'band', round: true }}
-            colors={['#1A91FF']}
-            colorBy="index"
-            borderRadius={15}
-            borderColor="#000000"
-            axisTop={null}
-            axisRight={null}
-            axisBottom={{
-                tickSize: 9,
-                tickPadding: 8,
-                tickRotation: 0,
-            }}
-            axisLeft={null}
-            enableGridX={true}
-            enableLabel={false}
-            enableTotals={true}
-            labelSkipWidth={12}
-            labelSkipHeight={12}
-            labelTextColor={{
-                from: 'color',
-                modifiers: [['darker', '1.6']],
-            }}
-        />
+        <div
+            className={Dashboard_Item}
+            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+        >
+            <ResponsiveBar
+                data={data}
+                margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
+                padding={0.3}
+                valueScale={{ type: 'linear' }}
+                indexScale={{ type: 'band', round: true }}
+                colors={['#1A91FF']}
+                colorBy="index"
+                borderRadius={15}
+                borderColor="#000000"
+                axisTop={null}
+                axisRight={null}
+                axisBottom={{
+                    tickSize: 9,
+                    tickPadding: 8,
+                    tickRotation: 0,
+                }}
+                axisLeft={null}
+                enableGridX={true}
+                enableLabel={false}
+                enableTotals={true}
+                labelSkipWidth={12}
+                labelSkipHeight={12}
+                labelTextColor={{
+                    from: 'color',
+                    modifiers: [['darker', '1.6']],
+                }}
+            />
+        </div>
     );
 };
