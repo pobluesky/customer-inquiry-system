@@ -7,6 +7,7 @@ import com.pobluesky.backend.domain.inquiry.dto.request.InquiryUpdateRequestDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryAllocateResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteLineItemResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryFavoriteResponseDTO;
+import com.pobluesky.backend.domain.inquiry.dto.response.InquiryLogResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryProgressResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquiryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.dto.response.InquirySummaryResponseDTO;
@@ -14,9 +15,11 @@ import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquiryResponseDT
 import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.inquiry.entity.Industry;
 import com.pobluesky.backend.domain.inquiry.entity.Inquiry;
+import com.pobluesky.backend.domain.inquiry.entity.InquiryLog;
 import com.pobluesky.backend.domain.inquiry.entity.InquiryType;
 import com.pobluesky.backend.domain.inquiry.entity.ProductType;
 import com.pobluesky.backend.domain.inquiry.entity.Progress;
+import com.pobluesky.backend.domain.inquiry.repository.InquiryLogRepository;
 import com.pobluesky.backend.domain.inquiry.repository.InquiryRepository;
 import com.pobluesky.backend.domain.lineitem.dto.response.LineItemResponseDTO;
 import com.pobluesky.backend.domain.lineitem.service.LineItemService;
@@ -29,6 +32,7 @@ import com.pobluesky.backend.domain.user.repository.ManagerRepository;
 import com.pobluesky.backend.domain.user.service.SignService;
 import com.pobluesky.backend.global.error.CommonException;
 import com.pobluesky.backend.global.error.ErrorCode;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,8 +46,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +70,8 @@ public class InquiryService {
     private final FileService fileService;
 
     private final ManagerRepository managerRepository;
+
+    private final InquiryLogRepository inquiryLogRepository;
 
     // Inquiry 전체 조회(고객사) without paging
     @Transactional(readOnly = true)
@@ -212,6 +220,9 @@ public class InquiryService {
 
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
+        // InquiryLog 생성
+        createInquiryLog(savedInquiry, savedInquiry.getProgress());
+
         List<LineItemResponseDTO> lineItems = lineItemService.createLineItems(
             inquiry,
             dto.lineItemRequestDTOs()
@@ -294,28 +305,6 @@ public class InquiryService {
 
         return InquiryAllocateResponseDTO.from(inquiry);
     }
-
-//    @Transactional
-//    public InquiryAllocateResponseDTO allocateManager(String token, Long inquiryId) {
-//        Manager manager = validateManager(token);
-//
-//        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-//            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
-//
-//        if (manager.getRole() == UserRole.SALES) {
-//            if (inquiry.getProgress() == Progress.SUBMIT) {
-//                inquiry.allocateSalesManager(manager);
-//                inquiry.updateProgress(Progress.RECEIPT);
-//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-//        } else {
-//            if (inquiry.getProgress() == Progress.QUALITY_REVIEW_REQUEST) {
-//                inquiry.allocateQualityManager(manager);
-//                inquiry.updateProgress(Progress.QUALITY_REVIEW_RESPONSE);
-//            } else throw new CommonException(ErrorCode.INQUIRY_UNABLE_ALLOCATE);
-//        }
-//
-//        return InquiryAllocateResponseDTO.from(inquiry);
-//    }
 
     @Transactional
     public InquiryResponseDTO updateInquiryById(
@@ -453,6 +442,9 @@ public class InquiryService {
         )) throw new CommonException(ErrorCode.INVALID_PROGRESS_UPDATE);
 
         inquiry.updateProgress(newProgress);
+
+        // InquiryLog 생성
+        createInquiryLog(inquiry, newProgress);
 
         return InquiryProgressResponseDTO.from(inquiry);
     }
@@ -756,6 +748,26 @@ public class InquiryService {
 
         return MobileInquiryResponseDTO.of(inquiry,lineItemsByInquiry);
     }
+  
+    public InquiryLogResponseDTO getInquiryLogs(String token, Long inquiryId) {
+        validateManager(token);
+
+        inquiryRepository.findById(inquiryId)
+            .orElseThrow(() -> new CommonException(ErrorCode.INQUIRY_NOT_FOUND));
+
+        List<InquiryLog> logs = inquiryLogRepository.findByInquiryInquiryIdOrderByCreatedDateAsc(inquiryId);
+
+        return InquiryLogResponseDTO.from(inquiryId, logs);
+    }
+
+    private void createInquiryLog(Inquiry inquiry, Progress progress) {
+        InquiryLog log = InquiryLog.builder()
+            .inquiry(inquiry)
+            .progress(progress)
+            .build();
+
+        inquiryLogRepository.save(log);
+    }
 
     @Transactional(readOnly = true)
     public List<MobileInquirySummaryResponseDTO> getInquiriesBySearch(
@@ -771,8 +783,6 @@ public class InquiryService {
             String salesManagerName,
             String qualityManagerName
     ) {
-
-
         List<InquirySummaryResponseDTO> inquiries = inquiryRepository.findInquiriesBySalesManager(
                 progress,
                 productType,
