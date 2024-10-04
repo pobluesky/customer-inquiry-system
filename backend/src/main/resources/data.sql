@@ -20,21 +20,21 @@ VALUES
 -- INQUIRY
 INSERT INTO inquiry (user_id, sales_manager_id, quality_manager_id, country, corporate, sales_person, inquiry_type, industry, corporation_code, product_type, progress, customer_request_date, additional_requests, file_name, file_path, response_deadline, is_activated, is_favorite, created_date, modified_date)
 VALUES
-    (1, null, null, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2023-08-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2023-08-10',  true, true, '2023-01-29 14:22:37.123456+00', '2023-02-28 14:22:37.123456+00'),
-    (2, null, null,'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2023-08-02', '이전 요청을 참고해주세요', 'file2.pdf','file2Name', '2023-08-15', true, true, '2023-02-28 14:22:37.123456+00', '2023-03-28 14:22:37.123456+00'),
-    (3, 1, 2,'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2023-08-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2023-08-20', true, false, '2023-03-29 14:22:37.123456+00', '2023-04-29 14:22:37.123456+00'),
-    (4, 5, 4,'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2023-08-04', null, 'file4.pdf', 'file4Name', '2023-08-21', true, false, '2023-04-29 14:22:37.123456+00', '2023-05-29 14:22:37.123456+00'),
-    (5, 3, null,'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2023-08-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2023-08-21', true, false, '2023-05-29 14:22:37.123456+00', '2023-06-29 14:22:37.123456+00'),
-    (1, 5, 4,'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2023-08-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2023-08-22', true, true, '2023-06-29 14:22:37.123456+00', '2023-07-29 14:22:37.123456+00'),
-    (2, 3, null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2023-08-25', true, false, '2023-07-29 14:22:37.123456+00', '2023-08-29 14:22:37.123456+00'),
-    (3, 1, null,'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2023-08-07', '수출용', 'file8.pdf', 'file8Name', '2023-08-30', true, false, '2023-08-29 14:22:37.123456+00', '2023-09-29 14:22:37.123456+00'),
-    (4, 5, null,'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'FINAL_REVIEW_COMPLETED', '2023-08-08', '배타적 계약', 'file9.pdf', 'file9Name', '2023-09-01', true, false, '2023-09-29 14:22:37.123456+00', '2023-10-29 14:22:37.123456+00'),
-    (5, 3, null,'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FIRST_REVIEW_COMPLETED', '2023-08-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2023-09-05', true, false, '2023-10-29 14:22:37.123456+00', '2023-11-29 14:22:37.123456+00'),
-    (1, 1, 4,'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2023-08-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2023-09-10', true, true, '2023-11-29 14:22:37.123456+00', '2023-12-29 14:22:37.123456+00'),
-    (2, 1, null,'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2023-08-11', '견적 요청', 'file12.pdf', 'file12Name', '2023-09-15', true, false, '2023-12-29 14:22:37.123456+00', '2024-01-29 14:22:37.123456+00'),
-    (3, 5, null,'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2023-08-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2023-09-20', true, true, '2023-07-29 14:22:37.123456+00', '2023-08-15 14:22:37.123456+00'),
-    (4, 3, 4,'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2023-08-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2023-09-25', true, false, '2023-08-29 14:22:37.123456+00', '2023-09-18 14:22:37.123456+00'),
-    (5, 3, null,'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2023-08-14', '긴급 요청', 'file15.pdf', 'file15Name', '2023-09-30', true, true, '2023-09-29 14:22:37.123456+00', '2023-10-20 14:22:37.123456+00');
+    (1, null, null, 'USA', 'POA', 'POSCO Asia', 'QUOTE_INQUIRY', 'AUTOMOBILE', '(주)포스코', 'CAR', 'SUBMIT', '2024-09-01', '빠른 회신 부탁합니다', 'file1.pdf', 'file1Name', '2024-09-10', true, true, '2024-09-01 09:15:22.123456+00', '2024-09-01 09:15:22.123456+00'),
+    (2, null, null, 'JAPAN', 'BR', 'BORAM', 'COMMON_INQUIRY', 'CONSTRUCTION', '(주)포스코', 'HOT_ROLLED', 'SUBMIT', '2024-09-02', '이전 요청을 참고해주세요', 'file2.pdf', 'file2Name', '2024-09-15', true, true, '2024-09-05 11:42:18.123456+00', '2024-09-05 11:42:18.123456+00'),
+    (3, 1, 2, 'GERMANY', 'DR', 'DURI', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_COMPLETED', '2024-09-03', '기한 내에 납부 바람', 'file3.pdf', 'file3Name', '2024-09-20', true, false, '2024-09-10 13:27:55.123456+00', '2024-09-20 16:38:41.123456+00'),
+    (4, 5, 4, 'KOREA', 'GG', 'GEUMGANG', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_COMPLETED', '2024-09-04', null, 'file4.pdf', 'file4Name', '2024-09-21', true, false, '2024-09-15 10:05:33.123456+00', '2024-09-25 15:19:27.123456+00'),
+    (5, 3, null, 'KOREA', 'SS', 'SESIN', 'COMMON_INQUIRY', 'ELECTRIC', '(주)포스코', 'THICK_PLATE', 'QUALITY_REVIEW_REQUEST', '2024-09-04', '후판 품질에 신경써주세요', 'file4.pdf', 'file5Name', '2024-09-21', true, false, '2024-09-20 14:53:09.123456+00', '2024-09-25 09:34:58.123456+00'),
+    (1, 5, 4, 'CANADA', 'CC', 'CANCO', 'QUOTE_INQUIRY', 'SHIPBUILDING', '(주)포스코', 'CAR', 'FINAL_REVIEW_COMPLETED', '2024-09-05', '빠른 납품 필요', 'file6.pdf', 'file6Name', '2024-09-22', true, true, '2024-09-25 08:47:12.123456+00', '2024-10-05 11:23:45.123456+00'),
+    (2, 3, null, 'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'MACHINERY', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2024-09-06', '최고 품질을 원합니다', 'file7.pdf', 'file7Name', '2024-09-25', true, false, '2024-09-30 15:39:28.123456+00', '2024-10-01 10:56:32.123456+00'),
+    (3, 1, null, 'FRANCE', 'FR', 'FRANCO', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2024-09-07', '수출용', 'file8.pdf', 'file8Name', '2024-09-30', true, false, '2024-10-01 12:18:44.123456+00', '2024-10-05 14:07:19.123456+00'),
+    (4, 5, null, 'KOREA', 'HH', 'HANHWA', 'QUOTE_INQUIRY', 'VESSEL', '(주)포스코', 'COLD_ROLLED', 'FINAL_REVIEW_COMPLETED', '2024-09-08', '배타적 계약', 'file9.pdf', 'file9Name', '2024-10-01', true, false, '2024-10-05 09:29:51.123456+00', '2024-10-15 13:44:38.123456+00'),
+    (5, 3, null, 'GERMANY', 'MG', 'MEGA', 'QUOTE_INQUIRY', 'PIPE', '(주)포스코', 'THICK_PLATE', 'FIRST_REVIEW_COMPLETED', '2024-09-09', '안정적인 공급 요청', 'file10.pdf', 'file10Name', '2024-10-05', true, false, '2024-10-10 11:08:17.123456+00', '2024-10-15 16:52:03.123456+00'),
+    (1, 1, 4, 'USA', 'POA', 'POSCO Asia', 'COMMON_INQUIRY', 'HIGH_CARBON', '(주)포스코', 'CAR', 'QUALITY_REVIEW_RESPONSE', '2024-09-10', '기한 내 작업 완료', 'file11.pdf', 'file11Name', '2024-10-10', true, true, '2024-10-15 10:35:49.123456+00', '2024-10-20 15:41:26.123456+00'),
+    (2, 1, null, 'CHINA', 'CN', 'CHINAPRO', 'QUOTE_INQUIRY', 'LOW_CARBON', '(주)포스코', 'HOT_ROLLED', 'RECEIPT', '2024-09-11', '견적 요청', 'file12.pdf', 'file12Name', '2024-10-15', true, false, '2024-10-20 14:22:37.123456+00', '2024-10-21 09:17:55.123456+00'),
+    (3, 5, null, 'JAPAN', 'BR', 'BORAM', 'QUOTE_INQUIRY', 'DISTRIBUTION', '(주)포스코', 'WIRE_ROD', 'FIRST_REVIEW_COMPLETED', '2024-09-12', '고객의견 반영', 'file13.pdf', 'file13Name', '2024-10-20', true, true, '2024-10-25 13:49:22.123456+00', '2024-10-28 11:33:08.123456+00'),
+    (4, 3, 4, 'CANADA', 'CC', 'CANCO', 'COMMON_INQUIRY', 'KITCHEN', '(주)포스코', 'COLD_ROLLED', 'QUALITY_REVIEW_RESPONSE', '2024-09-13', '주문 변경 가능', 'file14.pdf', 'file14Name', '2024-10-25', true, false, '2024-10-28 15:56:41.123456+00', '2024-10-30 10:28:34.123456+00'),
+    (5, 3, null, 'KOREA', 'GG', 'GEUMGANG', 'QUOTE_INQUIRY', 'PLATING', '(주)포스코', 'THICK_PLATE', 'RECEIPT', '2024-09-14', '긴급 요청', 'file15.pdf', 'file15Name', '2024-10-30', true, true, '2024-09-28 11:22:37.123456+00', '2024-09-28 14:22:37.123456+00');
 
 -- CAR_LINE_ITEMS
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, order_edge, tolerance, annual_cost, is_activated, created_date, modified_date)
@@ -414,3 +414,94 @@ VALUES
     (CURRENT_TIMESTAMP, 14, 4, 25, 3, '문의해주셔서 감사합니다', '문의해주셔서 감사합니다. 최대한 빠르게 처리하겠습니다.', 'voc_answer23.pdf', 'https://example.com/image23.jpg', true),
     (CURRENT_TIMESTAMP, null, 2, 27, 4, '문의해주셔서 감사합니다', '문의하신 내용에 대해 최대한 빠른 답변을 드리겠습니다.', 'voc_answer25.pdf', 'https://example.com/image25.jpg', true),
     (CURRENT_TIMESTAMP, null, 4, 29, 5, '문의해주셔서 감사합니다', '자세한 정보를 제공해 주시면 빠르게 처리하겠습니다.', 'voc_answer27.pdf', 'https://example.com/image27.jpg', true);
+
+-- Insert data into inquiry_log
+INSERT INTO inquiry_log (inquiry_id, progress, created_date, modified_date)
+VALUES
+    -- Inquiry 1 (SUBMIT)
+    (1, 'SUBMIT', '2024-09-01 09:15:22', '2024-09-01 09:15:22'),
+
+    -- Inquiry 2 (SUBMIT)
+    (2, 'SUBMIT', '2024-09-05 11:42:18', '2024-09-05 11:42:18'),
+
+    -- Inquiry 3 (QUALITY_REVIEW_COMPLETED)
+    (3, 'SUBMIT', '2024-09-10 13:27:55', '2024-09-10 13:27:55'),
+    (3, 'RECEIPT', '2024-09-12 10:18:33', '2024-09-12 10:18:33'),
+    (3, 'FIRST_REVIEW_COMPLETED', '2024-09-15 14:55:27', '2024-09-15 14:55:27'),
+    (3, 'QUALITY_REVIEW_REQUEST', '2024-09-17 11:42:19', '2024-09-17 11:42:19'),
+    (3, 'QUALITY_REVIEW_RESPONSE', '2024-09-19 15:29:44', '2024-09-19 15:29:44'),
+    (3, 'QUALITY_REVIEW_COMPLETED', '2024-09-20 16:38:41', '2024-09-20 16:38:41'),
+
+    -- Inquiry 4 (QUALITY_REVIEW_COMPLETED)
+    (4, 'SUBMIT', '2024-09-15 10:05:33', '2024-09-15 10:05:33'),
+    (4, 'RECEIPT', '2024-09-17 13:22:48', '2024-09-17 13:22:48'),
+    (4, 'FIRST_REVIEW_COMPLETED', '2024-09-20 09:47:15', '2024-09-20 09:47:15'),
+    (4, 'QUALITY_REVIEW_REQUEST', '2024-09-22 14:33:29', '2024-09-22 14:33:29'),
+    (4, 'QUALITY_REVIEW_RESPONSE', '2024-09-24 11:58:52', '2024-09-24 11:58:52'),
+    (4, 'QUALITY_REVIEW_COMPLETED', '2024-09-25 15:19:27', '2024-09-25 15:19:27'),
+
+    -- Inquiry 5 (QUALITY_REVIEW_REQUEST)
+    (5, 'SUBMIT', '2024-09-20 14:53:09', '2024-09-20 14:53:09'),
+    (5, 'RECEIPT', '2024-09-22 10:27:35', '2024-09-22 10:27:35'),
+    (5, 'FIRST_REVIEW_COMPLETED', '2024-09-24 15:48:22', '2024-09-24 15:48:22'),
+    (5, 'QUALITY_REVIEW_REQUEST', '2024-09-25 09:34:58', '2024-09-25 09:34:58'),
+
+    -- Inquiry 6 (FINAL_REVIEW_COMPLETED)
+    (6, 'SUBMIT', '2024-09-25 08:47:12', '2024-09-25 08:47:12'),
+    (6, 'RECEIPT', '2024-09-27 13:15:38', '2024-09-27 13:15:38'),
+    (6, 'FIRST_REVIEW_COMPLETED', '2024-09-29 10:42:55', '2024-09-29 10:42:55'),
+    (6, 'QUALITY_REVIEW_REQUEST', '2024-10-01 15:27:19', '2024-10-01 15:27:19'),
+    (6, 'QUALITY_REVIEW_RESPONSE', '2024-10-03 11:53:44', '2024-10-03 11:53:44'),
+    (6, 'QUALITY_REVIEW_COMPLETED', '2024-10-04 14:38:27', '2024-10-04 14:38:27'),
+    (6, 'FINAL_REVIEW_COMPLETED', '2024-10-05 11:23:45', '2024-10-05 11:23:45'),
+
+    -- Inquiry 7 (RECEIPT)
+    (7, 'SUBMIT', '2024-09-30 15:39:28', '2024-09-30 15:39:28'),
+    (7, 'RECEIPT', '2024-10-01 10:56:32', '2024-10-01 10:56:32'),
+
+    -- Inquiry 8 (QUALITY_REVIEW_REQUEST)
+    (8, 'SUBMIT', '2024-10-01 12:18:44', '2024-10-01 12:18:44'),
+    (8, 'RECEIPT', '2024-10-02 09:45:17', '2024-10-02 09:45:17'),
+    (8, 'FIRST_REVIEW_COMPLETED', '2024-10-04 11:32:55', '2024-10-04 11:32:55'),
+    (8, 'QUALITY_REVIEW_REQUEST', '2024-10-04 12:22:55', '2024-10-04 12:22:55'),
+
+    -- Inquiry 9 (FINAL_REVIEW_COMPLETED)
+    (9, 'SUBMIT', '2024-09-01 14:22:37', '2024-09-01 14:22:37'),
+    (9, 'RECEIPT', '2024-09-05 10:00:00', '2024-09-05 10:00:00'),
+    (9, 'FIRST_REVIEW_COMPLETED', '2024-09-10 11:00:00', '2024-09-10 11:00:00'),
+    (9, 'QUALITY_REVIEW_REQUEST', '2024-09-15 09:00:00', '2024-09-15 09:00:00'),
+    (9, 'QUALITY_REVIEW_RESPONSE', '2024-09-20 14:00:00', '2024-09-20 14:00:00'),
+    (9, 'QUALITY_REVIEW_COMPLETED', '2024-09-25 10:00:00', '2024-09-25 10:00:00'),
+    (9, 'FINAL_REVIEW_COMPLETED', '2024-09-29 14:22:37', '2024-09-29 14:22:37'),
+
+    -- Inquiry 10 (FIRST_REVIEW_COMPLETED)
+    (10, 'SUBMIT', '2024-09-29 14:22:37', '2024-09-29 14:22:37'),
+    (10, 'RECEIPT', '2024-10-01 10:00:00', '2024-10-01 10:00:00'),
+    (10, 'FIRST_REVIEW_COMPLETED', '2024-10-03 14:22:37', '2024-10-03 14:22:37'),
+
+    -- Inquiry 11 (QUALITY_REVIEW_RESPONSE)
+    (11, 'SUBMIT', '2024-09-20 14:22:37', '2024-09-20 14:22:37'),
+    (11, 'RECEIPT', '2024-09-22 10:00:00', '2024-09-22 10:00:00'),
+    (11, 'FIRST_REVIEW_COMPLETED', '2024-09-25 11:00:00', '2024-09-25 11:00:00'),
+    (11, 'QUALITY_REVIEW_REQUEST', '2024-09-28 09:00:00', '2024-09-28 09:00:00'),
+    (11, 'QUALITY_REVIEW_RESPONSE', '2024-10-01 14:22:37', '2024-10-01 14:22:37'),
+
+    -- Inquiry 12 (RECEIPT)
+    (12, 'SUBMIT', '2024-09-25 14:22:37', '2024-09-25 14:22:37'),
+    (12, 'RECEIPT', '2024-09-28 14:22:37', '2024-09-28 14:22:37'),
+
+    -- Inquiry 13 (FIRST_REVIEW_COMPLETED)
+    (13, 'SUBMIT', '2024-09-15 14:22:37', '2024-09-15 14:22:37'),
+    (13, 'RECEIPT', '2024-09-18 10:00:00', '2024-09-18 10:00:00'),
+    (13, 'FIRST_REVIEW_COMPLETED', '2024-09-22 14:22:37', '2024-09-22 14:22:37'),
+
+    -- Inquiry 14 (QUALITY_REVIEW_RESPONSE)
+    (14, 'SUBMIT', '2024-09-20 14:22:37', '2024-09-20 14:22:37'),
+    (14, 'RECEIPT', '2024-09-23 10:00:00', '2024-09-23 10:00:00'),
+    (14, 'FIRST_REVIEW_COMPLETED', '2024-09-26 11:00:00', '2024-09-26 11:00:00'),
+    (14, 'QUALITY_REVIEW_REQUEST', '2024-09-29 09:00:00', '2024-09-29 09:00:00'),
+    (14, 'QUALITY_REVIEW_RESPONSE', '2024-10-02 14:22:37', '2024-10-02 14:22:37'),
+
+    -- Inquiry 15 (RECEIPT)
+    (15, 'SUBMIT', '2024-09-28 11:22:37', '2024-09-28 11:22:37'),
+    (15, 'RECEIPT', '2024-09-28 14:22:37', '2024-09-28 14:22:37');
