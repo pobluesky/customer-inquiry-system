@@ -101,56 +101,74 @@ export default function DashBoard() {
                             <div
                                 style={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(3, 1fr)',
+                                    gridTemplateColumns: 'auto 1fr auto',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <InquiryOrderCountTotalChart
-                                    orderCount={orderCount}
-                                    name={name}
-                                />
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryOrderCountTotalChart
+                                        orderCount={orderCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'center' }}>
+                                    <InquiryOrderCountManagerChart
+                                        orderCount={orderCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <InquiryOrderPeriodChart
+                                        orderPeriod={orderPeriod}
+                                        name={name}
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'auto auto',
+                                }}
+                            >
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryProgressCountTotalChart
+                                        progressCount={progressCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <InquiryProgressCountManagerChart
+                                        progressCount={progressCount}
+                                        name={name}
+                                    />
+                                </div>
+                            </div>
 
-                                <InquiryOrderCountManagerChart
-                                    orderCount={orderCount}
-                                    name={name}
-                                />
-                                <InquiryOrderPeriodChart
-                                    orderPeriod={orderPeriod}
-                                    name={name}
-                                />
-                            </div>
                             <div
                                 style={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(2, 1fr)',
+                                    gridTemplateColumns: 'auto 1fr auto',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <InquiryProgressCountTotalChart
-                                    progressCount={progressCount}
-                                    name={name}
-                                />
-                                <InquiryProgressCountManagerChart
-                                    progressCount={progressCount}
-                                    name={name}
-                                />
-                            </div>
-                            <div
-                                style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(2, 1fr)',
-                                }}
-                            >
-                                <InquiryProductProgressChart
-                                    data={productType}
-                                    name={name}
-                                />
-                                <VocAnswerCountChart
-                                    answerCount={answerCount}
-                                    name={name}
-                                />
-                                <VocColCountChart
-                                    colCount={colCount}
-                                    name={name}
-                                />
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryProductProgressChart
+                                        data={productType}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'center' }}>
+                                    <VocAnswerCountChart
+                                        answerCount={answerCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <VocColCountChart
+                                        colCount={colCount}
+                                        name={name}
+                                    />
+                                </div>
                             </div>
                         </>
                     )}

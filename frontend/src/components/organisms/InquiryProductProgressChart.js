@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GaugeChart from 'react-gauge-chart';
-import { Dashboard_Item } from '../../assets/css/Chart.css';
+import { Dashboard_Item, Gauge_Chart_Text } from '../../assets/css/Chart.css';
 
 const productNames = {
     CAR: '자동차',
@@ -63,18 +63,15 @@ export function InquiryProductProgressChart({ data, name }) {
         <div
             className={Dashboard_Item}
             style={{
-                width: 'auto',
-                aspectRatio: '1.8 / 1',
-                height: '15vw',
-                textAlign: 'center',
+                aspectRatio: '1.75 / 1',
+                height: '12.5vw',
             }}
         >
-            <div>{name}님의 제품별 주문 체결 현황</div>
+            <span>전체 담당자 대비 {name} 담당자 제품별 주문 체결 현황</span>
             <GaugeChart
                 style={{
-                    backgroundColor: '#f8f8f8',
                     width: '70%',
-                    margin: '0 auto',
+                    margin: '2vh auto 0 auto',
                 }}
                 id="gauge-chart5"
                 arcsLength={[1.428, 1.428, 1.428, 1.428, 1.428, 1.428, 1.432]}
@@ -86,20 +83,12 @@ export function InquiryProductProgressChart({ data, name }) {
                 animDelay={0}
                 animateDuration={2000}
             />
-            <div>
-                {productNames[selectedProduct]} {Math.round(percent * 100)}%
+            <div style={{ margin: '0 0 2vh 0' }}>
+                {Math.round(percent * 100)}%
             </div>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    marginTop: '10px',
-                }}
-            >
+            <div className={Gauge_Chart_Text}>
                 <button onClick={() => productChange(-1)}>◀</button>
-                <span style={{ margin: '0 20px', fontWeight: 'bold' }}>
-                    {productNames[selectedProduct]}
-                </span>
+                <span>{productNames[selectedProduct]}</span>
                 <button onClick={() => productChange(1)}>▶</button>
             </div>
         </div>

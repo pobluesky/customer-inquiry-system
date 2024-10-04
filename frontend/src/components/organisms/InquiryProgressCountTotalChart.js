@@ -77,15 +77,19 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '15vw' }}
+            style={{
+                aspectRatio: '2.2 / 1',
+                height: '16vw',
+            }}
         >
+            <span>담당자 전체 제품별 주문 처리 현황</span>
             <ResponsiveBar
                 data={data}
                 theme={{
-                    legends: { text: { fontSize: 16 } },
+                    legends: { text: { fontSize: 12 } },
                 }}
                 keys={['전체']}
-                margin={{ top: 20, right: 0, bottom: 50, left: 0 }}
+                margin={{ top: 30, right: 0, bottom: 80, left: 0 }}
                 padding={0.3}
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
@@ -94,12 +98,11 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
                 borderRadius={15}
                 axisTop={null}
                 axisRight={null}
-                // axisBottom={{
-                //     tickSize: 9,
-                //     tickPadding: 8,
-                //     tickRotation: 0,
-                // }}
-                axisBottom={null}
+                axisBottom={{
+                    tickSize: 9,
+                    tickPadding: 8,
+                    tickRotation: 0,
+                }}
                 axisLeft={null}
                 enableGridX={true}
                 enableLabel={false}
@@ -117,14 +120,14 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
                         direction: 'row',
                         justify: true,
                         translateX: 0,
-                        translateY: 30,
+                        translateY: 55,
                         itemsSpacing: 50,
-                        itemWidth: 120,
+                        itemWidth: 100,
                         itemHeight: 0,
                         itemTextColor: '#000000',
                         itemDirection: 'left-to-right',
                         itemOpacity: 1,
-                        symbolSize: 18,
+                        symbolSize: 12,
                         symbolShape: 'circle',
                     },
                 ]}

@@ -154,14 +154,18 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '13vw' }}
+            style={{
+                aspectRatio: '1.75 / 1',
+                height: '12.5vw',
+            }}
         >
+            <span>월별 Inquiry 접수건 주문 체결 소요일 평균</span>
             <ResponsiveLine
                 data={data}
                 theme={{
-                    legends: { text: { fontSize: 16 } },
+                    legends: { text: { fontSize: 12 } },
                 }}
-                margin={{ top: 50, right: 10, bottom: 80, left: 10 }}
+                margin={{ top: 20, right: 10, bottom: 80, left: 10 }}
                 xScale={{ type: 'point' }}
                 yScale={{
                     type: 'linear',
@@ -204,14 +208,14 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
                         direction: 'row',
                         justify: true,
                         translateX: 0,
-                        translateY: 60,
+                        translateY: 50,
                         itemsSpacing: 20,
-                        itemWidth: 120,
+                        itemWidth: 80,
                         itemHeight: 0,
                         itemTextColor: '#000000',
                         itemDirection: 'left-to-right',
                         itemOpacity: 1,
-                        symbolSize: 18,
+                        symbolSize: 12,
                         symbolShape: 'circle',
                     },
                 ]}

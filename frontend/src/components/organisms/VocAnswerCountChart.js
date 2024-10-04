@@ -84,16 +84,20 @@ export const VocAnswerCountChart = ({ answerCount, name }) => {
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '15vw' }}
+            style={{
+                aspectRatio: '1.75 / 1',
+                height: '12.5vw',
+            }}
         >
+            <span>월별 VoC 답변 건수</span>
             <ResponsiveBar
                 data={data}
                 theme={{
-                    legends: { text: { fontSize: 16 } },
+                    legends: { text: { fontSize: 12 } },
                 }}
                 keys={['전체', '담당자']}
                 indexBy="month"
-                margin={{ top: 20, right: 0, bottom: 80, left: 0 }}
+                margin={{ top: 10, right: 10, bottom: 70, left: 10 }}
                 padding={0.3}
                 groupMode="grouped"
                 valueScale={{ type: 'linear' }}
@@ -125,14 +129,14 @@ export const VocAnswerCountChart = ({ answerCount, name }) => {
                         direction: 'row',
                         justify: true,
                         translateX: 0,
-                        translateY: 60,
+                        translateY: 45,
                         itemsSpacing: 20,
-                        itemWidth: 120,
+                        itemWidth: 80,
                         itemHeight: 0,
                         itemTextColor: '#000000',
                         itemDirection: 'left-to-right',
                         itemOpacity: 1,
-                        symbolSize: 18,
+                        symbolSize: 12,
                         symbolShape: 'square',
                     },
                 ]}
