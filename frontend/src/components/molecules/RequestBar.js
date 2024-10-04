@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
     FinalReviewCompleteAlert,
     FirstReviewCompleteAlert,
@@ -10,9 +10,7 @@ import {
     QualityReviewCompleteAlert,
     SalesManagerCheckAlert,
 } from '../../utils/actions';
-import {
-    putProgress,
-} from '../../apis/api/inquiry';
+import { putProgress } from '../../apis/api/inquiry';
 import { _previewButton } from '../../assets/css/Form.css';
 
 function RequestBar({
@@ -29,7 +27,6 @@ function RequestBar({
     onAllocate,
     isUpdate,
 }) {
-    const navigate = useNavigate();
     const { role } = useAuth();
     const { id } = useParams();
     const realId = id ? id.slice(-2) : '';
@@ -48,7 +45,9 @@ function RequestBar({
 
     let buttons;
     if (requestBarTitle === 'Inquiry 조회0') {
-        buttons = isUpdate ? buttonConfig['Inquiry 조회7'] : buttonConfig['Inquiry 조회8'];
+        buttons = isUpdate
+            ? buttonConfig['Inquiry 조회7']
+            : buttonConfig['Inquiry 조회8'];
     } else {
         buttons = buttonConfig[requestBarTitle];
     }
@@ -62,7 +61,7 @@ function RequestBar({
         } catch (error) {
             console.log('Error updating progress:', error);
         }
-    }
+    };
 
     const handleButtonClick = (btnName) => {
         if (btnName === '수정') {
@@ -77,12 +76,12 @@ function RequestBar({
             }, '2000');
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
-            updateProgress("FIRST_REVIEW_COMPLETED");
+            updateProgress('FIRST_REVIEW_COMPLETED');
             FirstReviewCompleteAlert();
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();
             onAllocate();
-            updateProgress("QUALITY_REVIEW_REQUEST");
+            updateProgress('QUALITY_REVIEW_REQUEST');
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');
@@ -92,11 +91,11 @@ function RequestBar({
             }, '2000');
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
-            updateProgress("QUALITY_REVIEW_COMPLETED");
+            updateProgress('QUALITY_REVIEW_COMPLETED');
             QualityCompleteAlert();
-        }  else if (btnName === '최종검토완료') {
+        } else if (btnName === '최종검토완료') {
             onFinalSubmit();
-            updateProgress("FINAL_REVIEW_COMPLETED");
+            updateProgress('FINAL_REVIEW_COMPLETED');
             FinalReviewCompleteAlert();
         } else if (btnName === '초기화') {
             onReset();
@@ -134,30 +133,30 @@ function RequestBar({
                         <button
                             className={_previewButton}
                             onClick={handleIsPreview}
-                        >시연용</button>
+                        >
+                            시연용
+                        </button>
                     )}
-                    {Array.isArray(buttons) && buttons.length > 0 ? (
-                        buttons.map((btnName, index) => (
-                            <Button
-                                key={index}
-                                onClick={() => handleButtonClick(btnName)}
-                                variant="outlined"
-                                style={{
-                                    margin: '0 10px',
-                                    borderRadius: '10px',
-                                    color: '#03507d',
-                                    padding: '10px 20px',
-                                    fontWeight: '900',
-                                    fontSize: '14px',
-                                    border: '1px solid #03507d',
-                                }}
-                            >
-                                {btnName}
-                            </Button>
-                        ))
-                    ) : (
-                        ''
-                    )}
+                    {Array.isArray(buttons) && buttons.length > 0
+                        ? buttons.map((btnName, index) => (
+                              <Button
+                                  key={index}
+                                  onClick={() => handleButtonClick(btnName)}
+                                  variant="outlined"
+                                  style={{
+                                      margin: '0 10px',
+                                      borderRadius: '10px',
+                                      color: '#03507d',
+                                      padding: '10px 20px',
+                                      fontWeight: '900',
+                                      fontSize: '14px',
+                                      border: '1px solid #03507d',
+                                  }}
+                              >
+                                  {btnName}
+                              </Button>
+                          ))
+                        : ''}
                 </div>
             </div>
         </div>

@@ -108,6 +108,14 @@
     cursor: pointer;
 }
 
+.Header_Container button:hover {
+    background-color: #f3f3f3 !important;
+}
+
+.Header_Container_Not_Hover button:hover {
+    background-color: transparent !important;
+}
+
 /******************************************************************/
 /* 사용자 정보 모달 ************************************************/
 /******************************************************************/

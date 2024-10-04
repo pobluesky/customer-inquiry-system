@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Table,
@@ -10,7 +11,7 @@ import {
     Paper,
     Typography,
     ToggleButton,
-    ToggleButtonGroup
+    ToggleButtonGroup,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import MyStepTracker from './MyStepTracker';
@@ -22,11 +23,10 @@ import {
 import { BorderLinearProgress } from './BorderLinearProgress';
 import { getUserInfoByManagers } from '../../apis/api/auth';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
 const MyInquiryList = () => {
-    const { userId, role } = useAuth();
     const navigate = useNavigate();
+    const { userId, role } = useAuth();
     const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -59,37 +59,45 @@ const MyInquiryList = () => {
             let data, quoteCount, commonCount;
 
             const params = {
-                inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
+                inquiryType:
+                    inquiryType === '견적 문의'
+                        ? 'QUOTE_INQUIRY'
+                        : 'COMMON_INQUIRY',
             };
             const quoteParams = {
                 inquiryType: 'QUOTE_INQUIRY',
                 salesManagerName: userInfo.name,
-            }
+            };
             const commonParams = {
                 inquiryType: 'COMMON_INQUIRY',
-            }
+            };
 
             if (role === 'sales') {
                 params.salesManagerName = userInfo.name;
                 commonParams.salesManagerName = userInfo.name;
                 data = await getSalesManagerInquiriesByParameter(params);
 
-                quoteCount = await getSalesManagerInquiriesByParameter(quoteParams);
+                quoteCount = await getSalesManagerInquiriesByParameter(
+                    quoteParams,
+                );
                 setQuoteCount(quoteCount.length);
 
-                commonCount = await getSalesManagerInquiriesByParameter(commonParams);
+                commonCount = await getSalesManagerInquiriesByParameter(
+                    commonParams,
+                );
                 setCommonCount(commonCount.length);
             } else if (role === 'quality') {
                 params.qualityManagerName = userInfo.name;
                 commonParams.qualityManagerName = userInfo.name;
 
                 data = await getQualityManagerInquiriesByParameter(params);
-                commonCount = await getQualityManagerInquiriesByParameter(commonParams);
+                commonCount = await getQualityManagerInquiriesByParameter(
+                    commonParams,
+                );
                 setCommonCount(commonCount.length);
             }
 
             setInquiries(data);
-
         } catch (error) {
             console.error('Error fetching inquiries:', error);
         } finally {
@@ -106,7 +114,7 @@ const MyInquiryList = () => {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const updateStepTracker = (row) => {
         const step = calculateStep(row.progress);
@@ -186,107 +194,258 @@ const MyInquiryList = () => {
     return (
         <Box>
             {role === 'sales' && (
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginBottom: '1vh',
+                        marginRight: '1.4vh',
+                    }}
+                >
                     <ToggleButtonGroup
                         value={inquiryType}
                         exclusive
                         onChange={toggleInquiryType}
                         aria-label="문의 유형 선택"
                     >
-                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }}>
+                        <ToggleButton
+                            value="품질+견적 문의"
+                            aria-label="품질+견적 문의"
+                            sx={{ fontWeight: '600' }}
+                        >
                             품질+견적 문의 {commonCount} 건
                         </ToggleButton>
-                        <ToggleButton value="견적 문의" aria-label="견적 문의" sx={{ fontWeight: '600' }}>
+                        <ToggleButton
+                            value="견적 문의"
+                            aria-label="견적 문의"
+                            sx={{ fontWeight: '600' }}
+                        >
                             견적 문의 {quoteCount} 건
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
             )}
             {role === 'quality' && (
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginBottom: '1vh',
+                        marginRight: '1.4vh',
+                    }}
+                >
                     <ToggleButtonGroup
                         value={inquiryType}
                         exclusive
                         aria-label="문의 유형 선택"
                     >
-                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }} disabled>
+                        <ToggleButton
+                            value="품질+견적 문의"
+                            aria-label="품질+견적 문의"
+                            sx={{ fontWeight: '600' }}
+                            disabled
+                        >
                             품질+견적 문의 {commonCount} 건
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
             )}
-        <Container sx={{ boxShadow: 2 }}>
-            <MyStepTracker currentStep={currentStep} inquiryType={inquiryType} />
-            <InquiryTableContainer>
-                <TableContainer component={Paper} elevation={0}>
-                    <Table stickyHeader>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '3vh' }}>프로필</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>
-                                    {role === 'sales' ? "품질 담당자" : "판매 담당자"}
-                                </TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>진행 상태</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>문의 일자</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>고객</TableCell>
-                                <TableCell align="left" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '6vh' }}>판매계약자</TableCell>
-                                <TableCell align="center" sx={{ backgroundColor: '#edf8ff', border: 'none', fontWeight: '700', width: '8vh' }}>진행률</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {inquiries.map((row) => (
-                                <StyledTableRow
-                                    key={row.processedInquiryId}
-                                    selected={selectedRow === row.processedInquiryId}
-                                    onClick={() => handleRowClick(row)}
-                                    onMouseEnter={() => handleRowMouseEnter(row)}
-                                    onMouseLeave={handleRowMouseLeave}
-                                >
-                                    <TableCell align="left" sx={{ width: '3vh' }}>
-                                        <ProfileCircle
-                                            name={role === 'sales' ? row.qualityManagerName : row.salesManagerName}
-                                        />
+            <Container sx={{ boxShadow: 2 }}>
+                <MyStepTracker
+                    currentStep={currentStep}
+                    inquiryType={inquiryType}
+                />
+                <InquiryTableContainer>
+                    <TableContainer component={Paper} elevation={0}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '3vh',
+                                        }}
+                                    >
+                                        프로필
                                     </TableCell>
-                                    <TableCell align="left" sx={{ width: '6vh' }}>
-                                        <InquiryDetails>
-                                            <Typography variant="body1" fontWeight="bold">
-                                                {role === 'sales' ? row.qualityManagerName : row.salesManagerName}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {role === 'sales' ? row.qualityManagerDepartment : row.salesManagerDepartment}
-                                            </Typography>
-                                        </InquiryDetails>
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '6vh',
+                                        }}
+                                    >
+                                        {role === 'sales'
+                                            ? '품질 담당자'
+                                            : '판매 담당자'}
                                     </TableCell>
-                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.progress}</TableCell>
-                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.createdDate}</TableCell>
-                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.customerName}</TableCell>
-                                    <TableCell align="left" sx={{ width: '6vh' }}>{row.salesPerson}</TableCell>
-                                    <TableCell align="center" sx={{ width: '8vh' }}>
-                                        <BorderLinearProgress
-                                            variant="determinate"
-                                            value={calculatePercentage(row.progress, inquiryType)}
-                                        />
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '6vh',
+                                        }}
+                                    >
+                                        진행 상태
                                     </TableCell>
-                                </StyledTableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </InquiryTableContainer>
-        </Container>
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '6vh',
+                                        }}
+                                    >
+                                        문의 일자
+                                    </TableCell>
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '6vh',
+                                        }}
+                                    >
+                                        고객
+                                    </TableCell>
+                                    <TableCell
+                                        align="left"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '6vh',
+                                        }}
+                                    >
+                                        판매계약자
+                                    </TableCell>
+                                    <TableCell
+                                        align="center"
+                                        sx={{
+                                            backgroundColor: '#edf8ff',
+                                            border: 'none',
+                                            fontWeight: '700',
+                                            width: '8vh',
+                                        }}
+                                    >
+                                        진행률
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {inquiries.map((row) => (
+                                    <StyledTableRow
+                                        key={row.processedInquiryId}
+                                        selected={
+                                            selectedRow ===
+                                            row.processedInquiryId
+                                        }
+                                        onClick={() => handleRowClick(row)}
+                                        onMouseEnter={() =>
+                                            handleRowMouseEnter(row)
+                                        }
+                                        onMouseLeave={handleRowMouseLeave}
+                                    >
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '3vh' }}
+                                        >
+                                            <ProfileCircle
+                                                name={
+                                                    role === 'sales'
+                                                        ? row.qualityManagerName
+                                                        : row.salesManagerName
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '6vh' }}
+                                        >
+                                            <InquiryDetails>
+                                                <Typography
+                                                    variant="body1"
+                                                    fontWeight="bold"
+                                                >
+                                                    {role === 'sales'
+                                                        ? row.qualityManagerName
+                                                        : row.salesManagerName}
+                                                </Typography>
+                                                <Typography
+                                                    variant="body2"
+                                                    color="text.secondary"
+                                                >
+                                                    {role === 'sales'
+                                                        ? row.qualityManagerDepartment
+                                                        : row.salesManagerDepartment}
+                                                </Typography>
+                                            </InquiryDetails>
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '6vh' }}
+                                        >
+                                            {row.progress}
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '6vh' }}
+                                        >
+                                            {row.createdDate}
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '6vh' }}
+                                        >
+                                            {row.customerName}
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            sx={{ width: '6vh' }}
+                                        >
+                                            {row.salesPerson}
+                                        </TableCell>
+                                        <TableCell
+                                            align="center"
+                                            sx={{ width: '8vh' }}
+                                        >
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                value={calculatePercentage(
+                                                    row.progress,
+                                                    inquiryType,
+                                                )}
+                                            />
+                                        </TableCell>
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </InquiryTableContainer>
+            </Container>
         </Box>
     );
 };
 
 const Container = styled(Box)`
-  background-color: #ffffff;
-  border: 0.1vw solid #e0e0e0;
-  border-radius: 1vh;
-  padding: 2vh;
-  overflow: hidden;
-  height: 55vh;
-  z-index: 0;
-  margin: 1.4vh;
+    background-color: #ffffff;
+    border: 0.1vw solid #e0e0e0;
+    border-radius: 1vh;
+    padding: 2vh;
+    overflow: hidden;
+    height: 55vh;
+    z-index: 0;
+    margin: 1.4vh;
 `;
 
 const InquiryTableContainer = styled(TableContainer)({
@@ -305,9 +464,9 @@ const StyledTableRow = styled(TableRow)(({ selected }) => ({
 }));
 
 const InquiryDetails = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 export default MyInquiryList;
