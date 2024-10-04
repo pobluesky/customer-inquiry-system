@@ -6,9 +6,9 @@ import lombok.Builder;
 @Builder
 public record MobileAnswerSummaryResponseDTO(
 
-        String title,
+    String title,
 
-        String contents
+    String contents
 ) {
     public static MobileAnswerSummaryResponseDTO from(Answer answer) {
 
