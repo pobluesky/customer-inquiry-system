@@ -2,7 +2,7 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import { Dashboard_Item } from '../../assets/css/Chart.css';
 
-export const InquiryProgressCountManagerChart = ({ progressCount }) => {
+export const InquiryProgressCountManagerChart = ({ progressCount, name }) => {
     let submit = 0;
     let receipt = 0;
     let first_review_completed = 0;
@@ -38,8 +38,7 @@ export const InquiryProgressCountManagerChart = ({ progressCount }) => {
 
     const data = [
         {
-            id: 'japan',
-            color: 'hsl(9, 70%, 50%)',
+            id: '진행 현황',
             data: [
                 {
                     x: '문의 제출',
@@ -76,12 +75,15 @@ export const InquiryProgressCountManagerChart = ({ progressCount }) => {
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '15vw' }}
         >
             <ResponsiveLine
                 data={data}
-                margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
-                colors={['#FF0160']}
+                theme={{
+                    legends: { text: { fontSize: 16 } },
+                }}
+                margin={{ top: 20, right: 50, bottom: 50, left: 50 }}
+                colors={['#FF8484']}
                 colorBy="index"
                 xScale={{ type: 'point' }}
                 yScale={{
@@ -94,11 +96,12 @@ export const InquiryProgressCountManagerChart = ({ progressCount }) => {
                 yFormat=" >-.2f"
                 axisTop={null}
                 axisRight={null}
-                axisBottom={{
-                    tickSize: 9,
-                    tickPadding: 8,
-                    tickRotation: 0,
-                }}
+                // axisBottom={{
+                //     tickSize: 9,
+                //     tickPadding: 8,
+                //     tickRotation: 0,
+                // }}
+                axisBottom={null}
                 axisLeft={null}
                 enableGridY={false}
                 lineWidth={5}
@@ -110,7 +113,24 @@ export const InquiryProgressCountManagerChart = ({ progressCount }) => {
                 enableArea={false}
                 enableTouchCrosshair={true}
                 useMesh={true}
-                legends={[]}
+                legends={[
+                    {
+                        data: [{ label: `${name} 평균`, color: '#FF8484' }],
+                        anchor: 'bottom',
+                        direction: 'row',
+                        justify: true,
+                        translateX: 0,
+                        translateY: 30,
+                        itemsSpacing: 50,
+                        itemWidth: 120,
+                        itemHeight: 0,
+                        itemTextColor: '#000000',
+                        itemDirection: 'left-to-right',
+                        itemOpacity: 1,
+                        symbolSize: 18,
+                        symbolShape: 'circle',
+                    },
+                ]}
             />
         </div>
     );

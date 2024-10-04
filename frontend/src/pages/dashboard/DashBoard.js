@@ -19,6 +19,8 @@ import { InquiryProgressCountTotalChart } from '../../components/organisms/Inqui
 import { InquiryProgressCountManagerChart } from '../../components/organisms/InquiryProgressCountManagerChart';
 import { InquiryOrderPeriodChart } from '../../components/organisms/InquiryOrderPeriodChart';
 import { InquiryProductProgressChart } from '../../components/organisms/InquiryProductProgressChart';
+import { VocAnswerCountChart } from '../../components/organisms/VocAnswerCountChart';
+import { VocColCountChart } from '../../components/organisms/VocColCountChart';
 import {
     getAverageMonthly,
     getCountsByProgress,
@@ -96,31 +98,60 @@ export default function DashBoard() {
                         <>
                             <DepartmentByMonth />
                             <MyInquiryList />
-                            <InquiryOrderCountTotalChart
-                                orderCount={orderCount}
-                                name={name}
-                            />
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(3, 1fr)',
+                                }}
+                            >
+                                <InquiryOrderCountTotalChart
+                                    orderCount={orderCount}
+                                    name={name}
+                                />
 
-                            <InquiryOrderCountManagerChart
-                                orderCount={orderCount}
-                                name={name}
-                            />
-                            <InquiryOrderPeriodChart
-                                orderPeriod={orderPeriod}
-                                name={name}
-                            />
-                            <InquiryProgressCountTotalChart
-                                progressCount={progressCount}
-                                name={name}
-                            />
-                            <InquiryProgressCountManagerChart
-                                progressCount={progressCount}
-                                name={name}
-                            />
-                            <InquiryProductProgressChart
-                                data={productType}
-                                name={name}
-                            />
+                                <InquiryOrderCountManagerChart
+                                    orderCount={orderCount}
+                                    name={name}
+                                />
+                                <InquiryOrderPeriodChart
+                                    orderPeriod={orderPeriod}
+                                    name={name}
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(2, 1fr)',
+                                }}
+                            >
+                                <InquiryProgressCountTotalChart
+                                    progressCount={progressCount}
+                                    name={name}
+                                />
+                                <InquiryProgressCountManagerChart
+                                    progressCount={progressCount}
+                                    name={name}
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(2, 1fr)',
+                                }}
+                            >
+                                <InquiryProductProgressChart
+                                    data={productType}
+                                    name={name}
+                                />
+                                <VocAnswerCountChart
+                                    answerCount={answerCount}
+                                    name={name}
+                                />
+                                <VocColCountChart
+                                    colCount={colCount}
+                                    name={name}
+                                />
+                            </div>
                         </>
                     )}
                 </>

@@ -62,10 +62,20 @@ export function InquiryProductProgressChart({ data, name }) {
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+            style={{
+                width: 'auto',
+                aspectRatio: '1.8 / 1',
+                height: '15vw',
+                textAlign: 'center',
+            }}
         >
             <div>{name}님의 제품별 주문 체결 현황</div>
             <GaugeChart
+                style={{
+                    backgroundColor: '#f8f8f8',
+                    width: '70%',
+                    margin: '0 auto',
+                }}
                 id="gauge-chart5"
                 arcsLength={[1.428, 1.428, 1.428, 1.428, 1.428, 1.428, 1.432]}
                 colors={['#5BE12C', '#F5CD19', '#EA4228']}
