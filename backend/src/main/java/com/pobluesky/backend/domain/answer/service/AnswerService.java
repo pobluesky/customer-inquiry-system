@@ -152,15 +152,6 @@ public class AnswerService {
 
         validateAnswerActivated(answer);
 
-//        String fileName = answer.getFileName();
-//        String filePath = answer.getFilePath();
-//
-//        if (file != null) {
-//            FileInfo fileInfo = fileService.uploadFile(file);
-//            fileName = fileInfo.getOriginName();
-//            filePath = fileInfo.getStoredFilePath();
-//        }
-
         String fileName = answer.getFileName();
         String filePath = answer.getFilePath();
 

@@ -7,10 +7,13 @@ import com.pobluesky.backend.domain.user.entity.Customer;
 import com.pobluesky.backend.domain.user.entity.Manager;
 
 public record AnswerCreateRequestDTO(
+
     String title,
+
     String contents
 ) {
     public Answer toAnswerEntity(Question question, Inquiry inquiry, Customer customer, Manager manager, String fileName, String filePath) {
+
         return Answer.builder()
             .question(question)
             .inquiry(inquiry)
