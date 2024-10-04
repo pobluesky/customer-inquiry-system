@@ -4,6 +4,7 @@ import com.pobluesky.backend.domain.collaboration.dto.request.CollaborationCreat
 import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
 import com.pobluesky.backend.global.redisson.LockKeyGenerator;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class CollaborationServiceTest {
     private CollaborationRepository collaborationRepository;
 
     @Test
+    @DisplayName("분산락을 이용하여 더블클릭시의 동시성을 제어한다.")
     public void testConcurrentCollaborationCreation() throws InterruptedException {
         //given
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZUBjb21wYW55LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI4MDE4MDg2LCJleHAiOjE3MjgwMjY3MjZ9.3gmcM81b9SFRr3zPE5UNpmf99kWcOd-6fg1FOj4MYo8";
