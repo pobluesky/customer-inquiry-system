@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import {
     FinalReviewCompleteAlert,
     FirstReviewCompleteAlert,
@@ -27,6 +27,8 @@ function RequestBar({
     onAllocate,
     isUpdate,
 }) {
+    const navigate = useNavigate();
+    
     const { role } = useAuth();
     const { id } = useParams();
     const realId = id ? id.slice(-2) : '';
