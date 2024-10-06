@@ -130,7 +130,6 @@ export default function DashBoard() {
                     ) : (
                         <>
                         <DepartmentByMonth />
-                        <MyInquiryList />
                         <DragDropContext onDragEnd={handleOnDragEnd}>
                             <Droppable
                                 droppableId="droppable"
@@ -172,7 +171,7 @@ export default function DashBoard() {
                 </>
             );
         } else if (activeTab === 'Inquiry Log') {
-            return <div>Inquiry Log 페이지</div>;
+            return <MyInquiryList />;
         } else if (activeTab === 'User Info') {
             return <div>User Info 페이지</div>;
         }
@@ -244,7 +243,7 @@ export default function DashBoard() {
                     flexGrow: 1,
                     p: 3,
                     backgroundColor: '#F4F5FB',
-                    height: '100vh',
+                    height: '130vh',
                 }}
             >
                 {renderContent()}
