@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import PersonIcon from '@mui/icons-material/Person';
 import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
 import MyInquiryList from '../../components/molecules/MyInquiryList';
 import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
