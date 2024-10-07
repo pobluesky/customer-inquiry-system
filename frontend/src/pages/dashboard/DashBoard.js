@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import PersonIcon from '@mui/icons-material/Person';
 import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
 import MyInquiryList from '../../components/molecules/MyInquiryList';
 import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
@@ -97,7 +96,10 @@ export default function DashBoard() {
                     ) : (
                         <>
                             <DepartmentByMonth />
-                            <MyInquiryList />
+                            <InquiryOrderCountTotalChart
+                                orderCount={orderCount}
+                                name={name}
+                            />
                             <div
                                 style={{
                                     display: 'grid',
@@ -175,9 +177,7 @@ export default function DashBoard() {
                 </>
             );
         } else if (activeTab === 'Inquiry Log') {
-            return <div>Inquiry Log 페이지</div>;
-        } else if (activeTab === 'User Info') {
-            return <div>User Info 페이지</div>;
+            return <MyInquiryList />;
         }
     };
 
@@ -217,7 +217,6 @@ export default function DashBoard() {
                     {[
                         { text: 'Dashboard', icon: <DashboardIcon /> },
                         { text: 'Inquiry Log', icon: <ReceiptIcon /> },
-                        { text: 'User Info', icon: <PersonIcon /> },
                     ].map(({ text, icon }) => (
                         <ListItem
                             button
