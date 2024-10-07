@@ -8,6 +8,7 @@ import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationResp
 import com.pobluesky.backend.domain.collaboration.dto.response.CollaborationSummaryResponseDTO;
 import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.collaboration.service.CollaborationService;
+import com.pobluesky.backend.global.redisson.LockKeyGenerator;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.JsonResult;
 
@@ -89,8 +90,14 @@ public class CollaborationController {
         @RequestPart(value = "files", required = false) MultipartFile file,
         @RequestPart("collaboration") CollaborationCreateRequestDTO requestDTO
     ) {
+        String key = LockKeyGenerator.generateCollaborationKey(
+                requestDTO.colReqId(),
+                requestDTO.colResId()
+        );
+
         CollaborationResponseDTO response = collaborationService.createCollaboration(
             token,
+            key,
             questionId,
             file,
             requestDTO
