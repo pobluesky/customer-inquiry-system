@@ -433,7 +433,7 @@ function Offersheet({
     };
 
     return (
-        <div className={Offer_Sheet} style={{ marginTop: '-2vh' }}>
+        <div className={Offer_Sheet} style={{ margin: '-2vh 0 4vh 0' }}>
             <div>
                 {/* 토글 바 */}
                 <ToggleBar
@@ -548,7 +548,7 @@ function Offersheet({
                         <div>
                             <Category categoryName={'1. 고객사'} />
                             <Input
-                                width={'314px'}
+                                width={'12vw'}
                                 height={'28px'}
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'8px'}
@@ -577,7 +577,7 @@ function Offersheet({
                             <div>
                                 <Category categoryName={'3. Price Term'} />
                                 <Input
-                                    width={'214px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -595,7 +595,7 @@ function Offersheet({
                                 <Category categoryName={'4. Shipment'} />
                                 <Input
                                     type="date"
-                                    width={'125px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -612,7 +612,7 @@ function Offersheet({
                             <div>
                                 <Category categoryName={'5. Payment Term'} />
                                 <Input
-                                    width={'314px'}
+                                    width={'14vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -629,7 +629,7 @@ function Offersheet({
                             <div>
                                 <Category categoryName={'6. Destination'} />
                                 <Input
-                                    width={'214px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -647,7 +647,7 @@ function Offersheet({
                                 <Category categoryName={'7. Validity'} />
                                 <Input
                                     type="date"
-                                    width={'125px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -664,7 +664,7 @@ function Offersheet({
                             <div>
                                 <Category categoryName={'8. Remark'} />
                                 <Input
-                                    width={'314px'}
+                                    width={'14vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}

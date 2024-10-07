@@ -32,9 +32,9 @@ body {
 /* 행 추가, 행 삭제, 행 복사 */
 .Offer_Sheet > div:first-child > div:nth-child(2) > div:first-child {
     width: 85vw;
-    margin: 24px auto 16px auto;
-    display: grid;
-    grid-template-columns: 108px 108px 96px;
+    margin: 24px auto 24px auto;
+    display: flex;
+    /* grid-template-columns: 108px 108px 96px; */
     justify-content: right;
 }
 
@@ -42,7 +42,7 @@ body {
 .Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(3) {
     display: grid;
     width: 85vw;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 14vw 1fr;
     margin: 16px auto 0 auto;
 }
 
