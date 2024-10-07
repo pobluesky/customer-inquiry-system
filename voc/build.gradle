@@ -97,6 +97,12 @@ dependencies {
     implementation("com.google.firebase:firebase-admin:6.8.1")
     implementation("com.squareup.okhttp3:okhttp:4.2.2")
 
+    // redisson
+    implementation "org.redisson:redisson-spring-boot-starter:3.21.1"
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
 }
 
 tasks.named('test') {
