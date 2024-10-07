@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Table,
@@ -80,32 +81,41 @@ const MyInquiryList = () => {
             let data, quoteCount, commonCount;
 
             const params = {
-                inquiryType: inquiryType === '견적 문의' ? 'QUOTE_INQUIRY' : 'COMMON_INQUIRY',
+                inquiryType:
+                    inquiryType === '견적 문의'
+                        ? 'QUOTE_INQUIRY'
+                        : 'COMMON_INQUIRY',
             };
             const quoteParams = {
                 inquiryType: 'QUOTE_INQUIRY',
                 salesManagerName: userInfo.name,
-            }
+            };
             const commonParams = {
                 inquiryType: 'COMMON_INQUIRY',
-            }
+            };
 
             if (role === 'sales') {
                 params.salesManagerName = userInfo.name;
                 commonParams.salesManagerName = userInfo.name;
                 data = await getSalesManagerInquiriesByParameter(params);
 
-                quoteCount = await getSalesManagerInquiriesByParameter(quoteParams);
+                quoteCount = await getSalesManagerInquiriesByParameter(
+                    quoteParams,
+                );
                 setQuoteCount(quoteCount.length);
 
-                commonCount = await getSalesManagerInquiriesByParameter(commonParams);
+                commonCount = await getSalesManagerInquiriesByParameter(
+                    commonParams,
+                );
                 setCommonCount(commonCount.length);
             } else if (role === 'quality') {
                 params.qualityManagerName = userInfo.name;
                 commonParams.qualityManagerName = userInfo.name;
 
                 data = await getQualityManagerInquiriesByParameter(params);
-                commonCount = await getQualityManagerInquiriesByParameter(commonParams);
+                commonCount = await getQualityManagerInquiriesByParameter(
+                    commonParams,
+                );
                 setCommonCount(commonCount.length);
             }
 
@@ -144,7 +154,7 @@ const MyInquiryList = () => {
         } catch (error) {
             console.error('Error fetching Inquiry Logs:', error);
         }
-    }
+    };
 
     const updateStepTracker = (row) => {
         const step = calculateStep(row.progress);
@@ -252,10 +262,18 @@ const MyInquiryList = () => {
                         onChange={toggleInquiryType}
                         aria-label="문의 유형 선택"
                     >
-                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }}>
+                        <ToggleButton
+                            value="품질+견적 문의"
+                            aria-label="품질+견적 문의"
+                            sx={{ fontWeight: '600' }}
+                        >
                             품질+견적 문의 {commonCount} 건
                         </ToggleButton>
-                        <ToggleButton value="견적 문의" aria-label="견적 문의" sx={{ fontWeight: '600' }}>
+                        <ToggleButton
+                            value="견적 문의"
+                            aria-label="견적 문의"
+                            sx={{ fontWeight: '600' }}
+                        >
                             견적 문의 {quoteCount} 건
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -269,7 +287,12 @@ const MyInquiryList = () => {
                         exclusive
                         aria-label="문의 유형 선택"
                     >
-                        <ToggleButton value="품질+견적 문의" aria-label="품질+견적 문의" sx={{ fontWeight: '600' }} disabled>
+                        <ToggleButton
+                            value="품질+견적 문의"
+                            aria-label="품질+견적 문의"
+                            sx={{ fontWeight: '600' }}
+                            disabled
+                        >
                             품질+견적 문의 {commonCount} 건
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -418,7 +441,6 @@ const MyInquiryList = () => {
                     )}
                 </>
             )}
-
         </Box>
     );
 };
@@ -473,9 +495,9 @@ const StyledTableRow = styled(TableRow)(({ selected }) => ({
 }));
 
 const InquiryDetails = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 export default MyInquiryList;

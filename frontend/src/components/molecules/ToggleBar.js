@@ -56,6 +56,7 @@ const ToggleBar = ({
                             color: '#ffffff',
                             fontSize: '24px',
                             fontWeight: 'bold',
+                            alignContent: 'center'
                         }}
                     >
                         &nbsp;&nbsp;{title}
