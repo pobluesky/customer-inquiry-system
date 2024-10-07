@@ -19,10 +19,11 @@
 .Dashboard_Item .Gauge_Chart_Text {
     display: flex;
     justify-content: center;
-    margin: 10px 0 0 0;
+    margin: 12px 0 0 0;
 }
 
 .Dashboard_Item .Gauge_Chart_Text span {
+    background-color: pink;
     margin: 0 20px;
     font-weight: bold;
     cursor: pointer;

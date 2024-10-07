@@ -67,7 +67,7 @@ export function InquiryProductProgressChart({ data, name }) {
                 height: '12.5vw',
             }}
         >
-            <span>전체 담당자 대비 {name} 담당자 제품별 주문 체결 현황</span>
+            <span>전체 대비 {name} 담당자 제품별 주문 체결 현황</span>
             <GaugeChart
                 style={{
                     width: '70%',
@@ -83,7 +83,7 @@ export function InquiryProductProgressChart({ data, name }) {
                 animDelay={0}
                 animateDuration={2000}
             />
-            <div style={{ margin: '0 0 2vh 0' }}>
+            <div style={{ margin: '0 0 1vh 0' }}>
                 {Math.round(percent * 100)}%
             </div>
             <div className={Gauge_Chart_Text}>
