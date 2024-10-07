@@ -246,7 +246,7 @@ export default function DashBoard() {
                     flexGrow: 1,
                     p: 3,
                     backgroundColor: '#F4F5FB',
-                    height: '100%',
+                    height: '150vh',
                 }}
             >
                 {renderContent()}
