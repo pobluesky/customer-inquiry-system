@@ -172,8 +172,6 @@ export default function DashBoard() {
             );
         } else if (activeTab === 'Inquiry Log') {
             return <MyInquiryList />;
-        } else if (activeTab === 'User Info') {
-            return <div>User Info 페이지</div>;
         }
     };
 
@@ -213,7 +211,6 @@ export default function DashBoard() {
                     {[
                         { text: 'Dashboard', icon: <DashboardIcon /> },
                         { text: 'Inquiry Log', icon: <ReceiptIcon /> },
-                        { text: 'User Info', icon: <PersonIcon /> },
                     ].map(({ text, icon }) => (
                         <ListItem
                             button

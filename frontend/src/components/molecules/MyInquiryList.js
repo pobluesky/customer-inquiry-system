@@ -29,12 +29,9 @@ import {
 } from '../../apis/api/inquiry';
 import { productTypes } from '../../utils/inquiry';
 import InquiryLogs from './InquiryLogs';
-import InquiryTimeline from './InquiryTimeLine';
-import InquiryTimeLine from './InquiryTimeLine';
 
 const MyInquiryList = () => {
     const { userId, role } = useAuth();
-    const navigate = useNavigate();
     const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -247,7 +244,8 @@ const MyInquiryList = () => {
     return (
         <Box>
             {role === 'sales' && (
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                    <InquiryTitle sx={{ marginTop: '1vh' }}>내 Inquiry 목록</InquiryTitle>
                     <ToggleButtonGroup
                         value={inquiryType}
                         exclusive
@@ -264,7 +262,8 @@ const MyInquiryList = () => {
                 </Box>
             )}
             {role === 'quality' && (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1vh', marginRight: '1.4vh' }}>
+                    <InquiryTitle sx={{ marginTop: '1vh' }}>내 Inquiry 목록</InquiryTitle>
                     <ToggleButtonGroup
                         value={inquiryType}
                         exclusive
@@ -350,9 +349,6 @@ const MyInquiryList = () => {
                     <InquiryLogs inquiryLogs={inquiryLogs} inquiryType={inquiryType} />
                 </Container>
             </Box>
-            {/*<Container sx={{ boxShadow: 2 }}>*/}
-            {/*    <InquiryTimeLine />*/}
-            {/*</Container>*/}
 
             {/* 라인아이템 컨테이너 */}
             {loading ? (
