@@ -8,7 +8,7 @@ import {
     Offersheet,
 } from '../../components/organisms/inquiry-form';
 import {
-    getInquiryDetailByManagers,
+    getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
@@ -49,6 +49,10 @@ import { assignQualityManagerByUserId } from '../../apis/api/manager';
 import { CircularProgress, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { OfferSheetReceipts } from '../../utils/inquiry';
+import {
+    FinalReviewCompleteAlert,
+    FirstReviewCompleteAlert,
+} from '../../utils/actions';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -57,6 +61,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const navigate = useNavigate();
 
     const {
+        register,
+        handleSubmit,
         formState: { errors },
         setValue,
     } = useForm();
@@ -275,7 +281,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     }, [inquiriesDataDetail, userInfo]);
 
     const handleReviewSubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         if (id) {
@@ -291,6 +297,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     notificationContents:
                         `${inquiriesDataDetail.name}님의 문의 1차 검토가 완료되었습니다.`,
                 })
+                updateProgress("FIRST_REVIEW_COMPLETED");
+                FirstReviewCompleteAlert();
                 console.log('Review posted successfully:', reviewResponse);
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
@@ -302,7 +310,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     }
 
     const handleQualitySubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         if (id) {
@@ -321,7 +329,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     }
 
     const handleFinalSubmit = async (event) => {
-        if (event) {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         if (id) {
@@ -345,6 +353,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 }
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
+                updateProgress("FINAL_REVIEW_COMPLETED");
+                FinalReviewCompleteAlert();
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
                 }, '1500');
@@ -361,6 +371,15 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }));
         setValue(field, value);
     };
+
+    const updateProgress = async (nextProgress) => {
+        try {
+            const response = await putProgress(realId, nextProgress);
+            console.log('Progress updated successfully:', response);
+        } catch (error) {
+            console.log('Error updating progress:', error);
+        }
+    }
 
     useEffect(() => {
         if (currentProgress === 'SUBMIT' && userId === inquiriesDataDetail.salesManagerSummaryDto.userId) {
@@ -419,11 +438,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             + '    <p>추가 요청 사항이 있으시다면 전달 주시길 바랍니다.</p>\n'
             + '    <p>감사합니다.</p>\n'
             + '\n'
-            + '    <div>────────────────────────────────────</div>'
-            + '    <div>\n'
-            + '        <strong>에너지마케팅실 박지현</strong>  \n'
-            + '        <br>연락처: 010-1234-5678 | 이메일: member1@company.com\n'
-            + '    </div>'
             + '');
         handleFormDataChange('priceTerms', 'FOB (Free on Board)');
         handleFormDataChange('paymentTerms', 'Net 30 Days');
@@ -451,9 +465,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 <>
                     <RequestBar
                         requestBarTitle={requestTitle}
-                        onReviewSubmit={handleReviewSubmit}
+                        onReviewSubmit={handleSubmit(handleReviewSubmit)}
                         onQualitySubmit={handleQualitySubmit}
-                        onFinalSubmit={handleFinalSubmit}
+                        onFinalSubmit={handleSubmit(handleFinalSubmit)}
                         onAllocate={allocateByQualityManagerId}
                     />
                     <ManagerBasicInfoForm
@@ -482,9 +496,13 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                                            handleFormDataChange={handleFormDataChange}
                                            isPreviewData={true}
                                            handleIsPreview={handlePreviewReviewData}
+                                           register={register}
+                                           errors={errors}
                             />
                             <ReviewTextForm formData={formData}
                                             handleFormDataChange={handleFormDataChange}
+                                            register={register}
+                                            errors={errors}
                             />
                         </>
                     )}
@@ -496,6 +514,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                                              handleFormDataChange={handleFormDataChange}
                                              isPreviewData={true}
                                              handleIsPreview={handlePreviewOfferSheetData}
+                                             // register={register}
+                                             // errors={errors}
                         />
                     )}
 

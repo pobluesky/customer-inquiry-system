@@ -78,12 +78,10 @@ function RequestBar({
             }, '2000');
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
-            updateProgress('FIRST_REVIEW_COMPLETED');
-            FirstReviewCompleteAlert();
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();
             onAllocate();
-            updateProgress('QUALITY_REVIEW_REQUEST');
+            updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');
@@ -93,12 +91,8 @@ function RequestBar({
             }, '2000');
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
-            updateProgress('QUALITY_REVIEW_COMPLETED');
-            QualityCompleteAlert();
-        } else if (btnName === '최종검토완료') {
+        }  else if (btnName === '최종검토완료') {
             onFinalSubmit();
-            updateProgress('FINAL_REVIEW_COMPLETED');
-            FinalReviewCompleteAlert();
         } else if (btnName === '초기화') {
             onReset();
         } else if (btnName === '닫기') {
