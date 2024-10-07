@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pobluesky.backend.global.redisson.DistributedLock;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -49,7 +50,6 @@ public class CollaborationService {
 
     private final FileService fileService;
 
-    // 협업 조회
     @Transactional(readOnly = true)
     public Page<CollaborationSummaryResponseDTO> getAllCollaborations(
         String token,
@@ -112,8 +112,10 @@ public class CollaborationService {
     }
 
     @Transactional
+    @DistributedLock(key = "#lockName")
     public CollaborationResponseDTO createCollaboration(
         String token,
+        String lockName,
         Long questionId,
         MultipartFile file,
         CollaborationCreateRequestDTO requestDTO
