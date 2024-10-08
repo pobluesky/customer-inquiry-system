@@ -3,7 +3,6 @@
 * 현재 객체 크기를 고려하여 불필요하다는 판단 하에 임시 주석 처리하겠습니다.
 * */
 
-/*
 package com.pobluesky.backend.global.config;
 
 import org.redisson.api.RedissonClient;
@@ -57,4 +56,3 @@ public class CacheConfig {
             .build();
     }
 }
-*/
