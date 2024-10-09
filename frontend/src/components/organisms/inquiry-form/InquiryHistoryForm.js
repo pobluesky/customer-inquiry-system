@@ -196,7 +196,7 @@ const InquiryHistoryForm = ({
                                                                     }}
                                                                     value={
                                                                         item[key] ||
-                                                                        ''
+                                                                        field.options[0]
                                                                     }
                                                                     onChange={(e) =>
                                                                         handleFieldChange(

@@ -405,7 +405,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         try {
             await assignQualityManagerByUserId(realId, selectedQualityManagerId);
         } catch (error) {
-            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+            console.log('Inquiry 품질 담당자 배정 실패: ', error);
         }
     };
 

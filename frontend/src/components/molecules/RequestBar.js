@@ -79,8 +79,8 @@ function RequestBar({
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
         } else if (btnName === '품질검토요청') {
-            onQualitySubmit();
             onAllocate();
+            onQualitySubmit();
             updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
