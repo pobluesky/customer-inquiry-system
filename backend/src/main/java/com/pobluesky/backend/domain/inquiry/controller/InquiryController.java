@@ -399,6 +399,7 @@ public class InquiryController {
         @PathVariable Long inquiryId
     ) {
         InquiryLogResponseDTO response = inquiryService.getInquiryLogs(token, inquiryId);
+
         return ResponseEntity.ok(ResponseFactory.getSuccessJsonResult(response));
     }
 
