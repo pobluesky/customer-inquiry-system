@@ -4,7 +4,6 @@ import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
 import com.pobluesky.backend.domain.collaboration.repository.CollaborationRepository;
 import com.pobluesky.backend.domain.file.dto.FileInfo;
 import com.pobluesky.backend.domain.file.service.FileService;
-import com.pobluesky.backend.domain.inquiry.dto.response.MobileInquirySummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.request.QuestionUpdateRequestDTO;
 import com.pobluesky.backend.domain.question.dto.response.MobileQuestionSummaryResponseDTO;
 import com.pobluesky.backend.domain.question.dto.response.QuestionSummaryResponseDTO;
@@ -61,7 +60,6 @@ public class QuestionService {
 
     // 질문 전체 조회 (담당자)
     @Transactional(readOnly = true)
-    @Cacheable(value = "questionsCache", key = "#page + '-' + #size + '-' + #sortBy + '-' + #status + '-' + #type + '-' + #title + '-' + #questionId + '-' + #customerName + '-' + #isActivated + '-' + #managerId + '-' + #startDate + '-' + #endDate")
     public Page<QuestionSummaryResponseDTO> getQuestionsByManager(
         String token,
         int page,
@@ -97,7 +95,6 @@ public class QuestionService {
 
     // 질문 전체 조회 (고객사)
     @Transactional(readOnly = true)
-    @Cacheable(value = "questionsCache", key = "#page + '-' + #size + '-' + #sortBy + '-' + #status + '-' + #type + '-' + #title + '-' + #questionId + '-' + #startDate + '-' + #endDate")
     public Page<QuestionSummaryResponseDTO> getQuestionsByCustomer(
         String token,
         Long customerId,
@@ -155,7 +152,6 @@ public class QuestionService {
 
     // 문의별 질문 작성 (고객사)
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public QuestionResponseDTO createInquiryQuestion(
         String token,
         Long customerId,
@@ -188,13 +184,12 @@ public class QuestionService {
 
     // 타입별 질문 작성 (고객사)
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public QuestionResponseDTO createGeneralQuestion(
         String token,
         Long customerId,
         MultipartFile file,
         QuestionCreateRequestDTO dto
-        ) {
+    ) {
         Customer customer = validateCustomer(token);
 
         validateUserMatch(customer.getUserId(), customerId);
@@ -219,7 +214,6 @@ public class QuestionService {
 
     // 고객사 문의별 질문 수정
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public QuestionResponseDTO updateInquiryQuestionById(
         String token,
         Long customerId,
@@ -271,7 +265,6 @@ public class QuestionService {
 
     // 고객사 기타 질문 수정
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public QuestionResponseDTO updateGeneralQuestion(
         String token,
         Long customerId,
@@ -320,7 +313,6 @@ public class QuestionService {
 
     // 질문 삭제 (고객사용)
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public void deleteQuestionById(
         String token,
         Long customerId,
@@ -343,7 +335,6 @@ public class QuestionService {
 
     // 질문 삭제 (담당자용)
     @Transactional
-    @CacheEvict(value = "questionsCache", allEntries = true)
     public void deleteQuestionById(
         String token,
         Long questionId
@@ -374,6 +365,33 @@ public class QuestionService {
             .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
 
         return MobileQuestionSummaryResponseDTO.from(question);
+    }
+
+    // 모바일 문의 답변 검색
+    @Transactional(readOnly = true)
+    public List<MobileQuestionSummaryResponseDTO> getQuestionsBySearch(
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        String customerName,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+
+        List<QuestionSummaryResponseDTO> questions = questionRepository.findQuestionsBySearch(
+            sortBy,
+            status,
+            type,
+            title,
+            customerName,
+            startDate,
+            endDate
+        );
+
+        return questions.stream()
+            .map(MobileQuestionSummaryResponseDTO::toMobileResponseDTO)
+            .toList();
     }
 
     private Inquiry validateInquiry(Long inquiryId) {
@@ -436,32 +454,5 @@ public class QuestionService {
         if (collaboration != null) {
             throw new CommonException(ErrorCode.COLLABORATION_STATUS_READY);
         }
-    }
-
-    // 모바일 문의 답변 검색
-    @Transactional(readOnly = true)
-    public List<MobileQuestionSummaryResponseDTO> getQuestionsBySearch(
-            String sortBy,
-            QuestionStatus status,
-            QuestionType type,
-            String title,
-            String customerName,
-            LocalDate startDate,
-            LocalDate endDate
-    ) {
-
-        List<QuestionSummaryResponseDTO> questions = questionRepository.findQuestionsBySearch(
-                sortBy,
-                status,
-                type,
-                title,
-                customerName,
-                startDate,
-                endDate
-        );
-
-        return questions.stream()
-                .map(MobileQuestionSummaryResponseDTO::toMobileResponseDTO)
-                .toList();
     }
 }
