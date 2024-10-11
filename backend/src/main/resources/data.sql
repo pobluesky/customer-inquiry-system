@@ -304,6 +304,12 @@ VALUES
     (19, 19, 9, 'USA', 'HANKOOK', 'Hankook Tire', 'COMMON_INQUIRY', 'RAIL', '(주)포스코', 'THICK_PLATE', 'FINAL_REVIEW_COMPLETED', '2023-12-01', '검토 후 최종 회신 부탁드립니다.', 'file9.pdf', 'file9Name', null, true, true, '2023-12-01 09:15:22.123456+00', '2023-12-01 09:15:22.123456+00'),
     (20, 20, 10, 'CANADA', 'LOTTE', 'Lotte Group', 'COMMON_INQUIRY', 'FURNITURE', '(주)포스코', 'WIRE_ROD', 'QUALITY_REVIEW_REQUEST', '2023-12-05', '확인 부탁드립니다.', 'file10.pdf', 'file10Name', null, true, false, '2023-12-05 10:00:30.123456+00', '2023-12-05 10:00:30.123456+00');
 
+
+----------------------------------------------------------------수정 완료
+
+
+
+
 -- CAR_LINE_ITEMS
 INSERT INTO car_line_items (inquiry_id, lab, kind, standard_org, sales_vehicle_name, part_name, ix_plate, thickness, width, quantity, expected_delivery_date, transportation_destination, order_edge, tolerance, annual_cost, is_activated, created_date, modified_date)
 VALUES
