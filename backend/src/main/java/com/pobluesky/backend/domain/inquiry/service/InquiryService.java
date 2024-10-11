@@ -301,7 +301,10 @@ public class InquiryService {
         }
 
         inquiry.allocateQualityManager(qualityManager);
-        inquiry.updateProgress(Progress.QUALITY_REVIEW_REQUEST);
+        Progress newProgress = Progress.QUALITY_REVIEW_REQUEST;
+        inquiry.updateProgress(newProgress);
+
+        createInquiryLog(inquiry, newProgress);
 
         return InquiryAllocateResponseDTO.from(inquiry);
     }

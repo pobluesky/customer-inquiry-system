@@ -30,10 +30,6 @@ export const getManagerByUserId = async (userId) => {
 
         const json = response.data;
 
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
-
         return json;
     } catch (error) {
         console.error('담당자 상세 조회 API ERROR: ', error.message || error);
@@ -49,10 +45,6 @@ export const getAllSalesManager = async () => {
         );
 
         const json = response.data;
-
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
 
         return json;
     } catch (error) {
@@ -70,10 +62,6 @@ export const getAllQualityManager = async () => {
 
         const json = response.data;
 
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
-
         return json;
     } catch (error) {
         console.error('품질 담당자 전제 조회 API ERROR: ', error.message || error);
@@ -84,17 +72,9 @@ export const getAllQualityManager = async () => {
 // Inquiry 품질 담당자 배정
 export const assignQualityManagerByUserId = async (inquiryId, qualityManagerId) => {
     try {
-        const response = await axiosInstance.put(
+        await axiosInstance.put(
             `/managers/inquiries/${inquiryId}/allocate/${qualityManagerId}`,
         );
-
-        const json = response.data;
-
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
-
-        return json;
     } catch (error) {
         console.error('Inquiry 품질 담당자 전제 조회 API ERROR: ', error.message || error);
         throw error;

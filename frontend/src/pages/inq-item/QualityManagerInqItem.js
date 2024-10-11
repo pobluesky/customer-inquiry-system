@@ -255,6 +255,18 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
     }
 
+    const postNotificationToCustomer = async () => {
+        try {
+            const response = await postNotificationByCustomers(formData.customerId, {
+                notificationContents:
+                    `${inquiriesDataDetail.name}님의 품질검토가 진행 중입니다.`,
+            })
+            console.log('Notification sent successfully:', response);
+        } catch (error) {
+            console.log('Error sending notification:', error);
+        }
+    }
+
     useEffect(() => {
         if (currentProgress === 'QUALITY_REVIEW_REQUEST') {
             setRequestTitle('Inquiry 상세조회 및 품질검토4');
@@ -297,6 +309,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     <RequestBar
                         requestBarTitle={requestTitle}
                         onQualityCompleteSubmit={handleSubmit(handleQualitySubmit)}
+                        onPostNotificationToCustomer={postNotificationToCustomer}
                     />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
