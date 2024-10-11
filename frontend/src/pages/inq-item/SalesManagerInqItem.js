@@ -301,7 +301,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 });
                 await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의 1차 검토가 완료되었습니다.`,
+                        `${inquiriesDataDetail.name}님의 문의 1차검토가 완료되었습니다.`,
                 })
                 updateProgress("FIRST_REVIEW_COMPLETED");
                 FirstReviewCompleteAlert();
@@ -311,25 +311,6 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 }, '1000');
             } catch (error) {
                 console.log('Error posting review:', error);
-            }
-        }
-    }
-
-    const handleQualitySubmit = async (event) => {
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
-        if (id) {
-            try {
-                await postNotificationByCustomers(formData.customerId, {
-                    notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의는 현재 품질 검토 진행 중입니다.`,
-                })
-                setTimeout(() => {
-                    navigate(`/inq-list/${role}`);
-                }, '2000');
-            } catch (error) {
-                console.log('Error posting notification:', error);
             }
         }
     }
@@ -476,10 +457,10 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     <RequestBar
                         requestBarTitle={requestTitle}
                         onReviewSubmit={handleSubmit(handleReviewSubmit)}
-                        onQualitySubmit={handleQualitySubmit}
                         onFinalSubmit={handleSubmit(handleFinalSubmit)}
                         onAllocate={allocateByQualityManagerId}
                     />
+
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
