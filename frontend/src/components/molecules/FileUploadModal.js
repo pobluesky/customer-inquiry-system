@@ -78,7 +78,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                 setUploadPercentage(simulatedPercentage);
             }, 1000);
 
-            // Upload progress tracking
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
