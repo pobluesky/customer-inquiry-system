@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
-@EnableCaching
 public class BackendApplication {
 
 	public static void main(String[] args) {
