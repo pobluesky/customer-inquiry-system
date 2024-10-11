@@ -1,30 +1,19 @@
 package com.pobluesky.backend.domain.user.controller;
 
-import com.pobluesky.backend.domain.user.dto.request.LogInDto;
 import com.pobluesky.backend.domain.user.dto.request.ManagerCreateRequestDTO;
 import com.pobluesky.backend.domain.user.dto.request.ManagerUpdateRequestDTO;
-import com.pobluesky.backend.domain.user.dto.response.CustomerResponseDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerResponseDTO;
 import com.pobluesky.backend.domain.user.dto.response.ManagerSummaryResponseDTO;
-import com.pobluesky.backend.domain.user.entity.Customer;
-import com.pobluesky.backend.domain.user.entity.Manager;
 import com.pobluesky.backend.domain.user.service.ManagerService;
-import com.pobluesky.backend.domain.user.service.SignService;
-import com.pobluesky.backend.global.error.CommonException;
-import com.pobluesky.backend.global.error.ErrorCode;
-import com.pobluesky.backend.global.security.JwtToken;
 import com.pobluesky.backend.global.util.ResponseFactory;
 import com.pobluesky.backend.global.util.model.CommonResult;
 import com.pobluesky.backend.global.util.model.JsonResult;
-
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -73,7 +60,7 @@ public class ManagerController {
     }
 
     @GetMapping("/{userId}")
-    @Operation(summary = "담당자 조회")
+    @Operation(summary = "담당자 상세 조회")
     public ResponseEntity<JsonResult> getManagerById(
         @RequestHeader("Authorization") String token,
         @PathVariable("userId") Long userId

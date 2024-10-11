@@ -45,7 +45,10 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
-import { assignQualityManagerByUserId } from '../../apis/api/manager';
+import {
+    assignQualityManagerByUserId,
+    getManagerByUserId,
+} from '../../apis/api/manager';
 import { CircularProgress, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { OfferSheetReceipts } from '../../utils/inquiry';
@@ -82,6 +85,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [requestTitle, setRequestTitle] = useState(null);
     const [selectedQualityManagerId, setSelectedQualityManagerId] = useState(null);
     const [receipts, setReceipts] = useState([]);
+    const [qualityManagerName, setQualityManagerName] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -297,35 +301,16 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 });
                 await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의 1차 검토가 완료되었습니다.`,
+                        `${inquiriesDataDetail.name}님의 문의 1차검토가 완료되었습니다.`,
                 })
                 updateProgress("FIRST_REVIEW_COMPLETED");
                 FirstReviewCompleteAlert();
                 console.log('Review posted successfully:', reviewResponse);
                 setTimeout(() => {
-                    navigate(`/inq-list/${role}`);
-                }, '2000');
+                    window.location.reload();
+                }, '1000');
             } catch (error) {
                 console.log('Error posting review:', error);
-            }
-        }
-    }
-
-    const handleQualitySubmit = async (event) => {
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
-        if (id) {
-            try {
-                await postNotificationByCustomers(formData.customerId, {
-                    notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의는 현재 품질 검토 진행 중입니다.`,
-                })
-                setTimeout(() => {
-                    navigate(`/inq-list/${role}`);
-                }, '2000');
-            } catch (error) {
-                console.log('Error posting notification:', error);
             }
         }
     }
@@ -401,14 +386,26 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const handleManagerSelect = (selectedData) => {
         setSelectedQualityManagerId(selectedData);
+        getManagerInfo(selectedData);
     };
+
+    const getManagerInfo = async (managerId) => {
+        try {
+            const managers = await getManagerByUserId(managerId);
+            setQualityManagerName(managers.data.name);
+        } catch (error) {
+            console.log('Error getting managers: ', error);
+        }
+    }
 
     const allocateByQualityManagerId = async () => {
         try {
             await assignQualityManagerByUserId(realId, selectedQualityManagerId);
-            console.log("realId: ", realId)
-            console.log("selectedQualityManagerId: ", selectedQualityManagerId)
-            console.log("품질담당자 할당 성공")
+            const response = await postNotificationByManagers(selectedQualityManagerId, {
+                notificationContents:
+                    `${qualityManagerName} 담당자로 품질검토가 요청되었습니다.`,
+            });
+            console.log('Notification sent successfully:', response);
         } catch (error) {
             console.log('Inquiry 품질 담당자 배정 실패: ', error);
         }
@@ -460,10 +457,10 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     <RequestBar
                         requestBarTitle={requestTitle}
                         onReviewSubmit={handleSubmit(handleReviewSubmit)}
-                        onQualitySubmit={handleQualitySubmit}
                         onFinalSubmit={handleSubmit(handleFinalSubmit)}
                         onAllocate={allocateByQualityManagerId}
                     />
+
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
