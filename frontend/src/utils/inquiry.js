@@ -150,7 +150,7 @@ export const Departments = {
 // 오퍼시트 시연용 데이터
 export const OfferSheetReceipts = [
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "ASTM A510",
         "surfaceFinish": "Cold Drawn",
         "usage": "Automotive",
@@ -164,7 +164,7 @@ export const OfferSheetReceipts = [
         "edge": "Smooth Edge"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "EN 10270",
         "surfaceFinish": "Galvanized",
         "usage": "Construction",
@@ -178,7 +178,7 @@ export const OfferSheetReceipts = [
         "edge": "Clean Cut"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "JIS G3505",
         "surfaceFinish": "Hot Rolled",
         "usage": "Spring",
@@ -192,7 +192,7 @@ export const OfferSheetReceipts = [
         "edge": "Rounded Edge"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "ISO 16120",
         "surfaceFinish": "Pickled",
         "usage": "Wire Rope",
@@ -206,7 +206,7 @@ export const OfferSheetReceipts = [
         "edge": "Mill Edge"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "ASTM A228",
         "surfaceFinish": "Cold Drawn",
         "usage": "Mechanical Springs",
@@ -220,7 +220,7 @@ export const OfferSheetReceipts = [
         "edge": "Square Edge"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "EN 10016-2",
         "surfaceFinish": "Bright",
         "usage": "Welding Wire",
@@ -234,7 +234,7 @@ export const OfferSheetReceipts = [
         "edge": "Flat Edge"
     },
     {
-        "product": "선재",
+        "product": "자동차",
         "specification": "GB/T 3429",
         "surfaceFinish": "Annealed",
         "usage": "Piano Wire",

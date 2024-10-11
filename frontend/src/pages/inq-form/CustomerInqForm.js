@@ -185,7 +185,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         handleFormDataChange('customerRequestDate', '2024-10-21');
         handleFormDataChange('industry', 'ELECTRIC');
         handleFormDataChange('inquiryType', 'COMMON_INQUIRY');
-        handleFormDataChange('productType', 'WIRE_ROD');
+        handleFormDataChange('productType', 'CAR');
         handleFormDataChange('salesPerson', 'GEUMGANG');
     }
 

@@ -29,7 +29,7 @@ function CustomerInqItem() {
     // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
     const { id } = useParams();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
     const {
         register,

@@ -31,7 +31,7 @@ function RequestBar({
     
     const { role } = useAuth();
     const { id } = useParams();
-    const realId = id ? id.slice(-2) : '';
+    const realId = id ? id.slice(8) : '';
 
     const buttonConfig = {
         'Inquiry 등록0': ['초기화', '검토의뢰'],
