@@ -30,10 +30,6 @@ export const getManagerByUserId = async (userId) => {
 
         const json = response.data;
 
-        if (json.result !== 'success') {
-            throw new Error(json.message);
-        }
-
         return json;
     } catch (error) {
         console.error('담당자 상세 조회 API ERROR: ', error.message || error);

@@ -21,6 +21,7 @@ function RequestBar({
     onFinalSubmit,
     onQualitySubmit,
     onQualityCompleteSubmit,
+    onPostNotificationToCustomer,
     onReset,
     isPreviewData,
     handleIsPreview,
@@ -84,6 +85,7 @@ function RequestBar({
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');
+            onPostNotificationToCustomer();
             QualityResponseAlert();
             setTimeout(() => {
                 window.location.reload();
