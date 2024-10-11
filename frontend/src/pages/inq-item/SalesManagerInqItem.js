@@ -60,7 +60,7 @@ import {
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
 
     const {
@@ -147,7 +147,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const realId = id.slice(-2);
+            const realId = id.slice(8);
             const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
@@ -386,6 +386,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const handleManagerSelect = (selectedData) => {
         setSelectedQualityManagerId(selectedData);
+        console.log('handleManagerSelect', selectedData)
         getManagerInfo(selectedData);
     };
 

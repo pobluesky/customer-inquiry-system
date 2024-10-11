@@ -134,7 +134,7 @@ const MyInquiryList = () => {
     }
 
     const fetchInquiryLineItems = async () => {
-        const realId = selectedRow ? selectedRow.slice(-2) : '';
+        const realId = selectedRow ? selectedRow.slice(8) : '';
 
         try {
             const response = await getInquiryDetailByManagers(realId);
@@ -145,7 +145,7 @@ const MyInquiryList = () => {
     }
 
     const fetchInquiryLogs = async () => {
-        const realId = selectedRow ? selectedRow.slice(-2) : '';
+        const realId = selectedRow ? selectedRow.slice(8) : '';
         try {
             const response = await getInquiryLogs(realId);
             setInquiryLogs(response);

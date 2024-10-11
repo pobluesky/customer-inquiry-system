@@ -39,7 +39,7 @@ import { QualityCompleteAlert } from '../../utils/actions';
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
 
     const {
