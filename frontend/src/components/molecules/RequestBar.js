@@ -74,8 +74,8 @@ function RequestBar({
             updateProgress('RECEIPT');
             SalesManagerCheckAlert();
             setTimeout(() => {
-                navigate(`/inq-list/${role}`);
-            }, '2000');
+                window.location.reload();
+            }, '1000');
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
         } else if (btnName === '품질검토요청') {
@@ -86,8 +86,8 @@ function RequestBar({
             updateProgress('QUALITY_REVIEW_RESPONSE');
             QualityResponseAlert();
             setTimeout(() => {
-                navigate(`/inq-list/${role}`);
-            }, '2000');
+                window.location.reload();
+            }, '1000');
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
         }  else if (btnName === '최종검토완료') {
