@@ -184,7 +184,7 @@ function CustomerInqItem() {
             const notificationResponse = await postNotificationByCustomers(
                 userId,
                 {
-                    notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
+                    notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 접수 시 수정이 불가합니다.`,
                 },
             );
             console.log('Inquiry posted successfully:', inquiryUpdateResponse);
