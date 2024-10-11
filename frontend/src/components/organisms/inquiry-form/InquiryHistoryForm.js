@@ -54,11 +54,12 @@ const InquiryHistoryForm = ({
             if (index !== null && field !== null) {
                 newData[index] = {
                     ...newData[index],
-                    [field]: value || newData[index][field],
+                    [field]: value !== undefined ? value : newData[index][field],
                 };
             }
             return newData;
         });
+
         onLineItemsChange(updatedData);
     };
 
