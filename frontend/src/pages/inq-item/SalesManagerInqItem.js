@@ -407,6 +407,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     `${qualityManagerName} 담당자로 품질검토가 요청되었습니다.`,
             });
             console.log('Notification sent successfully:', response);
+            setTimeout(() => {
+                navigate(`/inq-list/${role}`);
+            }, '1500');
         } catch (error) {
             console.log('Inquiry 품질 담당자 배정 실패: ', error);
         }
