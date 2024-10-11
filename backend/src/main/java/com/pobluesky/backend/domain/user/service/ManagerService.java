@@ -74,12 +74,8 @@ public class ManagerService {
 
     @Transactional(readOnly = true)
     public ManagerResponseDTO getManagerById(String token, Long targetId) {
-        Long userId = signService.parseToken(token);
 
-        if (!userId.equals(targetId))
-            throw new CommonException(ErrorCode.USER_NOT_MATCHED);
-
-        Manager manager = managerRepository.findById(userId)
+        Manager manager = managerRepository.findById(targetId)
             .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_FOUND));
 
         return  ManagerResponseDTO.from(manager);
