@@ -27,13 +27,18 @@ const InquiryHistoryForm = ({
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
+    const [currentProductType, setCurrentProductType] = useState(productType);
 
-    const fields = productTypes[productType] || productTypes['CAR'];
+    const fields = productTypes[currentProductType] || productTypes['CAR'];
 
     const onResetLineItems = () => {
         setLocalData([]);
         onLineItemsChange([]);
     }
+
+    useEffect(() => {
+        setCurrentProductType(productType);
+    }, [productType]);
 
     useEffect(() => {
         if (onRefLineItems) {
@@ -49,11 +54,12 @@ const InquiryHistoryForm = ({
             if (index !== null && field !== null) {
                 newData[index] = {
                     ...newData[index],
-                    [field]: value || newData[index][field],
+                    [field]: value !== undefined ? value : newData[index][field],
                 };
             }
             return newData;
         });
+
         onLineItemsChange(updatedData);
     };
 
@@ -90,6 +96,7 @@ const InquiryHistoryForm = ({
     const deleteAllRows = () => {
         setLocalData([]);
         onLineItemsChange([]);
+        setCurrentProductType(productType);
     };
 
     const copyRow = (index) => {
@@ -122,7 +129,7 @@ const InquiryHistoryForm = ({
                 title={'라인아이템'}
                 isChecked={isChecked}
                 setCheck={setChecked}
-                productType={productType}
+                productType={currentProductType}
                 onLineItemsChange={onLineItemsChange}
                 handleLineItemsChangeByOCR={handleLineItemsChangeByOCR}
                 onSelect={handleSelect}
