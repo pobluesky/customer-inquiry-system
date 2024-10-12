@@ -74,7 +74,9 @@ export default function QuestionViewer({ questionDetail, secretPath }) {
               };
 
     useEffect(() => {
-        fetchInquiryNo(questionDetail);
+        if (questionDetail.type == 'INQ') {
+            fetchInquiryNo(questionDetail);
+        }
     }, [questionDetail]);
 
     return (

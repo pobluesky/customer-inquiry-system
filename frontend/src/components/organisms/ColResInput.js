@@ -234,11 +234,14 @@ export default function ColResInput({ colDetail, setColDetail }) {
                                             textColor={'#ffffff'}
                                             margin={'0 0 0 24px'}
                                             onClick={() => {
-                                                window.confirm(
-                                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
-                                                )
-                                                    ? setSelectedType('')
-                                                    : '';
+                                                if (
+                                                    window.confirm(
+                                                        '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                                    )
+                                                ) {
+                                                    setSelectedType('');
+                                                    window.location.reload();
+                                                }
                                             }}
                                         />
                                     </div>

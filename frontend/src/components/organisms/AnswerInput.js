@@ -63,7 +63,7 @@ export default function AnswerInput({
 
     const [colIdForNewPage, setColIdForNewPage] = useState('');
 
-    const fetchPostAndPutAnswerByQuestionId = answerDetail
+    const fetchPostAndPutAnswerByQuestionId = answerDetail?.questionId
         ? async () => {
               try {
                   const answerData = {
@@ -94,7 +94,7 @@ export default function AnswerInput({
                   await postAnswerByQuestionId(
                       file,
                       answerData,
-                      answerDetail?.questionId,
+                      questionDetail.questionId,
                   );
                   setMessage('답변이 등록되었습니다.');
                   canShowSuccessAlert(true);
@@ -323,12 +323,6 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            if (!colPossible) {
-                                                window.alert(
-                                                    '현재 협업 진행 중인 질문입니다.',
-                                                );
-                                                return;
-                                            }
                                             navigate(
                                                 '/voc-form/collaboration/req',
                                                 {
@@ -348,11 +342,14 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            window.confirm(
-                                                '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
-                                            )
-                                                ? setWriteAnswer(false)
-                                                : '';
+                                            if (
+                                                window.confirm(
+                                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                                )
+                                            ) {
+                                                setWriteAnswer(false);
+                                                setEditAnswer(false);
+                                            }
                                         }}
                                     />
                                     <VocButton
