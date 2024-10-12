@@ -137,39 +137,39 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     @Override
     public List<QuestionSummaryResponseDTO> findQuestionsBySearch(
-            String sortBy,
-            QuestionStatus status,
-            QuestionType type,
-            String title,
-            String customerName,
-            LocalDate startDate,
-            LocalDate endDate
+        String sortBy,
+        QuestionStatus status,
+        QuestionType type,
+        String title,
+        String customerName,
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         List<QuestionSummaryResponseDTO> content = queryFactory
-                .select(Projections.constructor(QuestionSummaryResponseDTO.class,
-                        question.questionId,
-                        question.title,
-                        question.status,
-                        question.type,
-                        question.contents,
-                        customer.customerName,
-                        question.createdDate.as("questionCreatedAt"),
-                        answer.createdDate.as("answerCreatedAt"),
-                        answer.manager.userId.as("managerId"),
-                        question.isActivated
-                ))
-                .from(question)
-                .leftJoin(question.answer, answer)
-                .leftJoin(question.customer, customer)
-                .where(
-                        statusEq(status),
-                        typeEq(type),
-                        titleContains(title),
-                        customerNameContains(customerName),
-                        createdDateBetween(startDate, endDate)
-                )
-                .orderBy(getOrderSpecifier(sortBy))
-                .fetch();
+            .select(Projections.constructor(QuestionSummaryResponseDTO.class,
+                question.questionId,
+                question.title,
+                question.status,
+                question.type,
+                question.contents,
+                customer.customerName,
+                question.createdDate.as("questionCreatedAt"),
+                answer.createdDate.as("answerCreatedAt"),
+                answer.manager.userId.as("managerId"),
+                question.isActivated
+            ))
+            .from(question)
+            .leftJoin(question.answer, answer)
+            .leftJoin(question.customer, customer)
+            .where(
+                statusEq(status),
+                typeEq(type),
+                titleContains(title),
+                customerNameContains(customerName),
+                createdDateBetween(startDate, endDate)
+            )
+            .orderBy(getOrderSpecifier(sortBy))
+            .fetch();
 
         return content;
     }

@@ -48,6 +48,8 @@ public class CollaborationService {
 
     private final ManagerRepository managerRepository;
 
+    private final ManagerRepository customerRepository;
+
     private final FileService fileService;
 
     @Transactional(readOnly = true)
@@ -254,6 +256,31 @@ public class CollaborationService {
         if (requestDTO.colReply() != null) {
             collaboration.modifyColReply(requestDTO.colReply());
         }
+
+        return CollaborationDetailResponseDTO.from(collaboration);
+    }
+
+    // 질문 페이지에서 협업 조회
+    @Transactional(readOnly = true)
+    public CollaborationDetailResponseDTO getCollaborationByQuestionId(
+        String token,
+        Long questionId
+    ) {
+        Long userId = signService.parseToken(token);
+
+        boolean isManagerExists = managerRepository.findById(userId).isPresent();
+        boolean isCustomerExists = customerRepository.findById(userId).isPresent();
+
+        if (!isManagerExists && !isCustomerExists) {
+            throw new CommonException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new CommonException(ErrorCode.QUESTION_NOT_FOUND));
+
+        Collaboration collaboration = collaborationRepository.findByQuestionId(
+            question
+        ).orElseThrow(() -> new CommonException(ErrorCode.COLLABORATION_NOT_FOUND));
 
         return CollaborationDetailResponseDTO.from(collaboration);
     }

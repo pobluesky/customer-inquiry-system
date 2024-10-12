@@ -173,3 +173,23 @@ export const putCompleteByQuality = async (colId) => {
         throw error;
     }
 };
+
+// 질문 페이지에서 협업 여부 조회
+export const isCollaborated = async (questionId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/collaborations/${questionId}`,
+        );
+
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
+        }
+
+        return json;
+    } catch (error) {
+        console.log('해당 질문은 협업 진행되지 않음');
+        throw error;
+    }
+};

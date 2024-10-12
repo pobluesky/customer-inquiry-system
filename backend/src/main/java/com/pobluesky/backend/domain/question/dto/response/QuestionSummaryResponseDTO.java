@@ -6,8 +6,6 @@ import com.pobluesky.backend.domain.question.entity.QuestionType;
 
 import java.time.LocalDateTime;
 
-import java.io.Serializable;
-
 import lombok.Builder;
 
 @Builder
@@ -33,7 +31,7 @@ public record QuestionSummaryResponseDTO(
 
     Boolean isActivated
 
-) implements Serializable {
+) {
     public static QuestionSummaryResponseDTO from(Question question) {
 
         return QuestionSummaryResponseDTO.builder()

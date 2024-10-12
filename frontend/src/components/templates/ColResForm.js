@@ -61,16 +61,15 @@ export default function ColResForm({ setColNo }) {
                 'questionDetail',
                 JSON.stringify(location.state.questionDetail),
             );
-            setColNo(
-                questionDetail.createdDate.substring(0, 10).replace(/-/g, '') +
-                    questionDetail.colId.toString().padStart(3, '0'),
-            );
         }
         setColNo(
             questionDetail.createdDate.substring(0, 10).replace(/-/g, '') +
-                questionDetail.colId.toString().padStart(3, '0'),
+                colDetail.colId.toString().padStart(3, '0'),
         );
     }, [location.state]);
+
+    console.log(questionDetail);
+    console.log(colDetail);
 
     return (
         <div>
