@@ -46,7 +46,7 @@ export default function ColReqInput({
                   canShowSuccessAlert(true);
                   setTimeout(() => {
                       navigate(
-                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          `/voc-form/collaboration/res/${response.data.colId}/${response.data.questionId}`,
                           {
                               state: {
                                   questionDetail: questionDetail,
@@ -77,7 +77,7 @@ export default function ColReqInput({
                   canShowSuccessAlert(true);
                   setTimeout(() => {
                       navigate(
-                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          `/voc-form/collaboration/res/${response.data.colId}/${response.data.questionId}`,
                           {
                               state: {
                                   questionDetail: questionDetail,

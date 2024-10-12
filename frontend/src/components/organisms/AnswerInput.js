@@ -15,7 +15,7 @@ import {
     postAnswerByQuestionId,
     putAnswerByQuestionId,
 } from '../../apis/api/answer';
-import { getCollaborationDetail } from '../../apis/api/collaboration';
+import { isCollaborated } from '../../apis/api/collaboration';
 import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
 export default function AnswerInput({
@@ -32,10 +32,7 @@ export default function AnswerInput({
 
     useEffect(() => {
         if (!colPossible) {
-            fetchGetColDetail(
-                questionDetail?.questionId,
-                questionDetail?.colId,
-            );
+            fetchGetColDetail(questionDetail?.questionId);
         }
     }, [colPossible]);
 
@@ -63,6 +60,8 @@ export default function AnswerInput({
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
     const [showWarningAlert, canShowWarningAlert] = useState(false);
     const [message, setMessage] = useState('');
+
+    const [colIdForNewPage, setColIdForNewPage] = useState('');
 
     const fetchPostAndPutAnswerByQuestionId = answerDetail
         ? async () => {
@@ -125,9 +124,10 @@ export default function AnswerInput({
         }
     };
 
-    const fetchGetColDetail = async (questionId, colId) => {
+    const fetchGetColDetail = async (questionId) => {
         try {
-            const response = await getCollaborationDetail(questionId, colId);
+            const response = await isCollaborated(questionId);
+            setColIdForNewPage(response.data.colId);
             sessionStorage.setItem('colDetail', JSON.stringify(response.data));
         } catch (error) {
             console.error('(새창) 협업 상세 조회 실패: ', error);
@@ -307,7 +307,7 @@ export default function AnswerInput({
                                                     ),
                                                 );
                                                 window.open(
-                                                    `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                                                    `/voc-form/collaboration/res/${colIdForNewPage}/${questionDetail.questionId}`,
                                                 );
                                             }
                                             setWriteAnswer(true);
@@ -426,7 +426,7 @@ export default function AnswerInput({
                                         JSON.stringify(questionDetail),
                                     );
                                     window.open(
-                                        `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                                        `/voc-form/collaboration/res/${colIdForNewPage}/${questionDetail.questionId}`,
                                     );
                                 }
                                 setEditAnswer(true);
