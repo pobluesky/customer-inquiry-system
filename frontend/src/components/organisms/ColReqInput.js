@@ -144,7 +144,7 @@ export default function ColReqInput({
                                 window.confirm(
                                     '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
                                 )
-                                    ? navigate(-1)
+                                    ? (window.location.href = `/voc-form/answer/${questionDetail.questionId}`)
                                     : '';
                             }}
                         />
