@@ -120,7 +120,6 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
             }, 1000);
 
         } catch (error) {
-            clearInterval(increasePercentageRandomly);
             console.log('Error posting OCR Line Items:', error);
         }
     };
