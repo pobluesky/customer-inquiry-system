@@ -2,7 +2,10 @@ package com.pobluesky.backend.domain.collaboration.dto.response;
 
 import com.pobluesky.backend.domain.collaboration.entity.ColStatus;
 import com.pobluesky.backend.domain.collaboration.entity.Collaboration;
+
 import lombok.Builder;
+
+import java.time.LocalDateTime;
 
 @Builder
 public record CollaborationDetailResponseDTO(
@@ -20,6 +23,8 @@ public record CollaborationDetailResponseDTO(
     String colContents,
 
     String colReply,
+
+    LocalDateTime createdDate,
 
     String fileName,
 
@@ -44,6 +49,7 @@ public record CollaborationDetailResponseDTO(
             .colStatus(collaboration.getColStatus())
             .colContents(collaboration.getColContents())
             .colReply(collaboration.getColReply())
+            .createdDate(collaboration.getCreatedDate())
             .fileName(collaboration.getFileName())
             .filePath(collaboration.getFilePath())
             .vocFileName(collaboration.getQuestion().getFileName())
