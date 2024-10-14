@@ -108,7 +108,7 @@ export default function AnswerInput({
 
     const fetchDeleteQuestionByQuestionId = async (userId) => {
         try {
-            await deleteQuestionByUserId(userId, questionId);
+            await deleteQuestionByUserId(userId, questionDetail.questionId);
             navigate('/voc-list/question');
         } catch (error) {
             console.log('질문 삭제(고객사용) 실패: ', error);
@@ -117,7 +117,7 @@ export default function AnswerInput({
 
     const fetchDeleteQuestionByQuestionIdForManager = async () => {
         try {
-            await deleteQuestionByUserIdForManager(questionId);
+            await deleteQuestionByUserIdForManager(questionDetail.questionId);
             navigate('/voc-list/question');
         } catch (error) {
             console.log('질문 삭제(담당자용) 실패: ', error);
