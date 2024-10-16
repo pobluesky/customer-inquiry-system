@@ -165,8 +165,10 @@ const LineItemToggleBar = ({
                                     cursor: 'pointer',
                                 }}
                                 onClick={() => {
-                                    testAnnualCost();
-                                    testTolerance();
+                                    if (localData) {
+                                        testAnnualCost();
+                                        testTolerance();
+                                    }
                                 }}
                             >
                                 이상치 측정
