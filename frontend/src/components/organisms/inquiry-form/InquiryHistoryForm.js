@@ -34,7 +34,7 @@ const InquiryHistoryForm = ({
     const onResetLineItems = () => {
         setLocalData([]);
         onLineItemsChange([]);
-    }
+    };
 
     useEffect(() => {
         setCurrentProductType(productType);
@@ -49,12 +49,13 @@ const InquiryHistoryForm = ({
     const handleFieldChange = (index, field, value, data) => {
         const updatedData = data ? data : localData;
 
-        setLocalData(prevData => {
+        setLocalData((prevData) => {
             const newData = [...updatedData];
             if (index !== null && field !== null) {
                 newData[index] = {
                     ...newData[index],
-                    [field]: value !== undefined ? value : newData[index][field],
+                    [field]:
+                        value !== undefined ? value : newData[index][field],
                 };
             }
             return newData;
@@ -135,6 +136,7 @@ const InquiryHistoryForm = ({
                 onSelect={handleSelect}
                 isUpdate={isUpdate}
                 setError={setError}
+                localData={localData} 
             />
             {isChecked ? (
                 <>
@@ -145,23 +147,24 @@ const InquiryHistoryForm = ({
                                     <TableCell
                                         style={{ minWidth: 100 }}
                                     ></TableCell>
-                                    {Object.keys(fields).map((key) => (
-                                        key !== 'lineItemId' && (
-                                            <TableCell
-                                                key={key}
-                                                style={{
-                                                    minWidth: 200,
-                                                    fontSize: '20px',
-                                                    fontWeight: '800',
-                                                    color: '#000000',
-                                                    textAlign: 'center',
-                                                }}
-                                            >
-                                                &nbsp;&nbsp;&nbsp;
-                                                {fields[key].label}
-                                            </TableCell>
-                                        )
-                                    ))}
+                                    {Object.keys(fields).map(
+                                        (key) =>
+                                            key !== 'lineItemId' && (
+                                                <TableCell
+                                                    key={key}
+                                                    style={{
+                                                        minWidth: 200,
+                                                        fontSize: '20px',
+                                                        fontWeight: '800',
+                                                        color: '#000000',
+                                                        textAlign: 'center',
+                                                    }}
+                                                >
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    {fields[key].label}
+                                                </TableCell>
+                                            ),
+                                    )}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -202,14 +205,20 @@ const InquiryHistoryForm = ({
                                                                             '#ffffff',
                                                                     }}
                                                                     value={
-                                                                        item[key] ||
-                                                                        field.options[0]
+                                                                        item[
+                                                                            key
+                                                                        ] ||
+                                                                        field
+                                                                            .options[0]
                                                                     }
-                                                                    onChange={(e) =>
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) =>
                                                                         handleFieldChange(
                                                                             index,
                                                                             key,
-                                                                            e.target
+                                                                            e
+                                                                                .target
                                                                                 .value,
                                                                         )
                                                                     }
@@ -234,7 +243,7 @@ const InquiryHistoryForm = ({
                                                                     )}
                                                                 </Select>
                                                             ) : field.type ===
-                                                            'boolean' ? (
+                                                              'boolean' ? (
                                                                 <Select
                                                                     style={{
                                                                         width: '100%',
@@ -242,17 +251,22 @@ const InquiryHistoryForm = ({
                                                                             '#ffffff',
                                                                     }}
                                                                     value={
-                                                                        item[key]
+                                                                        item[
+                                                                            key
+                                                                        ]
                                                                             ? 'true'
                                                                             : 'false'
                                                                     }
-                                                                    onChange={(e) =>
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) =>
                                                                         handleFieldChange(
                                                                             index,
                                                                             key,
-                                                                            e.target
+                                                                            e
+                                                                                .target
                                                                                 .value ===
-                                                                            'true',
+                                                                                'true',
                                                                         )
                                                                     }
                                                                 >
@@ -266,8 +280,9 @@ const InquiryHistoryForm = ({
                                                             ) : (
                                                                 <TextField
                                                                     value={
-                                                                        item[key] ||
-                                                                        ''
+                                                                        item[
+                                                                            key
+                                                                        ] || ''
                                                                     }
                                                                     type={
                                                                         field.type
@@ -277,11 +292,14 @@ const InquiryHistoryForm = ({
                                                                         backgroundColor:
                                                                             '#ffffff',
                                                                     }}
-                                                                    onChange={(e) =>
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) =>
                                                                         handleFieldChange(
                                                                             index,
                                                                             key,
-                                                                            e.target
+                                                                            e
+                                                                                .target
                                                                                 .value,
                                                                         )
                                                                     }
@@ -289,11 +307,11 @@ const InquiryHistoryForm = ({
                                                                         field.type ===
                                                                         'int'
                                                                             ? {
-                                                                                inputProps:
-                                                                                    {
-                                                                                        min: 0,
-                                                                                    },
-                                                                            }
+                                                                                  inputProps:
+                                                                                      {
+                                                                                          min: 0,
+                                                                                      },
+                                                                              }
                                                                             : {}
                                                                     }
                                                                 />
