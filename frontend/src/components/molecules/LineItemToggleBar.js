@@ -60,34 +60,32 @@ const LineItemToggleBar = ({
     const testAnnualCost = () => {
         if (localData.length > 0) {
             localData.forEach((item, index) => {
-                // 조건 1: 맨 앞의 $ 제거
+                // $ 제거
                 const tempValue = item.annualCost.replace(/^[$]+/, '');
 
-                // 쉼표가 연속으로 나오는지 확인하는 정규식 (예: 2,,000 등)
+                // 연속 쉼표 탐색
                 const hasInvalidCommas = /,,/.test(tempValue);
 
-                // 쉼표를 제거한 값의 길이에 따라 제거할 쉼표 개수 결정
+                // 쉼표 개수 결정
                 const commaCount = Math.floor(
                     tempValue.replace(/[,]/g, '').length / 3,
                 );
 
                 let count = 0;
 
-                // 쉼표 개수만큼 제거
+                // 적절한 쉼표 개수만큼 제거
                 const annualCostValue = tempValue.replace(/,/g, (match) => {
                     count++;
                     return count <= commaCount ? '' : match;
                 });
 
-                // 숫자가 아닌 문자가 포함되었는지 확인
                 const isValidNumber = /^[0-9.]+$/.test(annualCostValue);
 
-                // 값이 -5000 초과, 43000 미만인지 확인
+                // -5000 초과 && 43000 미만
                 const isWithinRange =
                     parseFloat(annualCostValue) > -5000 &&
                     parseFloat(annualCostValue) < 43000;
 
-                // 쉼표가 연속되었거나 숫자 형식이 잘못되었거나 범위를 벗어난 경우 처리
                 if (hasInvalidCommas || !isValidNumber || !isWithinRange) {
                     handleClick();
                     console.log(
