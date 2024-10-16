@@ -45,7 +45,10 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
-import { assignQualityManagerByUserId } from '../../apis/api/manager';
+import {
+    assignQualityManagerByUserId,
+    getManagerByUserId,
+} from '../../apis/api/manager';
 import { CircularProgress, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { OfferSheetReceipts } from '../../utils/inquiry';
@@ -57,7 +60,7 @@ import {
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
 
     const {
@@ -82,6 +85,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [requestTitle, setRequestTitle] = useState(null);
     const [selectedQualityManagerId, setSelectedQualityManagerId] = useState(null);
     const [receipts, setReceipts] = useState([]);
+    const [qualityManagerName, setQualityManagerName] = useState(null);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -143,7 +147,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const realId = id.slice(-2);
+            const realId = id.slice(8);
             const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
@@ -159,12 +163,14 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     };
 
     const getUserInfo = async () => {
-        try {
-            const response = await getUserInfoByCustomers(realId);
-            setUserInfo(response.data.data);
-            return response.data.data;
-        } catch (error) {
-            console.log('Error fetching User Info:', error);
+        if (formData.customerId) {
+            try {
+                const response = await getUserInfoByCustomers(formData.customerId);
+                setUserInfo(response.data.data);
+                return response.data.data;
+            } catch (error) {
+                console.log('Error fetching User Info:', error);
+            }
         }
     }
 
@@ -223,7 +229,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -295,35 +301,16 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 });
                 await postNotificationByCustomers(formData.customerId, {
                     notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의 1차 검토가 완료되었습니다.`,
+                        `${inquiriesDataDetail.name}님의 문의 1차검토가 완료되었습니다.`,
                 })
                 updateProgress("FIRST_REVIEW_COMPLETED");
                 FirstReviewCompleteAlert();
                 console.log('Review posted successfully:', reviewResponse);
                 setTimeout(() => {
-                    navigate(`/inq-list/${role}`);
-                }, '2000');
+                    window.location.reload();
+                }, '1000');
             } catch (error) {
                 console.log('Error posting review:', error);
-            }
-        }
-    }
-
-    const handleQualitySubmit = async (event) => {
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
-        if (id) {
-            try {
-                await postNotificationByCustomers(formData.customerId, {
-                    notificationContents:
-                        `${inquiriesDataDetail.name}님의 문의는 현재 품질 검토 진행 중입니다.`,
-                })
-                setTimeout(() => {
-                    navigate(`/inq-list/${role}`);
-                }, '2000');
-            } catch (error) {
-                console.log('Error posting notification:', error);
             }
         }
     }
@@ -399,13 +386,32 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const handleManagerSelect = (selectedData) => {
         setSelectedQualityManagerId(selectedData);
+        console.log('handleManagerSelect', selectedData)
+        getManagerInfo(selectedData);
     };
+
+    const getManagerInfo = async (managerId) => {
+        try {
+            const managers = await getManagerByUserId(managerId);
+            setQualityManagerName(managers.data.name);
+        } catch (error) {
+            console.log('Error getting managers: ', error);
+        }
+    }
 
     const allocateByQualityManagerId = async () => {
         try {
             await assignQualityManagerByUserId(realId, selectedQualityManagerId);
+            const response = await postNotificationByManagers(selectedQualityManagerId, {
+                notificationContents:
+                    `${qualityManagerName} 담당자로 품질검토가 요청되었습니다.`,
+            });
+            console.log('Notification sent successfully:', response);
+            setTimeout(() => {
+                navigate(`/inq-list/${role}`);
+            }, '1500');
         } catch (error) {
-            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+            console.log('Inquiry 품질 담당자 배정 실패: ', error);
         }
     };
 
@@ -455,10 +461,10 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                     <RequestBar
                         requestBarTitle={requestTitle}
                         onReviewSubmit={handleSubmit(handleReviewSubmit)}
-                        onQualitySubmit={handleQualitySubmit}
                         onFinalSubmit={handleSubmit(handleFinalSubmit)}
                         onAllocate={allocateByQualityManagerId}
                     />
+
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
                         salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}

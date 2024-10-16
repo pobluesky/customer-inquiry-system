@@ -39,7 +39,7 @@ import { QualityCompleteAlert } from '../../utils/actions';
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, role } = useAuth();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
 
     const {
@@ -255,6 +255,18 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
     }
 
+    const postNotificationToCustomer = async () => {
+        try {
+            const response = await postNotificationByCustomers(formData.customerId, {
+                notificationContents:
+                    `${inquiriesDataDetail.name}님의 품질검토가 진행 중입니다.`,
+            })
+            console.log('Notification sent successfully:', response);
+        } catch (error) {
+            console.log('Error sending notification:', error);
+        }
+    }
+
     useEffect(() => {
         if (currentProgress === 'QUALITY_REVIEW_REQUEST') {
             setRequestTitle('Inquiry 상세조회 및 품질검토4');
@@ -283,7 +295,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         <div className={InqTableContainer}>
             <ManagerInqPath
                 largeCategory={'Inquiry'}
-                mediumCategory={'Inquiry 조회'}
+                mediumCategory={'품질설계연계조회'}
                 smallCategory={id}
                 role={'quality'}
             />
@@ -297,6 +309,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                     <RequestBar
                         requestBarTitle={requestTitle}
                         onQualityCompleteSubmit={handleSubmit(handleQualitySubmit)}
+                        onPostNotificationToCustomer={postNotificationToCustomer}
                     />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}

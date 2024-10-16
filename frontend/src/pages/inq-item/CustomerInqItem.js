@@ -29,7 +29,7 @@ function CustomerInqItem() {
     // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
     const { id } = useParams();
-    const realId = id.slice(-2);
+    const realId = id.slice(8);
     const navigate = useNavigate();
     const {
         register,
@@ -184,7 +184,7 @@ function CustomerInqItem() {
             const notificationResponse = await postNotificationByCustomers(
                 userId,
                 {
-                    notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
+                    notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 접수 시 수정이 불가합니다.`,
                 },
             );
             console.log('Inquiry posted successfully:', inquiryUpdateResponse);

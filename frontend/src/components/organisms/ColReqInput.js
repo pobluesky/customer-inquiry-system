@@ -46,7 +46,7 @@ export default function ColReqInput({
                   canShowSuccessAlert(true);
                   setTimeout(() => {
                       navigate(
-                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          `/voc-form/collaboration/res/${response.data.colId}/${response.data.questionId}`,
                           {
                               state: {
                                   questionDetail: questionDetail,
@@ -77,7 +77,7 @@ export default function ColReqInput({
                   canShowSuccessAlert(true);
                   setTimeout(() => {
                       navigate(
-                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          `/voc-form/collaboration/res/${response.data.colId}/${response.data.questionId}`,
                           {
                               state: {
                                   questionDetail: questionDetail,
@@ -144,7 +144,7 @@ export default function ColReqInput({
                                 window.confirm(
                                     '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
                                 )
-                                    ? navigate(-1)
+                                    ? (window.location.href = `/voc-form/answer/${questionDetail.questionId}`)
                                     : '';
                             }}
                         />

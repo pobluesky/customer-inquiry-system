@@ -42,7 +42,14 @@ export default function ColReqViewer({
                     <div>협업 요청 사유</div>
                 </div>
                 <div>
-                    <div>2024-08-26 11:00</div>
+                    <div>
+                        {colDetail?.createdDate &&
+                            `${
+                                colDetail.createdDate.split('T')[0]
+                            } ${colDetail.createdDate
+                                .split('T')[1]
+                                .substring(0, 5)}`}
+                    </div>
                     <div>
                         {getDeptLabel(
                             colDetail?.colManagerFromResponseDto.department,

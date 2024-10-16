@@ -85,7 +85,7 @@ export default function QuestionDashboard() {
 
     const fetchGetColCount = async () => {
         try {
-            const response = await getAllCollaboration('');
+            const response = await getAllCollaboration(0, '');
             setColCount(response.data.totalElements);
         } catch (error) {
             console.log('협업 목록 개수 조회 실패: ', error);

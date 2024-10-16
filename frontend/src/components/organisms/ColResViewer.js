@@ -109,7 +109,14 @@ export default function ColResViewer({
                         </div>
                     </div>
                     <div>
-                        <div>2024-08-26 11:00</div>
+                        <div>
+                            {colDetail?.createdDate &&
+                                `${
+                                    colDetail.createdDate.split('T')[0]
+                                } ${colDetail.createdDate
+                                    .split('T')[1]
+                                    .substring(0, 5)}`}
+                        </div>
                         <div>
                             {getDeptLabel(
                                 colDetail?.colManagerToResponseDto.department,

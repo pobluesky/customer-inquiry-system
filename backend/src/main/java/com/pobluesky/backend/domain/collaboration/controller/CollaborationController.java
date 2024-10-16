@@ -186,6 +186,21 @@ public class CollaborationController {
             .body(ResponseFactory.getSuccessJsonResult(response));
     }
 
+    // 질문 페이지에서 협업 조회
+    @GetMapping("/{questionId}")
+    public ResponseEntity<JsonResult> getCollaborationByQuestionId(
+        @RequestHeader("Authorization") String token,
+        @PathVariable Long questionId
+    ) {
+        CollaborationDetailResponseDTO response = collaborationService.getCollaborationByQuestionId(
+            token,
+            questionId
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ResponseFactory.getSuccessJsonResult(response));
+    }
+
     /* [Start] Dashboard API */
     @GetMapping("/managers/col/dashboard")
     @Operation(summary = "월별 협업 처리 건수 평균")

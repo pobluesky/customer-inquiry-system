@@ -19,8 +19,8 @@ function RequestBar({
     onSubmit,
     onReviewSubmit,
     onFinalSubmit,
-    onQualitySubmit,
     onQualityCompleteSubmit,
+    onPostNotificationToCustomer,
     onReset,
     isPreviewData,
     handleIsPreview,
@@ -31,7 +31,7 @@ function RequestBar({
     
     const { role } = useAuth();
     const { id } = useParams();
-    const realId = id ? id.slice(-2) : '';
+    const realId = id ? id.slice(8) : '';
 
     const buttonConfig = {
         'Inquiry 등록0': ['초기화', '검토의뢰'],
@@ -74,21 +74,20 @@ function RequestBar({
             updateProgress('RECEIPT');
             SalesManagerCheckAlert();
             setTimeout(() => {
-                navigate(`/inq-list/${role}`);
-            }, '2000');
+                window.location.reload();
+            }, '1000');
         } else if (btnName === '1차검토완료') {
             onReviewSubmit();
         } else if (btnName === '품질검토요청') {
-            onQualitySubmit();
             onAllocate();
-            updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');
+            onPostNotificationToCustomer();
             QualityResponseAlert();
             setTimeout(() => {
-                navigate(`/inq-list/${role}`);
-            }, '2000');
+                window.location.reload();
+            }, '1000');
         } else if (btnName === '품질검토완료') {
             onQualityCompleteSubmit();
         }  else if (btnName === '최종검토완료') {

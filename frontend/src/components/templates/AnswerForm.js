@@ -11,11 +11,13 @@ import {
     getAnswerByQuestionId,
     getAnswerByQuestionIdForManager,
 } from '../../apis/api/answer';
+import { isCollaborated } from '../../apis/api/collaboration';
 import { getFileDownloadUrl } from '../../apis/api/file';
 import { getCookie } from '../../apis/utils/cookies';
 
-export default function AnswerForm() {
+export default function AnswerForm({ setVocNo }) {
     useEffect(() => {
+        fetchGetColCheck(questionId);
         fetchGetQuestionDetail(questionId);
     }, [questionId]);
 
@@ -30,8 +32,19 @@ export default function AnswerForm() {
 
     const [isQuestionLoading, setQuestionLoading] = useState(true);
     const [isAnswerLoading, setAnswerLoading] = useState(true);
+    const [isColChecked, setColChecked] = useState(true);
 
     const [secretPath, setSecretPath] = useState('');
+
+    const fetchGetColCheck = async (questionId) => {
+        try {
+            await isCollaborated(questionId);
+            setColPossible(false);
+        } catch {
+        } finally {
+            setColChecked(true);
+        }
+    };
 
     const fetchGetQuestionDetail =
         role === 'customer'
@@ -42,14 +55,19 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      setVocNo(
+                          response.data.createdDate
+                              .substring(0, 10)
+                              .replace(/-/g, '') +
+                              response.data.questionId
+                                  .toString()
+                                  .padStart(3, '0'),
+                      );
                       if (response.data.filePath != null) {
                           const url = await getFileDownloadUrl(
                               response.data.filePath,
                           );
                           setSecretPath(url);
-                      }
-                      if (response.data.colStatus != null) {
-                          setColPossible(false);
                       }
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
@@ -68,14 +86,19 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      setVocNo(
+                          response.data.createdDate
+                              .substring(0, 10)
+                              .replace(/-/g, '') +
+                              response.data.questionId
+                                  .toString()
+                                  .padStart(3, '0'),
+                      );
                       if (response.data.filePath != null) {
                           const url = await getFileDownloadUrl(
                               response.data.filePath,
                           );
                           setSecretPath(url);
-                      }
-                      if (response.data.colStatus != null) {
-                          setColPossible(false);
                       }
                       if (response.data.status === 'COMPLETED') {
                           fetchGetAnswerDetail(questionId);
@@ -119,7 +142,7 @@ export default function AnswerForm() {
 
     return (
         <>
-            {isQuestionLoading || isAnswerLoading ? (
+            {(isQuestionLoading || isAnswerLoading) && isColChecked ? (
                 <Box
                     sx={{
                         display: 'flex',

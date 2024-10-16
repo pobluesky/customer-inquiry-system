@@ -31,7 +31,9 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
     useEffect(() => {
         if (uploadPercentage === 100 && !isUploadComplete) {
-            setIsUploadComplete(true);
+            setTimeout(() => {
+                closeModal();
+            }, 2000);
         }
     }, [uploadPercentage, isUploadComplete]);
 
@@ -43,35 +45,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
         setIsModalOpen(true);
         setFile(file);
 
-        let uploadComplete = false;
-        let postOCRCalled = false;
-        const uploadInterval = 2200;
-
-        const fakeUpload = setInterval(() => {
-            const randomStep = Math.floor(Math.random() * (20 - 15 + 1)) + 15;
-            setUploadPercentage((prev) => {
-                const nextPercentage = prev + randomStep;
-                if (nextPercentage >= 100) {
-                    clearInterval(fakeUpload);
-                    uploadComplete = true;
-                    setUploadPercentage(100);
-
-                    if (!postOCRCalled) {
-                        postOCRFile(file);
-                        postOCRCalled = true;
-                    }
-
-                    return 100;
-                }
-
-                if (nextPercentage >= 50 && !postOCRCalled) {
-                    postOCRFile(file);
-                    postOCRCalled = true;
-                }
-
-                return nextPercentage;
-            });
-        }, uploadInterval);
+        postOCRFile(file);
     };
 
     const openFileDialog = () => {
@@ -93,7 +67,40 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
 
     const postOCRFile = async (file) => {
         try {
-            const response = await postOCR(userId, file, productType);
+            const formData = new FormData();
+            formData.append('files', file);
+            formData.append('productType', productType);
+
+            let simulatedPercentage = 0;
+            const increasePercentageRandomly = setInterval(() => {
+                const randomIncrease = Math.floor(Math.random() * 5) + 1;
+                simulatedPercentage = Math.min(simulatedPercentage + randomIncrease, 100);
+                setUploadPercentage(simulatedPercentage);
+            }, 1000);
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    const actualPercentage = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+
+                    if (actualPercentage > simulatedPercentage) {
+                        setUploadPercentage(actualPercentage);
+                        simulatedPercentage = actualPercentage;
+                    }
+
+                    if (actualPercentage >= 100) {
+                        clearInterval(increasePercentageRandomly);
+                        setUploadPercentage(100);
+                    }
+                },
+                timeout: 100000,
+            };
+
+            const response = await postOCR(userId, file, productType, config);
             const lineItems = response.data.lineItemResponseDTOs;
             setLineItemsFromOCR(lineItems);
 
@@ -101,9 +108,17 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                 onLineItemsUpdate(lineItems);
             }
 
+            clearInterval(increasePercentageRandomly);
+            setUploadPercentage(100);
+
             setTimeout(() => {
-                closeModal();
-            }, 150);
+                setIsUploadComplete(true);
+
+                setTimeout(() => {
+                    setIsUploadComplete(false);
+                }, 2500);
+            }, 1000);
+
         } catch (error) {
             console.log('Error posting OCR Line Items:', error);
         }
@@ -208,7 +223,7 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                         AI 기술을 활용해 내역을 등록 중입니다.
                                     </p>
                                     <div className={progressBarContainer}>
-                                    <div
+                                        <div
                                             className={progressBar}
                                             style={{
                                                 width: `${uploadPercentage}%`,
@@ -264,11 +279,12 @@ const FileUploadModal = ({ productType, onLineItemsUpdate, setError }) => {
                                 확인해 주세요.
                             </div>
                             <Chip
-                                icon={<InsertDriveFileIcon sx={{ color: '#03507D !important' }} />}
+                                icon={<InsertDriveFileIcon
+                                    sx={{ color: '#03507D !important' }} />}
                                 label={file?.name}
                                 variant="outlined"
                                 sx={{
-                                    margin: '25px 0 0 0',
+                                    margin: '25px 0 20px 0',
                                     color: '#03507D',
                                     borderColor: '#03507D',
                                     backgroundColor: '#f3f3f3',

@@ -24,7 +24,7 @@ export default function QuestionInquirySearchModal({
     const [searchId, setSearchId] = useState('');
     const [filteredInquiryData, setFilteredInquiryData] = useState([]);
     const [tempInquiryId, setTempInquiryId] = useState(null);
-    const [tempProcessedInquiryId, setTempProcessedInquiryId] = useState(null);
+    const [tempProcessedInquiryId, setTempProcessedInquiryId] = useState(null); 
 
     const [showWarningAlert, canShowWarningAlert] = useState(false);
     const [message, setMessage] = useState('');
@@ -164,7 +164,7 @@ export default function QuestionInquirySearchModal({
                                                         userId,
                                                     );
                                                     window.open(
-                                                        `/inq-list/customer/${inq.inquiryId}`,
+                                                        `/inq-list/customer/${inq.processedInquiryId}`,
                                                         '_blank',
                                                     );
                                                 }}

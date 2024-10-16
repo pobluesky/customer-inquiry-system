@@ -15,7 +15,7 @@ import {
     postAnswerByQuestionId,
     putAnswerByQuestionId,
 } from '../../apis/api/answer';
-import { getCollaborationDetail } from '../../apis/api/collaboration';
+import { isCollaborated } from '../../apis/api/collaboration';
 import { Answer_Input, Ready, Completed } from '../../assets/css/Voc.css';
 
 export default function AnswerInput({
@@ -32,10 +32,7 @@ export default function AnswerInput({
 
     useEffect(() => {
         if (!colPossible) {
-            fetchGetColDetail(
-                questionDetail?.questionId,
-                questionDetail?.colId,
-            );
+            fetchGetColDetail(questionDetail?.questionId);
         }
     }, [colPossible]);
 
@@ -64,7 +61,9 @@ export default function AnswerInput({
     const [showWarningAlert, canShowWarningAlert] = useState(false);
     const [message, setMessage] = useState('');
 
-    const fetchPostAndPutAnswerByQuestionId = answerDetail
+    const [colIdForNewPage, setColIdForNewPage] = useState('');
+
+    const fetchPostAndPutAnswerByQuestionId = answerDetail?.questionId
         ? async () => {
               try {
                   const answerData = {
@@ -95,7 +94,7 @@ export default function AnswerInput({
                   await postAnswerByQuestionId(
                       file,
                       answerData,
-                      answerDetail?.questionId,
+                      questionDetail.questionId,
                   );
                   setMessage('답변이 등록되었습니다.');
                   canShowSuccessAlert(true);
@@ -109,7 +108,7 @@ export default function AnswerInput({
 
     const fetchDeleteQuestionByQuestionId = async (userId) => {
         try {
-            await deleteQuestionByUserId(userId, questionId);
+            await deleteQuestionByUserId(userId, questionDetail.questionId);
             navigate('/voc-list/question');
         } catch (error) {
             console.log('질문 삭제(고객사용) 실패: ', error);
@@ -118,16 +117,17 @@ export default function AnswerInput({
 
     const fetchDeleteQuestionByQuestionIdForManager = async () => {
         try {
-            await deleteQuestionByUserIdForManager(questionId);
+            await deleteQuestionByUserIdForManager(questionDetail.questionId);
             navigate('/voc-list/question');
         } catch (error) {
             console.log('질문 삭제(담당자용) 실패: ', error);
         }
     };
 
-    const fetchGetColDetail = async (questionId, colId) => {
+    const fetchGetColDetail = async (questionId) => {
         try {
-            const response = await getCollaborationDetail(questionId, colId);
+            const response = await isCollaborated(questionId);
+            setColIdForNewPage(response.data.colId);
             sessionStorage.setItem('colDetail', JSON.stringify(response.data));
         } catch (error) {
             console.error('(새창) 협업 상세 조회 실패: ', error);
@@ -307,7 +307,7 @@ export default function AnswerInput({
                                                     ),
                                                 );
                                                 window.open(
-                                                    `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                                                    `/voc-form/collaboration/res/${colIdForNewPage}/${questionDetail.questionId}`,
                                                 );
                                             }
                                             setWriteAnswer(true);
@@ -323,12 +323,6 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            if (!colPossible) {
-                                                window.alert(
-                                                    '현재 협업 진행 중인 질문입니다.',
-                                                );
-                                                return;
-                                            }
                                             navigate(
                                                 '/voc-form/collaboration/req',
                                                 {
@@ -348,11 +342,14 @@ export default function AnswerInput({
                                         backgroundColor={'#03507d'}
                                         textColor={'#ffffff'}
                                         onClick={() => {
-                                            window.confirm(
-                                                '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
-                                            )
-                                                ? setWriteAnswer(false)
-                                                : '';
+                                            if (
+                                                window.confirm(
+                                                    '지금까지 작성한 내용이 사라집니다. 정말 취소하시겠습니까?',
+                                                )
+                                            ) {
+                                                setWriteAnswer(false);
+                                                setEditAnswer(false);
+                                            }
                                         }}
                                     />
                                     <VocButton
@@ -426,7 +423,7 @@ export default function AnswerInput({
                                         JSON.stringify(questionDetail),
                                     );
                                     window.open(
-                                        `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                                        `/voc-form/collaboration/res/${colIdForNewPage}/${questionDetail.questionId}`,
                                     );
                                 }
                                 setEditAnswer(true);

@@ -17,7 +17,10 @@ import {
 } from '../../utils/actions';
 import { useNavigate } from 'react-router-dom';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
-import { postNotificationByCustomers } from '../../apis/api/notification';
+import {
+    postNotificationByCustomers,
+    postNotificationByManagers,
+} from '../../apis/api/notification';
 
 function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
     const { userId, role } = useAuth();
@@ -108,6 +111,9 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
             await postNotificationByCustomers(userId, {
                 notificationContents: `${formData.name}님의 Inquiry가 접수되었습니다.`,
             })
+            await postNotificationByManagers(userId, {
+                notificationContents: "새 Inquiry의 영업검토 담당자로 배정되었습니다.",
+            })
             console.log('Inquiry posted successfully:', inquiryResponse);
 
             InquiryCompleteAlert();
@@ -179,7 +185,7 @@ function CustomerInqForm() { // 고객사 Inquiry 작성 페이지
         handleFormDataChange('customerRequestDate', '2024-10-21');
         handleFormDataChange('industry', 'ELECTRIC');
         handleFormDataChange('inquiryType', 'COMMON_INQUIRY');
-        handleFormDataChange('productType', 'WIRE_ROD');
+        handleFormDataChange('productType', 'CAR');
         handleFormDataChange('salesPerson', 'GEUMGANG');
     }
 
