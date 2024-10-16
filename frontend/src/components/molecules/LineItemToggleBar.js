@@ -102,14 +102,14 @@ const LineItemToggleBar = ({
     const testTolerance = () => {
         if (localData != []) {
             localData.forEach((item, index) => {
-                // 조건 1: 완전한 숫자
+                // ±, mm 제거
                 const toleranceValue = item.tolerance
-                    .replace(/^[±]+/, '')
+                    .replace(/^±/, '')
                     .replace(/mm$/, '');
 
                 const isValidNumber = /^[0-9.]+$/.test(toleranceValue);
 
-                // 조건 2: -0.12 초과이면서 0.47 미만
+                // -0.12 초과 && 0.47 미만
                 const isWithinRange =
                     toleranceValue > -0.12 && toleranceValue < 0.47;
 
