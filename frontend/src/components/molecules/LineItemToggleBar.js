@@ -15,7 +15,6 @@ const LineItemToggleBar = ({
     onSelect,
     isUpdate,
     setError,
-
     localData,
 }) => {
     const [lineItemsFromOCR, setLineItemsFromOCR] = useState([]);
@@ -102,7 +101,7 @@ const LineItemToggleBar = ({
             localData.forEach((item, index) => {
                 // ±, mm 제거
                 const toleranceValue = item.tolerance
-                    .replace(/^±/, '')
+                    .replace(/^([±+-])/, '')
                     .replace(/mm$/, '');
 
                 const isValidNumber = /^[0-9.]+$/.test(toleranceValue);
@@ -131,7 +130,7 @@ const LineItemToggleBar = ({
                 >
                     <Alert
                         onClose={handleClose}
-                        severity="success"
+                        severity="warning"
                         variant="filled"
                         sx={{ width: '100%' }}
                     >
