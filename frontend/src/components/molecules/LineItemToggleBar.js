@@ -24,6 +24,7 @@ const LineItemToggleBar = ({
     const [isFileModalOpen, setIsFileModalOpen] = useState(true);
 
     const [open, setOpen] = useState(false);
+    const [successOpen, setSuccessOpen] = useState(false);
 
     const handleClick = () => {
         setOpen(true);
@@ -33,8 +34,18 @@ const LineItemToggleBar = ({
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
+    };
+
+    const handleSuccessClick = () => {
+        setSuccessOpen(true);
+    };
+
+    const handleSuccessClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSuccessOpen(false);
     };
 
     const openModal = () => setIsModalOpen(true);
@@ -55,68 +66,52 @@ const LineItemToggleBar = ({
         }
     };
 
-    // 연소요량
-    const testAnnualCost = () => {
+    const testValue = () => {
         if (localData.length > 0) {
-            localData.forEach((item, index) => {
-                // $ 제거
+            for (let i = 0; i < localData.length; i++) {
+                const item = localData[i];
+
+                /******** 연소요량 ********/
                 const tempValue = item.annualCost.replace(/^[$]+/, '');
-
-                // 연속 쉼표 탐색
                 const hasInvalidCommas = /,,/.test(tempValue);
-
-                // 쉼표 개수 결정
                 const commaCount = Math.floor(
                     tempValue.replace(/[,]/g, '').length / 3,
                 );
-
                 let count = 0;
-
-                // 적절한 쉼표 개수만큼 제거
                 const annualCostValue = tempValue.replace(/,/g, (match) => {
                     count++;
                     return count <= commaCount ? '' : match;
                 });
-
-                const isValidNumber = /^[0-9.]+$/.test(annualCostValue);
-
-                // -5000 초과 && 43000 미만
-                const isWithinRange =
+                const isAnnualCostValidNumber = /^[0-9.]+$/.test(
+                    annualCostValue,
+                );
+                const isAnnualCostWithinRange =
                     parseFloat(annualCostValue) > -5000 &&
                     parseFloat(annualCostValue) < 43000;
 
-                if (hasInvalidCommas || !isValidNumber || !isWithinRange) {
-                    handleClick();
-                    console.log(
-                        `${index + 1}번째 줄의 연소요량 값이 적합하지 않습니다`,
-                    );
-                }
-            });
-        }
-    };
-
-    // 공차
-    const testTolerance = () => {
-        if (localData != []) {
-            localData.forEach((item, index) => {
-                // ±, mm 제거
+                /******** 공차 ********/
                 const toleranceValue = item.tolerance
                     .replace(/^([±+-])/, '')
                     .replace(/mm$/, '');
-
-                const isValidNumber = /^[0-9.]+$/.test(toleranceValue);
-
-                // -0.12 초과 && 0.47 미만
-                const isWithinRange =
+                const isToleranceValidNumber = /^[0-9.]+$/.test(toleranceValue);
+                const isToleranceWithinRange =
                     toleranceValue > -0.12 && toleranceValue < 0.47;
 
-                if (!isValidNumber || !isWithinRange) {
+                if (
+                    hasInvalidCommas ||
+                    !isAnnualCostValidNumber ||
+                    !isAnnualCostWithinRange ||
+                    !isToleranceValidNumber ||
+                    !isToleranceWithinRange
+                ) {
                     handleClick();
-                    console.log(
-                        `${index + 1}번째 줄의 공차 값이 적합하지 않습니다`,
-                    );
+                    return;
                 }
-            });
+            }
+
+            setTimeout(() => {
+                handleSuccessClick();
+            }, 1000);
         }
     };
 
@@ -125,7 +120,7 @@ const LineItemToggleBar = ({
             <div>
                 <Snackbar
                     open={open}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                 >
                     <Alert
@@ -135,6 +130,22 @@ const LineItemToggleBar = ({
                         sx={{ width: '100%' }}
                     >
                         라인 아이템 중 적합하지 않은 데이터가 있습니다.
+                    </Alert>
+                </Snackbar>
+            </div>
+            <div>
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={3000}
+                    onClose={handleSuccessClose}
+                >
+                    <Alert
+                        onClose={handleSuccessClose}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        라인 아이템 데이터 적합 테스트 완료
                     </Alert>
                 </Snackbar>
             </div>
@@ -163,8 +174,7 @@ const LineItemToggleBar = ({
                                 }}
                                 onClick={() => {
                                     if (localData) {
-                                        testAnnualCost();
-                                        testTolerance();
+                                        testValue();
                                     }
                                 }}
                             >
