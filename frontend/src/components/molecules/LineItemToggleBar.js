@@ -66,68 +66,6 @@ const LineItemToggleBar = ({
         }
     };
 
-    // 연소요량
-    // const testValue = () => {
-    //     if (localData.length > 0) {
-    //         localData.forEach((item, index) => {
-    //             /******** 연소요량 ********/
-    //             // $ 제거
-    //             const tempValue = item.annualCost.replace(/^[$]+/, '');
-
-    //             // 연속 쉼표 탐색
-    //             const hasInvalidCommas = /,,/.test(tempValue);
-
-    //             // 쉼표 개수 결정
-    //             const commaCount = Math.floor(
-    //                 tempValue.replace(/[,]/g, '').length / 3,
-    //             );
-
-    //             let count = 0;
-
-    //             // 적절한 쉼표 개수만큼 제거
-    //             const annualCostValue = tempValue.replace(/,/g, (match) => {
-    //                 count++;
-    //                 return count <= commaCount ? '' : match;
-    //             });
-
-    //             const isAnnualCostValidNumber = /^[0-9.]+$/.test(
-    //                 annualCostValue,
-    //             );
-
-    //             // -5000 초과 && 43000 미만
-    //             const isAnnualCostWithinRange =
-    //                 parseFloat(annualCostValue) > -5000 &&
-    //                 parseFloat(annualCostValue) < 43000;
-
-    //             /******** 공차 ********/
-    //             // ±, mm 제거
-    //             const toleranceValue = item.tolerance
-    //                 .replace(/^([±+-])/, '')
-    //                 .replace(/mm$/, '');
-
-    //             const isToleranceValidNumber = /^[0-9.]+$/.test(toleranceValue);
-
-    //             // -0.12 초과 && 0.47 미만
-    //             const isToleranceWithinRange =
-    //                 toleranceValue > -0.12 && toleranceValue < 0.47;
-
-    //             if (
-    //                 hasInvalidCommas ||
-    //                 !isAnnualCostValidNumber ||
-    //                 !isAnnualCostWithinRange ||
-    //                 !isToleranceValidNumber ||
-    //                 !isToleranceWithinRange
-    //             ) {
-    //                 handleClick();
-    //                 console.log('111111111111');
-    //                 return;
-    //             }
-    //         });
-    //         handleSuccessClick();
-    //         console.log('222222222222');
-    //     }
-    // };
-
     const testValue = () => {
         if (localData.length > 0) {
             for (let i = 0; i < localData.length; i++) {
