@@ -25,10 +25,6 @@ const LineItemToggleBar = ({
 
     const [open, setOpen] = useState(false);
     const [successOpen, setSuccessOpen] = useState(false);
-    const [dataChecked, setDataChecked] = useState(false);
-
-    const [isAnnualCostValid, setIsAnnualCostValid] = useState(false); // 연소요량 유효성 상태
-    const [isToleranceValid, setIsToleranceValid] = useState(false); // 공차 유효성 상태
 
     const handleClick = () => {
         setOpen(true);
@@ -38,7 +34,6 @@ const LineItemToggleBar = ({
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
     };
 
@@ -50,7 +45,6 @@ const LineItemToggleBar = ({
         if (reason === 'clickaway') {
             return;
         }
-
         setSuccessOpen(false);
     };
 
@@ -73,86 +67,114 @@ const LineItemToggleBar = ({
     };
 
     // 연소요량
-    const testAnnualCost = () => {
-        let isValid = true;
+    // const testValue = () => {
+    //     if (localData.length > 0) {
+    //         localData.forEach((item, index) => {
+    //             /******** 연소요량 ********/
+    //             // $ 제거
+    //             const tempValue = item.annualCost.replace(/^[$]+/, '');
+
+    //             // 연속 쉼표 탐색
+    //             const hasInvalidCommas = /,,/.test(tempValue);
+
+    //             // 쉼표 개수 결정
+    //             const commaCount = Math.floor(
+    //                 tempValue.replace(/[,]/g, '').length / 3,
+    //             );
+
+    //             let count = 0;
+
+    //             // 적절한 쉼표 개수만큼 제거
+    //             const annualCostValue = tempValue.replace(/,/g, (match) => {
+    //                 count++;
+    //                 return count <= commaCount ? '' : match;
+    //             });
+
+    //             const isAnnualCostValidNumber = /^[0-9.]+$/.test(
+    //                 annualCostValue,
+    //             );
+
+    //             // -5000 초과 && 43000 미만
+    //             const isAnnualCostWithinRange =
+    //                 parseFloat(annualCostValue) > -5000 &&
+    //                 parseFloat(annualCostValue) < 43000;
+
+    //             /******** 공차 ********/
+    //             // ±, mm 제거
+    //             const toleranceValue = item.tolerance
+    //                 .replace(/^([±+-])/, '')
+    //                 .replace(/mm$/, '');
+
+    //             const isToleranceValidNumber = /^[0-9.]+$/.test(toleranceValue);
+
+    //             // -0.12 초과 && 0.47 미만
+    //             const isToleranceWithinRange =
+    //                 toleranceValue > -0.12 && toleranceValue < 0.47;
+
+    //             if (
+    //                 hasInvalidCommas ||
+    //                 !isAnnualCostValidNumber ||
+    //                 !isAnnualCostWithinRange ||
+    //                 !isToleranceValidNumber ||
+    //                 !isToleranceWithinRange
+    //             ) {
+    //                 handleClick();
+    //                 console.log('111111111111');
+    //                 return;
+    //             }
+    //         });
+    //         handleSuccessClick();
+    //         console.log('222222222222');
+    //     }
+    // };
+
+    const testValue = () => {
         if (localData.length > 0) {
-            localData.forEach((item, index) => {
-                // $ 제거
+            for (let i = 0; i < localData.length; i++) {
+                const item = localData[i];
+
+                /******** 연소요량 ********/
                 const tempValue = item.annualCost.replace(/^[$]+/, '');
-
-                // 연속 쉼표 탐색
                 const hasInvalidCommas = /,,/.test(tempValue);
-
-                // 쉼표 개수 결정
                 const commaCount = Math.floor(
                     tempValue.replace(/[,]/g, '').length / 3,
                 );
-
                 let count = 0;
-
-                // 적절한 쉼표 개수만큼 제거
                 const annualCostValue = tempValue.replace(/,/g, (match) => {
                     count++;
                     return count <= commaCount ? '' : match;
                 });
-
-                const isValidNumber = /^[0-9.]+$/.test(annualCostValue);
-
-                // -5000 초과 && 43000 미만
-                const isWithinRange =
+                const isAnnualCostValidNumber = /^[0-9.]+$/.test(
+                    annualCostValue,
+                );
+                const isAnnualCostWithinRange =
                     parseFloat(annualCostValue) > -5000 &&
                     parseFloat(annualCostValue) < 43000;
 
-                if (hasInvalidCommas || !isValidNumber || !isWithinRange) {
-                    isValid = false;
-                    handleClick();
-                    console.log(
-                        `${index + 1}번째 줄의 연소요량 값이 적합하지 않습니다`,
-                    );
-                }
-            });
-        }
-        setIsAnnualCostValid(isValid); // 연소요량 검사 결과 설정
-    };
-
-    // 공차
-    const testTolerance = () => {
-        let isValid = true;
-        if (localData != []) {
-            localData.forEach((item, index) => {
-                // ±, mm 제거
+                /******** 공차 ********/
                 const toleranceValue = item.tolerance
                     .replace(/^([±+-])/, '')
                     .replace(/mm$/, '');
-
-                const isValidNumber = /^[0-9.]+$/.test(toleranceValue);
-
-                // -0.12 초과 && 0.47 미만
-                const isWithinRange =
+                const isToleranceValidNumber = /^[0-9.]+$/.test(toleranceValue);
+                const isToleranceWithinRange =
                     toleranceValue > -0.12 && toleranceValue < 0.47;
 
-                if (!isValidNumber || !isWithinRange) {
-                    isValid = false;
+                if (
+                    hasInvalidCommas ||
+                    !isAnnualCostValidNumber ||
+                    !isAnnualCostWithinRange ||
+                    !isToleranceValidNumber ||
+                    !isToleranceWithinRange
+                ) {
                     handleClick();
-                    console.log(
-                        `${index + 1}번째 줄의 공차 값이 적합하지 않습니다`,
-                    );
-                } else {
+                    return;
                 }
-            });
-        }
-        setIsToleranceValid(isValid); // 공차 검사 결과 설정
-    };
-
-    const runValidationChecks = () => {
-        testAnnualCost();
-        testTolerance();
-
-        setTimeout(() => {
-            if (isAnnualCostValid && isToleranceValid) {
-                handleSuccessClick();
             }
-        }, 2000);
+
+            setTimeout(() => {
+                handleSuccessClick();
+            }, 1000);
+        }
     };
 
     return (
@@ -160,7 +182,7 @@ const LineItemToggleBar = ({
             <div>
                 <Snackbar
                     open={open}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                 >
                     <Alert
@@ -176,7 +198,7 @@ const LineItemToggleBar = ({
             <div>
                 <Snackbar
                     open={successOpen}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleSuccessClose}
                 >
                     <Alert
@@ -214,7 +236,7 @@ const LineItemToggleBar = ({
                                 }}
                                 onClick={() => {
                                     if (localData) {
-                                        runValidationChecks();
+                                        testValue();
                                     }
                                 }}
                             >
