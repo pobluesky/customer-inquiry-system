@@ -24,6 +24,11 @@ const LineItemToggleBar = ({
     const [isFileModalOpen, setIsFileModalOpen] = useState(true);
 
     const [open, setOpen] = useState(false);
+    const [successOpen, setSuccessOpen] = useState(false);
+    const [dataChecked, setDataChecked] = useState(false);
+
+    const [isAnnualCostValid, setIsAnnualCostValid] = useState(false); // 연소요량 유효성 상태
+    const [isToleranceValid, setIsToleranceValid] = useState(false); // 공차 유효성 상태
 
     const handleClick = () => {
         setOpen(true);
@@ -35,6 +40,18 @@ const LineItemToggleBar = ({
         }
 
         setOpen(false);
+    };
+
+    const handleSuccessClick = () => {
+        setSuccessOpen(true);
+    };
+
+    const handleSuccessClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSuccessOpen(false);
     };
 
     const openModal = () => setIsModalOpen(true);
@@ -57,6 +74,7 @@ const LineItemToggleBar = ({
 
     // 연소요량
     const testAnnualCost = () => {
+        let isValid = true;
         if (localData.length > 0) {
             localData.forEach((item, index) => {
                 // $ 제거
@@ -86,6 +104,7 @@ const LineItemToggleBar = ({
                     parseFloat(annualCostValue) < 43000;
 
                 if (hasInvalidCommas || !isValidNumber || !isWithinRange) {
+                    isValid = false;
                     handleClick();
                     console.log(
                         `${index + 1}번째 줄의 연소요량 값이 적합하지 않습니다`,
@@ -93,10 +112,12 @@ const LineItemToggleBar = ({
                 }
             });
         }
+        setIsAnnualCostValid(isValid); // 연소요량 검사 결과 설정
     };
 
     // 공차
     const testTolerance = () => {
+        let isValid = true;
         if (localData != []) {
             localData.forEach((item, index) => {
                 // ±, mm 제거
@@ -111,13 +132,27 @@ const LineItemToggleBar = ({
                     toleranceValue > -0.12 && toleranceValue < 0.47;
 
                 if (!isValidNumber || !isWithinRange) {
+                    isValid = false;
                     handleClick();
                     console.log(
                         `${index + 1}번째 줄의 공차 값이 적합하지 않습니다`,
                     );
+                } else {
                 }
             });
         }
+        setIsToleranceValid(isValid); // 공차 검사 결과 설정
+    };
+
+    const runValidationChecks = () => {
+        testAnnualCost();
+        testTolerance();
+
+        setTimeout(() => {
+            if (isAnnualCostValid && isToleranceValid) {
+                handleSuccessClick();
+            }
+        }, 2000);
     };
 
     return (
@@ -135,6 +170,22 @@ const LineItemToggleBar = ({
                         sx={{ width: '100%' }}
                     >
                         라인 아이템 중 적합하지 않은 데이터가 있습니다.
+                    </Alert>
+                </Snackbar>
+            </div>
+            <div>
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={6000}
+                    onClose={handleSuccessClose}
+                >
+                    <Alert
+                        onClose={handleSuccessClose}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        라인 아이템 데이터 적합 테스트 완료
                     </Alert>
                 </Snackbar>
             </div>
@@ -163,8 +214,7 @@ const LineItemToggleBar = ({
                                 }}
                                 onClick={() => {
                                     if (localData) {
-                                        testAnnualCost();
-                                        testTolerance();
+                                        runValidationChecks();
                                     }
                                 }}
                             >
